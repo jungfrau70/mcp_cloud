@@ -1,0 +1,82 @@
+# Docker Compose configuration for production
+services:
+  
+  # PostgreSQL Database
+  mcp_postgres:
+    image: postgres:14
+    container_name: mcp_postgres
+    environment:
+      - POSTGRES_DB=mcp_db
+      - POSTGRES_USER=mcpuser
+      - POSTGRES_PASSWORD=mcppassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mcp_cloud_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mcpuser -d mcp_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  
+  # Redis for caching
+  mcp_redis:
+    image: redis:7-alpine
+    container_name: mcp_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - mcp_cloud_network
+  
+  # Backend with package/app separation
+  mcp_backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.app
+    container_name: mcp_backend
+    env_file: ./backend/env/.env
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://mcpuser:mcppassword@mcp_postgres:5432/mcp_db
+      - REDIS_URL=redis://mcp_redis:6379
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-sa-key.json
+      - CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=/app/gcp-sa-key.json
+    volumes:
+      - ./backend:/app
+      - terraform_modules_data:/app/terraform_modules
+      - ./backend/env/alpha-ktixap-43e9bf90eb00.json:/app/gcp-sa-key.json
+      - ./mcp_knowledge_base:/mcp_knowledge_base
+    depends_on:
+      mcp_postgres:
+        condition: service_healthy
+      mcp_redis:
+        condition: service_started
+    networks:
+      - mcp_cloud_network
+    
+  # Frontend with package/app separation
+  mcp_frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.app
+    container_name: mcp_frontend
+    environment:
+      - MCP_API_KEY=${MCP_API_KEY:-my_mcp_eagle_tiger}
+      - NUXT_PUBLIC_API_BASE_URL=http://mcp_backend:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mcp_backend
+    networks:
+      - mcp_cloud_network
+
+volumes:
+  postgres_data:
+  terraform_modules_data:
+
+networks:
+  mcp_cloud_network:
+    driver: bridge

@@ -1,0 +1,36 @@
+# Package stage - Dependencies management for backend
+FROM python:3.12-slim AS package
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        curl unzip apt-transport-https ca-certificates gnupg \
+    && mkdir -p -m 755 /usr/share/keyrings \
+    && curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list \
+    && apt-get update && apt-get install -y google-cloud-sdk \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Terraform
+ARG TERRAFORM_VERSION="1.8.5"
+RUN curl -fsSLo terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
+    && unzip -q terraform.zip -d /usr/local/bin/ \
+    && rm terraform.zip
+
+WORKDIR /app
+
+# Upgrade pip and install wheel
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+
+# Create non-root user
+RUN addgroup --system mcpuser
+RUN adduser --system --uid 1001 mcpuser --ingroup mcpuser
+
+# Copy requirements and install dependencies to system Python
+COPY requirements.txt .
+RUN pip install --no-cache-dir --compile --prefer-binary -r requirements.txt awscli
+
+# Verify key installations
+RUN python -c "import uvicorn; print('uvicorn version:', uvicorn.__version__)"
+RUN python -c "import fastapi; print('fastapi version:', fastapi.__version__)"
+RUN python -c "import sqlalchemy; print('sqlalchemy version:', sqlalchemy.__version__)"

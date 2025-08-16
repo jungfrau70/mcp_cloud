@@ -1,0 +1,86 @@
+---
+alwaysApply: true
+---
+---
+description: 프로젝트의 전반적인 규칙과 가이드라인
+globs:
+  - "**/*.py"
+  - "**/*.ts"
+  - "**/*.vue"
+  - "**/*.json"
+  - "**/*.md"
+alwaysApply: true
+---
+
+# Global Rules
+
+## 프로젝트 구조
+- Backend: FastAPI 기반의 Python 서버
+- Frontend: Nuxt.js 기반의 Vue.js 애플리케이션
+- Database: PostgreSQL
+- Cache: Redis
+- Task Queue: Celery
+
+## 코드 스타일
+- Python: PEP 8 스타일 가이드 준수
+- TypeScript: ESLint와 Prettier 설정 준수
+- Vue.js: Vue 3 Composition API 사용
+
+## 언어
+- 코드: 주석포함 모두 영어
+- 대화: 한글
+
+## Git 규칙
+- main 브랜치: 프로덕션 환경
+- develop 브랜치: 개발 환경
+- feature/*: 기능 개발
+- hotfix/*: 긴급 수정
+
+## API 규칙
+- RESTful API 디자인 패턴 준수
+- API 버전 관리: /api/v1/ 형식 사용
+- 응답 형식: JSON 표준 준수
+
+## 보안 규칙
+- 환경 변수: .env 파일 사용
+- API 키: 환경 변수로 관리
+- 비밀번호: 암호화 저장
+
+## 개발 및 테스트 환경 준수
+- Backend: venv(virtual environment) 및 pytest 사용
+- Frontend: Vitest 사용
+- 테스트 커버리지: 80% 이상 유지
+
+### 가상환경 및 pytest 환경 규칙
+- **가상환경**: `venv/` 디렉토리 사용, Windows에서 `venv\Scripts\activate` 활성화
+- **백엔드 실행**: `uvicorn main:app --reload --host 0.0.0.0 --port 7000`
+- **테스트 실행**: `pytest tests/` 또는 `python -m pytest`
+- **환경 변수**: `backend/env/.env` 또는 직접 설정
+- **데이터베이스**: PostgreSQL 로컬 또는 Docker 컨테이너 사용
+
+## 패키지 설치 규칙
+- 기존 package 들과 호환성 체크
+  
+## 운영 환경
+- docker-compose 로 container 구동
+
+## Sequential Thinking 규칙
+- 모든 복잡한 로직 구현 시 Sequential Thinking 방식 적용
+- Sequential Thinking 구성 요소:
+  1. 명확한 초기 상태 정의
+  2. 단계별 진행 상태 추적
+  3. 분기 처리 명시
+  4. 수정 및 롤백 계획 포함
+- Sequential Thinking 적용 대상:
+  1. 시스템 확장 및 최적화
+  2. 성능 개선
+  3. 오류 처리
+  4. 논리 및 코드 정합성
+- Sequential Thinking 문서화:
+  1. 각 단계별 입/출력 명시
+  2. 상태 변화 기록
+  3. 분기 조건 문서화
+  4. 예외 처리 방안 포함
+
+
+

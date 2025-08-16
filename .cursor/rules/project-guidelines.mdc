@@ -1,0 +1,66 @@
+---
+description: 프로젝트의 상세 개발 가이드라인
+globs:
+  - "backend/**/*.py"
+  - "frontend/**/*.ts"
+  - "frontend/**/*.vue"
+  - "**/Dockerfile*"
+  - "**/docker-compose*.yml"
+alwaysApply: true
+---
+
+# Project Guidelines
+
+## Backend 가이드라인
+
+### 디렉토리 구조
+- app/: 메인 애플리케이션 코드
+- routers/: API 라우터 정의
+- alembic/: 데이터베이스 마이그레이션
+- tests/: 테스트 코드
+
+### API 개발
+- FastAPI 의존성 주입 패턴 사용
+- Pydantic 모델로 요청/응답 검증
+- 비동기 작업은 Celery로 처리
+
+### 데이터베이스
+- SQLAlchemy ORM 사용
+- Alembic으로 마이그레이션 관리
+- 트랜잭션 관리 필수
+
+## Frontend 가이드라인
+
+### 디렉토리 구조
+- components/: 재사용 가능한 컴포넌트
+- pages/: 라우트 페이지
+- stores/: 상태 관리
+- composables/: 재사용 가능한 로직
+- assets/: 정적 파일
+
+### 컴포넌트 개발
+- Composition API 사용
+- TypeScript 타입 정의 필수
+- 컴포넌트 props 검증
+
+### 상태 관리
+- Pinia 스토어 사용
+- 상태 변경은 mutation으로만
+- 비동기 작업은 action으로 처리
+
+## 배포 가이드라인
+
+### Docker
+- 멀티 스테이지 빌드 사용
+- .dockerignore 설정 필수
+- 환경 변수 주입
+
+### CI/CD
+- GitHub Actions 사용
+- 테스트 자동화
+- 코드 품질 검사
+
+## 문서화
+- API 문서: Swagger/OpenAPI
+- 코드 주석: Google 스타일
+- 변경 로그 관리

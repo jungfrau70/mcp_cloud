@@ -1,0 +1,131 @@
+# Development Environment Rules
+
+## 가상환경 관리
+
+### Python 가상환경 설정
+- **필수**: `venv/` 디렉토리에 Python 3.12 가상환경 사용
+- **활성화**: Windows에서 `venv\Scripts\activate` 사용
+- **패키지 관리**: `requirements.txt`와 `requirements-pytest.txt` 분리 관리
+
+### 가상환경 활성화 명령어
+```bash
+# Windows CMD
+venv\Scripts\activate
+
+# Windows PowerShell
+venv\Scripts\Activate.ps1
+
+# Linux/Mac
+source venv/bin/activate
+```
+
+## 백엔드 개발 환경
+
+### 로컬 개발 서버 실행
+- **FastAPI 서버**: `uvicorn main:app --reload --host 0.0.0.0 --port 7000`
+- **환경 변수**: `backend/env/.env` 파일 또는 환경 변수 직접 설정
+- **데이터베이스**: PostgreSQL 로컬 연결 또는 Docker 컨테이너 사용
+
+### 환경 변수 설정 (로컬 개발)
+```bash
+# 필수 환경 변수
+DATABASE_URL=postgresql://mcpuser:mcppassword@localhost:5434/mcp_db
+GEMINI_API_KEY=your_gemini_api_key
+MCP_API_KEY=my_mcp_eagle_tiger
+
+# 선택적 환경 변수
+AWS_DEFAULT_REGION=ap-northeast-2
+GOOGLE_APPLICATION_CREDENTIALS=path/to/gcp-sa-key.json
+```
+
+## 테스트 환경
+
+### pytest 설정
+- **테스트 실행**: `pytest tests/` 또는 `python -m pytest`
+- **커버리지**: `pytest --cov=backend tests/`
+- **병렬 실행**: `pytest -n auto tests/`
+- **특정 테스트**: `pytest tests/test_ai_agent.py::TestTerraformCodeGenerator::test_generate_code_success`
+
+### 테스트 데이터베이스
+- **테스트용 DB**: 별도 PostgreSQL 데이터베이스 또는 SQLite 인메모리
+- **Fixtures**: `conftest.py`에서 공통 테스트 설정 관리
+- **Mock**: 외부 API 호출은 unittest.mock 사용
+
+### 테스트 실행 명령어
+```bash
+# 기본 테스트 실행
+pytest
+
+# 커버리지 포함
+pytest --cov=backend --cov-report=html
+
+# 특정 테스트 파일
+pytest tests/test_ai_agent.py
+
+# 실패한 테스트만 재실행
+pytest --lf
+
+# 상세 출력
+pytest -v
+```
+
+## 개발 워크플로우
+
+### 1. 가상환경 활성화
+```bash
+venv\Scripts\activate
+```
+
+### 2. 의존성 설치
+```bash
+pip install -r backend/requirements.txt
+pip install -r backend/requirements-pytest.txt
+```
+
+### 3. 데이터베이스 설정
+```bash
+# PostgreSQL 컨테이너 시작 (선택사항)
+docker-compose up -d postgres
+
+# 또는 로컬 PostgreSQL 사용
+```
+
+### 4. 백엔드 서버 실행
+```bash
+cd backend
+uvicorn main:app --reload --host 0.0.0.0 --port 7000
+```
+
+### 5. 테스트 실행
+```bash
+# 새 터미널에서
+pytest tests/
+```
+
+## 문제 해결
+
+### 일반적인 문제들
+- **포트 충돌**: 7000번 포트가 사용 중인 경우 다른 포트 사용
+- **데이터베이스 연결 실패**: PostgreSQL 서비스 상태 확인
+- **가상환경 활성화 실패**: Python 경로 및 권한 확인
+- **패키지 설치 실패**: pip 업그레이드 및 캐시 클리어
+
+### 디버깅 도구
+- **FastAPI**: `/docs` 엔드포인트에서 Swagger UI 사용
+- **로깅**: `logging` 모듈 사용하여 디버그 정보 출력
+- **pytest**: `pytest -s`로 출력 캡처 비활성화
+
+## 성능 최적화
+
+### 개발 환경 최적화
+- **Hot Reload**: `uvicorn --reload` 사용으로 코드 변경 시 자동 재시작
+- **테스트 병렬화**: `pytest -n auto`로 테스트 병렬 실행
+- **캐싱**: pytest-cov 플러그인으로 커버리지 계산 캐싱
+
+### 메모리 관리
+- **가상환경**: 불필요한 패키지 제거로 가상환경 크기 최소화
+- **테스트**: `pytest --tb=short`로 트레이스백 간소화
+description:
+globs:
+alwaysApply: false
+---
