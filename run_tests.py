@@ -45,7 +45,7 @@ def check_backend_service():
     
     try:
         import requests
-        response = requests.get("http://localhost:7000/docs", timeout=5)
+        response = requests.get("http://localhost:8000/docs", timeout=5)
         if response.status_code == 200:
             print("✅ 백엔드 서비스가 실행 중입니다.")
             return True

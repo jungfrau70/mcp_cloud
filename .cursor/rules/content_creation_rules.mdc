@@ -1,0 +1,24 @@
+# Content Creation Guideline for MCP Knowledge Base
+
+## Principle
+
+All educational content, including textbook chapters and slides, should be structured around three core components to provide a comprehensive learning experience. This ensures a balance between conceptual understanding, practical application, and automation.
+
+## Core Components
+
+Every topic or module should be organized into the following three sections:
+
+### 1. Theory (이론)
+*   **Objective:** Explain the fundamental concepts, architecture, and purpose of the service or topic.
+*   **Content Example:** What is AWS S3? Key features, storage classes, consistency model, and common use cases.
+*   **AI-Assisted Generation:** Use Gemini to generate clear explanations, analogies, and answer user questions in real-time.
+
+### 2. Practice (실습 - Console & CLI)
+*   **Objective:** Provide hands-on experience using the web console and command-line interface.
+*   **Content Example:** A step-by-step guide to creating an S3 bucket using the AWS Management Console, including screenshots or tips. A corresponding guide to performing the same task using AWS CLI commands (`aws s3 mb`), with explanations for each parameter.
+*   **AI-Assisted Generation:** Use Gemini to generate detailed, step-by-step instructions for both console and CLI operations.
+
+### 3. Infrastructure as Code (IaC - Terraform)
+*   **Objective:** Teach how to provision and manage the infrastructure using code.
+*   **Content Example:** A complete Terraform code snippet (`.tf` file) to create the same S3 bucket. The code should be explained, covering resources, variables, and outputs.
+*   **AI-Assisted Generation:** Use Gemini to automatically generate Terraform code based on natural language requirements, and to analyze and explain user-submitted code.

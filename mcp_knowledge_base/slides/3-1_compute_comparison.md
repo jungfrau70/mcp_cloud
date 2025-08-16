@@ -9,6 +9,7 @@
 
 ---
 
+
 ## 가상 머신 서비스 비교
 
 ### AWS EC2 vs GCP Compute Engine
@@ -243,22 +244,24 @@ gcloud compute commitments create \
 
 ### AWS에서 GCP로 마이그레이션
 
-#### 1. 단계별 접근
-```
-Phase 1: 평가 및 계획
-├── 워크로드 분석
-├── 비용 비교 분석
-└── 마이그레이션 계획 수립
+#### 1. 단계별 접근 (Infographic)
 
-Phase 2: 파일럿 프로젝트
-├── 작은 워크로드로 시작
-├── GCP 환경 적응
-└── 모범 사례 확립
-
-Phase 3: 단계적 마이그레이션
-├── 개발 환경 → GCP
-├── 스테이징 환경 → GCP
-└── 프로덕션 환경 → GCP
+```mermaid
+graph TD
+    subgraph Phase 1: 평가 및 계획
+        A[워크로드 분석] --> B[비용 비교 분석];
+        B --> C[마이그레이션 계획 수립];
+    end
+    subgraph Phase 2: 파일럿 프로젝트
+        D[작은 워크로드로 시작] --> E[GCP 환경 적응];
+        E --> F[모범 사례 확립];
+    end
+    subgraph Phase 3: 단계적 마이그레이션
+        G[개발 환경 → GCP] --> H[스테이징 환경 → GCP];
+        H --> I[프로덕션 환경 → GCP];
+    end
+    C --> D;
+    F --> G;
 ```
 
 #### 2. 마이그레이션 도구
