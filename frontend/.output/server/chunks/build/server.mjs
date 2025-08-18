@@ -384,7 +384,9 @@ async function getRouteRules(arg) {
   }
 }
 const __nuxt_page_meta$3 = {
-  title: "홈"
+  layout: "default",
+  // Use the new default layout
+  title: "Home"
 };
 const __nuxt_page_meta$2 = {
   title: "CLI 실행"
@@ -400,7 +402,7 @@ const _routes = [
     name: "index",
     path: "/",
     meta: __nuxt_page_meta$3 || {},
-    component: () => import('./index-BI9odwIS.mjs')
+    component: () => import('./index-Bwegcp5z.mjs')
   },
   {
     name: "cli",
@@ -423,7 +425,7 @@ const _routes = [
     name: "knowledge-base",
     path: "/knowledge-base",
     meta: __nuxt_page_meta || {},
-    component: () => import('./index-MkbGlj8F.mjs')
+    component: () => import('./index-BWSX7Mvm.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -772,7 +774,7 @@ const plugins = [
   components_plugin_z4hgvsiddfKkfXTP6M8M4zG5Cb7sGnDhcryKVM45Di4
 ];
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-D2uD14le.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-C5dWkEbF.mjs').then((m) => m.default || m))
 };
 const LayoutLoader = defineComponent({
   name: "LayoutLoader",
@@ -1035,7 +1037,7 @@ const _sfc_main$1 = {
     const statusMessage = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack = void 0;
-    const _Error404 = defineAsyncComponent(() => import('./error-404-wpDOFjJc.mjs'));
+    const _Error404 = defineAsyncComponent(() => import('./error-404-DIcPAtHl.mjs'));
     const _Error = defineAsyncComponent(() => import('./error-500-CF_GL0Wg.mjs'));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _push, _parent, _attrs) => {
@@ -1117,5 +1119,5 @@ let entry;
 }
 const entry$1 = (ssrContext) => entry(ssrContext);
 
-export { useNuxtApp as a, useRuntimeConfig as b, nuxtLinkDefaults as c, entry$1 as default, navigateTo as n, resolveRouteObject as r, tryUseNuxtApp as t, useRouter as u };
+export { useRouter as a, useNuxtApp as b, nuxtLinkDefaults as c, entry$1 as default, navigateTo as n, resolveRouteObject as r, tryUseNuxtApp as t, useRuntimeConfig as u };
 //# sourceMappingURL=server.mjs.map

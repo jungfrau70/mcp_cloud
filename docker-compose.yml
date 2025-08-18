@@ -44,8 +44,11 @@ services:
       - REDIS_URL=redis://mcp_redis:6379
       - GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-sa-key.json
       - CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=/app/gcp-sa-key.json
+      # Ensure file change detection works well in mounted volumes
+      - WATCHFILES_FORCE_POLLING=true
     volumes:
       - ./backend:/app
+      - ./backend/tests:/app/tests
       - terraform_modules_data:/app/terraform_modules
       - ./backend/env/alpha-ktixap-43e9bf90eb00.json:/app/gcp-sa-key.json
       - ./mcp_knowledge_base:/mcp_knowledge_base
@@ -66,8 +69,15 @@ services:
     environment:
       - MCP_API_KEY=${MCP_API_KEY:-my_mcp_eagle_tiger}
       - NUXT_PUBLIC_API_BASE_URL=http://mcp_backend:8000
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - NUXT_TELEMETRY_DISABLED=1
     ports:
       - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: ["yarn", "dev", "--host", "0.0.0.0", "--port", "3000"]
     depends_on:
       - mcp_backend
     networks:

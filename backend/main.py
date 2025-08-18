@@ -13,7 +13,7 @@ if os.path.exists(env_path):
 import subprocess
 import tempfile
 import shutil
-from fastapi import FastAPI, HTTPException, Depends, Security
+from fastapi import FastAPI, HTTPException, Depends, Security, WebSocket, WebSocketDisconnect, Request
 from fastapi.security.api_key import APIKeyHeader
 from pydantic import BaseModel
 from sqlalchemy import create_engine
@@ -21,12 +21,27 @@ from sqlalchemy.orm import sessionmaker, Session
 from typing import List, Optional
 from datetime import datetime
 import google.generativeai as genai
-from models import Base, Deployment, DeploymentStatus
+from models import Base, Deployment, DeploymentStatus, DataSource
 from fastapi.middleware.cors import CORSMiddleware # Import CORSMiddleware
 
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
 from rag_service import rag_service_instance
 import asyncio
+from io import BytesIO
+
+# Markdown to PDF conversion (optional import)
+try:
+    from markdown_pdf import MarkdownPdf, Section
+    HAS_MARKDOWN_PDF = True
+except ImportError:
+    HAS_MARKDOWN_PDF = False
+    print("Warning: markdown_pdf module not available. PDF conversion will be disabled.")
+
+try:
+    import pty
+    HAS_PTY = True
+except Exception:
+    HAS_PTY = False
 
 # Pydantic 모델 정의
 class TerraformContent(BaseModel):
@@ -78,7 +93,32 @@ class DataSourceResponse(BaseModel):
     error: Optional[str] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+# DataSource CRUD를 위한 Pydantic 모델들
+class DataSourceCreate(BaseModel):
+    name: str
+    provider: str
+    data_type: str
+    config: dict
+
+class DataSourceUpdate(BaseModel):
+    name: Optional[str] = None
+    provider: Optional[str] = None
+    data_type: Optional[str] = None
+    config: Optional[dict] = None
+
+class DataSourceInDB(BaseModel):
+    id: int
+    name: str
+    provider: str
+    data_type: str
+    config: dict
+    created_at: datetime
+    updated_at: datetime
+    
+    class Config:
+        from_attributes = True
 
 # AI Assistant를 위한 Pydantic 모델
 class AgentQueryRequest(BaseModel):
@@ -87,7 +127,12 @@ class AgentQueryRequest(BaseModel):
 # 지식베이스를 위한 모델
 class DocumentContentRequest(BaseModel):
     path: str
-        
+
+# Markdown to PDF conversion request
+class MarkdownToPdfRequest(BaseModel):
+    markdown: str
+    filename: Optional[str] = "document.md"
+
 # 데이터베이스 URL 환경변수 가져오기 (Docker 환경 우선)
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://mcpuser:mcppassword@mcp_postgres:5432/mcp_db")
 print(f"🔗 Database URL: {DATABASE_URL}")
@@ -98,13 +143,16 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "dummy_key")
 # API Key for authentication
 MCP_API_KEY = os.getenv("MCP_API_KEY", "my_mcp_eagle_tiger")
 
-api_key_header = APIKeyHeader(name="X-API-Key", auto_error=True)
+api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
-async def get_api_key(api_key: str = Security(api_key_header)):
-    if api_key == MCP_API_KEY:
-        return api_key
-    else:
-        raise HTTPException(status_code=403, detail="Could not validate credentials")
+async def get_api_key(request: Request):
+    # Accept API key via header or `api_key` query parameter
+    provided = request.headers.get("x-api-key") or request.query_params.get("api_key")
+    # Read current expected key dynamically to respect test-time env overrides
+    expected = os.getenv("MCP_API_KEY", MCP_API_KEY)
+    if provided == expected:
+        return provided
+    raise HTTPException(status_code=403, detail="Could not validate credentials")
 
 # SQLAlchemy 엔진 생성 (에러 처리 추가)
 try:
@@ -159,21 +207,88 @@ app.add_middleware(
 # ===================================
 KNOWLEDGE_BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
 
-def get_knowledge_base_structure(path):
-    """ Recursively builds a dictionary representing the directory structure. """
-    structure = {}
+def get_knowledge_base_structure(path, is_root: bool = False):
+    """ Recursively builds a dictionary representing the directory structure.
+    - Directories are ordered alphabetically with 'appendix' placed last.
+    - Markdown files are listed under the special key 'files' and sorted alphabetically.
+    """
+    structure: dict = {}
+
+    directories: List[str] = []
+    markdown_files: List[str] = []
+
     for item in os.listdir(path):
         item_path = os.path.join(path, item)
         if os.path.isdir(item_path):
-            structure[item] = get_knowledge_base_structure(item_path)
+            directories.append(item)
         elif item.endswith('.md'):
-            if 'files' not in structure:
-                structure['files'] = []
-            structure['files'].append(item)
-    # Sort files for consistent ordering
-    if 'files' in structure:
-        structure['files'].sort()
+            # Exclude Curriculum.md from the root textbook listing
+            if is_root and item.lower() == 'curriculum.md':
+                continue
+            markdown_files.append(item)
+
+    # Order directories with 'appendix' always at the end (case-insensitive)
+    directories.sort(key=lambda name: (name.lower() == 'appendix', name.lower()))
+
+    for directory_name in directories:
+        structure[directory_name] = get_knowledge_base_structure(os.path.join(path, directory_name), is_root=False)
+
+    if markdown_files:
+        markdown_files.sort()
+        structure['files'] = markdown_files
+
     return structure
+
+# ===================================
+
+# ===================================
+# DataSource CRUD Endpoints
+# ===================================
+
+@app.post("/api/v1/datasources/", response_model=DataSourceInDB, dependencies=[Depends(get_api_key)])
+def create_data_source(datasource: DataSourceCreate, db: Session = Depends(get_db)):
+    db_datasource = db.query(DataSource).filter(DataSource.name == datasource.name).first()
+    if db_datasource:
+        raise HTTPException(status_code=400, detail="DataSource with this name already exists")
+    new_datasource = DataSource(**datasource.dict())
+    db.add(new_datasource)
+    db.commit()
+    db.refresh(new_datasource)
+    return new_datasource
+
+@app.get("/api/v1/datasources/", response_model=List[DataSourceInDB], dependencies=[Depends(get_api_key)])
+def list_data_sources(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    datasources = db.query(DataSource).offset(skip).limit(limit).all()
+    return datasources
+
+@app.get("/api/v1/datasources/{datasource_id}", response_model=DataSourceInDB, dependencies=[Depends(get_api_key)])
+def get_data_source(datasource_id: int, db: Session = Depends(get_db)):
+    db_datasource = db.query(DataSource).filter(DataSource.id == datasource_id).first()
+    if db_datasource is None:
+        raise HTTPException(status_code=404, detail="DataSource not found")
+    return db_datasource
+
+@app.put("/api/v1/datasources/{datasource_id}", response_model=DataSourceInDB, dependencies=[Depends(get_api_key)])
+def update_data_source(datasource_id: int, datasource: DataSourceUpdate, db: Session = Depends(get_db)):
+    db_datasource = db.query(DataSource).filter(DataSource.id == datasource_id).first()
+    if db_datasource is None:
+        raise HTTPException(status_code=404, detail="DataSource not found")
+    
+    for key, value in datasource.dict().items():
+        setattr(db_datasource, key, value)
+    
+    db.commit()
+    db.refresh(db_datasource)
+    return db_datasource
+
+@app.delete("/api/v1/datasources/{datasource_id}", response_model=DataSourceInDB, dependencies=[Depends(get_api_key)])
+def delete_data_source(datasource_id: int, db: Session = Depends(get_db)):
+    db_datasource = db.query(DataSource).filter(DataSource.id == datasource_id).first()
+    if db_datasource is None:
+        raise HTTPException(status_code=404, detail="DataSource not found")
+    db.delete(db_datasource)
+    db.commit()
+    return db_datasource
 
 # ===================================
 
@@ -243,7 +358,7 @@ async def get_document_content(request: DocumentContentRequest):
     try:
         # Sanitize the requested path to prevent directory traversal
         # os.path.join will handle the slashes correctly for the OS
-        relative_path = os.path.normpath(request.path.strip(r'./\ '))
+        relative_path = os.path.normpath(request.path.strip(r'./\ ')) # Corrected escape sequence here
         secure_path = os.path.join(KNOWLEDGE_BASE_DIR, relative_path)
 
         # Security Check: Ensure the final path is within the knowledge base directory
@@ -262,6 +377,218 @@ async def get_document_content(request: DocumentContentRequest):
         raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read document content: {e}")
+
+
+# ===================================
+# Curriculum Endpoints
+# ===================================
+TEXTBOOK_DIR = os.path.join(KNOWLEDGE_BASE_DIR, 'textbook')
+SLIDES_DIR = os.path.join(KNOWLEDGE_BASE_DIR, 'slides')
+
+@app.get("/api/v1/curriculum/tree", dependencies=[Depends(get_api_key)])
+async def get_curriculum_tree():
+    """
+    Returns the directory structure of the textbook as JSON.
+    """
+    try:
+        # We can reuse the existing helper function
+        tree = get_knowledge_base_structure(TEXTBOOK_DIR, is_root=True)
+        return tree
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to read curriculum structure: {e}")
+
+@app.get("/api/v1/curriculum/content", dependencies=[Depends(get_api_key)])
+async def get_curriculum_content(path: str):
+    """
+    Returns the content of a requested markdown file from the textbook directory.
+    """
+    try:
+        # Sanitize path
+        relative_path = os.path.normpath(path.strip(r'./\ ')) # Corrected escape sequence here
+        secure_path = os.path.join(TEXTBOOK_DIR, relative_path)
+
+        if not os.path.commonpath([TEXTBOOK_DIR]) == os.path.commonpath([TEXTBOOK_DIR, secure_path]):
+            raise HTTPException(status_code=400, detail="Invalid file path.")
+
+        if not os.path.exists(secure_path) or not secure_path.endswith('.md'):
+            raise HTTPException(status_code=404, detail="File not found or not a markdown file.")
+
+        with open(secure_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        return {"path": relative_path, "content": content}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to read content: {e}")
+
+@app.get("/api/v1/curriculum/slide")
+async def get_slide_download(textbook_path: str, request: Request):
+    # Allow api key via header or query param for downloads (avoids CORS preflight issues)
+    await get_api_key(request)
+    """
+    Finds the corresponding slide for a textbook path and returns it for download.
+    For now, it returns the markdown content. PDF conversion can be added later.
+    """
+    try:
+        # Prefer exact basename match, e.g., textbook/part1/day1/1-2_account_setup.md -> slides/1-2_account_setup.md
+        basename = os.path.basename(textbook_path)
+        found_slide = None
+        if basename in os.listdir(SLIDES_DIR):
+            found_slide = basename
+        else:
+            # Fallback: textbook/part1/day1/intro.md -> slides/1-1_intro.md
+            parts = textbook_path.split(os.path.sep)
+            if len(parts) >= 3 and parts[0].startswith('part'):
+                part_num = parts[0].replace('part', '')
+                day_num = parts[1].replace('day', '')
+                topic = os.path.splitext(parts[-1])[0]
+                slide_prefix = f"{part_num}-{day_num}_"
+                for filename in os.listdir(SLIDES_DIR):
+                    if filename.startswith(slide_prefix) and topic in filename:
+                        found_slide = filename
+                        break
+        
+        if not found_slide:
+            raise HTTPException(status_code=404, detail="Slide mapping is not defined for this document.")
+
+        slide_path = os.path.join(SLIDES_DIR, found_slide)
+        # Try Marp PDF conversion if available; fallback to raw markdown
+        import shutil, subprocess, tempfile
+        marp_bin = shutil.which("marp")
+        if marp_bin:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                pdf_out = os.path.join(tmpdir, os.path.splitext(found_slide)[0] + ".pdf")
+                try:
+                    # Optional browser path for puppeteer (Windows/enterprise env)
+                    browser_path = os.getenv("MARP_BROWSER_PATH")
+                    cmd = [
+                        marp_bin,
+                        slide_path,
+                        "--pdf",
+                        "--allow-local-files",
+                        "--timeout",
+                        os.getenv("MARP_TIMEOUT_MS", "120000"),
+                        "-o",
+                        pdf_out,
+                    ]
+                    if browser_path:
+                        cmd.extend(["--browser", browser_path])
+                    # Allow setting PUPPETEER_EXECUTABLE_PATH via env
+                    env = os.environ.copy()
+                    if os.getenv("PUPPETEER_EXECUTABLE_PATH"):
+                        env["PUPPETEER_EXECUTABLE_PATH"] = os.getenv("PUPPETEER_EXECUTABLE_PATH")
+                    subprocess.run(
+                        cmd,
+                        check=True,
+                        capture_output=True,
+                        text=True,
+                        env=env,
+                    )
+                    return FileResponse(
+                        pdf_out,
+                        media_type="application/pdf",
+                        filename=os.path.basename(pdf_out),
+                    )
+                except subprocess.CalledProcessError:
+                    pass
+        # No marp available or conversion failed: return markdown
+        return FileResponse(
+            slide_path,
+            media_type="text/markdown; charset=utf-8",
+            filename=found_slide,
+        )
+
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get slide: {e}")
+
+# Generic Markdown -> PDF conversion using Marp (if available)
+@app.post("/api/v1/markdown/pdf", dependencies=[Depends(get_api_key)])
+async def convert_markdown_to_pdf(req: MarkdownToPdfRequest):
+    try:
+        import shutil, tempfile, subprocess, os as _os
+        marp_bin = shutil.which("marp")
+        # Write markdown to temp file
+        with tempfile.TemporaryDirectory() as tmpdir:
+            md_path = _os.path.join(tmpdir, req.filename or "document.md")
+            with open(md_path, "w", encoding="utf-8") as f:
+                f.write(req.markdown)
+            if marp_bin:
+                pdf_out = _os.path.join(tmpdir, _os.path.splitext(_os.path.basename(md_path))[0] + ".pdf")
+                try:
+                    subprocess.run([marp_bin, md_path, "--pdf", "--allow-local-files", "-o", pdf_out],
+                                   check=True, capture_output=True, text=True)
+                    return FileResponse(pdf_out, media_type="application/pdf",
+                                         filename=_os.path.basename(pdf_out))
+                except subprocess.CalledProcessError as e:
+                    raise HTTPException(status_code=500, detail=f"Marp conversion failed: {e.stderr or e.stdout}")
+            # Fallback: return markdown if Marp not available
+            return FileResponse(md_path, media_type="text/markdown; charset=utf-8",
+                                 filename=_os.path.basename(md_path))
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to convert markdown: {e}")
+
+@app.get("/api/v1/slides/{slide_name}/pdf", dependencies=[Depends(get_api_key)])
+async def get_slide_pdf(slide_name: str):
+    """
+    Converts a specified slide markdown file to PDF and returns it.
+    """
+    try:
+        # Sanitize the slide_name to prevent directory traversal
+        # Use os.path.abspath to get the absolute path, then check if it's within SLIDES_DIR
+        requested_path = os.path.join(SLIDES_DIR, slide_name.strip(r'./\ '))
+        
+        # Ensure the file is a markdown file
+        if not requested_path.endswith('.md'):
+            requested_path += '.md'
+
+        # Resolve the real path to handle '..' and symlinks
+        real_path = os.path.realpath(requested_path)
+
+        # Security Check: Ensure the real path is within the SLIDES_DIR
+        if not real_path.startswith(os.path.realpath(SLIDES_DIR)):
+            raise HTTPException(status_code=400, detail="Invalid or malicious slide name.")
+
+        slide_path = real_path # Use the real_path for opening the file
+
+        if not os.path.exists(slide_path):
+            raise HTTPException(status_code=404, detail="Slide not found.")
+
+        # Read markdown content
+        with open(slide_path, 'r', encoding='utf-8') as f:
+            markdown_content = f.read()
+
+        # Convert markdown to PDF
+        if not HAS_MARKDOWN_PDF:
+            # Fallback: return markdown content as text
+            return StreamingResponse(
+                iter([markdown_content]),
+                media_type="text/markdown",
+                headers={'Content-Disposition': f'attachment; filename="{os.path.splitext(slide_name)[0]}.md"'}
+            )
+            
+        # Use MarkdownPdf if available
+        pdf = MarkdownPdf()
+        pdf.add_section(Section(markdown_content, toc=False))
+        
+        # Save PDF to a BytesIO object
+        buffer = BytesIO()
+        pdf.save(buffer)
+        buffer.seek(0) # Rewind to the beginning of the buffer
+
+        return StreamingResponse(
+            buffer,
+            media_type="application/pdf",
+            headers={'Content-Disposition': f'attachment; filename="{os.path.splitext(slide_name)[0]}.pdf"'}
+        )
+
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        print(f"Error during PDF conversion: {e}") # Added for debugging
+        raise HTTPException(status_code=500, detail=f"Failed to convert slide to PDF: {e}")
+
 
 
 
@@ -335,10 +662,22 @@ async def review_terraform_with_gemini(deployment_id: int, content: TerraformCon
 
 READ_ONLY_COMMAND_WHITELIST = {
     "aws": {
-        "get-caller-identity": ["aws", "sts", "get-caller-identity"]
+        # existing
+        "get-caller-identity": ["aws", "sts", "get-caller-identity"],
+        # frontend expects these
+        "s3_ls": ["aws", "s3", "ls"],
+        "ec2_describe_instances": ["aws", "ec2", "describe-instances"],
+        "iam_list_users": ["aws", "iam", "list-users"],
+        "vpc_describe_vpcs": ["aws", "ec2", "describe-vpcs"],
     },
     "gcp": {
-        "auth-list": ["gcloud", "auth", "list"]
+        # existing
+        "auth-list": ["gcloud", "auth", "list"],
+        # frontend expects these
+        "gcloud_zones_list": ["gcloud", "compute", "zones", "list"],
+        "gcloud_projects_list": ["gcloud", "projects", "list"],
+        "gcloud_storage_buckets_list": ["gcloud", "storage", "buckets", "list"],
+        "gcloud_compute_instances_list": ["gcloud", "compute", "instances", "list"],
     }
 }
 
@@ -518,6 +857,11 @@ def query_data_source(request: DataSourceRequest):
         return DataSourceResponse(success=False, error=str(e))
     finally:
         shutil.rmtree(temp_dir)
+
+# Backward-compatible API without versioned prefix
+@app.post("/data-sources/query", response_model=DataSourceResponse, dependencies=[Depends(get_api_key)])
+def query_data_source_legacy(request: DataSourceRequest):
+    return query_data_source(request)
 
 # AI Agent 고도화 기능을 위한 새로운 API 엔드포인트들
 
@@ -717,6 +1061,93 @@ async def get_infrastructure_recommendations(request: dict):
     
     except Exception as e:
         return {"success": False, "error": str(e)}
+
+
+@app.websocket("/ws/v1/cli/interactive")
+async def websocket_interactive_cli(websocket: WebSocket):
+    await websocket.accept()
+    
+    # 첫 번째 메시지에서 API 키 인증 처리
+    try:
+        auth_message = await websocket.receive_text()
+        auth_data = json.loads(auth_message)
+        
+        if auth_data.get('type') == 'auth':
+            provided_key = auth_data.get('api_key')
+            expected_key = os.getenv("MCP_API_KEY", MCP_API_KEY)
+            
+            if provided_key != expected_key:
+                await websocket.send_text("Authentication failed. Invalid API key.")
+                await websocket.close()
+                return
+        else:
+            await websocket.send_text("Authentication required. Please provide API key.")
+            await websocket.close()
+            return
+    except (json.JSONDecodeError, KeyError):
+        await websocket.send_text("Invalid authentication message format.")
+        await websocket.close()
+        return
+    
+    if not HAS_PTY:
+        await websocket.send_text("Interactive shell is not supported on this platform.")
+        await websocket.close()
+        return
+    
+    # This is a simplified implementation using a local pty.
+    # For enhanced security, this should be executed inside a Docker container.
+    master_fd, slave_fd = pty.openpty()
+    
+    # Start a shell process
+    shell_process = await asyncio.create_subprocess_shell(
+        'sh',
+        stdin=slave_fd,
+        stdout=slave_fd,
+        stderr=slave_fd,
+        close_fds=True
+    )
+
+    # Task to forward output from shell to websocket
+    async def forward_output():
+        import select
+        while True:
+            r, _, _ = select.select([master_fd], [], [], 0)
+            if r:
+                try:
+                    output = os.read(master_fd, 1024)
+                    if output:
+                        await websocket.send_text(output.decode())
+                    else:
+                        break # EOF
+                except (WebSocketDisconnect, OSError):
+                    break
+            await asyncio.sleep(0.01)
+
+    # Task to forward input from websocket to shell
+    async def forward_input():
+        try:
+            while True:
+                data = await websocket.receive_text()
+                os.write(master_fd, data.encode())
+        except WebSocketDisconnect:
+            pass # Client disconnected
+
+    output_task = asyncio.create_task(forward_output())
+    input_task = asyncio.create_task(forward_input())
+
+    try:
+        await asyncio.gather(output_task, input_task)
+    finally:
+        # Cleanup
+        output_task.cancel()
+        input_task.cancel()
+        os.close(master_fd)
+        os.close(slave_fd)
+        if shell_process.returncode is None:
+            shell_process.terminate()
+            await shell_process.wait()
+        print("Interactive session closed.")
+
 
 if __name__ == "__main__":
     import uvicorn

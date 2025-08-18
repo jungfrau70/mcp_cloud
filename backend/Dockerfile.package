@@ -4,12 +4,16 @@ FROM python:3.12-slim AS package
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
         curl unzip apt-transport-https ca-certificates gnupg \
+        nodejs npm \
     && mkdir -p -m 755 /usr/share/keyrings \
     && curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg \
     && echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list \
     && apt-get update && apt-get install -y google-cloud-sdk \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Marp CLI for slide PDF conversion
+RUN npm install -g @marp-team/marp-cli
 
 # Install Terraform
 ARG TERRAFORM_VERSION="1.8.5"

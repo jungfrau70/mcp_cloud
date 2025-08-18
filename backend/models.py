@@ -42,3 +42,14 @@ class Deployment(Base):
     terraform_apply_log = Column(Text, nullable=True)
     gemini_review_summary = Column(Text, nullable=True)
     gemini_review_issues = Column(JSON, nullable=True)
+
+class DataSource(Base):
+    __tablename__ = "datasources"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True, unique=True, nullable=False)
+    provider = Column(String, nullable=False)
+    data_type = Column(String, nullable=False)
+    config = Column(JSON, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

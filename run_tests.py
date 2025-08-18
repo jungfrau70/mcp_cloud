@@ -14,55 +14,55 @@ from pathlib import Path
 
 def check_dependencies():
     """필요한 의존성 확인"""
-    print("🔍 의존성 확인 중...")
+    print("의존성 확인 중...")
     
     # Python 버전 확인
     if sys.version_info < (3, 8):
-        print("❌ Python 3.8 이상이 필요합니다.")
+        print("Python 3.8 이상이 필요합니다.")
         return False
     
     # pytest 확인
     try:
         import pytest
-        print(f"✅ pytest {pytest.__version__} 설치됨")
+        print(f"pytest {pytest.__version__} 설치됨")
     except ImportError:
-        print("❌ pytest가 설치되지 않았습니다. 'pip install pytest'를 실행하세요.")
+        print("pytest가 설치되지 않았습니다. 'pip install pytest'를 실행하세요.")
         return False
     
     # requests 확인
     try:
         import requests
-        print(f"✅ requests {requests.__version__} 설치됨")
+        print(f"requests {requests.__version__} 설치됨")
     except ImportError:
-        print("❌ requests가 설치되지 않았습니다. 'pip install requests'를 실행하세요.")
+        print("requests가 설치되지 않았습니다. 'pip install requests'를 실행하세요.")
         return False
     
     return True
 
 def check_backend_service():
     """백엔드 서비스 상태 확인"""
-    print("🔍 백엔드 서비스 상태 확인 중...")
+    print("백엔드 서비스 상태 확인 중...")
     
     try:
         import requests
         response = requests.get("http://localhost:8000/docs", timeout=5)
         if response.status_code == 200:
-            print("✅ 백엔드 서비스가 실행 중입니다.")
+            print("백엔드 서비스가 실행 중입니다.")
             return True
     except:
         pass
     
-    print("❌ 백엔드 서비스가 실행되지 않았습니다.")
-    print("💡 'docker-compose up -d'를 실행하여 서비스를 시작하세요.")
+    print("백엔드 서비스가 실행되지 않았습니다.")
+    print("'docker-compose up -d'를 실행하여 서비스를 시작하세요.")
     return False
 
 def run_mock_tests():
     """Mock 기반 테스트 실행"""
-    print("\n🧪 Mock 기반 테스트 실행 중...")
+    print("\nMock 기반 테스트 실행 중...")
     
     test_file = "tests/test_complete_mock.py"
     if not Path(test_file).exists():
-        print(f"❌ 테스트 파일을 찾을 수 없습니다: {test_file}")
+        print(f"테스트 파일을 찾을 수 없습니다: {test_file}")
         return False
     
     try:
@@ -71,28 +71,28 @@ def run_mock_tests():
         ], capture_output=True, text=True, timeout=600)
         
         if result.returncode == 0:
-            print("✅ Mock 기반 테스트가 성공적으로 완료되었습니다.")
+            print("Mock 기반 테스트가 성공적으로 완료되었습니다.")
             return True
         else:
-            print("❌ Mock 기반 테스트가 실패했습니다.")
+            print("Mock 기반 테스트가 실패했습니다.")
             print(result.stdout)
             print(result.stderr)
             return False
             
     except subprocess.TimeoutExpired:
-        print("❌ Mock 기반 테스트 실행 시간 초과")
+        print("Mock 기반 테스트 실행 시간 초과")
         return False
     except Exception as e:
-        print(f"❌ Mock 기반 테스트 실행 중 오류 발생: {e}")
+        print(f"Mock 기반 테스트 실행 중 오류 발생: {e}")
         return False
 
 def run_unit_tests():
     """기존 단위 테스트 실행"""
-    print("\n🧪 기존 단위 테스트 실행 중...")
+    print("\n기존 단위 테스트 실행 중...")
     
     test_file = "tests/test_ai_agent.py"
     if not Path(test_file).exists():
-        print(f"❌ 테스트 파일을 찾을 수 없습니다: {test_file}")
+        print(f"테스트 파일을 찾을 수 없습니다: {test_file}")
         return False
     
     try:
@@ -101,28 +101,28 @@ def run_unit_tests():
         ], capture_output=True, text=True, timeout=300)
         
         if result.returncode == 0:
-            print("✅ 기존 단위 테스트가 성공적으로 완료되었습니다.")
+            print("기존 단위 테스트가 성공적으로 완료되었습니다.")
             return True
         else:
-            print("❌ 기존 단위 테스트가 실패했습니다.")
+            print("기존 단위 테스트가 실패했습니다.")
             print(result.stdout)
             print(result.stderr)
             return False
             
     except subprocess.TimeoutExpired:
-        print("❌ 기존 단위 테스트 실행 시간 초과")
+        print("기존 단위 테스트 실행 시간 초과")
         return False
     except Exception as e:
-        print(f"❌ 기존 단위 테스트 실행 중 오류 발생: {e}")
+        print(f"기존 단위 테스트 실행 중 오류 발생: {e}")
         return False
 
 def run_user_scenario_tests():
     """사용자 시나리오 테스트 실행"""
-    print("\n🎭 사용자 시나리오 테스트 실행 중...")
+    print("\n사용자 시나리오 테스트 실행 중...")
     
     test_file = "tests/test_user_scenarios.py"
     if not Path(test_file).exists():
-        print(f"❌ 테스트 파일을 찾을 수 없습니다: {test_file}")
+        print(f"테스트 파일을 찾을 수 없습니다: {test_file}")
         return False
     
     try:
@@ -131,28 +131,28 @@ def run_user_scenario_tests():
         ], capture_output=True, text=True, timeout=600)
         
         if result.returncode == 0:
-            print("✅ 사용자 시나리오 테스트가 성공적으로 완료되었습니다.")
+            print("사용자 시나리오 테스트가 성공적으로 완료되었습니다.")
             return True
         else:
-            print("❌ 사용자 시나리오 테스트가 실패했습니다.")
+            print("사용자 시나리오 테스트가 실패했습니다.")
             print(result.stdout)
             print(result.stderr)
             return False
             
     except subprocess.TimeoutExpired:
-        print("❌ 사용자 시나리오 테스트 실행 시간 초과")
+        print("사용자 시나리오 테스트 실행 시간 초과")
         return False
     except Exception as e:
-        print(f"❌ 사용자 시나리오 테스트 실행 중 오류 발생: {e}")
+        print(f"사용자 시나리오 테스트 실행 중 오류 발생: {e}")
         return False
 
 def run_api_integration_tests():
     """API 통합 테스트 실행"""
-    print("\n🔗 API 통합 테스트 실행 중...")
+    print("\nAPI 통합 테스트 실행 중...")
     
     test_file = "tests/test_api_integration.py"
     if not Path(test_file).exists():
-        print(f"❌ 테스트 파일을 찾을 수 없습니다: {test_file}")
+        print(f"테스트 파일을 찾을 수 없습니다: {test_file}")
         return False
     
     try:
@@ -161,28 +161,28 @@ def run_api_integration_tests():
         ], capture_output=True, text=True, timeout=900)
         
         if result.returncode == 0:
-            print("✅ API 통합 테스트가 성공적으로 완료되었습니다.")
+            print("API 통합 테스트가 성공적으로 완료되었습니다.")
             return True
         else:
-            print("❌ API 통합 테스트가 실패했습니다.")
+            print("API 통합 테스트가 실패했습니다.")
             print(result.stdout)
             print(result.stderr)
             return False
             
     except subprocess.TimeoutExpired:
-        print("❌ API 통합 테스트 실행 시간 초과")
+        print("API 통합 테스트 실행 시간 초과")
         return False
     except Exception as e:
-        print(f"❌ API 통합 테스트 실행 중 오류 발생: {e}")
+        print(f"API 통합 테스트 실행 중 오류 발생: {e}")
         return False
 
 def run_specific_scenario(scenario_number):
     """특정 시나리오 테스트 실행"""
-    print(f"\n🎯 시나리오 {scenario_number} 테스트 실행 중...")
+    print(f"\n시나리오 {scenario_number} 테스트 실행 중...")
     
     test_file = "tests/test_api_integration.py"
     if not Path(test_file).exists():
-        print(f"❌ 테스트 파일을 찾을 수 없습니다: {test_file}")
+        print(f"테스트 파일을 찾을 수 없습니다: {test_file}")
         return False
     
     try:
@@ -193,55 +193,55 @@ def run_specific_scenario(scenario_number):
         ], capture_output=True, text=True, timeout=300)
         
         if result.returncode == 0:
-            print(f"✅ 시나리오 {scenario_number} 테스트가 성공적으로 완료되었습니다.")
+            print(f"시나리오 {scenario_number} 테스트가 성공적으로 완료되었습니다.")
             return True
         else:
-            print(f"❌ 시나리오 {scenario_number} 테스트가 실패했습니다.")
+            print(f"시나리오 {scenario_number} 테스트가 실패했습니다.")
             print(result.stdout)
             print(result.stderr)
             return False
             
     except subprocess.TimeoutExpired:
-        print(f"❌ 시나리오 {scenario_number} 테스트 실행 시간 초과")
+        print(f"시나리오 {scenario_number} 테스트 실행 시간 초과")
         return False
     except Exception as e:
-        print(f"❌ 시나리오 {scenario_number} 테스트 실행 중 오류 발생: {e}")
+        print(f"시나리오 {scenario_number} 테스트 실행 중 오류 발생: {e}")
         return False
 
 def run_performance_tests():
     """성능 테스트 실행"""
-    print("\n⚡ 성능 테스트 실행 중...")
+    print("\n성능 테스트 실행 중...")
     
     test_file = "tests/test_api_integration.py"
     if not Path(test_file).exists():
-        print(f"❌ 테스트 파일을 찾을 수 없습니다: {test_file}")
+        print(f"테스트 파일을 찾을 수 없습니다: {test_file}")
         return False
     
     try:
         result = subprocess.run([
-            sys.executable, "-m", "pytest", test_file, "::TestAPIPerformance", "-v", "--tb=short"
+            sys.executable, "-m", "pytest", f"{test_file}::TestAPIPerformance", "-v", "--tb=short"
         ], capture_output=True, text=True, timeout=300)
         
         if result.returncode == 0:
-            print("✅ 성능 테스트가 성공적으로 완료되었습니다.")
+            print("성능 테스트가 성공적으로 완료되었습니다.")
             return True
         else:
-            print("❌ 성능 테스트가 실패했습니다.")
+            print("성능 테스트가 실패했습니다.")
             print(result.stdout)
             print(result.stderr)
             return False
             
     except subprocess.TimeoutExpired:
-        print("❌ 성능 테스트 실행 시간 초과")
+        print("성능 테스트 실행 시간 초과")
         return False
     except Exception as e:
-        print(f"❌ 성능 테스트 실행 중 오류 발생: {e}")
+        print(f"성능 테스트 실행 중 오류 발생: {e}")
         return False
 
 def print_test_summary(results):
     """테스트 결과 요약 출력"""
     print("\n" + "="*60)
-    print("📊 테스트 결과 요약")
+    print("테스트 결과 요약")
     print("="*60)
     
     total_tests = len(results)
@@ -249,16 +249,16 @@ def print_test_summary(results):
     failed_tests = total_tests - passed_tests
     
     print(f"총 테스트: {total_tests}")
-    print(f"성공: {passed_tests} ✅")
-    print(f"실패: {failed_tests} ❌")
+    print(f"성공: {passed_tests}")
+    print(f"실패: {failed_tests}")
     
     if failed_tests == 0:
-        print("\n🎉 모든 테스트가 성공적으로 완료되었습니다!")
+        print("\n모든 테스트가 성공적으로 완료되었습니다!")
     else:
-        print(f"\n⚠️  {failed_tests}개의 테스트가 실패했습니다.")
+        print(f"\n{failed_tests}개의 테스트가 실패했습니다.")
         for test_name, result in results.items():
             if not result:
-                print(f"  - {test_name}: 실패 ❌")
+                print(f"  - {test_name}: 실패")
     
     print("="*60)
 
@@ -278,7 +278,7 @@ def main():
     
     args = parser.parse_args()
     
-    print("🚀 MCP AI Agent 사용자 시나리오 테스트 시작")
+    print("MCP AI Agent 사용자 시나리오 테스트 시작")
     print("="*60)
     
     # 의존성 확인
@@ -287,7 +287,7 @@ def main():
     
     # 백엔드 서비스 상태 확인 (건너뛰기 옵션이 아닌 경우)
     if not args.skip_backend_check and not check_backend_service():
-        print("\n💡 백엔드 서비스를 시작한 후 다시 시도하세요:")
+        print("\n백엔드 서비스를 시작한 후 다시 시도하세요:")
         print("   docker-compose up -d")
         sys.exit(1)
     
@@ -324,10 +324,10 @@ def main():
             sys.exit(1)
             
     except KeyboardInterrupt:
-        print("\n\n⚠️  테스트가 사용자에 의해 중단되었습니다.")
+        print("\n\n테스트가 사용자에 의해 중단되었습니다.")
         sys.exit(1)
     except Exception as e:
-        print(f"\n❌ 테스트 실행 중 예상치 못한 오류가 발생했습니다: {e}")
+        print(f"\n테스트 실행 중 예상치 못한 오류가 발생했습니다: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":

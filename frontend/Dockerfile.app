@@ -6,16 +6,13 @@ WORKDIR /app
 # Copy source code
 COPY . .
 
-# Build the application
-RUN yarn build
-
 # Expose port
 EXPOSE 3000
 
-# Set environment variables
-ENV NODE_ENV=production
+# Set environment variables for dev hot-reload
+ENV NODE_ENV=development
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
-# Start the application
-CMD ["node", ".output/server/index.mjs"]
+# Default command will be overridden by docker-compose in dev to run `yarn dev`
+CMD ["yarn", "dev", "--host", "0.0.0.0", "--port", "3000"]

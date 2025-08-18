@@ -18,6 +18,7 @@
     "entities": "4.5.0",
     "estree-walker": "2.0.2",
     "hookable": "5.5.3",
+    "marked": "9.1.6",
     "source-map-js": "1.2.1",
     "ufo": "1.6.1",
     "unhead": "2.0.14",

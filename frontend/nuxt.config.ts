@@ -4,6 +4,13 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss'
   ],
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+      ignore: ['**/StepCli.*']
+    }
+  ],
   css: ['~/assets/css/main.css'],
   app: {
     head: {
@@ -17,7 +24,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:7000'
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'http://mcp_backend:8000'
     }
   }
 })

@@ -12,10 +12,44 @@ MCP 서버(AWS·GCP AI Agent 기반 IaaS/PaaS 배포 관리)의 **사용자 시�
 
 ## 2. 배포 코드 준비
 
-* AI Agent와 대화하면 모듈작성
+* AI Agent와 대화하면서 모듈작성
 * 모듈 구조와 변수 타입이 맞는지 검증
 * 필요 시 사용자에게 “리전 변경 권고” 같은 피드백 제공
-* **인프라팀**이 GitHub 저장소에 `terraform/modules` 폴더에 AWS, GCP 모듈을 등록
+* **```
+
+---
+
+
+---
+
+## 9. Frontend-based Curriculum Learning Scenario
+
+**Actor:** A developer learning about cloud infrastructure.
+
+**Flow:**
+
+1.  **Accessing the Curriculum:** The user opens the MCP Cloud Platform web interface. The `SyllabusExplorer` on the left panel automatically loads and displays the curriculum structure by fetching it from the `/api/v1/curriculum/tree` endpoint. The curriculum is neatly organized into parts and days.
+
+2.  **Selecting a Topic:** The user navigates the tree and clicks on a specific topic, for example, `part2/day3/cli_basics.md`.
+
+3.  **Viewing Content:**
+    *   The `SyllabusExplorer` emits a `file-click` event with the path to the selected file.
+    *   The main layout component catches this event and fetches the content of the markdown file from `/api/v1/curriculum/content`.
+    *   The fetched markdown is rendered in the central `WorkspaceView`, displaying the lesson content.
+
+4.  **Interactive Learning:**
+    *   The rendered markdown for "CLI Basics" contains a special link: `[Open CLI Tool](mcp://tool/cli)`.
+    *   The user clicks this link to practice the commands they've just learned about.
+
+5.  **Seamless View Transition:**
+    *   The click on the special link is intercepted by the `ContentView` component.
+    *   It emits a `navigate-tool` event.
+    *   The `WorkspaceView` component receives the event, and instead of navigating to a new page, it dynamically switches the active component.
+    *   The `ContentView` fades out, and the `StepCli` component (the interactive terminal) fades in, providing a seamless transition within the workspace.
+
+6.  **Returning to Content:** The user can select another topic from the `SyllabusExplorer` at any time to switch back to the content view.
+
+---**이 GitHub 저장소에 `terraform/modules` 폴더에 AWS, GCP 모듈을 등록
 
 ---
 

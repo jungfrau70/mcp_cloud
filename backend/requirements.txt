@@ -32,3 +32,4 @@ matplotlib
 seaborn
 plotly
 markdown
+# markdown-pdf  # Temporarily disabled due to compatibility issues
