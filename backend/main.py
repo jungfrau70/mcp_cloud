@@ -127,7 +127,7 @@ class AgentQueryRequest(BaseModel):
 # 지식베이스를 위한 모델
 class DocumentContentRequest(BaseModel):
     path: str
-
+        
 # Markdown to PDF conversion request
 class MarkdownToPdfRequest(BaseModel):
     markdown: str
@@ -152,7 +152,7 @@ async def get_api_key(request: Request):
     expected = os.getenv("MCP_API_KEY", MCP_API_KEY)
     if provided == expected:
         return provided
-    raise HTTPException(status_code=403, detail="Could not validate credentials")
+        raise HTTPException(status_code=403, detail="Could not validate credentials")
 
 # SQLAlchemy 엔진 생성 (에러 처리 추가)
 try:
@@ -186,7 +186,69 @@ try:
 except Exception as e:
     print(f"Failed to create database tables: {e}")
 
-app = FastAPI()
+tags_metadata = [
+    {
+        "name": "Health Check",
+        "description": "Application health and status endpoints"
+    },
+    {
+        "name": "Data Sources",
+        "description": "CRUD operations for cloud data sources and queries"
+    },
+    {
+        "name": "AI Agent",
+        "description": "RAG-powered AI agent for natural language queries"
+    },
+    {
+        "name": "Knowledge Base",
+        "description": "Knowledge base tree structure and content management"
+    },
+    {
+        "name": "Curriculum",
+        "description": "Educational curriculum content and slide management"
+    },
+    # {
+    #     "name": "Document Conversion",
+    #     "description": "Markdown to PDF conversion services"
+    # },
+    {
+        "name": "Deployments",
+        "description": "Infrastructure deployment lifecycle management"
+    },
+    {
+        "name": "CLI Commands",
+        "description": "Read-only CLI command execution for cloud providers"
+    },
+    {
+        "name": "AI Terraform",
+        "description": "AI-powered Terraform code generation and validation"
+    },
+    {
+        "name": "AI Analysis",
+        "description": "AI-powered cost and security analysis"
+    },
+    {
+        "name": "AI Assistant",
+        "description": "AI assistant for interactive queries and support"
+    },
+    {
+        "name": "AI Knowledge",
+        "description": "AI knowledge base search and management"
+    },
+    {
+        "name": "AI Infrastructure",
+        "description": "AI-powered infrastructure recommendations"
+    }
+]
+
+app = FastAPI(
+    title="Bigs API",
+    description="Multi-Cloud Platform for Infrastructure as Code with AI Assistant",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_tags=tags_metadata
+)
 
 # CORS Middleware
 origins = [
@@ -245,7 +307,7 @@ def get_knowledge_base_structure(path, is_root: bool = False):
 # DataSource CRUD Endpoints
 # ===================================
 
-@app.post("/api/v1/datasources/", response_model=DataSourceInDB, dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/datasources/", response_model=DataSourceInDB, dependencies=[Depends(get_api_key)], tags=["Data Sources"])
 def create_data_source(datasource: DataSourceCreate, db: Session = Depends(get_db)):
     db_datasource = db.query(DataSource).filter(DataSource.name == datasource.name).first()
     if db_datasource:
@@ -256,19 +318,19 @@ def create_data_source(datasource: DataSourceCreate, db: Session = Depends(get_d
     db.refresh(new_datasource)
     return new_datasource
 
-@app.get("/api/v1/datasources/", response_model=List[DataSourceInDB], dependencies=[Depends(get_api_key)])
+@app.get("/api/v1/datasources/", response_model=List[DataSourceInDB], dependencies=[Depends(get_api_key)], tags=["Data Sources"])
 def list_data_sources(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     datasources = db.query(DataSource).offset(skip).limit(limit).all()
     return datasources
 
-@app.get("/api/v1/datasources/{datasource_id}", response_model=DataSourceInDB, dependencies=[Depends(get_api_key)])
+@app.get("/api/v1/datasources/{datasource_id}", response_model=DataSourceInDB, dependencies=[Depends(get_api_key)], tags=["Data Sources"])
 def get_data_source(datasource_id: int, db: Session = Depends(get_db)):
     db_datasource = db.query(DataSource).filter(DataSource.id == datasource_id).first()
     if db_datasource is None:
         raise HTTPException(status_code=404, detail="DataSource not found")
     return db_datasource
 
-@app.put("/api/v1/datasources/{datasource_id}", response_model=DataSourceInDB, dependencies=[Depends(get_api_key)])
+@app.put("/api/v1/datasources/{datasource_id}", response_model=DataSourceInDB, dependencies=[Depends(get_api_key)], tags=["Data Sources"])
 def update_data_source(datasource_id: int, datasource: DataSourceUpdate, db: Session = Depends(get_db)):
     db_datasource = db.query(DataSource).filter(DataSource.id == datasource_id).first()
     if db_datasource is None:
@@ -281,7 +343,7 @@ def update_data_source(datasource_id: int, datasource: DataSourceUpdate, db: Ses
     db.refresh(db_datasource)
     return db_datasource
 
-@app.delete("/api/v1/datasources/{datasource_id}", response_model=DataSourceInDB, dependencies=[Depends(get_api_key)])
+@app.delete("/api/v1/datasources/{datasource_id}", response_model=DataSourceInDB, dependencies=[Depends(get_api_key)], tags=["Data Sources"])
 def delete_data_source(datasource_id: int, db: Session = Depends(get_db)):
     db_datasource = db.query(DataSource).filter(DataSource.id == datasource_id).first()
     if db_datasource is None:
@@ -314,15 +376,15 @@ def run_terraform_command(command: List[str], working_dir: str):
     except FileNotFoundError:
         raise HTTPException(status_code=500, detail="Terraform 실행 파일을 찾을 수 없습니다.")
 
-@app.get("/")
+@app.get("/", tags=["Health Check"])
 def read_root():
     return {"message": "MCP Backend is running!"}
 
-@app.get("/health")
+@app.get("/health", tags=["Health Check"])
 def health_check():
     return {"status": "healthy", "timestamp": datetime.now().isoformat()}
 
-@app.post("/api/v1/agent/query", dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/agent/query", dependencies=[Depends(get_api_key)], tags=["AI Agent"])
 async def agent_query(request: AgentQueryRequest):
     """
     사용자 쿼리를 받아 RAG 체인을 통해 스트리밍 응답을 반환합니다.
@@ -338,7 +400,7 @@ async def agent_query(request: AgentQueryRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred in the RAG service: {e}")
 
-@app.get("/api/v1/knowledge-base/tree", dependencies=[Depends(get_api_key)])
+@app.get("/api/v1/knowledge-base/tree", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
 async def get_knowledge_base_tree():
     """
     지식 베이스의 디렉토리 구조를 JSON 형태로 반환합니다.
@@ -349,7 +411,7 @@ async def get_knowledge_base_tree():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read knowledge base structure: {e}")
 
-@app.post("/api/v1/knowledge-base/content", dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/knowledge-base/content", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
 async def get_document_content(request: DocumentContentRequest):
     """
     요청된 마크다운 파일의 내용을 반환합니다.
@@ -385,7 +447,7 @@ async def get_document_content(request: DocumentContentRequest):
 TEXTBOOK_DIR = os.path.join(KNOWLEDGE_BASE_DIR, 'textbook')
 SLIDES_DIR = os.path.join(KNOWLEDGE_BASE_DIR, 'slides')
 
-@app.get("/api/v1/curriculum/tree", dependencies=[Depends(get_api_key)])
+@app.get("/api/v1/curriculum/tree", dependencies=[Depends(get_api_key)], tags=["Curriculum"])
 async def get_curriculum_tree():
     """
     Returns the directory structure of the textbook as JSON.
@@ -397,14 +459,17 @@ async def get_curriculum_tree():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read curriculum structure: {e}")
 
-@app.get("/api/v1/curriculum/content", dependencies=[Depends(get_api_key)])
+@app.get("/api/v1/curriculum/content", dependencies=[Depends(get_api_key)], tags=["Curriculum"])
 async def get_curriculum_content(path: str):
     """
     Returns the content of a requested markdown file from the textbook directory.
     """
     try:
-        # Sanitize path
-        relative_path = os.path.normpath(path.strip(r'./\ ')) # Corrected escape sequence here
+        # Sanitize and normalize path (cross-platform)
+        normalized = path.replace("\\", "/").lstrip("/ ")
+        relative_path = os.path.normpath(normalized)
+        print(f"normalized relative_path: {relative_path}")
+
         secure_path = os.path.join(TEXTBOOK_DIR, relative_path)
 
         if not os.path.commonpath([TEXTBOOK_DIR]) == os.path.commonpath([TEXTBOOK_DIR, secure_path]):
@@ -419,31 +484,61 @@ async def get_curriculum_content(path: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read content: {e}")
 
-@app.get("/api/v1/curriculum/slide")
-async def get_slide_download(textbook_path: str, request: Request):
-    # Allow api key via header or query param for downloads (avoids CORS preflight issues)
-    await get_api_key(request)
+@app.get("/api/v1/slides", dependencies=[Depends(get_api_key)], tags=["Slides"])
+async def get_slide_download(textbook_path: str):
     """
     Finds the corresponding slide for a textbook path and returns it for download.
     For now, it returns the markdown content. PDF conversion can be added later.
     """
     try:
-        # Prefer exact basename match, e.g., textbook/part1/day1/1-2_account_setup.md -> slides/1-2_account_setup.md
-        basename = os.path.basename(textbook_path)
+        # Normalize incoming URL path for cross-platform handling
+        normalized = textbook_path.replace("\\", "/").lstrip("/ ")
+        # Prefer exact basename match (case-insensitive)
+        basename = os.path.basename(normalized)
+        topic_base = os.path.splitext(basename)[0]
+        topic_base_lower = topic_base.lower()
+        slides = [f for f in os.listdir(SLIDES_DIR) if f.lower().endswith('.md')]
+
         found_slide = None
-        if basename in os.listdir(SLIDES_DIR):
-            found_slide = basename
-        else:
-            # Fallback: textbook/part1/day1/intro.md -> slides/1-1_intro.md
-            parts = textbook_path.split(os.path.sep)
-            if len(parts) >= 3 and parts[0].startswith('part'):
-                part_num = parts[0].replace('part', '')
-                day_num = parts[1].replace('day', '')
-                topic = os.path.splitext(parts[-1])[0]
+
+        # 1) Exact filename match (case-insensitive)
+        for f in slides:
+            if f.lower() == basename.lower():
+                found_slide = f
+                break
+
+        # 2) Startswith topic base (e.g., "7-2_advanced_devops*")
+        if not found_slide:
+            for f in slides:
+                if f.lower().startsWith(topic_base_lower):
+                    found_slide = f
+                    break
+
+        # 3) Contains topic base anywhere
+        if not found_slide:
+            for f in slides:
+                if topic_base_lower in f.lower():
+                    found_slide = f
+                    break
+
+        # 4) Remove chapter prefix before first underscore and try contains (e.g., "advanced_devops")
+        if not found_slide and '_' in topic_base:
+            remainder = topic_base.split('_', 1)[1].lower()
+            for f in slides:
+                if remainder and remainder in f.lower():
+                    found_slide = f
+                    break
+
+        # 5) part/day prefix + any topic (e.g., "3-7_*")
+        if not found_slide:
+            parts = normalized.split('/')
+            if len(parts) >= 3 and parts[0].lower().startswith('part') and parts[1].lower().startswith('day'):
+                part_num = parts[0].lower().replace('part', '')
+                day_num = parts[1].lower().replace('day', '')
                 slide_prefix = f"{part_num}-{day_num}_"
-                for filename in os.listdir(SLIDES_DIR):
-                    if filename.startswith(slide_prefix) and topic in filename:
-                        found_slide = filename
+                for f in slides:
+                    if f.lower().startswith(slide_prefix):
+                        found_slide = f
                         break
         
         if not found_slide:
@@ -501,35 +596,35 @@ async def get_slide_download(textbook_path: str, request: Request):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get slide: {e}")
 
-# Generic Markdown -> PDF conversion using Marp (if available)
-@app.post("/api/v1/markdown/pdf", dependencies=[Depends(get_api_key)])
-async def convert_markdown_to_pdf(req: MarkdownToPdfRequest):
-    try:
-        import shutil, tempfile, subprocess, os as _os
-        marp_bin = shutil.which("marp")
-        # Write markdown to temp file
-        with tempfile.TemporaryDirectory() as tmpdir:
-            md_path = _os.path.join(tmpdir, req.filename or "document.md")
-            with open(md_path, "w", encoding="utf-8") as f:
-                f.write(req.markdown)
-            if marp_bin:
-                pdf_out = _os.path.join(tmpdir, _os.path.splitext(_os.path.basename(md_path))[0] + ".pdf")
-                try:
-                    subprocess.run([marp_bin, md_path, "--pdf", "--allow-local-files", "-o", pdf_out],
-                                   check=True, capture_output=True, text=True)
-                    return FileResponse(pdf_out, media_type="application/pdf",
-                                         filename=_os.path.basename(pdf_out))
-                except subprocess.CalledProcessError as e:
-                    raise HTTPException(status_code=500, detail=f"Marp conversion failed: {e.stderr or e.stdout}")
-            # Fallback: return markdown if Marp not available
-            return FileResponse(md_path, media_type="text/markdown; charset=utf-8",
-                                 filename=_os.path.basename(md_path))
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to convert markdown: {e}")
+# # Generic Markdown -> PDF conversion using Marp (if available)
+# @app.post("/api/v1/slides/pdf", dependencies=[Depends(get_api_key)], tags=["Slides"])
+# async def convert_markdown_to_pdf(req: MarkdownToPdfRequest):
+#     try:
+#         import shutil, tempfile, subprocess, os as _os
+#         marp_bin = shutil.which("marp")
+#         # Write markdown to temp file
+#         with tempfile.TemporaryDirectory() as tmpdir:
+#             md_path = _os.path.join(tmpdir, req.filename or "document.md")
+#             with open(md_path, "w", encoding="utf-8") as f:
+#                 f.write(req.markdown)
+#             if marp_bin:
+#                 pdf_out = _os.path.join(tmpdir, _os.path.splitext(_os.path.basename(md_path))[0] + ".pdf")
+#                 try:
+#                     subprocess.run([marp_bin, md_path, "--pdf", "--allow-local-files", "-o", pdf_out],
+#                                    check=True, capture_output=True, text=True)
+#                     return FileResponse(pdf_out, media_type="application/pdf",
+#                                          filename=_os.path.basename(pdf_out))
+#                 except subprocess.CalledProcessError as e:
+#                     raise HTTPException(status_code=500, detail=f"Marp conversion failed: {e.stderr or e.stdout}")
+#             # Fallback: return markdown if Marp not available
+#             return FileResponse(md_path, media_type="text/markdown; charset=utf-8",
+#                                  filename=_os.path.basename(md_path))
+#     except HTTPException:
+#         raise
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Failed to convert markdown: {e}")
 
-@app.get("/api/v1/slides/{slide_name}/pdf", dependencies=[Depends(get_api_key)])
+@app.get("/api/v1/slides/{slide_name}/pdf", dependencies=[Depends(get_api_key)], tags=["Slides"])
 async def get_slide_pdf(slide_name: str):
     """
     Converts a specified slide markdown file to PDF and returns it.
@@ -538,6 +633,7 @@ async def get_slide_pdf(slide_name: str):
         # Sanitize the slide_name to prevent directory traversal
         # Use os.path.abspath to get the absolute path, then check if it's within SLIDES_DIR
         requested_path = os.path.join(SLIDES_DIR, slide_name.strip(r'./\ '))
+        print(requested_path)
         
         # Ensure the file is a markdown file
         if not requested_path.endswith('.md'):
@@ -592,7 +688,7 @@ async def get_slide_pdf(slide_name: str):
 
 
 
-@app.post("/deployments/", response_model=DeploymentResponse, dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/deployments/", response_model=DeploymentResponse, dependencies=[Depends(get_api_key)], tags=["Deployments"])
 def create_deployment(request: DeploymentRequest, db: Session = Depends(get_db)):
     new_deployment = Deployment(
         name=request.name,
@@ -606,14 +702,14 @@ def create_deployment(request: DeploymentRequest, db: Session = Depends(get_db))
     db.refresh(new_deployment)
     return new_deployment
 
-@app.get("/deployments/{deployment_id}", response_model=DeploymentResponse)
+@app.get("/api/v1/deployments/{deployment_id}", response_model=DeploymentResponse, tags=["Deployments"])
 def get_deployment(deployment_id: int, db: Session = Depends(get_db)):
     deployment = db.query(Deployment).filter(Deployment.id == deployment_id).first()
     if not deployment:
         raise HTTPException(status_code=404, detail="Deployment not found")
     return deployment
 
-@app.post("/deployments/{deployment_id}/review_with_gemini", response_model=GeminiReviewResponse, dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/deployments/{deployment_id}/review_with_gemini", response_model=GeminiReviewResponse, dependencies=[Depends(get_api_key)], tags=["Deployments"])
 async def review_terraform_with_gemini(deployment_id: int, content: TerraformContent, db: Session = Depends(get_db)):
     deployment = db.query(Deployment).filter(Deployment.id == deployment_id).first()
     if not deployment:
@@ -681,7 +777,7 @@ READ_ONLY_COMMAND_WHITELIST = {
     }
 }
 
-@app.post("/cli/read-only", response_model=ReadOnlyCliResponse, dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/cli/read-only-legacy", response_model=ReadOnlyCliResponse, dependencies=[Depends(get_api_key)], tags=["CLI Commands"])
 def run_readonly_cli_command(request: ReadOnlyCliRequest):
     """
     Executes a whitelisted, read-only CLI command for AWS or GCP.
@@ -722,11 +818,11 @@ def run_readonly_cli_command(request: ReadOnlyCliRequest):
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {e}")
 
 # Backward-compatible API under versioned prefix
-@app.post("/api/v1/cli/read-only", response_model=ReadOnlyCliResponse, dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/cli/read-only", response_model=ReadOnlyCliResponse, dependencies=[Depends(get_api_key)], tags=["CLI Commands"])
 def run_readonly_cli_command_v1(request: ReadOnlyCliRequest):
     return run_readonly_cli_command(request)
 
-@app.post("/deployments/{deployment_id}/plan", response_model=DeploymentResponse, dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/deployments/{deployment_id}/plan", response_model=DeploymentResponse, dependencies=[Depends(get_api_key)], tags=["Deployments"])
 def run_plan(deployment_id: int, db: Session = Depends(get_db)):
     deployment = db.query(Deployment).filter(Deployment.id == deployment_id).first()
     if not deployment:
@@ -758,7 +854,7 @@ def run_plan(deployment_id: int, db: Session = Depends(get_db)):
     
     return deployment
 
-@app.post("/deployments/{deployment_id}/apply", response_model=DeploymentResponse, dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/deployments/{deployment_id}/apply", response_model=DeploymentResponse, dependencies=[Depends(get_api_key)], tags=["Deployments"])
 def run_apply(deployment_id: int, db: Session = Depends(get_db)):
     deployment = db.query(Deployment).filter(Deployment.id == deployment_id).first()
     if not deployment:
@@ -786,7 +882,7 @@ def run_apply(deployment_id: int, db: Session = Depends(get_db)):
     
     return deployment
 
-@app.post("/deployments/{deployment_id}/approve", response_model=DeploymentResponse, dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/deployments/{deployment_id}/approve", response_model=DeploymentResponse, dependencies=[Depends(get_api_key)], tags=["Deployments"])
 def approve_deployment(deployment_id: int, db: Session = Depends(get_db)):
     deployment = db.query(Deployment).filter(Deployment.id == deployment_id).first()
     if not deployment:
@@ -801,7 +897,7 @@ def approve_deployment(deployment_id: int, db: Session = Depends(get_db)):
     
     return deployment
 
-@app.post("/api/v1/data-sources/query", response_model=DataSourceResponse, dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/data-sources/query", response_model=DataSourceResponse, dependencies=[Depends(get_api_key)], tags=["Data Sources"])
 def query_data_source(request: DataSourceRequest):
     temp_dir = tempfile.mkdtemp()
     try:
@@ -859,13 +955,13 @@ def query_data_source(request: DataSourceRequest):
         shutil.rmtree(temp_dir)
 
 # Backward-compatible API without versioned prefix
-@app.post("/data-sources/query", response_model=DataSourceResponse, dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/data-sources/query-legacy", response_model=DataSourceResponse, dependencies=[Depends(get_api_key)], tags=["Data Sources"])
 def query_data_source_legacy(request: DataSourceRequest):
     return query_data_source(request)
 
 # AI Agent 고도화 기능을 위한 새로운 API 엔드포인트들
 
-@app.post("/ai/terraform/generate", dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/ai/terraform/generate", dependencies=[Depends(get_api_key)], tags=["AI Terraform"])
 async def generate_terraform_code(request: dict):
     """자연어 요구사항을 바탕으로 Terraform 코드를 생성합니다."""
     try:
@@ -884,7 +980,7 @@ async def generate_terraform_code(request: dict):
     except Exception as e:
         return {"success": False, "error": str(e)}
 
-@app.post("/ai/terraform/validate", dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/ai/terraform/validate", dependencies=[Depends(get_api_key)], tags=["AI Terraform"])
 async def validate_terraform_code(request: dict):
     """Terraform 코드의 유효성을 검증합니다."""
     try:
@@ -899,7 +995,7 @@ async def validate_terraform_code(request: dict):
     except Exception as e:
         return {"success": False, "error": str(e)}
 
-@app.post("/ai/cost/analyze", dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/ai/cost/analyze", dependencies=[Depends(get_api_key)], tags=["AI Analysis"])
 async def analyze_infrastructure_cost(request: dict):
     """인프라 설명을 바탕으로 비용 분석을 수행합니다."""
     try:
@@ -918,7 +1014,7 @@ async def analyze_infrastructure_cost(request: dict):
     except Exception as e:
         return {"success": False, "error": str(e)}
 
-@app.post("/ai/security/audit", dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/ai/security/audit", dependencies=[Depends(get_api_key)], tags=["AI Analysis"])
 async def audit_infrastructure_security(request: dict):
     """인프라 설명을 바탕으로 보안 감사를 수행합니다."""
     try:
@@ -937,7 +1033,7 @@ async def audit_infrastructure_security(request: dict):
     except Exception as e:
         return {"success": False, "error": str(e)}
 
-@app.post("/ai/assistant/query", dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/ai/assistant/query", dependencies=[Depends(get_api_key)], tags=["AI Assistant"])
 async def query_ai_assistant(request: dict):
     """AI 어시스턴트에게 질문하고 답변을 받습니다."""
     try:
@@ -956,7 +1052,7 @@ async def query_ai_assistant(request: dict):
     except Exception as e:
         return {"success": False, "error": str(e)}
 
-@app.post("/ai/assistant/query-sync", dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/ai/assistant/query-sync", dependencies=[Depends(get_api_key)], tags=["AI Assistant"])
 async def query_ai_assistant_sync(request: dict):
     """AI 어시스턴트에게 질문하고 동기적으로 답변을 받습니다."""
     try:
@@ -971,7 +1067,7 @@ async def query_ai_assistant_sync(request: dict):
     except Exception as e:
         return {"success": False, "error": str(e)}
 
-@app.get("/ai/knowledge/search", dependencies=[Depends(get_api_key)])
+@app.get("/api/v1/ai/knowledge/search", dependencies=[Depends(get_api_key)], tags=["AI Knowledge"])
 async def search_knowledge_base(query: str, limit: int = 3):
     """지식베이스에서 관련 문서를 검색합니다."""
     try:
@@ -993,7 +1089,7 @@ async def search_knowledge_base(query: str, limit: int = 3):
     except Exception as e:
         return {"success": False, "error": str(e)}
 
-@app.post("/ai/knowledge/update", dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/ai/knowledge/update", dependencies=[Depends(get_api_key)], tags=["AI Knowledge"])
 async def update_knowledge_base():
     """지식베이스를 업데이트합니다."""
     try:
@@ -1006,7 +1102,7 @@ async def update_knowledge_base():
     except Exception as e:
         return {"success": False, "error": str(e)}
 
-@app.post("/ai/infrastructure/recommend", dependencies=[Depends(get_api_key)])
+@app.post("/api/v1/ai/infrastructure/recommend", dependencies=[Depends(get_api_key)], tags=["AI Infrastructure"])
 async def get_infrastructure_recommendations(request: dict):
     """사용자 요구사항에 따라 인프라 아키텍처를 추천합니다."""
     try:
@@ -1151,4 +1247,4 @@ async def websocket_interactive_cli(websocket: WebSocket):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)

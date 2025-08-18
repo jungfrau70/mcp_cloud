@@ -114,6 +114,11 @@ const onResizeStart = (e) => {
   window.addEventListener('mouseup', onMouseUp);
 };
 
+// API configuration
+const config = useRuntimeConfig();
+const apiBase = config.public.apiBaseUrl || 'http://localhost:8000';
+const apiKey = 'my_mcp_eagle_tiger';
+
 // Load default content: textbook/index.md when on knowledge-base route
 const route = useRoute();
 onMounted(() => {
