@@ -1,11 +1,3 @@
----
-marp: true
-theme: default
-paginate: true
-backgroundColor: #fff
-backgroundImage: url('https://marp.app/assets/hero-background.svg')
----
-
 # 부록: 클라우드 실전 가이드 및 전문가 로드맵
 
 **7일 과정의 실습 환경 구축 및 Day별 실전 적용 가이드를 위한 종합 가이드**

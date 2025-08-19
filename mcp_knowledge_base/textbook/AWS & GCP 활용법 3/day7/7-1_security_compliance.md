@@ -1,7 +1,3 @@
-
----
-tags: [advanced, security, compliance]
----
 # 7-1. 클라우드 보안 및 규정 준수
 
 클라우드 보안은 "누구의 책임인가?"라는 질문에서 시작됩니다. 이 챕터에서는 AWS와 GCP의 공동 책임 모델(Shared Responsibility Model)을 이해하고, 클라우드 환경을 안전하게 보호하기 위한 핵심 보안 서비스와 모범 사례를 배웁니다. 또한, 주요 규정 준수(Compliance) 요구사항을 충족하는 방법을 알아봅니다.

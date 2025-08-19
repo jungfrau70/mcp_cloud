@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen flex flex-col">
     <!-- Top Navigation Bar -->
-    <nav class="bg-white shadow-sm border-b z-10">
+    <nav v-if="!isKnowledgeBase" class="bg-white shadow-sm border-b z-10">
       <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
           <div class="flex items-center">
@@ -10,27 +10,30 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            <NuxtLink to="/" class="text-xl font-bold text-gray-900">
+            <a href="/" class="text-xl font-bold text-gray-900">
               Mirae
-            </NuxtLink>
+            </a>
           </div>
           <div class="flex items-center space-x-4">
-            <NuxtLink to="/textbook" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+            <a href="/textbook" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
               커리큘럼
-            </NuxtLink>
-            <NuxtLink to="/knowledge-base" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+            </a>
+            <a href="/knowledge-base" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
               지식베이스
-            </NuxtLink>
-            <NuxtLink to="/login" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+            </a>
+            <a href="/login" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
               로그인
-            </NuxtLink>
+            </a>
           </div>
         </div>
       </div>
     </nav>
 
     <!-- Main IDE Layout -->
-    <div class="flex flex-grow overflow-hidden bg-gray-100">
+    <div v-if="isKnowledgeBase" class="flex-grow">
+      <slot />
+    </div>
+    <div v-else class="flex flex-grow overflow-hidden bg-gray-100">
       <!-- Left Panel: Syllabus Explorer -->
       <aside
         v-if="!isKnowledgeBase"
@@ -50,13 +53,14 @@
 
       <!-- Center Panel: Workspace Tabs -->
       <main class="flex-grow overflow-hidden" ref="workspaceMain">
-        <WorkspaceView :active-content="activeContent" :active-slide="activeSlide" :active-path="activePath" :show-slot="isKnowledgeBase" ref="workspaceView">
+        <WorkspaceView v-if="!isKnowledgeBase" :active-content="activeContent" :active-slide="activeSlide" :active-path="activePath" :show-slot="isKnowledgeBase" ref="workspaceView">
           <slot /> <!-- Nuxt page content will be injected here -->
         </WorkspaceView>
+        <slot v-else /> <!-- For knowledge-base page, show slot directly -->
       </main>
 
       <!-- Right Panel: AI Assistant -->
-      <aside class="w-80 bg-white border-l border-gray-200 flex-shrink-0 overflow-y-auto shadow-md">
+      <aside v-if="!isKnowledgeBase" class="w-80 bg-white border-l border-gray-200 flex-shrink-0 overflow-y-auto shadow-md">
         <AIAssistantPanel />
       </aside>
     </div>

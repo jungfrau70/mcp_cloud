@@ -2,7 +2,7 @@
   <div class="p-4 select-none">
     <h3 class="text-lg font-semibold mb-4 whitespace-nowrap">
       <a href="#" @click.prevent="openCurriculum" class="hover:underline text-blue-700">
-        Curriculum
+        커리큘럼
       </a>
     </h3>
     <div v-if="loading">Loading...</div>
@@ -77,11 +77,39 @@ function shortTitle(name) {
 
 function deleteTopic(id) {
   const idx = topics.value.findIndex(t => t.id === id)
-  if (idx >= 0) topics.value.splice(idx, 1)
-  persistTopics()
+  if (idx >= 0) {
+    // 삭제되는 채팅이 현재 활성 채팅인지 확인
+    const isCurrentActive = id === window.currentActiveTopicId
+    
+    topics.value.splice(idx, 1)
+    persistTopics()
+    
+    // 삭제된 채팅이 현재 활성 채팅이었다면 새 채팅 화면으로 전환
+    if (isCurrentActive) {
+      // 새 채팅 생성 및 선택
+      const newTopic = { id: crypto.randomUUID(), name: '새 대화', conversationId: null, messages: [] }
+      topics.value.unshift(newTopic)
+      persistTopics()
+      
+      // 새 채팅으로 전환
+      selectTopic(newTopic.id)
+      
+      // 우측 패널에 새 채팅 전환 알림
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('mcp:terminal:topic-deleted-and-refresh', { 
+          detail: { deletedId: id, newTopicId: newTopic.id } 
+        }))
+      }
+    }
+  }
 }
 
 function selectTopic(id) {
+  // 전역적으로 현재 활성 채팅 ID 업데이트
+  if (typeof window !== 'undefined') {
+    window.currentActiveTopicId = id
+  }
+  
   if (typeof window !== 'undefined') {
     window.dispatchEvent(new CustomEvent('mcp:terminal:select-topic', { detail: { id } }))
   }
@@ -91,6 +119,12 @@ function startNewChat() {
   const newTopic = { id: crypto.randomUUID(), name: '새 대화', conversationId: null, messages: [] }
   topics.value.unshift(newTopic)
   persistTopics()
+  
+  // 전역적으로 현재 활성 채팅 ID 업데이트
+  if (typeof window !== 'undefined') {
+    window.currentActiveTopicId = newTopic.id
+  }
+  
   selectTopic(newTopic.id)
   // 우측 패널 입력창 포커스 및 목록 싱크를 위해 이벤트 발행
   if (typeof window !== 'undefined') {
@@ -119,7 +153,10 @@ onMounted(async () => {
     const data = await response.json();
     // Ensure root-level Curriculum.md is hidden from the sidebar
     if (data && Array.isArray(data.files)) {
-      data.files = data.files.filter((f) => f.toLowerCase() !== 'curriculum.md');
+      data.files = data.files.filter((f) => {
+        const filename = typeof f === 'string' ? f : f?.name || f?.path || '';
+        return filename.toLowerCase() !== 'curriculum.md';
+      });
     }
     tree.value = data;
   } catch (e) {

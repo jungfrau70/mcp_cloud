@@ -14,12 +14,12 @@ import subprocess
 import uuid
 import tempfile
 import shutil
-from fastapi import FastAPI, HTTPException, Depends, Security, WebSocket, WebSocketDisconnect, Request
+from fastapi import FastAPI, HTTPException, Depends, Security, WebSocket, WebSocketDisconnect, Request, APIRouter
 from fastapi.security.api_key import APIKeyHeader
 from pydantic import BaseModel
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Literal
 from datetime import datetime
 import google.generativeai as genai
 from models import Base, Deployment, DeploymentStatus, DataSource
@@ -29,6 +29,7 @@ from fastapi.responses import StreamingResponse, FileResponse
 from rag_service import rag_service_instance
 import asyncio
 from io import BytesIO
+import pathlib
 
 # Markdown to PDF conversion (optional import)
 try:
@@ -289,41 +290,402 @@ app.add_middleware(
 # ===================================
 # Constants & Helper Functions
 # ===================================
+# Knowledge Base Directory
 KNOWLEDGE_BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
+# Docker 환경에서는 절대 경로 사용
+if os.path.exists('/mcp_knowledge_base'):
+    KNOWLEDGE_BASE_DIR = '/mcp_knowledge_base'
 
-def get_knowledge_base_structure(path, is_root: bool = False):
+def get_knowledge_base_structure(path, is_root: bool = False, current_relative_path: str = ""):
     """ Recursively builds a dictionary representing the directory structure.
     - Directories are ordered alphabetically with 'appendix' placed last.
     - Markdown files are listed under the special key 'files' and sorted alphabetically.
+    - Each file entry includes the full relative path from the knowledge base root.
     """
     structure: dict = {}
 
     directories: List[str] = []
-    markdown_files: List[str] = []
+    markdown_files: List[dict] = []
 
-    for item in os.listdir(path):
-        item_path = os.path.join(path, item)
-        if os.path.isdir(item_path):
-            directories.append(item)
-        elif item.endswith('.md'):
-            # Exclude Curriculum.md from the root textbook listing
-            if is_root and item.lower() == 'curriculum.md':
-                continue
-            markdown_files.append(item)
+    try:
+        for item in os.listdir(path):
+            item_path = os.path.join(path, item)
+            if os.path.isdir(item_path):
+                directories.append(item)
+            elif item.endswith('.md'):
+                # Exclude Curriculum.md from the root textbook and slides listing only
+                if is_root and item.lower() == 'curriculum.md' and (current_relative_path in ['textbook', 'slides']):
+                    continue
+                # Create file entry with full relative path
+                file_relative_path = os.path.join(current_relative_path, item).replace('\\', '/')
+                markdown_files.append({
+                    "name": item,
+                    "path": file_relative_path
+                })
 
-    # Order directories with 'appendix' always at the end (case-insensitive)
-    directories.sort(key=lambda name: (name.lower() == 'appendix', name.lower()))
+        # Order directories with 'appendix' always at the end (case-insensitive)
+        directories.sort(key=lambda name: (name.lower() == 'appendix', name.lower()))
 
-    for directory_name in directories:
-        structure[directory_name] = get_knowledge_base_structure(os.path.join(path, directory_name), is_root=False)
+        for directory_name in directories:
+            next_relative_path = os.path.join(current_relative_path, directory_name).replace('\\', '/')
+            structure[directory_name] = get_knowledge_base_structure(
+                os.path.join(path, directory_name), 
+                is_root=False, 
+                current_relative_path=next_relative_path
+            )
 
-    if markdown_files:
-        markdown_files.sort()
-        structure['files'] = markdown_files
+        if markdown_files:
+            markdown_files.sort(key=lambda x: x["name"])
+            structure['files'] = markdown_files
+
+    except Exception as e:
+        print(f"Error processing directory {path}: {e}")
+        structure['error'] = str(e)
 
     return structure
 
 # ===================================
+# Knowledge Base v2 (CRUD)
+# ===================================
+kb_router = APIRouter(
+    prefix="/api/kb",
+    tags=["Knowledge Base"],
+    dependencies=[Depends(get_api_key)]
+)
+
+class KBItem(BaseModel):
+    path: str
+
+class KBItemCreate(BaseModel):
+    path: str
+    type: Literal["file", "directory"]
+    content: Optional[str] = None
+
+class KBItemUpdate(BaseModel):
+    content: str
+
+class KBItemRename(BaseModel):
+    path: str
+    new_path: str
+
+def secure_path(path: str) -> pathlib.Path:
+    """Validates and resolves a relative path against the knowledge base directory."""
+    # Normalize to prevent directory traversal attacks (e.g., ../../)
+    # The `resolve()` method will raise an error if the path is outside the base directory.
+    base_dir = pathlib.Path(KNOWLEDGE_BASE_DIR).resolve()
+    # The user-provided path is joined to the base directory
+    request_path = base_dir.joinpath(path).resolve()
+    
+    # Check if the resolved path is still within the base directory
+    if base_dir not in request_path.parents and request_path != base_dir:
+        raise HTTPException(status_code=400, detail="Invalid or malicious file path provided.")
+        
+    return request_path
+
+@kb_router.get("/tree")
+def get_kb_tree():
+    """Returns the entire directory structure of the knowledge base."""
+    # This can reuse the existing helper function or a new one based on pathlib
+    try:
+        return get_knowledge_base_structure(KNOWLEDGE_BASE_DIR)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to read knowledge base structure: {e}")
+
+@kb_router.get("/item")
+def get_kb_item_content(path: str):
+    """Gets the content of a specific file."""
+    try:
+        # The secure_path function will handle validation
+        file_path = secure_path(path)
+        
+        if not file_path.is_file():
+            raise HTTPException(status_code=404, detail="Item is not a file or does not exist.")
+        
+        content = file_path.read_text(encoding="utf-8")
+        return {"path": path, "content": content}
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=404, detail="File not found.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@kb_router.post("/item")
+def create_kb_item(item: KBItemCreate):
+    """Creates a new file or directory."""
+    try:
+        target_path = secure_path(item.path)
+        if target_path.exists():
+            raise HTTPException(status_code=409, detail="Item already exists at this path.")
+
+        if item.type == "directory":
+            target_path.mkdir(parents=True, exist_ok=True)
+            return {"message": "Directory created successfully", "path": item.path}
+        
+        elif item.type == "file":
+            # Ensure parent directory exists
+            target_path.parent.mkdir(parents=True, exist_ok=True)
+            target_path.write_text(item.content or "", encoding="utf-8")
+            return {"message": "File created successfully", "path": item.path, "content": item.content or ""}
+        
+        else:
+            raise HTTPException(status_code=400, detail="Invalid item type specified.")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@kb_router.put("/item")
+def update_kb_item_content(item: KBItemCreate):
+    """Updates the content of a file."""
+    try:
+        target_path = secure_path(item.path)
+        if not target_path.is_file():
+            raise HTTPException(status_code=404, detail="File not found.")
+        
+        target_path.write_text(item.content or "", encoding="utf-8")
+        return {"message": "File updated successfully", "path": item.path, "content": item.content or ""}
+
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="File not found.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@kb_router.patch("/item")
+def rename_kb_item(item: KBItemRename):
+    """Renames a file or directory."""
+    try:
+        old_path = secure_path(item.path)
+        new_path = secure_path(item.new_path)
+
+        if not old_path.exists():
+            raise HTTPException(status_code=404, detail="Original item not found.")
+        if new_path.exists():
+            raise HTTPException(status_code=409, detail="An item already exists at the new path.")
+
+        old_path.rename(new_path)
+        return {"message": "Item renamed successfully", "old_path": item.path, "new_path": item.new_path}
+
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Item not found.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@kb_router.post("/move")
+def move_kb_item(item: KBItemRename):
+    """Moves a file or directory to a new location."""
+    try:
+        old_path = secure_path(item.path)
+        new_path = secure_path(item.new_path)
+
+        if not old_path.exists():
+            raise HTTPException(status_code=404, detail="Original item not found.")
+        if new_path.exists():
+            raise HTTPException(status_code=409, detail="An item already exists at the new path.")
+
+        # Ensure the target directory exists
+        new_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        old_path.rename(new_path)
+        return {"message": "Item moved successfully", "old_path": item.path, "new_path": item.new_path}
+
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Item not found.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@kb_router.delete("/item")
+def delete_kb_item(path: str):
+    """Deletes a file or directory."""
+    try:
+        target_path = secure_path(path)
+        if not target_path.exists():
+            raise HTTPException(status_code=404, detail="Item not found.")
+
+        if target_path.is_dir():
+            # Use shutil.rmtree for directories to remove them recursively
+            shutil.rmtree(target_path)
+            message = "Directory deleted successfully"
+        else:
+            target_path.unlink()
+            message = "File deleted successfully"
+        
+        return {"message": message, "path": path}
+
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Item not found.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@kb_router.get("/search")
+def search_kb_files(query: str, search_type: str = "both"):
+    """Searches for files and content in the knowledge base.
+    
+    Args:
+        query: Search query string
+        search_type: "filename", "content", or "both" (default)
+    """
+    try:
+        results = []
+        query_lower = query.lower()
+        
+        def search_directory(dir_path: str, relative_path: str = ""):
+            """Recursively search through directory"""
+            try:
+                for item in os.listdir(dir_path):
+                    item_path = os.path.join(dir_path, item)
+                    item_relative_path = os.path.join(relative_path, item).replace('\\', '/')
+                    
+                    if os.path.isdir(item_path):
+                        # Recursively search subdirectories
+                        search_directory(item_path, item_relative_path)
+                    elif item.endswith('.md'):
+                        # Search in markdown files
+                        match_found = False
+                        match_type = []
+                        
+                        # Search in filename
+                        if search_type in ["filename", "both"] and query_lower in item.lower():
+                            match_found = True
+                            match_type.append("filename")
+                        
+                        # Search in content
+                        if search_type in ["content", "both"]:
+                            try:
+                                with open(item_path, 'r', encoding='utf-8') as f:
+                                    content = f.read()
+                                    if query_lower in content.lower():
+                                        match_found = True
+                                        match_type.append("content")
+                                        
+                                        # Get context around the match
+                                        content_lower = content.lower()
+                                        query_index = content_lower.find(query_lower)
+                                        if query_index != -1:
+                                            start = max(0, query_index - 100)
+                                            end = min(len(content), query_index + len(query) + 100)
+                                            context = content[start:end]
+                                            if start > 0:
+                                                context = "..." + context
+                                            if end < len(content):
+                                                context = context + "..."
+                                        else:
+                                            context = content[:200] + "..." if len(content) > 200 else content
+                            except Exception as e:
+                                print(f"Error reading file {item_path}: {e}")
+                                context = "Error reading file"
+                        
+                        if match_found:
+                            results.append({
+                                "path": item_relative_path,
+                                "name": item,
+                                "match_type": match_type,
+                                "context": context if "content" in match_type else None
+                            })
+            except Exception as e:
+                print(f"Error searching directory {dir_path}: {e}")
+        
+        # Start search from knowledge base root
+        search_directory(KNOWLEDGE_BASE_DIR)
+        
+        # Sort results by relevance (content matches first, then filename matches)
+        def sort_key(result):
+            if "content" in result["match_type"] and "filename" in result["match_type"]:
+                return 0  # Both matches
+            elif "content" in result["match_type"]:
+                return 1  # Content match only
+            else:
+                return 2  # Filename match only
+        
+        results.sort(key=sort_key)
+        
+        return {
+            "query": query,
+            "search_type": search_type,
+            "total_results": len(results),
+            "results": results
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Search failed: {str(e)}")
+
+# Directory management endpoints
+@kb_router.post("/directory")
+def create_directory(item: KBItemCreate):
+    """Creates a new directory."""
+    try:
+        if item.type != "directory":
+            raise HTTPException(status_code=400, detail="Type must be 'directory' for directory creation.")
+        
+        target_path = secure_path(item.path)
+        if target_path.exists():
+            raise HTTPException(status_code=409, detail="Directory already exists at this path.")
+        
+        target_path.mkdir(parents=True, exist_ok=True)
+        return {"message": "Directory created successfully", "path": item.path}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@kb_router.put("/directory")
+def rename_directory(item: KBItemRename):
+    """Renames a directory."""
+    try:
+        old_dir_path = secure_path(item.path)
+        new_dir_path = secure_path(item.new_path)
+        
+        if not old_dir_path.exists():
+            raise HTTPException(status_code=404, detail="Directory not found.")
+        if not old_dir_path.is_dir():
+            raise HTTPException(status_code=400, detail="Path is not a directory.")
+        
+        # Check if it's a case-only change (same path but different case)
+        if old_dir_path.parent == new_dir_path.parent and old_dir_path.name.lower() == new_dir_path.name.lower():
+            # Use temporary name for case-only changes
+            temp_path = old_dir_path.parent / f"{old_dir_path.name}_temp"
+            if temp_path.exists():
+                raise HTTPException(status_code=409, detail="Temporary directory already exists. Please try again.")
+            
+            # Step 1: Rename to temporary name
+            old_dir_path.rename(temp_path)
+            
+            # Step 2: Rename from temporary to final name
+            temp_path.rename(new_dir_path)
+            
+            return {"message": "Directory renamed successfully (case change)", "old_path": item.path, "new_path": item.new_path}
+        else:
+            # Regular rename (different path or different name)
+            if new_dir_path.exists():
+                raise HTTPException(status_code=409, detail="A directory already exists at the new path.")
+            
+            old_dir_path.rename(new_dir_path)
+            return {"message": "Directory renamed successfully", "old_path": item.path, "new_path": item.new_path}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@kb_router.delete("/directory")
+def delete_directory(path: str, recursive: bool = False):
+    """Deletes a directory."""
+    try:
+        target_path = secure_path(path)
+        
+        if not target_path.exists():
+            raise HTTPException(status_code=404, detail="Directory not found.")
+        if not target_path.is_dir():
+            raise HTTPException(status_code=400, detail="Path is not a directory.")
+        
+        # Check if directory is empty (unless recursive is True)
+        if not recursive and any(target_path.iterdir()):
+            raise HTTPException(status_code=400, detail="Directory is not empty. Use recursive=true to force deletion.")
+        
+        shutil.rmtree(target_path)
+        return {"message": "Directory deleted successfully", "path": path}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+app.include_router(kb_router)
+
 
 # ===================================
 # DataSource CRUD Endpoints
@@ -1232,13 +1594,13 @@ async def suggest_knowledge_title(request: dict):
         text = resp.text or ""
         # naive parse
         title_match = re.search(r"title:\s*(.+)", text)
-        slug_match = re.search(r"slug:\s*([a-z0-9\-\_\.]+)", text)
+        slug_match = re.search(r"slug:\s*([a-z0-9\-_\.]+)", text)
         title = (title_match.group(1).strip() if title_match else hint[:25])
         # build slug from title if missing
         if slug_match:
             slug = slug_match.group(1).strip()
         else:
-            slug = re.sub(r"[^a-z0-9\-]", "-", re.sub(r"\s+", "-", title.lower()))
+            slug = re.sub(r"[^a-z0-9\-ről", "-", re.sub(r"\s+", "-", title.lower()))
             slug = re.sub(r"-+", "-", slug).strip('-') or "doc"
         return {"success": True, "title": title, "slug": slug}
     except HTTPException:
@@ -1372,7 +1734,7 @@ async def get_infrastructure_recommendations(request: dict):
         try:
             # JSON 응답을 파싱
             import re
-            json_match = re.search(r'\{.*\}', response.text, re.DOTALL)
+            json_match = re.search(r'{{.*}}', response.text, re.DOTALL)
             if json_match:
                 result = json.loads(json_match.group())
                 return {"success": True, "recommendations": result}

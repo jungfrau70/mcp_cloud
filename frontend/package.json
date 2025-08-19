@@ -5,11 +5,14 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --host 0.0.0.0 --port 3000",
+    "dev:debug": "NODE_OPTIONS='--max-old-space-size=4096' nuxt dev --host 0.0.0.0 --port 3000",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "test": "vitest"
+    "test": "vitest",
+    "clean": "rm -rf .nuxt .output node_modules/.vite",
+    "reinstall": "npm run clean && npm install"
   },
   "devDependencies": {
     "@nuxt/devtools": "^2.6.2",
@@ -17,7 +20,8 @@
     "@vue/test-utils": "^2.4.6",
     "happy-dom": "^18.0.1",
     "nuxt": "^3.10.0",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "@vitejs/plugin-vue": "^5.0.0"
   },
   "dependencies": {
     "marked": "^9.0.0",

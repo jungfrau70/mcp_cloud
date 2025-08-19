@@ -1,11 +1,3 @@
----
-marp: true
-theme: default
-paginate: true
-backgroundColor: #fff
-backgroundImage: url('https://marp.app/assets/hero-background.svg')
----
-
 # 부록: 인프라 실습 가이드 - Terraform으로 AWS & GCP 인프라 구축
 
 **Day 4: Terraform 기초 및 실습을 위한 종합 실전 가이드**

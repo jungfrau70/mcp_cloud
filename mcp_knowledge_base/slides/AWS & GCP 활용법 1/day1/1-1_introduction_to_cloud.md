@@ -1,11 +1,3 @@
----
-marp: true
-theme: default
-paginate: true
-backgroundColor: #fff
-backgroundImage: url('https://marp.app/assets/hero-background.svg')
----
-
 # 1-1. 클라우드 컴퓨팅 소개
 
 **클라우드의 기본 개념부터 AWS vs GCP 비교까지**

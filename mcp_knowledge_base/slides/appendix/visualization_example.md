@@ -1,13 +1,3 @@
----
-marp: true
-theme: default
-paginate: true
-backgroundColor: #fff
-backgroundImage: url('https://marp.app/assets/hero-background.svg')
-style: |
-  @import url('./custom-theme.css');
----
-
 # 고급 시각화 예시 슬라이드
 
 **커스텀 CSS와 다양한 시각화 요소를 활용한 프레젠테이션**

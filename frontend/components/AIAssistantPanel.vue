@@ -50,7 +50,7 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick, onMounted } from 'vue'
+import { ref, computed, nextTick, onMounted, watch } from 'vue'
 import { useRuntimeConfig } from '#app'
 
 const config = useRuntimeConfig()
@@ -97,9 +97,40 @@ const activeMessages = computed(() => activeTopic.value ? activeTopic.value.mess
 function deleteTopic(id = null) {
   const targetId = id || activeTopicId.value
   const idx = topics.value.findIndex(t => t.id === targetId)
-  if (idx >= 0) topics.value.splice(idx, 1)
-  if (!topics.value.length) topics.value = [{ id: crypto.randomUUID(), name: '기본', conversationId: null, messages: [] }]
-  activeTopicId.value = topics.value[0].id
+  if (idx >= 0) {
+    // 삭제되는 채팅이 현재 활성 채팅인지 확인
+    const isCurrentActive = targetId === activeTopicId.value
+    
+    topics.value.splice(idx, 1)
+    
+    // 삭제된 채팅이 현재 활성 채팅이었다면 새 채팅 화면으로 전환
+    if (isCurrentActive) {
+      if (!topics.value.length) {
+        topics.value = [{ id: crypto.randomUUID(), name: '기본', conversationId: null, messages: [] }]
+      }
+      activeTopicId.value = topics.value[0].id
+      
+      // 전역적으로 현재 활성 채팅 ID 업데이트
+      if (typeof window !== 'undefined') {
+        window.currentActiveTopicId = activeTopicId.value
+      }
+      
+      // 새 채팅 화면으로 리플레쉬
+      nextTick(() => {
+        // 입력창 초기화
+        if (inputEl.value) {
+          inputEl.value.value = ''
+          inputEl.value.focus()
+        }
+        
+        // 메시지 영역 스크롤을 맨 위로
+        const container = document.scrollingElement || document.documentElement
+        if (container) {
+          container.scrollTop = 0
+        }
+      })
+    }
+  }
   persist()
 }
 
@@ -166,6 +197,13 @@ async function send() {
 
 onMounted(load)
 
+// activeTopicId 변경 시 전역 변수 업데이트
+watch(activeTopicId, (newId) => {
+  if (typeof window !== 'undefined' && newId) {
+    window.currentActiveTopicId = newId
+  }
+})
+
 // 왼쪽 사이드바에서 주제 선택 이벤트 수신
 if (typeof window !== 'undefined') {
   window.addEventListener('mcp:terminal:select-topic', (e) => {
@@ -184,12 +222,46 @@ if (typeof window !== 'undefined') {
           } catch {}
         }
         activeTopicId.value = detail.id
+        
+        // 전역적으로 현재 활성 채팅 ID 업데이트
+        window.currentActiveTopicId = activeTopicId.value
+        
         nextTick(() => {
           if (inputEl.value) inputEl.value.focus()
         })
       }
     } catch {}
   })
+  
+  // 사이드바에서 채팅 삭제 후 새 채팅 전환 이벤트 처리
+  window.addEventListener('mcp:terminal:topic-deleted-and-refresh', (e) => {
+    try {
+      const detail = (e && e.detail) || {}
+      if (detail && detail.newTopicId) {
+        // 새 채팅으로 전환
+        activeTopicId.value = detail.newTopicId
+        
+        // 전역적으로 현재 활성 채팅 ID 업데이트
+        window.currentActiveTopicId = activeTopicId.value
+        
+        // 새 채팅 화면으로 리플레쉬
+        nextTick(() => {
+          // 입력창 초기화
+          if (inputEl.value) {
+            inputEl.value.value = ''
+            inputEl.value.focus()
+          }
+          
+          // 메시지 영역 스크롤을 맨 위로
+          const container = document.scrollingElement || document.documentElement
+          if (container) {
+            container.scrollTop = 0
+          }
+        })
+      }
+    } catch {}
+  })
+  
   // 외부에서 목록 갱신 시 재로딩
   window.addEventListener('mcp:terminal:topics-updated', () => {
     try {

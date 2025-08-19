@@ -1,11 +1,3 @@
----
-marp: true
-theme: default
-paginate: true
-backgroundColor: #fff
-backgroundImage: url('https://marp.app/assets/hero-background.svg')
----
-
 # 4-1. Terraform 소개 및 기본 사용법
 
 **Infrastructure as Code로 클라우드 인프라를 코드로 관리하기**
