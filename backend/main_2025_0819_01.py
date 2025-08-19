@@ -11,7 +11,6 @@ if os.path.exists(env_path):
     load_dotenv(dotenv_path=env_path)
 
 import subprocess
-import uuid
 import tempfile
 import shutil
 from fastapi import FastAPI, HTTPException, Depends, Security, WebSocket, WebSocketDisconnect, Request
@@ -19,7 +18,7 @@ from fastapi.security.api_key import APIKeyHeader
 from pydantic import BaseModel
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
-from typing import List, Optional, Dict
+from typing import List, Optional
 from datetime import datetime
 import google.generativeai as genai
 from models import Base, Deployment, DeploymentStatus, DataSource
@@ -128,11 +127,6 @@ class AgentQueryRequest(BaseModel):
 # 지식베이스를 위한 모델
 class DocumentContentRequest(BaseModel):
     path: str
-        
-# 통합터미널 에이전트 입력 모델
-class TerminalAgentInput(BaseModel):
-    user_input: str
-    conversation_id: Optional[str] = None
         
 # Markdown to PDF conversion request
 class MarkdownToPdfRequest(BaseModel):
@@ -1108,75 +1102,6 @@ async def search_knowledge_base(query: str, limit: int = 3):
     
     except Exception as e:
         return {"success": False, "error": str(e)}
-
-# ===================================
-# 통합터미널: 주제별 대화 + CLI 모드
-# ===================================
-
-# 메모리 기반 대화 컨텍스트 (운영에서는 Redis 등 외부 스토리지를 권장)
-TERMINAL_CONVERSATIONS: Dict[str, List[Dict[str, str]]] = {}
-
-def _get_or_create_conv(cid: Optional[str]) -> str:
-    if not cid or cid not in TERMINAL_CONVERSATIONS:
-        cid = str(uuid.uuid4())
-        TERMINAL_CONVERSATIONS[cid] = []
-    return cid
-
-@app.post("/api/v1/terminal/agent", dependencies=[Depends(get_api_key)], tags=["CLI Commands", "AI Assistant"])
-async def terminal_agent(payload: TerminalAgentInput):
-    """
-    - '/cli' 또는 '/c' 로 시작하면 제한된 시스템 명령 실행
-    - 그 외는 AI Agent 대화 (주제별 conversation_id 유지)
-    """
-    text = payload.user_input.strip()
-    if not text:
-        raise HTTPException(status_code=400, detail="user_input is required")
-
-    # CLI 모드 처리
-    if text.startswith("/cli") or text.startswith("/c"):
-        command = text.split(" ", 1)[1].strip() if " " in text else ""
-        if not command:
-            return {"result": "명령어가 비었습니다.", "conversation_id": payload.conversation_id, "mode": "cli"}
-
-        try:
-            result = subprocess.run(
-                command,
-                shell=True,
-                capture_output=True,
-                text=True,
-                timeout=10,
-                cwd=os.path.expanduser('~')
-            )
-            output = result.stdout if result.returncode == 0 else result.stderr
-            return {"result": output, "conversation_id": payload.conversation_id, "mode": "cli"}
-        except subprocess.TimeoutExpired:
-            return {"error": "명령어 실행 시간이 초과되었습니다.", "conversation_id": payload.conversation_id, "mode": "cli"}
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
-
-    # 대화 모드
-    cid = _get_or_create_conv(payload.conversation_id)
-    history = TERMINAL_CONVERSATIONS[cid]
-
-    try:
-        # 간단한 히스토리를 프롬프트에 포함
-        history_text = ""
-        if history:
-            history_text = "\n".join([f"User: {h['user']}\nAssistant: {h.get('assistant','')}" for h in history]) + "\n"
-        prompt = f"{history_text}User: {text}\nAssistant:"
-
-        if not rag_service_instance:
-            raise HTTPException(status_code=503, detail="RAG service is not available.")
-
-        answer = rag_service_instance.query(prompt)
-        history.append({"user": text, "assistant": answer})
-        TERMINAL_CONVERSATIONS[cid] = history
-
-        return {"result": answer, "conversation_id": cid, "mode": "chat"}
-    except HTTPException:
-        raise
-    except Exception as e:
-        return {"error": str(e), "conversation_id": cid, "mode": "chat"}
 
 @app.post("/api/v1/ai/knowledge/update", dependencies=[Depends(get_api_key)], tags=["AI Knowledge"])
 async def update_knowledge_base():

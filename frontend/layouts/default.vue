@@ -15,23 +15,8 @@
             </NuxtLink>
           </div>
           <div class="flex items-center space-x-4">
-            <NuxtLink to="/" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-              홈
-            </NuxtLink>
-            <NuxtLink to="/ai-assistant" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-              AI 어시스턴트
-            </NuxtLink>
-            <NuxtLink to="/knowledge-base" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-              Curriculum
-            </NuxtLink>
-            <NuxtLink to="/datasources" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-              데이터소스
-            </NuxtLink>
-            <button @click="openInteractiveCLI" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-              대화형 CLI
-            </button>
-            <NuxtLink to="/cli" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-              CLI 명령어
+            <NuxtLink to="/login" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+              로그인
             </NuxtLink>
           </div>
         </div>
