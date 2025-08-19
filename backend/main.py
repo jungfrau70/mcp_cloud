@@ -493,58 +493,72 @@ async def get_slide_download(textbook_path: str):
     try:
         # Normalize incoming URL path for cross-platform handling
         normalized = textbook_path.replace("\\", "/").lstrip("/ ")
-        # Prefer exact basename match (case-insensitive)
-        basename = os.path.basename(normalized)
-        topic_base = os.path.splitext(basename)[0]
-        topic_base_lower = topic_base.lower()
-        slides = [f for f in os.listdir(SLIDES_DIR) if f.lower().endswith('.md')]
+        # If caller provided a nested relative path under slides, use it directly
+        direct_path = os.path.join(SLIDES_DIR, normalized)
+        if os.path.isdir(os.path.dirname(direct_path)) and os.path.exists(direct_path):
+            slide_path = direct_path
+        else:
+            # Search recursively across slides directory
+            basename = os.path.basename(normalized)
+            topic_base = os.path.splitext(basename)[0]
+            topic_base_lower = topic_base.lower()
 
-        found_slide = None
+            found_path: str | None = None
 
-        # 1) Exact filename match (case-insensitive)
-        for f in slides:
-            if f.lower() == basename.lower():
-                found_slide = f
-                break
+            def walk_files():
+                for root, _, files in os.walk(SLIDES_DIR):
+                    for name in files:
+                        if not name.lower().endswith('.md'):
+                            continue
+                        yield os.path.join(root, name), name
 
-        # 2) Startswith topic base (e.g., "7-2_advanced_devops*")
-        if not found_slide:
-            for f in slides:
-                if f.lower().startsWith(topic_base_lower):
-                    found_slide = f
+            # 1) Exact filename match (case-insensitive)
+            for fpath, name in walk_files():
+                if name.lower() == basename.lower():
+                    found_path = fpath
                     break
 
-        # 3) Contains topic base anywhere
-        if not found_slide:
-            for f in slides:
-                if topic_base_lower in f.lower():
-                    found_slide = f
-                    break
-
-        # 4) Remove chapter prefix before first underscore and try contains (e.g., "advanced_devops")
-        if not found_slide and '_' in topic_base:
-            remainder = topic_base.split('_', 1)[1].lower()
-            for f in slides:
-                if remainder and remainder in f.lower():
-                    found_slide = f
-                    break
-
-        # 5) part/day prefix + any topic (e.g., "3-7_*")
-        if not found_slide:
-            parts = normalized.split('/')
-            if len(parts) >= 3 and parts[0].lower().startswith('part') and parts[1].lower().startswith('day'):
-                part_num = parts[0].lower().replace('part', '')
-                day_num = parts[1].lower().replace('day', '')
-                slide_prefix = f"{part_num}-{day_num}_"
-                for f in slides:
-                    if f.lower().startswith(slide_prefix):
-                        found_slide = f
+            # 2) Startswith topic base (e.g., "7-2_advanced_devops*")
+            if not found_path:
+                for fpath, name in walk_files():
+                    if name.lower().startswith(topic_base_lower):
+                        found_path = fpath
                         break
-        
-        if not found_slide:
-            raise HTTPException(status_code=404, detail="Slide mapping is not defined for this document.")
 
-        slide_path = os.path.join(SLIDES_DIR, found_slide)
+            # 3) Contains topic base anywhere
+            if not found_path:
+                for fpath, name in walk_files():
+                    if topic_base_lower in name.lower():
+                        found_path = fpath
+                        break
+
+            # 4) Remove chapter prefix before first underscore and try contains (e.g., "advanced_devops")
+            if not found_path and '_' in topic_base:
+                remainder = topic_base.split('_', 1)[1].lower()
+                for fpath, name in walk_files():
+                    if remainder and remainder in name.lower():
+                        found_path = fpath
+                        break
+
+            # 5) part/day prefix + any topic (e.g., "3-7_*")
+            if not found_path:
+                parts = normalized.split('/')
+                if len(parts) >= 3 and parts[0].lower().startswith('part') and parts[1].lower().startswith('day'):
+                    part_num = parts[0].lower().replace('part', '')
+                    day_num = parts[1].lower().replace('day', '')
+                    slide_prefix = f"{part_num}-{day_num}_"
+                    for fpath, name in walk_files():
+                        if name.lower().startswith(slide_prefix):
+                            found_path = fpath
+                            break
+
+            if not found_path:
+                raise HTTPException(status_code=404, detail="Slide mapping is not defined for this document.")
+
+            slide_path = found_path
+
+        # slide_path determined above; compute a safe filename for download header
+        found_slide = os.path.basename(slide_path)
         # Try Marp PDF conversion if available; fallback to raw markdown
         import shutil, subprocess, tempfile
         marp_bin = shutil.which("marp")
