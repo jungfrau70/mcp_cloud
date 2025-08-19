@@ -133,6 +133,22 @@ class DocumentContentRequest(BaseModel):
 class TerminalAgentInput(BaseModel):
     user_input: str
     conversation_id: Optional[str] = None
+
+# 지식베이스 문서 CRUD 모델
+class KnowledgeDocCreate(BaseModel):
+    path: str
+    content: str
+    refresh_vector: Optional[bool] = False
+
+class KnowledgeDocUpdate(BaseModel):
+    path: str
+    content: str
+    new_path: Optional[str] = None
+    refresh_vector: Optional[bool] = False
+
+class KnowledgeDocDelete(BaseModel):
+    path: str
+    refresh_vector: Optional[bool] = False
         
 # Markdown to PDF conversion request
 class MarkdownToPdfRequest(BaseModel):
@@ -445,6 +461,89 @@ async def get_document_content(request: DocumentContentRequest):
         raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read document content: {e}")
+
+# ===================================
+# Knowledge Base CRUD (file-based under mcp_knowledge_base)
+# ===================================
+
+def _secure_kb_path(rel_path: str) -> str:
+    normalized = os.path.normpath(rel_path.strip().lstrip("/\\ "))
+    if not normalized.endswith('.md'):
+        normalized += '.md'
+    abs_path = os.path.join(KNOWLEDGE_BASE_DIR, normalized)
+    # Ensure path stays within KB dir
+    if not os.path.commonpath([KNOWLEDGE_BASE_DIR]) == os.path.commonpath([KNOWLEDGE_BASE_DIR, abs_path]):
+        raise HTTPException(status_code=400, detail="Invalid or malicious file path.")
+    return abs_path
+
+@app.post("/api/v1/knowledge/docs", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+def create_knowledge_doc(req: KnowledgeDocCreate):
+    try:
+        target = _secure_kb_path(req.path)
+        os.makedirs(os.path.dirname(target), exist_ok=True)
+        with open(target, 'w', encoding='utf-8') as f:
+            f.write(req.content or "")
+        if req.refresh_vector and rag_service_instance:
+            rag_service_instance.update_knowledge_base()
+        # Return relative path for client
+        rel = os.path.relpath(target, KNOWLEDGE_BASE_DIR).replace('\\', '/')
+        return {"success": True, "path": rel}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to create document: {e}")
+
+@app.put("/api/v1/knowledge/docs", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+def update_knowledge_doc(req: KnowledgeDocUpdate):
+    try:
+        current = _secure_kb_path(req.path)
+        if not os.path.exists(current):
+            raise HTTPException(status_code=404, detail="Document not found")
+        target = current
+        if req.new_path and req.new_path.strip():
+            target = _secure_kb_path(req.new_path)
+            os.makedirs(os.path.dirname(target), exist_ok=True)
+            # If moving, remove old after write
+        with open(target, 'w', encoding='utf-8') as f:
+            f.write(req.content or "")
+        if target != current and os.path.exists(current):
+            try:
+                os.remove(current)
+            except Exception:
+                pass
+        if req.refresh_vector and rag_service_instance:
+            rag_service_instance.update_knowledge_base()
+        rel = os.path.relpath(target, KNOWLEDGE_BASE_DIR).replace('\\', '/')
+        return {"success": True, "path": rel}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to update document: {e}")
+
+@app.delete("/api/v1/knowledge/docs", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+def delete_knowledge_doc(req: KnowledgeDocDelete):
+    try:
+        target = _secure_kb_path(req.path)
+        if not os.path.exists(target):
+            raise HTTPException(status_code=404, detail="Document not found")
+        os.remove(target)
+        # Clean up empty directories optionally
+        try:
+            parent = os.path.dirname(target)
+            while parent and os.path.commonpath([KNOWLEDGE_BASE_DIR]) == os.path.commonpath([KNOWLEDGE_BASE_DIR, parent]):
+                if os.listdir(parent):
+                    break
+                os.rmdir(parent)
+                parent = os.path.dirname(parent)
+        except Exception:
+            pass
+        if req.refresh_vector and rag_service_instance:
+            rag_service_instance.update_knowledge_base()
+        return {"success": True}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete document: {e}")
 
 
 # ===================================
@@ -1106,6 +1205,44 @@ async def search_knowledge_base(query: str, limit: int = 3):
         
         return {"success": True, "documents": serialized_docs}
     
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+@app.post("/api/v1/ai/knowledge/suggest-title", dependencies=[Depends(get_api_key)], tags=["AI Knowledge"])
+async def suggest_knowledge_title(request: dict):
+    """주제 설명(hint)을 받아 지식베이스 문서 제목과 슬러그를 제안합니다."""
+    try:
+        hint = request.get("hint", "").strip()
+        if not hint:
+            raise HTTPException(status_code=400, detail="hint가 필요합니다")
+
+        import re
+        import google.generativeai as genai
+        genai.configure(api_key=GEMINI_API_KEY)
+        model = genai.GenerativeModel('gemini-pro')
+        prompt = f"""
+        너는 기술 문서 편집자다. 다음 주제를 한 줄 한국어 제목으로 간결하고 검색이 잘 되게 제안해줘.
+        조건: 25자 이내, 특수문자 없이, 불필요한 조사 생략.
+        주제: {hint}
+        출력 형식:
+        title: <제목>
+        slug: <영문 소문자와 숫자, 하이픈만 사용한 파일 슬러그>
+        """
+        resp = model.generate_content(prompt)
+        text = resp.text or ""
+        # naive parse
+        title_match = re.search(r"title:\s*(.+)", text)
+        slug_match = re.search(r"slug:\s*([a-z0-9\-\_\.]+)", text)
+        title = (title_match.group(1).strip() if title_match else hint[:25])
+        # build slug from title if missing
+        if slug_match:
+            slug = slug_match.group(1).strip()
+        else:
+            slug = re.sub(r"[^a-z0-9\-]", "-", re.sub(r"\s+", "-", title.lower()))
+            slug = re.sub(r"-+", "-", slug).strip('-') or "doc"
+        return {"success": True, "title": title, "slug": slug}
+    except HTTPException:
+        raise
     except Exception as e:
         return {"success": False, "error": str(e)}
 

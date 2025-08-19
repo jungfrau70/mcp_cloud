@@ -64,7 +64,24 @@
       <div class="lg:col-span-3">
         <div class="bg-white rounded-lg shadow">
           <div class="p-6">
-            <div v-if="selectedDoc" class="prose max-w-none">
+            <!-- 편집/생성 폼 -->
+            <div class="mb-6 flex items-center gap-2">
+              <input v-model="titleHint" type="text" placeholder="주제 힌트(예: AWS CLI 기초)" class="px-3 py-2 border rounded w-60" />
+              <button class="px-3 py-2 bg-indigo-600 text-white rounded" @click="suggestTitle">AI 제목 제안</button>
+              <button class="px-3 py-2 bg-blue-600 text-white rounded" @click="newDoc">새 문서</button>
+              <button class="px-3 py-2 bg-green-600 text-white rounded" :disabled="!dirty" @click="saveDoc">저장</button>
+              <button class="px-3 py-2 bg-red-600 text-white rounded" :disabled="!selectedDoc" @click="deleteDoc">삭제</button>
+              <span v-if="saveMsg" class="text-sm text-gray-500">{{ saveMsg }}</span>
+            </div>
+
+            <div v-if="editMode" class="space-y-3">
+              <input v-model="editor.title" type="text" placeholder="제목" class="w-full px-3 py-2 border rounded" />
+              <input v-model="editor.category" type="text" placeholder="카테고리(예: aws, gcp)" class="w-full px-3 py-2 border rounded" />
+              <textarea v-model="editor.content" rows="12" placeholder="마크다운 내용" class="w-full px-3 py-2 border rounded font-mono"></textarea>
+            </div>
+
+            <!-- 뷰 모드 -->
+            <div v-else-if="selectedDoc" class="prose max-w-none">
               <h1 class="text-2xl font-bold text-gray-900 mb-4">{{ selectedDoc.title }}</h1>
               <div class="flex items-center text-sm text-gray-500 mb-6">
                 <span>카테고리: {{ selectedDoc.category }}</span>
@@ -115,10 +132,18 @@
 definePageMeta({
   title: '지식베이스'
 })
+const config = useRuntimeConfig()
+const apiBase = config.public.apiBaseUrl || 'http://localhost:8000'
+const apiKey = 'my_mcp_eagle_tiger'
 
 const searchQuery = ref('')
 const selectedCategory = ref('all')
 const selectedDoc = ref(null)
+const editMode = ref(false)
+const dirty = ref(false)
+const saveMsg = ref('')
+const editor = reactive({ id: null, title: '', category: '', content: '' })
+const titleHint = ref('')
 
 // 카테고리 데이터
 const categories = ref([
@@ -151,7 +176,9 @@ const selectCategory = (categoryId) => {
 
 const selectDocument = (doc) => {
   selectedDoc.value = doc
-  // TODO: 실제 문서 내용 로딩 로직 구현
+  editMode.value = true
+  Object.assign(editor, { id: doc.id, title: doc.title, category: doc.category, content: doc.content })
+  dirty.value = false
 }
 
 // 검색 기능
@@ -161,4 +188,96 @@ watch(searchQuery, (newQuery) => {
     console.log('Searching for:', newQuery)
   }
 })
+
+// CRUD (localStorage 기반 MVP)
+const STORAGE_KEY = 'kb_docs_mvp'
+
+function loadDocs() {
+  const raw = localStorage.getItem(STORAGE_KEY)
+  if (raw) {
+    try {
+      const docs = JSON.parse(raw)
+      if (Array.isArray(docs) && docs.length) {
+        recentDocs.value = docs.slice(0, 10)
+      }
+    } catch {}
+  }
+}
+
+function persistDocs() {
+  const all = [...recentDocs.value]
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(all))
+}
+
+function newDoc() {
+  editMode.value = true
+  Object.assign(editor, { id: null, title: '', category: '', content: '' })
+  selectedDoc.value = null
+  dirty.value = true
+}
+
+async function suggestTitle() {
+  if (!titleHint.value.trim()) return
+  try {
+    const resp = await fetch(`${apiBase}/api/v1/ai/knowledge/suggest-title`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
+      body: JSON.stringify({ hint: titleHint.value })
+    })
+    const data = await resp.json()
+    if (data.success) {
+      editor.title = data.title
+      if (!editor.category) editor.category = 'misc'
+      if (!editor.content) editor.content = `# ${data.title}\n\n` 
+      dirty.value = true
+    }
+  } catch (e) {
+    console.warn('제목 제안 실패', e)
+  }
+}
+
+async function saveDoc() {
+  const id = editor.id || Date.now()
+  const existingIdx = recentDocs.value.findIndex(d => d.id === id)
+  const doc = { id, title: editor.title || '무제', category: editor.category || 'misc', content: editor.content || '' }
+  if (existingIdx >= 0) recentDocs.value.splice(existingIdx, 1, doc)
+  else recentDocs.value.unshift(doc)
+  try {
+    // 서버에 저장 (경로는 카테고리/제목 기반으로 구성)
+    const relPath = `${editor.category || 'misc'}/${(editor.title || 'untitled').replace(/\s+/g,'_')}.md`
+    const method = editor.id ? 'PUT' : 'POST'
+    const url = `${apiBase}/api/v1/knowledge/docs`
+    const body = editor.id ? { path: relPath, content: editor.content, refresh_vector: false } : { path: relPath, content: editor.content, refresh_vector: false }
+    await fetch(url, { method, headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey }, body: JSON.stringify(body) })
+  } catch (e) {
+    console.warn('Server save failed, fallback to localStorage only.', e)
+  }
+  persistDocs()
+  selectedDoc.value = doc
+  editMode.value = false
+  dirty.value = false
+  saveMsg.value = '저장됨'
+  setTimeout(() => saveMsg.value = '', 1500)
+}
+
+async function deleteDoc() {
+  if (!selectedDoc.value && !editor.id) return
+  const id = editor.id || selectedDoc.value?.id
+  const idx = recentDocs.value.findIndex(d => d.id === id)
+  if (idx >= 0) recentDocs.value.splice(idx, 1)
+  try {
+    const relPath = `${(editor.category || selectedDoc.value?.category || 'misc')}/${((editor.title || selectedDoc.value?.title) || 'untitled').replace(/\s+/g,'_')}.md`
+    await fetch(`${apiBase}/api/v1/knowledge/docs`, { method: 'DELETE', headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey }, body: JSON.stringify({ path: relPath, refresh_vector: false }) })
+  } catch (e) {
+    console.warn('Server delete failed, fallback to local only.', e)
+  }
+  persistDocs()
+  selectedDoc.value = null
+  editMode.value = false
+  dirty.value = false
+}
+
+watch(editor, () => { dirty.value = true }, { deep: true })
+
+onMounted(loadDocs)
 </script>

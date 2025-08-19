@@ -11,10 +11,16 @@
               </svg>
             </button>
             <NuxtLink to="/" class="text-xl font-bold text-gray-900">
-              m-Learning
+              Mirae
             </NuxtLink>
           </div>
           <div class="flex items-center space-x-4">
+            <NuxtLink to="/textbook" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+              커리큘럼
+            </NuxtLink>
+            <NuxtLink to="/knowledge-base" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+              지식베이스
+            </NuxtLink>
             <NuxtLink to="/login" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
               로그인
             </NuxtLink>
@@ -27,6 +33,7 @@
     <div class="flex flex-grow overflow-hidden bg-gray-100">
       <!-- Left Panel: Syllabus Explorer -->
       <aside
+        v-if="!isKnowledgeBase"
         class="bg-white border-r border-gray-200 flex-shrink-0 overflow-y-auto shadow-md transition-all duration-200"
         :style="{ width: isSidebarCollapsed ? '0px' : sidebarWidth + 'px' }"
       >
@@ -36,14 +43,14 @@
       </aside>
       <!-- Resizer -->
       <div
-        v-if="!isSidebarCollapsed"
+        v-if="!isSidebarCollapsed && !isKnowledgeBase"
         class="w-1 cursor-col-resize bg-gray-200 hover:bg-gray-300"
         @mousedown="onResizeStart"
       ></div>
 
       <!-- Center Panel: Workspace Tabs -->
       <main class="flex-grow overflow-hidden" ref="workspaceMain">
-        <WorkspaceView :active-content="activeContent" :active-slide="activeSlide" :active-path="activePath" ref="workspaceView">
+        <WorkspaceView :active-content="activeContent" :active-slide="activeSlide" :active-path="activePath" :show-slot="isKnowledgeBase" ref="workspaceView">
           <slot /> <!-- Nuxt page content will be injected here -->
         </WorkspaceView>
       </main>
@@ -57,7 +64,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import SyllabusExplorer from '~/components/SyllabusExplorer.vue';
 import WorkspaceView from '~/components/WorkspaceView.vue';
@@ -106,6 +113,7 @@ const apiKey = 'my_mcp_eagle_tiger';
 
 // Load default content: textbook/index.md when on knowledge-base route
 const route = useRoute();
+const isKnowledgeBase = computed(() => route.path.startsWith('/knowledge-base'))
 onMounted(() => {
   // 기본 본문을 Curriculum으로 로드
   if (!activeContent.value) {
@@ -121,6 +129,14 @@ onMounted(() => {
     });
   }
 });
+
+// 라우트 변경 시 커리큘럼 페이지로 전환되면 교재(Curriculum.md) 로드
+watch(() => route.path, (p) => {
+  if (p.startsWith('/textbook')) {
+    handleFileClick('Curriculum.md')
+    isSidebarCollapsed.value = false
+  }
+})
 
 const handleFileClick = async (path) => {
   try {
@@ -149,6 +165,18 @@ const openInteractiveCLI = () => {
   // WorkspaceView에 CLI 컴포넌트로 전환하도록 이벤트 발생
   if (workspaceView.value) {
     workspaceView.value.handleNavigation({ tool: 'cli' });
+  }
+};
+
+// 지식베이스 본문 전환
+const openKnowledgeBase = async () => {
+  try {
+    // 기본 소개 문서가 있다면 로드, 없으면 리스트 안내
+    await handleFileClick('textbook/Curriculum.md');
+    // 경로가 다를 경우 지식베이스 인덱스 문서를 시도
+  } catch (e) {
+    activeContent.value = '# 지식베이스\n좌측 상단 메뉴에서 지식베이스 페이지로 이동해 문서를 관리하세요.';
+    activeSlide.value = null;
   }
 };
 
