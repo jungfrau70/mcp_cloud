@@ -1,5 +1,5 @@
 <template>
-  <div v-if="content" class="prose max-w-none" ref="contentContainer">
+  <div v-if="content" class="prose max-w-none h-full overflow-y-auto" ref="contentContainer">
     <!-- Title row with toggle link -->
     <div v-if="titleText" class="flex items-center justify-between mb-4">
       <h1 class="m-0">{{ titleText }}</h1>
@@ -141,4 +141,29 @@ const closeSlides = () => {
 <style>
 .fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
+
+/* 스크롤바 스타일링 */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 8px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Firefox 스크롤바 스타일링 */
+.overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
+}
 </style>

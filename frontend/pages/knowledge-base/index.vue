@@ -1,5 +1,7 @@
 <template>
-  <KnowledgeBase />
+  <div class="h-full overflow-hidden">
+    <KnowledgeBase />
+  </div>
 </template>
 
 <script setup>

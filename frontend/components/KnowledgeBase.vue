@@ -1,8 +1,8 @@
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 h-full">
     <!-- Sidebar: 문서 관리 뷰 -->
-    <div class="lg:col-span-1">
-      <div class="bg-white rounded-lg shadow p-6 sticky top-6">
+    <div class="lg:col-span-1 h-full overflow-hidden">
+      <div class="bg-white rounded-lg shadow p-6 h-full overflow-y-auto">
         <div class="mb-6">
           <label for="search" class="block text-sm font-medium text-gray-700 mb-2">
             검색
@@ -54,8 +54,8 @@
 
     <!-- 메인 콘텐츠 영역 -->
     <div class="lg:col-span-3">
-      <div class="bg-white rounded-lg shadow">
-        <div class="p-6">
+      <div class="bg-white rounded-lg shadow h-full">
+        <div class="p-6 h-full overflow-hidden flex flex-col">
           <!-- 헤더/버튼 -->
           <div class="mb-6 flex items-center gap-2">
             <input v-model="titleHint" type="text" placeholder="힌트 입력(예: AWS CLI 사용법)" class="px-3 py-2 border rounded w-60" />
@@ -73,40 +73,44 @@
           </div>
 
           <!-- 미리보기 -->
-          <div v-else-if="selectedDoc" class="prose max-w-none">
-            <h1 class="text-2xl font-bold text-gray-900 mb-4">{{ selectedDoc.title }}</h1>
-            <div class="flex items-center text-sm text-gray-500 mb-6">
-              <span>카테고리: {{ selectedDoc.category }}</span>
-              <span class="mx-2">|</span>
-              <span>최근 수정: {{ selectedDoc.updatedAt || '최근' }}</span>
-            </div>
-            
-            <div v-html="selectedDoc.content"></div>
-            
-            <div class="mt-8 pt-6 border-t border-gray-200">
-              <h3 class="text-lg font-medium text-gray-900 mb-3">관련 문서</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div
-                  v-for="related in relatedDocs"
-                  :key="related.id"
-                  @click="selectDocument(related)"
-                  class="p-4 border border-gray-200 rounded-lg hover:border-primary-300 cursor-pointer transition-colors"
-                >
-                  <h4 class="font-medium text-gray-900">{{ related.title }}</h4>
-                  <p class="text-sm text-gray-600 mt-1">{{ related.excerpt }}</p>
+          <div v-else-if="selectedDoc" class="flex-1 overflow-y-auto">
+            <div class="prose max-w-none">
+              <h1 class="text-2xl font-bold text-gray-900 mb-4">{{ selectedDoc.title }}</h1>
+              <div class="flex items-center text-sm text-gray-500 mb-6">
+                <span>카테고리: {{ selectedDoc.category }}</span>
+                <span class="mx-2">|</span>
+                <span>최근 수정: {{ selectedDoc.updatedAt || '최근' }}</span>
+              </div>
+              
+              <div v-html="selectedDoc.content"></div>
+              
+              <div class="mt-8 pt-6 border-t border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900 mb-3">관련 문서</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div
+                    v-for="related in relatedDocs"
+                    :key="related.id"
+                    @click="selectDocument(related)"
+                    class="p-4 border border-gray-200 rounded-lg hover:border-primary-300 cursor-pointer transition-colors"
+                  >
+                    <h4 class="font-medium text-gray-900">{{ related.title }}</h4>
+                    <p class="text-sm text-gray-600 mt-1">{{ related.excerpt }}</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div v-else class="text-center py-12">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900">문서가 선택되지 않았습니다</h3>
-            <p class="mt-1 text-sm text-gray-500">
-              왼쪽 사이드바에서 카테고리나 문서를 선택하거나 검색하여 문서를 확인하세요.
-            </p>
+          <div v-else class="flex-1 flex items-center justify-center">
+            <div class="text-center py-12">
+              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <h3 class="mt-2 text-sm font-medium text-gray-900">문서가 선택되지 않았습니다</h3>
+              <p class="mt-1 text-sm text-gray-500">
+                왼쪽 사이드바에서 카테고리나 문서를 선택하거나 검색하여 문서를 확인하세요.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -266,3 +270,30 @@ watch(editor, () => { dirty.value = true }, { deep: true })
 
 onMounted(loadDocs)
 </script>
+
+<style scoped>
+/* 스크롤바 스타일링 */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 8px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Firefox 스크롤바 스타일링 */
+.overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
+}
+</style>

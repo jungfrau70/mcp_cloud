@@ -4,10 +4,7 @@
       <ClientOnly>
         <transition name="fade" mode="out-in">
           <div>
-            <template v-if="showSlot">
-              <slot />
-            </template>
-            <component v-else :is="activeComponent" v-bind="viewProps" @navigate-tool="handleNavigation" />
+            <component :is="activeComponent" v-bind="viewProps" @navigate-tool="handleNavigation" />
           </div>
         </transition>
       </ClientOnly>
@@ -28,7 +25,6 @@ const props = defineProps({
   activeContent: String,
   activeSlide: Object,
   activePath: String,
-  showSlot: { type: Boolean, default: false },
 });
 
 const activeComponent = shallowRef(ContentView);

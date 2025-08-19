@@ -28,6 +28,7 @@
           @directory-create="handleDirectoryCreate"
           @directory-rename="handleDirectoryRename"
           @directory-delete="handleDirectoryDelete"
+          @file-move="handleFileMove"
         />
       </li>
       <li v-for="file in files" :key="file.name || file">
@@ -181,15 +182,8 @@ const directories = computed(() => {
 const sortedTree = computed(() => {
     const dirs = { ...props.tree };
     delete dirs.files;
-    // excludeDirs에 있는 디렉토리 제외
-    const filteredDirs = {};
-    Object.keys(dirs).forEach(key => {
-        if (!props.excludeDirs.includes(key)) {
-            filteredDirs[key] = dirs[key];
-        }
-    });
-    return Object.keys(filteredDirs).sort().reduce((acc, key) => {
-        acc[key] = filteredDirs[key];
+    return Object.keys(dirs).sort().reduce((acc, key) => {
+        acc[key] = dirs[key];
         return acc;
     }, {});
 });
@@ -408,6 +402,10 @@ const handleDirectoryRename = (data) => {
 
 const handleDirectoryDelete = (data) => {
   emit('directory-delete', data);
+};
+
+const handleFileMove = (data) => {
+  emit('file-move', data);
 };
 
 // Close context menus when clicking outside

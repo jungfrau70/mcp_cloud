@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen flex flex-col">
     <!-- Top Navigation Bar -->
-    <nav v-if="!isKnowledgeBase" class="bg-white shadow-sm border-b z-10">
+    <nav class="bg-white shadow-sm border-b z-10">
       <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
           <div class="flex items-center">
@@ -30,33 +30,29 @@
     </nav>
 
     <!-- Main IDE Layout -->
-    <div v-if="isKnowledgeBase" class="flex-grow">
-      <slot />
-    </div>
-    <div v-else class="flex flex-grow overflow-hidden bg-gray-100">
-      <!-- Left Panel: Syllabus Explorer -->
+    <div class="flex flex-grow overflow-hidden bg-gray-100">
+      <!-- Left Panel -->
       <aside
-        v-if="!isKnowledgeBase"
         class="bg-white border-r border-gray-200 flex-shrink-0 overflow-y-auto shadow-md transition-all duration-200"
         :style="{ width: isSidebarCollapsed ? '0px' : sidebarWidth + 'px' }"
       >
         <div v-show="!isSidebarCollapsed">
-          <SyllabusExplorer @file-click="handleFileClick" />
+          <SyllabusExplorer v-if="!isKnowledgeBase" @file-click="handleFileClick" />
+          <KnowledgeBaseExplorer v-else @file-select="handleKbFileSelect" />
         </div>
       </aside>
       <!-- Resizer -->
       <div
-        v-if="!isSidebarCollapsed && !isKnowledgeBase"
+        v-if="!isSidebarCollapsed"
         class="w-1 cursor-col-resize bg-gray-200 hover:bg-gray-300"
         @mousedown="onResizeStart"
       ></div>
 
       <!-- Center Panel: Workspace Tabs -->
       <main class="flex-grow overflow-hidden" ref="workspaceMain">
-        <WorkspaceView v-if="!isKnowledgeBase" :active-content="activeContent" :active-slide="activeSlide" :active-path="activePath" :show-slot="isKnowledgeBase" ref="workspaceView">
+        <WorkspaceView :active-content="activeContent" :active-slide="activeSlide" :active-path="activePath" ref="workspaceView">
           <slot /> <!-- Nuxt page content will be injected here -->
         </WorkspaceView>
-        <slot v-else /> <!-- For knowledge-base page, show slot directly -->
       </main>
 
       <!-- Right Panel: AI Assistant -->
@@ -71,6 +67,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import SyllabusExplorer from '~/components/SyllabusExplorer.vue';
+import KnowledgeBaseExplorer from '~/components/KnowledgeBaseExplorer.vue';
 import WorkspaceView from '~/components/WorkspaceView.vue';
 import AIAssistantPanel from '~/components/AIAssistantPanel.vue';
 
@@ -119,9 +116,13 @@ const apiKey = 'my_mcp_eagle_tiger';
 const route = useRoute();
 const isKnowledgeBase = computed(() => route.path.startsWith('/knowledge-base'))
 onMounted(() => {
-  // 기본 본문을 Curriculum으로 로드
-  if (!activeContent.value) {
-    handleFileClick('Curriculum.md');
+  if (isKnowledgeBase.value) {
+    // Load initial KB content if any
+  } else {
+    // 기본 본문을 Curriculum으로 로드
+    if (!activeContent.value) {
+      handleFileClick('Curriculum.md');
+    }
   }
   
   // 대화형 CLI 이벤트 리스너 설정
@@ -164,6 +165,35 @@ const handleFileClick = async (path) => {
   }
 };
 
+const handleKbFileSelect = async (path) => {
+  try {
+    activePath.value = path;
+    
+    const response = await fetch(`${apiBase}/api/kb/item?path=${encodeURIComponent(stripBasePath(path))}`, {
+      headers: { 'X-API-Key': apiKey }
+    });
+    
+    if (!response.ok) throw new Error('Failed to load file');
+    
+    const data = await response.json();
+    activeContent.value = data.content;
+    activeSlide.value = null;
+
+  } catch (error) {
+    console.error('Error loading file:', error);
+    activeContent.value = 'Error loading content.';
+    activeSlide.value = null;
+  }
+};
+
+const stripBasePath = (path) => {
+  const basePath = 'mcp_knowledge_base/';
+  if (path.startsWith(basePath)) {
+    return path.substring(basePath.length);
+  }
+  return path;
+};
+
 // 대화형 CLI 열기 함수
 const openInteractiveCLI = () => {
   // WorkspaceView에 CLI 컴포넌트로 전환하도록 이벤트 발생
@@ -186,6 +216,7 @@ const openKnowledgeBase = async () => {
 
 // Default layout for the IDE-style interface.
 </script>
+
 
 <style>
 html, body, #__nuxt {
