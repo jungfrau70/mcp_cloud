@@ -1,0 +1,139 @@
+# RKE2 모니터링 설정 파일
+# Version: 1.0.0
+
+# 기본 설정
+defaults:
+  timeout: 30
+  log_dir: "./logs"
+  log_level: "INFO"
+  retention_days: 30
+
+# RKE2 특화 설정
+rke2:
+  config_path: "/etc/rancher/rke2"
+  data_dir: "/var/lib/rancher/rke2"
+  etcd_dir: "/var/lib/rancher/rke2/server/tls/etcd"
+  kubeconfig: "/etc/rancher/rke2/rke2.yaml"
+
+# 모니터링 설정
+monitoring:
+  enable_metrics: true
+  enable_logs: true
+  enable_security_checks: true
+  enable_etcd_checks: true
+  enable_containerd_checks: true
+
+# 점검 범위 설정
+checks:
+  # 24x7 모니터링용
+  24x7:
+    cluster_info: true
+    control_plane: true
+    node_overview: true
+    role_nodes: true
+    namespace_pod: true
+    storage_infra: true
+    oss_tools: true
+    system: true
+    rke2_specific: true
+    rke2_etcd: true
+    rke2_containerd: true
+    rke2_security: true
+    rke2_logs: true
+
+  # 플랫폼 점검용
+  platform:
+    cluster_config: true
+    node_roles: true
+    network: true
+    storage: true
+    metrics: true
+    security: true
+    monitoring: true
+
+  # 파드 점검용
+  pod:
+    pod_status: true
+    pod_resources: true
+    pod_networking: true
+    pod_volumes: true
+    pod_logs: true
+    pod_security: true
+    pod_containerd: true
+
+# 보안 설정
+security:
+  mask_sensitive_info: true
+  enable_audit_logs: true
+  validate_commands: true
+  check_file_permissions: true
+  check_certificate_expiry: true
+  certificate_warning_days: 30
+
+# 알림 설정
+alerts:
+  slack_webhook_url: ""
+  email_recipients: ""
+  alert_level: "WARNING"
+  enable_notifications: false
+
+# Azure 특화 설정 (Azure 환경인 경우)
+azure:
+  subscription_id: ""
+  resource_group: ""
+  location: ""
+  enable_azure_checks: false
+
+# 성능 설정
+performance:
+  max_retries: 2
+  retry_delay: 2
+  parallel_execution: false
+  max_parallel_jobs: 5
+
+# 로깅 설정
+logging:
+  enable_html_reports: true
+  enable_summary: true
+  log_rotation: true
+  compress_old_logs: true
+  max_log_size_mb: 100
+
+# 네트워크 설정
+network:
+  enable_connectivity_tests: true
+  test_endpoints:
+    - "kubernetes.default.svc.cluster.local"
+    - "kube-dns.kube-system.svc.cluster.local"
+  timeout_seconds: 10
+
+# 스토리지 설정
+storage:
+  check_pv_status: true
+  check_pvc_status: true
+  check_storage_class: true
+  enable_storage_metrics: true
+
+# etcd 설정
+etcd:
+  check_health: true
+  check_members: true
+  check_leader: true
+  check_metrics: true
+  backup_check: true
+
+# containerd 설정
+containerd:
+  check_service: true
+  check_processes: true
+  check_socket: true
+  check_containers: true
+  check_images: true
+
+# 시스템 설정
+system:
+  check_resources: true
+  check_services: true
+  check_ports: true
+  check_security: true
+  check_kernel_params: true
