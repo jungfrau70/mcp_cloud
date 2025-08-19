@@ -30,7 +30,7 @@
     </nav>
 
     <!-- Main IDE Layout -->
-    <div class="flex flex-grow overflow-hidden bg-gray-100">
+    <div class="flex flex-grow overflow-hidden bg-gray-100 relative">
       <!-- Left Panel -->
       <aside
         class="bg-white border-r border-gray-200 flex-shrink-0 overflow-y-auto shadow-md transition-all duration-200"
@@ -47,6 +47,22 @@
         class="w-1 cursor-col-resize bg-gray-200 hover:bg-gray-300"
         @mousedown="onResizeStart"
       ></div>
+      
+      <!-- 사이드바 토글 버튼 -->
+      <div
+        class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10"
+        :style="{ left: isSidebarCollapsed ? '0px' : sidebarWidth + 'px' }"
+      >
+        <button
+          @click="toggleSidebar"
+          class="bg-white border border-gray-200 rounded-r-lg p-2 shadow-md hover:bg-gray-50 transition-colors"
+          :title="isSidebarCollapsed ? '사이드바 열기' : '사이드바 닫기'"
+        >
+          <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
 
       <!-- Center Panel: Workspace Tabs -->
       <main class="flex-grow overflow-hidden" ref="workspaceMain">
@@ -119,9 +135,9 @@ onMounted(() => {
   if (isKnowledgeBase.value) {
     // Load initial KB content if any
   } else {
-    // 기본 본문을 Curriculum으로 로드
+    // 기본 본문을 첫 번째 슬라이드로 로드
     if (!activeContent.value) {
-      handleFileClick('Curriculum.md');
+      handleFileClick('1-1_introduction_to_cloud.md');
     }
   }
   
@@ -135,10 +151,11 @@ onMounted(() => {
   }
 });
 
-// 라우트 변경 시 커리큘럼 페이지로 전환되면 교재(Curriculum.md) 로드
+// 라우트 변경 시 커리큘럼 페이지로 전환되면 첫 번째 슬라이드 로드
 watch(() => route.path, (p) => {
   if (p.startsWith('/textbook')) {
-    handleFileClick('Curriculum.md')
+    // 첫 번째 슬라이드 파일을 찾아서 로드
+    handleFileClick('1-1_introduction_to_cloud.md')
     isSidebarCollapsed.value = false
   }
 })
@@ -147,20 +164,28 @@ const handleFileClick = async (path) => {
   try {
     activePath.value = path;
     
-    // Fetch textbook content
-    const contentResponse = await fetch(`${apiBase}/api/v1/curriculum/content?path=${path}`, {
+    // 슬라이드 내용을 가져오기 위해 슬라이드 API 사용
+    const contentResponse = await fetch(`${apiBase}/api/v1/slides?textbook_path=${encodeURIComponent(path)}`, {
       headers: { 'X-API-Key': apiKey },
     });
-    if (!contentResponse.ok) throw new Error('Failed to fetch content');
-    const contentData = await contentResponse.json();
-    activeContent.value = contentData.content;
-
-    // Slide download is handled client-side from ContentView using the same path
-    activeSlide.value = null;
+    if (!contentResponse.ok) throw new Error('Failed to fetch slide content');
+    
+    const contentType = contentResponse.headers.get('content-type') || '';
+    if (contentType.includes('application/pdf')) {
+      // PDF인 경우 blob으로 처리
+      const blob = await contentResponse.blob();
+      activeContent.value = `# ${path}\n\nPDF 슬라이드가 로드되었습니다.`;
+      activeSlide.value = { type: 'pdf', url: URL.createObjectURL(blob) };
+    } else {
+      // 마크다운인 경우 텍스트로 처리
+      const content = await contentResponse.text();
+      activeContent.value = content;
+      activeSlide.value = null;
+    }
 
   } catch (error) {
-    console.error('Error fetching curriculum data:', error);
-    activeContent.value = 'Error loading content.';
+    console.error('Error fetching slide data:', error);
+    activeContent.value = 'Error loading slide content.';
     activeSlide.value = null;
   }
 };

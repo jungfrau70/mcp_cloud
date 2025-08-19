@@ -926,6 +926,18 @@ async def get_curriculum_tree():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read curriculum structure: {e}")
 
+@app.get("/api/v1/slides/tree", dependencies=[Depends(get_api_key)], tags=["Slides"])
+async def get_slides_tree():
+    """
+    Returns the directory structure of the slides as JSON.
+    """
+    try:
+        # We can reuse the existing helper function
+        tree = get_knowledge_base_structure(SLIDES_DIR, is_root=True)
+        return tree
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to read slides structure: {e}")
+
 @app.get("/api/v1/curriculum/content", dependencies=[Depends(get_api_key)], tags=["Curriculum"])
 async def get_curriculum_content(path: str):
     """

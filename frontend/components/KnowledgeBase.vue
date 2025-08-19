@@ -1,7 +1,7 @@
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 h-full">
+  <div class="h-full flex">
     <!-- Sidebar: 문서 관리 뷰 -->
-    <div class="lg:col-span-1 h-full overflow-hidden">
+    <div v-show="!sidebarCollapsed" class="w-80 flex-shrink-0 h-full overflow-hidden transition-all duration-300">
       <div class="bg-white rounded-lg shadow p-6 h-full overflow-y-auto">
         <div class="mb-6">
           <label for="search" class="block text-sm font-medium text-gray-700 mb-2">
@@ -53,11 +53,21 @@
     </div>
 
     <!-- 메인 콘텐츠 영역 -->
-    <div class="lg:col-span-3">
+    <div class="flex-1 h-full overflow-hidden">
       <div class="bg-white rounded-lg shadow h-full">
         <div class="p-6 h-full overflow-hidden flex flex-col">
           <!-- 헤더/버튼 -->
           <div class="mb-6 flex items-center gap-2">
+            <!-- 사이드바 토글 버튼 -->
+            <button 
+              @click="toggleSidebar" 
+              class="p-2 rounded hover:bg-gray-100 focus:outline-none"
+              :title="sidebarCollapsed ? '사이드바 열기' : '사이드바 닫기'"
+            >
+              <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
             <input v-model="titleHint" type="text" placeholder="힌트 입력(예: AWS CLI 사용법)" class="px-3 py-2 border rounded w-60" />
             <button class="px-3 py-2 bg-indigo-600 text-white rounded" @click="suggestTitle">AI 제목 제안</button>
             <button class="px-3 py-2 bg-blue-600 text-white rounded" @click="newDoc">새 문서</button>
@@ -133,6 +143,7 @@ const dirty = ref(false)
 const saveMsg = ref('')
 const editor = reactive({ id: null, title: '', category: '', content: '' })
 const titleHint = ref('')
+const sidebarCollapsed = ref(false)
 
 // 카테고리 데이터
 const categories = ref([
@@ -161,6 +172,10 @@ const relatedDocs = ref([
 const selectCategory = (categoryId) => {
   selectedCategory.value = categoryId
   // TODO: 카테고리별 문서 필터링 구현
+}
+
+const toggleSidebar = () => {
+  sidebarCollapsed.value = !sidebarCollapsed.value
 }
 
 const selectDocument = (doc) => {
