@@ -1,34 +1,35 @@
 <template>
-  <div v-if="content" class="prose max-w-none relative" ref="contentContainer">
-    <!-- Title row with slide link -->
+  <div v-if="content" class="prose max-w-none" ref="contentContainer">
+    <!-- Title row with toggle link -->
     <div v-if="titleText" class="flex items-center justify-between mb-4">
       <h1 class="m-0">{{ titleText }}</h1>
       <button
-        v-if="path"
+        v-if="path && !isSlideView"
         @click="openSlides"
         class="px-3 py-1 text-sm rounded bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
       >
         Slides 보기
       </button>
+      <button
+        v-if="isSlideView"
+        @click="closeSlides"
+        class="px-3 py-1 text-sm rounded bg-gray-200 hover:bg-gray-300 transition-colors"
+      >
+        Textbook으로
+      </button>
     </div>
 
-    <!-- 기존 콘텐츠 -->
-    <div v-html="renderedMarkdown"></div>
-
-    <!-- Fullscreen slide overlay -->
-    <transition name="fade">
-      <div v-if="isSlideView" class="fixed inset-0 bg-white z-50 flex flex-col">
-        <div class="h-14 flex items-center justify-between px-4 border-b">
-          <h2 class="text-lg font-semibold">{{ slideTitle }}</h2>
-          <button @click="closeSlides" class="text-sm px-3 py-1 rounded bg-gray-200 hover:bg-gray-300">Textbook으로</button>
+    <!-- Fade between content and slides in-place -->
+    <transition name="fade" mode="out-in">
+      <div v-if="!isSlideView" key="content-view">
+        <div v-html="renderedMarkdown"></div>
+      </div>
+      <div v-else key="slides-view">
+        <div v-if="slidePdfUrl" class="w-full">
+          <iframe :src="slidePdfUrl" class="w-full min-h-[60vh]"></iframe>
         </div>
-        <div class="flex-1 overflow-auto">
-          <div v-if="slidePdfUrl" class="w-full h-full">
-            <iframe :src="slidePdfUrl" class="w-full h-[calc(100vh-56px)]" />
-          </div>
-          <div v-else class="prose max-w-none p-6">
-            <div v-html="slideHtml"></div>
-          </div>
+        <div v-else class="prose max-w-none">
+          <div v-html="slideHtml"></div>
         </div>
       </div>
     </transition>
