@@ -17,11 +17,12 @@
   "devDependencies": {
     "@nuxt/devtools": "^2.6.2",
     "@nuxtjs/tailwindcss": "^6.10.0",
+    "@playwright/test": "^1.54.2",
+    "@vitejs/plugin-vue": "^5.0.0",
     "@vue/test-utils": "^2.4.6",
     "happy-dom": "^18.0.1",
     "nuxt": "^3.10.0",
-    "vitest": "^3.2.4",
-    "@vitejs/plugin-vue": "^5.0.0"
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "marked": "^9.0.0",

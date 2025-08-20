@@ -30,6 +30,9 @@ from rag_service import rag_service_instance
 import asyncio
 from io import BytesIO
 import pathlib
+from external_search_service import external_search_service_instance
+from content_extractor import content_extractor_instance
+from ai_document_generator import ai_document_generator_instance
 
 # Markdown to PDF conversion (optional import)
 try:
@@ -156,8 +159,19 @@ class MarkdownToPdfRequest(BaseModel):
     markdown: str
     filename: Optional[str] = "document.md"
 
+class GenerateDocumentRequest(BaseModel):
+    query: str
+    target_path: Optional[str] = None
+
+class GenerateDocumentResponse(BaseModel):
+    success: bool
+    message: str
+    document_path: Optional[str] = None
+    generated_doc_data: Optional[Dict] = None
+
 # 데이터베이스 URL 환경변수 가져오기 (Docker 환경 우선)
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://mcpuser:mcppassword@mcp_postgres:5432/mcp_db")
+# DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://mcpuser:mcppassword@localhost:5432/mcp_db?client_encoding=utf8")
 print(f"🔗 Database URL: {DATABASE_URL}")
 
 # Gemini API Key 환경변수 가져오기
@@ -173,13 +187,22 @@ async def get_api_key(request: Request):
     provided = request.headers.get("x-api-key") or request.query_params.get("api_key")
     # Read current expected key dynamically to respect test-time env overrides
     expected = os.getenv("MCP_API_KEY", MCP_API_KEY)
-    if provided == expected:
-        return provided
+    if provided is None or provided != expected:
         raise HTTPException(status_code=403, detail="Could not validate credentials")
+    return provided
 
 # SQLAlchemy 엔진 생성 (에러 처리 추가)
 try:
-    engine = create_engine(DATABASE_URL, echo=False)
+    engine = create_engine(
+        DATABASE_URL, 
+        echo=False,
+        pool_pre_ping=True,
+        pool_recycle=300,
+        connect_args={
+            "connect_timeout": 10,
+            "application_name": "mcp_cloud_backend"
+        }
+    )
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     
     # 데이터베이스 연결 테스트 (SQLAlchemy 2.0 호환)
@@ -907,6 +930,94 @@ def delete_knowledge_doc(req: KnowledgeDocDelete):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to delete document: {e}")
 
+@app.post("/api/v1/knowledge/generate-from-external", response_model=GenerateDocumentResponse, dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+async def generate_document_from_external(request: GenerateDocumentRequest):
+    """
+    Generates a knowledge base document from external sources based on a query.
+    """
+    try:
+        # 1. Perform external search
+        search_results = external_search_service_instance.search(request.query, num_results=3)
+        
+        combined_content = ""
+        if not search_results:
+            return GenerateDocumentResponse(
+                success=False,
+                message=f"No relevant search results found for query: '{request.query}'",
+                document_path=None
+            )
+
+        # 2. Extract and combine content from search results
+        for result in search_results:
+            extracted = content_extractor_instance.extract_content(result["link"])
+            if extracted:
+                combined_content += f"## Source: {result['title']}\nLink: {result['link']}\n\n{extracted}\n\n---\n\n"
+        
+        if not combined_content:
+            return GenerateDocumentResponse(
+                success=False,
+                message=f"Could not extract content from any search results for query: '{request.query}'",
+                document_path=None
+            )
+
+        # 3. Generate document using AI
+        print(f"Combined content before AI generation: {combined_content[:200]}...")
+        generated_doc_data = await ai_document_generator_instance.generate_document(request.query, combined_content, search_results)
+
+        if not generated_doc_data:
+            raise HTTPException(status_code=500, detail="AI document generation failed.")
+
+        # Determine target path and filename
+        target_filename = f"{generated_doc_data['slug']}.md"
+        if request.target_path:
+            # Ensure target_path is relative to KNOWLEDGE_BASE_DIR and ends with .md
+            # Use pathlib for robust path manipulation
+            base_path = pathlib.Path(KNOWLEDGE_BASE_DIR)
+            requested_relative_path = pathlib.Path(request.target_path)
+            
+            # If target_path is a directory, append the generated slug
+            if requested_relative_path.suffix == '': # It's a directory
+                final_relative_path = requested_relative_path / target_filename
+            else: # It's a file path, use it directly
+                final_relative_path = requested_relative_path
+                # Ensure it ends with .md
+                if final_relative_path.suffix != '.md':
+                    final_relative_path = final_relative_path.with_suffix('.md')
+
+            # Construct the full absolute path
+            full_target_path = base_path / final_relative_path
+        else:
+            # Default path: root of KNOWLEDGE_BASE_DIR
+            full_target_path = pathlib.Path(KNOWLEDGE_BASE_DIR) / target_filename
+
+        # Ensure parent directories exist
+        full_target_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # 4. Save the generated document
+        with open(full_target_path, 'w', encoding='utf-8') as f:
+            f.write(generated_doc_data['content'])
+
+        # Update RAG service knowledge base if available
+        if rag_service_instance:
+            rag_service_instance.update_knowledge_base()
+
+        # Return relative path for client
+        relative_path_for_client = str(full_target_path.relative_to(KNOWLEDGE_BASE_DIR)).replace('\\', '/')
+
+        return GenerateDocumentResponse(
+            success=True,
+            message=f"Document '{generated_doc_data['title']}' generated and saved.",
+            document_path=relative_path_for_client,
+            generated_doc_data=generated_doc_data # Add this line
+        )
+
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        print(f"Error during document generation: {e}")
+        raise HTTPException(status_code=500, detail=f"Document generation failed: {e}")
+
+
 
 # ===================================
 # Curriculum Endpoints
@@ -1089,33 +1200,11 @@ async def get_slide_download(textbook_path: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get slide: {e}")
 
-# # Generic Markdown -> PDF conversion using Marp (if available)
-# @app.post("/api/v1/slides/pdf", dependencies=[Depends(get_api_key)], tags=["Slides"])
-# async def convert_markdown_to_pdf(req: MarkdownToPdfRequest):
-#     try:
-#         import shutil, tempfile, subprocess, os as _os
-#         marp_bin = shutil.which("marp")
-#         # Write markdown to temp file
-#         with tempfile.TemporaryDirectory() as tmpdir:
-#             md_path = _os.path.join(tmpdir, req.filename or "document.md")
-#             with open(md_path, "w", encoding="utf-8") as f:
-#                 f.write(req.markdown)
-#             if marp_bin:
-#                 pdf_out = _os.path.join(tmpdir, _os.path.splitext(_os.path.basename(md_path))[0] + ".pdf")
-#                 try:
-#                     subprocess.run([marp_bin, md_path, "--pdf", "--allow-local-files", "-o", pdf_out],
-#                                    check=True, capture_output=True, text=True)
-#                     return FileResponse(pdf_out, media_type="application/pdf",
-#                                          filename=_os.path.basename(pdf_out))
-#                 except subprocess.CalledProcessError as e:
-#                     raise HTTPException(status_code=500, detail=f"Marp conversion failed: {e.stderr or e.stdout}")
-#             # Fallback: return markdown if Marp not available
-#             return FileResponse(md_path, media_type="text/markdown; charset=utf-8",
-#                                  filename=_os.path.basename(md_path))
-#     except HTTPException:
-#         raise
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=f"Failed to convert markdown: {e}")
+# 테스트 호환성을 위한 별칭 경로
+@app.get("/api/v1/curriculum/slide", dependencies=[Depends(get_api_key)], tags=["Curriculum"])
+async def get_slide_alias(textbook_path: str):
+    """교과서 경로에 해당하는 슬라이드를 반환합니다. (테스트 호환성)"""
+    return await get_slide_download(textbook_path)
 
 @app.get("/api/v1/slides/{slide_name}/pdf", dependencies=[Depends(get_api_key)], tags=["Slides"])
 async def get_slide_pdf(slide_name: str):

@@ -71,6 +71,7 @@
             <input v-model="titleHint" type="text" placeholder="힌트 입력(예: AWS CLI 사용법)" class="px-3 py-2 border rounded w-60" />
             <button class="px-3 py-2 bg-indigo-600 text-white rounded" @click="suggestTitle">AI 제목 제안</button>
             <button class="px-3 py-2 bg-blue-600 text-white rounded" @click="newDoc">새 문서</button>
+            <button class="px-3 py-2 bg-purple-600 text-white rounded" @click="showAiGenerateModal = true">AI 문서 생성</button>
             <button class="px-3 py-2 bg-green-600 text-white rounded" :disabled="!dirty" @click="saveDoc">저장</button>
             <button class="px-3 py-2 bg-red-600 text-white rounded" :disabled="!selectedDoc" @click="deleteDoc">삭제</button>
             <span v-if="saveMsg" class="text-sm text-gray-500">{{ saveMsg }}</span>
@@ -125,6 +126,42 @@
         </div>
       </div>
     </div>
+
+    <!-- AI 문서 생성 모달 -->
+    <div v-if="showAiGenerateModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
+      <div class="relative p-8 bg-white w-96 mx-auto rounded-lg shadow-lg">
+        <h3 class="text-xl font-semibold mb-4">AI 문서 생성</h3>
+        <div class="mb-4">
+          <label for="aiQuery" class="block text-sm font-medium text-gray-700 mb-2">
+            생성할 문서의 주제 또는 질문을 입력하세요:
+          </label>
+          <input
+            id="aiQuery"
+            v-model="aiGenerateQuery"
+            type="text"
+            placeholder="예: AWS S3 버킷 생성 방법"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          />
+        </div>
+        <div class="flex justify-end space-x-2">
+          <button
+            @click="showAiGenerateModal = false; aiGenerateMessage = ''; aiGenerateQuery = ''"
+            class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none"
+          >
+            취소
+          </button>
+          <button
+            @click="generateDocFromAI"
+            :disabled="aiGenerateLoading || !aiGenerateQuery.trim()"
+            class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none"
+          >
+            <span v-if="aiGenerateLoading">생성 중...</span>
+            <span v-else>생성</span>
+          </button>
+        </div>
+        <p v-if="aiGenerateMessage" :class="{'text-green-600': aiGenerateMessage.includes('성공'), 'text-red-600': aiGenerateMessage.includes('실패')}" class="mt-4 text-sm text-center">{{ aiGenerateMessage }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -144,6 +181,11 @@ const saveMsg = ref('')
 const editor = reactive({ id: null, title: '', category: '', content: '' })
 const titleHint = ref('')
 const sidebarCollapsed = ref(false)
+
+const aiGenerateQuery = ref('')
+const aiGenerateLoading = ref(false)
+const aiGenerateMessage = ref('')
+const showAiGenerateModal = ref(false)
 
 // 카테고리 데이터
 const categories = ref([
@@ -279,6 +321,55 @@ async function deleteDoc() {
   selectedDoc.value = null
   editMode.value = false
   dirty.value = false
+}
+
+async function generateDocFromAI() {
+  if (!aiGenerateQuery.value.trim()) {
+    aiGenerateMessage.value = '주제를 입력해주세요.';
+    return;
+  }
+
+  aiGenerateLoading.value = true;
+  aiGenerateMessage.value = '';
+
+  try {
+    const response = await fetch(`${apiBase}/api/v1/knowledge/generate-from-external`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
+      body: JSON.stringify({ query: aiGenerateQuery.value })
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      aiGenerateMessage.value = `문서 생성 성공: ${data.message}. 경로: ${data.document_path}`;
+      
+      // Load generated content into the editor for review
+      editor.id = null; // New document
+      editor.title = data.generated_doc_data.title;
+      editor.category = data.generated_doc_data.category || 'ai-generated'; // Use a default category if not provided by AI
+      editor.content = data.generated_doc_data.content;
+      dirty.value = true; // Mark as dirty for saving
+      editMode.value = true; // Switch to edit mode
+      selectedDoc.value = null; // Clear selected doc
+
+      aiGenerateQuery.value = ''; // Clear query
+      
+      // Close modal immediately after populating editor
+      showAiGenerateModal.value = false;
+      aiGenerateMessage.value = ''; // Clear message
+      
+      // No need for setTimeout to close modal, as editor is now open
+      // Refresh recentDocs or tree if needed (this would happen on saveDoc)
+    } else {
+      aiGenerateMessage.value = `문서 생성 실패: ${data.detail || data.message || '알 수 없는 오류'}`;
+    }
+  } catch (e) {
+    console.error('AI 문서 생성 중 오류 발생:', e);
+    aiGenerateMessage.value = `AI 문서 생성 중 네트워크 오류: ${e.message}`;
+  } finally {
+    aiGenerateLoading.value = false;
+  }
 }
 
 watch(editor, () => { dirty.value = true }, { deep: true })

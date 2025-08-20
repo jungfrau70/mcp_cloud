@@ -4,12 +4,15 @@ from unittest.mock import patch, mock_open
 import os
 
 # Assuming your main.py is in the backend directory
-from backend.main import app, get_api_key, SLIDES_DIR
+from main import app, get_api_key
 
 # Override the API key dependency for testing
 app.dependency_overrides[get_api_key] = lambda: "my_mcp_eagle_tiger"
 
 client = TestClient(app)
+
+# Mock SLIDES_DIR for testing
+MOCK_SLIDES_DIR = "/mock/slides/dir"
 
 @pytest.fixture
 def mock_slide_content():
@@ -53,21 +56,27 @@ def create_mock_exists_side_effect(expected_existing_paths):
         return result
     return _side_effect
 
+@patch('main.SLIDES_DIR', MOCK_SLIDES_DIR)
 @patch('os.path.exists')
 @patch('os.path.realpath')
+@patch('os.walk')
 @patch('builtins.open', new_callable=mock_open)
-def test_get_slide_pdf_success(mock_open_file, mock_realpath, mock_exists, mock_slide_content):
+def test_get_slide_pdf_success(mock_open_file, mock_walk, mock_realpath, mock_exists, mock_slide_content):
     # Configure mocks for a successful scenario
     mock_exists.side_effect = create_mock_exists_side_effect([
-        os.path.join(SLIDES_DIR, "test_slide.md")
+        os.path.join(MOCK_SLIDES_DIR, "test_slide.md")
     ])
     mock_realpath.side_effect = create_mock_realpath_side_effect({
-        SLIDES_DIR: SLIDES_DIR,
-        os.path.join(SLIDES_DIR, "test_slide.md"): os.path.join(SLIDES_DIR, "test_slide.md")
+        MOCK_SLIDES_DIR: MOCK_SLIDES_DIR,
+        os.path.join(MOCK_SLIDES_DIR, "test_slide.md"): os.path.join(MOCK_SLIDES_DIR, "test_slide.md")
     })
+    # Mock os.walk to return the test slide file
+    mock_walk.return_value = [
+        (MOCK_SLIDES_DIR, [], ["test_slide.md"])
+    ]
     mock_open_file.return_value.read.return_value = mock_slide_content
 
-    response = client.get("/api/v1/curriculum/slide?textbook_path=test_slide.md", headers={"X-API-Key": "my_mcp_eagle_tiger"})
+    response = client.get("/api/v1/slides?textbook_path=test_slide.md", headers={"X-API-Key": "my_mcp_eagle_tiger"})
 
     # Since HAS_MARKDOWN_PDF is False, it should return markdown content
     assert response.status_code == 200
@@ -75,55 +84,58 @@ def test_get_slide_pdf_success(mock_open_file, mock_realpath, mock_exists, mock_
     assert response.headers['content-disposition'] == 'attachment; filename="test_slide.md"'
     assert response.content.decode() == mock_slide_content
 
-    mock_exists.assert_called_with(os.path.join(SLIDES_DIR, "test_slide.md"))
-    mock_open_file.assert_called_with(os.path.join(SLIDES_DIR, "test_slide.md"), 'r', encoding='utf-8')
+    mock_exists.assert_called_with(os.path.join(MOCK_SLIDES_DIR, "test_slide.md"))
+    mock_open_file.assert_called_with(os.path.join(MOCK_SLIDES_DIR, "test_slide.md"), 'r', encoding='utf-8')
 
+@patch('main.SLIDES_DIR', MOCK_SLIDES_DIR)
 @patch('os.path.exists')
 @patch('os.path.realpath')
 def test_get_slide_pdf_not_found(mock_realpath, mock_exists):
     mock_exists.side_effect = create_mock_exists_side_effect([]) # No files exist
     mock_realpath.side_effect = create_mock_realpath_side_effect({
-        SLIDES_DIR: SLIDES_DIR,
-        os.path.join(SLIDES_DIR, "non_existent_slide.md"): os.path.join(SLIDES_DIR, "non_existent_slide.md")
+        MOCK_SLIDES_DIR: MOCK_SLIDES_DIR,
+        os.path.join(MOCK_SLIDES_DIR, "non_existent_slide.md"): os.path.join(MOCK_SLIDES_DIR, "non_existent_slide.md")
     })
 
-    response = client.get("/api/v1/curriculum/slide?textbook_path=non_existent_slide.md", headers={"X-API-Key": "my_mcp_eagle_tiger"})
+    response = client.get("/api/v1/slides?textbook_path=non_existent_slide.md", headers={"X-API-Key": "my_mcp_eagle_tiger"})
 
     assert response.status_code == 404
     assert "Slide mapping is not defined for this document." in response.json()["detail"]
 
+@patch('main.SLIDES_DIR', MOCK_SLIDES_DIR)
 @patch('os.path.exists')
 @patch('os.path.realpath')
 def test_get_slide_pdf_invalid_path(mock_realpath, mock_exists):
-    # The requested_path will be SLIDES_DIR/test_slide.md after normpath
+    # The requested_path will be MOCK_SLIDES_DIR/test_slide.md after normpath
     # We want os.path.realpath(requested_path) to return a malicious path
     mock_exists.side_effect = create_mock_exists_side_effect([
         "/malicious/path/outside/slides_dir" # This path should exist for the test to proceed to the security check
     ])
     mock_realpath.side_effect = create_mock_realpath_side_effect({
-        SLIDES_DIR: SLIDES_DIR,
-        os.path.join(SLIDES_DIR, "../test_slide.md"): "/malicious/path/outside/slides_dir" # This is the path passed to realpath
+        MOCK_SLIDES_DIR: MOCK_SLIDES_DIR,
+        os.path.join(MOCK_SLIDES_DIR, "../test_slide.md"): "/malicious/path/outside/slides_dir" # This is the path passed to realpath
     })
 
-    response = client.get("/api/v1/curriculum/slide?textbook_path=../test_slide.md", headers={"X-API-Key": "my_mcp_eagle_tiger"})
+    response = client.get("/api/v1/slides?textbook_path=../test_slide.md", headers={"X-API-Key": "my_mcp_eagle_tiger"})
 
     assert response.status_code == 404
     assert "Not Found" in response.json()["detail"]
 
+@patch('main.SLIDES_DIR', MOCK_SLIDES_DIR)
 @patch('os.path.exists')
 @patch('os.path.realpath')
 @patch('builtins.open', new_callable=mock_open)
 def test_get_slide_pdf_internal_error(mock_open_file, mock_realpath, mock_exists, mock_slide_content):
     mock_exists.side_effect = create_mock_exists_side_effect([
-        os.path.join(SLIDES_DIR, "test_slide.md")
+        os.path.join(MOCK_SLIDES_DIR, "test_slide.md")
     ])
     mock_realpath.side_effect = create_mock_realpath_side_effect({
-        SLIDES_DIR: SLIDES_DIR,
-        os.path.join(SLIDES_DIR, "test_slide.md"): os.path.join(SLIDES_DIR, "test_slide.md")
+        MOCK_SLIDES_DIR: MOCK_SLIDES_DIR,
+        os.path.join(MOCK_SLIDES_DIR, "test_slide.md"): os.path.join(MOCK_SLIDES_DIR, "test_slide.md")
     })
     mock_open_file.return_value.read.return_value = mock_slide_content
 
-    response = client.get("/api/v1/curriculum/slide?textbook_path=test_slide.md", headers={"X-API-Key": "my_mcp_eagle_tiger"})
+    response = client.get("/api/v1/slides?textbook_path=test_slide.md", headers={"X-API-Key": "my_mcp_eagle_tiger"})
 
     # Since HAS_MARKDOWN_PDF is False, it should return markdown content successfully
     assert response.status_code == 200
@@ -131,20 +143,21 @@ def test_get_slide_pdf_internal_error(mock_open_file, mock_realpath, mock_exists
     assert response.headers['content-disposition'] == 'attachment; filename="test_slide.md"'
     assert response.content.decode() == mock_slide_content
 
+@patch('main.SLIDES_DIR', MOCK_SLIDES_DIR)
 @patch('os.path.exists')
 @patch('os.path.realpath')
 @patch('builtins.open', new_callable=mock_open)
 def test_get_slide_pdf_no_md_extension(mock_open_file, mock_realpath, mock_exists, mock_slide_content):
     mock_exists.side_effect = create_mock_exists_side_effect([
-        os.path.join(SLIDES_DIR, "test_slide.md")
+        os.path.join(MOCK_SLIDES_DIR, "test_slide.md")
     ])
     mock_realpath.side_effect = create_mock_realpath_side_effect({
-        SLIDES_DIR: SLIDES_DIR,
-        os.path.join(SLIDES_DIR, "test_slide.md"): os.path.join(SLIDES_DIR, "test_slide.md")
+        MOCK_SLIDES_DIR: MOCK_SLIDES_DIR,
+        os.path.join(MOCK_SLIDES_DIR, "test_slide.md"): os.path.join(MOCK_SLIDES_DIR, "test_slide.md")
     })
     mock_open_file.return_value.read.return_value = mock_slide_content
 
-    response = client.get("/api/v1/curriculum/slide?textbook_path=test_slide", headers={"X-API-Key": "my_mcp_eagle_tiger"})
+    response = client.get("/api/v1/slides?textbook_path=test_slide", headers={"X-API-Key": "my_mcp_eagle_tiger"})
 
     # Since HAS_MARKDOWN_PDF is False, it should return markdown content
     assert response.status_code == 200
@@ -152,9 +165,10 @@ def test_get_slide_pdf_no_md_extension(mock_open_file, mock_realpath, mock_exist
     assert response.headers['content-disposition'] == 'attachment; filename="test_slide.md"'
     assert response.content.decode() == mock_slide_content
 
-    mock_exists.assert_called_with(os.path.join(SLIDES_DIR, "test_slide.md"))
-    mock_open_file.assert_called_with(os.path.join(SLIDES_DIR, "test_slide.md"), 'r', encoding='utf-8')
+    mock_exists.assert_called_with(os.path.join(MOCK_SLIDES_DIR, "test_slide.md"))
+    mock_open_file.assert_called_with(os.path.join(MOCK_SLIDES_DIR, "test_slide.md"), 'r', encoding='utf-8')
 
+@patch('main.SLIDES_DIR', MOCK_SLIDES_DIR)
 @patch('os.path.exists')
 @patch('os.path.realpath')
 @patch('builtins.open', new_callable=mock_open)
@@ -162,21 +176,21 @@ def test_get_slide_pdf_with_path_segments(mock_open_file, mock_realpath, mock_ex
     # Configure mocks for a successful scenario with path segments
     # Mock os.path.exists to return True only for the expected full path
     mock_exists.side_effect = create_mock_exists_side_effect([
-        os.path.join(SLIDES_DIR, "subdir", "another_slide.md")
+        os.path.join(MOCK_SLIDES_DIR, "subdir", "another_slide.md")
     ])
     # Mock os.path.realpath to return the expected real path
     mock_realpath.side_effect = create_mock_realpath_side_effect({
-        SLIDES_DIR: SLIDES_DIR,
-        os.path.join(SLIDES_DIR, "subdir", "another_slide.md"): os.path.join(SLIDES_DIR, "subdir", "another_slide.md")
+        MOCK_SLIDES_DIR: MOCK_SLIDES_DIR,
+        os.path.join(MOCK_SLIDES_DIR, "subdir", "another_slide.md"): os.path.join(MOCK_SLIDES_DIR, "subdir", "another_slide.md")
     })
 
     mock_open_file.return_value.read.return_value = mock_slide_content
 
     # Simulate a slide in a subdirectory
     slide_name_with_path = "subdir/another_slide.md"
-    expected_full_path = os.path.join(SLIDES_DIR, "subdir", "another_slide.md")
+    expected_full_path = os.path.join(MOCK_SLIDES_DIR, "subdir", "another_slide.md")
 
-    response = client.get(f"/api/v1/curriculum/slide?textbook_path={slide_name_with_path}", headers={"X-API-Key": "my_mcp_eagle_tiger"})
+    response = client.get(f"/api/v1/slides?textbook_path={slide_name_with_path}", headers={"X-API-Key": "my_mcp_eagle_tiger"})
 
     # Since HAS_MARKDOWN_PDF is False, it should return markdown content
     assert response.status_code == 200

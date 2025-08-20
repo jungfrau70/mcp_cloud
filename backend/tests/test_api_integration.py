@@ -46,7 +46,7 @@ class TestAPIIntegration:
         
         # API 호출
         response = requests.post(
-            f"{self.base_url}/ai/terraform/generate",
+            f"{self.base_url}/api/v1/ai/terraform/generate",
             headers=self.headers,
             json=test_data,
             timeout=30
@@ -78,7 +78,7 @@ class TestAPIIntegration:
         
         # API 호출
         response = requests.post(
-            f"{self.base_url}/ai/cost/analyze",
+            f"{self.base_url}/api/v1/ai/cost/analyze",
             headers=self.headers,
             json=test_data,
             timeout=30
@@ -109,7 +109,7 @@ class TestAPIIntegration:
         
         # API 호출
         response = requests.post(
-            f"{self.base_url}/ai/security/audit",
+            f"{self.base_url}/api/v1/ai/security/audit",
             headers=self.headers,
             json=test_data,
             timeout=30
@@ -140,7 +140,7 @@ class TestAPIIntegration:
         
         # API 호출
         response = requests.post(
-            f"{self.base_url}/ai/assistant/query-sync",
+            f"{self.base_url}/api/v1/ai/assistant/query-sync",
             headers=self.headers,
             json=test_data,
             timeout=30
@@ -164,7 +164,7 @@ class TestAPIIntegration:
         
         # API 호출
         response = requests.get(
-            f"{self.base_url}/ai/knowledge/search?query=VPC&limit=3",
+            f"{self.base_url}/api/v1/ai/knowledge/search?query=VPC&limit=3",
             headers={"X-API-Key": self.api_key},
             timeout=30
         )
@@ -230,7 +230,7 @@ class TestUserScenarioAPIIntegration:
         }
         
         response = requests.post(
-            f"{self.base_url}/ai/terraform/generate",
+            f"{self.base_url}/api/v1/ai/terraform/generate",
             headers=self.headers,
             json=terraform_data,
             timeout=30
@@ -247,7 +247,7 @@ class TestUserScenarioAPIIntegration:
         }
         
         response = requests.post(
-            f"{self.base_url}/ai/cost/analyze",
+            f"{self.base_url}/api/v1/ai/cost/analyze",
             headers=self.headers,
             json=cost_data,
             timeout=30
@@ -264,7 +264,7 @@ class TestUserScenarioAPIIntegration:
         }
         
         response = requests.post(
-            f"{self.base_url}/ai/security/audit",
+            f"{self.base_url}/api/v1/ai/security/audit",
             headers=self.headers,
             json=security_data,
             timeout=30
@@ -293,7 +293,7 @@ class TestUserScenarioAPIIntegration:
         }
         
         response = requests.post(
-            f"{self.base_url}/ai/cost/analyze",
+            f"{self.base_url}/api/v1/ai/cost/analyze",
             headers=self.headers,
             json=current_cost_data,
             timeout=30
@@ -310,7 +310,7 @@ class TestUserScenarioAPIIntegration:
         }
         
         response = requests.post(
-            f"{self.base_url}/ai/cost/analyze",
+            f"{self.base_url}/api/v1/ai/cost/analyze",
             headers=self.headers,
             json=optimized_cost_data,
             timeout=30
@@ -343,7 +343,7 @@ class TestUserScenarioAPIIntegration:
         }
         
         response = requests.post(
-            f"{self.base_url}/ai/security/audit",
+            f"{self.base_url}/api/v1/ai/security/audit",
             headers=self.headers,
             json=initial_security_data,
             timeout=30
@@ -360,7 +360,7 @@ class TestUserScenarioAPIIntegration:
         }
         
         response = requests.post(
-            f"{self.base_url}/ai/security/audit",
+            f"{self.base_url}/api/v1/ai/security/audit",
             headers=self.headers,
             json=improved_security_data,
             timeout=30
@@ -388,7 +388,7 @@ class TestUserScenarioAPIIntegration:
         }
         
         response = requests.post(
-            f"{self.base_url}/ai/terraform/generate",
+            f"{self.base_url}/api/v1/ai/terraform/generate",
             headers=self.headers,
             json=aws_data,
             timeout=30
@@ -405,7 +405,7 @@ class TestUserScenarioAPIIntegration:
         }
         
         response = requests.post(
-            f"{self.base_url}/ai/terraform/generate",
+            f"{self.base_url}/api/v1/ai/terraform/generate",
             headers=self.headers,
             json=gcp_data,
             timeout=30
@@ -432,7 +432,7 @@ class TestUserScenarioAPIIntegration:
         }
         
         response = requests.post(
-            f"{self.base_url}/ai/assistant/query-sync",
+            f"{self.base_url}/api/v1/ai/assistant/query-sync",
             headers=self.headers,
             json=basic_question,
             timeout=30
@@ -448,7 +448,7 @@ class TestUserScenarioAPIIntegration:
         }
         
         response = requests.post(
-            f"{self.base_url}/ai/assistant/query-sync",
+            f"{self.base_url}/api/v1/ai/assistant/query-sync",
             headers=self.headers,
             json=practice_question,
             timeout=30
@@ -464,7 +464,7 @@ class TestUserScenarioAPIIntegration:
         }
         
         response = requests.post(
-            f"{self.base_url}/ai/assistant/query-sync",
+            f"{self.base_url}/api/v1/ai/assistant/query-sync",
             headers=self.headers,
             json=advanced_question,
             timeout=30
@@ -502,7 +502,7 @@ class TestAPIPerformance:
         
         start_time = time.time()
         response = requests.post(
-            f"{self.base_url}/ai/assistant/query-sync",
+            f"{self.base_url}/api/v1/ai/assistant/query-sync",
             headers=self.headers,
             json=test_data,
             timeout=60
@@ -524,7 +524,7 @@ class TestAPIPerformance:
         def make_request():
             test_data = {"question": "간단한 질문"}
             response = requests.post(
-                f"{self.base_url}/ai/assistant/query-sync",
+                f"{self.base_url}/api/v1/ai/assistant/query-sync",
                 headers=self.headers,
                 json=test_data,
                 timeout=30

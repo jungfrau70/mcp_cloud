@@ -64,7 +64,7 @@ def test_create_deployment(client):
     Tests the successful creation of a deployment via POST /deployments/.
     """
     response = client.post(
-        "/deployments/",
+        "/api/v1/deployments/",
         headers={"X-API-Key": "test_api_key"},
         json={"name": "test-s3", "cloud": "aws", "module": "s3_bucket", "vars": {"bucket_name": "my-test-bucket"}},
     )
@@ -90,7 +90,7 @@ def test_run_readonly_cli_command_success(client, monkeypatch):
 
     # 2. Call the new /cli/read-only endpoint
     response = client.post(
-        "/cli/read-only",
+        "/api/v1/cli/read-only",
         headers={"X-API-Key": "test_api_key"},
         json={"provider": "aws", "command_name": "s3_ls", "args": {}},
     )
@@ -109,7 +109,7 @@ def test_run_readonly_cli_command_blocked(client, monkeypatch):
     """
     # 1. Call the endpoint with a command that is not in the whitelist
     response = client.post(
-        "/cli/read-only",
+        "/api/v1/cli/read-only",
         headers={"X-API-Key": "test_api_key"},
         json={"provider": "aws", "command_name": "s3_rb", "args": {"bucket_name": "my-test-bucket"}},
     )
@@ -133,7 +133,7 @@ def test_run_readonly_cli_command_gcp_success(client, monkeypatch):
     )
 
     response = client.post(
-        "/cli/read-only",
+        "/api/v1/cli/read-only",
         headers={"X-API-Key": "test_api_key"},
         json={"provider": "gcp", "command_name": "gcloud_zones_list", "args": {}},
     )
@@ -157,7 +157,7 @@ def test_run_readonly_cli_command_failure(client, monkeypatch):
     )
 
     response = client.post(
-        "/cli/read-only",
+        "/api/v1/cli/read-only",
         headers={"X-API-Key": "test_api_key"},
         json={"provider": "aws", "command_name": "ec2_describe_instances", "args": {}},
     )

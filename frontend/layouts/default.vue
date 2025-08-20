@@ -11,7 +11,7 @@
               </svg>
             </button>
             <a href="/" class="text-xl font-bold text-gray-900">
-              Mirae
+              Dr. Cloud
             </a>
           </div>
           <div class="flex items-center space-x-4">

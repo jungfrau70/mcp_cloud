@@ -22,7 +22,7 @@ source venv/bin/activate
 ## 백엔드 개발 환경
 
 ### 로컬 개발 서버 실행
-- **FastAPI 서버**: `uvicorn main:app --reload --host 0.0.0.0 --port 7000`
+- **FastAPI 서버**: `uvicorn main:app --reload --host 0.0.0.0 --port 8000`
 - **환경 변수**: `backend/env/.env` 파일 또는 환경 변수 직접 설정
 - **데이터베이스**: PostgreSQL 로컬 연결 또는 Docker 컨테이너 사용
 

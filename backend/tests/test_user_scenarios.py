@@ -1,7 +1,7 @@
 import pytest
 import json
 from unittest.mock import Mock, patch
-from backend.rag_service import RAGService, TerraformCodeGenerator, CostOptimizer, SecurityAuditor
+from rag_service import RAGService, TerraformCodeGenerator, CostOptimizer, SecurityAuditor
 
 class TestUserScenario1_NewTeamInfrastructure:
     def setup_method(self):
@@ -25,7 +25,7 @@ class TestUserScenario1_NewTeamInfrastructure:
         assert "aws_vpc" in terraform_result["main_tf"]
 
 class TestUserScenarioIntegration:
-    @patch('backend.rag_service.RAGService')
+    @patch('rag_service.RAGService')
     def test_complete_user_journey(self, mock_rag_service):
         mock_instance = mock_rag_service.return_value
 

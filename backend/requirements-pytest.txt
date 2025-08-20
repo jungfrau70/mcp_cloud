@@ -31,3 +31,4 @@ pandas
 matplotlib
 seaborn
 plotly
+pytest-mock

@@ -79,7 +79,7 @@ def test_query_data_source_auth_success(auth_client, monkeypatch):
     monkeypatch.setattr("subprocess.run", mock_run)
 
     response = auth_client.post(
-        "/data-sources/query",
+        "/api/v1/data-sources/query",
         headers={"X-API-Key": "my_test_api_key"},
         json={
             "provider": "aws",
@@ -94,7 +94,7 @@ def test_query_data_source_auth_success(auth_client, monkeypatch):
 
 def test_query_data_source_auth_failure_incorrect_key(auth_client):
     response = auth_client.post(
-        "/data-sources/query",
+        "/api/v1/data-sources/query",
         headers={"X-API-Key": "wrong_key"},
         json={
             "provider": "aws",
@@ -108,7 +108,7 @@ def test_query_data_source_auth_failure_incorrect_key(auth_client):
 
 def test_query_data_source_auth_failure_missing_key(auth_client):
     response = auth_client.post(
-        "/data-sources/query",
+        "/api/v1/data-sources/query",
         json={
             "provider": "aws",
             "data_type": "aws_ami",
@@ -127,7 +127,7 @@ def test_query_data_source_aws_credentials_error(auth_client, monkeypatch):
     monkeypatch.setattr("subprocess.run", mock_run_error)
 
     response = auth_client.post(
-        "/data-sources/query",
+        "/api/v1/data-sources/query",
         headers={"X-API-Key": "my_test_api_key"},
         json={
             "provider": "aws",
@@ -147,7 +147,7 @@ def test_query_data_source_gcp_permission_denied_error(auth_client, monkeypatch)
     monkeypatch.setattr("subprocess.run", mock_run_error)
 
     response = auth_client.post(
-        "/data-sources/query",
+        "/api/v1/data-sources/query",
         headers={"X-API-Key": "my_test_api_key"},
         json={
             "provider": "google",
