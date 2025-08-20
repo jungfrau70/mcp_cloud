@@ -44,14 +44,18 @@ services:
       - REDIS_URL=redis://mcp_redis:6379
       - GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-sa-key.json
       - CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=/app/gcp-sa-key.json
-      # Ensure file change detection works well in mounted volumes
+      # 파일 감시 설정 개선
       - WATCHFILES_FORCE_POLLING=true
+      - WATCHFILES_IGNORE_PATTERNS=*.db,*.db-journal,*.sqlite,*.sqlite-journal
     volumes:
       - ./backend:/app
       - ./backend/tests:/app/tests
       - terraform_modules_data:/app/terraform_modules
       - ./backend/env/alpha-ktixap-43e9bf90eb00.json:/app/gcp-sa-key.json
       - ./mcp_knowledge_base:/mcp_knowledge_base
+      # SQLite 파일 제외
+      - /app/*.db
+      - /app/*.db-journal
     depends_on:
       mcp_postgres:
         condition: service_healthy

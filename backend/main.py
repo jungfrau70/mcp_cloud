@@ -23,7 +23,7 @@ except Exception:
     ConfigDict = dict  # fallback
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
-from typing import List, Optional, Dict, Literal
+from typing import List, Optional, Dict, Literal, Any
 from datetime import datetime
 import google.generativeai as genai
 from models import Base, Deployment, DeploymentStatus, DataSource
@@ -37,6 +37,9 @@ import pathlib
 from external_search_service import external_search_service_instance
 from content_extractor import content_extractor_instance
 from ai_document_generator import ai_document_generator_instance
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Markdown to PDF conversion (optional import)
 try:
@@ -224,14 +227,28 @@ try:
     from sqlalchemy import text
     with engine.connect() as conn:
         conn.execute(text("SELECT 1"))
-        print("Database connection successful!")
+        print("✅ Database connection successful")
         
 except Exception as e:
-    print(f"Database connection failed: {e}")
-    print("Using in-memory database for now...")
-    # SQLite 인메모리 데이터베이스로 폴백
-    engine = create_engine("sqlite:///:memory:", echo=False)
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    print(f"❌ Database connection failed: {e}")
+    # 개발 환경에서는 SQLite로 폴백
+    if "localhost" in DATABASE_URL or "127.0.0.1" in DATABASE_URL:
+        print("🔄 Falling back to SQLite for local development")
+        DATABASE_URL = "sqlite:///./data/mcp_knowledge.db"
+        
+        # 데이터 디렉토리 생성
+        data_dir = "./data"
+        if not os.path.exists(data_dir):
+            os.makedirs(data_dir, exist_ok=True)
+            
+        engine = create_engine(
+            DATABASE_URL,
+            connect_args={"check_same_thread": False},
+            echo=False
+        )
+        SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    else:
+        raise e
 
 def get_db():
     db = SessionLocal()
@@ -386,7 +403,7 @@ def get_knowledge_base_structure(path, is_root: bool = False, current_relative_p
 # Knowledge Base v2 (CRUD)
 # ===================================
 kb_router = APIRouter(
-    prefix="/api/kb",
+    prefix="/api/v1/knowledge",
     tags=["Knowledge Base"],
     dependencies=[Depends(get_api_key)]
 )
@@ -721,9 +738,6 @@ def delete_directory(path: str, recursive: bool = False):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-app.include_router(kb_router)
-
 
 # ===================================
 # DataSource CRUD Endpoints
@@ -1917,6 +1931,671 @@ async def websocket_interactive_cli(websocket: WebSocket):
             await shell_process.wait()
         print("Interactive session closed.")
 
+# 새로운 Pydantic 모델들 추가
+class ExternalDocumentRequest(BaseModel):
+    query: str
+    target_path: Optional[str] = None
+    doc_type: Optional[str] = "guide"  # "guide", "tutorial", "reference", "comparison"
+    search_sources: Optional[List[str]] = ["web", "news"]  # 검색할 소스들
+    max_results: Optional[int] = 5
+
+class DocumentGenerationStatus(BaseModel):
+    task_id: str
+    status: str  # "pending", "searching", "extracting", "generating", "completed", "failed"
+    progress: int  # 0-100
+    message: str
+    result: Optional[Dict] = None
+    error: Optional[str] = None
+
+class ContentExtractionRequest(BaseModel):
+    urls: List[str]
+    extract_metadata: Optional[bool] = True
+
+class ContentExtractionResponse(BaseModel):
+    success: bool
+    results: Dict[str, Optional[Dict]]
+    stats: Dict[str, Any]
+
+# 새로운 API 엔드포인트들 추가
+@app.post("/api/v1/knowledge/generate-from-external-enhanced", response_model=GenerateDocumentResponse, dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+async def generate_document_from_external_enhanced(request: ExternalDocumentRequest):
+    """
+    향상된 외부 자료 기반 문서 생성 API
+    """
+    try:
+        # 1. 다중 소스 검색
+        search_results = {}
+        for source in request.search_sources:
+            results = external_search_service_instance.search(
+                request.query, 
+                num_results=request.max_results, 
+                search_type=source
+            )
+            search_results[source] = results
+        
+        # 모든 검색 결과를 하나로 합치기
+        all_results = []
+        for source_results in search_results.values():
+            all_results.extend(source_results)
+        
+        if not all_results:
+            return GenerateDocumentResponse(
+                success=False,
+                message=f"No relevant search results found for query: '{request.query}'",
+                document_path=None
+            )
+
+        # 2. URL에서 콘텐츠 추출
+        urls = [result["link"] for result in all_results if result.get("link")]
+        extraction_results = content_extractor_instance.extract_multiple_urls(urls)
+        
+        # 추출된 콘텐츠 결합
+        combined_content = ""
+        successful_extractions = 0
+        
+        for url, extraction_result in extraction_results.items():
+            if extraction_result and extraction_result.get('content'):
+                content = extraction_result['content']
+                metadata = extraction_result.get('metadata', {})
+                title = metadata.get('title', 'Unknown')
+                
+                combined_content += f"## Source: {title}\nURL: {url}\n\n{content}\n\n---\n\n"
+                successful_extractions += 1
+        
+        if not combined_content:
+            return GenerateDocumentResponse(
+                success=False,
+                message=f"Could not extract content from any search results for query: '{request.query}'",
+                document_path=None
+            )
+
+        # 3. AI 문서 생성
+        generated_doc_data = await ai_document_generator_instance.generate_document(
+            request.query, 
+            combined_content, 
+            all_results, 
+            request.doc_type
+        )
+        
+        if not generated_doc_data:
+            return GenerateDocumentResponse(
+                success=False,
+                message="AI document generation failed",
+                document_path=None
+            )
+
+        # 4. 문서 저장
+        target_filename = f"{generated_doc_data['slug']}.md"
+        if request.target_path:
+            base_path = pathlib.Path(KNOWLEDGE_BASE_DIR)
+            requested_relative_path = pathlib.Path(request.target_path)
+            
+            if requested_relative_path.suffix == '':
+                final_relative_path = requested_relative_path / target_filename
+            else:
+                final_relative_path = requested_relative_path
+                if final_relative_path.suffix != '.md':
+                    final_relative_path = final_relative_path.with_suffix('.md')
+            
+            full_target_path = base_path / final_relative_path
+        else:
+            full_target_path = pathlib.Path(KNOWLEDGE_BASE_DIR) / target_filename
+
+        full_target_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        content_value = generated_doc_data.get('content', '')
+        with open(full_target_path, 'w', encoding='utf-8') as f:
+            f.write(content_value)
+
+        # RAG 서비스 업데이트
+        if rag_service_instance:
+            rag_service_instance.update_knowledge_base()
+
+        relative_path_for_client = str(full_target_path.relative_to(KNOWLEDGE_BASE_DIR)).replace('\\', '/')
+
+        return GenerateDocumentResponse(
+            success=True,
+            message=f"Enhanced document '{generated_doc_data['title']}' generated and saved. Extracted from {successful_extractions} sources.",
+            document_path=relative_path_for_client,
+            generated_doc_data=generated_doc_data
+        )
+
+    except Exception as e:
+        logger.error(f"Error during enhanced document generation: {e}")
+        raise HTTPException(status_code=500, detail=f"Enhanced document generation failed: {e}")
+
+@app.post("/api/v1/knowledge/extract-content", response_model=ContentExtractionResponse, dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+async def extract_content_from_urls(request: ContentExtractionRequest):
+    """
+    여러 URL에서 콘텐츠를 추출합니다.
+    """
+    try:
+        results = content_extractor_instance.extract_multiple_urls(
+            request.urls, 
+            max_concurrent=5
+        )
+        
+        stats = content_extractor_instance.get_extraction_stats()
+        
+        return ContentExtractionResponse(
+            success=True,
+            results=results,
+            stats=stats
+        )
+    except Exception as e:
+        logger.error(f"Error during content extraction: {e}")
+        raise HTTPException(status_code=500, detail=f"Content extraction failed: {e}")
+
+@app.post("/api/v1/knowledge/generate-multiple-formats", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+async def generate_multiple_document_formats(request: ExternalDocumentRequest):
+    """
+    여러 형식의 문서를 동시에 생성합니다.
+    """
+    try:
+        # 검색 및 콘텐츠 추출 (기존 로직과 동일)
+        search_results = external_search_service_instance.search(
+            request.query, 
+            num_results=request.max_results
+        )
+        
+        if not search_results:
+            raise HTTPException(status_code=400, detail="No search results found")
+        
+        urls = [result["link"] for result in search_results if result.get("link")]
+        extraction_results = content_extractor_instance.extract_multiple_urls(urls)
+        
+        combined_content = ""
+        for url, extraction_result in extraction_results.items():
+            if extraction_result and extraction_result.get('content'):
+                combined_content += f"{extraction_result['content']}\n\n"
+        
+        if not combined_content:
+            raise HTTPException(status_code=400, detail="No content could be extracted")
+        
+        # 여러 형식으로 문서 생성
+        format_results = await ai_document_generator_instance.generate_multiple_formats(
+            request.query, 
+            combined_content, 
+            search_results
+        )
+        
+        return {
+            "success": True,
+            "formats": format_results,
+            "query": request.query
+        }
+        
+    except Exception as e:
+        logger.error(f"Error during multiple format generation: {e}")
+        raise HTTPException(status_code=500, detail=f"Multiple format generation failed: {e}")
+
+@app.get("/api/v1/knowledge/search-stats", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+async def get_search_and_extraction_stats():
+    """
+    검색 및 추출 서비스의 통계를 반환합니다.
+    """
+    try:
+        extraction_stats = content_extractor_instance.get_extraction_stats()
+        
+        return {
+            "success": True,
+            "extraction_stats": extraction_stats,
+            "timestamp": datetime.now().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Error getting stats: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to get stats: {e}")
+
+class KnowledgeSearchRequest(BaseModel):
+    query: str
+    category: Optional[str] = None
+    limit: Optional[int] = 10
+    search_type: Optional[str] = "both"  # "filename", "content", "both"
+
+class KnowledgeSearchResponse(BaseModel):
+    success: bool
+    results: List[Dict[str, Any]]
+    total_count: int
+    query: str
+    search_type: str
+
+# Shared in-memory mock document list for simplified knowledge CRUD endpoints
+mock_documents = [
+    {
+        "id": 1,
+        "title": "AWS VPC 설계 및 구성 방법",
+        "category": "aws",
+        "content": "AWS VPC를 설계하고 구성하는 방법에 대한 설명입니다.",
+        "path": "aws/vpc-design.md",
+        "created_at": "2024-01-15T10:30:00Z",
+        "updated_at": "2024-01-15T10:30:00Z",
+        "tags": ["vpc", "networking", "aws"],
+    }
+]
+
+# ---------------------------------------------------------------------------
+# New Knowledge Base Explorer minimal FS API (/api/kb/*) for frontend component
+# ---------------------------------------------------------------------------
+from pathlib import Path
+
+KB_ROOT = Path(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "mcp_knowledge_base")))
+
+def _kb_safe_path(rel: str) -> Path:
+    rel = rel.strip().lstrip("/\\")
+    candidate = KB_ROOT / rel
+    resolved = candidate.resolve()
+    if not str(resolved).startswith(str(KB_ROOT)):
+        raise HTTPException(status_code=400, detail="Invalid path")
+    return resolved
+
+@app.get("/api/kb/tree", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"])
+def kb_tree(path: str = ""):
+    base = _kb_safe_path(path)
+    if not base.exists():
+        base.mkdir(parents=True, exist_ok=True)
+
+    def _build(dir_path: Path, rel: str="") -> dict:
+        tree: Dict[str, Any] = {}
+        files: List[Dict[str, str]] = []
+        try:
+            for child in sorted(dir_path.iterdir()):
+                child_rel = f"{rel}/{child.name}" if rel else child.name
+                if child.is_dir():
+                    tree[child.name] = _build(child, child_rel)
+                else:
+                    files.append({"name": child.name, "path": child_rel})
+        except Exception as e:
+            logger.error("KB tree build error at %s: %s", dir_path, e)
+        if files:
+            tree["files"] = files
+        return tree
+
+    return _build(base, path.strip("/"))
+
+@app.get("/api/kb/item", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"])
+def kb_get_item(path: str):
+    fp = _kb_safe_path(path)
+    if not fp.exists():
+        raise HTTPException(status_code=404, detail="Not found")
+    if fp.is_dir():
+        return {"path": path, "type": "directory"}
+    content = fp.read_text(encoding="utf-8", errors="ignore")
+    return {"path": path, "type": "file", "content": content}
+
+class KBItemCreate(BaseModel):
+    path: str
+    type: Literal["file", "directory"] = "file"
+    content: Optional[str] = ""
+
+class KBItemMove(BaseModel):
+    path: str
+    new_path: str
+
+@app.post("/api/kb/item", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"])
+def kb_create_item(payload: KBItemCreate):
+    fp = _kb_safe_path(payload.path)
+    fp.parent.mkdir(parents=True, exist_ok=True)
+    if payload.type == "directory":
+        fp.mkdir(exist_ok=True)
+        return {"created": payload.path, "type": "directory"}
+    fp.write_text(payload.content or "", encoding="utf-8")
+    return {"created": payload.path, "type": "file"}
+
+@app.patch("/api/kb/item", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"])
+def kb_rename_item(payload: KBItemMove):
+    src = _kb_safe_path(payload.path)
+    if not src.exists():
+        raise HTTPException(status_code=404, detail="Source not found")
+    dst = _kb_safe_path(payload.new_path)
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    src.rename(dst)
+    return {"moved": {"from": payload.path, "to": payload.new_path}}
+
+@app.delete("/api/kb/item", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"])
+def kb_delete_item(path: str):
+    fp = _kb_safe_path(path)
+    if not fp.exists():
+        raise HTTPException(status_code=404, detail="Not found")
+    if fp.is_dir():
+        raise HTTPException(status_code=400, detail="Use directory delete endpoint")
+    fp.unlink()
+    return {"deleted": path}
+
+@app.delete("/api/kb/directory", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"])
+def kb_delete_directory(path: str, recursive: bool = False):
+    fp = _kb_safe_path(path)
+    if not fp.exists():
+        raise HTTPException(status_code=404, detail="Not found")
+    if not fp.is_dir():
+        raise HTTPException(status_code=400, detail="Not a directory")
+    if any(fp.iterdir()) and not recursive:
+        raise HTTPException(status_code=400, detail="Directory not empty (use recursive=true)")
+    if recursive:
+        import shutil
+        shutil.rmtree(fp)
+    else:
+        fp.rmdir()
+    return {"deleted": path}
+
+@app.post("/api/kb/move", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"])
+def kb_move_item(payload: KBItemMove):
+    return kb_rename_item(payload)
+
+@kb_router.post("/search-enhanced", response_model=KnowledgeSearchResponse)
+def search_knowledge_enhanced(request: KnowledgeSearchRequest):
+    """Enhanced search functionality for knowledge base with category filtering and better results."""
+    try:
+        results = []
+        query_lower = request.query.lower()
+        
+        # Mock data for demonstration - 실제로는 데이터베이스에서 검색
+        mock_documents = [
+            {
+                "id": 1,
+                "title": "AWS VPC 설계 및 구성 방법",
+                "category": "aws",
+                "content": "AWS VPC를 설계하고 구성하는 방법에 대한 설명입니다.",
+                "path": "aws/vpc-design.md",
+                "created_at": "2024-01-15T10:30:00Z",
+                "updated_at": "2024-01-15T10:30:00Z",
+                "tags": ["vpc", "networking", "aws"]
+            },
+            {
+                "id": 2,
+                "title": "GCP GKE 클러스터 구성",
+                "category": "gcp",
+                "content": "Google Kubernetes Engine 클러스터 구성에 대한 설명입니다.",
+                "path": "gcp/gke-cluster.md",
+                "created_at": "2024-01-14T15:20:00Z",
+                "updated_at": "2024-01-14T15:20:00Z",
+                "tags": ["kubernetes", "gke", "gcp"]
+            },
+            {
+                "id": 3,
+                "title": "Terraform 모듈 작성법",
+                "category": "terraform",
+                "content": "Terraform 모듈 작성법에 대한 설명입니다.",
+                "path": "terraform/module-guide.md",
+                "created_at": "2024-01-13T09:15:00Z",
+                "updated_at": "2024-01-13T09:15:00Z",
+                "tags": ["terraform", "iac", "modules"]
+            },
+            {
+                "id": 4,
+                "title": "코드 리뷰 문화 확산 방안",
+                "category": "best-practices",
+                "content": "코드 리뷰 문화 확산 방안에 대한 설명입니다.",
+                "path": "best-practices/code-review.md",
+                "created_at": "2024-01-12T14:45:00Z",
+                "updated_at": "2024-01-12T14:45:00Z",
+                "tags": ["code-review", "best-practices", "culture"]
+            },
+            {
+                "id": 5,
+                "title": "AWS Lambda 서버리스 아키텍처",
+                "category": "aws",
+                "content": "AWS Lambda를 사용한 서버리스 아키텍처 구성 방법",
+                "path": "aws/lambda-architecture.md",
+                "created_at": "2024-01-11T11:30:00Z",
+                "updated_at": "2024-01-11T11:30:00Z",
+                "tags": ["lambda", "serverless", "aws"]
+            }
+        ]
+        
+        # 필터링 및 검색
+        for doc in mock_documents:
+            # 카테고리 필터링
+            if request.category and request.category != "all" and doc["category"] != request.category:
+                continue
+                
+            # 검색어 매칭
+            matches = False
+            if request.search_type in ["filename", "both"]:
+                if query_lower in doc["title"].lower() or query_lower in doc["path"].lower():
+                    matches = True
+                    
+            if request.search_type in ["content", "both"]:
+                if query_lower in doc["content"].lower() or any(query_lower in tag.lower() for tag in doc["tags"]):
+                    matches = True
+                    
+            if matches:
+                # 검색어 하이라이팅
+                highlighted_title = doc["title"]
+                highlighted_content = doc["content"]
+                
+                if query_lower in doc["title"].lower():
+                    highlighted_title = doc["title"].replace(
+                        query_lower, f"<mark>{query_lower}</mark>"
+                    )
+                    
+                if query_lower in doc["content"].lower():
+                    highlighted_content = doc["content"].replace(
+                        query_lower, f"<mark>{query_lower}</mark>"
+                    )
+                
+                results.append({
+                    **doc,
+                    "highlighted_title": highlighted_title,
+                    "highlighted_content": highlighted_content[:200] + "..." if len(highlighted_content) > 200 else highlighted_content
+                })
+        
+        # 결과 제한
+        results = results[:request.limit]
+        
+        return KnowledgeSearchResponse(
+            success=True,
+            results=results,
+            total_count=len(results),
+            query=request.query,
+            search_type=request.search_type
+        )
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Search failed: {str(e)}")
+
+@kb_router.get("/categories")
+def get_knowledge_categories():
+    """Get available knowledge base categories with document counts."""
+    try:
+        # Mock data - 실제로는 데이터베이스에서 집계
+        categories = [
+            {"id": "all", "name": "전체", "count": 25},
+            {"id": "aws", "name": "AWS", "count": 8},
+            {"id": "gcp", "name": "GCP", "count": 7},
+            {"id": "azure", "name": "Azure", "count": 5},
+            {"id": "terraform", "name": "Terraform", "count": 3},
+            {"id": "best-practices", "name": "모범 사례", "count": 2}
+        ]
+        
+        return {
+            "success": True,
+            "categories": categories
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get categories: {str(e)}")
+
+@kb_router.get("/recent-documents")
+def get_recent_documents(limit: int = 5):
+    """Get recently accessed or created documents."""
+    try:
+        # Mock data - 실제로는 데이터베이스에서 조회
+        recent_docs = [
+            {
+                "id": 1,
+                "title": "AWS VPC 설계 및 구성 방법",
+                "category": "aws",
+                "content": "AWS VPC를 설계하고 구성하는 방법에 대한 설명입니다.",
+                "last_accessed": "2024-01-15T10:30:00Z"
+            },
+            {
+                "id": 2,
+                "title": "GCP GKE 클러스터 구성",
+                "category": "gcp",
+                "content": "Google Kubernetes Engine 클러스터 구성에 대한 설명입니다.",
+                "last_accessed": "2024-01-14T15:20:00Z"
+            },
+            {
+                "id": 3,
+                "title": "Terraform 모듈 작성법",
+                "category": "terraform",
+                "content": "Terraform 모듈 작성법에 대한 설명입니다.",
+                "last_accessed": "2024-01-13T09:15:00Z"
+            }
+        ]
+        
+        return {
+            "success": True,
+            "documents": recent_docs[:limit]
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get recent documents: {str(e)}")
+
+class DocumentSaveRequest(BaseModel):
+    title: str
+    category: str
+    content: str
+    tags: Optional[List[str]] = []
+    path: Optional[str] = None
+
+class DocumentUpdateRequest(BaseModel):
+    title: Optional[str] = None
+    category: Optional[str] = None
+    content: Optional[str] = None
+    tags: Optional[List[str]] = None
+
+class DocumentResponse(BaseModel):
+    id: int
+    title: str
+    category: str
+    content: str
+    tags: List[str]
+    path: str
+    created_at: str
+    updated_at: str
+
+@kb_router.post("/documents", response_model=DocumentResponse)
+def create_document(request: DocumentSaveRequest):
+    """Create a new document in the knowledge base."""
+    try:
+        # Mock document creation - 실제로는 데이터베이스에 저장
+        document_id = len(mock_documents) + 1
+        current_time = datetime.now().isoformat()
+        
+        new_document = {
+            "id": document_id,
+            "title": request.title,
+            "category": request.category,
+            "content": request.content,
+            "tags": request.tags or [],
+            "path": request.path or f"{request.category}/{request.title.lower().replace(' ', '-')}.md",
+            "created_at": current_time,
+            "updated_at": current_time
+        }
+        
+        # Mock documents list에 추가
+        mock_documents.append(new_document)
+        
+        return DocumentResponse(**new_document)
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to create document: {str(e)}")
+
+@kb_router.put("/documents/{document_id}", response_model=DocumentResponse)
+def update_document(document_id: int, request: DocumentUpdateRequest):
+    """Update an existing document."""
+    try:
+        # Mock document update - 실제로는 데이터베이스에서 업데이트
+        document = next((doc for doc in mock_documents if doc["id"] == document_id), None)
+        
+        if not document:
+            raise HTTPException(status_code=404, detail="Document not found")
+        
+        # 업데이트할 필드들
+        if request.title is not None:
+            document["title"] = request.title
+        if request.category is not None:
+            document["category"] = request.category
+        if request.content is not None:
+            document["content"] = request.content
+        if request.tags is not None:
+            document["tags"] = request.tags
+            
+        document["updated_at"] = datetime.now().isoformat()
+        
+        return DocumentResponse(**document)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to update document: {str(e)}")
+
+@kb_router.get("/documents/{document_id}", response_model=DocumentResponse)
+def get_document(document_id: int):
+    """Get a specific document by ID."""
+    try:
+        # Mock document retrieval - 실제로는 데이터베이스에서 조회
+        document = next((doc for doc in mock_documents if doc["id"] == document_id), None)
+        
+        if not document:
+            raise HTTPException(status_code=404, detail="Document not found")
+        
+        return DocumentResponse(**document)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get document: {str(e)}")
+
+@kb_router.delete("/documents/{document_id}")
+def delete_document(document_id: int):
+    """Delete a document."""
+    try:
+        # Mock document deletion - 실제로는 데이터베이스에서 삭제
+        document = next((doc for doc in mock_documents if doc["id"] == document_id), None)
+        
+        if not document:
+            raise HTTPException(status_code=404, detail="Document not found")
+        
+        mock_documents.remove(document)
+        
+        return {
+            "success": True,
+            "message": f"Document {document_id} deleted successfully"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete document: {str(e)}")
+
+@kb_router.get("/documents")
+def list_documents(category: Optional[str] = None, limit: int = 10, offset: int = 0):
+    """List documents with optional filtering and pagination."""
+    try:
+        # Mock document listing - 실제로는 데이터베이스에서 조회
+        filtered_docs = mock_documents
+        
+        if category and category != "all":
+            filtered_docs = [doc for doc in mock_documents if doc["category"] == category]
+        
+        # 페이지네이션
+        paginated_docs = filtered_docs[offset:offset + limit]
+        
+        return {
+            "success": True,
+            "documents": paginated_docs,
+            "total_count": len(filtered_docs),
+            "limit": limit,
+            "offset": offset
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to list documents: {str(e)}")
+
+# 라우터 등록을 모든 엔드포인트 정의 후에 수행
+app.include_router(kb_router)
 
 if __name__ == "__main__":
     import uvicorn

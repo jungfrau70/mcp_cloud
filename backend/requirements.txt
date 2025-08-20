@@ -32,5 +32,5 @@ matplotlib
 seaborn
 plotly
 markdown
-# markdown-pdf  # Temporarily disabled due to compatibility issues
+markdown-pdf  # Temporarily disabled due to compatibility issues
 pytest-mock  # provide 'mocker' fixture for tests

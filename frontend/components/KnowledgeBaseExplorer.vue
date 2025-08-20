@@ -1,17 +1,80 @@
 <template>
   <div class="p-4">
     <h2 class="text-lg font-bold mb-4">지식베이스 탐색기</h2>
-    
+
+    <!-- 탭 네비게이션 -->
+    <div class="mb-4 border-b border-gray-200">
+      <nav class="flex space-x-4">
+        <button
+          @click="activeTab = 'internal'"
+          :class="tabBtnClass('internal')"
+        >내부자료 검색</button>
+        <button
+          @click="activeTab = 'external'"
+          :class="tabBtnClass('external')"
+        >외부자료 검색 및 문서 생성</button>
+      </nav>
+    </div>
+
+    <!-- 로딩 -->
     <div v-if="isInitialLoading" class="text-center py-8">
       <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2"></div>
       <p class="text-sm text-gray-500">로딩 중...</p>
     </div>
-    
-    <div v-else>
-      <FileTree 
-        :tree="treeData" 
-        :base-path="''" 
-        @file-click="handleFileSelect" 
+
+    <!-- 내부자료 검색 탭 -->
+    <div v-else-if="activeTab === 'internal'" class="space-y-4">
+      <div class="flex items-center space-x-2">
+        <input
+          v-model="internalSearchQuery"
+          type="text"
+          placeholder="파일/내용 검색..."
+          class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          @keyup.enter="performInternalSearch"
+        />
+        <button
+          @click="performInternalSearch"
+          :disabled="internalSearchLoading"
+          class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex items-center"
+        >
+          <svg v-if="internalSearchLoading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          검색
+        </button>
+        <button
+          v-if="internalSearchPerformed"
+          @click="resetInternalSearch"
+          class="px-3 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
+        >전체 보기</button>
+      </div>
+
+      <!-- 검색 결과 -->
+      <div v-if="internalSearchPerformed" class="bg-white border rounded-md divide-y max-h-80 overflow-auto">
+        <div v-if="internalSearchResults.length === 0" class="p-4 text-sm text-gray-500">검색 결과가 없습니다.</div>
+        <div
+          v-for="res in internalSearchResults"
+          :key="res.id + res.path"
+          class="p-3 hover:bg-blue-50 cursor-pointer"
+          @click="openSearchResult(res)"
+        >
+          <div class="flex items-start justify-between">
+            <div class="flex-1">
+              <h4 class="text-sm font-medium" v-html="res.highlighted_title || res.title"></h4>
+              <p class="text-xs text-gray-500 mb-1">{{ res.category }} • {{ res.path }}</p>
+              <p class="text-xs text-gray-600" v-html="res.highlighted_content || (res.content ? res.content.slice(0,120)+'...' : '')"></p>
+            </div>
+            <div class="ml-2 space-x-1">
+              <span v-for="tag in res.tags" :key="tag" class="inline-block px-2 py-0.5 bg-gray-100 rounded text-[10px] text-gray-700">{{ tag }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 파일 트리 -->
+      <FileTree
+        v-if="!internalSearchPerformed"
+        :tree="treeData"
+        :base-path="''"
+        @file-click="handleFileSelect"
         :selected-file="selectedFile?.path"
         @directory-create="handleDirectoryCreate"
         @directory-rename="handleDirectoryRename"
@@ -19,11 +82,42 @@
         @file-move="handleFileMove"
       />
     </div>
+
+    <!-- 외부자료 검색 및 문서 생성 탭 -->
+    <div v-else-if="activeTab === 'external'" class="space-y-4">
+      <div class="space-y-3 bg-white p-4 border rounded-md">
+        <textarea
+          v-model="externalQuery"
+          rows="3"
+          placeholder="생성할 문서 주제 (예: AWS Lambda 서버리스 아키텍처)"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        ></textarea>
+        <input
+          v-model="externalTargetPath"
+          type="text"
+          placeholder="저장 경로 (예: aws/lambda/lambda-architecture) - 선택"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <div class="flex items-center space-x-2">
+          <button
+            @click="generateExternalDocument"
+            :disabled="!canGenerateExternal || externalGenerating"
+            class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex items-center"
+          >
+            <svg v-if="externalGenerating" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            {{ externalGenerating ? '생성 중...' : 'AI 문서 생성' }}
+          </button>
+          <div v-if="externalGenerating" class="text-sm text-blue-600">{{ externalStatus }}</div>
+        </div>
+        <div v-if="externalError" class="text-sm text-red-600">{{ externalError }}</div>
+        <div v-if="externalSuccess" class="text-sm text-green-600">{{ externalSuccess }}</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import FileTree from '~/components/FileTree.vue';
 
 const emit = defineEmits(['file-select']);
@@ -32,11 +126,29 @@ const config = useRuntimeConfig();
 const apiBase = config.public.apiBaseUrl || 'http://localhost:8000';
 const apiKey = 'my_mcp_eagle_tiger';
 
-// State
+// 탭 상태
+const activeTab = ref('internal')
+
+// State (공통)
 const treeData = ref({});
 const selectedFile = ref(null);
 const isInitialLoading = ref(true);
 const statusMessage = ref('');
+
+// 내부 검색 상태
+const internalSearchQuery = ref('')
+const internalSearchLoading = ref(false)
+const internalSearchResults = ref([])
+const internalSearchPerformed = ref(false)
+
+// 외부 문서 생성 상태
+const externalQuery = ref('')
+const externalTargetPath = ref('')
+const externalGenerating = ref(false)
+const externalStatus = ref('')
+const externalError = ref('')
+const externalSuccess = ref('')
+const canGenerateExternal = computed(() => externalQuery.value.trim().length > 2)
 
 const stripBasePath = (path) => {
   const basePath = 'mcp_knowledge_base/';
@@ -64,6 +176,85 @@ const loadKnowledgeBaseStructure = async () => {
     isInitialLoading.value = false;
   }
 };
+
+// 탭 버튼 클래스 헬퍼
+const tabBtnClass = (tab) => [
+  'py-2 px-3 -mb-px border-b-2 font-medium text-sm transition-colors',
+  activeTab.value === tab
+    ? 'border-blue-500 text-blue-600'
+    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+]
+
+// 내부 검색 실행
+const performInternalSearch = async () => {
+  if (!internalSearchQuery.value.trim()) return
+  internalSearchLoading.value = true
+  internalSearchPerformed.value = true
+  internalSearchResults.value = []
+  try {
+    const resp = await fetch(`${apiBase}/api/v1/knowledge/search-enhanced`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
+      body: JSON.stringify({ query: internalSearchQuery.value, category: null, limit: 20, search_type: 'both' })
+    })
+    if (resp.ok) {
+      const data = await resp.json()
+      internalSearchResults.value = data.results || []
+    }
+  } catch (e) {
+    console.error('Internal search failed', e)
+  } finally {
+    internalSearchLoading.value = false
+  }
+}
+
+const resetInternalSearch = () => {
+  internalSearchPerformed.value = false
+  internalSearchResults.value = []
+  internalSearchQuery.value = ''
+}
+
+const openSearchResult = (res) => {
+  // For now just log; could auto-open file if path maps to file
+  console.log('Open search result', res)
+}
+
+// 외부 문서 생성
+const generateExternalDocument = async () => {
+  if (!canGenerateExternal.value) return
+  externalGenerating.value = true
+  externalStatus.value = '외부 자료 검색 중...'
+  externalError.value = ''
+  externalSuccess.value = ''
+  try {
+    const resp = await fetch(`${apiBase}/api/v1/knowledge/generate-from-external`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
+      body: JSON.stringify({ query: externalQuery.value, target_path: externalTargetPath.value || undefined })
+    })
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}))
+      throw new Error(err.detail || '생성 실패')
+    }
+    externalStatus.value = '문서 생성 중...'
+    const data = await resp.json()
+    if (data.success) {
+      externalSuccess.value = data.message
+      externalStatus.value = '완료'
+      // 트리 갱신
+      await loadKnowledgeBaseStructure()
+      if (data.document_path) {
+        console.log('Generated document path:', data.document_path)
+      }
+    } else {
+      throw new Error(data.message || '실패')
+    }
+  } catch (e) {
+    externalError.value = e.message || '알 수 없는 오류'
+  } finally {
+    externalGenerating.value = false
+  }
+}
 
 const handleFileSelect = (path) => {
   emit('file-select', path);
