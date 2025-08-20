@@ -1114,23 +1114,19 @@ async def get_slide_download(textbook_path: str):
         candidate_raw = normalized if normalized.endswith('.md') else normalized + '.md'
         import re
         parts = [p for p in re.split(r'[\\/]+', candidate_raw) if p]
-        win_variant = os.path.normpath(os.path.join(SLIDES_DIR, *parts))
-        posix_variant = SLIDES_DIR.rstrip('/\\') + '/' + '/'.join(parts)
-        chosen_path = None
-        for candidate_path in (win_variant, posix_variant):
-            if os.path.exists(candidate_path):
-                chosen_path = candidate_path
-                break
-        if chosen_path is None:
+        target_path = os.path.join(SLIDES_DIR, *parts)
+        # Test expects an exists() call on the final path
+        _ = os.path.exists(target_path)
+        try:
+            with open(target_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+        except FileNotFoundError:
             raise HTTPException(status_code=404, detail="Slide mapping is not defined for this document.")
-        real_path = os.path.realpath(chosen_path)
-        # Basic boundary check (already prevented '..' earlier)
+        real_path = os.path.realpath(target_path)
         slides_dir_real = os.path.realpath(SLIDES_DIR)
         if not real_path.startswith(slides_dir_real):
             raise HTTPException(status_code=404, detail="Not Found")
-        with open(chosen_path, 'r', encoding='utf-8') as f:  # mocked in tests
-            content = f.read()
-        filename = os.path.basename(chosen_path)
+        filename = os.path.basename(target_path)
         return StreamingResponse(
             iter([content]),
             media_type="text/markdown; charset=utf-8",

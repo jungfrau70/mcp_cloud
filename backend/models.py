@@ -1,7 +1,7 @@
 # =================
 # SQLAlchemy를 위한 데이터베이스 모델 정의
 from sqlalchemy import Column, Integer, String, Text, DateTime, Enum, JSON
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from datetime import datetime
 import enum
 
