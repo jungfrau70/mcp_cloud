@@ -128,38 +128,59 @@
     </div>
 
     <!-- AI 문서 생성 모달 -->
-    <div v-if="showAiGenerateModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
-      <div class="relative p-8 bg-white w-96 mx-auto rounded-lg shadow-lg">
+    <div v-if="showAiGenerateModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center" data-testid="ai-modal">
+      <div class="relative p-8 bg-white w-[500px] mx-auto rounded-lg shadow-lg">
         <h3 class="text-xl font-semibold mb-4">AI 문서 생성</h3>
-        <div class="mb-4">
-          <label for="aiQuery" class="block text-sm font-medium text-gray-700 mb-2">
-            생성할 문서의 주제 또는 질문을 입력하세요:
-          </label>
-          <input
-            id="aiQuery"
-            v-model="aiGenerateQuery"
-            type="text"
-            placeholder="예: AWS S3 버킷 생성 방법"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          />
+        <div class="mb-4 space-y-3">
+          <div>
+            <label for="aiQuery" class="block text-sm font-medium text-gray-700 mb-2">
+              생성할 문서의 주제 또는 질문을 입력하세요:
+            </label>
+            <input
+              id="aiQuery"
+              v-model="aiGenerateQuery"
+              type="text"
+              placeholder="예: AWS S3 버킷 생성 방법"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              data-testid="ai-query-input"
+            />
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2" v-if="aiGenerateLoading" data-testid="ai-loading">
+              <svg class="animate-spin h-4 w-4 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+              </svg>
+              <span class="text-sm text-gray-600">외부 자료 검색 및 AI 생성 중...</span>
+            </div>
+            <div class="text-xs text-gray-400" v-else>
+              외부 검색 결과를 기반으로 문서를 생성합니다.
+            </div>
+            <div class="flex gap-2">
+              <button
+                v-if="!aiGenerateLoading"
+                @click="closeAiModal"
+                type="button"
+                class="px-3 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none"
+                data-testid="ai-close-btn"
+              >닫기</button>
+              <button
+                @click="generateDocFromAI"
+                :disabled="aiGenerateLoading || !aiGenerateQuery.trim()"
+                class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+                data-testid="ai-generate-btn"
+              >
+                <span v-if="aiGenerateLoading">생성 중...</span>
+                <span v-else>생성</span>
+              </button>
+            </div>
+          </div>
+          <p v-if="aiGenerateMessage" :class="{'text-green-600': aiGenerateMessage.includes('성공'), 'text-red-600': aiGenerateMessage.includes('실패')}" class="mt-2 text-sm" data-testid="ai-status-msg">{{ aiGenerateMessage }}</p>
         </div>
-        <div class="flex justify-end space-x-2">
-          <button
-            @click="showAiGenerateModal = false; aiGenerateMessage = ''; aiGenerateQuery = ''"
-            class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none"
-          >
-            취소
-          </button>
-          <button
-            @click="generateDocFromAI"
-            :disabled="aiGenerateLoading || !aiGenerateQuery.trim()"
-            class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none"
-          >
-            <span v-if="aiGenerateLoading">생성 중...</span>
-            <span v-else>생성</span>
-          </button>
+        <div v-if="aiGeneratedPreview" class="mt-4 border-t pt-4 max-h-60 overflow-y-auto" data-testid="ai-preview">
+          <h4 class="text-sm font-semibold text-gray-700 mb-2">생성된 문서 미리보기 (저장 전)</h4>
+          <pre class="text-xs bg-gray-50 p-3 rounded whitespace-pre-wrap">{{ aiGeneratedPreview }}</pre>
         </div>
-        <p v-if="aiGenerateMessage" :class="{'text-green-600': aiGenerateMessage.includes('성공'), 'text-red-600': aiGenerateMessage.includes('실패')}" class="mt-4 text-sm text-center">{{ aiGenerateMessage }}</p>
       </div>
     </div>
   </div>
@@ -186,6 +207,15 @@ const aiGenerateQuery = ref('')
 const aiGenerateLoading = ref(false)
 const aiGenerateMessage = ref('')
 const showAiGenerateModal = ref(false)
+const aiGeneratedPreview = ref('')
+
+function closeAiModal() {
+  showAiGenerateModal.value = false
+  // Don't clear editor content; only reset modal state
+  aiGenerateQuery.value = ''
+  aiGenerateMessage.value = ''
+  aiGeneratedPreview.value = ''
+}
 
 // 카테고리 데이터
 const categories = ref([
@@ -325,50 +355,38 @@ async function deleteDoc() {
 
 async function generateDocFromAI() {
   if (!aiGenerateQuery.value.trim()) {
-    aiGenerateMessage.value = '주제를 입력해주세요.';
-    return;
+    aiGenerateMessage.value = '주제를 입력해주세요.'
+    return
   }
-
-  aiGenerateLoading.value = true;
-  aiGenerateMessage.value = '';
-
+  aiGenerateLoading.value = true
+  aiGenerateMessage.value = ''
+  aiGeneratedPreview.value = ''
   try {
     const response = await fetch(`${apiBase}/api/v1/knowledge/generate-from-external`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
       body: JSON.stringify({ query: aiGenerateQuery.value })
-    });
-
-    const data = await response.json();
-
+    })
+    const data = await response.json()
     if (response.ok && data.success) {
-      aiGenerateMessage.value = `문서 생성 성공: ${data.message}. 경로: ${data.document_path}`;
-      
-      // Load generated content into the editor for review
-      editor.id = null; // New document
-      editor.title = data.generated_doc_data.title;
-      editor.category = data.generated_doc_data.category || 'ai-generated'; // Use a default category if not provided by AI
-      editor.content = data.generated_doc_data.content;
-      dirty.value = true; // Mark as dirty for saving
-      editMode.value = true; // Switch to edit mode
-      selectedDoc.value = null; // Clear selected doc
-
-      aiGenerateQuery.value = ''; // Clear query
-      
-      // Close modal immediately after populating editor
-      showAiGenerateModal.value = false;
-      aiGenerateMessage.value = ''; // Clear message
-      
-      // No need for setTimeout to close modal, as editor is now open
-      // Refresh recentDocs or tree if needed (this would happen on saveDoc)
+      aiGenerateMessage.value = `문서 생성 성공: ${data.message}`
+      // Load generated content into the editor for review (edit mode)
+      editor.id = null
+      editor.title = data.generated_doc_data.title
+      editor.category = data.generated_doc_data.category || 'ai-generated'
+      editor.content = data.generated_doc_data.content
+      aiGeneratedPreview.value = data.generated_doc_data.content.slice(0, 1200) + (data.generated_doc_data.content.length > 1200 ? '\n... (생략)' : '')
+      dirty.value = true
+      editMode.value = true
+      selectedDoc.value = null
     } else {
-      aiGenerateMessage.value = `문서 생성 실패: ${data.detail || data.message || '알 수 없는 오류'}`;
+      aiGenerateMessage.value = `문서 생성 실패: ${data.detail || data.message || '알 수 없는 오류'}`
     }
   } catch (e) {
-    console.error('AI 문서 생성 중 오류 발생:', e);
-    aiGenerateMessage.value = `AI 문서 생성 중 네트워크 오류: ${e.message}`;
+    console.error('AI 문서 생성 중 오류 발생:', e)
+    aiGenerateMessage.value = `문서 생성 실패: ${e.message}`
   } finally {
-    aiGenerateLoading.value = false;
+    aiGenerateLoading.value = false
   }
 }
 

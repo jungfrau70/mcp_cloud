@@ -3,19 +3,33 @@ import os
 import pytest
 from unittest.mock import Mock, patch
 
-# 백엔드 모듈 경로 추가
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'backend')))
+# 백엔드 루트(현재 디렉터리 상위) 경로를 sys.path에 추가
+# 기존 경로는 backend/backend 를 가리켜 ModuleNotFoundError 발생
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
 # 테스트용 환경 변수 설정
-os.environ.update({
+# 통합/라이브 테스트 시 실제 실행중인 백엔드의 키를 덮어쓰면 안되므로 LIVE_API_BASE 존재 시 MCP_API_KEY 미변경
+live_mode = bool(os.getenv('LIVE_API_BASE'))
+
+env_patch = {
     'DATABASE_URL': 'postgresql://mcpuser:mcppassword@localhost:5434/mcp_db',
     'GEMINI_API_KEY': 'test_key_for_testing',
-    'MCP_API_KEY': 'test_mcp_key',
     'AWS_DEFAULT_REGION': 'ap-northeast-2',
     'ENVIRONMENT': 'test',
     'DEBUG': 'false',
     'LOG_LEVEL': 'INFO'
-})
+}
+"""MCP_API_KEY 우선순위
+1. 이미 환경에 설정되어 있으면(예: live 서비스) 그대로 사용
+2. LIVE_API_BASE 지정되면 라이브 모드 간주 → 덮어쓰지 않음
+3. 그 외(로컬 단위/모킹 테스트)일 때만 test_mcp_key 주입
+"""
+if not live_mode and 'MCP_API_KEY' not in os.environ:
+    env_patch['MCP_API_KEY'] = 'test_mcp_key'
+
+os.environ.update(env_patch)
 
 @pytest.fixture(scope="session")
 def test_environment():

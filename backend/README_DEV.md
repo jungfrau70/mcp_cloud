@@ -246,3 +246,42 @@ deactivate
 - FastAPI Discord
 - pytest GitHub Discussions
 - Python 한국 사용자 그룹
+
+## Gemini / LLM 쿼터 초과 처리 (2025-08 추가)
+
+무료 티어 또는 제한된 Gemini API 사용 중 429(ResourceExhausted) 오류가 반복될 수 있습니다. `rag_service.py` 에서는 다음 대응을 구현했습니다:
+
+1. 429/쿼터 관련 예외 감지 → 다음 후보 모델 순차 폴백 (기본: flash → flash-8b → pro)
+2. 모든 후보 모델 소진 시 600초(기본, `RAG_QUOTA_COOLDOWN_SECS`로 조정) 쿨다운 적용
+3. 쿨다운 기간엔 LLM 미호출, 로컬 벡터 검색 상위 결과 요약 반환
+4. 사용자 메시지에 대안 제시: 다른 API Key, 모델 변경, 쿼터 리셋, 캐시 활용
+
+### 설정/튜닝 방법
+- 환경변수:
+	- `RAG_LLM_FALLBACK_MODELS`: 콤마 구분 커스텀 모델 순서 (예: `gemini-1.5-flash,gemini-1.5-flash-8b,gemini-1.5-pro`)
+	- `RAG_PRIMARY_MODEL`: 첫 번째 기본 모델 (미설정 시 flash)
+	- `RAG_QUOTA_COOLDOWN_SECS`: 쿨다운 초 (기본 600)
+- 쿨다운 시간 조정: `RAG_QUOTA_COOLDOWN_SECS=300` 등 설정
+- 폴백 비활성화: `RAG_LLM_FALLBACK_MODELS`를 단일 모델로 설정하거나 코드에서 모델 리스트 로직 제거
+- 경량 모델 우선: `RAG_LLM_FALLBACK_MODELS=gemini-1.5-flash-8b,gemini-1.5-flash` (저비용→기본)
+
+### 로컬 캐시 활용 아이디어 (추후)
+- 동일 질문 해시 기반 (SHA-1) => 최근 N개 응답 메모리/디스크 캐시
+- 캐시 hit 시 LLM 호출 생략, TTL 정책 적용
+- 추가 시 주의: 민감 데이터 포함 가능성 -> PII 마스킹 or opt-in 환경 변수
+
+### 장애 시 빠른 점검 체크리스트
+| 항목 | 확인 | 액션 |
+|------|------|------|
+| GEMINI_API_KEY | 값/유효성 | 키 재발급/롤링 |
+| 모델 폴백 순서 | `RAG_LLM_FALLBACK_MODELS` | 순서 조정(경량→고사양) |
+| 429 빈도 | 로그 | 모델 교체/쿼터 업그레이드 |
+| 쿨다운 동작 | "쿨다운" 경고 존재 | 기간 조정/비활성화 |
+| 벡터 스토어 최신성 | 업데이트 로그 | `/api/v1/knowledge/docs` 저장 시 refresh_vector 사용 |
+
+### 향후 개선 제안
+- 지연 재시도 (Exponential Backoff) 후 부분 응답 스트리밍
+- 멀티 LLM 폴백 체인 (Gemini -> OpenAI -> 로컬 LLM)
+- 비용/쿼터 대시보드 집계 엔드포인트 추가
+
+이 섹션은 LLM 호출 관련 운영 안정성을 높이기 위한 참고용입니다.

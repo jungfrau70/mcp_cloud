@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, vi } from 'vitest';
+import { nextTick } from 'vue';
 import StepCli from '../../components/StepCli.client.vue';
 
 // Mock xterm.js and its addon
@@ -20,6 +21,9 @@ vi.mock('xterm-addon-fit', () => ({
   })),
 }));
 
+// Mock CSS import (dynamic import in component)
+vi.mock('xterm/css/xterm.css', () => ({}));
+
 // Mock WebSocket
 vi.stubGlobal('WebSocket', vi.fn(() => ({
   send: vi.fn(),
@@ -33,8 +37,12 @@ vi.stubGlobal('WebSocket', vi.fn(() => ({
 
 describe('StepCli.client.vue', () => {
   it('renders the terminal container', async () => {
-    const wrapper = mount(StepCli);
-    await new Promise(resolve => setTimeout(resolve, 0));
+  const wrapper = mount(StepCli);
+  const flush = () => new Promise(r => setTimeout(r, 0));
+  await nextTick();
+  await flush();
+  await nextTick();
+  await flush();
 
     // Check if the main div for the terminal is present
     expect(wrapper.find('#terminal').exists()).toBe(true);
@@ -45,8 +53,8 @@ describe('StepCli.client.vue', () => {
     // Ensure xterm.js Terminal and FitAddon are instantiated
     const { Terminal } = await import('xterm'); // Re-import to get the mocked version
     const { FitAddon } = await import('xterm-addon-fit'); // Re-import to get the mocked version
-    expect(Terminal).toHaveBeenCalled();
-    expect(FitAddon).toHaveBeenCalled();
+  expect(Terminal).toHaveBeenCalled();
+  expect(FitAddon).toHaveBeenCalled();
 
     // Ensure WebSocket is instantiated
     expect(WebSocket).toHaveBeenCalledWith('ws://localhost:8000/ws/v1/cli/interactive');
