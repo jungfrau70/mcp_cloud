@@ -368,8 +368,36 @@ class SecurityAuditor:
 
     def __init__(self, llm: ChatGoogleGenerativeAI):
         self.llm = llm
+        # 쿼터 초과 관련 쿨다운 타임스탬프 (epoch seconds)
+        self._quota_cooldown_until = 0.0
+        self._last_quota_error_time = 0.0
 
     def audit_security(self, infrastructure_description: str, cloud_provider: str) -> SecurityAuditResult:
+        import time
+        # 쿨다운 활성화 시 LLM 호출 없이 즉시 폴백 응답
+        now = time.time()
+        if now < getattr(self, "_quota_cooldown_until", 0):
+            remaining = int(self._quota_cooldown_until - now)
+            return SecurityAuditResult(
+                error=(
+                    "LLM 일일 쿼터를 초과하여 보안 감사 LLM 호출이 임시 중단되었습니다. "
+                    f"쿨다운 {remaining}s 후 재시도하거나 다른 모델/키를 설정하세요."
+                ),
+                security_score=50,
+                critical_issues=[],
+                high_risk_issues=[],
+                medium_risk_issues=[],
+                low_risk_issues=[],
+                compliance_check=["기본 보안 베이스라인 점검 (쿨다운 폴백)"],
+                security_recommendations=[
+                    "IAM 최소 권한 원칙 적용 검토",
+                    "네트워크 보안 그룹 / 방화벽 규칙 재검토",
+                    "민감 데이터 암호화 상태 확인"
+                ],
+                iam_recommendations=["루트 계정 MFA 적용"],
+                network_security=["서브넷/보안그룹 규칙 최소화"],
+            )
+
         if _Mock and isinstance(self.llm, _Mock):  # type: ignore[arg-type]
             try:
                 raw = self.llm.invoke("security-audit")  # type: ignore[attr-defined]
@@ -427,7 +455,48 @@ class SecurityAuditor:
                 raise ValueError(parsed["error"])  # fallback
             return parsed  # type: ignore[return-value]
         except Exception as e:
-            logger.exception("보안 감사 실패: %s", e)
+            import traceback
+            err_txt = str(e)
+            quota_signatures = [
+                "ResourceExhausted", "quota", "429 You exceeded your current quota"
+            ]
+            if any(sig.lower() in err_txt.lower() for sig in quota_signatures):
+                # Fast-fail 윈도우: 최근 쿼터 오류 반복 시 즉시 쿨다운 진입
+                fast_window = int(os.getenv("SECURITY_AUDIT_QUOTA_FAST_FAIL_WINDOW", "90"))
+                last_quota = getattr(self, "_last_quota_error_time", 0)
+                setattr(self, "_last_quota_error_time", now)
+                cooldown = int(os.getenv("SECURITY_AUDIT_QUOTA_COOLDOWN_SECS", "600"))
+                if now - last_quota < fast_window or True:
+                    # 항상 쿨다운 설정 (단순화)
+                    self._quota_cooldown_until = now + cooldown
+                remaining = cooldown
+                logger.warning(
+                    "SecurityAudit LLM 쿼터 초과 감지: %s (쿨다운 %ss)", err_txt, remaining
+                )
+                return SecurityAuditResult(
+                    error=(
+                        "보안 감사 LLM 쿼터를 초과했습니다. "
+                        f"{remaining}s 후 자동 재시도 가능. 다른 모델/키 설정을 고려하세요."
+                    ),
+                    security_score=55,
+                    critical_issues=[],
+                    high_risk_issues=[],
+                    medium_risk_issues=[],
+                    low_risk_issues=[],
+                    compliance_check=[
+                        "IAM 정책 최소 권한 원칙 검토",
+                        "누락된 암호화(KMS/EBS/S3) 확인",
+                        "로그/모니터링(CloudTrail / Config) 활성화 상태"
+                    ],
+                    security_recommendations=[
+                        "루트 계정 MFA 활성화",
+                        "비활성 Access Key 회전 및 폐기",
+                        "보안 그룹 0.0.0.0/0 제한 축소",
+                    ],
+                    iam_recommendations=["서비스 계정별 세분화된 역할 적용"],
+                    network_security=["VPC 서브넷/Public Exposure 최소화"],
+                )
+            logger.exception("보안 감사 실패: %s", traceback.format_exc())
             return SecurityAuditResult(
                 error=f"보안 감사 중 오류 발생: {e}",
                 security_score=50,
@@ -579,6 +648,15 @@ class RAGService:
                 f" 상세: {inner}"
             )
 
+    # Lightweight internal retrieval helper used only for fallback messaging
+    def _retrieve_documents(self, query: str, k: int = 3) -> List[Document]:
+        try:
+            retriever = self.vector_store.as_retriever(search_kwargs={"k": k})
+            return retriever.get_relevant_documents(query)
+        except Exception as e:
+            logger.error("로컬 문서 검색 실패: %s", e)
+            return []
+
     def query(self, question: str) -> str:
         logger.info("질문 처리 중 (동기): %s", question)
         # 간단한 in-memory 쿨다운 (429 반복 호출 방지)
@@ -616,6 +694,13 @@ class RAGService:
                     try:
                         provider = LLMProvider(model=next_model)
                         self.llm = provider.create()
+                        # 연관 에이전트 LLM 모두 동기화 (보안/비용/테라폼)
+                        if hasattr(self, 'security_auditor'):
+                            self.security_auditor.llm = self.llm
+                        if hasattr(self, 'cost_optimizer'):
+                            self.cost_optimizer.llm = self.llm
+                        if hasattr(self, 'terraform_generator'):
+                            self.terraform_generator.llm = self.llm
                         # 체인 재구성 (LLM 교체)
                         self.rag_chain = (
                             {"context": self.retriever, "question": RunnablePassthrough()} 

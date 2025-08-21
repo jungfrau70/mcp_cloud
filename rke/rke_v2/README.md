@@ -2,7 +2,8 @@
 
 ## 개요
 
-RKE2 클러스터를 위한 모듈화된 모니터링 시스템입니다. 공통 라이브러리를 사용하여 코드 재사용성을 높이고, YAML 설정 파일을 통해 유연한 설정이 가능합니다.
+RKE2 클러스터를 위한 모듈화된 모니터링 시스템입니다. 
+공통 라이브러리를 사용하여 코드 재사용성을 높이고, YAML 설정 파일을 통해 유연한 설정이 가능하게 했습니다.
 
 ## 주요 특징
 
@@ -25,11 +26,11 @@ rke/
 │   └── rke2_config.sh           # 설정 파일 파서
 ├── config/                       # 설정 파일
 │   └── rke2-monitoring.yaml     # 메인 설정 파일
-├── 24x7_rke2_check_modular.sh   # 24x7 모니터링 스크립트
-├── rke2_check_modular.sh        # 플랫폼 점검 스크립트
-├── rke2_pod_modular.sh          # 파드 점검 스크립트
+├── 24x7_rke2_check.sh   # 24x7 모니터링 스크립트
+├── rke2_check.sh        # 플랫폼 점검 스크립트
+├── rke2_pod.sh          # 파드 점검 스크립트
 ├── *.env.template               # 환경 변수 템플릿
-└── README_MODULAR.md            # 이 파일
+└── README.md            # 이 파일
 ```
 
 ## 설치 및 설정
@@ -61,7 +62,7 @@ export LOG_LEVEL="INFO"
 ### 3. 실행 권한 설정
 
 ```bash
-chmod +x lib/*.sh *_modular.sh
+chmod +x lib/*.sh *.sh
 ```
 
 ## 사용법
@@ -70,39 +71,39 @@ chmod +x lib/*.sh *_modular.sh
 
 ```bash
 # 기본 설정으로 실행
-./24x7_rke2_check_modular.sh
+./24x7_rke2_check.sh
 
 # 사용자 정의 설정 파일 사용
-./24x7_rke2_check_modular.sh -c /path/to/config.yaml
+./24x7_rke2_check.sh -c /path/to/config.yaml
 
 # 환경 변수 파일 지정
-./24x7_rke2_check_modular.sh -e /path/to/env.file
+./24x7_rke2_check.sh -e /path/to/env.file
 
 # 도움말
-./24x7_rke2_check_modular.sh -h
+./24x7_rke2_check.sh -h
 ```
 
 ### 플랫폼 점검
 
 ```bash
 # 기본 실행
-./rke2_check_modular.sh
+./rke2_check.sh
 
 # 설정 파일 지정
-./rke2_check_modular.sh -c /path/to/config.yaml
+./rke2_check.sh -c /path/to/config.yaml
 ```
 
 ### 파드 점검
 
 ```bash
 # 전체 네임스페이스 점검
-./rke2_pod_modular.sh
+./rke2_pod.sh
 
 # 특정 네임스페이스만 점검
-./rke2_pod_modular.sh -n kube-system
+./rke2_pod.sh -n kube-system
 
 # 설정 파일 지정
-./rke2_pod_modular.sh -c /path/to/config.yaml
+./rke2_pod.sh -c /path/to/config.yaml
 ```
 
 ## 설정 파일
@@ -297,10 +298,10 @@ export ENABLE_SECURITY_CHECKS=true
 ```bash
 # DEBUG 레벨로 실행
 export LOG_LEVEL="DEBUG"
-./24x7_rke2_check_modular.sh
+./24x7_rke2_check.sh
 
 # 설정 정보 출력
-./24x7_rke2_check_modular.sh -v
+./24x7_rke2_check.sh -v
 ```
 
 ## 업그레이드
