@@ -142,6 +142,11 @@ run_pod_checks() {
     if is_check_enabled "pod" "pod_containerd"; then
         check_rke2_pod_containerd "$namespace"
     fi
+    
+    # 서비스 체크 추가 (해당 네임스페이스의 서비스만)
+    if is_check_enabled "pod" "service_checks"; then
+        check_namespace_services "$namespace"
+    fi
 }
 
 # 사용법 출력

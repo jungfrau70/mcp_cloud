@@ -107,6 +107,11 @@ run_platform_checks() {
         check_monitoring
     fi
     
+    # 서비스 체크 추가
+    if is_check_enabled "platform" "service_checks"; then
+        run_service_checks
+    fi
+    
     log_message "" "SECTION_END"
 }
 

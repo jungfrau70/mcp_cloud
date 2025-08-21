@@ -40,6 +40,7 @@ checks:
     rke2_containerd: true
     rke2_security: true
     rke2_logs: true
+    service_checks: true
 
   # 플랫폼 점검용
   platform:
@@ -50,6 +51,7 @@ checks:
     metrics: true
     security: true
     monitoring: true
+    service_checks: true
 
   # 파드 점검용
   pod:
@@ -60,6 +62,7 @@ checks:
     pod_logs: true
     pod_security: true
     pod_containerd: true
+    service_checks: true
 
 # 보안 설정
 security:
@@ -106,6 +109,19 @@ network:
     - "kubernetes.default.svc.cluster.local"
     - "kube-dns.kube-system.svc.cluster.local"
   timeout_seconds: 10
+
+# 서비스 체크 설정
+service_check:
+  kubernetes_api: true
+  rke2_services: true
+  application_services: true
+  custom_services: true
+  network_connectivity: true
+  http_timeout: 10
+  https_timeout: 10
+  expected_status: 200
+  enable_retry: true
+  max_retries: 3
 
 # 스토리지 설정
 storage:

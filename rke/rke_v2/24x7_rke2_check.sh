@@ -126,6 +126,11 @@ run_24x7_checks() {
         check_rke2_logs
     fi
     
+    # 서비스 체크 추가
+    if is_check_enabled "24x7" "service_checks"; then
+        run_service_checks
+    fi
+    
     log_message "" "SECTION_END"
 }
 

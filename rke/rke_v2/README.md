@@ -10,6 +10,7 @@ RKE2 클러스터를 위한 모듈화된 모니터링 시스템입니다.
 - **모듈화된 구조**: 공통 라이브러리를 통한 코드 재사용
 - **설정 파일 기반**: YAML 설정 파일로 유연한 설정
 - **RKE2 특화**: RKE2 아키텍처에 최적화된 점검 기능
+- **서비스 체크 통합**: HTTP/HTTPS 서비스 상태 자동 체크
 - **보안 강화**: 민감 정보 마스킹 및 명령어 검증
 - **HTML 보고서**: 시각적 보고서 생성
 - **명령행 인터페이스**: 다양한 옵션 지원
@@ -22,7 +23,7 @@ rke/
 │   ├── rke2_common.sh           # 기본 공통 함수
 │   ├── rke2_logging.sh          # 로깅 관련 함수
 │   ├── rke2_security.sh         # 보안 관련 함수
-│   ├── rke2_monitoring.sh       # 모니터링 관련 함수
+│   ├── rke2_monitoring.sh       # 모니터링 관련 함수 (서비스 체크 포함)
 │   └── rke2_config.sh           # 설정 파일 파서
 ├── config/                       # 설정 파일
 │   └── rke2-monitoring.yaml     # 메인 설정 파일
@@ -83,6 +84,29 @@ chmod +x lib/*.sh *.sh
 ./24x7_rke2_check.sh -h
 ```
 
+### 서비스 체크 기능
+
+모든 모니터링 스크립트에 HTTP/HTTPS 서비스 체크가 통합되어 있습니다:
+
+```bash
+# 24x7 모니터링 (서비스 체크 포함)
+./24x7_rke2_check.sh
+
+# 플랫폼 점검 (서비스 체크 포함)
+./rke2_check.sh
+
+# 파드 점검 (해당 네임스페이스 서비스 체크 포함)
+./rke2_pod.sh -n kube-system
+```
+
+**자동 체크되는 서비스들:**
+- Kubernetes API 서버
+- RKE2 핵심 서비스 (메트릭 서버, 컨트롤러 매니저, 스케줄러)
+- NodePort/LoadBalancer 애플리케이션 서비스
+- 사용자 정의 서비스 (환경 변수로 설정)
+- 네트워크 연결성
+```
+
 ### 플랫폼 점검
 
 ```bash
@@ -130,7 +154,27 @@ checks:
     cluster_info: true
     control_plane: true
     rke2_specific: true
+    service_checks: true  # 서비스 체크 활성화
     # ... 기타 설정
+
+  platform:
+    cluster_config: true
+    service_checks: true  # 플랫폼 점검에 서비스 체크 포함
+
+  pod:
+    pod_status: true
+    service_checks: true  # 파드 점검에 서비스 체크 포함
+
+# 서비스 체크 세부 설정
+service_check:
+  kubernetes_api: true
+  rke2_services: true
+  application_services: true
+  custom_services: true
+  network_connectivity: true
+  http_timeout: 10
+  https_timeout: 10
+  expected_status: 200
 
 # 보안 설정
 security:
@@ -194,6 +238,7 @@ export ENABLE_SECURITY_CHECKS=true
 - RKE2 특화 점검 함수들
 - 클러스터 상태 점검
 - 파드 상태 점검
+- **서비스 체크 함수들** (HTTP/HTTPS, Kubernetes API, RKE2 서비스 등)
 
 ### rke2_config.sh
 - YAML 설정 파일 파싱
@@ -214,6 +259,7 @@ export ENABLE_SECURITY_CHECKS=true
 - containerd 상태
 - 보안 설정
 - 로그 분석
+- **서비스 체크** (HTTP/HTTPS 상태)
 
 ### 플랫폼 점검
 - 클러스터 구성
@@ -223,6 +269,7 @@ export ENABLE_SECURITY_CHECKS=true
 - 메트릭 서버
 - 보안 정책
 - 모니터링 도구
+- **서비스 체크** (전체 클러스터 서비스)
 
 ### 파드 점검
 - 파드 상태
@@ -232,6 +279,7 @@ export ENABLE_SECURITY_CHECKS=true
 - 로그 분석
 - 보안 설정
 - containerd 컨테이너
+- **서비스 체크** (해당 네임스페이스 서비스)
 
 ## 보안 기능
 

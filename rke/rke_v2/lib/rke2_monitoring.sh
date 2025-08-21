@@ -703,6 +703,63 @@ check_network_connectivity() {
     log_message "" "SECTION_END"
 }
 
+# 네임스페이스별 서비스 체크 함수
+check_namespace_services() {
+    local namespace="$1"
+    log_message "=== 네임스페이스 서비스 체크: $namespace ===" "SECTION"
+    
+    # 해당 네임스페이스의 서비스 목록 가져오기
+    local services=$(kubectl get services -n "$namespace" -o jsonpath='{range .items[*]}{.metadata.name}:{.spec.type}:{.spec.ports[0].port}{"\n"}{end}' 2>/dev/null)
+    
+    if [ -n "$services" ]; then
+        log_message "네임스페이스 $namespace의 서비스 발견:" "INFO"
+        echo "$services" >> ${LOG_FILE}
+        
+        while IFS= read -r service_info; do
+            if [ -n "$service_info" ]; then
+                local service_name=$(echo "$service_info" | cut -d':' -f1)
+                local service_type=$(echo "$service_info" | cut -d':' -f2)
+                local service_port=$(echo "$service_info" | cut -d':' -f3)
+                
+                log_message "서비스 체크: $service_name ($service_type, 포트: $service_port)" "INFO"
+                
+                # 서비스 타입별 체크
+                case $service_type in
+                    "NodePort")
+                        local node_port=$(kubectl get service "$service_name" -n "$namespace" -o jsonpath='{.spec.ports[0].nodePort}' 2>/dev/null)
+                        local node_ip=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}' 2>/dev/null)
+                        
+                        if [ -n "$node_port" ] && [ -n "$node_ip" ]; then
+                            check_http_service "http://$node_ip:$node_port" \
+                                "$namespace/$service_name NodePort" "200"
+                        fi
+                        ;;
+                    "LoadBalancer")
+                        local external_ip=$(kubectl get service "$service_name" -n "$namespace" -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null)
+                        
+                        if [ -n "$external_ip" ]; then
+                            check_http_service "http://$external_ip:$service_port" \
+                                "$namespace/$service_name LoadBalancer" "200"
+                        fi
+                        ;;
+                    "ClusterIP")
+                        # ClusterIP는 프록시를 통해 접근
+                        local cluster_ip=$(kubectl get service "$service_name" -n "$namespace" -o jsonpath='{.spec.clusterIP}' 2>/dev/null)
+                        
+                        if [ -n "$cluster_ip" ]; then
+                            log_message "ClusterIP 서비스 $service_name ($cluster_ip:$service_port) - 프록시 접근 필요" "INFO"
+                        fi
+                        ;;
+                esac
+            fi
+        done <<< "$services"
+    else
+        log_message "네임스페이스 $namespace에 서비스가 없습니다." "INFO"
+    fi
+    
+    log_message "" "SECTION_END"
+}
+
 # 통합 서비스 체크 함수
 run_service_checks() {
     log_message "=== RKE2 클러스터 서비스 체크 시작 ===" "SECTION"

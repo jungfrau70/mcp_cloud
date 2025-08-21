@@ -28,6 +28,7 @@ from typing import List, Optional, Dict, Literal, Any
 from datetime import datetime
 import google.generativeai as genai
 from models import Base, Deployment, DeploymentStatus, DataSource
+from models import KbDocument, KbDocumentVersion, KbTask  # newly added models
 from fastapi.middleware.cors import CORSMiddleware # Import CORSMiddleware
 
 from fastapi.responses import StreamingResponse, FileResponse
@@ -39,6 +40,18 @@ from external_search_service import external_search_service_instance
 from content_extractor import content_extractor_instance
 from ai_document_generator import ai_document_generator_instance
 import logging
+import uuid as _uuid
+
+from kb_repository import (
+    get_or_create_document,
+    create_version,
+    list_versions as kb_list_versions,
+    get_latest_content,
+    record_task,
+    update_task,
+    get_task as kb_get_task,
+    normalize_path as kb_normalize_path,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -178,6 +191,40 @@ class GenerateDocumentResponse(BaseModel):
     message: str
     document_path: Optional[str] = None
     generated_doc_data: Optional[Dict] = None
+
+class KbSaveRequest(BaseModel):
+    path: str
+    content: str
+    message: Optional[str] = None
+
+class KbSaveResponse(BaseModel):
+    success: bool
+    version_id: int
+    version_no: int
+    updated_at: datetime
+
+class KbVersionsResponse(BaseModel):
+    versions: List[Dict[str, Any]]
+
+class KbOutlineRequest(BaseModel):
+    content: str
+
+class KbOutlineItem(BaseModel):
+    level: int
+    text: str
+    line: int
+
+class KbOutlineResponse(BaseModel):
+    outline: List[KbOutlineItem]
+
+class KbTaskResponse(BaseModel):
+    id: str
+    type: str
+    status: str
+    stage: Optional[str] = None
+    progress: Optional[int] = None
+    error: Optional[str] = None
+    updated_at: Optional[datetime] = None
 
 # 데이터베이스 URL 환경변수 가져오기 (Docker 환경 우선)
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://mcpuser:mcppassword@mcp_postgres:5432/mcp_db")
@@ -403,6 +450,92 @@ def get_knowledge_base_structure(path, is_root: bool = False, current_relative_p
         structure['error'] = str(e)
 
     return structure
+
+# =============================================================
+# KB API (P1)
+# =============================================================
+
+@app.get("/api/kb/item", tags=["Knowledge Base"])
+def kb_get_item(path: str, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
+    item = get_latest_content(db, path)
+    if not item:
+        raise HTTPException(status_code=404, detail="Document not found")
+    return item
+
+@app.patch("/api/kb/item", response_model=KbSaveResponse, tags=["Knowledge Base"])
+def kb_save_item(req: KbSaveRequest, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
+    norm = kb_normalize_path(req.path)
+    # Root storage path
+    kb_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
+    abs_path = os.path.abspath(os.path.join(kb_root, norm))
+    if not abs_path.startswith(kb_root):
+        raise HTTPException(status_code=400, detail="Invalid path")
+    os.makedirs(os.path.dirname(abs_path), exist_ok=True)
+    # Write file
+    with open(abs_path, 'w', encoding='utf-8') as f:
+        f.write(req.content)
+    # Versioning
+    doc = get_or_create_document(db, norm)
+    ver = create_version(db, doc, req.content, req.message)
+    db.commit()
+    return KbSaveResponse(success=True, version_id=ver.id, version_no=ver.version_no, updated_at=ver.created_at)
+
+@app.get("/api/kb/versions", response_model=KbVersionsResponse, tags=["Knowledge Base"])
+def kb_versions(path: str, limit: int = 50, offset: int = 0, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
+    versions = kb_list_versions(db, path, limit=limit, offset=offset)
+    return KbVersionsResponse(versions=versions)
+
+@app.get("/api/kb/diff", tags=["Knowledge Base"])
+def kb_diff(path: str, v1: Optional[int] = None, v2: Optional[int] = None):
+    raise HTTPException(status_code=501, detail="Diff API in Phase P2")
+
+@app.post("/api/kb/outline", response_model=KbOutlineResponse, tags=["Knowledge Base"])
+def kb_outline(req: KbOutlineRequest):
+    # Simple heading extractor using regex
+    import re
+    outlines = []
+    for i, line in enumerate(req.content.splitlines()):
+        m = re.match(r'^(#{1,6})\s+(.+)$', line)
+        if m:
+            outlines.append(KbOutlineItem(level=len(m.group(1)), text=m.group(2).strip(), line=i+1))
+    return KbOutlineResponse(outline=outlines)
+
+@app.post("/api/kb/compose/external", response_model=KbTaskResponse, tags=["Knowledge Base"])
+async def kb_compose_external(topic: str, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
+    # Create task record
+    task_id = str(_uuid.uuid4())
+    record_task(db, task_id, type_='generation', status='pending', stage='queued', input={'topic': topic})
+    db.commit()
+
+    async def run_pipeline():
+        stages = ['collect', 'extract', 'cluster', 'summarize', 'compose', 'validate']
+        from time import sleep
+        for idx, st in enumerate(stages):
+            db_s = SessionLocal()
+            try:
+                update_task(db_s, task_id, status='running', stage=st, progress=int((idx/len(stages))*100))
+                db_s.commit()
+            finally:
+                db_s.close()
+            await asyncio.sleep(0.1)  # simulate work
+        db_s = SessionLocal()
+        try:
+            update_task(db_s, task_id, status='done', stage='done', progress=100, output={'generated_doc_data': {'title': topic}})
+            db_s.commit()
+        finally:
+            db_s.close()
+
+    asyncio.create_task(run_pipeline())
+
+    return KbTaskResponse(id=task_id, type='generation', status='pending', stage='queued', progress=0)
+
+@app.get("/api/kb/tasks/{task_id}", response_model=KbTaskResponse, tags=["Knowledge Base"])
+def kb_get_task_status(task_id: str, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
+    t = kb_get_task(db, task_id)
+    if not t:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return KbTaskResponse(id=t['id'], type=t['type'], status=t['status'], stage=t['stage'], progress=t['progress'], error=t['error'])
+
 
 # ===================================
 # Knowledge Base v2 (CRUD)

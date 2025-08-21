@@ -53,3 +53,46 @@ class DataSource(Base):
     config = Column(JSON, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+# ---------------------------------------------------------------------------
+# Knowledge Base Models (P1)
+# ---------------------------------------------------------------------------
+
+class KbDocument(Base):
+    __tablename__ = "kb_documents"
+
+    id = Column(Integer, primary_key=True, index=True)
+    path = Column(String, unique=True, index=True, nullable=False)  # normalized relative path
+    title = Column(String, nullable=True)
+    tags = Column(JSON, nullable=True)
+    latest_version_id = Column(Integer, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class KbDocumentVersion(Base):
+    __tablename__ = "kb_document_versions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    document_id = Column(Integer, index=True, nullable=False)
+    version_no = Column(Integer, index=True, nullable=False)
+    content = Column(Text, nullable=False)
+    message = Column(String, nullable=True)
+    author = Column(String, default="system", nullable=False)
+    size_bytes = Column(Integer, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class KbTask(Base):
+    __tablename__ = "kb_tasks"
+
+    id = Column(String, primary_key=True, index=True)  # uuid string
+    type = Column(String, index=True)  # generation, indexing, etc.
+    status = Column(String, index=True)  # pending, running, done, failed
+    stage = Column(String, nullable=True)  # collect, extract ...
+    progress = Column(Integer, nullable=True)  # 0-100 int percentage
+    input = Column(JSON, nullable=True)
+    output = Column(JSON, nullable=True)
+    error = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
