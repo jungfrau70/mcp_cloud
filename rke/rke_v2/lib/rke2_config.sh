@@ -106,7 +106,7 @@ is_check_enabled() {
 apply_default_config() {
     # 기본값 설정
     export TIMEOUT="${TIMEOUT:-$(get_config_value 'defaults.timeout' '30')}"
-    export LOG_DIR="${LOG_DIR:-$(get_config_value 'defaults.log_dir' './logs')}"
+    export LOG_DIR="${LOG_DIR:-$(get_config_value 'defaults.log_dir' "${SCRIPT_DIR}/logs")}"
     export LOG_LEVEL="${LOG_LEVEL:-$(get_config_value 'defaults.log_level' 'INFO')}"
     export RETENTION_DAYS="${RETENTION_DAYS:-$(get_config_value 'defaults.retention_days' '30')}"
     

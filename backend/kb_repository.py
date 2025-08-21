@@ -2,8 +2,9 @@ import os
 from typing import Optional, List, Dict, Any
 from sqlalchemy.orm import Session
 from sqlalchemy import select, func
-from datetime import datetime
+from datetime import datetime, timezone
 from models import KbDocument, KbDocumentVersion, KbTask
+import json, sys
 
 
 def normalize_path(path: str) -> str:
@@ -38,7 +39,7 @@ def create_version(db: Session, document: KbDocument, content: str, message: Opt
     db.add(ver)
     db.flush()
     document.latest_version_id = ver.id
-    document.updated_at = datetime.utcnow()
+    document.updated_at = datetime.now(timezone.utc)
     return ver
 
 
@@ -107,9 +108,26 @@ def update_task(db: Session, task_id: str, **fields):
         return None
     for k, v in fields.items():
         setattr(t, k, v)
-    from datetime import datetime
-    t.updated_at = datetime.utcnow()
+    from datetime import datetime, timezone
+    t.updated_at = datetime.now(timezone.utc)
     return t
+
+def log_task_event(level: str, task_id: str, type_: str, stage: str, status: str, **extra):
+    record = {
+        'ts': datetime.now(timezone.utc).isoformat(),
+        'level': level,
+        'component': 'kb_task',
+        'task_id': task_id,
+        'task_type': type_,
+        'stage': stage,
+        'status': status,
+        **extra
+    }
+    try:
+        json.dump(record, sys.stdout)
+        sys.stdout.write('\n')
+    except Exception:
+        pass
 
 
 def get_task(db: Session, task_id: str) -> Optional[Dict[str, Any]]:

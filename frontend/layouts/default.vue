@@ -11,7 +11,7 @@
               </svg>
             </button>
             <a href="/" class="text-xl font-bold text-gray-900">
-              Dr. Cloud
+              MentorAi
             </a>
           </div>
           <div class="flex items-center space-x-4">
@@ -70,9 +70,12 @@
           <KnowledgeBaseExplorer mode="search" @file-select="handleKbFileSelect" />
         </div>
         <div class="flex-1 overflow-hidden">
-          <WorkspaceView :active-content="activeContent" :active-slide="activeSlide" :active-path="activePath" ref="workspaceView">
+          <WorkspaceView v-if="!isKnowledgeBase" :active-content="activeContent" :active-slide="activeSlide" :active-path="activePath" ref="workspaceView">
             <slot /> <!-- Nuxt page content will be injected here -->
           </WorkspaceView>
+          <div v-else class="h-full">
+            <SplitEditor :path="activePath" :content="activeContent" ref="splitEditor" @save="handleKbSave" />
+          </div>
         </div>
       </main>
 
@@ -81,52 +84,39 @@
         <AIAssistantPanel />
       </aside>
     </div>
+  <TaskStatusBar v-if="isKnowledgeBase" />
+  <ToastStack />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import { useRoute } from 'vue-router';
-import SyllabusExplorer from '~/components/SyllabusExplorer.vue';
-import KnowledgeBaseExplorer from '~/components/KnowledgeBaseExplorer.vue';
-import WorkspaceView from '~/components/WorkspaceView.vue';
-import AIAssistantPanel from '~/components/AIAssistantPanel.vue';
+import { ref, onMounted, computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import SyllabusExplorer from '~/components/SyllabusExplorer.vue'
+import KnowledgeBaseExplorer from '~/components/KnowledgeBaseExplorer.vue'
+import WorkspaceView from '~/components/WorkspaceView.vue'
+import AIAssistantPanel from '~/components/AIAssistantPanel.vue'
+import SplitEditor from '~/components/SplitEditor.vue'
+import TaskStatusBar from '~/components/TaskStatusBar.vue'
+import ToastStack from '~/components/ToastStack.vue'
+import { useToastStore } from '~/stores/toast'
+const toast = useToastStore()
+import { useSidebarResize } from '~/composables/useSidebarResize'
+import { useDocStore } from '~/stores/doc'
 
-const activeContent = ref('');
-const activeSlide = ref(null);
-const activePath = ref('');
+const activeSlide = ref(null)
+const docStore = useDocStore()
+const activeContent = computed(()=> docStore.content)
+const activePath = computed(()=> docStore.path)
+const lastVersion = computed(()=> docStore.version)
 
-// Sidebar state
-const isSidebarCollapsed = ref(false);
-const sidebarWidth = ref(256); // default ~ w-64
-const minSidebarWidth = 200;
-const maxSidebarWidth = 500;
+// Sidebar state via composable
+const { isCollapsed: isSidebarCollapsed, width: sidebarWidth, toggle: toggleSidebar, start: startResize } = useSidebarResize(256, 200, 500)
 
 // Workspace refs
-const workspaceMain = ref(null);
-const workspaceView = ref(null);
-
-const toggleSidebar = () => {
-  isSidebarCollapsed.value = !isSidebarCollapsed.value;
-};
-
-const onResizeStart = (e) => {
-  const startX = e.clientX;
-  const startWidth = sidebarWidth.value;
-  const onMouseMove = (ev) => {
-    const dx = ev.clientX - startX;
-    let next = startWidth + dx;
-    if (next < minSidebarWidth) next = minSidebarWidth;
-    if (next > maxSidebarWidth) next = maxSidebarWidth;
-    sidebarWidth.value = next;
-  };
-  const onMouseUp = () => {
-    window.removeEventListener('mousemove', onMouseMove);
-    window.removeEventListener('mouseup', onMouseUp);
-  };
-  window.addEventListener('mousemove', onMouseMove);
-  window.addEventListener('mouseup', onMouseUp);
-};
+const workspaceMain = ref(null)
+const workspaceView = ref(null)
+const splitEditor = ref(null)
 
 // API configuration
 const config = useRuntimeConfig();
@@ -196,33 +186,37 @@ const handleFileClick = async (path) => {
 };
 
 const handleKbFileSelect = async (path) => {
-  try {
-    activePath.value = path;
-    
-    const response = await fetch(`${apiBase}/api/kb/item?path=${encodeURIComponent(stripBasePath(path))}`, {
-      headers: { 'X-API-Key': apiKey }
-    });
-    
-    if (!response.ok) throw new Error('Failed to load file');
-    
-    const data = await response.json();
-    activeContent.value = data.content;
-    activeSlide.value = null;
+  activeSlide.value = null
+  await docStore.open(path)
+  if(docStore.error) toast.push('error','로드 실패: ' + docStore.error)
+}
 
-  } catch (error) {
-    console.error('Error loading file:', error);
-    activeContent.value = 'Error loading content.';
-    activeSlide.value = null;
+const handleKbSave = async ({ path, content, message, force }) => {
+  if(force){
+    // force bypass optimistic (call API directly)
+    try {
+      const config = useRuntimeConfig();
+      const apiBase = config.public.apiBaseUrl || 'http://localhost:8000';
+      await fetch(`${apiBase}/api/kb/item`, { method:'PATCH', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path, content, message }) })
+      toast.push('success','강제 저장 완료')
+    } catch(e){ toast.push('error','강제 저장 실패') }
+    return
   }
-};
+  const res = await docStore.save(message)
+  if(res?.conflict){
+    await docStore.open(path || docStore.path)
+    if(splitEditor.value?.handleConflict){
+      splitEditor.value.handleConflict(docStore.content, docStore.version)
+    }
+    toast.push('warn','버전 충돌 발생: 병합 필요')
+  } else if(!res?.error){
+    splitEditor.value?.setSaved({ version_no: docStore.version })
+    toast.push('success','저장 완료')
+  } else if(res.error){
+    toast.push('error','저장 실패: ' + res.error)
+  }
+}
 
-const stripBasePath = (path) => {
-  const basePath = 'mcp_knowledge_base/';
-  if (path.startsWith(basePath)) {
-    return path.substring(basePath.length);
-  }
-  return path;
-};
 
 // 대화형 CLI 열기 함수
 const openInteractiveCLI = () => {

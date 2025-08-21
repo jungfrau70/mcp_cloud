@@ -1,155 +1,159 @@
-# RKE2 모니터링 설정 파일
-# Version: 1.0.0
+# RKE2 모니터링 및 진단 스크립트 설정 파일
+# Version: 2.0.0
+#
+# 이 파일을 수정하여 스크립트의 동작을 제어할 수 있습니다.
+# 각 항목에 대한 설명과 기본값을 주석으로 제공합니다.
+# true/false 값을 변경하여 특정 점검을 활성화/비활성화할 수 있습니다.
 
-# 기본 설정
+#===============================================================================
+# 1. 기본 설정 (Defaults)
+# 스크립트 전반에 적용되는 기본값입니다.
+#===============================================================================
 defaults:
+  # (숫자) 명령어 실행 시 타임아웃 (초). 기본값: 30
   timeout: 30
-  log_dir: "./logs"
+
+  # (문자열) 로그 파일이 저장될 디렉토리.
+  # 기본값: 스크립트가 위치한 디렉토리 내의 'logs' 폴더.
+  # 예: /opt/rke2_scripts/logs
+  log_dir: "" # 비워두면 기본값이 적용됩니다.
+
+  # (문자열) 로그 레벨 (DEBUG, INFO, WARNING, ERROR). 기본값: "INFO"
   log_level: "INFO"
+
+  # (숫자) 오래된 로그 파일을 삭제하기 전 보관할 일 수. 기본값: 30
   retention_days: 30
 
-# RKE2 특화 설정
+#===============================================================================
+# 2. RKE2 경로 설정 (RKE2 Paths)
+# RKE2 설치 경로 관련 설정입니다. 대부분의 경우 수정할 필요가 없습니다.
+#===============================================================================
 rke2:
+  # (경로) RKE2 설정 파일(config.yaml)이 위치한 경로.
+  # 기본값: "/etc/rancher/rke2"
   config_path: "/etc/rancher/rke2"
+
+  # (경로) RKE2 데이터 디렉토리 경로.
+  # 기본값: "/var/lib/rancher/rke2"
   data_dir: "/var/lib/rancher/rke2"
+
+  # (경로) RKE2 etcd 디렉토리 경로.
+  # 기본값: "/var/lib/rancher/rke2/server/tls/etcd"
   etcd_dir: "/var/lib/rancher/rke2/server/tls/etcd"
+
+  # (경로) kubectl이 사용하는 kubeconfig 파일 경로.
+  # 기본값: "/etc/rancher/rke2/rke2.yaml"
   kubeconfig: "/etc/rancher/rke2/rke2.yaml"
 
-# 모니터링 설정
-monitoring:
-  enable_metrics: true
-  enable_logs: true
-  enable_security_checks: true
-  enable_etcd_checks: true
-  enable_containerd_checks: true
-
-# 점검 범위 설정
+#===============================================================================
+# 3. 점검 범위 설정 (Checks)
+# 각 스크립트(24x7, platform, pod)에서 수행할 점검 항목들을 활성화/비활성화합니다.
+#===============================================================================
 checks:
-  # 24x7 모니터링용
+  # [ 24x7_rke2_check.sh ] 스크립트의 점검 항목
   24x7:
-    cluster_info: true
-    control_plane: true
-    node_overview: true
-    role_nodes: true
-    namespace_pod: true
-    storage_infra: true
-    oss_tools: true
-    system: true
-    rke2_specific: true
-    rke2_etcd: true
-    rke2_containerd: true
-    rke2_security: true
-    rke2_logs: true
-    service_checks: true
+    cluster_info: true      # 클러스터 기본 정보
+    control_plane: true     # 컨트롤 플레인 (etcd, apiserver 등)
+    node_overview: true     # 노드 전체 현황
+    role_nodes: true        # 역할별 노드 상세 점검
+    namespace_pod: true     # 네임스페이스 및 파드 상태
+    storage_infra: true     # 스토리지 인프라 (PV, PVC, SC)
+    oss_tools: true         # 운영 도구 (Prometheus, Grafana 등)
+    system: true            # 시스템 리소스 및 서비스
+    rke2_specific: true     # RKE2 특화 설정 및 서비스
+    rke2_etcd: true         # RKE2 내장 etcd 상세 점검
+    rke2_containerd: true   # RKE2 내장 containerd 상세 점검
+    rke2_security: true     # RKE2 보안 관련 설정
+    rke2_logs: true         # RKE2 주요 로그
+    service_checks: true    # 서비스 연결성 체크
 
-  # 플랫폼 점검용
+  # [ rke2_check.sh ] 스크립트의 점검 항목
   platform:
-    cluster_config: true
-    node_roles: true
-    network: true
-    storage: true
-    metrics: true
-    security: true
-    monitoring: true
-    service_checks: true
+    cluster_config: true    # 클러스터 구성
+    node_roles: true        # 노드 역할
+    network: true           # 네트워크 (Service, Endpoint)
+    storage: true           # 스토리지 (SC, PV, PVC)
+    metrics: true           # 리소스 사용량 (top nodes/pods)
+    security: true          # 보안 (Pod Security, Network Policy)
+    monitoring: true        # 모니터링 도구 (Prometheus, Grafana)
+    service_checks: true    # 서비스 연결성 체크
 
-  # 파드 점검용
+  # [ rke2_pod.sh ] 스크립트의 점검 항목
   pod:
-    pod_status: true
-    pod_resources: true
-    pod_networking: true
-    pod_volumes: true
-    pod_logs: true
-    pod_security: true
-    pod_containerd: true
-    service_checks: true
+    pod_status: true        # 파드 상태 (Running, Error 등)
+    pod_resources: true     # 파드 리소스 사용량
+    pod_networking: true    # 파드 네트워크 (Service, Endpoint)
+    pod_volumes: true       # 파드 볼륨 (PVC)
+    pod_logs: true          # 파드 로그 (오류 탐지)
+    pod_security: true      # 파드 보안 컨텍스트
+    pod_containerd: true    # 파드와 연결된 containerd 컨테이너
+    service_checks: true    # 네임스페이스 내 서비스 연결성
 
-# 보안 설정
-security:
-  mask_sensitive_info: true
-  enable_audit_logs: true
-  validate_commands: true
-  check_file_permissions: true
-  check_certificate_expiry: true
-  certificate_warning_days: 30
-
-# 알림 설정
+#===============================================================================
+# 4. 알림 설정 (Alerts)
+# 점검 결과에 대한 알림을 설정합니다.
+#===============================================================================
 alerts:
-  slack_webhook_url: ""
-  email_recipients: ""
-  alert_level: "WARNING"
+  # (boolean) 알림 기능을 전체적으로 활성화/비활성화. 기본값: false
   enable_notifications: false
 
-# Azure 특화 설정 (Azure 환경인 경우)
-azure:
-  subscription_id: ""
-  resource_group: ""
-  location: ""
-  enable_azure_checks: false
+  # (문자열) 알림을 보낼 심각도 수준 (WARNING, ERROR). 기본값: "WARNING"
+  alert_level: "WARNING"
 
-# 성능 설정
+  # (URL) Slack 웹훅 URL. 비워두면 슬랙 알림을 보내지 않습니다.
+  # 예: "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+  slack_webhook_url: ""
+
+  # (문자열) 이메일 수신자 목록 (쉼표로 구분). 비워두면 이메일을 보내지 않습니다.
+  # 시스템에 'mail' 또는 'sendmail' 명령어가 설치되어 있어야 합니다.
+  # 예: "admin1@example.com,admin2@example.com"
+  email_recipients: ""
+
+#===============================================================================
+# 5. 보안 설정 (Security)
+# 스크립트 자체의 보안 관련 동작을 설정합니다.
+#===============================================================================
+security:
+  # (boolean) 로그 출력 시 비밀번호, 토큰 등 민감 정보를 마스킹 처리. 기본값: true
+  mask_sensitive_info: true
+
+  # (boolean) 보안 감사 로그(.log)를 추가로 생성. 기본값: true
+  enable_audit_logs: true
+
+  # (boolean) 실행 전 명령어의 안전성 검증. 기본값: true
+  validate_commands: true
+
+  # (boolean) RKE2 관련 파일 권한 점검. 기본값: true
+  check_file_permissions: true
+
+  # (boolean) RKE2 인증서 만료 여부 점검. 기본값: true
+  check_certificate_expiry: true
+
+  # (숫자) 인증서 만료 경고를 보낼 임계 일수. 기본값: 30
+  certificate_warning_days: 30
+
+#===============================================================================
+# 6. 기타 상세 설정 (Advanced Settings)
+# 성능, 로깅 등 상세 동작을 제어합니다.
+#===============================================================================
+# 성능 관련 설정
 performance:
-  max_retries: 2
-  retry_delay: 2
-  parallel_execution: false
-  max_parallel_jobs: 5
+  max_retries: 2      # (숫자) 명령어 실패 시 재시도 횟수.
+  retry_delay: 2      # (숫자) 재시도 전 대기 시간 (초).
+  parallel_execution: false # (boolean) 병렬 실행 (주의: 시스템 부하 유발 가능).
+  max_parallel_jobs: 5 # (숫자) 병렬 실행 시 최대 작업 수.
 
-# 로깅 설정
+# 로깅 관련 설정
 logging:
-  enable_html_reports: true
-  enable_summary: true
-  log_rotation: true
-  compress_old_logs: true
-  max_log_size_mb: 100
+  enable_html_reports: true # (boolean) 결과를 HTML 보고서로 생성.
+  enable_summary: true      # (boolean) 파드 점검 시 요약 정보 표시.
+  log_rotation: true        # (boolean) 오래된 로그 자동 삭제 활성화.
+  compress_old_logs: true   # (boolean) 오래된 로그 압축 (미래 기능).
+  max_log_size_mb: 100      # (숫자) 최대 로그 파일 크기 (미래 기능).
 
-# 네트워크 설정
-network:
-  enable_connectivity_tests: true
-  test_endpoints:
-    - "kubernetes.default.svc.cluster.local"
-    - "kube-dns.kube-system.svc.cluster.local"
-  timeout_seconds: 10
-
-# 서비스 체크 설정
+# 서비스 체크 관련 상세 설정
 service_check:
-  kubernetes_api: true
-  rke2_services: true
-  application_services: true
-  custom_services: true
-  network_connectivity: true
-  http_timeout: 10
-  https_timeout: 10
-  expected_status: 200
-  enable_retry: true
-  max_retries: 3
-
-# 스토리지 설정
-storage:
-  check_pv_status: true
-  check_pvc_status: true
-  check_storage_class: true
-  enable_storage_metrics: true
-
-# etcd 설정
-etcd:
-  check_health: true
-  check_members: true
-  check_leader: true
-  check_metrics: true
-  backup_check: true
-
-# containerd 설정
-containerd:
-  check_service: true
-  check_processes: true
-  check_socket: true
-  check_containers: true
-  check_images: true
-
-# 시스템 설정
-system:
-  check_resources: true
-  check_services: true
-  check_ports: true
-  check_security: true
-  check_kernel_params: true
+  http_timeout: 10      # (숫자) HTTP 요청 타임아웃 (초).
+  https_timeout: 10     # (숫자) HTTPS 요청 타임아웃 (초).
+  enable_retry: true    # (boolean) 서비스 체크 실패 시 재시도.
+  max_retries: 3        # (숫자) 서비스 체크 재시도 횟수.

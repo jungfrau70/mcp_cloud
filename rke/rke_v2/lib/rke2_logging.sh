@@ -74,38 +74,38 @@ log_message() {
             printf "${RED}[오류]${NC} %b\n" "$masked_message" >&2
             printf "[%s] [오류] %b\n" "$timestamp" "$masked_message" >> "${LOG_FILE}"
             echo "<div class='section error'><strong>오류:</strong> $html_message</div>" >> "${HTML_LOG_FILE}"
-            ;;
+            ;; 
         "WARNING")
             printf "${YELLOW}[경고]${NC} %b\n" "$masked_message"
             printf "[%s] [경고] %b\n" "$timestamp" "$masked_message" >> "${LOG_FILE}"
             echo "<div class='section warning'><strong>경고:</strong> $html_message</div>" >> "${HTML_LOG_FILE}"
-            ;;
+            ;; 
         "SUCCESS")
             printf "${GREEN}[성공]${NC} %b\n" "$masked_message"
             printf "[%s] [성공] %b\n" "$timestamp" "$masked_message" >> "${LOG_FILE}"
             echo "<div class='section success'><strong>성공:</strong> $html_message</div>" >> "${HTML_LOG_FILE}"
-            ;;
+            ;; 
         "SECTION")
             printf "\n${BLUE}${BOLD}=== %b ===${NC}\n" "$masked_message"
             printf "\n===========================================\n" >> "${LOG_FILE}"
             printf "[%s] === %b ===\n" "$timestamp" "$masked_message" >> "${LOG_FILE}"
             printf "===========================================\n" >> "${LOG_FILE}"
             echo "<div class='section'><h2>$html_message</h2>" >> "${HTML_LOG_FILE}"
-            ;;
+            ;; 
         "SECTION_END")
             echo "</div>" >> "${HTML_LOG_FILE}"
-            ;;
+            ;; 
         *)
             printf "%b\n" "$masked_message"
             printf "[%s] %b\n" "$timestamp" "$masked_message" >> "${LOG_FILE}"
             echo "<div class='details'>$html_message</div>" >> "${HTML_LOG_FILE}"
-            ;;
+            ;; 
     esac
 }
 
 # HTML 테이블 함수들
 start_table() {
-    local headers=("$@")
+    local headers=($@)
     echo "<table><tr>" >> "${HTML_LOG_FILE}"
     for header in "${headers[@]}"; do
         echo "<th>$header</th>" >> "${HTML_LOG_FILE}"
@@ -140,7 +140,6 @@ add_summary() {
     echo "<li>정상 실행 중인 파드: $running_pods</li>" >> "${HTML_LOG_FILE}"
     echo "<li>문제가 있는 파드: $problem_pods</li>" >> "${HTML_LOG_FILE}"
     echo "</ul>" >> "${HTML_LOG_FILE}"
-    echo "</div>" >> "${HTML_LOG_FILE}"
 }
 
 # HTML 파일 완성
@@ -156,10 +155,10 @@ set_log_level() {
         "DEBUG"|"INFO"|"WARNING"|"ERROR")
             export LOG_LEVEL="$level"
             log_message "로그 레벨이 $level로 설정되었습니다." "INFO"
-            ;;
+            ;; 
         *)
             log_message "잘못된 로그 레벨입니다: $level" "WARNING"
-            ;;
+            ;; 
     esac
 }
 

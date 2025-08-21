@@ -51,7 +51,43 @@ from kb_repository import (
     update_task,
     get_task as kb_get_task,
     normalize_path as kb_normalize_path,
+    log_task_event,
 )
+
+# In-memory websocket manager for KB tasks
+class KbWsManager:
+    def __init__(self):
+        self.active = set()
+        self.recent_events = []  # store last N events for reconnect
+        self.max_events = 50
+        self.last_ping = {}
+    async def connect(self, ws: WebSocket):
+        await ws.accept()
+        self.active.add(ws)
+        # Send buffered events
+        try:
+            for ev in self.recent_events[-self.max_events:]:
+                await ws.send_json(ev)
+        except Exception:
+            pass
+    def disconnect(self, ws: WebSocket):
+        if ws in self.active:
+            self.active.remove(ws)
+    async def broadcast(self, data: dict):
+        dead = []
+        # buffer
+        self.recent_events.append(data)
+        if len(self.recent_events) > self.max_events:
+            self.recent_events = self.recent_events[-self.max_events:]
+        for ws in list(self.active):
+            try:
+                await ws.send_json(data)
+            except Exception:
+                dead.append(ws)
+        for d in dead:
+            self.disconnect(d)
+
+kb_ws_manager = KbWsManager()
 
 logger = logging.getLogger(__name__)
 
@@ -196,6 +232,8 @@ class KbSaveRequest(BaseModel):
     path: str
     content: str
     message: Optional[str] = None
+    new_path: Optional[str] = None  # rename support
+    expected_version_no: Optional[int] = None  # optimistic locking (if provided, must match latest)
 
 class KbSaveResponse(BaseModel):
     success: bool
@@ -225,6 +263,9 @@ class KbTaskResponse(BaseModel):
     progress: Optional[int] = None
     error: Optional[str] = None
     updated_at: Optional[datetime] = None
+
+class KbTaskListResponse(BaseModel):
+    tasks: List[Dict[str, Any]]
 
 # 데이터베이스 URL 환경변수 가져오기 (Docker 환경 우선)
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://mcpuser:mcppassword@mcp_postgres:5432/mcp_db")
@@ -464,21 +505,129 @@ def kb_get_item(path: str, db: Session = Depends(get_db), api_key: str = Depends
 
 @app.patch("/api/kb/item", response_model=KbSaveResponse, tags=["Knowledge Base"])
 def kb_save_item(req: KbSaveRequest, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
-    norm = kb_normalize_path(req.path)
-    # Root storage path
+
     kb_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
+    norm = kb_normalize_path(req.path)
     abs_path = os.path.abspath(os.path.join(kb_root, norm))
     if not abs_path.startswith(kb_root):
         raise HTTPException(status_code=400, detail="Invalid path")
+
+    # Rename only (no content) path
+    if req.new_path and (req.content is None or req.content == ''):
+        new_norm = kb_normalize_path(req.new_path)
+        new_abs = os.path.abspath(os.path.join(kb_root, new_norm))
+        if not new_abs.startswith(kb_root):
+            raise HTTPException(status_code=400, detail="Invalid new path")
+        if not os.path.exists(abs_path):
+            raise HTTPException(status_code=404, detail="Source not found")
+        os.makedirs(os.path.dirname(new_abs), exist_ok=True)
+        os.replace(abs_path, new_abs)
+        # For simplicity we won't create a new version on pure rename
+        db.commit()
+        existing = get_latest_content(db, new_norm)
+        # If doc record exists update its path (simplify by creating new doc if not)
+    from datetime import timezone as _tz
+    return KbSaveResponse(success=True, version_id=existing.get('version_no', 0) if existing else 0, version_no=existing.get('version_no', 0) if existing else 0, updated_at=datetime.now(_tz.utc))
+
+    if req.content is None:
+        raise HTTPException(status_code=400, detail="Content required unless renaming")
+
+    # Optimistic locking check (if caller provided expected_version_no)
+    if req.expected_version_no is not None:
+        current = get_latest_content(db, norm)
+        # New document case: current is None and expected should be 0
+        if current is None and req.expected_version_no not in (0, None):
+            raise HTTPException(status_code=409, detail="Version conflict (document newly created or missing)")
+        if current is not None and current.get('version_no') != req.expected_version_no:
+            raise HTTPException(status_code=409, detail="Version conflict (expected v{} but latest is v{})".format(req.expected_version_no, current.get('version_no')))
+
     os.makedirs(os.path.dirname(abs_path), exist_ok=True)
-    # Write file
     with open(abs_path, 'w', encoding='utf-8') as f:
         f.write(req.content)
-    # Versioning
     doc = get_or_create_document(db, norm)
     ver = create_version(db, doc, req.content, req.message)
     db.commit()
     return KbSaveResponse(success=True, version_id=ver.id, version_no=ver.version_no, updated_at=ver.created_at)
+
+# --- KB Create/Delete/Move/Tree Endpoints ---
+
+class KbCreateRequest(BaseModel):
+    path: str
+    type: Literal['file','directory'] = 'file'
+    content: Optional[str] = ''
+
+@app.post("/api/kb/item", tags=["Knowledge Base"])
+def kb_create_item(req: KbCreateRequest, api_key: str = Depends(get_api_key)):
+    kb_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
+    norm = kb_normalize_path(req.path)
+    abs_path = os.path.abspath(os.path.join(kb_root, norm))
+    if not abs_path.startswith(kb_root):
+        raise HTTPException(status_code=400, detail="Invalid path")
+    if os.path.exists(abs_path):
+        raise HTTPException(status_code=409, detail="Already exists")
+    if req.type == 'directory':
+        os.makedirs(abs_path, exist_ok=False)
+        return {"success": True, "type": "directory"}
+    else:
+        os.makedirs(os.path.dirname(abs_path), exist_ok=True)
+        with open(abs_path, 'w', encoding='utf-8') as f:
+            f.write(req.content or '')
+        return {"success": True, "type": "file"}
+
+@app.delete("/api/kb/item", tags=["Knowledge Base"])
+def kb_delete_file(path: str, api_key: str = Depends(get_api_key)):
+    kb_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
+    norm = kb_normalize_path(path)
+    abs_path = os.path.abspath(os.path.join(kb_root, norm))
+    if not abs_path.startswith(kb_root):
+        raise HTTPException(status_code=400, detail="Invalid path")
+    if not os.path.isfile(abs_path):
+        raise HTTPException(status_code=404, detail="File not found")
+    os.remove(abs_path)
+    return {"success": True}
+
+@app.delete("/api/kb/directory", tags=["Knowledge Base"])
+def kb_delete_directory(path: str, recursive: bool = False, api_key: str = Depends(get_api_key)):
+    import shutil
+    kb_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
+    norm = kb_normalize_path(path)
+    abs_path = os.path.abspath(os.path.join(kb_root, norm))
+    if not abs_path.startswith(kb_root):
+        raise HTTPException(status_code=400, detail="Invalid path")
+    if not os.path.isdir(abs_path):
+        raise HTTPException(status_code=404, detail="Directory not found")
+    if recursive:
+        shutil.rmtree(abs_path)
+    else:
+        try:
+            os.rmdir(abs_path)
+        except OSError:
+            raise HTTPException(status_code=400, detail="Directory not empty")
+    return {"success": True}
+
+class KbMoveRequest(BaseModel):
+    path: str
+    new_path: str
+
+@app.post("/api/kb/move", tags=["Knowledge Base"])
+def kb_move(req: KbMoveRequest, api_key: str = Depends(get_api_key)):
+    kb_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
+    norm_old = kb_normalize_path(req.path)
+    norm_new = kb_normalize_path(req.new_path)
+    abs_old = os.path.abspath(os.path.join(kb_root, norm_old))
+    abs_new = os.path.abspath(os.path.join(kb_root, norm_new))
+    if not abs_old.startswith(kb_root) or not abs_new.startswith(kb_root):
+        raise HTTPException(status_code=400, detail="Invalid path")
+    if not os.path.exists(abs_old):
+        raise HTTPException(status_code=404, detail="Source not found")
+    os.makedirs(os.path.dirname(abs_new), exist_ok=True)
+    os.replace(abs_old, abs_new)
+    return {"success": True}
+
+@app.get("/api/kb/tree", tags=["Knowledge Base"])
+def kb_tree(api_key: str = Depends(get_api_key)):
+    kb_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
+    return get_knowledge_base_structure(kb_root, is_root=True, current_relative_path="")
 
 @app.get("/api/kb/versions", response_model=KbVersionsResponse, tags=["Knowledge Base"])
 def kb_versions(path: str, limit: int = 50, offset: int = 0, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
@@ -487,7 +636,141 @@ def kb_versions(path: str, limit: int = 50, offset: int = 0, db: Session = Depen
 
 @app.get("/api/kb/diff", tags=["Knowledge Base"])
 def kb_diff(path: str, v1: Optional[int] = None, v2: Optional[int] = None):
-    raise HTTPException(status_code=501, detail="Diff API in Phase P2")
+    # Basic unified diff between two versions (v1 older, v2 newer)
+    if v1 is None or v2 is None:
+        raise HTTPException(status_code=400, detail="v1 and v2 required")
+    from sqlalchemy import select
+    db = SessionLocal()
+    try:
+        npath = kb_normalize_path(path)
+        doc = db.scalar(select(KbDocument).where(KbDocument.path == npath))
+        if not doc:
+            raise HTTPException(status_code=404, detail="Document not found")
+        v1_row = db.scalar(select(KbDocumentVersion).where(KbDocumentVersion.document_id==doc.id, KbDocumentVersion.version_no==v1))
+        v2_row = db.scalar(select(KbDocumentVersion).where(KbDocumentVersion.document_id==doc.id, KbDocumentVersion.version_no==v2))
+        if not v1_row or not v2_row:
+            raise HTTPException(status_code=404, detail="Version not found")
+        import difflib
+        a_lines = (v1_row.content or '').splitlines()
+        b_lines = (v2_row.content or '').splitlines()
+        diff_lines = list(difflib.unified_diff(a_lines, b_lines, fromfile=f"v{v1}", tofile=f"v{v2}", lineterm=""))
+        # Construct simple hunks by scanning diff headers starting with @@
+        hunks = []
+        current = None
+        for line in diff_lines:
+            if line.startswith('@@'):
+                if current:
+                    hunks.append(current)
+                current = {"header": line, "lines": []}
+            else:
+                if current is None:
+                    current = {"header": "", "lines": []}
+                current["lines"].append(line)
+        if current:
+            hunks.append(current)
+        return {"diff_format": "unified", "hunks": hunks, "line_count": len(diff_lines)}
+    finally:
+        db.close()
+
+@app.get("/api/kb/diff/structured", tags=["Knowledge Base"])
+def kb_diff_structured(path: str, v1: Optional[int] = None, v2: Optional[int] = None):
+    """Return structured diff: hunks with per-line metadata (type, old_line, new_line, text).
+    line types: context, add, del. Useful for side-by-side rendering.
+    """
+    if v1 is None or v2 is None:
+        raise HTTPException(status_code=400, detail="v1 and v2 required")
+    from sqlalchemy import select
+    import difflib, re
+    db = SessionLocal()
+    try:
+        npath = kb_normalize_path(path)
+        doc = db.scalar(select(KbDocument).where(KbDocument.path == npath))
+        if not doc:
+            raise HTTPException(status_code=404, detail="Document not found")
+        v1_row = db.scalar(select(KbDocumentVersion).where(KbDocumentVersion.document_id==doc.id, KbDocumentVersion.version_no==v1))
+        v2_row = db.scalar(select(KbDocumentVersion).where(KbDocumentVersion.document_id==doc.id, KbDocumentVersion.version_no==v2))
+        if not v1_row or not v2_row:
+            raise HTTPException(status_code=404, detail="Version not found")
+        a_lines = (v1_row.content or '').splitlines()
+        b_lines = (v2_row.content or '').splitlines()
+        udiff = list(difflib.unified_diff(a_lines, b_lines, fromfile=f"v{v1}", tofile=f"v{v2}", lineterm=""))
+        hunks = []
+        h = None
+        old_line_base = new_line_base = None
+        header_re = re.compile(r'^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@')
+        for line in udiff:
+            if line.startswith('@@'):
+                if h:
+                    hunks.append(h)
+                m = header_re.match(line)
+                old_line_base = int(m.group(1)) if m else None
+                new_line_base = int(m.group(3)) if m else None
+                h = { 'header': line, 'lines': [] }
+                old_off = 0
+                new_off = 0
+                continue
+            if h is None:
+                continue
+            tag = line[:1]
+            text = line[1:]
+            if tag == ' ':
+                old_off += 1; new_off += 1
+                h['lines'].append({'type':'context','old_line': old_line_base + old_off -1, 'new_line': new_line_base + new_off -1, 'text': text})
+            elif tag == '+':
+                new_off += 1
+                h['lines'].append({'type':'add','old_line': None, 'new_line': new_line_base + new_off -1, 'text': text})
+            elif tag == '-':
+                old_off += 1
+                h['lines'].append({'type':'del','old_line': old_line_base + old_off -1, 'new_line': None, 'text': text})
+            else:
+                # unexpected (e.g. file headers) ignore
+                pass
+        if h:
+            hunks.append(h)
+        # Post-process: pair adjacent del/add sequences into change entries
+        processed = []
+        for hunk in hunks:
+            lines = hunk['lines']
+            new_lines = []
+            dels = []
+            adds = []
+            def flush():
+                nonlocal dels, adds, new_lines
+                if not dels and not adds:
+                    return
+                ln = max(len(dels), len(adds))
+                for i in range(ln):
+                    d = dels[i] if i < len(dels) else None
+                    a = adds[i] if i < len(adds) else None
+                    if d and a:
+                        new_lines.append({
+                            'type': 'change',
+                            'old_line': d['old_line'],
+                            'new_line': a['new_line'],
+                            'old_text': d['text'],
+                            'new_text': a['text'],
+                            'text': a['text']
+                        })
+                    elif d:
+                        new_lines.append(d)
+                    elif a:
+                        new_lines.append(a)
+                dels = []; adds = []
+            for ln in lines:
+                t = ln['type']
+                if t == 'del':
+                    dels.append(ln)
+                    continue
+                if t == 'add':
+                    adds.append(ln)
+                    continue
+                flush()
+                new_lines.append(ln)
+            flush()
+            processed.append({'header': hunk['header'], 'lines': new_lines})
+        return { 'diff_format':'structured', 'hunks': processed, 'v1': v1, 'v2': v2 }
+    finally:
+        db.close()
 
 @app.post("/api/kb/outline", response_model=KbOutlineResponse, tags=["Knowledge Base"])
 def kb_outline(req: KbOutlineRequest):
@@ -501,7 +784,7 @@ def kb_outline(req: KbOutlineRequest):
     return KbOutlineResponse(outline=outlines)
 
 @app.post("/api/kb/compose/external", response_model=KbTaskResponse, tags=["Knowledge Base"])
-async def kb_compose_external(topic: str, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
+async def kb_compose_external(topic: str, fail_stage: Optional[str] = None, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
     # Create task record
     task_id = str(_uuid.uuid4())
     record_task(db, task_id, type_='generation', status='pending', stage='queued', input={'topic': topic})
@@ -513,8 +796,31 @@ async def kb_compose_external(topic: str, db: Session = Depends(get_db), api_key
         for idx, st in enumerate(stages):
             db_s = SessionLocal()
             try:
-                update_task(db_s, task_id, status='running', stage=st, progress=int((idx/len(stages))*100))
-                db_s.commit()
+                # Simulated failure hook
+                if fail_stage and st == fail_stage:
+                    update_task(db_s, task_id, status='error', stage=st, progress=int((idx/len(stages))*100), error='Simulated failure at stage {}'.format(st))
+                    db_s.commit()
+                    log_task_event('ERROR', task_id, 'generation', st, 'error', progress=int((idx/len(stages))*100), error=f'Simulated failure at stage {st}')
+                    await kb_ws_manager.broadcast({
+                        'task_id': task_id,
+                        'type': 'generation',
+                        'status': 'error',
+                        'stage': st,
+                        'error': 'Simulated failure at stage {}'.format(st),
+                        'progress': int((idx/len(stages))*100)
+                    })
+                    return
+                else:
+                    update_task(db_s, task_id, status='running', stage=st, progress=int((idx/len(stages))*100))
+                    db_s.commit()
+                    log_task_event('INFO', task_id, 'generation', st, 'running', progress=int((idx/len(stages))*100))
+                    await kb_ws_manager.broadcast({
+                        'task_id': task_id,
+                        'type': 'generation',
+                        'status': 'running',
+                        'stage': st,
+                        'progress': int((idx/len(stages))*100)
+                    })
             finally:
                 db_s.close()
             await asyncio.sleep(0.1)  # simulate work
@@ -522,6 +828,14 @@ async def kb_compose_external(topic: str, db: Session = Depends(get_db), api_key
         try:
             update_task(db_s, task_id, status='done', stage='done', progress=100, output={'generated_doc_data': {'title': topic}})
             db_s.commit()
+            log_task_event('INFO', task_id, 'generation', 'done', 'done', progress=100)
+            await kb_ws_manager.broadcast({
+                'task_id': task_id,
+                'type': 'generation',
+                'status': 'done',
+                'stage': 'done',
+                'progress': 100
+            })
         finally:
             db_s.close()
 
@@ -535,6 +849,41 @@ def kb_get_task_status(task_id: str, db: Session = Depends(get_db), api_key: str
     if not t:
         raise HTTPException(status_code=404, detail="Task not found")
     return KbTaskResponse(id=t['id'], type=t['type'], status=t['status'], stage=t['stage'], progress=t['progress'], error=t['error'])
+
+@app.get("/api/kb/tasks/recent", response_model=KbTaskListResponse, tags=["Knowledge Base"])
+def kb_recent_tasks(limit: int = 20, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
+    q = db.query(KbTask).order_by(KbTask.created_at.desc()).limit(min(limit, 100))
+    rows = q.all()
+    tasks = []
+    for t in rows:
+        tasks.append({
+            'id': t.id,
+            'type': t.type,
+            'status': t.status,
+            'stage': t.stage,
+            'progress': t.progress,
+            'error': t.error,
+            'created_at': t.created_at.isoformat() if getattr(t, 'created_at', None) else None,
+            'updated_at': t.updated_at.isoformat() if getattr(t, 'updated_at', None) else None,
+        })
+    return KbTaskListResponse(tasks=tasks)
+
+@app.websocket("/api/kb/tasks/ws")
+async def kb_tasks_ws(ws: WebSocket):
+    await kb_ws_manager.connect(ws)
+    try:
+        while True:
+            msg = await ws.receive_text()
+            # Simple heartbeat: client sends 'ping' -> respond 'pong'
+            if msg == 'ping':
+                try:
+                    await ws.send_text('pong')
+                except Exception:
+                    break
+    except WebSocketDisconnect:
+        kb_ws_manager.disconnect(ws)
+    except Exception:
+        kb_ws_manager.disconnect(ws)
 
 
 # ===================================

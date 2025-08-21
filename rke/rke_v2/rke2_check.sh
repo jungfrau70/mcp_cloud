@@ -178,7 +178,7 @@ check_metrics() {
 # 보안 점검
 check_security() {
     log_message "보안 점검" "SECTION"
-    safe_execute "kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.namespace}{\"\\t\"}{.metadata.name}{\"\\t\"}{.spec.securityContext.runAsNonRoot}{\"\\n\"}{end}'"
+    safe_execute "kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.namespace}{\"\t\"}{.metadata.name}{\"\t\"}{.spec.securityContext.runAsNonRoot}{\"\n\"}{end}'"
     safe_execute "kubectl get networkpolicy -A"
     log_message "" "SECTION_END"
 }
@@ -232,24 +232,24 @@ parse_arguments() {
             -c|--config)
                 CONFIG_FILE="$2"
                 shift 2
-                ;;
+                ;; 
             -e|--env)
                 ENV_FILE="$2"
                 shift 2
-                ;;
+                ;; 
             -v|--version)
                 echo "RKE2 플랫폼 점검 스크립트 v${SCRIPT_VERSION}"
                 exit 0
-                ;;
+                ;; 
             -h|--help)
                 show_usage
                 exit 0
-                ;;
+                ;; 
             *)
                 log_message "알 수 없는 옵션: $1" "ERROR"
                 show_usage
                 exit 1
-                ;;
+                ;; 
         esac
     done
 }
