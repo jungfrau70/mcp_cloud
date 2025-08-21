@@ -1,77 +1,79 @@
 <template>
   <div class="p-4">
-    <h2 class="text-lg font-bold mb-4">지식베이스 탐색기</h2>
+    <!-- 헤더 (트리 전용 모드에서는 간단한 제목만) -->
+    <template v-if="mode !== 'search'">
+      <h2 class="text-lg font-bold mb-4" v-if="mode !== 'search'">지식베이스 탐색기</h2>
+    </template>
 
-    <!-- 탭 네비게이션 -->
-    <div class="mb-4 border-b border-gray-200">
-      <nav class="flex space-x-4">
-        <button
-          @click="activeTab = 'internal'"
-          :class="tabBtnClass('internal')"
-        >내부자료 검색</button>
-        <button
-          @click="activeTab = 'external'"
-          :class="tabBtnClass('external')"
-        >외부자료 검색 및 문서 생성</button>
-      </nav>
-    </div>
-
-    <!-- 로딩 -->
-    <div v-if="isInitialLoading" class="text-center py-8">
-      <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2"></div>
-      <p class="text-sm text-gray-500">로딩 중...</p>
-    </div>
-
-    <!-- 내부자료 검색 탭 -->
-    <div v-else-if="activeTab === 'internal'" class="space-y-4">
-      <div class="flex items-center space-x-2">
-        <input
-          v-model="internalSearchQuery"
-          type="text"
-          placeholder="파일/내용 검색..."
-          class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          @keyup.enter="performInternalSearch"
-        />
-        <button
-          @click="performInternalSearch"
-          :disabled="internalSearchLoading"
-          class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex items-center"
-        >
-          <svg v-if="internalSearchLoading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-          검색
-        </button>
-        <button
-          v-if="internalSearchPerformed"
-          @click="resetInternalSearch"
-          class="px-3 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
-        >전체 보기</button>
+    <!-- 검색 UI (mode !== 'tree') -->
+    <template v-if="mode !== 'tree'">
+      <div class="mb-4 border-b border-gray-200">
+        <nav class="flex space-x-4">
+          <button @click="activeTab = 'internal'" :class="tabBtnClass('internal')">내부자료 검색</button>
+          <button @click="activeTab = 'external'" :class="tabBtnClass('external')">외부자료 검색 및 문서 생성</button>
+        </nav>
       </div>
 
-      <!-- 검색 결과 -->
-      <div v-if="internalSearchPerformed" class="bg-white border rounded-md divide-y max-h-80 overflow-auto">
-        <div v-if="internalSearchResults.length === 0" class="p-4 text-sm text-gray-500">검색 결과가 없습니다.</div>
-        <div
-          v-for="res in internalSearchResults"
-          :key="res.id + res.path"
-          class="p-3 hover:bg-blue-50 cursor-pointer"
-          @click="openSearchResult(res)"
-        >
-          <div class="flex items-start justify-between">
-            <div class="flex-1">
-              <h4 class="text-sm font-medium" v-html="res.highlighted_title || res.title"></h4>
-              <p class="text-xs text-gray-500 mb-1">{{ res.category }} • {{ res.path }}</p>
-              <p class="text-xs text-gray-600" v-html="res.highlighted_content || (res.content ? res.content.slice(0,120)+'...' : '')"></p>
-            </div>
-            <div class="ml-2 space-x-1">
-              <span v-for="tag in res.tags" :key="tag" class="inline-block px-2 py-0.5 bg-gray-100 rounded text-[10px] text-gray-700">{{ tag }}</span>
+      <!-- 로딩 -->
+      <div v-if="isInitialLoading" class="text-center py-8">
+        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2"></div>
+        <p class="text-sm text-gray-500">로딩 중...</p>
+      </div>
+
+      <!-- 내부자료 검색 탭 -->
+      <div v-else-if="activeTab === 'internal'" class="space-y-4">
+        <div class="flex items-center space-x-2">
+          <input v-model="internalSearchQuery" type="text" placeholder="파일/내용 검색..." class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" @keyup.enter="performInternalSearch" />
+          <button @click="performInternalSearch" :disabled="internalSearchLoading" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex items-center">
+            <svg v-if="internalSearchLoading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" /><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" /></svg>
+            검색
+          </button>
+          <button v-if="internalSearchPerformed" @click="resetInternalSearch" class="px-3 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200">전체 보기</button>
+        </div>
+        <div v-if="internalSearchPerformed" class="bg-white border rounded-md divide-y max-h-80 overflow-auto">
+          <div v-if="internalSearchResults.length === 0" class="p-4 text-sm text-gray-500">검색 결과가 없습니다.</div>
+          <div v-for="res in internalSearchResults" :key="res.id + res.path" class="p-3 hover:bg-blue-50 cursor-pointer" @click="openSearchResult(res)">
+            <div class="flex items-start justify-between">
+              <div class="flex-1">
+                <h4 class="text-sm font-medium" v-html="res.highlighted_title || res.title" />
+                <p class="text-xs text-gray-500 mb-1">{{ res.category }} • {{ res.path }}</p>
+                <p class="text-xs text-gray-600" v-html="res.highlighted_content || (res.content ? res.content.slice(0,120)+'...' : '')" />
+              </div>
+              <div class="ml-2 space-x-1">
+                <span v-for="tag in res.tags" :key="tag" class="inline-block px-2 py-0.5 bg-gray-100 rounded text-[10px] text-gray-700">{{ tag }}</span>
+              </div>
             </div>
           </div>
         </div>
+        <!-- 파일 트리는 검색 패널 모드에서는 숨김 -->
       </div>
 
-      <!-- 파일 트리 -->
+      <!-- 외부자료 검색 및 문서 생성 탭 -->
+      <div v-else-if="activeTab === 'external'" class="space-y-4">
+        <div class="space-y-3 bg-white p-4 border rounded-md">
+          <textarea v-model="externalQuery" rows="3" placeholder="생성할 문서 주제 (예: AWS Lambda 서버리스 아키텍처)" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <input v-model="externalTargetPath" type="text" placeholder="저장 경로 (예: aws/lambda/lambda-architecture) - 선택" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <div class="flex items-center space-x-2">
+            <button @click="generateExternalDocument" :disabled="!canGenerateExternal || externalGenerating" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex items-center">
+              <svg v-if="externalGenerating" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" /><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" /></svg>
+              {{ externalGenerating ? '생성 중...' : 'AI 문서 생성' }}
+            </button>
+            <div v-if="externalGenerating" class="text-sm text-blue-600">{{ externalStatus }}</div>
+          </div>
+          <div v-if="externalError" class="text-sm text-red-600">{{ externalError }}</div>
+          <div v-if="externalSuccess" class="text-sm text-green-600">{{ externalSuccess }}</div>
+        </div>
+      </div>
+    </template>
+
+    <!-- 트리 전용 모드 (mode === 'tree') -->
+    <template v-if="mode === 'tree'">
+      <div v-if="isInitialLoading" class="text-center py-8">
+        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2" />
+        <p class="text-sm text-gray-500">로딩 중...</p>
+      </div>
       <FileTree
-        v-if="!internalSearchPerformed"
+        v-else
         :tree="treeData"
         :base-path="''"
         @file-click="handleFileSelect"
@@ -81,46 +83,21 @@
         @directory-delete="handleDirectoryDelete"
         @file-move="handleFileMove"
       />
-    </div>
-
-    <!-- 외부자료 검색 및 문서 생성 탭 -->
-    <div v-else-if="activeTab === 'external'" class="space-y-4">
-      <div class="space-y-3 bg-white p-4 border rounded-md">
-        <textarea
-          v-model="externalQuery"
-          rows="3"
-          placeholder="생성할 문서 주제 (예: AWS Lambda 서버리스 아키텍처)"
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        ></textarea>
-        <input
-          v-model="externalTargetPath"
-          type="text"
-          placeholder="저장 경로 (예: aws/lambda/lambda-architecture) - 선택"
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <div class="flex items-center space-x-2">
-          <button
-            @click="generateExternalDocument"
-            :disabled="!canGenerateExternal || externalGenerating"
-            class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex items-center"
-          >
-            <svg v-if="externalGenerating" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-            {{ externalGenerating ? '생성 중...' : 'AI 문서 생성' }}
-          </button>
-          <div v-if="externalGenerating" class="text-sm text-blue-600">{{ externalStatus }}</div>
-        </div>
-        <div v-if="externalError" class="text-sm text-red-600">{{ externalError }}</div>
-        <div v-if="externalSuccess" class="text-sm text-green-600">{{ externalSuccess }}</div>
-      </div>
-    </div>
+    </template>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
+import { defineProps } from 'vue';
 import FileTree from '~/components/FileTree.vue';
 
 const emit = defineEmits(['file-select']);
+
+const props = defineProps({
+  // mode: 'full' (검색+트리), 'search' (검색 패널), 'tree' (파일 트리만)
+  mode: { type: String, default: 'full' }
+});
 
 const config = useRuntimeConfig();
 const apiBase = config.public.apiBaseUrl || 'http://localhost:8000';
@@ -215,8 +192,11 @@ const resetInternalSearch = () => {
 }
 
 const openSearchResult = (res) => {
-  // For now just log; could auto-open file if path maps to file
-  console.log('Open search result', res)
+  if (res.path) {
+    emit('file-select', res.path)
+  } else {
+    console.log('Open search result (no path)', res)
+  }
 }
 
 // 외부 문서 생성
@@ -413,6 +393,11 @@ const handleFileMove = async (data) => {
 
 // Lifecycle
 onMounted(() => {
-  loadKnowledgeBaseStructure();
+  // 트리 모드이거나 전체 모드일 때만 구조 로딩
+  if (props.mode === 'tree' || props.mode === 'full') {
+    loadKnowledgeBaseStructure();
+  } else {
+    isInitialLoading.value = false;
+  }
 });
 </script>

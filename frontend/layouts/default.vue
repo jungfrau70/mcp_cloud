@@ -38,7 +38,7 @@
       >
         <div v-show="!isSidebarCollapsed">
           <SyllabusExplorer v-if="!isKnowledgeBase" @file-click="handleFileClick" />
-          <KnowledgeBaseExplorer v-else @file-select="handleKbFileSelect" />
+          <KnowledgeBaseExplorer v-else mode="tree" @file-select="handleKbFileSelect" />
         </div>
       </aside>
       <!-- Resizer -->
@@ -65,10 +65,15 @@
       </div>
 
       <!-- Center Panel: Workspace Tabs -->
-      <main class="flex-grow overflow-hidden" ref="workspaceMain">
-        <WorkspaceView :active-content="activeContent" :active-slide="activeSlide" :active-path="activePath" ref="workspaceView">
-          <slot /> <!-- Nuxt page content will be injected here -->
-        </WorkspaceView>
+      <main class="flex-grow overflow-hidden flex flex-col" ref="workspaceMain">
+        <div v-if="isKnowledgeBase" class="bg-white border-b shadow-sm">
+          <KnowledgeBaseExplorer mode="search" @file-select="handleKbFileSelect" />
+        </div>
+        <div class="flex-1 overflow-hidden">
+          <WorkspaceView :active-content="activeContent" :active-slide="activeSlide" :active-path="activePath" ref="workspaceView">
+            <slot /> <!-- Nuxt page content will be injected here -->
+          </WorkspaceView>
+        </div>
       </main>
 
       <!-- Right Panel: AI Assistant -->
