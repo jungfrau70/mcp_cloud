@@ -119,7 +119,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, onBeforeUnmount } from 'vue'
+import { ref, watch, computed, onBeforeUnmount, onMounted } from 'vue'
 import { merge3 } from '~/utils/threeWayMerge.js'
 import { useKbApi } from '~/composables/useKbApi'
 import { marked } from 'marked'
@@ -374,9 +374,11 @@ function diffClass(line){
   return 'text-gray-500'
 }
 
+onMounted(() => {
 requestOutline()
 buildLineOffsets()
 schedulePreviewScan()
+})
 
 function buildLineOffsets(){
   const text = draft.value || ''
@@ -432,7 +434,8 @@ function onEditorScroll(){
 
 // Preview heading sync
 function schedulePreviewScan(){
-  requestAnimationFrame(() => scanPreviewHeadings())
+  if (typeof window === 'undefined' || typeof window.requestAnimationFrame === 'undefined') return
+  window.requestAnimationFrame(() => scanPreviewHeadings())
 }
 
 function scanPreviewHeadings(){

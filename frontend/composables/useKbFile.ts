@@ -20,7 +20,7 @@ export function useKbFile(){
     error.value = undefined
     try {
       path.value = targetPath
-      const res = await fetch(`${apiBase()}/api/kb/item?path=${encodeURIComponent(stripBasePath(targetPath))}`, { headers: headers(), signal: currentAbort.signal })
+      const res = await fetch(`${apiBase()}/api/v1/knowledge-base/item?path=${encodeURIComponent(stripBasePath(targetPath))}`, { headers: headers(), signal: currentAbort.signal })
       if(!res.ok) throw new Error('Load failed')
       const data = await res.json()
       content.value = data.content || ''
@@ -37,13 +37,24 @@ export function useKbFile(){
   function apiBase(){
     // @ts-ignore Nuxt runtime
     const config = useRuntimeConfig()
-    return config.public.apiBaseUrl || 'http://localhost:8000'
+    const configured = (config.public as any)?.apiBaseUrl || 'http://localhost:8000'
+    if (typeof window !== 'undefined'){
+      try{
+        const u = new URL(configured)
+        const browserHost = window.location.hostname
+        if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== browserHost){
+          const port = u.port || '8000'
+          return `${window.location.protocol}//${browserHost}:${port}`
+        }
+      }catch{/* ignore */}
+    }
+    return configured
   }
   function headers(){ return { 'X-API-Key': 'my_mcp_eagle_tiger', 'Content-Type': 'application/json' } }
 
   async function save(newContent: string, opts: SaveOptions = {}){
     const expected = opts.force ? undefined : lastVersion.value
-    const res = await fetch(`${apiBase()}/api/kb/item`, {
+    const res = await fetch(`${apiBase()}/api/v1/knowledge-base/item`, {
       method: 'PATCH',
       headers: headers(),
       body: JSON.stringify({ path: stripBasePath(path.value), content: newContent, message: opts.message, expected_version_no: expected })

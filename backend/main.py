@@ -273,24 +273,36 @@ DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://mcpuser:mcppassword@mcp_p
 print(f"🔗 Database URL: {DATABASE_URL}")
 
 # Gemini API Key 환경변수 가져오기
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "dummy_key")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # API Key for authentication
-MCP_API_KEY = os.getenv("MCP_API_KEY", "my_mcp_eagle_tiger")
+MCP_API_KEY = os.getenv("MCP_API_KEY")
+if not MCP_API_KEY:
+    raise RuntimeError("MCP_API_KEY is not set. Please configure it in backend/env/.env or environment variables.")
 
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
-async def get_api_key(request: Request):
-    """Unified API key validation supporting multiple test keys & path-specific messages."""
-    provided = request.headers.get("x-api-key") or request.query_params.get("api_key")
-    expected_primary = os.getenv("MCP_API_KEY", MCP_API_KEY)
-    # Allow common test keys used across different test modules
-    # Always include the original default key plus common test keys
-    # Always include canonical default test key literal to avoid env drift breaking tests
-    allowed = {expected_primary, MCP_API_KEY, "test_api_key", "my_test_api_key", "my_mcp_eagle_tiger"}
-    if provided is None:
-        # Some tests expect different messages; generate-from-external expects 'Could not validate credentials'
-        path = request.url.path
+async def get_api_key(api_key: str = Security(api_key_header), request: Request = None):
+    """API Key resolver used by all protected routes.
+    - Exposes API Key security scheme in Swagger via Security(api_key_header)
+    - Accepts header (Swagger Authorize) or `?api_key=` query param as fallback
+    - Respects DISABLE_AUTH=true for local tests
+    """
+    # Fallback to query param if header missing
+    provided = api_key
+    if not provided and request is not None:
+        provided = request.query_params.get("api_key")
+
+    # Auth bypass for local tests
+    if os.getenv("DISABLE_AUTH", "false").lower() == "true":
+        return provided or ""
+
+    expected_primary = os.getenv("MCP_API_KEY")
+    allowed = {expected_primary} if expected_primary else set()
+
+    if not provided:
+        # Some tests expect different messages for specific paths
+        path = request.url.path if request else ""
         if "/knowledge/generate-from-external" in path:
             raise HTTPException(status_code=403, detail="Could not validate credentials")
         raise HTTPException(status_code=403, detail="Not authenticated")
@@ -496,14 +508,14 @@ def get_knowledge_base_structure(path, is_root: bool = False, current_relative_p
 # KB API (P1)
 # =============================================================
 
-@app.get("/api/kb/item", tags=["Knowledge Base"])
+@app.get("/api/_deprecated/kb/item", tags=["Deprecated"], include_in_schema=False)
 def kb_get_item(path: str, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
     item = get_latest_content(db, path)
     if not item:
         raise HTTPException(status_code=404, detail="Document not found")
     return item
 
-@app.patch("/api/kb/item", response_model=KbSaveResponse, tags=["Knowledge Base"])
+@app.patch("/api/_deprecated/kb/item", response_model=KbSaveResponse, tags=["Deprecated"], include_in_schema=False)
 def kb_save_item(req: KbSaveRequest, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
 
     kb_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
@@ -556,7 +568,7 @@ class KbCreateRequest(BaseModel):
     type: Literal['file','directory'] = 'file'
     content: Optional[str] = ''
 
-@app.post("/api/kb/item", tags=["Knowledge Base"])
+@app.post("/api/_deprecated/kb/item", tags=["Deprecated"], include_in_schema=False)
 def kb_create_item(req: KbCreateRequest, api_key: str = Depends(get_api_key)):
     kb_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
     norm = kb_normalize_path(req.path)
@@ -574,7 +586,7 @@ def kb_create_item(req: KbCreateRequest, api_key: str = Depends(get_api_key)):
             f.write(req.content or '')
         return {"success": True, "type": "file"}
 
-@app.delete("/api/kb/item", tags=["Knowledge Base"])
+@app.delete("/api/_deprecated/kb/item", tags=["Deprecated"], include_in_schema=False)
 def kb_delete_file(path: str, api_key: str = Depends(get_api_key)):
     kb_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
     norm = kb_normalize_path(path)
@@ -586,7 +598,7 @@ def kb_delete_file(path: str, api_key: str = Depends(get_api_key)):
     os.remove(abs_path)
     return {"success": True}
 
-@app.delete("/api/kb/directory", tags=["Knowledge Base"])
+@app.delete("/api/_deprecated/kb/directory", tags=["Deprecated"], include_in_schema=False)
 def kb_delete_directory(path: str, recursive: bool = False, api_key: str = Depends(get_api_key)):
     import shutil
     kb_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
@@ -609,7 +621,7 @@ class KbMoveRequest(BaseModel):
     path: str
     new_path: str
 
-@app.post("/api/kb/move", tags=["Knowledge Base"])
+@app.post("/api/_deprecated/kb/move", tags=["Deprecated"], include_in_schema=False)
 def kb_move(req: KbMoveRequest, api_key: str = Depends(get_api_key)):
     kb_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
     norm_old = kb_normalize_path(req.path)
@@ -624,17 +636,21 @@ def kb_move(req: KbMoveRequest, api_key: str = Depends(get_api_key)):
     os.replace(abs_old, abs_new)
     return {"success": True}
 
-@app.get("/api/kb/tree", tags=["Knowledge Base"])
-def kb_tree(api_key: str = Depends(get_api_key)):
-    kb_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
-    return get_knowledge_base_structure(kb_root, is_root=True, current_relative_path="")
+# NOTE: Removed duplicate `/api/kb/tree` endpoint.
+# The canonical implementation lives below under the "Knowledge FS" section
+# and supports nested paths and consistent response shape for the frontend.
 
-@app.get("/api/kb/versions", response_model=KbVersionsResponse, tags=["Knowledge Base"])
+@app.get("/api/_deprecated/kb/versions", response_model=KbVersionsResponse, tags=["Deprecated"], include_in_schema=False)
 def kb_versions(path: str, limit: int = 50, offset: int = 0, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
     versions = kb_list_versions(db, path, limit=limit, offset=offset)
     return KbVersionsResponse(versions=versions)
 
-@app.get("/api/kb/diff", tags=["Knowledge Base"])
+# Versioned alias
+@app.get("/api/v1/knowledge-base/versions", response_model=KbVersionsResponse, tags=["Knowledge Base"])
+def kb_versions_v1(path: str, limit: int = 50, offset: int = 0, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
+    return kb_versions(path, limit, offset, db, api_key)
+
+@app.get("/api/_deprecated/kb/diff", tags=["Deprecated"], include_in_schema=False)
 def kb_diff(path: str, v1: Optional[int] = None, v2: Optional[int] = None):
     # Basic unified diff between two versions (v1 older, v2 newer)
     if v1 is None or v2 is None:
@@ -672,7 +688,12 @@ def kb_diff(path: str, v1: Optional[int] = None, v2: Optional[int] = None):
     finally:
         db.close()
 
-@app.get("/api/kb/diff/structured", tags=["Knowledge Base"])
+# Versioned alias
+@app.get("/api/v1/knowledge-base/diff", tags=["Knowledge Base"])
+def kb_diff_v1(path: str, v1: Optional[int] = None, v2: Optional[int] = None):
+    return kb_diff(path, v1, v2)
+
+@app.get("/api/_deprecated/kb/diff/structured", tags=["Deprecated"], include_in_schema=False)
 def kb_diff_structured(path: str, v1: Optional[int] = None, v2: Optional[int] = None):
     """Return structured diff: hunks with per-line metadata (type, old_line, new_line, text).
     line types: context, add, del. Useful for side-by-side rendering.
@@ -772,7 +793,12 @@ def kb_diff_structured(path: str, v1: Optional[int] = None, v2: Optional[int] = 
     finally:
         db.close()
 
-@app.post("/api/kb/outline", response_model=KbOutlineResponse, tags=["Knowledge Base"])
+# Versioned alias
+@app.get("/api/v1/knowledge-base/diff/structured", tags=["Knowledge Base"])
+def kb_diff_structured_v1(path: str, v1: Optional[int] = None, v2: Optional[int] = None):
+    return kb_diff_structured(path, v1, v2)
+
+@app.post("/api/_deprecated/kb/outline", response_model=KbOutlineResponse, tags=["Deprecated"], include_in_schema=False)
 def kb_outline(req: KbOutlineRequest):
     # Simple heading extractor using regex
     import re
@@ -783,7 +809,12 @@ def kb_outline(req: KbOutlineRequest):
             outlines.append(KbOutlineItem(level=len(m.group(1)), text=m.group(2).strip(), line=i+1))
     return KbOutlineResponse(outline=outlines)
 
-@app.post("/api/kb/compose/external", response_model=KbTaskResponse, tags=["Knowledge Base"])
+# Versioned alias
+@app.post("/api/v1/knowledge-base/outline", response_model=KbOutlineResponse, tags=["Knowledge Base"])
+def kb_outline_v1(req: KbOutlineRequest):
+    return kb_outline(req)
+
+@app.post("/api/_deprecated/kb/compose/external", response_model=KbTaskResponse, tags=["Deprecated"], include_in_schema=False)
 async def kb_compose_external(topic: str, fail_stage: Optional[str] = None, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
     # Create task record
     task_id = str(_uuid.uuid4())
@@ -843,14 +874,24 @@ async def kb_compose_external(topic: str, fail_stage: Optional[str] = None, db: 
 
     return KbTaskResponse(id=task_id, type='generation', status='pending', stage='queued', progress=0)
 
-@app.get("/api/kb/tasks/{task_id}", response_model=KbTaskResponse, tags=["Knowledge Base"])
+# Versioned alias
+@app.post("/api/v1/knowledge-base/compose/external", response_model=KbTaskResponse, tags=["Knowledge Base"])
+async def kb_compose_external_v1(topic: str, fail_stage: Optional[str] = None, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
+    return await kb_compose_external(topic, fail_stage, db, api_key)
+
+@app.get("/api/_deprecated/kb/tasks/{task_id}", response_model=KbTaskResponse, tags=["Deprecated"], include_in_schema=False)
 def kb_get_task_status(task_id: str, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
     t = kb_get_task(db, task_id)
     if not t:
         raise HTTPException(status_code=404, detail="Task not found")
     return KbTaskResponse(id=t['id'], type=t['type'], status=t['status'], stage=t['stage'], progress=t['progress'], error=t['error'])
 
-@app.get("/api/kb/tasks/recent", response_model=KbTaskListResponse, tags=["Knowledge Base"])
+# Versioned alias
+@app.get("/api/v1/knowledge-base/tasks/{task_id}", response_model=KbTaskResponse, tags=["Knowledge Base"])
+def kb_get_task_status_v1(task_id: str, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
+    return kb_get_task_status(task_id, db, api_key)
+
+@app.get("/api/_deprecated/kb/tasks/recent", response_model=KbTaskListResponse, tags=["Deprecated"], include_in_schema=False)
 def kb_recent_tasks(limit: int = 20, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
     q = db.query(KbTask).order_by(KbTask.created_at.desc()).limit(min(limit, 100))
     rows = q.all()
@@ -868,7 +909,12 @@ def kb_recent_tasks(limit: int = 20, db: Session = Depends(get_db), api_key: str
         })
     return KbTaskListResponse(tasks=tasks)
 
-@app.websocket("/api/kb/tasks/ws")
+# Versioned alias
+@app.get("/api/v1/knowledge-base/tasks/recent", response_model=KbTaskListResponse, tags=["Knowledge Base"])
+def kb_recent_tasks_v1(limit: int = 20, db: Session = Depends(get_db), api_key: str = Depends(get_api_key)):
+    return kb_recent_tasks(limit, db, api_key)
+
+@app.websocket("/api/_deprecated/kb/tasks/ws")
 async def kb_tasks_ws(ws: WebSocket):
     await kb_ws_manager.connect(ws)
     try:
@@ -882,6 +928,12 @@ async def kb_tasks_ws(ws: WebSocket):
                     break
     except WebSocketDisconnect:
         kb_ws_manager.disconnect(ws)
+
+# Versioned alias websocket
+@app.websocket("/api/v1/knowledge-base/tasks/ws")
+async def kb_tasks_ws_v1(ws: WebSocket):
+    try:
+        await kb_tasks_ws(ws)
     except Exception:
         kb_ws_manager.disconnect(ws)
 
@@ -1278,7 +1330,10 @@ def delete_data_source(datasource_id: int, db: Session = Depends(get_db)):
 # ===================================
 
 # Gemini API 설정
-genai.configure(api_key=GEMINI_API_KEY)
+if not GEMINI_API_KEY:
+    print("⚠️  GEMINI_API_KEY is not set. Some AI features may be disabled.")
+else:
+    genai.configure(api_key=GEMINI_API_KEY)
 
 def run_terraform_command(command: List[str], working_dir: str):
     """
@@ -1306,6 +1361,11 @@ def read_root():
 @app.get("/health", tags=["Health Check"])
 def health_check():
     return {"status": "healthy", "timestamp": datetime.now().isoformat()}
+
+# Versioned health for consistency
+@app.get("/api/v1/health", tags=["Health Check"])
+def health_check_v1():
+    return health_check()
 
 @app.post("/api/v1/agent/query", dependencies=[Depends(get_api_key)], tags=["AI Agent"])
 async def agent_query(request: AgentQueryRequest):
@@ -2166,6 +2226,8 @@ async def suggest_knowledge_title(request: dict):
 
         import re
         import google.generativeai as genai
+        if not GEMINI_API_KEY:
+            raise HTTPException(status_code=500, detail="GEMINI_API_KEY not configured")
         genai.configure(api_key=GEMINI_API_KEY)
         model = genai.GenerativeModel('gemini-pro')
         prompt = f"""
@@ -2312,6 +2374,8 @@ async def get_infrastructure_recommendations(request: dict):
         
         # Gemini API를 직접 호출하여 추천 생성
         import google.generativeai as genai
+        if not GEMINI_API_KEY:
+            raise HTTPException(status_code=500, detail="GEMINI_API_KEY not configured")
         genai.configure(api_key=GEMINI_API_KEY)
         model = genai.GenerativeModel('gemini-pro')
         
@@ -2735,7 +2799,12 @@ def kb_tree(path: str = ""):
 
     return _build(base, path.strip("/"))
 
-@app.get("/api/kb/item", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"])
+# Versioned alias
+@app.get("/api/v1/knowledge-base/tree", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+def kb_tree_v1(path: str = ""):
+    return kb_tree(path)
+
+@app.get("/api/kb/item", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"], operation_id="fs_kb_get_item")
 def kb_get_item(path: str):
     """Return metadata or file content for a KB item.
 
@@ -2754,6 +2823,11 @@ def kb_get_item(path: str):
         raise HTTPException(status_code=500, detail=f"Failed to read file: {e}")
     return {"path": path, "type": "file", "content": content}
 
+# Versioned alias
+@app.get("/api/v1/knowledge-base/item", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+def kb_get_item_v1(path: str):
+    return kb_get_item(path)
+
 class KBItemCreate(BaseModel):
     path: str
     type: Literal["file", "directory"] = "file"
@@ -2763,7 +2837,7 @@ class KBItemMove(BaseModel):
     path: str
     new_path: str
 
-@app.post("/api/kb/item", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"])
+@app.post("/api/kb/item", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"], operation_id="fs_kb_create_item")
 def kb_create_item(payload: KBItemCreate):
     fp = _kb_safe_path(payload.path)
     fp.parent.mkdir(parents=True, exist_ok=True)
@@ -2773,7 +2847,12 @@ def kb_create_item(payload: KBItemCreate):
     fp.write_text(payload.content or "", encoding="utf-8")
     return {"created": payload.path, "type": "file"}
 
-@app.patch("/api/kb/item", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"])
+# Versioned alias
+@app.post("/api/v1/knowledge-base/item", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+def kb_create_item_v1(payload: KBItemCreate):
+    return kb_create_item(payload)
+
+@app.patch("/api/kb/item", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"], operation_id="fs_kb_rename_item")
 def kb_rename_item(payload: KBItemMove):
     src = _kb_safe_path(payload.path)
     if not src.exists():
@@ -2783,7 +2862,12 @@ def kb_rename_item(payload: KBItemMove):
     src.rename(dst)
     return {"moved": {"from": payload.path, "to": payload.new_path}}
 
-@app.delete("/api/kb/item", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"])
+# Versioned alias
+@app.patch("/api/v1/knowledge-base/item", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+def kb_rename_item_v1(payload: KBItemMove):
+    return kb_rename_item(payload)
+
+@app.delete("/api/kb/item", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"], operation_id="fs_kb_delete_item")
 def kb_delete_item(path: str):
     fp = _kb_safe_path(path)
     if not fp.exists():
@@ -2793,7 +2877,12 @@ def kb_delete_item(path: str):
     fp.unlink()
     return {"deleted": path}
 
-@app.delete("/api/kb/directory", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"])
+# Versioned alias
+@app.delete("/api/v1/knowledge-base/item", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+def kb_delete_item_v1(path: str):
+    return kb_delete_item(path)
+
+@app.delete("/api/kb/directory", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"], operation_id="fs_kb_delete_directory")
 def kb_delete_directory(path: str, recursive: bool = False):
     fp = _kb_safe_path(path)
     if not fp.exists():
@@ -2809,119 +2898,79 @@ def kb_delete_directory(path: str, recursive: bool = False):
         fp.rmdir()
     return {"deleted": path}
 
+# Versioned alias
+@app.delete("/api/v1/knowledge-base/directory", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+def kb_delete_directory_v1(path: str, recursive: bool = False):
+    return kb_delete_directory(path, recursive)
+
 @app.post("/api/kb/move", dependencies=[Depends(get_api_key)], tags=["Knowledge FS"])
 def kb_move_item(payload: KBItemMove):
     return kb_rename_item(payload)
 
+# Versioned alias
+@app.post("/api/v1/knowledge-base/move", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+def kb_move_item_v1(payload: KBItemMove):
+    return kb_move_item(payload)
+
 @kb_router.post("/search-enhanced", response_model=KnowledgeSearchResponse)
 def search_knowledge_enhanced(request: KnowledgeSearchRequest):
-    """Enhanced search functionality for knowledge base with category filtering and better results."""
+    """Search KB by scanning the filesystem under mcp_knowledge_base for markdown files.
+    Returns filename/path matches and a short content snippet."""
     try:
-        results = []
-        query_lower = request.query.lower()
-        
-        # Mock data for demonstration - 실제로는 데이터베이스에서 검색
-        mock_documents = [
-            {
-                "id": 1,
-                "title": "AWS VPC 설계 및 구성 방법",
-                "category": "aws",
-                "content": "AWS VPC를 설계하고 구성하는 방법에 대한 설명입니다.",
-                "path": "aws/vpc-design.md",
-                "created_at": "2024-01-15T10:30:00Z",
-                "updated_at": "2024-01-15T10:30:00Z",
-                "tags": ["vpc", "networking", "aws"]
-            },
-            {
-                "id": 2,
-                "title": "GCP GKE 클러스터 구성",
-                "category": "gcp",
-                "content": "Google Kubernetes Engine 클러스터 구성에 대한 설명입니다.",
-                "path": "gcp/gke-cluster.md",
-                "created_at": "2024-01-14T15:20:00Z",
-                "updated_at": "2024-01-14T15:20:00Z",
-                "tags": ["kubernetes", "gke", "gcp"]
-            },
-            {
-                "id": 3,
-                "title": "Terraform 모듈 작성법",
-                "category": "terraform",
-                "content": "Terraform 모듈 작성법에 대한 설명입니다.",
-                "path": "terraform/module-guide.md",
-                "created_at": "2024-01-13T09:15:00Z",
-                "updated_at": "2024-01-13T09:15:00Z",
-                "tags": ["terraform", "iac", "modules"]
-            },
-            {
-                "id": 4,
-                "title": "코드 리뷰 문화 확산 방안",
-                "category": "best-practices",
-                "content": "코드 리뷰 문화 확산 방안에 대한 설명입니다.",
-                "path": "best-practices/code-review.md",
-                "created_at": "2024-01-12T14:45:00Z",
-                "updated_at": "2024-01-12T14:45:00Z",
-                "tags": ["code-review", "best-practices", "culture"]
-            },
-            {
-                "id": 5,
-                "title": "AWS Lambda 서버리스 아키텍처",
-                "category": "aws",
-                "content": "AWS Lambda를 사용한 서버리스 아키텍처 구성 방법",
-                "path": "aws/lambda-architecture.md",
-                "created_at": "2024-01-11T11:30:00Z",
-                "updated_at": "2024-01-11T11:30:00Z",
-                "tags": ["lambda", "serverless", "aws"]
-            }
-        ]
-        
-        # 필터링 및 검색
-        for doc in mock_documents:
-            # 카테고리 필터링
-            if request.category and request.category != "all" and doc["category"] != request.category:
-                continue
-                
-            # 검색어 매칭
-            matches = False
-            if request.search_type in ["filename", "both"]:
-                if query_lower in doc["title"].lower() or query_lower in doc["path"].lower():
-                    matches = True
-                    
-            if request.search_type in ["content", "both"]:
-                if query_lower in doc["content"].lower() or any(query_lower in tag.lower() for tag in doc["tags"]):
-                    matches = True
-                    
-            if matches:
-                # 검색어 하이라이팅
-                highlighted_title = doc["title"]
-                highlighted_content = doc["content"]
-                
-                if query_lower in doc["title"].lower():
-                    highlighted_title = doc["title"].replace(
-                        query_lower, f"<mark>{query_lower}</mark>"
-                    )
-                    
-                if query_lower in doc["content"].lower():
-                    highlighted_content = doc["content"].replace(
-                        query_lower, f"<mark>{query_lower}</mark>"
-                    )
-                
+        kb_root = KB_ROOT
+        q = (request.query or "").strip().lower()
+        results: List[Dict[str, Any]] = []
+
+        if not q:
+            return KnowledgeSearchResponse(success=True, results=[], total_count=0, query=request.query, search_type=request.search_type)
+
+        for root, _, files in os.walk(kb_root):
+            for name in files:
+                if not name.lower().endswith('.md'):
+                    continue
+                rel = os.path.relpath(os.path.join(root, name), kb_root)
+                rel = rel.replace('\\','/')
+                # Category heuristic: first directory name if exists
+                parts = rel.split('/')
+                category = parts[0] if len(parts) > 1 else 'general'
+
+                matches = False
+                title = os.path.splitext(name)[0]
+                if request.search_type in ('filename','both'):
+                    if q in title.lower() or q in rel.lower():
+                        matches = True
+
+                content_snippet = ''
+                if request.search_type in ('content','both'):
+                    try:
+                        with open(os.path.join(root, name), 'r', encoding='utf-8', errors='ignore') as f:
+                            text = f.read(4000)
+                            idx = text.lower().find(q)
+                            if idx != -1:
+                                start = max(0, idx-80)
+                                end = min(len(text), idx+120)
+                                content_snippet = text[start:end]
+                                matches = True
+                    except Exception:
+                        pass
+
+                if not matches:
+                    continue
+
+                highlighted_title = title.replace(q, f"<mark>{q}</mark>") if q in title.lower() else title
+                highlighted_content = content_snippet.replace(q, f"<mark>{q}</mark>") if content_snippet else ''
+
                 results.append({
-                    **doc,
-                    "highlighted_title": highlighted_title,
-                    "highlighted_content": highlighted_content[:200] + "..." if len(highlighted_content) > 200 else highlighted_content
+                    'id': hash(rel) & 0xffffffff,
+                    'title': title,
+                    'path': rel,
+                    'category': category,
+                    'highlighted_title': highlighted_title,
+                    'highlighted_content': highlighted_content,
                 })
-        
-        # 결과 제한
-        results = results[:request.limit]
-        
-        return KnowledgeSearchResponse(
-            success=True,
-            results=results,
-            total_count=len(results),
-            query=request.query,
-            search_type=request.search_type
-        )
-        
+
+        results = results[: (request.limit or 20)]
+        return KnowledgeSearchResponse(success=True, results=results, total_count=len(results), query=request.query, search_type=request.search_type)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Search failed: {str(e)}")
 

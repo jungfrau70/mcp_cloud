@@ -28,8 +28,9 @@ function scheduleHeartbeat(){
 }
 
 function connect(){
-  const base = (process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:8000').replace(/^http/,'ws')
-  socket = new WebSocket(`${base}/api/kb/tasks/ws`)
+  const base = (typeof window !== 'undefined' && (window as any).__NUXT__?.config?.public?.apiBaseUrl) || 'http://localhost:8000'
+  const wsBase = base.replace(/^http/,'ws')
+  socket = new WebSocket(`${wsBase}/api/v1/knowledge-base/tasks/ws`)
   socket.onopen = () => {
     reconnectAttempts = 0
     scheduleHeartbeat()

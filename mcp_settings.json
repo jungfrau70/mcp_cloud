@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "yarn",
+      "args": ["playwright:mcp"],
+      "cwd": "C:/Users/JIH/githubs/mcp_cloud"
+    }
+  }
+}
+
+

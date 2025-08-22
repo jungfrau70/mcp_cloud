@@ -72,7 +72,7 @@ services:
     container_name: mcp_frontend
     environment:
       - MCP_API_KEY=${MCP_API_KEY:-my_mcp_eagle_tiger}
-      - NUXT_PUBLIC_API_BASE_URL=http://localhost:8000
+      - NUXT_PUBLIC_API_BASE_URL=http://mcp_backend:8000
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
       - NUXT_TELEMETRY_DISABLED=1
@@ -81,7 +81,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    command: ["yarn", "dev", "--host", "0.0.0.0", "--port", "3000"]
+    command: ["sh", "-lc", "rm -rf .nuxt .output && yarn dev --host 0.0.0.0 --port 3000"]
     depends_on:
       - mcp_backend
     networks:

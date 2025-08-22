@@ -31,25 +31,26 @@
 
     <!-- Main IDE Layout -->
     <div class="flex flex-grow overflow-hidden bg-gray-100 relative">
-      <!-- Left Panel -->
+      <!-- Left Panel: hidden entirely on knowledge-base -->
       <aside
+        v-if="!isKnowledgeBase"
         class="bg-white border-r border-gray-200 flex-shrink-0 overflow-y-auto shadow-md transition-all duration-200"
         :style="{ width: isSidebarCollapsed ? '0px' : sidebarWidth + 'px' }"
       >
         <div v-show="!isSidebarCollapsed">
-          <SyllabusExplorer v-if="!isKnowledgeBase" @file-click="handleFileClick" />
-          <KnowledgeBaseExplorer v-else mode="tree" @file-select="handleKbFileSelect" />
+          <SyllabusExplorer @file-click="handleFileClick" />
         </div>
       </aside>
       <!-- Resizer -->
       <div
-        v-if="!isSidebarCollapsed"
+        v-if="!isKnowledgeBase && !isSidebarCollapsed"
         class="w-1 cursor-col-resize bg-gray-200 hover:bg-gray-300"
         @mousedown="onResizeStart"
       ></div>
       
       <!-- 사이드바 토글 버튼 -->
       <div
+        v-if="!isKnowledgeBase"
         class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10"
         :style="{ left: isSidebarCollapsed ? '0px' : sidebarWidth + 'px' }"
       >
@@ -66,15 +67,17 @@
 
       <!-- Center Panel: Workspace Tabs -->
       <main class="flex-grow overflow-hidden flex flex-col" ref="workspaceMain">
-        <div v-if="isKnowledgeBase" class="bg-white border-b shadow-sm">
-          <KnowledgeBaseExplorer mode="search" @file-select="handleKbFileSelect" />
-        </div>
         <div class="flex-1 overflow-hidden">
           <WorkspaceView v-if="!isKnowledgeBase" :active-content="activeContent" :active-slide="activeSlide" :active-path="activePath" ref="workspaceView">
-            <slot /> <!-- Nuxt page content will be injected here -->
+            <NuxtPage />
           </WorkspaceView>
-          <div v-else class="h-full">
-            <SplitEditor :path="activePath" :content="activeContent" ref="splitEditor" @save="handleKbSave" />
+          <div v-else class="h-full flex flex-col">
+            <div v-if="!activePath" class="flex-1 overflow-auto">
+              <KnowledgeBaseExplorer mode="full" @file-select="handleKbFileSelect" @file-open="handleKbFileSelect" />
+            </div>
+            <div v-else class="flex-1 overflow-hidden">
+              <SplitEditor :path="activePath" :content="activeContent" ref="splitEditor" @save="handleKbSave" />
+            </div>
           </div>
         </div>
       </main>
@@ -197,7 +200,7 @@ const handleKbSave = async ({ path, content, message, force }) => {
     try {
       const config = useRuntimeConfig();
       const apiBase = config.public.apiBaseUrl || 'http://localhost:8000';
-      await fetch(`${apiBase}/api/kb/item`, { method:'PATCH', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path, content, message }) })
+      await fetch(`${apiBase}/api/v1/knowledge-base/item`, { method:'PATCH', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path, content, message }) })
       toast.push('success','강제 저장 완료')
     } catch(e){ toast.push('error','강제 저장 실패') }
     return

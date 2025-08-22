@@ -1,5 +1,22 @@
 {
   "devDependencies": {
-    "@playwright/test": "^1.54.2"
-  }
+    "@playwright/mcp": "^0.0.34",
+    "@playwright/test": "^1.55.0"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "name": "mcp_cloud",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "yarn playwright test",
+    "playwright:mcp": "mcp-server-playwright",
+    "playwright:mcp:headless": "mcp-server-playwright --headless"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

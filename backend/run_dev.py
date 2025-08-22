@@ -26,8 +26,6 @@ def setup_environment():
     # 2. 기본 환경 변수 설정 (환경변수나 .env 파일에 없을 때만 사용)
     default_env_vars = {
         'DATABASE_URL': 'postgresql://mcpuser:mcppassword@mcp_postgres:5432/postgres',
-        'GEMINI_API_KEY': 'dummy_key',
-        'MCP_API_KEY': 'dummy_key',
         'AWS_DEFAULT_REGION': 'ap-northeast-2',
         'ENVIRONMENT': 'development',
         'DEBUG': 'true',
@@ -67,7 +65,10 @@ def setup_environment():
             print(f"  ⚠️  Warning: Could not read AWS credentials: {e}")
 
     # 6. GEMINI 자격 증명 확인
-    print(f"  🔑 GEMINI_API_KEY: {os.environ['GEMINI_API_KEY']}")
+    if 'GEMINI_API_KEY' in os.environ:
+        print(f"  🔑 GEMINI_API_KEY set")
+    else:
+        print("  ⚠️  GEMINI_API_KEY not set")
     
     # 6. 환경 변수 확인
     print("\n📋 Environment variables status:")

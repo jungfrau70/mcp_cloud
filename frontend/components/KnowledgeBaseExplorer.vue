@@ -10,6 +10,7 @@
         :tree="treeData"
         :selected-file="selectedFile?.path"
         @file-select="handleFileSelect"
+        @file-open="handleFileOpen"
         @directory-create="handleDirectoryCreate"
         @directory-rename="handleDirectoryRename"
         @directory-delete="handleDirectoryDelete"
@@ -17,35 +18,36 @@
       />
     </template>
     <template v-else>
-      <div class="border-b mb-2 flex gap-4 text-sm">
-        <button @click="activeTab='internal'" :class="tabBtnClass('internal')">내부 검색</button>
-        <button @click="activeTab='external'" :class="tabBtnClass('external')">AI 생성</button>
-      </div>
-      <div v-if="activeTab==='internal'">
         <SearchPanel :api-base="apiBase" :api-key="apiKey" @open="emit('file-select',$event)" />
+      <div class="border rounded bg-white overflow-hidden">
+        <div v-if="isInitialLoading" class="text-center py-8 text-sm text-gray-500">로딩 중…</div>
+        <FileTreePanel
+          v-else
+          :tree="treeData"
+          :selected-file="selectedFile?.path"
+          @file-select="handleFileSelect"
+          @file-open="handleFileOpen"
+          @directory-create="handleDirectoryCreate"
+          @directory-rename="handleDirectoryRename"
+          @directory-delete="handleDirectoryDelete"
+          @file-move="handleFileMove"
+        />
       </div>
-      <div v-else>
-        <ExternalGeneratePanel @open="emit('file-select',$event)" />
-        <div class="mt-4">
-          <h3 class="text-xs font-semibold text-gray-600 mb-1">최근 생성 작업</h3>
-          <ul class="max-h-40 overflow-auto text-[11px] divide-y bg-white border rounded">
-            <li v-for="t in taskStore.tasks" :key="t.id" class="px-2 py-1 flex items-center gap-2">
-              <span class="text-gray-500" :title="t.id">{{ t.id.slice(0,8) }}</span>
-              <span class="px-1 rounded" :class="taskStatusClass(t.status)">{{ t.status }}</span>
-              <span>{{ t.stage || '-' }}</span>
-              <span class="ml-auto text-gray-400">{{ t.progress||0 }}%</span>
-              <span v-if="t.error" class="text-red-500" title="t.error">⚠</span>
-            </li>
-            <li v-if="!taskStore.tasks.length" class="py-2 text-center text-gray-400">기록 없음</li>
-          </ul>
-        </div>
-      </div>
+      <button
+        class="fixed bottom-6 right-6 z-20 rounded-full w-14 h-14 bg-blue-600 text-white shadow-lg hover:bg-blue-700"
+        title="외부자료 기반 문서 생성"
+        @click="showGenModal=true"
+      >
+        +
+      </button>
+      <ExternalGeneratePanel v-if="showGenModal" @open="onExternalGenerated" @close="showGenModal=false" />
     </template>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
+import { stripBasePath } from '~/utils/path'
 import { useTaskStore } from '~/stores/task'
 import FileTreePanel from '~/components/FileTreePanel.vue'
 import SearchPanel from '~/components/SearchPanel.vue'
@@ -59,33 +61,39 @@ const props = defineProps({
 });
 
 const config = useRuntimeConfig()
-const apiBase = config.public.apiBaseUrl || 'http://localhost:8000'
+function resolveApiBase(){
+  const configured = (config.public?.apiBaseUrl) || 'http://localhost:8000'
+  if (typeof window !== 'undefined'){
+    try{
+      const u = new URL(configured)
+      const browserHost = window.location.hostname
+      if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== browserHost){
+        const port = u.port || '8000'
+        return `${window.location.protocol}//${browserHost}:${port}`
+      }
+    }catch{ /* ignore */ }
+  }
+  return configured
+}
+const apiBase = resolveApiBase()
 const apiKey = 'my_mcp_eagle_tiger'
 const taskStore = useTaskStore()
+const showGenModal = ref(false)
 
-// 탭 상태
-const activeTab = ref('internal')
+// 탭 제거 (검색 + 플로팅 버튼만 유지)
 
 // State (공통)
-const treeData = ref({});
+const treeData = ref({ 'mcp_knowledge_base': { files: [] } });
 const selectedFile = ref(null);
 const isInitialLoading = ref(true);
 const statusMessage = ref('');
 
 // removed legacy search & generation state (handled by child panels)
 
-const stripBasePath = (path) => {
-  const basePath = 'mcp_knowledge_base/';
-  if (path.startsWith(basePath)) {
-    return path.substring(basePath.length);
-  }
-  return path;
-};
-
 // Methods
 const loadKnowledgeBaseStructure = async () => {
   try {
-    const response = await fetch(`${apiBase}/api/kb/tree`, {
+    const response = await fetch(`${apiBase}/api/v1/knowledge-base/tree`, {
       headers: { 'X-API-Key': apiKey }
     });
     
@@ -96,6 +104,10 @@ const loadKnowledgeBaseStructure = async () => {
   } catch (error) {
     console.error('Error loading structure:', error);
     statusMessage.value = '구조 로딩 실패';
+    // keep default root so FileTree is visible even when backend is down
+    if(!treeData.value || !Object.keys(treeData.value).length){
+      treeData.value = { 'mcp_knowledge_base': { files: [] } }
+    }
   } finally {
     isInitialLoading.value = false;
   }
@@ -121,15 +133,27 @@ function taskStatusClass(st){
 }
 
 const handleFileSelect = (path) => {
-  emit('file-select', path);
+  const p = stripBasePath(path)
+  emit('file-select', p);
 };
+
+// 더블클릭으로 파일 열기 → 전체 화면에 문서 표시 요청
+const handleFileOpen = (path) => {
+  const p = stripBasePath(path)
+  emit('file-select', p)
+};
+
+function onExternalGenerated(path){
+  showGenModal.value = false
+  if(path) emit('file-select', stripBasePath(path))
+}
 
 // Directory management functions
 const handleDirectoryCreate = async (data) => {
   try {
     console.log('Creating item:', data);
     
-    const response = await fetch(`${apiBase}/api/kb/item`, {
+    const response = await fetch(`${apiBase}/api/v1/knowledge-base/item`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -164,7 +188,7 @@ const handleDirectoryRename = async (data) => {
   try {
     console.log('Renaming item:', data);
     
-    const response = await fetch(`${apiBase}/api/kb/item`, {
+    const response = await fetch(`${apiBase}/api/v1/knowledge-base/item`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -200,7 +224,7 @@ const handleDirectoryDelete = async (data) => {
     
     if (data.type === 'file') {
       // Delete file
-      const response = await fetch(`${apiBase}/api/kb/item?path=${encodeURIComponent(stripBasePath(data.path))}`, {
+      const response = await fetch(`${apiBase}/api/v1/knowledge-base/item?path=${encodeURIComponent(stripBasePath(data.path))}`, {
         method: 'DELETE',
         headers: { 'X-API-Key': apiKey }
       });
@@ -213,7 +237,7 @@ const handleDirectoryDelete = async (data) => {
       statusMessage.value = '파일 삭제 완료';
     } else {
       // Delete directory
-      const response = await fetch(`${apiBase}/api/kb/directory?path=${encodeURIComponent(stripBasePath(data.path))}&recursive=true`, {
+      const response = await fetch(`${apiBase}/api/v1/knowledge-base/directory?path=${encodeURIComponent(stripBasePath(data.path))}&recursive=true`, {
         method: 'DELETE',
         headers: { 'X-API-Key': apiKey }
       });
@@ -248,7 +272,7 @@ const handleFileMove = async (data) => {
       new_path: newPath
     };
     
-    const response = await fetch(`${apiBase}/api/kb/move`, {
+    const response = await fetch(`${apiBase}/api/v1/knowledge-base/move`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -277,7 +301,8 @@ const handleFileMove = async (data) => {
 
 // Lifecycle
 onMounted(()=>{
-  if (props.mode === 'tree' || props.mode === 'full') loadKnowledgeBaseStructure(); else isInitialLoading.value = false
+  // 검색 모드에서도 트리 로드 필요
+  if (props.mode === 'tree' || props.mode === 'full' || props.mode === 'search') loadKnowledgeBaseStructure(); else isInitialLoading.value = false
   taskStore.subscribe()
 })
 </script>

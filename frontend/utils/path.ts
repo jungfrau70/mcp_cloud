@@ -1,6 +1,9 @@
-export function stripBasePath(path: string, basePath = 'mcp_knowledge_base/'): string {
-  if (path.startsWith(basePath)) return path.substring(basePath.length)
-  return path
+export function stripBasePath(path: string, basePath = 'mcp_knowledge_base'): string {
+  // Normalize path separators and leading slashes
+  const normalized = path.replace(/\\/g, '/').replace(/^\/+/, '')
+  const prefix = basePath.endsWith('/') ? basePath : basePath + '/'
+  if (normalized.startsWith(prefix)) return normalized.substring(prefix.length)
+  return normalized
 }
 
 export function sanitizeGeneratedFilename(title: string): string {

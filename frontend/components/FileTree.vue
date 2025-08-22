@@ -34,6 +34,7 @@
       <li v-for="file in files" :key="file.name || file">
         <div 
           @click="emitFileClick(file.path || constructPath(file))" 
+          @dblclick="emit('file-open', (file.path || constructPath(file)))"
           @contextmenu="showFileMenu($event, file)"
           @dragstart="handleDragStart($event, file)"
           @dragover="handleDragOver($event, null, null)"
@@ -141,7 +142,7 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['file-click', 'directory-create', 'directory-rename', 'directory-delete', 'file-move']);
+const emit = defineEmits(['file-click', 'file-open', 'directory-create', 'directory-rename', 'directory-delete', 'file-move']);
 
 const openDirectories = ref({});
 

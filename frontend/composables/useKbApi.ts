@@ -17,7 +17,21 @@ export interface KbUnifiedDiff { diff_format: string; hunks: { header: string; l
 
 export function useKbApi(){
   const config = useRuntimeConfig()
-  const apiBase: string = config.public.apiBaseUrl || 'http://localhost:8000'
+  function resolveApiBase(): string {
+    const configured = (config.public as any)?.apiBaseUrl || 'http://localhost:8000'
+    if (typeof window !== 'undefined'){
+      try{
+        const u = new URL(configured)
+        const browserHost = window.location.hostname
+        if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== browserHost){
+          const port = u.port || '8000'
+          return `${window.location.protocol}//${browserHost}:${port}`
+        }
+      }catch{/* ignore */}
+    }
+    return configured
+  }
+  const apiBase: string = resolveApiBase()
   // NOTE: For production, inject apiKey via runtime config / cookie / header
   const apiKey: string = 'my_mcp_eagle_tiger'
 
@@ -33,11 +47,11 @@ export function useKbApi(){
   }
 
   async function getItem(path: string): Promise<any>{
-    return request<any>(`${apiBase}/api/kb/item?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey }}, 'getItem failed')
+    return request<any>(`${apiBase}/api/v1/knowledge-base/item?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey }}, 'getItem failed')
   }
 
   async function saveItem(path: string, content: string, message?: string, expectedVersion?: number): Promise<KbSaveResponse>{
-    return request<KbSaveResponse>(`${apiBase}/api/kb/item`, {
+    return request<KbSaveResponse>(`${apiBase}/api/v1/knowledge-base/item`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
       body: JSON.stringify({ path, content, message, expected_version_no: expectedVersion })
@@ -45,11 +59,11 @@ export function useKbApi(){
   }
 
   async function listVersions(path: string): Promise<KbVersionsResponse>{
-    return request<KbVersionsResponse>(`${apiBase}/api/kb/versions?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey }}, 'listVersions failed')
+    return request<KbVersionsResponse>(`${apiBase}/api/v1/knowledge-base/versions?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey }}, 'listVersions failed')
   }
 
   async function outline(content: string): Promise<KbOutlineResponse>{
-    return request<KbOutlineResponse>(`${apiBase}/api/kb/outline`, {
+    return request<KbOutlineResponse>(`${apiBase}/api/v1/knowledge-base/outline`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
       body: JSON.stringify({ content })
@@ -59,23 +73,23 @@ export function useKbApi(){
   async function startCompose(topic: string, failStage?: string): Promise<KbTask>{
     const qs = new URLSearchParams({ topic })
     if(failStage) qs.append('fail_stage', failStage)
-    return request<KbTask>(`${apiBase}/api/kb/compose/external?${qs.toString()}`, { method: 'POST', headers: { 'X-API-Key': apiKey }}, 'compose failed')
+    return request<KbTask>(`${apiBase}/api/v1/knowledge-base/compose/external?${qs.toString()}`, { method: 'POST', headers: { 'X-API-Key': apiKey }}, 'compose failed')
   }
 
   async function getTask(id: string): Promise<KbTask>{
-    return request<KbTask>(`${apiBase}/api/kb/tasks/${id}`, { headers: { 'X-API-Key': apiKey }}, 'task failed')
+    return request<KbTask>(`${apiBase}/api/v1/knowledge-base/tasks/${id}`, { headers: { 'X-API-Key': apiKey }}, 'task failed')
   }
 
   async function diff(path: string, v1: number, v2: number): Promise<KbUnifiedDiff>{
-    return request<KbUnifiedDiff>(`${apiBase}/api/kb/diff?path=${encodeURIComponent(path)}&v1=${v1}&v2=${v2}`, { headers: { 'X-API-Key': apiKey }}, 'diff failed')
+    return request<KbUnifiedDiff>(`${apiBase}/api/v1/knowledge-base/diff?path=${encodeURIComponent(path)}&v1=${v1}&v2=${v2}`, { headers: { 'X-API-Key': apiKey }}, 'diff failed')
   }
 
   async function structuredDiff(path: string, v1: number, v2: number): Promise<KbStructuredDiff>{
-    return request<KbStructuredDiff>(`${apiBase}/api/kb/diff/structured?path=${encodeURIComponent(path)}&v1=${v1}&v2=${v2}`, { headers: { 'X-API-Key': apiKey }}, 'structured diff failed')
+    return request<KbStructuredDiff>(`${apiBase}/api/v1/knowledge-base/diff/structured?path=${encodeURIComponent(path)}&v1=${v1}&v2=${v2}`, { headers: { 'X-API-Key': apiKey }}, 'structured diff failed')
   }
 
   async function recentTasks(limit = 20): Promise<KbTaskList>{
-    return request<KbTaskList>(`${apiBase}/api/kb/tasks/recent?limit=${limit}`, { headers: { 'X-API-Key': apiKey }}, 'recent tasks failed')
+    return request<KbTaskList>(`${apiBase}/api/v1/knowledge-base/tasks/recent?limit=${limit}`, { headers: { 'X-API-Key': apiKey }}, 'recent tasks failed')
   }
 
   return { getItem, saveItem, listVersions, outline, startCompose, getTask, diff, structuredDiff, recentTasks }
