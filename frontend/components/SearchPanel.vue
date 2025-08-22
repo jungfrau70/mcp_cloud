@@ -25,6 +25,7 @@ const loading = ref(false)
 const searched = ref(false)
 const results = ref<any[]>([])
 async function search(){
+  try{ if(typeof window!=='undefined') localStorage.setItem('kb_search_query', query.value) }catch{}
   if(!query.value.trim()) return
   loading.value = true
   searched.value = true
@@ -41,6 +42,13 @@ async function search(){
     }
   } finally { loading.value = false }
 }
+// Restore last search query on mount
+try{
+  if(typeof window!=='undefined'){
+    const saved = localStorage.getItem('kb_search_query')
+    if(saved){ query.value = saved }
+  }
+}catch{}
 function reset(){ query.value=''; searched.value=false; results.value=[] }
 function open(r: any){ if(r.path) emit('open', r.path) }
 </script>

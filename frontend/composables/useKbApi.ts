@@ -92,5 +92,52 @@ export function useKbApi(){
     return request<KbTaskList>(`${apiBase}/api/v1/knowledge-base/tasks/recent?limit=${limit}`, { headers: { 'X-API-Key': apiKey }}, 'recent tasks failed')
   }
 
-  return { getItem, saveItem, listVersions, outline, startCompose, getTask, diff, structuredDiff, recentTasks }
+  async function uploadAsset(file: File, subdir = 'assets'): Promise<{ path: string }>{
+    const form = new FormData()
+    form.append('file', file)
+    form.append('subdir', subdir)
+    const r = await fetch(`${apiBase}/api/v1/assets/upload`, { method: 'POST', headers: { 'X-API-Key': apiKey }, body: form })
+    if(!r.ok){
+      let detail: string|undefined
+      try{ const d = await r.json(); detail = (d as any)?.detail }catch{}
+      throw new Error(detail || `upload failed: ${r.status}`)
+    }
+    return r.json()
+  }
+
+  async function transform(text: string, kind: 'table'|'mermaid'|'summary', opts?: { cols?: number; diagramType?: 'flow'|'sequence'|'gantt'; summaryLen?: number; use_rag?: boolean }): Promise<{ result: string }>{
+    return request<{ result: string }>(`${apiBase}/api/v1/knowledge-base/transform`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
+      body: JSON.stringify({ text, kind, ...(opts||{}) })
+    }, 'transform failed')
+  }
+
+  async function lint(text: string): Promise<{ issues: { line:number; column:number; message:string; rule?:string }[] }>{
+    return request<{ issues: { line:number; column:number; message:string; rule?:string }[] }>(`${apiBase}/api/v1/knowledge-base/lint`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
+      body: JSON.stringify({ text })
+    }, 'lint failed')
+  }
+
+  // Trending categories
+  async function listTrending(): Promise<{ categories: { name:string; query:string; enabled:boolean }[] }>{
+    return request(`${apiBase}/api/v1/trending/categories`, { headers: { 'X-API-Key': apiKey }}, 'trending list failed')
+  }
+  async function upsertTrending(item: { name:string; query:string; enabled?: boolean }): Promise<{ ok: boolean }>{
+    return request(`${apiBase}/api/v1/trending/categories`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey }, body: JSON.stringify(item)
+    }, 'trending upsert failed')
+  }
+  async function deleteTrending(name: string): Promise<{ ok: boolean }>{
+    return request(`${apiBase}/api/v1/trending/categories/${encodeURIComponent(name)}`, {
+      method: 'DELETE', headers: { 'X-API-Key': apiKey }
+    }, 'trending delete failed')
+  }
+  async function runTrendingNow(): Promise<{ ok: boolean }>{
+    return request(`${apiBase}/api/v1/trending/run-now`, { method: 'POST', headers: { 'X-API-Key': apiKey } }, 'trending run failed')
+  }
+
+  return { getItem, saveItem, listVersions, outline, startCompose, getTask, diff, structuredDiff, recentTasks, uploadAsset, transform, lint, listTrending, upsertTrending, deleteTrending, runTrendingNow }
 }

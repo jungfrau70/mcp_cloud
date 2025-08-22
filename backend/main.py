@@ -15,7 +15,7 @@ import subprocess
 import uuid
 import tempfile
 import shutil
-from fastapi import FastAPI, HTTPException, Depends, Security, WebSocket, WebSocketDisconnect, Request, APIRouter
+from fastapi import FastAPI, HTTPException, Depends, Security, WebSocket, WebSocketDisconnect, Request, APIRouter, UploadFile, File, Form
 from fastapi.security.api_key import APIKeyHeader
 from pydantic import BaseModel
 try:
@@ -34,6 +34,12 @@ from fastapi.middleware.cors import CORSMiddleware # Import CORSMiddleware
 from fastapi.responses import StreamingResponse, FileResponse
 from rag_service import rag_service_instance
 import asyncio
+from datetime import time as _time
+try:
+    from apscheduler.schedulers.asyncio import AsyncIOScheduler
+    HAS_APS = True
+except Exception:
+    HAS_APS = False
 from io import BytesIO
 import pathlib
 from external_search_service import external_search_service_instance
@@ -117,6 +123,34 @@ class ReadOnlyCliRequest(BaseModel):
     provider: str
     command_name: str
     args: Optional[dict] = {}
+
+# --------- AI Transform & Lint Schemas ---------
+class TransformRequest(BaseModel):
+    text: str
+    kind: Literal['table','mermaid','summary']
+    cols: Optional[int] = None
+    diagramType: Optional[Literal['flow','sequence','gantt']] = None
+    summaryLen: Optional[int] = 5
+    use_rag: Optional[bool] = False
+    model: Optional[str] = None
+    temperature: Optional[float] = None
+    topK: Optional[int] = None
+
+class TransformResponse(BaseModel):
+    result: str
+    meta: Optional[Dict[str, Any]] = None
+
+class LintRequest(BaseModel):
+    text: str
+
+class LintIssue(BaseModel):
+    line: int
+    column: int
+    message: str
+    rule: Optional[str] = None
+
+class LintResponse(BaseModel):
+    issues: List[LintIssue]
 
 class ReadOnlyCliResponse(BaseModel):
     success: bool
@@ -1367,6 +1401,108 @@ def health_check():
 def health_check_v1():
     return health_check()
 
+# ---------------------
+# Scheduler & Trending Categories (file-backed)
+# ---------------------
+TRENDING_FILE = os.path.join(os.path.dirname(__file__), 'data', 'trending_categories.json')
+DEFAULT_TRENDING_CATEGORIES = [
+    "aws","gcp","azure","terraform","IaC","devops","gitops","container","k8s"
+]
+DEFAULT_TRENDING_PHRASE = "오늘 기술 트렌드"
+
+def _load_trending_categories() -> list[dict]:
+    try:
+        os.makedirs(os.path.join(os.path.dirname(__file__), 'data'), exist_ok=True)
+        if not os.path.exists(TRENDING_FILE):
+            defaults = [
+                {"name": cat, "query": f"{cat} {DEFAULT_TRENDING_PHRASE}", "enabled": True}
+                for cat in DEFAULT_TRENDING_CATEGORIES
+            ]
+            with open(TRENDING_FILE,'w',encoding='utf-8') as f: json.dump(defaults,f,ensure_ascii=False,indent=2)
+        with open(TRENDING_FILE,'r',encoding='utf-8') as f:
+            data = json.load(f)
+            if isinstance(data, list):
+                return data
+    except Exception as e:
+        logger.warning(f"Failed to load trending categories: {e}")
+    return []
+
+def _save_trending_categories(items: list[dict]):
+    os.makedirs(os.path.join(os.path.dirname(__file__), 'data'), exist_ok=True)
+    with open(TRENDING_FILE,'w',encoding='utf-8') as f:
+        json.dump(items,f,ensure_ascii=False,indent=2)
+
+async def _generate_trending_docs():
+    try:
+        cats = [c for c in _load_trending_categories() if c.get('enabled')]
+        topics = [c.get('query') for c in cats][:3]
+        for topic in topics:
+            try:
+                # Reuse enhanced external generator via internal call
+                req = GenerateDocumentRequest(query=topic, target_path=None)
+                await generate_document_from_external(req)
+            except Exception as e:
+                logger.warning(f"Trending doc generation failed for {topic}: {e}")
+        # Notify via websocket
+        await kb_ws_manager.broadcast({
+            'type': 'trending',
+            'message': 'Daily trending knowledge docs generated',
+            'topics': topics
+        })
+    except Exception as e:
+        logger.error(f"Trending scheduler error: {e}")
+
+def _start_scheduler(app: FastAPI):
+    if not HAS_APS:
+        logger.warning("APScheduler not available; trending job disabled")
+        return
+    scheduler = AsyncIOScheduler()
+    # Every day 09:00 local time
+    scheduler.add_job(lambda: asyncio.create_task(_generate_trending_docs()), 'cron', hour=9, minute=0)
+    scheduler.start()
+    logger.info("Scheduler started: daily trending docs at 09:00")
+
+@app.on_event('startup')
+async def _on_startup():
+    _start_scheduler(app)
+
+# ---------------------
+# API: Manage Trending Categories
+# ---------------------
+class TrendingCategoryItem(BaseModel):
+    name: str
+    query: str
+    enabled: Optional[bool] = True
+
+@app.get('/api/v1/trending/categories', dependencies=[Depends(get_api_key)], tags=['Knowledge Base'])
+def list_trending_categories():
+    return { 'categories': _load_trending_categories() }
+
+@app.post('/api/v1/trending/categories', dependencies=[Depends(get_api_key)], tags=['Knowledge Base'])
+def upsert_trending_category(item: TrendingCategoryItem):
+    items = _load_trending_categories()
+    found = False
+    for it in items:
+        if it.get('name') == item.name:
+            it.update({'query': item.query, 'enabled': bool(item.enabled)})
+            found = True
+            break
+    if not found:
+        items.append({'name': item.name, 'query': item.query, 'enabled': bool(item.enabled)})
+    _save_trending_categories(items)
+    return { 'ok': True }
+
+@app.delete('/api/v1/trending/categories/{name}', dependencies=[Depends(get_api_key)], tags=['Knowledge Base'])
+def delete_trending_category(name: str):
+    items = [c for c in _load_trending_categories() if c.get('name') != name]
+    _save_trending_categories(items)
+    return { 'ok': True }
+
+@app.post('/api/v1/trending/run-now', dependencies=[Depends(get_api_key)], tags=['Knowledge Base'])
+async def run_trending_now():
+    await _generate_trending_docs()
+    return { 'ok': True }
+
 @app.post("/api/v1/agent/query", dependencies=[Depends(get_api_key)], tags=["AI Agent"])
 async def agent_query(request: AgentQueryRequest):
     """
@@ -1422,6 +1558,171 @@ async def get_document_content(request: DocumentContentRequest):
         raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read document content: {e}")
+
+# ------------------------------
+# Assets Upload (images/attachments)
+# ------------------------------
+@app.post("/api/v1/assets/upload", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+async def upload_asset(file: UploadFile = File(...), subdir: str = Form("assets")):
+    try:
+        # sanitize subdir
+        safe_subdir = os.path.normpath(subdir.strip().lstrip("/\\ "))
+        if safe_subdir.startswith(".."):
+            raise HTTPException(status_code=400, detail="Invalid subdir")
+        # only allow certain extensions
+        allowed = {".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp"}
+        _, ext = os.path.splitext(file.filename or "")
+        ext = ext.lower()
+        if ext not in allowed:
+            raise HTTPException(status_code=400, detail="Unsupported file type")
+        # target path
+        assets_dir = os.path.join(KNOWLEDGE_BASE_DIR, safe_subdir)
+        os.makedirs(assets_dir, exist_ok=True)
+        # unique filename
+        name = pathlib.Path(file.filename or f"upload{ext}").stem
+        safe_name = "".join(c for c in name if c.isalnum() or c in ("-","_")) or "asset"
+        uniq = uuid.uuid4().hex[:8]
+        target = os.path.join(assets_dir, f"{safe_name}-{uniq}{ext}")
+        # write
+        with open(target, "wb") as out:
+            content = await file.read()
+            out.write(content)
+        rel = os.path.relpath(target, KNOWLEDGE_BASE_DIR).replace('\\','/')
+        return {"path": rel}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Upload failed: {e}")
+
+# ------------------------------
+# AI Transform & Markdown Lint (MVP)
+# ------------------------------
+@app.post("/api/v1/knowledge-base/transform", response_model=TransformResponse, dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+async def kb_transform(req: TransformRequest):
+    """Gemini 기반 변환. 실패 시 간이 규칙으로 폴백.
+    - table: 의미 기반 열/행 구성 → Markdown 테이블
+    - mermaid: 관계/흐름 인식 → mermaid 코드블록(flowchart/sequence/gantt 중 적절한 것)
+    - summary: 목적형 요약(간결, 한국어)
+    """
+    def heuristic_fallback() -> str:
+        if req.kind == 'summary':
+            lines = [ln.strip() for ln in req.text.split('\n') if ln.strip()]
+            return '\n'.join(lines[:8])
+        if req.kind == 'table':
+            cells = [c.strip() for c in req.text.replace('\t','|').split('|') if c.strip()]
+            if len(cells) >= 4:
+                cols = min(max(2, len(cells)//2), 6)
+                header = '| ' + ' | '.join(cells[:cols]) + ' |\n'
+                sep = '| ' + ' | '.join(['---']*cols) + ' |\n'
+                rest = cells[cols:]
+                rows = ''
+                while rest:
+                    row = rest[:cols]
+                    rows += '| ' + ' | '.join(row + ['']*(cols-len(row))) + ' |\n'
+                    rest = rest[cols:]
+                return header+sep+rows
+            return '| H1 | H2 |\n| --- | --- |\n|  |  |'
+        if req.kind == 'mermaid':
+            lines = [ln.strip('- ').strip() for ln in req.text.split('\n') if ln.strip()]
+            pairs = []
+            for i in range(len(lines)-1):
+                pairs.append((lines[i], lines[i+1]))
+            edges = '\n'.join([f'  "{a}" --> "{b}"' for a,b in pairs])
+            return '```mermaid\nflowchart LR\n' + (edges or '  A --> B') + '\n```\n'
+        return req.text
+
+    try:
+        if not GEMINI_API_KEY:
+            return TransformResponse(result=heuristic_fallback(), meta={"provider":"fallback"})
+        # 모델 선택
+        chosen_model = req.model or 'gemini-1.5-flash'
+        model = genai.GenerativeModel(chosen_model)
+        sys_prompt = (
+            'You are a documentation editor assistant. '
+            'Return ONLY JSON with key "result". Do not include explanations.'
+        )
+        context_snippets = ''
+        try:
+            if req.use_rag and rag_service_instance:
+                # 간단 RAG: 상위 N개 스니펫 결합
+                snippets = rag_service_instance.search(req.text, top_k=3)
+                if snippets:
+                    joined = '\n\n'.join([s.get('content','')[:800] for s in snippets])
+                    context_snippets = f"\n\nCONTEXT:\n{joined}"
+        except Exception:
+            context_snippets = ''
+        if req.kind == 'table':
+            user = (
+                'Transform the following Korean text into a clean Markdown table. '
+                'Infer appropriate columns (<=8) and normalize numbers/units. '
+                'Header row required; fill missing cells with "-". '
+                'Output JSON: {"result":"<markdown>"} without code fences.\n'
+                f"Columns max={req.cols or 6}.\n"
+                'TEXT:\n' + req.text + context_snippets
+            )
+        elif req.kind == 'mermaid':
+            user = (
+                'From the text, infer a diagram and produce a valid Mermaid code block. '
+                'Prefer flowchart LR; limit nodes<=30, edges<=60; Korean labels <=20 chars. '
+                f"Diagram type preference: {req.diagramType or 'flow'}.\n"
+                'Return JSON: {"result":"```mermaid\n...\n```"}.\n'
+                'TEXT:\n' + req.text + context_snippets
+            )
+        else:
+            user = (
+                f"Summarize in Korean for a knowledge base. {req.summaryLen or 5} sentences, concise, no HTML. "
+                'Return JSON: {"result":"<markdown>"}.\n'
+                'TEXT:\n' + req.text + context_snippets
+            )
+
+        gen_cfg = genai.types.GenerationConfig(
+            temperature = req.temperature if req.temperature is not None else 0.3,
+            response_mime_type='application/json'
+        )
+        if isinstance(req.topK, int) and req.topK > 0:
+            try: gen_cfg.top_k = req.topK
+            except Exception: pass
+        resp = await model.generate_content_async(
+            [sys_prompt, user],
+            generation_config=gen_cfg
+        )
+        try:
+            data = json.loads(resp.text)
+            result = data.get('result') or ''
+            meta = data.get('meta') if isinstance(data.get('meta'), dict) else {}
+            meta.update({
+                "model": chosen_model,
+                "tokens_in": getattr(getattr(resp, 'usage_metadata', None), 'prompt_token_count', None),
+                "tokens_out": getattr(getattr(resp, 'usage_metadata', None), 'candidates_token_count', None)
+            })
+            if not isinstance(result, str) or not result.strip():
+                raise ValueError('empty result')
+            return TransformResponse(result=result, meta=meta)
+        except Exception:
+            # parsing 실패 시 본문 그대로 반환 시도
+            if isinstance(resp.text, str) and resp.text.strip():
+                return TransformResponse(result=resp.text.strip(), meta={"provider":"gemini-raw"})
+            return TransformResponse(result=heuristic_fallback(), meta={"provider":"fallback"})
+    except Exception:
+        # 네트워크/쿼터 등 모든 예외 폴백
+        return TransformResponse(result=heuristic_fallback(), meta={"provider":"fallback-exception"})
+
+@app.post("/api/v1/knowledge-base/lint", response_model=LintResponse, dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
+async def kb_lint(req: LintRequest):
+    # minimal rules: trailing spaces, long lines, empty heading
+    issues: List[LintIssue] = []
+    try:
+        lines = req.text.split('\n')
+        for i,ln in enumerate(lines, start=1):
+            if ln.endswith(' '):
+                issues.append(LintIssue(line=i, column=len(ln), message='Trailing space', rule='trailing-space'))
+            if len(ln) > 200:
+                issues.append(LintIssue(line=i, column=201, message='Line too long (>200)', rule='max-line-length'))
+            if ln.strip().startswith('#') and ln.strip() == '#':
+                issues.append(LintIssue(line=i, column=1, message='Empty heading', rule='empty-heading'))
+        return LintResponse(issues=issues)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # ===================================
 # Knowledge Base CRUD (file-based under mcp_knowledge_base)

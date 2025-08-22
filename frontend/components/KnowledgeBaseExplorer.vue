@@ -4,6 +4,10 @@
       <h2 class="text-lg font-semibold" v-if="mode!=='search'">지식베이스</h2>
     </template>
     <template v-if="mode==='tree'">
+      <div class="flex items-center justify-between">
+        <div></div>
+        <button @click="showTrending=true" class="mb-2 px-2 py-1 text-xs border rounded">관심 카테고리</button>
+      </div>
       <div v-if="isInitialLoading" class="text-center py-8 text-sm text-gray-500">로딩 중…</div>
       <FileTreePanel
         v-else
@@ -43,6 +47,7 @@
       <ExternalGeneratePanel v-if="showGenModal" @open="onExternalGenerated" @close="showGenModal=false" />
     </template>
   </div>
+  <TrendingCategoriesModal v-if="showTrending" @close="showTrending=false" />
 </template>
 
 <script setup>
@@ -52,6 +57,7 @@ import { useTaskStore } from '~/stores/task'
 import FileTreePanel from '~/components/FileTreePanel.vue'
 import SearchPanel from '~/components/SearchPanel.vue'
 import ExternalGeneratePanel from '~/components/ExternalGeneratePanel.vue'
+import TrendingCategoriesModal from '~/components/TrendingCategoriesModal.vue'
 
 const emit = defineEmits(['file-select']);
 
@@ -79,6 +85,7 @@ const apiBase = resolveApiBase()
 const apiKey = 'my_mcp_eagle_tiger'
 const taskStore = useTaskStore()
 const showGenModal = ref(false)
+const showTrending = ref(false)
 
 // 탭 제거 (검색 + 플로팅 버튼만 유지)
 

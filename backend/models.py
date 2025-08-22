@@ -96,3 +96,17 @@ class KbTask(Base):
     error = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+# ---------------------------------------------------------------------------
+# User-managed trending categories
+# ---------------------------------------------------------------------------
+
+class TrendingCategory(Base):
+    __tablename__ = "trending_categories"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, index=True, nullable=False)
+    query = Column(String, nullable=False)  # 검색/생성에 사용할 쿼리 텍스트
+    enabled = Column(Integer, default=1)  # 1=true, 0=false (sqlite 호환)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

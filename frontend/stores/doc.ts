@@ -17,6 +17,8 @@ export const useDocStore = defineStore('doc', () => {
     error.value = undefined
     try {
       path.value = p
+      // persist last opened KB path
+      try{ if(typeof window!=='undefined') localStorage.setItem('kb_last_path', p) }catch{}
       const data: any = await api.getItem(p)
       content.value = data.content || ''
       version.value = data.version_no

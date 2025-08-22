@@ -133,10 +133,13 @@ onMounted(() => {
   if (isKnowledgeBase.value) {
     // Load initial KB content if any
   } else {
-    // 기본 본문을 첫 번째 슬라이드로 로드
-    if (!activeContent.value) {
-      handleFileClick('1-1_introduction_to_cloud.md');
-    }
+    // Restore last opened textbook path if available
+    try {
+      const last = typeof window !== 'undefined' ? localStorage.getItem('textbook_last_path') : null
+      if (last) {
+        handleFileClick(last)
+      }
+    } catch {}
   }
   
   // 대화형 CLI 이벤트 리스너 설정
@@ -149,11 +152,15 @@ onMounted(() => {
   }
 });
 
-// 라우트 변경 시 커리큘럼 페이지로 전환되면 첫 번째 슬라이드 로드
+// 라우트 변경 시 커리큘럼 페이지로 전환되면 마지막 경로 복원
 watch(() => route.path, (p) => {
   if (p.startsWith('/textbook')) {
-    // 첫 번째 슬라이드 파일을 찾아서 로드
-    handleFileClick('1-1_introduction_to_cloud.md')
+    try {
+      const last = typeof window !== 'undefined' ? localStorage.getItem('textbook_last_path') : null
+      if (last) {
+        handleFileClick(last)
+      }
+    } catch {}
     isSidebarCollapsed.value = false
   }
 })
@@ -161,6 +168,8 @@ watch(() => route.path, (p) => {
 const handleFileClick = async (path) => {
   try {
     activePath.value = path;
+    // persist last opened textbook file
+    try { if (typeof window !== 'undefined') localStorage.setItem('textbook_last_path', path) } catch {}
     
     // 슬라이드 내용을 가져오기 위해 슬라이드 API 사용
     const contentResponse = await fetch(`${apiBase}/api/v1/slides?textbook_path=${encodeURIComponent(path)}`, {

@@ -40,6 +40,8 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRuntimeConfig } from '#app';
 import { marked } from 'marked';
+import mermaid from 'mermaid';
+import embedVega from 'vega-embed';
 
 const props = defineProps({
   content: String,
@@ -77,6 +79,31 @@ const renderedMarkdown = computed(() => {
 
 const setupLinkIntercepts = () => {
   if (contentContainer.value) {
+    // render mermaid
+    try{
+      const blocks = contentContainer.value.querySelectorAll('pre code.language-mermaid, code.language-mermaid')
+      blocks.forEach(async (el:any)=>{
+        const parent = el.parentElement?.tagName.toLowerCase() === 'pre' ? el.parentElement! : el as HTMLElement
+        const code = (el.textContent||'').trim()
+        const mount = document.createElement('div')
+        parent.replaceWith(mount)
+        try{ mermaid.initialize({ startOnLoad:false, theme:'default' }); const out = await mermaid.render('m'+Math.random().toString(36).slice(2), code); mount.innerHTML = out.svg }catch{}
+      })
+      // vega-lite
+      const vegaBlocks = contentContainer.value.querySelectorAll('pre code.language-json, pre code.language-vega-lite, code.language-vega-lite')
+      vegaBlocks.forEach(async (el:any)=>{
+        const text = (el.textContent||'').trim()
+        if(!/vega-lite/i.test(text) && !(el.className||'').includes('vega-lite')) return
+        const pre = el.closest('pre')
+        const mount = document.createElement('div')
+        if(pre) pre.replaceWith(mount); else (el as HTMLElement).replaceWith(mount)
+        try{
+          const jsonText = text.replace(/^[\/\s]*vega-lite\s*/i,'')
+          const spec = JSON.parse(jsonText.replace(/^\/\/.*$/gm,''))
+          await embedVega(mount, spec, { actions:false })
+        }catch{}
+      })
+    }catch{}
     contentContainer.value.querySelectorAll('a[href^="mcp://"]').forEach(link => {
       link.addEventListener('click', (event) => {
         event.preventDefault();

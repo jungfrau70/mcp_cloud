@@ -34,6 +34,16 @@
         <span v-if="saving" class="text-gray-500 text-xs">Saving...</span>
         <span v-if="lastSaved" class="text-gray-400 text-xs">v{{ lastVersion }} @ {{ lastSaved }}</span>
         <div class="flex-1"></div>
+        <div class="flex items-center gap-1">
+          <button @click="insertTable" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Table</button>
+          <button @click="insertMermaid" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Mermaid</button>
+          <button @click="insertChart" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Chart</button>
+          <label class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer">
+            Image<input type="file" accept="image/*" class="hidden" @change="onPickImage" />
+          </label>
+          <button @click="openAiMenu" class="px-2 py-1 rounded bg-indigo-50 hover:bg-indigo-100 text-indigo-700">AI</button>
+          <button @click="showExcalidraw=true" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Draw</button>
+        </div>
         <button @click="togglePreview" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">{{ showPreview ? 'Editor Only' : 'Split' }}</button>
       </div>
 
@@ -114,16 +124,30 @@
           </div>
         </div>
       </div>
+      <!-- Excalidraw modal (lightweight embed) -->
+      <div v-if="showExcalidraw" class="absolute inset-0 z-30 bg-black/40 flex items-center justify-center">
+        <div class="w-[900px] h-[600px] bg-white rounded shadow flex flex-col">
+          <div class="p-2 border-b text-sm flex items-center">Sketch
+            <div class="flex-1"></div>
+            <button @click="exportDrawing" class="px-2 py-1 text-xs border rounded mr-2">Export & Insert</button>
+            <button @click="showExcalidraw=false" class="px-2 py-1 text-xs border rounded">Close</button>
+          </div>
+          <iframe ref="excalFrame" src="https://excalidraw.com" class="flex-1"></iframe>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, computed, onBeforeUnmount, onMounted } from 'vue'
+import { ref, watch, computed, onBeforeUnmount, onMounted, nextTick } from 'vue'
 import { merge3 } from '~/utils/threeWayMerge.js'
 import { useKbApi } from '~/composables/useKbApi'
 import { marked } from 'marked'
+import mermaid from 'mermaid'
+import embedVega from 'vega-embed'
 import DiffViewer from '~/components/DiffViewer.vue'
+import { generateMarkdownTable, mermaidTemplate, vegaLiteBarTemplate } from '~/utils/mdTools'
 
 const props = defineProps({
   path: { type: String, required: false },
@@ -143,11 +167,13 @@ const showPreview = ref(true)
 const showOutline = ref(true)
 const showVersions = ref(false)
 const showDiff = ref(false)
+const showExcalidraw = ref(false)
 const outline = ref([])
 const outlineLoading = ref(false)
 const activeOutlineLine = ref(null)
 const editorEl = ref(null)
 const previewEl = ref(null)
+const excalFrame = ref(null)
 let lineOffsets = [] // character start positions for each line (1-based logical lines mapped to 0-based indices)
 let totalChars = 0
 let previewObserver = null
@@ -168,6 +194,77 @@ const diffRight = ref(null)
 const diffKey = computed(() => `${diffLeft.value||''}-${diffRight.value||''}`)
 
 const rendered = computed(() => marked.parse(draft.value || ''))
+
+// --- Insert helpers ---
+function insertAtCursor(text){
+  const el = editorEl.value
+  if(!el){ draft.value = (draft.value||'') + '\n' + text; return }
+  const start = el.selectionStart || 0
+  const end = el.selectionEnd || 0
+  draft.value = (draft.value||'').slice(0,start) + text + (draft.value||'').slice(end)
+  // place cursor after inserted
+  nextTick?.(() => { try { el.selectionStart = el.selectionEnd = start + text.length } catch{} })
+}
+function insertTable(){ insertAtCursor(generateMarkdownTable(4,3,true)) }
+function insertMermaid(){ insertAtCursor(mermaidTemplate('flow')) }
+function insertChart(){ insertAtCursor(vegaLiteBarTemplate()) }
+
+const api = useKbApi()
+async function onPickImage(ev){
+  const files = ev?.target?.files
+  if(!files || !files[0]) return
+  try{
+    const { path: rel } = await api.uploadAsset(files[0], 'assets')
+    const alt = files[0].name.replace(/\.[^.]+$/, '')
+    insertAtCursor(`![${alt}](${rel})\n`)
+  }catch(e){ alert((e && (e as any).message) || 'upload failed') }
+  ev.target.value = ''
+}
+
+async function openAiMenu(){
+  const choice = window.prompt('AI 작업 선택: table / mermaid / summary')
+  if(!choice) return
+  const kind = choice.trim().toLowerCase()
+  let sel = ''
+  const el = editorEl.value
+  if(el && el.selectionStart !== undefined && el.selectionEnd !== undefined && el.selectionStart !== el.selectionEnd){
+    sel = (draft.value||'').slice(el.selectionStart, el.selectionEnd)
+  } else { sel = draft.value || '' }
+  try{
+    const opts = {}
+    if(kind === 'table'){
+      const cols = window.prompt('열 수(최대 8, 빈칸=자동):')
+      if(cols) opts.cols = Math.min(8, Math.max(1, parseInt(cols)||6))
+      const rag = window.confirm('RAG 컨텍스트 사용할까요?')
+      opts.use_rag = !!rag
+    } else if(kind === 'mermaid'){
+      const type = window.prompt('다이어그램 유형(flow/sequence/gantt, 빈칸=flow):')
+      if(type) (opts as any).diagramType = type
+      opts.use_rag = window.confirm('RAG 컨텍스트 사용할까요?')
+    } else {
+      const len = window.prompt('요약 문장 수(기본 5):')
+      if(len) opts.summaryLen = Math.min(8, Math.max(1, parseInt(len)||5))
+      opts.use_rag = window.confirm('RAG 컨텍스트 사용할까요?')
+    }
+    const out = await api.transform(sel, kind === 'table' ? 'table' : kind === 'mermaid' ? 'mermaid' : 'summary', opts)
+    insertAtCursor('\n'+out.result+'\n')
+  }catch(e){ alert((e && (e as any).message) || 'AI 변환 실패') }
+}
+
+async function exportDrawing(){
+  try{
+    // Simplified: prompt user to paste exported PNG data URL from Excalidraw (manual step)
+    const dataUrl = prompt('Excalidraw에서 PNG로 Export to Clipboard 후 여기 붙여넣기 (data URL)')
+    if(!dataUrl) return
+    // convert dataURL to blob
+    const res = await fetch(dataUrl)
+    const blob = await res.blob()
+    const file = new File([blob], 'drawing.png', { type: 'image/png' })
+    const { path: rel } = await api.uploadAsset(file, 'assets')
+    insertAtCursor(`![diagram](${rel})\n`)
+    showExcalidraw.value = false
+  }catch(e){ alert('Export 실패') }
+}
 
 function togglePreview(){ showPreview.value = !showPreview.value }
 function toggleOutline(){ showOutline.value = !showOutline.value }
@@ -227,8 +324,20 @@ async function requestOutline(){
 }
 
 function emitSave(){
+  // run lightweight lint before save
+  const api = useKbApi()
   saving.value = true
-  emit('save', { path: props.path, content: draft.value, message: saveMessage.value || undefined })
+  api.lint(draft.value || '').then(res => {
+    const issues = res.issues || []
+    if(issues.length){
+      const top = issues.slice(0,5).map(i=>`L${i.line}:${i.column} ${i.message}`).join('\n')
+      const proceed = confirm(`Lint 경고 ${issues.length}건\n\n${top}\n\n그래도 저장할까요?`)
+      if(!proceed){ saving.value = false; return }
+    }
+    emit('save', { path: props.path, content: draft.value, message: saveMessage.value || undefined })
+  }).catch(()=>{
+    emit('save', { path: props.path, content: draft.value, message: saveMessage.value || undefined })
+  })
 }
 
 function scrollToLine(line){
@@ -440,6 +549,31 @@ function schedulePreviewScan(){
 
 function scanPreviewHeadings(){
   if(!previewEl.value) return
+  // render mermaid blocks
+  try{
+    const blocks = previewEl.value.querySelectorAll('pre code.language-mermaid, code.language-mermaid')
+    blocks.forEach((el) => {
+      const parent = (el.parentElement && el.parentElement.tagName.toLowerCase() === 'pre') ? el.parentElement : (el as HTMLElement)
+      const code = (el.textContent||'').trim()
+      const container = document.createElement('div')
+      parent.replaceWith(container)
+      try { mermaid.initialize({ startOnLoad:false, theme: 'default' }); mermaid.render('m'+Math.random().toString(36).slice(2), code).then(({svg})=>{ container.innerHTML = svg }) } catch {}
+    })
+    // vega-lite blocks: fenced as json with first line comment // vega-lite or fenced as vega-lite
+    const vegaBlocks = previewEl.value.querySelectorAll('pre code.language-json, pre code.language-vega-lite, code.language-vega-lite')
+    vegaBlocks.forEach(async (el)=>{
+      const text = (el.textContent||'').trim()
+      if(!/vega-lite/i.test(text) && !(el.className||'').includes('vega-lite')) return
+      const pre = el.closest('pre')
+      const mount = document.createElement('div')
+      if(pre) pre.replaceWith(mount); else (el as HTMLElement).replaceWith(mount)
+      try{
+        const jsonText = text.replace(/^[\/\s]*vega-lite\s*/i,'')
+        const spec = JSON.parse(jsonText.replace(/^\/\/.*$/gm,''))
+        await embedVega(mount, spec, { actions:false })
+      }catch{}
+    })
+  }catch{}
   if(previewObserver){ previewObserver.disconnect(); previewObserver = null }
   const headings = Array.from(previewEl.value.querySelectorAll('h1, h2, h3, h4, h5, h6'))
   if(!headings.length) return
