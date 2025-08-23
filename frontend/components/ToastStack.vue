@@ -3,7 +3,10 @@
     <transition-group name="toast-fade" tag="div">
       <div v-for="t in items" :key="t.id" class="px-4 py-3 rounded shadow text-sm flex items-start gap-2" :class="typeClass(t.type)">
         <span class="font-medium">{{ icon(t.type) }}</span>
-        <span class="flex-1 whitespace-pre-wrap">{{ t.msg }}</span>
+        <span class="flex-1 whitespace-pre-wrap">
+          {{ t.msg }}
+          <button v-if="t.link" class="ml-2 underline text-white/90 hover:text-white" @click="openLink(t.link!.path)">{{ t.link!.label }}</button>
+        </span>
         <button class="opacity-60 hover:opacity-100" @click="remove(t.id)" aria-label="닫기">×</button>
       </div>
     </transition-group>
@@ -15,6 +18,10 @@ import { useToastStore } from '~/stores/toast'
 const toast = useToastStore()
 const { items } = storeToRefs(toast)
 const remove = toast.remove
+function openLink(path: string){
+  // broadcast a custom event to open KB path
+  try { window.dispatchEvent(new CustomEvent('kb:open', { detail: { path } })) } catch{}
+}
 function typeClass(t: string){
   if(t==='success') return 'bg-green-600 text-white'
   if(t==='error') return 'bg-red-600 text-white'

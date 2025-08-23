@@ -150,6 +150,19 @@ onMounted(() => {
       }
     });
   }
+
+  // 토스트 링크로 전달된 KB 경로 열기
+  if (typeof window !== 'undefined'){
+    window.addEventListener('kb:open', (e:any) => {
+      const p = e?.detail?.path
+      if(p){ handleKbFileSelect(p) }
+    })
+    window.addEventListener('kb:mode', (e:any) => {
+      if(e?.detail?.to === 'view'){
+        // simply no-op here; content view is default when not directly using WorkspaceView
+      }
+    })
+  }
 });
 
 // 라우트 변경 시 커리큘럼 페이지로 전환되면 마지막 경로 복원

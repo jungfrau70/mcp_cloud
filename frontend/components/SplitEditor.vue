@@ -26,6 +26,7 @@
       <!-- Toolbar -->
       <div class="flex items-center gap-2 p-2 border-b bg-white text-sm">
         <button @click="emitSave" class="px-2 py-1 rounded bg-indigo-600 text-white hover:bg-indigo-500" :disabled="saving">Save</button>
+        <button @click="cancelEdit" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Cancel</button>
         <input v-model="saveMessage" placeholder="commit message" class="px-2 py-1 text-xs border rounded w-48 focus:outline-none focus:ring" />
   <button @click="toggleOutline" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Outline</button>
         <button @click="toggleVersions" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Versions</button>
@@ -338,6 +339,12 @@ function emitSave(){
   }).catch(()=>{
     emit('save', { path: props.path, content: draft.value, message: saveMessage.value || undefined })
   })
+}
+
+function cancelEdit(){
+  draft.value = baseContent.value || draft.value
+  // navigate back to view
+  try { (window as any).dispatchEvent(new CustomEvent('kb:mode', { detail: { to: 'view' }})) } catch{}
 }
 
 function scrollToLine(line){

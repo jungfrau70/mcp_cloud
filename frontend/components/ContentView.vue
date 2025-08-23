@@ -11,6 +11,13 @@
         Slides 보기
       </button>
       <button
+        v-if="path && !isSlideView"
+        @click="emit('navigate-tool',{ tool:'content-edit' })"
+        class="ml-2 px-3 py-1 text-sm rounded bg-gray-200 hover:bg-gray-300 transition-colors"
+      >
+        편집
+      </button>
+      <button
         v-if="isSlideView"
         @click="closeSlides"
         class="px-3 py-1 text-sm rounded bg-gray-200 hover:bg-gray-300 transition-colors"

@@ -89,8 +89,13 @@ async function poll(){
       running.value = false
       successMsg.value = '생성 완료'
       toast.push('success','문서 생성 완료')
-      // open generated doc (path derived server side in finalize step, we attempt standard naming fallback)
-      // Optional: could fetch output for metadata here
+      try{
+        if(info.output && info.output.path){
+          emit('open', info.output.path)
+          // 링크 토스트
+          toast.pushWithLink('success','새 문서가 생성되었습니다.', { label:'열기', path: info.output.path })
+        }
+      }catch{}
       return
     }
   } catch(e){ /* ignore intermittent */ }

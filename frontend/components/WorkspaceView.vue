@@ -15,6 +15,7 @@
 <script setup>
 import { ref, computed, shallowRef, watch, defineAsyncComponent } from 'vue';
 import ContentView from './ContentView.vue';
+import SplitEditor from './SplitEditor.vue';
 // Do NOT statically import StepCli to avoid SSR loading xterm; lazy-load on client only
 const StepCli = process.client
   ? defineAsyncComponent(() => import(/* webpackChunkName: "step-cli" */ './StepCli.client.vue'))
@@ -36,12 +37,15 @@ const viewProps = computed(() => {
       slide: props.activeSlide,
       path: props.activePath,
     };
+  } else if (activeComponent.value === SplitEditor) {
+    return { path: props.activePath, content: props.activeContent };
   }
   return {};
 });
 
 const toolComponents = {
   content: ContentView,
+  'content-edit': SplitEditor,
   ...(StepCli ? { cli: StepCli } : {}),
 };
 

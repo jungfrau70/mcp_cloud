@@ -132,3 +132,73 @@ watch(() => props.modelValue, (newValue) => {
 ### **결론**
 
 마크다운 표 작성의 비직관적인 문제를 해결하기 위해 **Nuxt3 기반의 위지윅 에디터를 프론트엔드에 도입**하고, **FastAPI 백엔드에서는 이를 안정적으로 처리하여 저장**하는 시스템을 구축하는 것이 가장 효과적입니다. 이 방식을 통해 작업자는 마크다운 문법을 몰라도 워드 프로세서나 스프레드시트를 다루듯 쉽게 표를 생성하고 편집할 수 있어 생산성이 크게 향상될 것입니다. 🚀
+
+---
+
+## Phase 2 적용 계획 (TipTap 하이브리드)
+
+목표: 현행 마크다운 파이프라인(버전·DIFF·Outline·AI·렌더·저장)을 유지하면서, 고급 편집 UX(표, 서식, 슬래시 명령, 붙여넣기/드래그앤드롭 업로드)를 제공하는 WYSIWYG 편집기를 추가한다.
+
+### 1) 범위(Scope)
+- SplitEditor에 TipTap 모드 추가(토글 가능): Markdown | TipTap
+- 표(Table) 고급 편집(행/열 추가·삭제, 병합/분할, 정렬)
+- 코드블록 + 구문강조, mermaid 프리뷰(펜스 코드 유지)
+- 이미지 업로드(붙여넣기/드래그앤드롭) → 기존 `uploadAsset` API 연동
+- 슬래시 메뉴(/) 및 기본 서식 핫키(B/I/U/Heading/List)
+- Markdown ↔ ProseMirror Round-trip 변환
+- 버전/DIFF/Outline/AI 변환/저장 동작 유지
+
+Out-of-Scope(본 단계 제외)
+- 실시간 협업(OT/CRDT), 주석/리뷰, 다중 사용자 커서
+- 서버 측 렌더러 교체(현행 유지)
+
+### 2) 아키텍처/연동
+- TipTap 에디터를 Nuxt 플러그인으로 동적 import(SSR 가드)
+- Markdown <-> ProseMirror 변환
+  - 우선 Remark/Remark-GFM + prosemirror-markdown 조합으로 MVP
+  - fenced code/mermaid/vega-lite는 토글 가능한 커스텀 노드 또는 MD 보존 전략으로 유지
+- 저장 시점: TipTap → MD 직렬화 → 기존 저장 API 사용
+- 이미지 업로드 훅: TipTap paste/drop 이벤트 → `uploadAsset(file, 'assets')` → 상대 경로 삽입
+- Feature Flag로 안전 배포: `EDITOR_MODE=tiptap|markdown`
+
+### 3) 구현 항목 (Checklist)
+- [ ] TipTap 및 필수 확장 설치(테이블/코드/링크/히스토리/플레이스홀더 등)
+- [ ] `TipTapEditor.vue` 래퍼 컴포넌트(SSR 가드, v-model, onSave 훅)
+- [ ] Markdown → TipTap 초기화 파이프라인(remark 기반)
+- [ ] TipTap → Markdown 저장 파이프라인(prosemirror-markdown 기반)
+- [ ] 표 확장: 툴바(행/열 추가/삭제, 병합/분할, 헤더/정렬)
+- [ ] 코드블록 + 구문강조(Shiki/Prism 중 택1), mermaid 블록 프리뷰
+- [ ] 이미지 붙여넣기/드롭 업로드 연동 및 진행 상태 UI
+- [ ] 슬래시 메뉴(/) + 서식 핫키
+- [ ] SplitEditor 토글 + 마지막 사용 모드 저장(localStorage)
+- [ ] 버전/DIFF/Outline/AI 변환 연동 회귀 테스트
+- [ ] E2E: open/edit/save/round-trip fidelity/rollback
+
+### 4) 작업 일정(안)
+- Day 1: 설치/플러그인 구성, 기본 에디터 표시, v-model 연동
+- Day 2: 표 확장/툴바, 이미지 업로드 훅, 코드블록/구문강조
+- Day 3: mermaid/vega-lite 블록 프리뷰, 슬래시 메뉴 & 핫키
+- Day 4: MD Round-trip 품질 개선(헤딩/리스트/표 보존), 회귀 테스트
+- Day 5: Feature Flag 배포, 사용자 검증, 안정화(버그픽스)
+
+### 5) 리스크 & 대응
+- Round-trip 손실(서식/표/특수 블록)
+  - 대응: 단위 테스트 + 샘플 문서 스냅샷 비교, 문제 구간은 fenced MD 원형 보존
+- 번들 크기/SSR 이슈
+  - 대응: 동적 import, 에디터 모드 진입 시 로딩, 크리티컬 렌더 경로 분리
+- Mermaids/Vega 실행 오류
+  - 대응: try/catch + 사용성 안내, 가능 시 웹워커/비동기 렌더링
+
+### 6) 성공 기준
+- 표 편집(병합/분할/헤더/정렬) 100% 동작
+- 기존 저장/버전/DIFF/Outline/AI 기능 회귀 테스트 통과
+- 라운드트립 품질: 기존 MD 문서 95% 이상 무손실 변환
+
+### 7) 롤백 전략
+- Feature Flag로 즉시 Markdown 모드로 고정
+- TipTap 관련 라우트/컴포넌트 비활성화
+- 저장 포맷은 MD만 사용하므로 데이터 롤백 불필요
+
+### 8) 승인/거버넌스
+- MVP 완료 후 튜터/PM 사용자 검증(표 작업 시나리오 중심)
+- 이슈 지표: 저장 실패율, 라운드트립 차이 건수, 성능(TTI, 입력 지연)
