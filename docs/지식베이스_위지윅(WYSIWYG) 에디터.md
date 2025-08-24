@@ -1,3 +1,24 @@
+### Nuxt 통합 예시 (nuxt-tiptap-editor)
+
+```ts
+// frontend/nuxt.config.ts
+export default defineNuxtConfig({
+  modules: [
+    '@nuxtjs/tailwindcss',
+    ['nuxt-tiptap-editor', { prefix: 'Tiptap' }]
+  ]
+})
+```
+
+```vue
+<template>
+  <client-only>
+    <TiptapEditor />
+  </client-only>
+  <!-- 필요 시 <TiptapEditorContent /> 등 모듈 제공 컴포넌트 사용 -->
+  <!-- 저장은 기존 Markdown 파이프라인을 사용: editor.getHTML() → MD 직렬화 → save API -->
+</template>
+```
 마크다운(Markdown) 문서에서 표를 작성하는 것은 많은 작업자에게 번거롭고 직관적이지 않은 작업입니다. 특히 복잡한 표를 만들거나 수정할 때는 더욱 그렇습니다. FastAPI를 백엔드로, Nuxt3를 프론트엔드로 사용하는 환경에서 이 문제를 해결할 수 있는 몇 가지 개선 방법을 제시합니다.
 
 ### **핵심 개선 방향: 위지윅(WYSIWYG) 에디터 도입**
@@ -11,7 +32,7 @@
 프론트엔드에서는 사용자가 직접 표를 보고 편집할 수 있는 인터페이스를 제공하는 것이 중요합니다. 이를 위해 다음과 같은 오픈소스 라이브러리를 활용할 수 있습니다.
 
   * **Toast UI Editor**: 마크다운 에디터 중 가장 강력한 기능 중 하나로, 표 편집을 위한 뛰어난 위지윅 인터페이스를 제공합니다. 사용자는 GUI를 통해 행과 열을 추가/삭제하고, 셀 내용을 채우고, 정렬 방식을 지정할 수 있습니다.
-  * **TipTap**: 확장성이 매우 뛰어난 에디터 프레임워크입니다. `tiptap-extension-table`과 같은 확장을 사용하면 손쉽게 커스텀 가능한 표 편집 기능을 구현할 수 있습니다. 보다 세밀한 제어가 필요할 때 유용합니다.
+  * **nuxt-tiptap-editor (Tiptap for Nuxt)**: Tiptap을 Nuxt 3 환경에 모듈 형태로 통합합니다. SSR 가드, 클라이언트 전용 로딩, 컴포넌트 자동 등록 등 Nuxt 친화적 사용성을 제공합니다. 표/코드/링크 등 확장을 모듈 옵션으로 손쉽게 구성할 수 있어, 세밀한 제어가 필요할 때 유용합니다.
   * **Milkdown**: Prosemirror와 Remark를 기반으로 하는 플러그인 기반의 마크다운 에디터입니다. 위지윅 기능과 마크다운 소스 코드 편집을 동시에 지원하는 하이브리드 모드를 제공하여 숙련자와 비숙련자 모두를 만족시킬 수 있습니다.
 
 **구현 단계:**
@@ -135,12 +156,12 @@ watch(() => props.modelValue, (newValue) => {
 
 ---
 
-## Phase 2 적용 계획 (TipTap 하이브리드)
+## Phase 2 적용 계획 (nuxt-tiptap-editor 하이브리드)
 
 목표: 현행 마크다운 파이프라인(버전·DIFF·Outline·AI·렌더·저장)을 유지하면서, 고급 편집 UX(표, 서식, 슬래시 명령, 붙여넣기/드래그앤드롭 업로드)를 제공하는 WYSIWYG 편집기를 추가한다.
 
 ### 1) 범위(Scope)
-- SplitEditor에 TipTap 모드 추가(토글 가능): Markdown | TipTap
+- SplitEditor에 Tiptap 모드 추가(토글 가능): Markdown | Tiptap
 - 표(Table) 고급 편집(행/열 추가·삭제, 병합/분할, 정렬)
 - 코드블록 + 구문강조, mermaid 프리뷰(펜스 코드 유지)
 - 이미지 업로드(붙여넣기/드래그앤드롭) → 기존 `uploadAsset` API 연동
@@ -153,19 +174,19 @@ Out-of-Scope(본 단계 제외)
 - 서버 측 렌더러 교체(현행 유지)
 
 ### 2) 아키텍처/연동
-- TipTap 에디터를 Nuxt 플러그인으로 동적 import(SSR 가드)
+- nuxt-tiptap-editor 모듈 사용(SSR 가드 내장), 필요 시 동적 import 보완
 - Markdown <-> ProseMirror 변환
   - 우선 Remark/Remark-GFM + prosemirror-markdown 조합으로 MVP
   - fenced code/mermaid/vega-lite는 토글 가능한 커스텀 노드 또는 MD 보존 전략으로 유지
-- 저장 시점: TipTap → MD 직렬화 → 기존 저장 API 사용
-- 이미지 업로드 훅: TipTap paste/drop 이벤트 → `uploadAsset(file, 'assets')` → 상대 경로 삽입
+- 저장 시점: Tiptap → MD 직렬화 → 기존 저장 API 사용
+- 이미지 업로드 훅: Tiptap paste/drop 이벤트 → `uploadAsset(file, 'assets')` → 상대 경로 삽입
 - Feature Flag로 안전 배포: `EDITOR_MODE=tiptap|markdown`
 
 ### 3) 구현 항목 (Checklist)
-- [ ] TipTap 및 필수 확장 설치(테이블/코드/링크/히스토리/플레이스홀더 등)
-- [ ] `TipTapEditor.vue` 래퍼 컴포넌트(SSR 가드, v-model, onSave 훅)
-- [ ] Markdown → TipTap 초기화 파이프라인(remark 기반)
-- [ ] TipTap → Markdown 저장 파이프라인(prosemirror-markdown 기반)
+- [ ] nuxt-tiptap-editor 설치 및 확장 구성(테이블/코드/링크/히스토리/플레이스홀더 등)
+- [ ] Tiptap 래퍼 컴포넌트 또는 페이지 통합(SSR 가드, v-model, onSave 훅)
+- [ ] Markdown → Tiptap 초기화 파이프라인(remark 기반)
+- [ ] Tiptap → Markdown 저장 파이프라인(prosemirror-markdown 기반)
 - [ ] 표 확장: 툴바(행/열 추가/삭제, 병합/분할, 헤더/정렬)
 - [ ] 코드블록 + 구문강조(Shiki/Prism 중 택1), mermaid 블록 프리뷰
 - [ ] 이미지 붙여넣기/드롭 업로드 연동 및 진행 상태 UI
@@ -175,7 +196,7 @@ Out-of-Scope(본 단계 제외)
 - [ ] E2E: open/edit/save/round-trip fidelity/rollback
 
 ### 4) 작업 일정(안)
-- Day 1: 설치/플러그인 구성, 기본 에디터 표시, v-model 연동
+- Day 1: nuxt-tiptap-editor 설치/모듈 구성, 기본 에디터 표시, v-model 연동
 - Day 2: 표 확장/툴바, 이미지 업로드 훅, 코드블록/구문강조
 - Day 3: mermaid/vega-lite 블록 프리뷰, 슬래시 메뉴 & 핫키
 - Day 4: MD Round-trip 품질 개선(헤딩/리스트/표 보존), 회귀 테스트
@@ -196,7 +217,7 @@ Out-of-Scope(본 단계 제외)
 
 ### 7) 롤백 전략
 - Feature Flag로 즉시 Markdown 모드로 고정
-- TipTap 관련 라우트/컴포넌트 비활성화
+- Tiptap 직접 의존(개별 @tiptap/*) 컴포넌트/플러그인 비활성화(모듈로 대체)
 - 저장 포맷은 MD만 사용하므로 데이터 롤백 불필요
 
 ### 8) 승인/거버넌스

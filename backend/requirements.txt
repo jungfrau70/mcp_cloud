@@ -4,6 +4,8 @@ sqlalchemy
 alembic
 psycopg2-binary
 pydantic
+requests
+beautifulsoup4
 httpx
 google-generativeai
 pytest
@@ -18,7 +20,7 @@ langchain-google-genai
 langchain-huggingface
 faiss-cpu
 sentence-transformers
-PyPDF
+pypdf
 lark
 unstructured
 # Additional packages for AI Agent enhancement

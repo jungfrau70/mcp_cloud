@@ -111,7 +111,7 @@ function sideRows(h: ViewHunk): SideRow[] {
       adds.push(ln)
     } else if(ln.type==='change') {
       flush()
-      rows.push({ key: h.header+'-chg-'+rows.length, type: 'change', old_line: ln.old_line, new_line: ln.new_line, old_text: (ln as any).old_text || ln.text, new_text: (ln as any).new_text || ln.text })
+      rows.push({ key: h.header+'-chg-'+rows.length, type: 'change', old_line: ln.old_line, new_line: ln.new_line, old_text: (ln as unknown as any).old_text || ln.text, new_text: (ln as unknown as any).new_text || ln.text })
     }
   }
   flush()

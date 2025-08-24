@@ -55,7 +55,7 @@ async function load(){
   const r = await api.listTrending()
   categories.value = r.categories || []
 }
-function edit(c:any){ form.value = { name:c.name, query:c.query, enabled: !!c.enabled } }
+function edit(c: { name: string; query: string; enabled?: boolean }){ form.value = { name:c.name, query:c.query, enabled: !!c.enabled } }
 async function save(){
   if(!form.value.name || !form.value.query) return
   await api.upsertTrending(form.value)

@@ -16,6 +16,7 @@
 import { ref, computed, shallowRef, watch, defineAsyncComponent } from 'vue';
 import ContentView from './ContentView.vue';
 import SplitEditor from './SplitEditor.vue';
+const TipTapKbEditor = defineAsyncComponent(() => import('./TipTapKbEditor.client.vue'))
 // Do NOT statically import StepCli to avoid SSR loading xterm; lazy-load on client only
 const StepCli = process.client
   ? defineAsyncComponent(() => import(/* webpackChunkName: "step-cli" */ './StepCli.client.vue'))
@@ -45,7 +46,7 @@ const viewProps = computed(() => {
 
 const toolComponents = {
   content: ContentView,
-  'content-edit': SplitEditor,
+  'content-edit': TipTapKbEditor,
   ...(StepCli ? { cli: StepCli } : {}),
 };
 

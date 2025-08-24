@@ -218,7 +218,7 @@ async function onPickImage(ev){
     const { path: rel } = await api.uploadAsset(files[0], 'assets')
     const alt = files[0].name.replace(/\.[^.]+$/, '')
     insertAtCursor(`![${alt}](${rel})\n`)
-  }catch(e){ alert((e && (e as any).message) || 'upload failed') }
+  }catch(e){ try{ alert((e && e.message) || 'upload failed') }catch{ alert('upload failed') } }
   ev.target.value = ''
 }
 
@@ -240,7 +240,7 @@ async function openAiMenu(){
       opts.use_rag = !!rag
     } else if(kind === 'mermaid'){
       const type = window.prompt('다이어그램 유형(flow/sequence/gantt, 빈칸=flow):')
-      if(type) (opts as any).diagramType = type
+      if(type) (opts).diagramType = type
       opts.use_rag = window.confirm('RAG 컨텍스트 사용할까요?')
     } else {
       const len = window.prompt('요약 문장 수(기본 5):')
@@ -249,7 +249,7 @@ async function openAiMenu(){
     }
     const out = await api.transform(sel, kind === 'table' ? 'table' : kind === 'mermaid' ? 'mermaid' : 'summary', opts)
     insertAtCursor('\n'+out.result+'\n')
-  }catch(e){ alert((e && (e as any).message) || 'AI 변환 실패') }
+  }catch(e){ try{ alert((e && e.message) || 'AI 변환 실패') }catch{ alert('AI 변환 실패') } }
 }
 
 async function exportDrawing(){
@@ -344,7 +344,7 @@ function emitSave(){
 function cancelEdit(){
   draft.value = baseContent.value || draft.value
   // navigate back to view
-  try { (window as any).dispatchEvent(new CustomEvent('kb:mode', { detail: { to: 'view' }})) } catch{}
+  try { window.dispatchEvent(new CustomEvent('kb:mode', { detail: { to: 'view' }})) } catch{}
 }
 
 function scrollToLine(line){
@@ -560,7 +560,7 @@ function scanPreviewHeadings(){
   try{
     const blocks = previewEl.value.querySelectorAll('pre code.language-mermaid, code.language-mermaid')
     blocks.forEach((el) => {
-      const parent = (el.parentElement && el.parentElement.tagName.toLowerCase() === 'pre') ? el.parentElement : (el as HTMLElement)
+      const parent = (el.parentElement && el.parentElement.tagName.toLowerCase() === 'pre') ? el.parentElement : el
       const code = (el.textContent||'').trim()
       const container = document.createElement('div')
       parent.replaceWith(container)
@@ -573,7 +573,7 @@ function scanPreviewHeadings(){
       if(!/vega-lite/i.test(text) && !(el.className||'').includes('vega-lite')) return
       const pre = el.closest('pre')
       const mount = document.createElement('div')
-      if(pre) pre.replaceWith(mount); else (el as HTMLElement).replaceWith(mount)
+      if(pre) pre.replaceWith(mount); else el.replaceWith(mount)
       try{
         const jsonText = text.replace(/^[\/\s]*vega-lite\s*/i,'')
         const spec = JSON.parse(jsonText.replace(/^\/\/.*$/gm,''))

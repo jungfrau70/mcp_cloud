@@ -88,22 +88,26 @@ const setupLinkIntercepts = () => {
   if (contentContainer.value) {
     // render mermaid
     try{
-      const blocks = contentContainer.value.querySelectorAll('pre code.language-mermaid, code.language-mermaid')
-      blocks.forEach(async (el:any)=>{
-        const parent = el.parentElement?.tagName.toLowerCase() === 'pre' ? el.parentElement! : el as HTMLElement
-        const code = (el.textContent||'').trim()
+      const mermaidNodes = contentContainer.value.querySelectorAll('pre code.language-mermaid, code.language-mermaid')
+      mermaidNodes.forEach(async (node) => {
+        const parent = (node.parentElement && node.parentElement.tagName.toLowerCase() === 'pre') ? node.parentElement : node
+        const code = (node.textContent||'').trim()
         const mount = document.createElement('div')
         parent.replaceWith(mount)
-        try{ mermaid.initialize({ startOnLoad:false, theme:'default' }); const out = await mermaid.render('m'+Math.random().toString(36).slice(2), code); mount.innerHTML = out.svg }catch{}
+        try{
+          mermaid.initialize({ startOnLoad:false, theme:'default' })
+          const out = await mermaid.render('m'+Math.random().toString(36).slice(2), code)
+          mount.innerHTML = out.svg
+        }catch{}
       })
       // vega-lite
-      const vegaBlocks = contentContainer.value.querySelectorAll('pre code.language-json, pre code.language-vega-lite, code.language-vega-lite')
-      vegaBlocks.forEach(async (el:any)=>{
-        const text = (el.textContent||'').trim()
-        if(!/vega-lite/i.test(text) && !(el.className||'').includes('vega-lite')) return
-        const pre = el.closest('pre')
+      const vegaNodes = contentContainer.value.querySelectorAll('pre code.language-json, pre code.language-vega-lite, code.language-vega-lite')
+      vegaNodes.forEach(async (node) => {
+        const text = (node.textContent||'').trim()
+        if(!/vega-lite/i.test(text) && !((node.className||'').includes('vega-lite'))) return
+        const pre = node.closest('pre')
         const mount = document.createElement('div')
-        if(pre) pre.replaceWith(mount); else (el as HTMLElement).replaceWith(mount)
+        if(pre) pre.replaceWith(mount); else (node).replaceWith(mount)
         try{
           const jsonText = text.replace(/^[\/\s]*vega-lite\s*/i,'')
           const spec = JSON.parse(jsonText.replace(/^\/\/.*$/gm,''))

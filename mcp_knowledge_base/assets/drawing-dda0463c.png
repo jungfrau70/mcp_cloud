@@ -1,0 +1,23 @@
+{
+  "error": true,
+  "url": "http://localhost:3000/asdf",
+  "statusCode": 404,
+  "statusMessage": "Page not found: /asdf",
+  "message": "Page not found: /asdf",
+  "data": {
+    "path": "/asdf"
+  },
+  "stack": [
+    "Page not found: /asdf",
+    "at createError (/app/node_modules/h3/dist/index.mjs:71:15)",
+    "at createError (/app/node_modules/nuxt/dist/app/composables/error.js:44:58)",
+    "at /app/node_modules/nuxt/dist/pages/runtime/plugins/router.js:222:117)",
+    "at fn (/app/node_modules/nuxt/dist/app/nuxt.js:239:44)",
+    "at Object.callAsync (/app/node_modules/unctx/dist/index.mjs:68:55)",
+    "at /app/node_modules/nuxt/dist/app/nuxt.js:242:56)",
+    "at Object.runWithContext (/app/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:4016:18)",
+    "at callWithNuxt (/app/node_modules/nuxt/dist/app/nuxt.js:242:24)",
+    "at /app/node_modules/nuxt/dist/app/nuxt.js:56:41)",
+    "at EffectScope.run (/app/node_modules/@vue/reactivity/dist/reactivity.cjs.js:85:16)"
+  ]
+}

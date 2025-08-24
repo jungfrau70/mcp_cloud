@@ -50,5 +50,5 @@ try{
   }
 }catch{}
 function reset(){ query.value=''; searched.value=false; results.value=[] }
-function open(r: any){ if(r.path) emit('open', r.path) }
+function open(r: any){ if((r as any).path) emit('open', (r as any).path) }
 </script>

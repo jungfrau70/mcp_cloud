@@ -45,7 +45,7 @@
       <div
         v-if="!isKnowledgeBase && !isSidebarCollapsed"
         class="w-1 cursor-col-resize bg-gray-200 hover:bg-gray-300"
-        @mousedown="onResizeStart"
+        @mousedown="startResize"
       ></div>
       
       <!-- 사이드바 토글 버튼 -->
@@ -69,14 +69,23 @@
       <main class="flex-grow overflow-hidden flex flex-col" ref="workspaceMain">
         <div class="flex-1 overflow-hidden">
           <WorkspaceView v-if="!isKnowledgeBase" :active-content="activeContent" :active-slide="activeSlide" :active-path="activePath" ref="workspaceView">
-            <NuxtPage />
+            <slot />
           </WorkspaceView>
           <div v-else class="h-full flex flex-col">
             <div v-if="!activePath" class="flex-1 overflow-auto">
               <KnowledgeBaseExplorer mode="full" @file-select="handleKbFileSelect" @file-open="handleKbFileSelect" />
             </div>
-            <div v-else class="flex-1 overflow-hidden">
-              <SplitEditor :path="activePath" :content="activeContent" ref="splitEditor" @save="handleKbSave" />
+            <div v-else class="flex-1 overflow-hidden flex flex-col">
+              <div class="border-b bg-white p-2 text-sm flex items-center gap-2">
+                <button @click="kbEditorMode='tiptap'" :class="kbEditorMode==='tiptap' ? 'px-2 py-1 rounded bg-indigo-600 text-white' : 'px-2 py-1 rounded bg-gray-200'">WYSIWYG</button>
+                <button @click="kbEditorMode='markdown'" :class="kbEditorMode==='markdown' ? 'px-2 py-1 rounded bg-indigo-600 text-white' : 'px-2 py-1 rounded bg-gray-200'">Markdown</button>
+                <div class="flex-1"></div>
+                <span class="text-xs text-gray-500" v-if="activePath">{{ activePath }}</span>
+              </div>
+              <div class="flex-1 overflow-hidden">
+                <TipTapKbEditor v-if="kbEditorMode==='tiptap'" :path="activePath" :content="activeContent" />
+                <SplitEditor v-else :path="activePath" :content="activeContent" ref="splitEditor" @save="handleKbSave" />
+              </div>
             </div>
           </div>
         </div>
@@ -100,6 +109,7 @@ import KnowledgeBaseExplorer from '~/components/KnowledgeBaseExplorer.vue'
 import WorkspaceView from '~/components/WorkspaceView.vue'
 import AIAssistantPanel from '~/components/AIAssistantPanel.vue'
 import SplitEditor from '~/components/SplitEditor.vue'
+import TipTapKbEditor from '~/components/TipTapKbEditor.client.vue'
 import TaskStatusBar from '~/components/TaskStatusBar.vue'
 import ToastStack from '~/components/ToastStack.vue'
 import { useToastStore } from '~/stores/toast'
@@ -112,6 +122,7 @@ const docStore = useDocStore()
 const activeContent = computed(()=> docStore.content)
 const activePath = computed(()=> docStore.path)
 const lastVersion = computed(()=> docStore.version)
+const kbEditorMode = ref('tiptap')
 
 // Sidebar state via composable
 const { isCollapsed: isSidebarCollapsed, width: sidebarWidth, toggle: toggleSidebar, start: startResize } = useSidebarResize(256, 200, 500)
@@ -133,13 +144,15 @@ onMounted(() => {
   if (isKnowledgeBase.value) {
     // Load initial KB content if any
   } else {
-    // Restore last opened textbook path if available
+    // Restore last opened textbook path if available, otherwise open first slide
     try {
       const last = typeof window !== 'undefined' ? localStorage.getItem('textbook_last_path') : null
       if (last) {
         handleFileClick(last)
+      } else {
+        handleFileClick('1-1_introduction_to_cloud.md')
       }
-    } catch {}
+    } catch { handleFileClick('1-1_introduction_to_cloud.md') }
   }
   
   // 대화형 CLI 이벤트 리스너 설정
@@ -153,11 +166,11 @@ onMounted(() => {
 
   // 토스트 링크로 전달된 KB 경로 열기
   if (typeof window !== 'undefined'){
-    window.addEventListener('kb:open', (e:any) => {
+    window.addEventListener('kb:open', (e) => {
       const p = e?.detail?.path
       if(p){ handleKbFileSelect(p) }
     })
-    window.addEventListener('kb:mode', (e:any) => {
+    window.addEventListener('kb:mode', (e) => {
       if(e?.detail?.to === 'view'){
         // simply no-op here; content view is default when not directly using WorkspaceView
       }
