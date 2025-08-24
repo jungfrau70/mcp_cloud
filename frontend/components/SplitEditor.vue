@@ -491,6 +491,14 @@ onMounted(() => {
 requestOutline()
 buildLineOffsets()
 schedulePreviewScan()
+// focus into textarea when tab is switched to markdown
+try{
+  window.addEventListener('kb:focus', (e)=>{
+    const det = e && (e).detail
+    if(!det || det.tab !== 'markdown') return
+    setTimeout(()=>{ try{ if(editorEl.value && editorEl.value.focus) editorEl.value.focus() }catch{} }, 0)
+  })
+}catch{}
 })
 
 function buildLineOffsets(){

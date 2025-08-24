@@ -118,6 +118,7 @@ const docStore = useDocStore()
 const saving = ref(false)
 const html = ref('')
 const editor = ref<Editor|null>(null)
+const isEditorEmpty = ref(true)
 const turndown = new Turndown()
 let selfUpdating = false
 const imagePicker = ref<HTMLInputElement|null>(null)
@@ -179,7 +180,7 @@ onMounted(()=>{
     extensions: [
       StarterKit.configure({ codeBlock: false }),
       Underline,
-      TextAlign.configure({ types: ['heading','paragraph'] }),
+      TextAlign.configure({ types: ['heading','paragraph','taskItem'] }),
       Link.configure({ openOnClick: true, autolink: true, HTMLAttributes: { rel: 'noopener nofollow', target: '_blank' } }),
       Image.configure({ inline: false, allowBase64: false }),
       TextStyle,
@@ -200,6 +201,7 @@ onMounted(()=>{
       Typography
     ],
     editorProps: {
+      attributes: { class: 'outline-none focus:outline-none min-h-[600px] p-4' },
       handlePaste: (view, event) => {
         const dt = (event as ClipboardEvent).clipboardData
         if(!dt) return false
@@ -235,12 +237,21 @@ onMounted(()=>{
       const len = (html.value||'').length
       ;(updateMarkdownDebounced as any).delay = len > 20000 ? 400 : 150
       updateMarkdownDebounced(html.value || '')
+      try{ isEditorEmpty.value = (editor as any)?.isEmpty?.() }catch{}
     },
     onCreate(){
       try{ currentMarkdown.value = turndown.turndown(html.value || '') }catch{}
+      try{ isEditorEmpty.value = (editor.value as any)?.isEmpty?.() }catch{}
     }
   })
   } catch(e){ try{ console.error('TipTap init failed', e) }catch{} }
+  // tab focus event → focus editor
+  try{
+    window.addEventListener('kb:focus', (e:any)=>{
+      if(e?.detail?.tab !== 'tiptap') return
+      setTimeout(()=>{ try{ (editor.value as any)?.chain().focus().run() }catch{} }, 0)
+    })
+  }catch{}
   // 콘텐츠가 비동기로 도착할 때 에디터에 반영
   // 콘텐츠 또는 경로 변경 시 에디터에 반영 (탭 역방향 전환 포함)
   watch(() => [props.path, props.content], async ([p, c]) => {

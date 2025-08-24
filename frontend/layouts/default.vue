@@ -296,6 +296,8 @@ async function switchKbTab(next){
   try { await docStore.whenLoaded(activePath.value) } catch {}
   // force re-render editors to avoid stale content when switching quickly
   kbTab.value = next
+  // focus into the editor after tab switch
+  try{ setTimeout(()=>{ if(typeof window!=='undefined') window.dispatchEvent(new CustomEvent('kb:focus', { detail:{ tab: next, path: activePath.value }})) }, 0) }catch{}
 }
 
 // remember kb tab

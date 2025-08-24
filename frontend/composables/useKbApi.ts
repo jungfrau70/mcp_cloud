@@ -2,35 +2,23 @@
 // @ts-ignore - Nuxt provides this at runtime / via nuxt.d.ts generation
 import { useRuntimeConfig } from '#app'
 
-// Common API response shapes (extend as needed)
-export interface KbSaveResponse { version_no: number; version_id?: number; updated_at?: string }
-export interface KbVersion { id: number; version_no: number; message?: string; created_at?: string }
-export interface KbVersionsResponse { versions: KbVersion[] }
-export interface KbOutlineItem { level: number; text: string; line: number }
-export interface KbOutlineResponse { outline: KbOutlineItem[] }
-export interface KbTask { id: string; type: string; status: string; stage?: string; progress?: number; error?: string; updated_at?: string; [k: string]: any }
-export interface KbTaskList { tasks: KbTask[] }
-export interface KbStructuredDiffLine { type: string; old_line: number|null; new_line: number|null; text?: string; old_text?: string; new_text?: string }
-export interface KbStructuredDiffHunk { header: string; lines: KbStructuredDiffLine[] }
-export interface KbStructuredDiff { diff_format: string; hunks: KbStructuredDiffHunk[]; v1: number; v2: number }
-export interface KbUnifiedDiff { diff_format: string; hunks: { header: string; lines: string[] }[] }
+export function resolveApiBase(): string {
+  const config = useRuntimeConfig()
+  const configured = (config.public as any)?.apiBaseUrl || 'http://localhost:8000'
+  if (typeof window !== 'undefined'){
+    try{
+      const u = new URL(configured)
+      const browserHost = window.location.hostname
+      if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== browserHost){
+        const port = u.port || '8000'
+        return `${window.location.protocol}//${browserHost}:${port}`
+      }
+    }catch{/* ignore */}
+  }
+  return configured
+}
 
 export function useKbApi(){
-  const config = useRuntimeConfig()
-  function resolveApiBase(): string {
-    const configured = (config.public as any)?.apiBaseUrl || 'http://localhost:8000'
-    if (typeof window !== 'undefined'){
-      try{
-        const u = new URL(configured)
-        const browserHost = window.location.hostname
-        if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== browserHost){
-          const port = u.port || '8000'
-          return `${window.location.protocol}//${browserHost}:${port}`
-        }
-      }catch{/* ignore */}
-    }
-    return configured
-  }
   const apiBase: string = resolveApiBase()
   // NOTE: For production, inject apiKey via runtime config / cookie / header
   const apiKey: string = 'my_mcp_eagle_tiger'
@@ -139,5 +127,5 @@ export function useKbApi(){
     return request(`${apiBase}/api/v1/trending/run-now`, { method: 'POST', headers: { 'X-API-Key': apiKey } }, 'trending run failed')
   }
 
-  return { getItem, saveItem, listVersions, outline, startCompose, getTask, diff, structuredDiff, recentTasks, uploadAsset, transform, lint, listTrending, upsertTrending, deleteTrending, runTrendingNow }
+  return { getItem, saveItem, listVersions, outline, startCompose, getTask, diff, structuredDiff, recentTasks, uploadAsset, transform, lint, listTrending, upsertTrending, deleteTrending, runTrendingNow, request }
 }
