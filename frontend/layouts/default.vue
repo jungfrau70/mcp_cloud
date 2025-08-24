@@ -72,10 +72,10 @@
             <slot />
           </WorkspaceView>
           <div v-else class="h-full flex flex-col">
-            <div class="border-b bg-white p-2 text-sm flex items-center gap-2">
-              <button @click="kbTab='tree'" :class="kbTab==='tree' ? 'px-3 py-1 rounded bg-indigo-600 text-white' : 'px-3 py-1 rounded bg-gray-200'">FileTree</button>
-              <button @click="switchKbTab('tiptap')" :class="kbTab==='tiptap' ? 'px-3 py-1 rounded bg-indigo-600 text-white' : 'px-3 py-1 rounded bg-gray-200'">WYSIWYG</button>
-              <button @click="switchKbTab('markdown')" :class="kbTab==='markdown' ? 'px-3 py-1 rounded bg-indigo-600 text-white' : 'px-3 py-1 rounded bg-gray-200'">Markdown</button>
+            <div class="border-b bg-white p-2 text-sm flex items-center gap-2" role="tablist" aria-label="KB editor tabs">
+              <button role="tab" :aria-selected="kbTab==='tree'" @click="kbTab='tree'" :class="kbTab==='tree' ? 'px-3 py-1 rounded bg-indigo-600 text-white' : 'px-3 py-1 rounded bg-gray-200'">FileTree</button>
+              <button role="tab" :aria-selected="kbTab==='tiptap'" @click="switchKbTab('tiptap')" :class="kbTab==='tiptap' ? 'px-3 py-1 rounded bg-indigo-600 text-white' : 'px-3 py-1 rounded bg-gray-200'">WYSIWYG</button>
+              <button role="tab" :aria-selected="kbTab==='markdown'" @click="switchKbTab('markdown')" :class="kbTab==='markdown' ? 'px-3 py-1 rounded bg-indigo-600 text-white' : 'px-3 py-1 rounded bg-gray-200'">Markdown</button>
               <div class="flex-1"></div>
               <span class="text-xs text-gray-500" v-if="activePath">{{ activePath }}</span>
             </div>
@@ -109,6 +109,7 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useRuntimeConfig } from '#app'
 import SyllabusExplorer from '~/components/SyllabusExplorer.vue'
 import KnowledgeBaseExplorer from '~/components/KnowledgeBaseExplorer.vue'
 import WorkspaceView from '~/components/WorkspaceView.vue'
@@ -149,7 +150,10 @@ const route = useRoute();
 const isKnowledgeBase = computed(() => route.path.startsWith('/knowledge-base'))
 onMounted(() => {
   if (isKnowledgeBase.value) {
-    // Load initial KB content if any
+    try{
+      const lastTab = typeof window !== 'undefined' ? localStorage.getItem('kb_last_tab') : null
+      if(lastTab && ['tree','tiptap','markdown'].includes(lastTab)) kbTab.value = lastTab
+    }catch{}
   } else {
     // Restore last opened textbook path if available, otherwise open first slide
     try {
@@ -283,14 +287,21 @@ const openKnowledgeBase = async () => {
   }
 };
 
-function onTreeSelect(p){ void handleKbFileSelect(p); kbTab.value = 'tiptap' }
+async function onTreeSelect(p){ await handleKbFileSelect(p); kbTab.value = 'tiptap' }
 
 async function switchKbTab(next){
+  if(next === kbTab.value) return
   if(!activePath.value){ kbTab.value = next; return }
   // ensure the current doc is loaded before switching to an editor tab
   try { await docStore.whenLoaded(activePath.value) } catch {}
+  // force re-render editors to avoid stale content when switching quickly
   kbTab.value = next
 }
+
+// remember kb tab
+watch(kbTab, (v) => {
+  try{ if(typeof window !== 'undefined') localStorage.setItem('kb_last_tab', v) }catch{}
+})
 
 // Default layout for the IDE-style interface.
 </script>

@@ -51,7 +51,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
+import { useRuntimeConfig } from '#app'
 import { stripBasePath } from '~/utils/path'
 import { useTaskStore } from '~/stores/task'
 import FileTreePanel from '~/components/FileTreePanel.vue'

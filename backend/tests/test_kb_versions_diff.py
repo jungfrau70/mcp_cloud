@@ -71,7 +71,7 @@ def test_kb_save_and_list_versions_and_diff(client, tmp_path):
     assert v2_no in nums and v1_no in nums
 
     # diff
-        rd = client.get(f"/api/_deprecated/kb/diff?path={path}&v1={v1_no}&v2={v2_no}", headers=API_KEY)
+    rd = client.get(f"/api/_deprecated/kb/diff?path={path}&v1={v1_no}&v2={v2_no}", headers=API_KEY)
     assert rd.status_code == 200
     data = rd.json()
     assert data["diff_format"] == "unified"

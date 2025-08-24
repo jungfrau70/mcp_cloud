@@ -24,13 +24,11 @@
     <!-- Editor & Preview -->
     <div class="flex-1 flex flex-col">
       <!-- Toolbar -->
-      <div class="flex items-center gap-2 p-2 border-b bg-white text-sm">
-        <button @click="emitSave" class="px-2 py-1 rounded bg-indigo-600 text-white hover:bg-indigo-500" :disabled="saving">Save</button>
-        <button @click="cancelEdit" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Cancel</button>
+      <KbToolbar :saving="saving" save-label="Save" cancel-label="Cancel" saving-text="Saving..." aria-label="Markdown toolbar" @save="emitSave" @cancel="cancelEdit">
         <input v-model="saveMessage" placeholder="commit message" class="px-2 py-1 text-xs border rounded w-48 focus:outline-none focus:ring" />
-  <button @click="toggleOutline" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Outline</button>
+        <button @click="toggleOutline" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Outline</button>
         <button @click="toggleVersions" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Versions</button>
-  <button @click="toggleDiff" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300" :disabled="!versions.length">Diff</button>
+        <button @click="toggleDiff" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300" :disabled="!versions.length">Diff</button>
         <button @click="requestOutline" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300" :disabled="outlineLoading">Refresh Outline</button>
         <span v-if="saving" class="text-gray-500 text-xs">Saving...</span>
         <span v-if="lastSaved" class="text-gray-400 text-xs">v{{ lastVersion }} @ {{ lastSaved }}</span>
@@ -45,8 +43,10 @@
           <button @click="openAiMenu" class="px-2 py-1 rounded bg-indigo-50 hover:bg-indigo-100 text-indigo-700">AI</button>
           <button @click="showExcalidraw=true" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Draw</button>
         </div>
-        <button @click="togglePreview" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">{{ showPreview ? 'Editor Only' : 'Split' }}</button>
-      </div>
+        <template #right>
+          <button @click="togglePreview" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">{{ showPreview ? 'Editor Only' : 'Split' }}</button>
+        </template>
+      </KbToolbar>
 
       <div class="flex flex-1 min-h-0">
         <!-- Conflict Resolution Panel (overlay) -->
@@ -91,8 +91,11 @@
             @scroll="onEditorScroll"
           ></textarea>
         </div>
-        <div v-if="showPreview && !showDiff" class="flex-1 border-l overflow-auto p-4 prose max-w-none bg-white">
-          <div ref="previewEl" v-html="rendered"></div>
+        <div v-if="showPreview && !showDiff" class="flex-1 overflow-hidden flex">
+          <div class="flex-1 border-l overflow-auto p-4 prose max-w-none bg-white">
+            <div ref="previewEl" v-html="rendered"></div>
+          </div>
+          <KbSidePanel v-if="path" :path="path" :content="draft" class="border-l" @goto-line="scrollToLine" />
         </div>
         <div v-if="showDiff" class="flex-1 border-l bg-white">
           <DiffViewer
@@ -104,25 +107,6 @@
             :default-right="diffRight"
             @close="showDiff=false"
           />
-        </div>
-        <div v-if="showVersions" class="w-64 border-l bg-gray-50 flex flex-col">
-          <div class="p-2 font-semibold text-xs tracking-wide text-gray-600 border-b flex items-center">VERSIONS
-            <button @click="loadVersions" class="ml-auto text-[10px] px-1 py-0.5 bg-white border rounded">↻</button>
-          </div>
-          <div class="flex-1 overflow-auto text-xs">
-            <ul>
-              <li v-for="v in versions" :key="v.id" class="border-b px-2 py-1 hover:bg-indigo-50 cursor-pointer group" @click="pickVersionForDiff(v.version_no)">
-                <div class="flex items-center justify-between">
-                  <div class="font-mono">v{{ v.version_no }}</div>
-                  <span v-if="v.version_no===diffLeft" class="text-[10px] text-indigo-600">LEFT</span>
-                  <span v-else-if="v.version_no===diffRight" class="text-[10px] text-green-600">RIGHT</span>
-                </div>
-                <div class="truncate text-[11px]" :title="v.message">{{ v.message || '—' }}</div>
-                <div class="text-[10px] text-gray-400">{{ formatTs(v.created_at) }}</div>
-              </li>
-              <li v-if="!versions.length" class="px-2 py-4 text-center text-gray-400">No versions</li>
-            </ul>
-          </div>
         </div>
       </div>
       <!-- Excalidraw modal (lightweight embed) -->
@@ -145,10 +129,13 @@ import { ref, watch, computed, onBeforeUnmount, onMounted, nextTick } from 'vue'
 import { merge3 } from '~/utils/threeWayMerge.js'
 import { useKbApi } from '~/composables/useKbApi'
 import { marked } from 'marked'
+import DOMPurify from 'dompurify'
 import mermaid from 'mermaid'
 import embedVega from 'vega-embed'
 import DiffViewer from '~/components/DiffViewer.vue'
 import { generateMarkdownTable, mermaidTemplate, vegaLiteBarTemplate } from '~/utils/mdTools'
+import KbToolbar from '~/components/KbToolbar.vue'
+import KbSidePanel from '~/components/KbSidePanel.vue'
 
 const props = defineProps({
   path: { type: String, required: false },
@@ -205,7 +192,7 @@ const diffLeft = ref(null)
 const diffRight = ref(null)
 const diffKey = computed(() => `${diffLeft.value||''}-${diffRight.value||''}`)
 
-const rendered = computed(() => marked.parse(draft.value || ''))
+const rendered = computed(() => DOMPurify.sanitize(marked.parse(draft.value || '')))
 
 // --- Insert helpers ---
 function insertAtCursor(text){

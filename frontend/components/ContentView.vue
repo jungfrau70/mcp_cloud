@@ -49,6 +49,7 @@ import { useRuntimeConfig } from '#app';
 import { marked } from 'marked';
 import mermaid from 'mermaid';
 import embedVega from 'vega-embed';
+import DOMPurify from 'dompurify'
 
 const props = defineProps({
   content: String,
@@ -81,7 +82,7 @@ const renderedMarkdown = computed(() => {
     rest.push(line);
   }
   const body = removed ? rest.join('\n') : props.content;
-  return marked(body);
+  return DOMPurify.sanitize(marked(body));
 });
 
 const setupLinkIntercepts = () => {
@@ -156,7 +157,7 @@ const openSlides = async () => {
     } else {
       const md = await res.text();
       marked.setOptions({ breaks: true, gfm: true, headerIds: true, mangle: false });
-      slideHtml.value = marked(md);
+      slideHtml.value = DOMPurify.sanitize(marked(md));
       slidePdfUrl.value = '';
     }
     isSlideView.value = true;
