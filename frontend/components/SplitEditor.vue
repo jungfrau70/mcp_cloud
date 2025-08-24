@@ -91,11 +91,10 @@
             @scroll="onEditorScroll"
           ></textarea>
         </div>
-        <div v-if="showPreview && !showDiff" class="flex-1 overflow-hidden flex">
+        <div v-if="showPreview && !showDiff" class="flex-1 overflow-hidden">
           <div class="flex-1 border-l overflow-auto p-4 prose max-w-none bg-white">
             <div ref="previewEl" v-html="rendered"></div>
           </div>
-          <KbSidePanel v-if="path" :path="path" :content="draft" class="border-l" @goto-line="scrollToLine" />
         </div>
         <div v-if="showDiff" class="flex-1 border-l bg-white">
           <DiffViewer

@@ -3,6 +3,7 @@ import pytest
 import os
 import json
 import subprocess
+import shutil
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -11,15 +12,22 @@ from sqlalchemy.orm import sessionmaker
 # It needs to be imported *after* environment variables are patched.
 
 @pytest.fixture(scope="function")
-def client(monkeypatch):
+def client(monkeypatch, tmp_path):
     """
     A function-scoped fixture that provides a fully isolated test client
-    for each test function.
+    for each test function. It also sets up a temporary knowledge base directory.
     """
+    # Create a temporary directory for the knowledge base
+    kb_root = tmp_path / "mcp_knowledge_base"
+    kb_root.mkdir()
+    
     # 1. Set environment variables for the test
-    monkeypatch.setenv("DATABASE_URL", "sqlite:///./test.db")
+    monkeypatch.setenv("DATABASE_URL", f"sqlite:///{tmp_path / 'test.db'}")
     monkeypatch.setenv("GEMINI_API_KEY", "fake_api_key")
-    monkeypatch.setenv("MCP_API_KEY", "test_api_key") # Add a test API key
+    monkeypatch.setenv("MCP_API_KEY", "test_api_key")
+    
+    # Monkeypatch the KNOWLEDGE_BASE_DIR constant in main
+    monkeypatch.setattr("backend.main.KNOWLEDGE_BASE_DIR", str(kb_root))
 
     # 2. Now, safely import the app
     from backend.main import app, get_db
@@ -27,7 +35,7 @@ def client(monkeypatch):
 
     # 3. Create a fresh, in-memory SQLite database for this test
     engine = create_engine(
-        "sqlite:///./test.db", connect_args={"check_same_thread": False}
+        f"sqlite:///{tmp_path / 'test.db'}", connect_args={"check_same_thread": False}
     )
     TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     
@@ -49,6 +57,7 @@ def client(monkeypatch):
     # Teardown: clear dependency overrides and drop tables
     app.dependency_overrides.clear()
     Base.metadata.drop_all(bind=engine)
+    # The tmp_path fixture handles directory cleanup
 
 def test_read_root(client):
     """
@@ -167,3 +176,81 @@ def test_run_readonly_cli_command_failure(client, monkeypatch):
     assert data["success"] is False
     assert data["stdout"] == ""
     assert data["stderr"] == mock_stderr
+
+class TestKnowledgeBaseV2:
+    def test_get_kb_tree_empty(self, client):
+        response = client.get("/api/v1/knowledge/tree", headers={"X-API-Key": "test_api_key"})
+        assert response.status_code == 200
+        assert response.json() == {}
+
+    def test_file_crud_cycle(self, client):
+        # 1. Create File
+        create_resp = client.post(
+            "/api/v1/knowledge/item",
+            headers={"X-API-Key": "test_api_key"},
+            json={"path": "test/document.md", "type": "file", "content": "Hello World"}
+        )
+        assert create_resp.status_code == 200
+        assert create_resp.json()["path"] == "test/document.md"
+
+        # 2. Read File
+        read_resp = client.get("/api/v1/knowledge/item?path=test/document.md", headers={"X-API-Key": "test_api_key"})
+        assert read_resp.status_code == 200
+        assert read_resp.json()["content"] == "Hello World"
+
+        # 3. Update File
+        update_resp = client.put(
+            "/api/v1/knowledge/item",
+            headers={"X-API-Key": "test_api_key"},
+            json={"path": "test/document.md", "type": "file", "content": "Hello Again"}
+        )
+        assert update_resp.status_code == 200
+        
+        read_again_resp = client.get("/api/v1/knowledge/item?path=test/document.md", headers={"X-API-Key": "test_api_key"})
+        assert read_again_resp.json()["content"] == "Hello Again"
+
+        # 4. Rename File
+        rename_resp = client.patch(
+            "/api/v1/knowledge/item",
+            headers={"X-API-Key": "test_api_key"},
+            json={"path": "test/document.md", "new_path": "test/renamed.md"}
+        )
+        assert rename_resp.status_code == 200
+        
+        # Verify old path is gone
+        read_old_resp = client.get("/api/v1/knowledge/item?path=test/document.md", headers={"X-API-Key": "test_api_key"})
+        assert read_old_resp.status_code == 404
+
+        # Verify new path exists
+        read_new_resp = client.get("/api/v1/knowledge/item?path=test/renamed.md", headers={"X-API-Key": "test_api_key"})
+        assert read_new_resp.status_code == 200
+        assert read_new_resp.json()["content"] == "Hello Again"
+
+        # 5. Delete File
+        delete_resp = client.delete("/api/v1/knowledge/item?path=test/renamed.md", headers={"X-API-Key": "test_api_key"})
+        assert delete_resp.status_code == 200
+
+        # Verify it's gone
+        read_deleted_resp = client.get("/api/v1/knowledge/item?path=test/renamed.md", headers={"X-API-Key": "test_api_key"})
+        assert read_deleted_resp.status_code == 404
+
+    def test_directory_crud_cycle(self, client):
+        # 1. Create Directory
+        create_resp = client.post(
+            "/api/v1/knowledge/item",
+            headers={"X-API-Key": "test_api_key"},
+            json={"path": "test_dir", "type": "directory"}
+        )
+        assert create_resp.status_code == 200
+
+        # 2. Check Tree
+        tree_resp = client.get("/api/v1/knowledge/tree", headers={"X-API-Key": "test_api_key"})
+        assert "test_dir" in tree_resp.json()
+
+        # 3. Delete Directory
+        delete_resp = client.delete("/api/v1/knowledge/item?path=test_dir", headers={"X-API-Key": "test_api_key"})
+        assert delete_resp.status_code == 200
+
+        # 4. Check Tree again
+        tree_after_delete_resp = client.get("/api/v1/knowledge/tree", headers={"X-API-Key": "test_api_key"})
+        assert "test_dir" not in tree_after_delete_resp.json()

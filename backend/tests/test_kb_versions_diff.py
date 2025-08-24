@@ -29,6 +29,7 @@ def db_session():
         yield db
     finally:
         db.close()
+        engine.dispose() # Add this line
         os.remove("./test_kb_versions.db")
 
 @pytest.fixture(scope="module")

@@ -22,10 +22,12 @@
       <button class="px-2 py-1 border rounded" aria-label="왼쪽 정렬" @click="align('left')">⟸</button>
       <button class="px-2 py-1 border rounded" aria-label="가운데 정렬" @click="align('center')">⇔</button>
       <button class="px-2 py-1 border rounded" aria-label="오른쪽 정렬" @click="align('right')">⟹</button>
+      <button class="px-2 py-1 border rounded" aria-label="양쪽 정렬" @click="align('justify')">⟷</button>
       <div class="w-px h-5 bg-gray-200 mx-1"></div>
       <button class="px-2 py-1 border rounded" aria-label="불릿 리스트" @click="cmd('toggleBulletList')">• List</button>
       <button class="px-2 py-1 border rounded" aria-label="번호 리스트" @click="cmd('toggleOrderedList')">1. List</button>
       <button class="px-2 py-1 border rounded" aria-label="태스크 리스트" @click="cmd('toggleTaskList')">☐ Task</button>
+      <button class="px-2 py-1 border rounded" aria-label="체크 토글" @click="toggleTaskChecked">☑︎</button>
       <button class="px-2 py-1 border rounded" aria-label="목록 들여쓰기" @click="indentList">→</button>
       <button class="px-2 py-1 border rounded" aria-label="목록 내어쓰기" @click="outdentList">←</button>
       <div class="w-px h-5 bg-gray-200 mx-1"></div>
@@ -62,11 +64,12 @@
       <button class="px-2 py-1 rounded bg-indigo-50 hover:bg-indigo-100 text-indigo-700" aria-label="AI 변환" @click="openAiMenu">AI</button>
     </KbToolbar>
     <div class="flex-1 overflow-auto p-3">
-      <div class="h-full flex min-h-0">
-        <div class="flex-1 min-h-0">
-          <EditorContent :editor="editor" class="tiptap-editor" />
+      <div class="h-full grid grid-cols-[18rem_1fr] min-h-0">
+        <KbSidePanel v-if="path" :path="path" :content="currentMarkdown" />
+        <div class="min-h-0 h-full overflow-auto">
+          <EditorContent v-if="editor" :editor="editor as unknown as Editor" class="tiptap-editor prose max-w-none h-full" />
+          <div v-else class="prose max-w-none p-4" v-html="html"></div>
         </div>
-        <KbSidePanel v-if="path" :path="path" :content="currentMarkdown" class="border-l" />
       </div>
     </div>
   </div>
@@ -102,11 +105,11 @@ import bash from 'highlight.js/lib/languages/bash'
 import jsonLang from 'highlight.js/lib/languages/json'
 import yamlLang from 'highlight.js/lib/languages/yaml'
 import markdownLang from 'highlight.js/lib/languages/markdown'
-import { useDocStore } from '~/stores/doc'
-import { useKbApi } from '~/composables/useKbApi'
-import { useToastStore } from '~/stores/toast'
-import KbToolbar from '~/components/KbToolbar.vue'
-import KbSidePanel from '~/components/KbSidePanel.vue'
+import { useDocStore } from '../stores/doc'
+import { useKbApi } from '../composables/useKbApi'
+import { useToastStore } from '../stores/toast'
+import KbToolbar from './KbToolbar.vue'
+import KbSidePanel from './KbSidePanel.vue'
 
 const props = defineProps({ path: String, content: String })
 const api = useKbApi()
@@ -170,6 +173,7 @@ onMounted(()=>{
   try{ (lowlight as any).register?.('json', jsonLang) }catch{}
   try{ (lowlight as any).register?.('yaml', yamlLang) }catch{}
   try{ (lowlight as any).register?.('markdown', markdownLang) }catch{}
+  try{
   editor.value = new Editor({
     content: html.value,
     extensions: [
@@ -231,8 +235,12 @@ onMounted(()=>{
       const len = (html.value||'').length
       ;(updateMarkdownDebounced as any).delay = len > 20000 ? 400 : 150
       updateMarkdownDebounced(html.value || '')
+    },
+    onCreate(){
+      try{ currentMarkdown.value = turndown.turndown(html.value || '') }catch{}
     }
   })
+  } catch(e){ try{ console.error('TipTap init failed', e) }catch{} }
   // 콘텐츠가 비동기로 도착할 때 에디터에 반영
   // 콘텐츠 또는 경로 변경 시 에디터에 반영 (탭 역방향 전환 포함)
   watch(() => [props.path, props.content], async ([p, c]) => {
@@ -243,7 +251,14 @@ onMounted(()=>{
     html.value = next
     currentMarkdown.value = nextMd
     // TipTap은 내부 상태가 있을 수 있으므로 약간 지연 또는 idle 후 주입 (대용량 최적화)
-    const setter = () => { try{ selfUpdating = true; editor.value?.commands?.setContent(next, false) }catch{} finally{ selfUpdating = false } }
+    const setter = () => {
+      try{
+        selfUpdating = true
+        editor.value?.commands?.setContent(next, false)
+        // 강제 리프레시로 뷰 업데이트 보장
+        try{ (editor.value as any)?.view?.dispatch?.((editor.value as any)?.state?.tr) }catch{}
+      }catch{} finally{ selfUpdating = false }
+    }
     if (typeof window !== 'undefined' && 'requestIdleCallback' in window && nextMd.length > 20000){
       ;(window as any).requestIdleCallback(() => setter(), { timeout: 200 })
     } else {
@@ -258,12 +273,31 @@ function cmd(name: string, args: any = {}){
   try{ (editor.value as any)?.chain().focus()?.[name](args).run() }catch{}
 }
 
-function align(dir: 'left'|'center'|'right'){
+function align(dir: 'left'|'center'|'right'|'justify'){
   try{
     const m = (editor.value as any)?.chain().focus()
     if(dir==='left') m.setTextAlign('left').run()
     else if(dir==='center') m.setTextAlign('center').run()
-    else m.setTextAlign('right').run()
+    else if(dir==='right') m.setTextAlign('right').run()
+    else m.setTextAlign('justify').run()
+  }catch{}
+}
+
+function toggleTaskChecked(){
+  try{
+    // toggle between [ ] and [x] if selection is on a task item
+    const api = (editor.value as any)
+    if(!api) return
+    const state = api.state
+    const { $from } = state.selection
+    const node = $from?.node($from.depth)
+    if(node && node.type?.name === 'taskItem'){
+      const checked = !!node?.attrs?.checked
+      api.chain().focus().updateAttributes('taskItem', { checked: !checked }).run()
+    } else {
+      // if not on task, create a task list item
+      api.chain().focus().toggleTaskList().run()
+    }
   }catch{}
 }
 

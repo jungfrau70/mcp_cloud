@@ -1000,9 +1000,15 @@ def secure_path(path: str) -> pathlib.Path:
     # Normalize to prevent directory traversal attacks (e.g., ../../)
     # The `resolve()` method will raise an error if the path is outside the base directory.
     base_dir = pathlib.Path(KNOWLEDGE_BASE_DIR).resolve()
-    # The user-provided path is joined to the base directory
-    request_path = base_dir.joinpath(path).resolve()
-    
+    try:
+        request_path = base_dir.joinpath(path).resolve()
+    except FileNotFoundError:
+        # If any part of the path doesn't exist during resolve, it's a 404
+        raise HTTPException(status_code=404, detail="File or directory not found.")
+    except Exception as e:
+        # Catch any other unexpected errors during path resolution
+        raise HTTPException(status_code=500, detail=f"Path resolution error: {str(e)}")
+
     # Check if the resolved path is still within the base directory
     if base_dir not in request_path.parents and request_path != base_dir:
         raise HTTPException(status_code=400, detail="Invalid or malicious file path provided.")
@@ -1022,18 +1028,17 @@ def get_kb_tree():
 def get_kb_item_content(path: str):
     """Gets the content of a specific file."""
     try:
-        # The secure_path function will handle validation
-        file_path = secure_path(path)
-        
+        file_path = secure_path(path) # secure_path now handles FileNotFoundError
+
         if not file_path.is_file():
             raise HTTPException(status_code=404, detail="Item is not a file or does not exist.")
-        
+
         content = file_path.read_text(encoding="utf-8")
         return {"path": path, "content": content}
-    except FileNotFoundError as e:
-        raise HTTPException(status_code=404, detail="File not found.")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except HTTPException: # Re-raise HTTPExceptions from secure_path
+        raise
+    except Exception as e: # Catch any other unexpected errors
+        raise HTTPException(status_code=500, detail=f"Failed to read document content: {e}")
 
 @kb_router.post("/item")
 def create_kb_item(item: KBItemCreate):
@@ -1856,6 +1861,13 @@ async def generate_document_from_external(request: GenerateDocumentRequest):
                 document_path=None
             )
         generated_doc_data = gen_result
+        # Add an explicit check for None after unwrapping/assignment
+        if generated_doc_data is None:
+            return GenerateDocumentResponse(
+                success=False,
+                message="AI document generation failed: generated data is empty.",
+                document_path=None
+            )
 
         # Determine target path and filename
         target_filename = f"{generated_doc_data['slug']}.md"

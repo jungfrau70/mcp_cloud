@@ -1,5 +1,5 @@
 <template>
-  <div class="w-72 border-l bg-gray-50 flex flex-col min-h-0">
+  <div class="w-72 bg-gray-50 flex flex-col min-h-0">
     <div class="p-2 font-semibold text-xs tracking-wide text-gray-700 border-b flex items-center gap-2">
       <button @click="active='outline'; if(!outline.length) refreshOutline()" :class="tabClass('outline')">Outline</button>
       <button @click="active='versions'; if(!versions.length) loadVersions()" :class="tabClass('versions')">Versions</button>
