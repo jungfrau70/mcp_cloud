@@ -45,7 +45,7 @@
       <div
         v-if="!isSidebarCollapsed"
         class="w-1 cursor-col-resize bg-gray-200 hover:bg-gray-300"
-        @mousedown="onResizeStart"
+        @mousedown="startResize"
       ></div>
       
       <!-- 사이드바 토글 버튼 -->

@@ -1,4 +1,4 @@
-import { ref, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 export function useSidebarResize(initial = 256, min = 200, max = 500){
   const isCollapsed = ref(false)
@@ -16,9 +16,14 @@ export function useSidebarResize(initial = 256, min = 200, max = 500){
 
   const start = () => { resizing = true }
 
-  window.addEventListener('mousemove', onMouseMove)
-  window.addEventListener('mouseup', onMouseUp)
+  // Register listeners on client only
+  onMounted(() => {
+    if (typeof window === 'undefined') return
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', onMouseUp)
+  })
   onBeforeUnmount(()=>{
+    if (typeof window === 'undefined') return
     window.removeEventListener('mousemove', onMouseMove)
     window.removeEventListener('mouseup', onMouseUp)
   })
