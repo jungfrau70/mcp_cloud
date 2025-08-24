@@ -40,6 +40,7 @@
           @dragover="handleDragOver($event, null, null)"
           @drop="handleDrop($event, null, null)"
           :class="['tree-item', 'is-file', { 'is-selected': selectedFile === (file.path || constructPath(file)) }]"
+          :data-path="(file.path || constructPath(file))"
           :style="{ 'padding-left': (depth * 15) + 'px' }"
           draggable="true"
         >
@@ -117,7 +118,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick } from 'vue';
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps({
   tree: {
@@ -145,6 +146,7 @@ const props = defineProps({
 const emit = defineEmits(['file-click', 'file-open', 'directory-create', 'directory-rename', 'directory-delete', 'file-move']);
 
 const openDirectories = ref({});
+const expandedBySelectionOnce = ref(false)
 
 // Context menu state
 const showDirectoryContextMenu = ref(false);
@@ -416,18 +418,30 @@ const handleClickOutside = (event) => {
   }
 };
 
-// Auto-open directories if there's a selected file path within them
+// Auto-open nested directories so that selected file becomes visible
 watch(() => props.selectedFile, (newPath) => {
-    if (newPath) {
-        const pathParts = newPath.split('/');
-        if (pathParts.length > 1) {
-            const dirName = pathParts[0];
-            if (directories.value[dirName]) {
-                openDirectories.value[dirName] = true;
-            }
-        }
+  if (!newPath) return
+  const base = props.basePath ? props.basePath + '/' : ''
+  if (base && newPath.indexOf(base) !== 0) return
+  const remaining = base ? newPath.slice(base.length) : newPath
+  const parts = remaining.split('/').filter(Boolean)
+  // 반복 렌더링에서도 꾸준히 경로를 따라가며 모든 상위 디렉토리를 open
+  if (parts.length > 1) {
+    const first = parts[0]
+    if (directories.value[first]) {
+      openDirectories.value[first] = true
     }
-}, { immediate: true });
+  }
+  // 선택된 파일이 보이도록 스크롤
+  nextTick(() => {
+    try{
+      const el = document.querySelector(`.tree-item.is-file[data-path="${CSS.escape(newPath)}"]`)
+      if(el && typeof el.scrollIntoView === 'function'){
+        el.scrollIntoView({ block: 'nearest' })
+      }
+    }catch{}
+  })
+}, { immediate: true })
 
 // Add global click listener
 onMounted(() => {

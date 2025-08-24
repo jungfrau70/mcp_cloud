@@ -2,12 +2,13 @@ import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import patch, mock_open
 import os
+from main import app
 
-# Assuming your main.py is in the backend directory
-from main import app, get_api_key
+@pytest.fixture(autouse=True)
+def _disable_auth(monkeypatch):
+    monkeypatch.setenv("DISABLE_AUTH", "true")
 
-# Override the API key dependency for testing
-app.dependency_overrides[get_api_key] = lambda: "my_mcp_eagle_tiger"
+
 
 client = TestClient(app)
 
@@ -76,7 +77,7 @@ def test_get_slide_pdf_success(mock_open_file, mock_walk, mock_realpath, mock_ex
     ]
     mock_open_file.return_value.read.return_value = mock_slide_content
 
-    response = client.get("/api/v1/slides?textbook_path=test_slide.md", headers={"X-API-Key": "my_mcp_eagle_tiger"})
+    response = client.get("/api/v1/slides?textbook_path=test_slide.md")
 
     # Since HAS_MARKDOWN_PDF is False, it should return markdown content
     assert response.status_code == 200
@@ -97,7 +98,7 @@ def test_get_slide_pdf_not_found(mock_realpath, mock_exists):
         os.path.join(MOCK_SLIDES_DIR, "non_existent_slide.md"): os.path.join(MOCK_SLIDES_DIR, "non_existent_slide.md")
     })
 
-    response = client.get("/api/v1/slides?textbook_path=non_existent_slide.md", headers={"X-API-Key": "my_mcp_eagle_tiger"})
+    response = client.get("/api/v1/slides?textbook_path=non_existent_slide.md")
 
     assert response.status_code == 404
     assert "Slide mapping is not defined for this document." in response.json()["detail"]
@@ -116,7 +117,7 @@ def test_get_slide_pdf_invalid_path(mock_realpath, mock_exists):
         os.path.join(MOCK_SLIDES_DIR, "../test_slide.md"): "/malicious/path/outside/slides_dir" # This is the path passed to realpath
     })
 
-    response = client.get("/api/v1/slides?textbook_path=../test_slide.md", headers={"X-API-Key": "my_mcp_eagle_tiger"})
+    response = client.get("/api/v1/slides?textbook_path=../test_slide.md")
 
     assert response.status_code == 404
     assert "Not Found" in response.json()["detail"]
@@ -135,7 +136,7 @@ def test_get_slide_pdf_internal_error(mock_open_file, mock_realpath, mock_exists
     })
     mock_open_file.return_value.read.return_value = mock_slide_content
 
-    response = client.get("/api/v1/slides?textbook_path=test_slide.md", headers={"X-API-Key": "my_mcp_eagle_tiger"})
+    response = client.get("/api/v1/slides?textbook_path=test_slide.md")
 
     # Since HAS_MARKDOWN_PDF is False, it should return markdown content successfully
     assert response.status_code == 200
@@ -157,7 +158,7 @@ def test_get_slide_pdf_no_md_extension(mock_open_file, mock_realpath, mock_exist
     })
     mock_open_file.return_value.read.return_value = mock_slide_content
 
-    response = client.get("/api/v1/slides?textbook_path=test_slide", headers={"X-API-Key": "my_mcp_eagle_tiger"})
+    response = client.get("/api/v1/slides?textbook_path=test_slide")
 
     # Since HAS_MARKDOWN_PDF is False, it should return markdown content
     assert response.status_code == 200
@@ -190,7 +191,7 @@ def test_get_slide_pdf_with_path_segments(mock_open_file, mock_realpath, mock_ex
     slide_name_with_path = "subdir/another_slide.md"
     expected_full_path = os.path.join(MOCK_SLIDES_DIR, "subdir", "another_slide.md")
 
-    response = client.get(f"/api/v1/slides?textbook_path={slide_name_with_path}", headers={"X-API-Key": "my_mcp_eagle_tiger"})
+    response = client.get(f"/api/v1/slides?textbook_path={slide_name_with_path}")
 
     # Since HAS_MARKDOWN_PDF is False, it should return markdown content
     assert response.status_code == 200

@@ -72,19 +72,24 @@
             <slot />
           </WorkspaceView>
           <div v-else class="h-full flex flex-col">
-            <div v-if="!activePath" class="flex-1 overflow-auto">
-              <KnowledgeBaseExplorer mode="full" @file-select="handleKbFileSelect" @file-open="handleKbFileSelect" />
+            <div class="border-b bg-white p-2 text-sm flex items-center gap-2">
+              <button @click="kbTab='tree'" :class="kbTab==='tree' ? 'px-3 py-1 rounded bg-indigo-600 text-white' : 'px-3 py-1 rounded bg-gray-200'">FileTree</button>
+              <button @click="switchKbTab('tiptap')" :class="kbTab==='tiptap' ? 'px-3 py-1 rounded bg-indigo-600 text-white' : 'px-3 py-1 rounded bg-gray-200'">WYSIWYG</button>
+              <button @click="switchKbTab('markdown')" :class="kbTab==='markdown' ? 'px-3 py-1 rounded bg-indigo-600 text-white' : 'px-3 py-1 rounded bg-gray-200'">Markdown</button>
+              <div class="flex-1"></div>
+              <span class="text-xs text-gray-500" v-if="activePath">{{ activePath }}</span>
             </div>
-            <div v-else class="flex-1 overflow-hidden flex flex-col">
-              <div class="border-b bg-white p-2 text-sm flex items-center gap-2">
-                <button @click="kbEditorMode='tiptap'" :class="kbEditorMode==='tiptap' ? 'px-2 py-1 rounded bg-indigo-600 text-white' : 'px-2 py-1 rounded bg-gray-200'">WYSIWYG</button>
-                <button @click="kbEditorMode='markdown'" :class="kbEditorMode==='markdown' ? 'px-2 py-1 rounded bg-indigo-600 text-white' : 'px-2 py-1 rounded bg-gray-200'">Markdown</button>
-                <div class="flex-1"></div>
-                <span class="text-xs text-gray-500" v-if="activePath">{{ activePath }}</span>
+            <div class="flex-1 overflow-hidden">
+              <div v-if="kbTab==='tree'" class="h-full">
+                <KnowledgeBaseExplorer mode="full" :selected-file="activePath" @file-select="onTreeSelect" @file-open="onTreeSelect" />
               </div>
-              <div class="flex-1 overflow-hidden">
-                <TipTapKbEditor v-if="kbEditorMode==='tiptap'" :path="activePath" :content="activeContent" />
-                <SplitEditor v-else :path="activePath" :content="activeContent" ref="splitEditor" @save="handleKbSave" />
+              <div v-else-if="kbTab==='tiptap'" class="h-full">
+                <div v-if="activePath" class="h-full"><TipTapKbEditor :key="editorKeyFull" :path="activePath" :content="activeContent" /></div>
+                <div v-else class="p-6 text-sm text-gray-500">좌측 FileTree 탭에서 문서를 선택해 주세요.</div>
+              </div>
+              <div v-else class="h-full">
+                <div v-if="activePath" class="h-full"><SplitEditor :key="editorKeyFull" :path="activePath" :content="activeContent" ref="splitEditor" @save="handleKbSave" /></div>
+                <div v-else class="p-6 text-sm text-gray-500">좌측 FileTree 탭에서 문서를 선택해 주세요.</div>
               </div>
             </div>
           </div>
@@ -122,7 +127,9 @@ const docStore = useDocStore()
 const activeContent = computed(()=> docStore.content)
 const activePath = computed(()=> docStore.path)
 const lastVersion = computed(()=> docStore.version)
-const kbEditorMode = ref('tiptap')
+const kbTab = ref('tree')
+const editorKey = computed(()=> `${kbTab.value}`)
+const editorKeyFull = computed(()=> `${kbTab.value}:${activePath.value || ''}:${lastVersion.value || 0}:${(activeContent.value||'').length}`)
 
 // Sidebar state via composable
 const { isCollapsed: isSidebarCollapsed, width: sidebarWidth, toggle: toggleSidebar, start: startResize } = useSidebarResize(256, 200, 500)
@@ -275,6 +282,15 @@ const openKnowledgeBase = async () => {
     activeSlide.value = null;
   }
 };
+
+function onTreeSelect(p){ void handleKbFileSelect(p); kbTab.value = 'tiptap' }
+
+async function switchKbTab(next){
+  if(!activePath.value){ kbTab.value = next; return }
+  // ensure the current doc is loaded before switching to an editor tab
+  try { await docStore.whenLoaded(activePath.value) } catch {}
+  kbTab.value = next
+}
 
 // Default layout for the IDE-style interface.
 </script>

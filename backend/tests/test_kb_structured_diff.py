@@ -11,7 +11,7 @@ API_KEY = {"X-API-Key": os.getenv("MCP_API_KEY", "my_mcp_eagle_tiger")}
 client = TestClient(app)
 
 def save_doc(path: str, content: str, message: str):
-    r = client.patch("/api/kb/item", json={"path": path, "content": content, "message": message}, headers=API_KEY)
+    r = client.patch("/api/_deprecated/kb/item", json={"path": path, "content": content, "message": message}, headers=API_KEY)
     assert r.status_code == 200, r.text
     return r.json()["version_no"]
 

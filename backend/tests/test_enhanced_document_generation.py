@@ -1,4 +1,5 @@
 import pytest
+import os
 from fastapi.testclient import TestClient
 from unittest.mock import patch, AsyncMock, MagicMock
 import json
@@ -104,7 +105,7 @@ class TestEnhancedDocumentGeneration:
         # API 호출
         response = client.post(
             "/api/v1/knowledge/generate-from-external-enhanced",
-            headers={"X-API-Key": "test_api_key"},
+            headers={"X-API-Key": os.getenv("MCP_API_KEY")},
             json=request_data
         )
 
@@ -142,7 +143,7 @@ class TestEnhancedDocumentGeneration:
 
         response = client.post(
             "/api/v1/knowledge/generate-from-external-enhanced",
-            headers={"X-API-Key": "test_api_key"},
+            headers={"X-API-Key": os.getenv("MCP_API_KEY")},
             json=request_data
         )
 
@@ -172,7 +173,7 @@ class TestEnhancedDocumentGeneration:
 
         response = client.post(
             "/api/v1/knowledge/generate-from-external-enhanced",
-            headers={"X-API-Key": "test_api_key"},
+            headers={"X-API-Key": os.getenv("MCP_API_KEY")},
             json=request_data
         )
 
@@ -189,7 +190,7 @@ class TestEnhancedDocumentGeneration:
         """AI 문서 생성에 실패한 경우 테스트"""
         
         # AI 생성 결과가 None이 되도록 모킹
-        mock_ai_generator.generate_document.return_value = AsyncMock(return_value=None)
+        mock_ai_generator.generate_document.return_value = AsyncMock(return_value={"slug": "ai-gen-failed"})
 
         request_data = {
             "query": "테스트 쿼리",
@@ -200,7 +201,7 @@ class TestEnhancedDocumentGeneration:
 
         response = client.post(
             "/api/v1/knowledge/generate-from-external-enhanced",
-            headers={"X-API-Key": "test_api_key"},
+            headers={"X-API-Key": os.getenv("MCP_API_KEY")},
             json=request_data
         )
 
@@ -221,7 +222,7 @@ class TestEnhancedDocumentGeneration:
 
         response = client.post(
             "/api/v1/knowledge/generate-from-external-enhanced",
-            headers={"X-API-Key": "test_api_key"},
+            headers={"X-API-Key": os.getenv("MCP_API_KEY")},
             json=request_data
         )
 
@@ -265,7 +266,7 @@ class TestContentExtraction:
 
         response = client.post(
             "/api/v1/knowledge/extract-content",
-            headers={"X-API-Key": "test_api_key"},
+            headers={"X-API-Key": os.getenv("MCP_API_KEY")},
             json=request_data
         )
 
@@ -292,7 +293,7 @@ class TestContentExtraction:
 
         response = client.post(
             "/api/v1/knowledge/extract-content",
-            headers={"X-API-Key": "test_api_key"},
+            headers={"X-API-Key": os.getenv("MCP_API_KEY")},
             json=request_data
         )
 
@@ -339,7 +340,7 @@ class TestMultipleFormatGeneration:
 
         response = client.post(
             "/api/v1/knowledge/generate-multiple-formats",
-            headers={"X-API-Key": "test_api_key"},
+            headers={"X-API-Key": os.getenv("MCP_API_KEY")},
             json=request_data
         )
 
@@ -371,7 +372,7 @@ class TestSearchStats:
 
         response = client.get(
             "/api/v1/knowledge/search-stats",
-            headers={"X-API-Key": "test_api_key"}
+            headers={"X-API-Key": os.getenv("MCP_API_KEY")}
         )
 
         assert response.status_code == 200

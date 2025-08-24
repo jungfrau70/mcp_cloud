@@ -5,10 +5,10 @@
       <button @click="search" :disabled="loading" class="px-3 py-1 text-sm bg-blue-600 text-white rounded disabled:opacity-50">검색</button>
       <button v-if="searched" @click="reset" class="px-2 py-1 text-xs bg-gray-200 rounded">초기화</button>
     </div>
-    <div v-if="loading" class="text-xs text-gray-500">검색 중...</div>
+    <div v-if="loading" data-testid="loading-indicator" class="text-xs text-gray-500">검색 중...</div>
     <div v-else-if="searched" class="border rounded divide-y max-h-72 overflow-auto bg-white">
       <div v-if="!results.length" class="p-3 text-xs text-gray-500">결과 없음</div>
-      <div v-for="r in results" :key="r.id + r.path" class="p-2 hover:bg-blue-50 cursor-pointer" @click="open(r)">
+      <div v-for="r in results" :key="r.id + r.path" data-testid="result-item" class="p-2 hover:bg-blue-50 cursor-pointer" @click="open(r)">
         <div class="text-xs font-medium" v-html="r.highlighted_title || r.title" />
         <div class="text-[10px] text-gray-500">{{ r.path }}</div>
         <div class="text-[11px] text-gray-600" v-html="r.highlighted_content || (r.content ? r.content.slice(0,100)+'…' : '')" />

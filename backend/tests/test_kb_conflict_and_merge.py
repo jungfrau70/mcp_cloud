@@ -14,7 +14,7 @@ def save_doc(path: str, content: str, message: str, expected_version=None):
     body = {"path": path, "content": content, "message": message}
     if expected_version is not None:
         body["expected_version_no"] = expected_version
-    r = client.patch("/api/kb/item", json=body, headers=API_KEY)
+    r = client.patch("/api/_deprecated/kb/item", json=body, headers=API_KEY)
     return r
 
 def test_version_conflict():

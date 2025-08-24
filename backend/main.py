@@ -572,8 +572,9 @@ def kb_save_item(req: KbSaveRequest, db: Session = Depends(get_db), api_key: str
         db.commit()
         existing = get_latest_content(db, new_norm)
         # If doc record exists update its path (simplify by creating new doc if not)
-    from datetime import timezone as _tz
-    return KbSaveResponse(success=True, version_id=existing.get('version_no', 0) if existing else 0, version_no=existing.get('version_no', 0) if existing else 0, updated_at=datetime.now(_tz.utc))
+        from datetime import timezone as _tz
+        return KbSaveResponse(success=True, version_id=existing.get('version_no', 0) if existing else 0, version_no=existing.get('version_no', 0) if existing else 0, updated_at=datetime.now(_tz.utc))
+
 
     if req.content is None:
         raise HTTPException(status_code=400, detail="Content required unless renaming")
@@ -1851,7 +1852,11 @@ async def generate_document_from_external(request: GenerateDocumentRequest):
             gen_result = getattr(gen_result, 'return_value')
         # Final guard: ensure dict
         if not isinstance(gen_result, dict):
-            raise HTTPException(status_code=500, detail="AI document generator returned invalid type")
+            return GenerateDocumentResponse(
+                success=False,
+                message="AI document generation failed: generator returned invalid type.",
+                document_path=None
+            )
         generated_doc_data = gen_result
 
         # Determine target path and filename

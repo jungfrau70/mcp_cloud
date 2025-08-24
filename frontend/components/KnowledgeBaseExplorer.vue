@@ -12,7 +12,7 @@
       <FileTreePanel
         v-else
         :tree="treeData"
-        :selected-file="selectedFile?.path"
+        :selected-file="selectedFile ? ('mcp_knowledge_base/' + stripBasePath(selectedFile)) : null"
         @file-select="handleFileSelect"
         @file-open="handleFileOpen"
         @directory-create="handleDirectoryCreate"
@@ -28,7 +28,7 @@
         <FileTreePanel
           v-else
           :tree="treeData"
-          :selected-file="selectedFile?.path"
+          :selected-file="selectedFile ? ('mcp_knowledge_base/' + stripBasePath(selectedFile)) : null"
           @file-select="handleFileSelect"
           @file-open="handleFileOpen"
           @directory-create="handleDirectoryCreate"
@@ -63,7 +63,8 @@ const emit = defineEmits(['file-select']);
 
 const props = defineProps({
   // mode: 'full' (검색+트리), 'search' (검색 패널), 'tree' (파일 트리만)
-  mode: { type: String, default: 'full' }
+  mode: { type: String, default: 'full' },
+  selectedFile: { type: String, default: '' }
 });
 
 const config = useRuntimeConfig()

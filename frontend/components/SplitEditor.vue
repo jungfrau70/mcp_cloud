@@ -159,10 +159,21 @@ const emit = defineEmits(['save'])
 import { useDocStore } from '~/stores/doc'
 const docStore = useDocStore()
 const draft = ref(props.content)
+let selfUpdating = false
 // Sync with central store if same path
-watch(() => props.content, c => { if (c !== draft.value) draft.value = c })
-watch(() => docStore.path, p => { if(p === props.path && docStore.content !== draft.value) draft.value = docStore.content })
-watch(draft, v => { if(docStore.path === props.path) docStore.update(v) })
+watch(() => props.content, async c => {
+  if (c === draft.value) return
+  try { await docStore.whenLoaded(props.path || docStore.path) } catch {}
+  selfUpdating = true
+  draft.value = c
+  selfUpdating = false
+})
+watch(() => docStore.path, async p => {
+  if(p !== props.path) return
+  try { await docStore.whenLoaded(p) } catch {}
+  if(docStore.content !== draft.value){ selfUpdating = true; draft.value = docStore.content; selfUpdating = false }
+})
+watch(draft, v => { if(!selfUpdating && docStore.path === props.path) docStore.update(v) })
 
 const showPreview = ref(true)
 const showOutline = ref(true)

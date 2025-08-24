@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useKbApi } from '~/composables/useKbApi'
 
 export const useDocStore = defineStore('doc', () => {
@@ -34,6 +34,22 @@ export const useDocStore = defineStore('doc', () => {
     content.value = newContent
   }
 
+  // Wait until the current document is fully loaded (and optionally matches expected path)
+  function whenLoaded(expectedPath?: string): Promise<void> {
+    return new Promise((resolve) => {
+      if (!loading.value && (!expectedPath || path.value === expectedPath)) {
+        resolve();
+        return;
+      }
+      const stop = watch([loading, path], () => {
+        if (!loading.value && (!expectedPath || path.value === expectedPath)) {
+          stop();
+          resolve();
+        }
+      });
+    })
+  }
+
   async function save(message?: string){
     if(!path.value) return
     try {
@@ -53,5 +69,5 @@ export const useDocStore = defineStore('doc', () => {
 
   const status = computed(()=> loading.value ? 'loading' : (dirty.value ? 'modified' : 'clean'))
 
-  return { path, content, version, baseVersion, loading, dirty, error, status, open, update, save }
+  return { path, content, version, baseVersion, loading, dirty, error, status, open, update, save, whenLoaded }
 })

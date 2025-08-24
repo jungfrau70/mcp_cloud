@@ -20,12 +20,12 @@ def test_kb_save_and_list_versions_and_diff(tmp_path):
     content_v2 = "# Title\nFirst line changed\nSecond line"
 
     # save v1
-    r1 = client.patch("/api/kb/item", json={"path": path, "content": content_v1, "message": "initial"}, headers=API_KEY)
+    r1 = client.patch("/api/_deprecated/kb/item", json={"path": path, "content": content_v1, "message": "initial"}, headers=API_KEY)
     assert r1.status_code == 200, r1.text
     v1_no = r1.json()["version_no"]
 
     # save v2
-    r2 = client.patch("/api/kb/item", json={"path": path, "content": content_v2, "message": "update"}, headers=API_KEY)
+    r2 = client.patch("/api/_deprecated/kb/item", json={"path": path, "content": content_v2, "message": "update"}, headers=API_KEY)
     assert r2.status_code == 200, r2.text
     v2_no = r2.json()["version_no"]
     assert v2_no == v1_no + 1
