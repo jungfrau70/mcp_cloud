@@ -686,12 +686,11 @@ def kb_versions_v1(path: str, limit: int = 50, offset: int = 0, db: Session = De
     return kb_versions(path, limit, offset, db, api_key)
 
 @app.get("/api/_deprecated/kb/diff", tags=["Deprecated"], include_in_schema=False)
-def kb_diff(path: str, v1: Optional[int] = None, v2: Optional[int] = None):
+def kb_diff(path: str, v1: Optional[int] = None, v2: Optional[int] = None, db: Session = Depends(get_db)):
     # Basic unified diff between two versions (v1 older, v2 newer)
     if v1 is None or v2 is None:
         raise HTTPException(status_code=400, detail="v1 and v2 required")
     from sqlalchemy import select
-    db = SessionLocal()
     try:
         npath = kb_normalize_path(path)
         doc = db.scalar(select(KbDocument).where(KbDocument.path == npath))
@@ -721,7 +720,7 @@ def kb_diff(path: str, v1: Optional[int] = None, v2: Optional[int] = None):
             hunks.append(current)
         return {"diff_format": "unified", "hunks": hunks, "line_count": len(diff_lines)}
     finally:
-        db.close()
+        pass
 
 # Versioned alias
 @app.get("/api/v1/knowledge-base/diff", tags=["Knowledge Base"])
@@ -729,7 +728,7 @@ def kb_diff_v1(path: str, v1: Optional[int] = None, v2: Optional[int] = None):
     return kb_diff(path, v1, v2)
 
 @app.get("/api/_deprecated/kb/diff/structured", tags=["Deprecated"], include_in_schema=False)
-def kb_diff_structured(path: str, v1: Optional[int] = None, v2: Optional[int] = None):
+def kb_diff_structured(path: str, v1: Optional[int] = None, v2: Optional[int] = None, db: Session = Depends(get_db)):
     """Return structured diff: hunks with per-line metadata (type, old_line, new_line, text).
     line types: context, add, del. Useful for side-by-side rendering.
     """
@@ -737,7 +736,6 @@ def kb_diff_structured(path: str, v1: Optional[int] = None, v2: Optional[int] = 
         raise HTTPException(status_code=400, detail="v1 and v2 required")
     from sqlalchemy import select
     import difflib, re
-    db = SessionLocal()
     try:
         npath = kb_normalize_path(path)
         doc = db.scalar(select(KbDocument).where(KbDocument.path == npath))
@@ -826,7 +824,7 @@ def kb_diff_structured(path: str, v1: Optional[int] = None, v2: Optional[int] = 
             processed.append({'header': hunk['header'], 'lines': new_lines})
         return { 'diff_format':'structured', 'hunks': processed, 'v1': v1, 'v2': v2 }
     finally:
-        db.close()
+        pass
 
 # Versioned alias
 @app.get("/api/v1/knowledge-base/diff/structured", tags=["Knowledge Base"])

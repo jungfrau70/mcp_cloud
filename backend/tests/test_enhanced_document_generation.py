@@ -190,7 +190,7 @@ class TestEnhancedDocumentGeneration:
         """AI 문서 생성에 실패한 경우 테스트"""
         
         # AI 생성 결과가 None이 되도록 모킹
-        mock_ai_generator.generate_document.return_value = AsyncMock(return_value={"slug": "ai-gen-failed"})
+        mock_ai_generator.generate_document.return_value = AsyncMock(return_value={"slug": "ai-gen-failed", "title": "AI Gen Failed"})
 
         request_data = {
             "query": "테스트 쿼리",

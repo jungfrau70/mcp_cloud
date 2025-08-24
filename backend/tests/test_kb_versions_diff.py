@@ -1,19 +1,51 @@
 import os
 import uuid
 from fastapi.testclient import TestClient
+import pytest
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 # Allow running either from project root (import backend.main) or from inside backend/ (import main)
 try:  # project root execution
-    from backend.main import app  # type: ignore
+    from backend.main import app, get_db
 except ImportError:  # inside backend directory
-    from main import app  # type: ignore
+    from main import app, get_db
+
+
+@pytest.fixture(scope="module")
+def db_session():
+    SQLALCHEMY_DATABASE_URL = "sqlite:///./test_kb_versions.db"
+    engine = create_engine(
+        SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+    )
+    TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    
+    # Create tables
+    from models import Base
+    Base.metadata.create_all(bind=engine)
+
+    db = TestingSessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+        os.remove("./test_kb_versions.db")
+
+@pytest.fixture(scope="module")
+def client(db_session):
+    def override_get_db():
+        try:
+            yield db_session
+        finally:
+            pass
+
+    app.dependency_overrides[get_db] = override_get_db
+    yield TestClient(app)
+    del app.dependency_overrides[get_db]
 
 API_KEY = {"X-API-Key": os.getenv("MCP_API_KEY", "my_mcp_eagle_tiger")}
 
-client = TestClient(app)
-
-
-def test_kb_save_and_list_versions_and_diff(tmp_path):
+def test_kb_save_and_list_versions_and_diff(client, tmp_path):
     # create a temp doc path inside knowledge base root simulation
     path = f"test_directory/test_doc_{uuid.uuid4().hex}.md"
     content_v1 = "# Title\nFirst line"
@@ -31,7 +63,7 @@ def test_kb_save_and_list_versions_and_diff(tmp_path):
     assert v2_no == v1_no + 1
 
     # list versions
-    rv = client.get(f"/api/kb/versions?path={path}", headers=API_KEY)
+    rv = client.get(f"/api/_deprecated/kb/versions?path={path}", headers=API_KEY)
     assert rv.status_code == 200
     versions = rv.json()["versions"]
     assert len(versions) >= 2
@@ -39,7 +71,7 @@ def test_kb_save_and_list_versions_and_diff(tmp_path):
     assert v2_no in nums and v1_no in nums
 
     # diff
-    rd = client.get(f"/api/kb/diff?path={path}&v1={v1_no}&v2={v2_no}", headers=API_KEY)
+        rd = client.get(f"/api/_deprecated/kb/diff?path={path}&v1={v1_no}&v2={v2_no}", headers=API_KEY)
     assert rd.status_code == 200
     data = rd.json()
     assert data["diff_format"] == "unified"
@@ -47,3 +79,4 @@ def test_kb_save_and_list_versions_and_diff(tmp_path):
     # ensure changed line appears
     full_lines = [l for h in data["hunks"] for l in h["lines"]]
     assert any("First line changed" in l for l in full_lines)
+

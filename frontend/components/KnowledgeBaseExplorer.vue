@@ -12,7 +12,7 @@
       <FileTreePanel
         v-else
         :tree="treeData"
-        :selected-file="selectedFile ? ('mcp_knowledge_base/' + stripBasePath(selectedFile)) : null"
+        :selected-file="props.selectedFile ? ('mcp_knowledge_base/' + stripBasePath(props.selectedFile)) : null"
         @file-select="handleFileSelect"
         @file-open="handleFileOpen"
         @directory-create="handleDirectoryCreate"
@@ -28,7 +28,7 @@
         <FileTreePanel
           v-else
           :tree="treeData"
-          :selected-file="selectedFile ? ('mcp_knowledge_base/' + stripBasePath(selectedFile)) : null"
+          :selected-file="props.selectedFile ? ('mcp_knowledge_base/' + stripBasePath(props.selectedFile)) : null"
           @file-select="handleFileSelect"
           @file-open="handleFileOpen"
           @directory-create="handleDirectoryCreate"
@@ -93,6 +93,8 @@ const showTrending = ref(false)
 // State (공통)
 const treeData = ref({ 'mcp_knowledge_base': { files: [] } });
 const selectedFile = ref(null);
+// 외부에서 활성 경로가 바뀌면 내부 선택 상태도 동기화해 트리 강조 및 펼침 유도
+watch(() => props.selectedFile, (p)=>{ selectedFile.value = p ? ('mcp_knowledge_base/' + stripBasePath(p)) : null }, { immediate: true })
 const isInitialLoading = ref(true);
 const statusMessage = ref('');
 

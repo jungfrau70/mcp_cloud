@@ -24,6 +24,7 @@
           :tree="item" 
           :depth="depth + 1"
           :base-path="constructPath(name)"
+          :selected-file="selectedFile"
           @file-click="emitFileClick"
           @directory-create="handleDirectoryCreate"
           @directory-rename="handleDirectoryRename"
@@ -418,21 +419,18 @@ const handleClickOutside = (event) => {
   }
 };
 
-// Auto-open nested directories so that selected file becomes visible
-watch(() => props.selectedFile, (newPath) => {
+function expandBySelected(newPath){
   if (!newPath) return
   const base = props.basePath ? props.basePath + '/' : ''
   if (base && newPath.indexOf(base) !== 0) return
   const remaining = base ? newPath.slice(base.length) : newPath
   const parts = remaining.split('/').filter(Boolean)
-  // 반복 렌더링에서도 꾸준히 경로를 따라가며 모든 상위 디렉토리를 open
   if (parts.length > 1) {
     const first = parts[0]
     if (directories.value[first]) {
       openDirectories.value[first] = true
     }
   }
-  // 선택된 파일이 보이도록 스크롤
   nextTick(() => {
     try{
       const el = document.querySelector(`.tree-item.is-file[data-path="${CSS.escape(newPath)}"]`)
@@ -441,7 +439,12 @@ watch(() => props.selectedFile, (newPath) => {
       }
     }catch{}
   })
-}, { immediate: true })
+}
+
+// Auto-open nested directories so that selected file becomes visible
+watch(() => props.selectedFile, (newPath) => { expandBySelected(newPath) }, { immediate: true })
+// Re-expand after tree data changes (e.g., initial load or refresh)
+watch(() => props.tree, () => { expandBySelected(props.selectedFile) }, { deep: true })
 
 // Add global click listener
 onMounted(() => {
