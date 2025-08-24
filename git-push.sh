@@ -5,5 +5,5 @@
 git add .
 git commit -m "$(date +"%Y_%m_%d_%I_%M_%p")"
 # git push origin master
-git push origin v1.1    
+git push origin v1.2    
 #git log
