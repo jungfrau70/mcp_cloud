@@ -15,9 +15,9 @@
             </a>
           </div>
           <div class="flex items-center space-x-4">
-            <a href="/textbook" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+            <NuxtLink to="/textbook?path=curriculum.md&force=1" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
               커리큘럼
-            </a>
+            </NuxtLink>
             <a href="/knowledge-base" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
               지식베이스
             </a>
@@ -68,10 +68,7 @@
       <!-- Center Panel: Workspace Tabs -->
       <main class="flex-grow overflow-hidden flex flex-col" ref="workspaceMain">
         <div class="flex-1 overflow-hidden">
-          <WorkspaceView v-if="!isKnowledgeBase" :active-content="tbContent" :active-slide="tbSlide" :active-path="tbPath" :readonly="true" ref="workspaceView">
-            <slot />
-          </WorkspaceView>
-          <div v-else class="h-full flex flex-col">
+          <div v-if="isKnowledgeBase" class="h-full flex flex-col">
             <div class="border-b bg-white p-2 text-sm flex items-center gap-2" role="tablist" aria-label="KB editor tabs">
               <button role="tab" :aria-selected="kbTab==='tree'" @click="kbTab='tree'" :class="kbTab==='tree' ? 'px-3 py-1 rounded bg-indigo-600 text-white' : 'px-3 py-1 rounded bg-gray-200'">FileTree</button>
               <button role="tab" :aria-selected="kbTab==='tiptap'" @click="switchKbTab('tiptap')" :class="kbTab==='tiptap' ? 'px-3 py-1 rounded bg-indigo-600 text-white' : 'px-3 py-1 rounded bg-gray-200'">WYSIWYG</button>
@@ -93,6 +90,10 @@
               </div>
             </div>
           </div>
+          <div v-else-if="isHome" class="h-full">
+            <slot />
+          </div>
+          <WorkspaceView v-else :active-content="tbContent" :active-slide="tbSlide" :active-path="tbPath" :readonly="true" ref="workspaceView" />
         </div>
       </main>
 
@@ -175,7 +176,8 @@ const isHomeRedirect = computed(() => {
 const homePathParam = computed(() => {
   try{ return String((route.query||{}).path||'') }catch{ return '' }
 })
-onMounted(() => {
+const isHome = computed(() => route.path === '/')
+onMounted(async () => {
   if (isKnowledgeBase.value) {
     try{
       const lastTab = typeof window !== 'undefined' ? localStorage.getItem('kb_last_tab') : null
@@ -195,14 +197,15 @@ onMounted(() => {
       }catch{ /* ignore */ }
     })()
   } else {
-    // Restore last opened textbook path if available, otherwise show KB index.md in content area
+    // Restore last opened textbook path if available unless forced path in query
     try {
+      const q = route.query || {}
+      const forced = String(q.force || '') === '1'
+      const target = String(q.path || '')
       const last = typeof window !== 'undefined' ? localStorage.getItem('textbook_last_path') : null
-      if (last) {
-        handleFileClick(last)
-      } else {
-        ;(async ()=>{ await showCurriculumIndex() })()
-      }
+      if (forced && target){ await handleFileClick(target) }
+      else if (last) { handleFileClick(last) }
+      else { ;(async ()=>{ await showCurriculumIndex() })() }
     } catch { ;(async ()=>{ await showCurriculumIndex() })() }
   }
   
@@ -230,12 +233,20 @@ onMounted(() => {
 });
 
 // 라우트 변경 시 커리큘럼 페이지로 전환되면 마지막 경로 복원
-watch(() => route.path, (p) => {
+watch(() => route.path, async (p) => {
   if (p.startsWith('/textbook')) {
     try {
+      const q = route.query || {}
+      const forced = String(q.force || '') === '1'
+      const target = String(q.path || '')
       const last = typeof window !== 'undefined' ? localStorage.getItem('textbook_last_path') : null
-      if (last) {
-        handleFileClick(last)
+      // 우선순위: 강제 대상 -> 최근 문서 -> 기본 인덱스
+      if (forced && target && tbPath.value !== target) {
+        await handleFileClick(target)
+      } else if (!forced && last && tbPath.value !== last) {
+        await handleFileClick(last)
+      } else if (!tbPath.value) {
+        await showCurriculumIndex()
       }
     } catch {}
     isSidebarCollapsed.value = false

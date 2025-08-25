@@ -11,7 +11,8 @@ export default defineConfig({
     globals: true,
     include: [
       './tests/components/**/*.spec.ts',
-      './tests/composables/**/*.spec.ts'
+      './tests/composables/**/*.spec.ts',
+      './tests/layouts/**/*.spec.ts'
     ],
   },
   resolve: {

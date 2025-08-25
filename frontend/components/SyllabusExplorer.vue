@@ -1,9 +1,7 @@
 <template>
   <div class="p-4 select-none">
-    <h3 class="text-lg font-semibold mb-4 whitespace-nowrap">
-      <a href="#" @click.prevent="openCurriculum" class="hover:underline text-blue-700">
-        슬라이드
-      </a>
+    <h3 class="text-lg font-semibold mb-4 whitespace-nowrap text-gray-800">
+      카테고리
     </h3>
     <div v-if="loading">Loading...</div>
     <div v-if="error">{{ error }}</div>
