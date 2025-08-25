@@ -21,11 +21,26 @@ cd mcp_cloud
 ### 2. 백엔드 설정
 
 - **Google Gemini API 키 발급**: [Google AI Studio](https://aistudio.google.com/app/apikey)에서 API 키를 발급받으세요.
-- **환경 변수 파일 생성**: `backend` 디렉토리 내에 `.env` 파일을 생성하고 아래 내용을 추가하세요.
+- **환경 변수 파일 생성**: `backend/env/.env` 파일을 생성하고 아래 내용을 추가하세요.
 
   ```
-  # backend/.env
-  GOOGLE_API_KEY="여기에_발급받은_API_키를_입력하세요"
+  # backend/env/.env
+  # Gemini / API
+  GEMINI_API_KEY="여기에_발급받은_API_키를_입력하세요"
+
+  # (선택) AWS - 읽기 전용 테스트용 자격증명
+  AWS_ACCESS_KEY_ID=
+  AWS_SECRET_ACCESS_KEY=
+  AWS_DEFAULT_REGION=ap-northeast-2
+
+  # (선택) GCP - 서비스 계정 키는 docker-compose 볼륨으로 마운트됨
+  # GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-sa-key.json (compose에 설정됨)
+
+  # (선택) Azure - 서비스 프린시펄 자격증명
+  AZURE_TENANT_ID=
+  AZURE_CLIENT_ID=
+  AZURE_CLIENT_SECRET=
+  AZURE_SUBSCRIPTION_ID=
   ```
 
 - **Python 의존성 설치**:
@@ -49,7 +64,7 @@ cd mcp_cloud
 프로젝트 루트 디렉토리에서 아래 명령어를 실행하여 백엔드와 프론트엔드 서비스를 동시에 시작합니다.
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 - 빌드가 완료되고 서비스가 시작될 때까지 잠시 기다려주세요.
@@ -64,3 +79,7 @@ docker-compose up --build
 - **Docker 실행 오류**: Docker 데몬이 실행 중인지 확인하세요.
 - **포트 충돌**: `docker-compose.yml` 파일에 정의된 포트(예: 8000, 3000)가 다른 프로세스에서 사용 중인지 확인하세요.
 - **API 키 오류**: 백엔드 로그에 API 키 관련 인증 오류가 표시되면 `.env` 파일의 키가 올바른지 다시 확인하세요.
+- **클라우드 인증**:
+  - AWS: `docker compose exec mcp_backend aws sts get-caller-identity`
+  - GCP: `docker compose exec mcp_backend gcloud auth list`
+  - Azure: `docker compose exec mcp_backend az account show`

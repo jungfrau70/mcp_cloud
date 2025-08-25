@@ -1,5 +1,5 @@
 <template>
-  <div class="w-72 bg-gray-50 flex flex-col min-h-0">
+  <div class="w-72 flex-none bg-gray-50 flex flex-col min-h-0">
     <div class="p-2 font-semibold text-xs tracking-wide text-gray-700 border-b flex items-center gap-2">
       <button @click="active='outline'; if(!outline.length) refreshOutline()" :class="tabClass('outline')">Outline</button>
       <button @click="active='versions'; if(!versions.length) loadVersions()" :class="tabClass('versions')">Versions</button>
@@ -8,6 +8,7 @@
       <button v-if="active==='outline'" @click="refreshOutline" class="text-[10px] px-1 py-0.5 bg-white border rounded" :disabled="outlineLoading">↻</button>
       <button v-if="active!=='outline'" @click="loadVersions" class="text-[10px] px-1 py-0.5 bg-white border rounded" :disabled="versionsLoading">↻</button>
     </div>
+    <div class="px-2 py-1 text-[10px] text-gray-500 truncate" :title="path || ''" v-if="path">{{ path }}</div>
     <div class="flex-1 overflow-auto text-sm">
       <!-- Outline -->
       <div v-if="active==='outline'" class="p-2">
@@ -61,12 +62,33 @@ const active = ref('outline')
 // Outline
 const outline = ref([])
 const outlineLoading = ref(false)
+function buildLocalOutline(md){
+  const out = []
+  if(!md) return out
+  const lines = String(md).split(/\r?\n/)
+  for(let i=0;i<lines.length;i++){
+    const m = lines[i].match(/^\s{0,3}(#{1,6})\s+(.+)$/)
+    if(m){ out.push({ level: m[1].length, text: m[2].trim(), line: i+1 }) }
+  }
+  return out
+}
+
 async function refreshOutline(){
-  if(!props.content){ outline.value = []; return }
+  if(props.content === undefined || props.content === null){ outline.value = []; return }
   outlineLoading.value = true
-  try{ const data = await api.outline(props.content); outline.value = data.outline || [] } finally { outlineLoading.value = false }
+  try{
+    const data = await api.outline(props.content)
+    outline.value = (data && Array.isArray(data.outline)) ? data.outline : []
+    if(!outline.value.length){
+      outline.value = buildLocalOutline(props.content)
+    }
+  } catch{
+    outline.value = buildLocalOutline(props.content)
+  } finally { outlineLoading.value = false }
 }
 watch(() => props.content, () => { if(active.value==='outline') refreshOutline() })
+// 경로가 바뀌면 즉시 아웃라인/버전을 갱신해 다른 문서의 정보가 남지 않도록 함
+watch(() => props.path, () => { refreshOutline(); diffLeft.value = null; diffRight.value = null; loadVersions() })
 
 // Versions & Diff
 const versions = ref([])

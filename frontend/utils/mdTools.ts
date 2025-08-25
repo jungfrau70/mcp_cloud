@@ -34,3 +34,16 @@ export function vegaLiteBarTemplate(): string {
   return ['```json','// vega-lite',''+JSON.stringify(spec, null, 2),'```',''].join('\n')
 }
 
+export function vegaLiteBarSpec(): string {
+  const spec = {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    data: { values: [ { stage: 'plan', sec: 12 }, { stage: 'apply', sec: 34 } ] },
+    mark: 'bar',
+    encoding: {
+      x: { field: 'stage', type: 'nominal' },
+      y: { field: 'sec', type: 'quantitative' }
+    }
+  }
+  return JSON.stringify(spec, null, 2)
+}
+

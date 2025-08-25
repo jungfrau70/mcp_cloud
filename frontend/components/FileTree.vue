@@ -364,25 +364,55 @@ const deleteFile = () => {
 };
 
 const confirmCreate = () => {
-  if (newName.value.trim()) {
-    const path = constructPath(newName.value.trim());
-    emit('directory-create', { path, type: createType.value });
-    closeCreateDialog();
+  const raw = newName.value.trim()
+  if (!raw) return
+
+  // Determine target directory based on selected directory (if any)
+  const selectedDirPath = (selectedItem.value && (selectedItem.value.type === 'directory' || selectedItem.value.type === 'create'))
+    ? constructPath(selectedItem.value.name)
+    : (props.basePath || '')
+
+  if (createType.value === 'file') {
+    // Enforce single .md extension (strip any existing or duplicate extensions)
+    // 1) remove trailing .md repetitions
+    let base = raw.replace(/(\.md)+$/i, '')
+    // 2) if another extension exists at the end, strip it
+    base = base.replace(/\.[^\\/.]+$/i, '')
+    const finalName = `${base}.md`
+
+    const path = selectedDirPath ? `${selectedDirPath}/${finalName}` : finalName
+    emit('directory-create', { path, type: 'file' })
+  } else {
+    // Directory creation: create inside selected directory if provided
+    const path = selectedDirPath ? `${selectedDirPath}/${raw}` : raw
+    emit('directory-create', { path, type: 'directory' })
   }
+  closeCreateDialog()
 };
 
 const confirmRename = () => {
-  if (newName.value.trim() && newName.value.trim() !== selectedItem.value.name) {
-    const oldPath = selectedItem.value.type === 'file' 
-      ? (selectedItem.value.item.path || constructPath(selectedItem.value.name))
-      : constructPath(selectedItem.value.name);
-    const newPath = selectedItem.value.type === 'file'
-      ? (oldPath.substring(0, oldPath.lastIndexOf('/') + 1) + newName.value.trim())
-      : constructPath(newName.value.trim());
-    
+  const raw = newName.value.trim();
+  if (!raw) return;
+  // allow no-op rename
+  if (raw === selectedItem.value.name) { closeRenameDialog(); return; }
+
+  const oldPath = selectedItem.value.type === 'file' 
+    ? (selectedItem.value.item.path || constructPath(selectedItem.value.name))
+    : constructPath(selectedItem.value.name);
+
+  let finalName = raw;
+  if (selectedItem.value.type === 'file') {
+    let base = raw.replace(/(\.md)+$/i, '');
+    base = base.replace(/\.[^\\/.]+$/i, '');
+    finalName = `${base}.md`;
+    const dirPrefix = oldPath.substring(0, oldPath.lastIndexOf('/') + 1);
+    const newPath = `${dirPrefix}${finalName}`;
+    emit('directory-rename', { oldPath, newPath, type: 'file' });
+  } else {
+    const newPath = constructPath(finalName);
     emit('directory-rename', { oldPath, newPath, type: selectedItem.value.type });
-    closeRenameDialog();
   }
+  closeRenameDialog();
 };
 
 const closeCreateDialog = () => {

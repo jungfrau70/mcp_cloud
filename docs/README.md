@@ -34,4 +34,13 @@ MentorAi 플랫폼에서 튜터와 학생이 어떻게 상호작용하는지에 
 - **Frontend**: Nuxt 3 (Vue.js, TypeScript)
 - **AI/LLM**: Google Gemini
 - **Database**: PostgreSQL, Vector DB (FAISS)
+- **Cloud Connectors**: AWS CLI, GCP gcloud, Azure CLI (읽기 전용 화이트리스트)
 - **Deployment**: Docker
+
+## 🌩️ 멀티클라우드 지원 (AWS / GCP / Azure)
+
+- 백엔드의 읽기 전용 CLI 엔드포인트(`/api/v1/cli/read-only`)를 통해 다음을 지원합니다:
+  - AWS: `s3_ls`, `ec2_describe_instances`, `iam_list_users` 등
+  - GCP: `gcloud_zones_list`, `gcloud_projects_list`, `gcloud_compute_instances_list` 등
+  - Azure: `account_show`, `resource_groups_list`, `vm_list`, `storage_accounts_list`, `aks_list` 등
+- 인증 설정은 `backend/env/.env`에 기록하고, Docker Compose가 자동 주입합니다.

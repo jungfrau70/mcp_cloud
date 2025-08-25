@@ -2,6 +2,18 @@
 // @ts-ignore - Nuxt provides this at runtime / via nuxt.d.ts generation
 import { useRuntimeConfig } from '#app'
 
+// Types for KB API responses (aligned with backend models)
+export interface KbSaveResponse { success?: boolean; version_id?: number; version_no: number; updated_at?: string }
+export interface KbVersion { id: number; version_no: number; message?: string; created_at?: string }
+export interface KbVersionsResponse { versions: KbVersion[] }
+export interface KbOutlineItem { level: number; text: string; line: number }
+export interface KbOutlineResponse { outline: KbOutlineItem[] }
+export interface KbTask { id: string; type: string; status: string; stage?: string; progress?: number; error?: string; updated_at?: string; [k: string]: any }
+export interface KbTaskList { tasks: KbTask[] }
+export interface KbUnifiedDiff { diff_format: string; hunks: { header: string; lines: string[] }[] }
+export interface KbStructuredDiffHunk { header: string; lines: { type: string; old_line: number|null; new_line: number|null; text?: string; old_text?: string; new_text?: string }[] }
+export interface KbStructuredDiff { diff_format: string; hunks: KbStructuredDiffHunk[]; v1: number; v2: number }
+
 export function resolveApiBase(): string {
   const config = useRuntimeConfig()
   const configured = (config.public as any)?.apiBaseUrl || 'http://localhost:8000'
@@ -39,7 +51,8 @@ export function useKbApi(){
   }
 
   async function saveItem(path: string, content: string, message?: string, expectedVersion?: number): Promise<KbSaveResponse>{
-    return request<KbSaveResponse>(`${apiBase}/api/v1/knowledge-base/item`, {
+    // Use content-saving endpoint (v1 alias is rename-only)
+    return request<KbSaveResponse>(`${apiBase}/api/_deprecated/kb/item`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
       body: JSON.stringify({ path, content, message, expected_version_no: expectedVersion })

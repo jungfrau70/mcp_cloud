@@ -44,6 +44,12 @@ services:
       - REDIS_URL=redis://mcp_redis:6379
       - GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-sa-key.json
       - CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=/app/gcp-sa-key.json
+      # HF offline-friendly defaults
+      - EMBEDDING_BACKEND=${EMBEDDING_BACKEND:-local}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-jhgan/ko-sroberta-multitask}
+      - HF_HUB_OFFLINE=${HF_HUB_OFFLINE:-1}
+      - HF_LOCAL_FILES_ONLY=${HF_LOCAL_FILES_ONLY:-1}
+      - HF_HOME=/cache/hf
       # 파일 감시 설정 개선
       - WATCHFILES_FORCE_POLLING=true
       - WATCHFILES_IGNORE_PATTERNS=*.db,*.db-journal,*.sqlite,*.sqlite-journal
@@ -53,6 +59,8 @@ services:
       - terraform_modules_data:/app/terraform_modules
       - ./backend/env/alpha-ktixap-43e9bf90eb00.json:/app/gcp-sa-key.json
       - ./mcp_knowledge_base:/mcp_knowledge_base
+      - hf_cache:/cache/hf
+      - azure_config:/root/.azure
       # SQLite 파일 제외
       - /app/*.db
       - /app/*.db-journal
@@ -90,6 +98,8 @@ services:
 volumes:
   postgres_data:
   terraform_modules_data:
+  hf_cache:
+  azure_config:
 
 networks:
   mcp_cloud_network:

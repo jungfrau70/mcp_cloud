@@ -1,7 +1,7 @@
 <template>
   <div class="flex h-full w-full overflow-hidden">
     <!-- Outline Panel -->
-        <div class="w-56 border-r bg-gray-50 flex flex-col" v-if="showOutline">
+        <div class="w-56 flex-none border-r bg-gray-50 flex flex-col" v-if="showOutline">
           <div class="p-2 font-semibold text-xs tracking-wide text-gray-600 border-b">OUTLINE</div>
           <div class="flex-1 overflow-auto text-sm" role="tree" aria-label="Document outline">
             <ul>
@@ -34,12 +34,10 @@
         <span v-if="lastSaved" class="text-gray-400 text-xs">v{{ lastVersion }} @ {{ lastSaved }}</span>
         <div class="flex-1"></div>
         <div class="flex items-center gap-1">
-          <button @click="insertTable" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Table</button>
-          <button @click="insertMermaid" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Mermaid</button>
-          <button @click="insertChart" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Chart</button>
-          <label class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300 cursor-pointer">
-            Image<input type="file" accept="image/*" class="hidden" @change="onPickImage" />
-          </label>
+          <button @click="showTableModal=true" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Table</button>
+          <button @click="openMermaidModal()" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Mermaid</button>
+          <button @click="openChartModal()" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Chart</button>
+          <button @click="openImageModal()" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Image</button>
           <button @click="openAiMenu" class="px-2 py-1 rounded bg-indigo-50 hover:bg-indigo-100 text-indigo-700">AI</button>
           <button @click="showExcalidraw=true" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Draw</button>
         </div>
@@ -48,7 +46,7 @@
         </template>
       </KbToolbar>
 
-      <div class="flex flex-1 min-h-0">
+      <div class="flex flex-1 min-h-0" @keydown.stop>
         <!-- Conflict Resolution Panel (overlay) -->
         <div v-if="conflictActive" class="absolute inset-0 z-20 flex">
           <div class="w-96 h-full border-r bg-white flex flex-col shadow-xl">
@@ -89,10 +87,11 @@
             class="flex-1 font-mono text-sm p-3 outline-none resize-none"
             @input="onInput"
             @scroll="onEditorScroll"
+            @keydown.stop
           ></textarea>
         </div>
-        <div v-if="showPreview && !showDiff" class="flex-1 overflow-hidden">
-          <div class="flex-1 border-l overflow-auto p-4 prose max-w-none bg-white">
+        <div v-if="showPreview && !showDiff" class="flex-1 flex min-h-0 overflow-hidden">
+          <div class="flex-1 min-h-0 border-l overflow-auto p-4 prose max-w-none bg-white">
             <div ref="previewEl" v-html="rendered"></div>
           </div>
         </div>
@@ -119,6 +118,93 @@
           <iframe ref="excalFrame" src="https://excalidraw.com" class="flex-1"></iframe>
         </div>
       </div>
+
+      <!-- Table modal -->
+      <div v-if="showTableModal" class="absolute inset-0 z-30 bg-black/40 flex items-center justify-center">
+        <div class="w-[420px] bg-white rounded shadow flex flex-col">
+          <div class="p-2 border-b text-sm flex items-center">Insert Table<div class="flex-1"></div><button @click="showTableModal=false" class="px-2 py-1 text-xs border rounded">Close</button></div>
+          <div class="p-3 space-y-2 text-sm">
+            <div class="flex items-center gap-2">
+              <label class="w-24">Rows</label>
+              <input v-model.number="tableRows" type="number" min="1" max="50" class="border rounded px-2 py-1 w-24" />
+              <label class="w-24">Cols</label>
+              <input v-model.number="tableCols" type="number" min="1" max="20" class="border rounded px-2 py-1 w-24" />
+            </div>
+            <label class="inline-flex items-center gap-2"><input type="checkbox" v-model="tableHeader" /><span>With header</span></label>
+            <div class="text-[11px] text-gray-500">A markdown table will be inserted at the cursor.</div>
+            <div class="pt-2 flex items-center justify-end">
+              <button @click="applyTable()" class="px-2 py-1 text-xs rounded bg-indigo-600 text-white">Insert</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mermaid modal -->
+      <div v-if="showMermaidModal" class="absolute inset-0 z-30 bg-black/40 flex items-center justify-center">
+        <div class="w-[900px] h-[600px] bg-white rounded shadow flex flex-col">
+          <div class="p-2 border-b text-sm flex items-center">Insert Mermaid Diagram<div class="flex-1"></div><button @click="showMermaidModal=false" class="px-2 py-1 text-xs border rounded mr-2">Close</button><button @click="applyMermaid()" class="px-2 py-1 text-xs rounded bg-indigo-600 text-white">Insert</button></div>
+          <div class="flex-1 grid grid-cols-2 min-h-0">
+            <div class="p-3 space-y-2 border-r min-h-0 flex flex-col">
+              <div class="flex items-center gap-2 text-sm">
+                <label class="w-24">Type</label>
+                <select v-model="mermaidType" @change="onMermaidTypeChange" class="border rounded px-2 py-1">
+                  <option value="flow">flow</option>
+                  <option value="sequence">sequence</option>
+                  <option value="gantt">gantt</option>
+                </select>
+              </div>
+              <textarea v-model="mermaidCode" class="flex-1 font-mono text-xs p-2 border rounded resize-none" @input="renderMermaidPreview" placeholder="Mermaid code"></textarea>
+            </div>
+            <div class="p-3 min-h-0 overflow-auto">
+              <div ref="mermaidPreviewMount"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart (Vega-Lite) modal -->
+      <div v-if="showChartModal" class="absolute inset-0 z-30 bg-black/40 flex items-center justify-center">
+        <div class="w-[1000px] h-[650px] bg-white rounded shadow flex flex-col">
+          <div class="p-2 border-b text-sm flex items-center">Insert Chart (Vega-Lite)<div class="flex-1"></div><button @click="showChartModal=false" class="px-2 py-1 text-xs border rounded mr-2">Close</button><button @click="applyChart()" class="px-2 py-1 text-xs rounded bg-indigo-600 text-white">Insert</button></div>
+          <div class="flex-1 grid grid-cols-2 min-h-0">
+            <div class="p-3 space-y-2 border-r min-h-0 flex flex-col">
+              <div class="text-xs text-gray-600">Paste or edit a Vega-Lite spec JSON. A preview will render on the right.</div>
+              <textarea v-model="chartSpec" class="flex-1 font-mono text-xs p-2 border rounded resize-none" @input="renderChartPreview" :placeholder="chartPlaceholder"></textarea>
+            </div>
+            <div class="p-3 min-h-0 overflow-auto">
+              <div ref="chartPreviewMount"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Image modal -->
+      <div v-if="showImageModal" class="absolute inset-0 z-30 bg-black/40 flex items-center justify-center">
+        <div class="w-[520px] bg-white rounded shadow flex flex-col">
+          <div class="p-2 border-b text-sm flex items-center">Insert Image<div class="flex-1"></div><button @click="showImageModal=false" class="px-2 py-1 text-xs border rounded mr-2">Close</button><button @click="applyImage()" class="px-2 py-1 text-xs rounded bg-indigo-600 text-white">Insert</button></div>
+          <div class="p-3 space-y-3 text-sm">
+            <div class="space-y-1">
+              <label>Image URL</label>
+              <input v-model="imageUrl" type="text" placeholder="https://... or /assets/..." class="w-full border rounded px-2 py-1" />
+              <div class="text-[11px] text-gray-500">Or upload a file below to get a URL.</div>
+              <input type="file" accept="image/*" @change="onPickImageForModal" />
+            </div>
+            <div class="flex items-center gap-2">
+              <label class="w-20">Alt</label>
+              <input v-model="imageAlt" type="text" class="flex-1 border rounded px-2 py-1" />
+            </div>
+            <div class="flex items-center gap-2">
+              <label class="w-20">Title</label>
+              <input v-model="imageTitle" type="text" class="flex-1 border rounded px-2 py-1" />
+            </div>
+            <div class="flex items-center gap-2">
+              <label class="w-20">Width</label>
+              <input v-model.number="imageWidth" type="number" min="1" max="4000" placeholder="optional" class="border rounded px-2 py-1 w-32" />
+              <span class="text-[11px] text-gray-500">px (optional)</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -132,7 +218,7 @@ import DOMPurify from 'dompurify'
 import mermaid from 'mermaid'
 import embedVega from 'vega-embed'
 import DiffViewer from '~/components/DiffViewer.vue'
-import { generateMarkdownTable, mermaidTemplate, vegaLiteBarTemplate } from '~/utils/mdTools'
+import { generateMarkdownTable, mermaidTemplate, vegaLiteBarTemplate, vegaLiteBarSpec } from '~/utils/mdTools'
 import KbToolbar from '~/components/KbToolbar.vue'
 import KbSidePanel from '~/components/KbSidePanel.vue'
 
@@ -201,7 +287,12 @@ function insertAtCursor(text){
   const end = el.selectionEnd || 0
   draft.value = (draft.value||'').slice(0,start) + text + (draft.value||'').slice(end)
   // place cursor after inserted
-  nextTick?.(() => { try { el.selectionStart = el.selectionEnd = start + text.length } catch{} })
+  nextTick?.(() => {
+    try {
+      el.selectionStart = el.selectionEnd = start + text.length
+      el.focus()
+    } catch{}
+  })
 }
 function insertTable(){ insertAtCursor(generateMarkdownTable(4,3,true)) }
 function insertMermaid(){ insertAtCursor(mermaidTemplate('flow')) }
@@ -585,6 +676,36 @@ function scanPreviewHeadings(){
         await embedVega(mount, spec, { actions:false })
       }catch{}
     })
+    // Add copy buttons to code blocks (bash, sh, etc.)
+    const codeBlocks = previewEl.value.querySelectorAll('pre > code')
+    codeBlocks.forEach((codeEl)=>{
+      const pre = codeEl.closest('pre')
+      if(!pre || pre.dataset.kbCopyBound === '1') return
+      // skip blocks transformed earlier (mermaid/vega already replaced)
+      const cls = (codeEl.className||'')
+      // target common languages; if none, still allow copy
+      const target = /(bash|shell|sh|console|zsh|powershell|ps|json|yaml|yml|toml|ini|javascript|typescript|ts|js|python|py|go|rust|java|dockerfile|terraform)/i.test(cls) || true
+      if(!target) return
+      pre.style.position = pre.style.position || 'relative'
+      const btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'kb-copy-btn absolute top-1 right-1 text-[10px] px-2 py-0.5 border rounded bg-white/80 hover:bg-white shadow'
+      btn.textContent = 'Copy'
+      btn.title = 'Copy code to clipboard'
+      btn.addEventListener('click', async (e)=>{
+        e.preventDefault()
+        e.stopPropagation()
+        try {
+          const text = (codeEl.textContent||'')
+          await navigator.clipboard.writeText(text)
+          const old = btn.textContent
+          btn.textContent = 'Copied'
+          setTimeout(()=>{ btn.textContent = old || 'Copy' }, 1200)
+        } catch {}
+      })
+      pre.appendChild(btn)
+      pre.dataset.kbCopyBound = '1'
+    })
   }catch{}
   if(previewObserver){ previewObserver.disconnect(); previewObserver = null }
   const headings = Array.from(previewEl.value.querySelectorAll('h1, h2, h3, h4, h5, h6'))
@@ -633,6 +754,84 @@ onBeforeUnmount(() => {
 })
 
 defineExpose({ setSaved, lastVersion, draft, handleConflict })
+
+// -----------------------------
+// Advanced insertion modals state & logic
+// -----------------------------
+const showTableModal = ref(false)
+const tableRows = ref(4)
+const tableCols = ref(3)
+const tableHeader = ref(true)
+function applyTable(){ insertAtCursor(generateMarkdownTable(Math.max(1, tableRows.value||1), Math.max(1, tableCols.value||1), !!tableHeader.value)); showTableModal.value = false }
+
+const showMermaidModal = ref(false)
+const mermaidType = ref('flow')
+const mermaidCode = ref('')
+const mermaidPreviewMount = ref(null)
+function openMermaidModal(){
+  showMermaidModal.value = true
+  if(!mermaidCode.value){ mermaidCode.value = mermaidTemplate(mermaidType.value).replace(/^```mermaid\n|```\n?$/g,'') }
+  nextTick(()=>renderMermaidPreview())
+}
+function onMermaidTypeChange(){
+  mermaidCode.value = mermaidTemplate(mermaidType.value).replace(/^```mermaid\n|```\n?$/g,'')
+  renderMermaidPreview()
+}
+function renderMermaidPreview(){
+  try{
+    if(!mermaidPreviewMount.value) return
+    const code = mermaidCode.value || ''
+    mermaid.initialize({ startOnLoad:false, theme: 'default' })
+    const id = 'm'+Math.random().toString(36).slice(2)
+    mermaid.render(id, code).then(({ svg }) => { mermaidPreviewMount.value.innerHTML = svg }).catch(()=>{ mermaidPreviewMount.value.innerHTML = '<div class="text-xs text-red-600">Render failed</div>' })
+  }catch{ try{ mermaidPreviewMount.value.innerHTML = '<div class="text-xs text-red-600">Render failed</div>' }catch{} }
+}
+function applyMermaid(){ insertAtCursor(['```mermaid', mermaidCode.value.trim(), '```',''].join('\n')); showMermaidModal.value = false }
+
+const showChartModal = ref(false)
+const chartSpec = ref(vegaLiteBarSpec())
+const chartPreviewMount = ref(null)
+const chartPlaceholder = '{ "$schema": "https://vega.github.io/schema/vega-lite/v5.json", ... }'
+function openChartModal(){ showChartModal.value = true; nextTick(()=>renderChartPreview()) }
+async function renderChartPreview(){
+  if(!chartPreviewMount.value) return
+  // clear
+  chartPreviewMount.value.innerHTML = ''
+  try{
+    const spec = JSON.parse(chartSpec.value)
+    await embedVega(chartPreviewMount.value, spec, { actions:false })
+  }catch{ chartPreviewMount.value.innerHTML = '<div class="text-xs text-red-600">Invalid Vega-Lite JSON</div>' }
+}
+function applyChart(){ insertAtCursor(['```json','// vega-lite', chartSpec.value.trim(), '```',''].join('\n')); showChartModal.value = false }
+
+const showImageModal = ref(false)
+const imageUrl = ref('')
+const imageAlt = ref('')
+const imageTitle = ref('')
+const imageWidth = ref(null)
+function openImageModal(){ showImageModal.value = true }
+async function onPickImageForModal(ev){
+  const files = ev?.target?.files
+  if(!files || !files[0]) return
+  try{
+    const { path: rel } = await api.uploadAsset(files[0], 'assets')
+    imageUrl.value = rel
+    if(!imageAlt.value){ imageAlt.value = files[0].name.replace(/\.[^.]+$/, '') }
+  }catch{ alert('upload failed') }
+  ev.target.value = ''
+}
+function applyImage(){
+  if(!imageUrl.value){ alert('Image URL is required'); return }
+  const title = imageTitle.value ? ` \"${imageTitle.value.replace(/\"/g,'\\\"')}\"` : ''
+  const widthAttr = imageWidth.value ? `{width=${Number(imageWidth.value)}px}` : ''
+  const md = `![${imageAlt.value||''}](${imageUrl.value}${title})${widthAttr}\n`
+  insertAtCursor(md)
+  showImageModal.value = false
+  imageUrl.value = ''
+  imageAlt.value = ''
+  imageTitle.value = ''
+  imageWidth.value = null
+}
 </script>
 
 <style scoped>

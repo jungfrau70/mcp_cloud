@@ -2173,13 +2173,35 @@ READ_ONLY_COMMAND_WHITELIST = {
         "gcloud_projects_list": ["gcloud", "projects", "list"],
         "gcloud_storage_buckets_list": ["gcloud", "storage", "buckets", "list"],
         "gcloud_compute_instances_list": ["gcloud", "compute", "instances", "list"],
+    },
+    "azure": {
+        # Basic identity and listings (read-only)
+        "account_show": ["az", "account", "show"],
+        "account_list": ["az", "account", "list"],
+        "locations_list": ["az", "account", "list-locations"],
+        "resource_groups_list": ["az", "group", "list"],
+        "vnet_list": ["az", "network", "vnet", "list"],
+        "subnet_list": ["az", "network", "vnet", "subnet", "list"],
+        "nsg_list": ["az", "network", "nsg", "list"],
+        "public_ip_list": ["az", "network", "public-ip", "list"],
+        "vm_list": ["az", "vm", "list"],
+        "disks_list": ["az", "disk", "list"],
+        "images_list": ["az", "image", "list"],
+        "storage_accounts_list": ["az", "storage", "account", "list"],
+        "acr_list": ["az", "acr", "list"],
+        "keyvault_list": ["az", "keyvault", "list"],
+        "cosmosdb_list": ["az", "cosmosdb", "list"],
+        "functionapp_list": ["az", "functionapp", "list"],
+        "appservice_list": ["az", "webapp", "list"],
+        "aks_list": ["az", "aks", "list"],
+        "aks_get_versions": ["az", "aks", "get-versions"],  # requires --location arg
     }
 }
 
 @app.post("/api/v1/cli/read-only-legacy", response_model=ReadOnlyCliResponse, dependencies=[Depends(get_api_key)], tags=["CLI Commands"])
 def run_readonly_cli_command(request: ReadOnlyCliRequest):
     """
-    Executes a whitelisted, read-only CLI command for AWS or GCP.
+    Executes a whitelisted, read-only CLI command for AWS, GCP, or Azure.
     """
     provider_commands = READ_ONLY_COMMAND_WHITELIST.get(request.provider)
     if not provider_commands:

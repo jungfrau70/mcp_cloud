@@ -14,6 +14,12 @@ graph TD
         D[WebSocket Gateway]
     end
 
+    subgraph "Cloud Connectors (Multi-Cloud)"
+        X1[AWS CLI / SDK]
+        X2[GCP gcloud / SDK]
+        X3[Azure CLI (az) / SDK]
+    end
+
     subgraph "AI Mentor Layer"
         E[LLM<br>(Google Gemini)]
         F[RAG Service]
@@ -36,6 +42,11 @@ graph TD
     C -- 로직 처리 --> G
     C -- AI 멘토링 요청 --> F
 
+    %% Backend to Cloud Connectors (read-only CLI, provisioning)
+    C -- Read-only CLI --> X1
+    C -- Read-only CLI --> X2
+    C -- Read-only CLI --> X3
+
     F -- 컨텍스트 검색 --> H
     F -- 프롬프트 전달 --> E
     E -- 답변 생성 --> F
@@ -51,7 +62,8 @@ graph TD
     linkStyle 4 stroke-width:2px,fill:none,stroke:purple;
     linkStyle 5 stroke-width:2px,fill:none,stroke:orange;
     linkStyle 6 stroke-width:2px,fill:none,stroke:orange;
-    linkStyle 7 stroke-width:2px,fill:none,stroke:red;
-    linkStyle 8 stroke-width:2px,fill:none,stroke:red;
+    linkStyle 7 stroke-width:2px,fill:none,stroke:teal;
+    linkStyle 8 stroke-width:2px,fill:none,stroke:teal;
+    linkStyle 9 stroke-width:2px,fill:none,stroke:teal;
 
 ```

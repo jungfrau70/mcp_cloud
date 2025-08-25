@@ -6,6 +6,7 @@ from typing import List, Dict, Any, Optional, TypedDict
 from dataclasses import dataclass
 
 from dotenv import load_dotenv
+import hashlib
 from langchain_community.document_loaders import DirectoryLoader, UnstructuredMarkdownLoader
 from langchain_text_splitters import MarkdownTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -91,6 +92,34 @@ class SecurityAuditResult(TypedDict, total=False):
     iam_recommendations: List[str]
     network_security: List[str]
     error: str
+
+# ----------------------------------------------------------------------------
+# Offline-safe local embeddings (fallback when HF download is unavailable)
+# ----------------------------------------------------------------------------
+
+class LocalHashEmbeddings:
+    """Deterministic, offline embeddings based on SHA-256 hashing.
+    - Produces fixed-length float vectors without any external dependencies
+    - Intended only as a safe fallback to allow the system to start
+    """
+
+    def __init__(self, dimension: int = 384):
+        self.dimension = max(16, int(dimension))
+
+    def _vectorize(self, text: str) -> List[float]:
+        data = (text or "").encode("utf-8")
+        digest = hashlib.sha256(data).digest()
+        # Repeat digest bytes to fill dimension and normalize to [0,1]
+        vec = [0.0] * self.dimension
+        for i in range(self.dimension):
+            vec[i] = digest[i % len(digest)] / 255.0
+        return vec
+
+    def embed_documents(self, texts: List[str]) -> List[List[float]]:
+        return [self._vectorize(t) for t in texts]
+
+    def embed_query(self, text: str) -> List[float]:
+        return self._vectorize(text)
 
 # ----------------------------------------------------------------------------
 # Utilities
@@ -528,7 +557,28 @@ class RAGService:
         """
         self.knowledge_base_dir = knowledge_base_dir
         self.vector_store_path = vector_store_path
-        self.embeddings = HuggingFaceEmbeddings(model_name=embedding_model)
+
+        # Embeddings init with offline-safe fallback
+        embedding_backend = os.getenv("EMBEDDING_BACKEND", "huggingface").lower()
+        embedding_dim = int(os.getenv("EMBEDDING_DIM", "384"))
+        if embedding_backend in ("local", "hash", "offline"):
+            logger.warning("Using LocalHashEmbeddings (offline mode)")
+            self.embeddings = LocalHashEmbeddings(dimension=embedding_dim)
+        else:
+            try:
+                local_only = os.getenv("HF_LOCAL_FILES_ONLY", "0").lower() in ("1", "true", "yes")
+                cache_dir = os.getenv("HF_HOME") or os.getenv("HUGGINGFACE_HUB_CACHE") or None
+                kwargs = {}
+                if local_only:
+                    kwargs["model_kwargs"] = {"local_files_only": True}
+                if cache_dir:
+                    kwargs["cache_folder"] = cache_dir
+                self.embeddings = HuggingFaceEmbeddings(model_name=embedding_model, **kwargs)
+            except Exception as e:
+                logger.exception("HuggingFaceEmbeddings 초기화 실패, LocalHashEmbeddings로 폴백합니다: %s", e)
+                # Hint future loads to not attempt network
+                os.environ.setdefault("HF_HUB_OFFLINE", "1")
+                self.embeddings = LocalHashEmbeddings(dimension=embedding_dim)
 
         if not os.path.exists(self.vector_store_path):
             logger.info("벡터 저장소를 새로 생성합니다…")

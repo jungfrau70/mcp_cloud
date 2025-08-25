@@ -130,7 +130,9 @@ const activePath = computed(()=> docStore.path)
 const lastVersion = computed(()=> docStore.version)
 const kbTab = ref('tree')
 const editorKey = computed(()=> `${kbTab.value}`)
-const editorKeyFull = computed(()=> `${kbTab.value}:${activePath.value || ''}:${lastVersion.value || 0}:${(activeContent.value||'').length}`)
+// Avoid re-mounting editors on each keystroke: do not include content length in key
+// 안정적인 레이아웃 유지: 저장 시 버전 갱신으로 에디터가 재마운트되지 않도록 key에서 버전을 제외
+const editorKeyFull = computed(()=> `${kbTab.value}:${activePath.value || ''}`)
 
 // Sidebar state via composable
 const { isCollapsed: isSidebarCollapsed, width: sidebarWidth, toggle: toggleSidebar, start: startResize } = useSidebarResize(256, 200, 500)

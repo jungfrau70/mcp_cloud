@@ -65,10 +65,10 @@
     </KbToolbar>
     <div class="flex-1 overflow-auto p-3">
       <div class="h-full grid grid-cols-[18rem_1fr] min-h-0">
-        <KbSidePanel v-if="path" :path="path" :content="currentMarkdown" />
+        <KbSidePanel v-if="path" :key="`${path}:${(currentMarkdown||'').length}`" :path="path" :content="currentMarkdown" />
         <div class="min-h-0 h-full overflow-auto">
           <EditorContent v-if="editor" :editor="editor as unknown as Editor" class="tiptap-editor prose max-w-none h-full" />
-          <div v-else class="prose max-w-none p-4" v-html="html"></div>
+          <div v-else class="p-4 text-sm text-gray-500">에디터 로딩 중…</div>
         </div>
       </div>
     </div>
@@ -124,6 +124,7 @@ let selfUpdating = false
 const imagePicker = ref<HTMLInputElement|null>(null)
 const currentMarkdown = ref('')
 const saveMessage = ref('')
+const initError = ref('')
 const showColorPalette = ref(false)
 const showHighlightPalette = ref(false)
 const colorPreset = ['#000000','#e11d48','#ef4444','#f59e0b','#10b981','#06b6d4','#3b82f6','#8b5cf6','#ec4899']
@@ -164,9 +165,9 @@ function onKey(e: KeyboardEvent){
   }
 }
 
-onMounted(()=>{
+onMounted(async ()=>{
   html.value = marked.parse(props.content || '')
-  // register lowlight languages
+  // register lowlight languages (best-effort)
   try{ (lowlight as any).register?.('javascript', javascript) }catch{}
   try{ (lowlight as any).register?.('typescript', typescript) }catch{}
   try{ (lowlight as any).register?.('python', python) }catch{}
@@ -174,10 +175,57 @@ onMounted(()=>{
   try{ (lowlight as any).register?.('json', jsonLang) }catch{}
   try{ (lowlight as any).register?.('yaml', yamlLang) }catch{}
   try{ (lowlight as any).register?.('markdown', markdownLang) }catch{}
+
+  async function initEditor(extensions: any[]){
+    editor.value = new Editor({
+      content: html.value,
+      extensions,
+      editorProps: {
+        attributes: { class: 'outline-none focus:outline-none min-h-[600px] p-4' },
+        handlePaste: (view, event) => {
+          const dt = (event as ClipboardEvent).clipboardData
+          if(!dt) return false
+          const file = Array.from(dt.items).map(i=>i.getAsFile()).find(f=>f && f.type.startsWith('image/'))
+          if(file){
+            event.preventDefault()
+            api.uploadAsset(file as File, 'assets')
+              .then(({ path }) => { try{ (editor.value as any)?.chain().focus().setImage({ src: path }).run() }catch{} })
+              .catch(() => { toast.push('error','이미지 업로드 실패') })
+            return true
+          }
+          return false
+        },
+        handleDrop: (view, event) => {
+          const dt = (event as DragEvent).dataTransfer
+          if(!dt || !dt.files?.length) return false
+          const file = Array.from(dt.files).find(f => f.type.startsWith('image/'))
+          if(file){
+            event.preventDefault()
+            api.uploadAsset(file, 'assets')
+              .then(({ path }) => { try{ (editor.value as any)?.chain().focus().setImage({ src: path }).run() }catch{} })
+              .catch(() => { toast.push('error','이미지 업로드 실패') })
+            return true
+          }
+          return false
+        }
+      },
+      onUpdate({ editor }){
+        html.value = editor.getHTML()
+        if(selfUpdating) return
+        const len = (html.value||'').length
+        ;(updateMarkdownDebounced as any).delay = len > 20000 ? 400 : 150
+        updateMarkdownDebounced(html.value || '')
+        try{ isEditorEmpty.value = (editor as any)?.isEmpty?.() }catch{}
+      },
+      onCreate(){
+        try{ currentMarkdown.value = turndown.turndown(html.value || '') }catch{}
+        try{ isEditorEmpty.value = (editor.value as any)?.isEmpty?.() }catch{}
+      }
+    })
+  }
+
   try{
-  editor.value = new Editor({
-    content: html.value,
-    extensions: [
+    await initEditor([
       StarterKit.configure({ codeBlock: false }),
       Underline,
       TextAlign.configure({ types: ['heading','paragraph','taskItem'] }),
@@ -199,52 +247,16 @@ onMounted(()=>{
       }).configure({ lowlight }),
       Placeholder.configure({ placeholder: '여기에 내용을 입력하세요…' }),
       Typography
-    ],
-    editorProps: {
-      attributes: { class: 'outline-none focus:outline-none min-h-[600px] p-4' },
-      handlePaste: (view, event) => {
-        const dt = (event as ClipboardEvent).clipboardData
-        if(!dt) return false
-        const file = Array.from(dt.items).map(i=>i.getAsFile()).find(f=>f && f.type.startsWith('image/'))
-        if(file){
-          event.preventDefault()
-          api.uploadAsset(file as File, 'assets')
-            .then(({ path }) => { try{ (editor.value as any)?.chain().focus().setImage({ src: path }).run() }catch{} })
-            .catch(() => { toast.push('error','이미지 업로드 실패') })
-          return true
-        }
-        return false
-      },
-      handleDrop: (view, event) => {
-        const dt = (event as DragEvent).dataTransfer
-        if(!dt || !dt.files?.length) return false
-        const file = Array.from(dt.files).find(f => f.type.startsWith('image/'))
-        if(file){
-          event.preventDefault()
-          api.uploadAsset(file, 'assets')
-            .then(({ path }) => { try{ (editor.value as any)?.chain().focus().setImage({ src: path }).run() }catch{} })
-            .catch(() => { toast.push('error','이미지 업로드 실패') })
-          return true
-        }
-        return false
-      }
-    },
-    onUpdate({ editor }){
-      html.value = editor.getHTML()
-      if(selfUpdating) return
-      // 실시간 동기화(디바운스): Markdown으로 변환해 중앙 스토어 갱신 → 탭 전환 시 내용 공유
-      // 대용량 문서일수록 변환 비용이 크므로 디바운스 지연 자동 조절
-      const len = (html.value||'').length
-      ;(updateMarkdownDebounced as any).delay = len > 20000 ? 400 : 150
-      updateMarkdownDebounced(html.value || '')
-      try{ isEditorEmpty.value = (editor as any)?.isEmpty?.() }catch{}
-    },
-    onCreate(){
-      try{ currentMarkdown.value = turndown.turndown(html.value || '') }catch{}
-      try{ isEditorEmpty.value = (editor.value as any)?.isEmpty?.() }catch{}
-    }
-  })
-  } catch(e){ try{ console.error('TipTap init failed', e) }catch{} }
+    ])
+  } catch(e){
+    try{ console.error('TipTap full init failed, fallback...', e); initError.value = 'fallback' }catch{}
+    try{
+      await initEditor([
+        StarterKit,
+        Placeholder.configure({ placeholder: '여기에 내용을 입력하세요…' })
+      ])
+    }catch(e2){ try{ console.error('TipTap fallback init failed', e2) }catch{} }
+  }
   // tab focus event → focus editor
   try{
     window.addEventListener('kb:focus', (e:any)=>{
@@ -258,6 +270,8 @@ onMounted(()=>{
     // 보장: 선택 파일이 로드된 이후 업데이트
     try { await docStore.whenLoaded(p || docStore.path) } catch {}
     const nextMd = (c ?? docStore.content) || ''
+    // 편집기에서 발생한 변경이라면 재주입하지 않아 커서 점프를 방지
+    if(nextMd === currentMarkdown.value){ return }
     const next = marked.parse(nextMd)
     html.value = next
     currentMarkdown.value = nextMd
@@ -273,7 +287,8 @@ onMounted(()=>{
     if (typeof window !== 'undefined' && 'requestIdleCallback' in window && nextMd.length > 20000){
       ;(window as any).requestIdleCallback(() => setter(), { timeout: 200 })
     } else {
-      setTimeout(() => setter(), 0)
+      // selection 업데이트 후에 content 교체하여 커서 점프 완화
+      setTimeout(() => setter(), 16)
     }
   }, { immediate: true })
   try{ window.addEventListener('keydown', onKey) }catch{}

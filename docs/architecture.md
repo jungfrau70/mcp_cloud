@@ -26,6 +26,7 @@ MentorAi는 학생, 튜터, AI 멘토 간의 원활한 상호작용을 지원하
     - **인증/권한 관리**: 튜터와 학생의 역할을 구분하고 접근 권한을 제어합니다.
     - **AI 멘토 오케스트레이션**: 학생의 질문을 받아 AI 멘토 레이어에 전달하고, 그 결과를 다시 프론트엔드에 반환합니다.
     - **데이터베이스 관리**: PostgreSQL 및 Vector DB와의 모든 상호작용을 담당합니다.
+    - **클라우드 커넥터**: 안전한 읽기 전용 CLI 화이트리스트를 통해 멀티클라우드(AWS, GCP, Azure) 리소스 조회를 지원합니다.
 
 ### 2.3. AI Mentor Layer
 
@@ -48,6 +49,15 @@ MentorAi는 학생, 튜터, AI 멘토 간의 원활한 상호작용을 지원하
     - **통합 터미널**: 프론트엔드에 내장된 웹 터미널(xterm.js)을 제공합니다.
     - **보안 컨테이너**: WebSocket을 통해 전달된 학생의 셸 명령어는 백엔드에서 격리된 Docker 컨테이너 환경에서 실행되어 시스템에 영향을 주지 않습니다.
 
+### 2.6. Cloud Connectors (Multi-Cloud)
+
+- **지원 플랫폼**: AWS, GCP, Azure
+- **구성요소**:
+    - AWS: `aws` CLI (읽기 전용 화이트리스트), AWS SDK
+    - GCP: `gcloud` CLI, 서비스 계정 인증
+    - Azure: `az` CLI, 서비스 프린시펄 인증 (Tenant/Client/Secret)
+- **보안**: 백엔드는 명시된 읽기 전용 명령만 실행하며, 쓰기/삭제는 UI에서 별도 승인 워크플로 및 Terraform 적용 경로로만 수행합니다.
+
 ## 3. 데이터 및 상호작용 흐름 (Data & Interaction Flow)
 
 1.  **학습 콘텐츠 조회**: 학생이 프론트엔드에서 특정 학습 모듈을 클릭합니다.
@@ -61,7 +71,7 @@ MentorAi는 학생, 튜터, AI 멘토 간의 원활한 상호작용을 지원하
     - `Backend` -> `AI Mentor Layer (LLM)`: 검색된 자료와 질문을 함께 전달하여 답변 생성 요청
     - `AI Mentor Layer` -> `Backend` -> `Frontend`: 생성된 답변을 학생에게 실시간으로 표시.
 
-3.  **통합 터미널 실습**: 학생이 터미널에 `aws s3 ls`와 같은 명령어를 입력합니다.
+3.  **통합 터미널 실습**: 학생이 터미널에 `aws s3 ls`, `gcloud compute zones list`, `az group list`와 같은 명령어를 입력합니다.
     - `Frontend (xterm.js)` -> `Backend`: WebSocket을 통해 명령어 전송
     - `Backend` -> `Hands-on Lab (Docker)`: 격리된 컨테이너에서 명령어 실행
     - `Hands-on Lab` -> `Backend` -> `Frontend`: 실행 결과를 WebSocket을 통해 터미널에 실시간으로 출력.
