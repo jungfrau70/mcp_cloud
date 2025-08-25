@@ -5,5 +5,5 @@
 
 <script setup>
 definePageMeta({ layout: 'default', title: 'Home' })
-onMounted(() => { try { navigateTo('/knowledge-base?home=1') } catch {} })
+onMounted(() => { try { navigateTo('/knowledge-base?path=index.md&force=1') } catch {} })
 </script>

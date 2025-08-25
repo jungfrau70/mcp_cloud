@@ -169,6 +169,12 @@ const apiKey = 'my_mcp_eagle_tiger';
 // Load default content: textbook/index.md when on knowledge-base route
 const route = useRoute();
 const isKnowledgeBase = computed(() => route.path.startsWith('/knowledge-base'))
+const isHomeRedirect = computed(() => {
+  try{ return String((route.query||{}).force||'') === '1' }catch{ return false }
+})
+const homePathParam = computed(() => {
+  try{ return String((route.query||{}).path||'') }catch{ return '' }
+})
 onMounted(() => {
   if (isKnowledgeBase.value) {
     try{
@@ -179,7 +185,9 @@ onMounted(() => {
     ;(async () => {
       try{
         const lastKb = typeof window !== 'undefined' ? localStorage.getItem('kb_last_path') : null
-        if(lastKb){
+        if(isHomeRedirect.value && homePathParam.value){
+          await handleKbFileSelect(homePathParam.value)
+        } else if(lastKb){
           await handleKbFileSelect(lastKb)
         } else if(!activePath.value){
           await ensureKbIndex()
