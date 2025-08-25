@@ -1,8 +1,7 @@
 <template>
-  <div v-if="content" class="prose max-w-none h-full overflow-y-auto" ref="contentContainer">
-    <!-- Title row with toggle link -->
-    <div v-if="titleText" class="flex items-center justify-between mb-4">
-      <h1 class="m-0">{{ titleText }}</h1>
+  <div v-if="content" class="h-full overflow-y-auto bg-white" ref="contentContainer">
+    <!-- Action row (optional) -->
+    <div class="flex items-center justify-end gap-2 px-4 pt-3" v-if="!readonly">
       <button
         v-if="path && !isSlideView"
         @click="openSlides"
@@ -13,7 +12,7 @@
       <button
         v-if="path && !isSlideView"
         @click="emit('navigate-tool',{ tool:'content-edit' })"
-        class="ml-2 px-3 py-1 text-sm rounded bg-gray-200 hover:bg-gray-300 transition-colors"
+        class="px-3 py-1 text-sm rounded bg-gray-200 hover:bg-gray-300 transition-colors"
       >
         편집
       </button>
@@ -28,8 +27,8 @@
 
     <!-- Fade between content and slides in-place -->
     <transition name="fade" mode="out-in">
-      <div v-if="!isSlideView" key="content-view">
-        <div v-html="renderedMarkdown"></div>
+      <div v-if="!isSlideView" key="content-view" class="prose max-w-none p-4">
+        <div v-html="renderedContent"></div>
       </div>
       <div v-else key="slides-view">
         <div v-if="slidePdfUrl" class="w-full">
@@ -44,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch, nextTick } from 'vue';
 import { useRuntimeConfig } from '#app';
 import { marked } from 'marked';
 import mermaid from 'mermaid';
@@ -55,6 +54,7 @@ const props = defineProps({
   content: String,
   slide: Object,
   path: String,
+  readonly: { type: Boolean, default: false }
 });
 
 const emit = defineEmits(['navigate-tool']);
@@ -69,7 +69,7 @@ const titleText = computed(() => {
 });
 
 // Render content without the first heading line
-const renderedMarkdown = computed(() => {
+const renderedContent = computed(() => {
   if (!props.content) return '';
   const lines = props.content.split(/\r?\n/);
   let removed = false;
@@ -81,23 +81,41 @@ const renderedMarkdown = computed(() => {
     }
     rest.push(line);
   }
-  const body = removed ? rest.join('\n') : props.content;
-  return DOMPurify.sanitize(marked(body));
+  let body = removed ? rest.join('\n') : props.content;
+  // Preprocess: auto-tag mermaid code fences without language
+  try{
+    body = body.replace(/```(?!\w)[ \t]*\n([\s\S]*?)```/g, (m, code) => {
+      const first = (code.split(/\r?\n/).find(l => l.trim().length>0) || '').trim()
+      return /^\s*(graph|flowchart|sequenceDiagram|classDiagram|stateDiagram|erDiagram)\b/.test(first)
+        ? '```mermaid\n' + code + '```'
+        : m
+    })
+  }catch{ /* ignore */ }
+  // KB Markdown 탭과 동일한 marked 옵션
+  marked.setOptions({ breaks: true, gfm: true, headerIds: true, mangle: false })
+  return DOMPurify.sanitize(marked.parse(body));
 });
 
-const setupLinkIntercepts = () => {
+let mermaidInitialized = false
+const setupLinkIntercepts = async () => {
+  await nextTick()
   if (contentContainer.value) {
     // render mermaid
     try{
-      const mermaidNodes = contentContainer.value.querySelectorAll('pre code.language-mermaid, code.language-mermaid')
-      mermaidNodes.forEach(async (node) => {
+      const allCodeBlocks = contentContainer.value.querySelectorAll('pre code, code')
+      allCodeBlocks.forEach(async (node) => {
+        const cls = String(node.className||'')
+        const text = String(node.textContent||'').trim()
+        const isMermaid = cls.includes('language-mermaid') || /^(graph|flowchart|sequenceDiagram|classDiagram|stateDiagram|erDiagram)\b/.test(text)
+        if(!isMermaid) return
         const parent = (node.parentElement && node.parentElement.tagName.toLowerCase() === 'pre') ? node.parentElement : node
-        const code = (node.textContent||'').trim()
+        if(parent.getAttribute('data-rendered-mermaid') === '1') return
         const mount = document.createElement('div')
         parent.replaceWith(mount)
+        mount.setAttribute('data-rendered-mermaid','1')
         try{
-          mermaid.initialize({ startOnLoad:false, theme:'default' })
-          const out = await mermaid.render('m'+Math.random().toString(36).slice(2), code)
+          if(!mermaidInitialized){ mermaid.initialize({ startOnLoad:false, theme:'default' }); mermaidInitialized = true }
+          const out = await mermaid.render('m'+Math.random().toString(36).slice(2), text)
           mount.innerHTML = out.svg
         }catch{}
       })
@@ -127,8 +145,8 @@ const setupLinkIntercepts = () => {
   }
 };
 
-onMounted(setupLinkIntercepts);
-watch(() => props.content, setupLinkIntercepts);
+onMounted(() => { setupLinkIntercepts() })
+watch(() => props.content, () => { setupLinkIntercepts() })
 
 // Slides overlay logic
 const isSlideView = ref(false);

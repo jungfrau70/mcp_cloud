@@ -1,0 +1,47 @@
+[
+  {
+    "name": "aws",
+    "query": "aws 오늘 기술 트렌드",
+    "enabled": true
+  },
+  {
+    "name": "gcp",
+    "query": "gcp 오늘 기술 트렌드",
+    "enabled": true
+  },
+  {
+    "name": "azure",
+    "query": "azure 오늘 기술 트렌드",
+    "enabled": true
+  },
+  {
+    "name": "terraform",
+    "query": "terraform 오늘 기술 트렌드",
+    "enabled": true
+  },
+  {
+    "name": "IaC",
+    "query": "IaC 오늘 기술 트렌드",
+    "enabled": true
+  },
+  {
+    "name": "devops",
+    "query": "devops 오늘 기술 트렌드",
+    "enabled": true
+  },
+  {
+    "name": "gitops",
+    "query": "gitops 오늘 기술 트렌드",
+    "enabled": true
+  },
+  {
+    "name": "container",
+    "query": "container 오늘 기술 트렌드",
+    "enabled": true
+  },
+  {
+    "name": "k8s",
+    "query": "k8s 오늘 기술 트렌드",
+    "enabled": true
+  }
+]

@@ -68,7 +68,7 @@
       <!-- Center Panel: Workspace Tabs -->
       <main class="flex-grow overflow-hidden flex flex-col" ref="workspaceMain">
         <div class="flex-1 overflow-hidden">
-          <WorkspaceView v-if="!isKnowledgeBase" :active-content="activeContent" :active-slide="activeSlide" :active-path="activePath" ref="workspaceView">
+          <WorkspaceView v-if="!isKnowledgeBase" :active-content="tbContent" :active-slide="tbSlide" :active-path="tbPath" :readonly="true" ref="workspaceView">
             <slot />
           </WorkspaceView>
           <div v-else class="h-full flex flex-col">
@@ -142,9 +142,28 @@ const workspaceMain = ref(null)
 const workspaceView = ref(null)
 const splitEditor = ref(null)
 
-// API configuration
+// Textbook display state (separate from KB doc store)
+const tbContent = ref('')
+const tbSlide = ref(null)
+const tbPath = ref('')
+
+// API configuration (browser-safe host resolution)
 const config = useRuntimeConfig();
-const apiBase = config.public.apiBaseUrl || 'http://localhost:8000';
+function resolveApiBase(){
+  const configured = (config.public?.apiBaseUrl) || 'http://localhost:8000'
+  if (typeof window !== 'undefined'){
+    try{
+      const u = new URL(configured)
+      const browserHost = window.location.hostname
+      if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== browserHost){
+        const port = u.port || '8000'
+        return `${window.location.protocol}//${browserHost}:${port}`
+      }
+    }catch{ /* ignore */ }
+  }
+  return configured
+}
+const apiBase = resolveApiBase()
 const apiKey = 'my_mcp_eagle_tiger';
 
 // Load default content: textbook/index.md when on knowledge-base route
@@ -168,15 +187,15 @@ onMounted(() => {
       }catch{ /* ignore */ }
     })()
   } else {
-    // Restore last opened textbook path if available, otherwise open first slide
+    // Restore last opened textbook path if available, otherwise show KB index.md in content area
     try {
       const last = typeof window !== 'undefined' ? localStorage.getItem('textbook_last_path') : null
       if (last) {
         handleFileClick(last)
       } else {
-        handleFileClick('1-1_introduction_to_cloud.md')
+        ;(async ()=>{ await showCurriculumIndex() })()
       }
-    } catch { handleFileClick('1-1_introduction_to_cloud.md') }
+    } catch { ;(async ()=>{ await showCurriculumIndex() })() }
   }
   
   // 대화형 CLI 이벤트 리스너 설정
@@ -214,36 +233,63 @@ watch(() => route.path, (p) => {
     isSidebarCollapsed.value = false
   }
 })
+async function showCurriculumIndex(){
+  // 1) Try slides index through slides endpoint (if admin selected dirs contain index.md)
+  try {
+    const s = await fetch(`${apiBase}/api/v1/slides?textbook_path=${encodeURIComponent('index')}`, { headers: { 'X-API-Key': apiKey } })
+    if (s.ok) {
+      const ct = (s.headers.get('content-type')||'').toLowerCase()
+      if (ct.includes('application/pdf')){
+        const blob = await s.blob();
+        tbContent.value = '# index\n\nPDF 슬라이드가 로드되었습니다.'
+        tbSlide.value = { type: 'pdf', url: URL.createObjectURL(blob) }
+      } else {
+        tbContent.value = await s.text()
+        tbSlide.value = null
+      }
+      tbPath.value = 'index.md'
+      return
+    }
+  } catch { /* ignore */ }
+  // 2) Fallback to knowledge-base root index.md
+  try{
+    const r = await fetch(`${apiBase}/api/v1/knowledge-base/item?path=${encodeURIComponent('index.md')}`, { headers: { 'X-API-Key': apiKey } })
+    if(!r.ok){ throw new Error('failed') }
+    const d = await r.json()
+    tbContent.value = d?.content || '# Welcome'
+    tbSlide.value = null
+    tbPath.value = 'index.md'
+  } catch {
+    tbContent.value = '# Knowledge Base\n\n좌측에서 문서를 선택하거나 index.md를 생성하세요.'
+    tbSlide.value = null
+    tbPath.value = ''
+  }
+}
 
 const handleFileClick = async (path) => {
   try {
-    activePath.value = path;
+    tbPath.value = path;
     // persist last opened textbook file
     try { if (typeof window !== 'undefined') localStorage.setItem('textbook_last_path', path) } catch {}
-    
-    // 슬라이드 내용을 가져오기 위해 슬라이드 API 사용
-    const contentResponse = await fetch(`${apiBase}/api/v1/slides?textbook_path=${encodeURIComponent(path)}`, {
-      headers: { 'X-API-Key': apiKey },
-    });
-    if (!contentResponse.ok) throw new Error('Failed to fetch slide content');
-    
-    const contentType = contentResponse.headers.get('content-type') || '';
-    if (contentType.includes('application/pdf')) {
-      // PDF인 경우 blob으로 처리
-      const blob = await contentResponse.blob();
-      activeContent.value = `# ${path}\n\nPDF 슬라이드가 로드되었습니다.`;
-      activeSlide.value = { type: 'pdf', url: URL.createObjectURL(blob) };
-    } else {
-      // 마크다운인 경우 텍스트로 처리
-      const content = await contentResponse.text();
-      activeContent.value = content;
-      activeSlide.value = null;
+
+    // KB 아이템 API로 직접 로드(지식베이스와 동일 경로/함수)
+    const url = `${apiBase}/api/v1/knowledge-base/item?path=${encodeURIComponent(path)}`
+    const r = await fetch(url, {
+      headers: { 'X-API-Key': apiKey }
+    })
+    if(!r.ok){
+      let detail = ''
+      try{ const d = await r.json(); detail = d?.detail || '' }catch{ try{ detail = await r.text() }catch{} }
+      throw new Error(`KB item ${r.status} ${detail}`)
     }
+    const d = await r.json()
+    tbContent.value = d?.content || ''
+    tbSlide.value = null
 
   } catch (error) {
-    console.error('Error fetching slide data:', error);
-    activeContent.value = 'Error loading slide content.';
-    activeSlide.value = null;
+    console.error('Error fetching textbook content:', error);
+    tbContent.value = `Error loading content. ${error?.message||''}`;
+    tbSlide.value = null;
   }
 };
 
@@ -301,25 +347,25 @@ const openKnowledgeBase = async () => {
 };
 
 async function onTreeSelect(p){ await handleKbFileSelect(p); kbTab.value = 'tiptap' }
-// KB 인덱스 문서 보장: index.ml 우선 시도, 없으면 생성
+// KB 인덱스 문서 보장: index.md 우선 시도, 없으면 생성
 async function ensureKbIndex(){
   try{
-    await handleKbFileSelect('index.ml')
+    await handleKbFileSelect('index.md')
     if(docStore.error){ throw new Error(docStore.error) }
   }catch{
     try{
       await fetch(`${apiBase}/api/v1/knowledge-base/item`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
-        body: JSON.stringify({ path: 'index.ml', type: 'file', content: '# Knowledge Base\n\n시작 문서입니다.' })
+        body: JSON.stringify({ path: 'index.md', type: 'file', content: '# Knowledge Base\n\n시작 문서입니다.' })
       })
-      await handleKbFileSelect('index.ml')
+      await handleKbFileSelect('index.md')
       kbTab.value = 'tiptap'
     }catch{
       // 최후 수단: 안내 메시지
       activeSlide.value = null
-      ;(docStore as any).content = '# Knowledge Base\n\n좌측에서 문서를 선택하거나 index.ml을 생성하세요.'
-      ;(docStore as any).path = 'index.ml'
+      docStore.content = '# Knowledge Base\n\n좌측에서 문서를 선택하거나 index.md를 생성하세요.'
+      docStore.path = 'index.md'
     }
   }
 }

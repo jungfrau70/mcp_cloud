@@ -27,6 +27,7 @@ const props = defineProps({
   activeContent: String,
   activeSlide: Object,
   activePath: String,
+  readonly: { type: Boolean, default: false },
 });
 
 const activeComponent = shallowRef(ContentView);
@@ -37,6 +38,7 @@ const viewProps = computed(() => {
       content: props.activeContent,
       slide: props.activeSlide,
       path: props.activePath,
+      readonly: props.readonly,
     };
   } else if (activeComponent.value === SplitEditor) {
     return { path: props.activePath, content: props.activeContent };

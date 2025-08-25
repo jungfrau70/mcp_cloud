@@ -24,7 +24,7 @@ except Exception:
     ConfigDict = dict  # fallback
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
-from typing import List, Optional, Dict, Literal, Any
+from typing import List, Optional, Dict, Literal, Any, Tuple
 from datetime import datetime
 import google.generativeai as genai
 from models import Base, Deployment, DeploymentStatus, DataSource
@@ -1934,6 +1934,69 @@ async def generate_document_from_external(request: GenerateDocumentRequest):
 TEXTBOOK_DIR = os.path.join(KNOWLEDGE_BASE_DIR, 'textbook')
 SLIDES_DIR = os.path.join(KNOWLEDGE_BASE_DIR, 'slides')
 
+# Slides directory selection (admin configurable): default to ['slides'] if exists
+SLIDES_SELECTION_FILE = os.path.join(KNOWLEDGE_BASE_DIR, '.slides_selection.json')
+
+def _load_selected_slide_dirs() -> List[str]:
+    try:
+        if os.path.exists(SLIDES_SELECTION_FILE):
+            with open(SLIDES_SELECTION_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                if isinstance(data, dict) and isinstance(data.get('selected_dirs'), list):
+                    # sanitize entries to be simple path segments
+                    out: List[str] = []
+                    for name in data['selected_dirs']:
+                        if isinstance(name, str):
+                            name = name.strip().strip('/\\')
+                            if name and not any(seg in name for seg in ['..', '/', '\\']):
+                                out.append(name)
+                    return out
+    except Exception as e:
+        print(f"Failed to load slides selection: {e}")
+    # default: prefer 'slides' if present, otherwise empty
+    return ['slides'] if os.path.isdir(SLIDES_DIR) else []
+
+def _resolve_selected_slide_dirs_abs() -> List[Tuple[str, str]]:
+    """Return list of tuples (dir_name, absolute_path) for selected slide roots that exist under KB root."""
+    selected = _load_selected_slide_dirs()
+    resolved: List[Tuple[str, str]] = []
+    for name in selected:
+        abs_path = os.path.join(KNOWLEDGE_BASE_DIR, name)
+        try:
+            real = os.path.realpath(abs_path)
+            if real.startswith(os.path.realpath(KNOWLEDGE_BASE_DIR)) and os.path.isdir(real):
+                resolved.append((name, real))
+        except Exception:
+            continue
+    return resolved
+
+class SlidesSelection(BaseModel):
+    selected_dirs: List[str]
+
+@app.get("/api/v1/slides/selection", dependencies=[Depends(get_api_key)], tags=["Slides"])
+def get_slides_selection():
+    return { "selected_dirs": _load_selected_slide_dirs() }
+
+@app.post("/api/v1/slides/selection", dependencies=[Depends(get_api_key)], tags=["Slides"])
+def set_slides_selection(payload: SlidesSelection):
+    # sanitize and keep only directories under KB root
+    cleaned: List[str] = []
+    for name in payload.selected_dirs:
+        if not isinstance(name, str):
+            continue
+        name = name.strip().strip('/\\')
+        if not name or any(seg in name for seg in ['..', '/', '\\']):
+            continue
+        abs_path = os.path.join(KNOWLEDGE_BASE_DIR, name)
+        if os.path.isdir(abs_path):
+            cleaned.append(name)
+    try:
+        with open(SLIDES_SELECTION_FILE, 'w', encoding='utf-8') as f:
+            json.dump({ 'selected_dirs': cleaned }, f, ensure_ascii=False, indent=2)
+        return { 'ok': True, 'selected_dirs': cleaned }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f'Failed to save selection: {e}')
+
 @app.get("/api/v1/curriculum/tree", dependencies=[Depends(get_api_key)], tags=["Curriculum"])
 async def get_curriculum_tree():
     """
@@ -1949,12 +2012,19 @@ async def get_curriculum_tree():
 @app.get("/api/v1/slides/tree", dependencies=[Depends(get_api_key)], tags=["Slides"])
 async def get_slides_tree():
     """
-    Returns the directory structure of the slides as JSON.
+    Returns the directory structure of the selected slide roots as JSON.
+    If multiple roots are selected, returns a merged object with each root name as a top-level key.
     """
     try:
-        # We can reuse the existing helper function
-        tree = get_knowledge_base_structure(SLIDES_DIR, is_root=True)
-        return tree
+        roots = _resolve_selected_slide_dirs_abs()
+        if not roots:
+            return {}
+        merged: Dict[str, Any] = {}
+        for name, abs_dir in roots:
+            # Build structure under current_relative_path=name so file paths include the root dir prefix
+            struct = get_knowledge_base_structure(abs_dir, is_root=False, current_relative_path=name)
+            merged[name] = struct
+        return merged if len(roots) > 1 else next(iter(merged.values()))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read slides structure: {e}")
 
@@ -1994,21 +2064,30 @@ async def get_slide_download(textbook_path: str):
         candidate_raw = normalized if normalized.endswith('.md') else normalized + '.md'
         import re
         parts = [p for p in re.split(r'[\\/]+', candidate_raw) if p]
-        target_path = os.path.join(SLIDES_DIR, *parts)
-        # Test expects an exists() call on the final path
-        _ = os.path.exists(target_path)
-        try:
-            with open(target_path, 'r', encoding='utf-8') as f:
-                content = f.read()
-        except FileNotFoundError:
+        # Search across selected roots; strip leading root name from parts if duplicated
+        found_path: Optional[str] = None
+        roots = _resolve_selected_slide_dirs_abs()
+        for name, root_abs in roots:
+            rel_parts = parts[1:] if parts and parts[0] == name else parts
+            candidate = os.path.join(root_abs, *rel_parts)
+            _ = os.path.exists(candidate)
+            if os.path.isfile(candidate):
+                found_path = candidate
+                break
+        if not found_path:
             raise HTTPException(status_code=404, detail="Slide mapping is not defined for this document.")
-        real_path = os.path.realpath(target_path)
-        slides_dir_real = os.path.realpath(SLIDES_DIR)
-        if not real_path.startswith(slides_dir_real):
+        real_path = os.path.realpath(found_path)
+        kb_real = os.path.realpath(KNOWLEDGE_BASE_DIR)
+        if not real_path.startswith(kb_real):
             raise HTTPException(status_code=404, detail="Not Found")
-        filename = os.path.basename(target_path)
+        filename = os.path.basename(found_path)
+        try:
+            with open(found_path, 'r', encoding='utf-8') as f:
+                content_text = f.read()
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Failed to read slide: {e}")
         return StreamingResponse(
-            iter([content]),
+            iter([content_text]),
             media_type="text/markdown; charset=utf-8",
             headers={'Content-Disposition': f'attachment; filename="{filename}"'}
         )
@@ -2031,18 +2110,24 @@ async def get_slide_pdf(slide_name: str):
     try:
         # Sanitize the slide_name to prevent directory traversal
         # Use os.path.abspath to get the absolute path, then check if it's within SLIDES_DIR
-        requested_path = os.path.join(SLIDES_DIR, slide_name.strip(r'./\ '))
-        print(requested_path)
-        
-        # Ensure the file is a markdown file
-        if not requested_path.endswith('.md'):
-            requested_path += '.md'
-
+        requested_rel = slide_name.strip(r'./\ ')
+        # Ensure .md suffix
+        if not requested_rel.endswith('.md'):
+            requested_rel += '.md'
+        # Resolve against selected roots
+        roots = _resolve_selected_slide_dirs_abs()
+        requested_path = None
+        for _, root_abs in roots:
+            p = os.path.join(root_abs, requested_rel)
+            if os.path.isfile(p):
+                requested_path = p
+                break
+        if not requested_path:
+            raise HTTPException(status_code=404, detail="Slide not found.")
         # Resolve the real path to handle '..' and symlinks
         real_path = os.path.realpath(requested_path)
-
-        # Security Check: Ensure the real path is within the SLIDES_DIR
-        if not real_path.startswith(os.path.realpath(SLIDES_DIR)):
+        # Security Check: Ensure the real path is within KB root (and implicitly selected dirs)
+        if not real_path.startswith(os.path.realpath(KNOWLEDGE_BASE_DIR)):
             raise HTTPException(status_code=400, detail="Invalid or malicious slide name.")
 
         slide_path = real_path # Use the real_path for opening the file

@@ -5,21 +5,16 @@
     </template>
     <template v-if="mode==='tree'">
       <div class="flex items-center justify-between">
+        <div></div>
         <div class="flex items-center gap-2">
-          <label class="text-xs text-gray-600">디렉토리 선택:</label>
-          <div class="flex flex-wrap gap-2">
-            <label v-for="dir in availableRootDirs" :key="dir" class="inline-flex items-center gap-1 text-xs">
-              <input type="checkbox" :value="dir" v-model="selectedRootDirs" />
-              <span>{{ dir }}</span>
-            </label>
-          </div>
+          <button @click="showAdmin=true; loadAdminPanel()" class="mb-2 px-2 py-1 text-xs border rounded" title="슬라이드 디렉토리 설정">설정</button>
+          <button @click="showTrending=true" class="mb-2 px-2 py-1 text-xs border rounded">관심 카테고리</button>
         </div>
-        <button @click="showTrending=true" class="mb-2 px-2 py-1 text-xs border rounded">관심 카테고리</button>
       </div>
       <div v-if="isInitialLoading" class="text-center py-8 text-sm text-gray-500">로딩 중…</div>
       <FileTreePanel
         v-else
-        :tree="displayTree"
+        :tree="treeData"
         :selected-file="props.selectedFile ? ('mcp_knowledge_base/' + stripBasePath(props.selectedFile)) : null"
         @file-select="handleFileSelect"
         @file-open="handleFileOpen"
@@ -30,12 +25,19 @@
       />
     </template>
     <template v-else>
+        <div class="flex items-center justify-between mb-2">
+          <div></div>
+          <div class="flex items-center gap-2">
+            <button @click="showAdmin=true; loadAdminPanel()" class="px-2 py-1 text-xs border rounded" title="슬라이드 디렉토리 설정">설정</button>
+            <button @click="showTrending=true" class="px-2 py-1 text-xs border rounded">관심 카테고리</button>
+          </div>
+        </div>
         <SearchPanel :api-base="apiBase" :api-key="apiKey" @open="emit('file-select',$event)" />
       <div class="border rounded bg-white overflow-hidden">
         <div v-if="isInitialLoading" class="text-center py-8 text-sm text-gray-500">로딩 중…</div>
         <FileTreePanel
           v-else
-          :tree="displayTree"
+          :tree="treeData"
           :selected-file="props.selectedFile ? ('mcp_knowledge_base/' + stripBasePath(props.selectedFile)) : null"
           @file-select="handleFileSelect"
           @file-open="handleFileOpen"
@@ -56,6 +58,28 @@
     </template>
   </div>
   <TrendingCategoriesModal v-if="showTrending" @close="showTrending=false" />
+  <!-- Admin Selection Modal -->
+  <div v-if="showAdmin" class="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+    <div class="bg-white rounded shadow-lg w-[520px] max-w-[92vw] p-4">
+      <div class="flex items-center justify-between mb-2">
+        <h4 class="text-sm font-semibold">슬라이드 디렉토리 선택</h4>
+        <button class="text-gray-500 hover:text-black" @click="showAdmin=false">✕</button>
+      </div>
+      <div class="text-xs text-gray-600 mb-3">mcp_knowledge_base 하위의 디렉토리 중 슬라이드로 사용할 루트를 선택하세요.</div>
+      <div v-if="allDirsLoading" class="text-sm text-gray-500">불러오는 중…</div>
+      <div v-else class="max-h-60 overflow-auto border rounded p-2 space-y-1">
+        <label v-for="dir in allKbDirs" :key="dir" class="flex items-center gap-2 text-sm">
+          <input type="checkbox" :value="dir" v-model="selectedDirs" />
+          <span class="font-mono">{{ dir }}</span>
+        </label>
+        <div v-if="!allKbDirs.length" class="text-xs text-gray-400">선택 가능한 디렉토리가 없습니다.</div>
+      </div>
+      <div class="mt-3 flex items-center justify-end gap-2">
+        <button class="px-3 py-1 text-xs border rounded" @click="showAdmin=false">취소</button>
+        <button class="px-3 py-1 text-xs bg-blue-600 text-white rounded disabled:opacity-50" :disabled="saving" @click="saveSelection">저장</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -96,31 +120,17 @@ const apiKey = 'my_mcp_eagle_tiger'
 const taskStore = useTaskStore()
 const showGenModal = ref(false)
 const showTrending = ref(false)
+const showAdmin = ref(false)
+const allKbDirs = ref([])
+const allDirsLoading = ref(false)
+const selectedDirs = ref([])
+const saving = ref(false)
 
 // 탭 제거 (검색 + 플로팅 버튼만 유지)
 
 // State (공통)
 const treeData = ref({ 'mcp_knowledge_base': { files: [] } });
-// 루트 하위 디렉토리 선택 상태
-const selectedRootDirs = ref<string[]>([])
-const rootData = computed<any>(() => (treeData.value as any)['mcp_knowledge_base'] || {})
-const availableRootDirs = computed<string[]>(() => Object.keys(rootData.value).filter(k => k !== 'files').sort())
-// 최초 로드 시 slides가 있으면 기본 선택 유지(기존 동작과의 호환)
-watch(rootData, (v) => {
-  if(!selectedRootDirs.value.length){
-    if(v && v['slides']) selectedRootDirs.value = ['slides']
-  }
-}, { immediate: true })
-const displayTree = computed<any>(() => {
-  if(!selectedRootDirs.value.length){
-    return treeData.value
-  }
-  const filtered: any = {}
-  for(const dir of selectedRootDirs.value){
-    if(rootData.value[dir]) filtered[dir] = rootData.value[dir]
-  }
-  return { 'mcp_knowledge_base': filtered }
-})
+// 지식베이스는 전체 트리를 그대로 표시
 const selectedFile = ref(null);
 // 외부에서 활성 경로가 바뀌면 내부 선택 상태도 동기화해 트리 강조 및 펼침 유도
 watch(() => props.selectedFile, (p)=>{ selectedFile.value = p ? ('mcp_knowledge_base/' + stripBasePath(p)) : null }, { immediate: true })
@@ -344,4 +354,31 @@ onMounted(()=>{
   if (props.mode === 'tree' || props.mode === 'full' || props.mode === 'search') loadKnowledgeBaseStructure(); else isInitialLoading.value = false
   taskStore.subscribe()
 })
+
+// Admin helpers
+async function loadAdminPanel(){
+  await Promise.all([loadAllKbDirs(), loadSelection()])
+}
+async function loadAllKbDirs(){
+  allDirsLoading.value = true
+  try{
+    const r = await fetch(`${apiBase}/api/v1/knowledge-base/tree`, { headers: { 'X-API-Key': apiKey }})
+    const data = await r.json()
+    allKbDirs.value = Object.keys(data || {}).filter(k => k !== 'files').sort()
+  } finally { allDirsLoading.value = false }
+}
+async function loadSelection(){
+  try{
+    const r = await fetch(`${apiBase}/api/v1/slides/selection`, { headers: { 'X-API-Key': apiKey }})
+    const d = await r.json()
+    selectedDirs.value = Array.isArray(d?.selected_dirs) ? d.selected_dirs : []
+  } catch { selectedDirs.value = [] }
+}
+async function saveSelection(){
+  saving.value = true
+  try{
+    await fetch(`${apiBase}/api/v1/slides/selection`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey }, body: JSON.stringify({ selected_dirs: selectedDirs.value }) })
+    showAdmin.value = false
+  } finally { saving.value = false }
+}
 </script>

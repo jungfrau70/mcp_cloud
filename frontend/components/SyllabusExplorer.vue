@@ -7,13 +7,16 @@
     </h3>
     <div v-if="loading">Loading...</div>
     <div v-if="error">{{ error }}</div>
-    <div v-if="slidesTree">
-      <FileTree 
-        :tree="slidesTree" 
-        :base-path="''" 
-        @file-click="onFileClick" 
+    <div v-if="displayTree">
+      <FileTreePanel
+        :tree="displayTree"
+        :selected-file="null"
+        @file-select="onFileClick"
+        @file-open="onFileClick"
       />
     </div>
+
+    
 
     <!-- 채팅 섹션 -->
     <div class="mt-6">
@@ -43,11 +46,24 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import FileTree from './FileTree.vue';
+import FileTreePanel from './FileTreePanel.vue';
+import { useRuntimeConfig } from '#app'
 
-const slidesTree = ref(null);
+const kbTree = ref(null);
 const loading = ref(false);
 const error = ref(null);
+// 관리자 설정 UI는 지식베이스로 이동
+
+const config = useRuntimeConfig()
+function resolveApiBase(){
+  const configured = (config.public?.apiBaseUrl) || 'http://localhost:8000'
+  if (typeof window !== 'undefined'){
+    try{ const u = new URL(configured); const host = window.location.hostname; const port = u.port || '8000'; if(!['localhost','127.0.0.1',host].includes(u.hostname)) return `${window.location.protocol}//${host}:${port}` }catch{}
+  }
+  return configured
+}
+const apiBase = resolveApiBase()
+const apiKey = 'my_mcp_eagle_tiger'
 
 // 통합터미널 주제 관리 동기화 (guest 기준)
 const userKey = 'guest'
@@ -153,18 +169,14 @@ const onFileClick = (path) => {
 onMounted(async () => {
   loading.value = true;
   try {
-    const apiKey = 'my_mcp_eagle_tiger';
-    const response = await fetch('http://localhost:8000/api/v1/slides/tree', {
-      headers: {
-        'X-API-Key': apiKey,
-      },
-    });
-    if (!response.ok) {
-      throw new Error(`Failed to fetch slides tree: ${response.statusText}`);
-    }
-    const data = await response.json();
-    // 슬라이드 트리를 루트로 설정
-    slidesTree.value = data;
+    // KB 전체 트리
+    const r1 = await fetch(`${apiBase}/api/v1/knowledge-base/tree`, { headers: { 'X-API-Key': apiKey } });
+    if (!r1.ok) throw new Error('Failed to fetch KB tree');
+    kbTree.value = await r1.json();
+    // 선택 디렉토리
+    const r2 = await fetch(`${apiBase}/api/v1/slides/selection`, { headers: { 'X-API-Key': apiKey } });
+    const sel = await r2.json();
+    selectedDirs.value = Array.isArray(sel?.selected_dirs) ? sel.selected_dirs : []
   } catch (e) {
     error.value = e.message;
   } finally {
@@ -180,9 +192,21 @@ onMounted(async () => {
 
 // Open root slide when clicking the title
 const openCurriculum = () => {
-  // 슬라이드 루트에서 첫 번째 파일을 찾아서 열기
-  if (slidesTree.value && slidesTree.value.files && slidesTree.value.files.length > 0) {
-    emit('file-click', slidesTree.value.files[0].path);
+  // 표시 트리의 첫 파일 열기
+  const t = displayTree.value
+  if (t && t.files && t.files.length > 0) {
+    emit('file-click', t.files[0].path);
   }
 };
+
+// 선택된 디렉토리만 필터링해 표시
+const selectedDirs = ref([])
+const displayTree = computed(() => {
+  const t = kbTree.value || {}
+  const picked = selectedDirs.value || []
+  if(!picked.length) return t
+  const filtered = {}
+  for(const key of picked){ if(t[key]) filtered[key] = t[key] }
+  return filtered
+})
 </script>
