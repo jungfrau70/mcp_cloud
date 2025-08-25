@@ -9,6 +9,7 @@ beautifulsoup4
 httpx
 google-generativeai
 pytest
+pytest-asyncio
 python-dotenv
 boto3
 google-auth

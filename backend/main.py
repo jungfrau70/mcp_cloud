@@ -1460,11 +1460,11 @@ def _start_scheduler(app: FastAPI):
     if not HAS_APS:
         logger.warning("APScheduler not available; trending job disabled")
         return
-    scheduler = AsyncIOScheduler()
-    # Every day 09:00 local time
-    scheduler.add_job(lambda: asyncio.create_task(_generate_trending_docs()), 'cron', hour=9, minute=0)
+    scheduler = AsyncIOScheduler(timezone="Asia/Seoul")
+    # Every day 10:30 KST (Asia/Seoul)
+    scheduler.add_job(lambda: asyncio.create_task(_generate_trending_docs()), 'cron', hour=10, minute=30)
     scheduler.start()
-    logger.info("Scheduler started: daily trending docs at 09:00")
+    logger.info("Scheduler started: daily trending docs at 10:30 KST")
 
 @app.on_event('startup')
 async def _on_startup():
