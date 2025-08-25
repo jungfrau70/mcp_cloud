@@ -156,6 +156,17 @@ onMounted(() => {
       const lastTab = typeof window !== 'undefined' ? localStorage.getItem('kb_last_tab') : null
       if(lastTab && ['tree','tiptap','markdown'].includes(lastTab)) kbTab.value = lastTab
     }catch{}
+    // 기본 문서 열기: 최근 문서가 없으면 index.ml 자동 로드(없으면 생성)
+    ;(async () => {
+      try{
+        const lastKb = typeof window !== 'undefined' ? localStorage.getItem('kb_last_path') : null
+        if(lastKb){
+          await handleKbFileSelect(lastKb)
+        } else if(!activePath.value){
+          await ensureKbIndex()
+        }
+      }catch{ /* ignore */ }
+    })()
   } else {
     // Restore last opened textbook path if available, otherwise open first slide
     try {
@@ -290,6 +301,28 @@ const openKnowledgeBase = async () => {
 };
 
 async function onTreeSelect(p){ await handleKbFileSelect(p); kbTab.value = 'tiptap' }
+// KB 인덱스 문서 보장: index.ml 우선 시도, 없으면 생성
+async function ensureKbIndex(){
+  try{
+    await handleKbFileSelect('index.ml')
+    if(docStore.error){ throw new Error(docStore.error) }
+  }catch{
+    try{
+      await fetch(`${apiBase}/api/v1/knowledge-base/item`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
+        body: JSON.stringify({ path: 'index.ml', type: 'file', content: '# Knowledge Base\n\n시작 문서입니다.' })
+      })
+      await handleKbFileSelect('index.ml')
+      kbTab.value = 'tiptap'
+    }catch{
+      // 최후 수단: 안내 메시지
+      activeSlide.value = null
+      ;(docStore as any).content = '# Knowledge Base\n\n좌측에서 문서를 선택하거나 index.ml을 생성하세요.'
+      ;(docStore as any).path = 'index.ml'
+    }
+  }
+}
 
 async function switchKbTab(next){
   if(next === kbTab.value) return

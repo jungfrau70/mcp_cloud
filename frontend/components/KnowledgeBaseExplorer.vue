@@ -5,13 +5,21 @@
     </template>
     <template v-if="mode==='tree'">
       <div class="flex items-center justify-between">
-        <div></div>
+        <div class="flex items-center gap-2">
+          <label class="text-xs text-gray-600">디렉토리 선택:</label>
+          <div class="flex flex-wrap gap-2">
+            <label v-for="dir in availableRootDirs" :key="dir" class="inline-flex items-center gap-1 text-xs">
+              <input type="checkbox" :value="dir" v-model="selectedRootDirs" />
+              <span>{{ dir }}</span>
+            </label>
+          </div>
+        </div>
         <button @click="showTrending=true" class="mb-2 px-2 py-1 text-xs border rounded">관심 카테고리</button>
       </div>
       <div v-if="isInitialLoading" class="text-center py-8 text-sm text-gray-500">로딩 중…</div>
       <FileTreePanel
         v-else
-        :tree="treeData"
+        :tree="displayTree"
         :selected-file="props.selectedFile ? ('mcp_knowledge_base/' + stripBasePath(props.selectedFile)) : null"
         @file-select="handleFileSelect"
         @file-open="handleFileOpen"
@@ -27,7 +35,7 @@
         <div v-if="isInitialLoading" class="text-center py-8 text-sm text-gray-500">로딩 중…</div>
         <FileTreePanel
           v-else
-          :tree="treeData"
+          :tree="displayTree"
           :selected-file="props.selectedFile ? ('mcp_knowledge_base/' + stripBasePath(props.selectedFile)) : null"
           @file-select="handleFileSelect"
           @file-open="handleFileOpen"
@@ -93,6 +101,26 @@ const showTrending = ref(false)
 
 // State (공통)
 const treeData = ref({ 'mcp_knowledge_base': { files: [] } });
+// 루트 하위 디렉토리 선택 상태
+const selectedRootDirs = ref<string[]>([])
+const rootData = computed<any>(() => (treeData.value as any)['mcp_knowledge_base'] || {})
+const availableRootDirs = computed<string[]>(() => Object.keys(rootData.value).filter(k => k !== 'files').sort())
+// 최초 로드 시 slides가 있으면 기본 선택 유지(기존 동작과의 호환)
+watch(rootData, (v) => {
+  if(!selectedRootDirs.value.length){
+    if(v && v['slides']) selectedRootDirs.value = ['slides']
+  }
+}, { immediate: true })
+const displayTree = computed<any>(() => {
+  if(!selectedRootDirs.value.length){
+    return treeData.value
+  }
+  const filtered: any = {}
+  for(const dir of selectedRootDirs.value){
+    if(rootData.value[dir]) filtered[dir] = rootData.value[dir]
+  }
+  return { 'mcp_knowledge_base': filtered }
+})
 const selectedFile = ref(null);
 // 외부에서 활성 경로가 바뀌면 내부 선택 상태도 동기화해 트리 강조 및 펼침 유도
 watch(() => props.selectedFile, (p)=>{ selectedFile.value = p ? ('mcp_knowledge_base/' + stripBasePath(p)) : null }, { immediate: true })
