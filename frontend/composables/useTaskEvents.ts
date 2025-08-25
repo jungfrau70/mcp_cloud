@@ -1,4 +1,5 @@
 import { onBeforeUnmount } from 'vue'
+import { resolveApiBase } from '~/composables/useKbApi'
 
 type TaskEvent = {
   task_id: string
@@ -28,7 +29,7 @@ function scheduleHeartbeat(){
 }
 
 function connect(){
-  const base = (typeof window !== 'undefined' && (window as any).__NUXT__?.config?.public?.apiBaseUrl) || 'http://localhost:8000'
+  const base = resolveApiBase()
   const wsBase = base.replace(/^http/,'ws')
   socket = new WebSocket(`${wsBase}/api/v1/knowledge-base/tasks/ws`)
   socket.onopen = () => {

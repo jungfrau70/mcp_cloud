@@ -71,8 +71,9 @@ const search = ref('')
 
 const filteredTopics = computed(() => {
   const q = (search.value || '').toLowerCase()
-  if (!q) return topics.value
-  return topics.value.filter(t => (t.name || '').toLowerCase().includes(q))
+  const base = (topics.value || []).filter(t => Array.isArray(t?.messages) && t.messages.length > 0)
+  if (!q) return base
+  return base.filter(t => (t.name || '').toLowerCase().includes(q))
 })
 
 function loadTopics() {

@@ -52,9 +52,10 @@
 <script setup>
 import { ref, computed, nextTick, onMounted, watch } from 'vue'
 import { useRuntimeConfig } from '#app'
+import { resolveApiBase } from '~/composables/useKbApi'
 
 const config = useRuntimeConfig()
-const apiBase = config.public.apiBaseUrl || 'http://localhost:8000'
+const apiBase = resolveApiBase()
 const apiKey = process.env.MCP_API_KEY || 'my_mcp_eagle_tiger'
 const userKey = 'guest' // TODO: 인증 연동 시 사용자 ID로 치환
 const storageKey = `mcp_terminal_topics_${userKey}`

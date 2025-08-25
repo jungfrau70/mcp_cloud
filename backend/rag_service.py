@@ -121,6 +121,26 @@ class LocalHashEmbeddings:
     def embed_query(self, text: str) -> List[float]:
         return self._vectorize(text)
 
+    # Some vectorstore APIs expect a callable embedding function. Make this
+    # instance callable to interoperate with versions that call embedding(texts)
+    # directly instead of using embed_documents/embed_query.
+    def __call__(self, texts):
+        try:
+            # Accept both single string and list of strings
+            if isinstance(texts, str):
+                return self.embed_query(texts)
+            if isinstance(texts, list):
+                # Ensure list of strings
+                coerced = [t if isinstance(t, str) else str(t) for t in texts]
+                return self.embed_documents(coerced)
+            # Fallback: coerce to string and embed as single query
+            return self.embed_query(str(texts))
+        except Exception:
+            # Never raise during embedding fallback; return zero-vector(s)
+            if isinstance(texts, list):
+                return [[0.0] * self.dimension for _ in texts]
+            return [0.0] * self.dimension
+
 # ----------------------------------------------------------------------------
 # Utilities
 # ----------------------------------------------------------------------------
