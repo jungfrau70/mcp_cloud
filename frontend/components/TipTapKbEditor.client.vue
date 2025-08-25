@@ -56,7 +56,7 @@
       <button class="px-2 py-1 border rounded" aria-label="하이라이트" @click="toggleHighlightPalette">Mark</button>
       <div v-if="showHighlightPalette" class="flex items-center gap-1">
         <button v-for="c in highlightPreset" :key="'h'+c" class="w-5 h-5 border rounded" :style="{ backgroundColor: c }" :title="c" @click="setHighlightPreset(c)"></button>
-      </div>
+    </div>
       <button class="px-2 py-1 border rounded" aria-label="색상 초기화" @click="clearColor">NoColor</button>
       <div class="w-px h-5 bg-gray-200 mx-1"></div>
       <button class="px-2 py-1 border rounded" aria-label="실행 취소" @click="cmd('undo')">Undo</button>
@@ -177,8 +177,8 @@ onMounted(async ()=>{
   try{ (lowlight as any).register?.('markdown', markdownLang) }catch{}
 
   async function initEditor(extensions: any[]){
-    editor.value = new Editor({
-      content: html.value,
+  editor.value = new Editor({
+    content: html.value,
       extensions,
       editorProps: {
         attributes: { class: 'outline-none focus:outline-none min-h-[600px] p-4' },
@@ -209,9 +209,9 @@ onMounted(async ()=>{
           return false
         }
       },
-      onUpdate({ editor }){
-        html.value = editor.getHTML()
-        if(selfUpdating) return
+    onUpdate({ editor }){
+      html.value = editor.getHTML()
+      if(selfUpdating) return
         const len = (html.value||'').length
         ;(updateMarkdownDebounced as any).delay = len > 20000 ? 400 : 150
         updateMarkdownDebounced(html.value || '')

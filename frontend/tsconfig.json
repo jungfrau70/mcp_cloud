@@ -2,10 +2,14 @@
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "types": ["vitest/globals"],
     "paths": {
       "~/*": ["./*"],
       "@/*": ["./*"],
-      "#app": [".nuxt/types/app"]
+      "#app": [
+        "test/mocks/nuxt-app-mock.ts",
+        ".nuxt/types/app"
+      ]
     }
   }
 }
