@@ -97,6 +97,13 @@ kb_ws_manager = KbWsManager()
 
 logger = logging.getLogger(__name__)
 
+# --- Observability (OpenTelemetry) ---
+try:
+    from observability import setup_tracer, instrument_fastapi
+    setup_tracer()
+except Exception:
+    pass
+
 # Markdown to PDF conversion (optional import)
 try:
     try:
@@ -466,6 +473,19 @@ app = FastAPI(
     redoc_url="/redoc",
     openapi_tags=tags_metadata
 )
+
+# Attach OTel instrumentation to FastAPI app (safe no-op if missing)
+try:
+    instrument_fastapi(app)
+except Exception:
+    pass
+# Register Config router (optional P2)
+try:
+    from routers_config import router as config_router
+    app.include_router(config_router)
+except Exception:
+    # Safe import: if module not ready, skip without failing app
+    pass
 
 # CORS Middleware
 origins = [

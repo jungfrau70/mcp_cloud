@@ -1,6 +1,6 @@
 # =================
 # SQLAlchemy를 위한 데이터베이스 모델 정의
-from sqlalchemy import Column, Integer, String, Text, DateTime, Enum, JSON
+from sqlalchemy import Column, Integer, BigInteger, String, Text, DateTime, Enum, JSON, Boolean, LargeBinary
 from sqlalchemy.orm import declarative_base
 from datetime import datetime
 import enum
@@ -110,3 +110,35 @@ class TrendingCategory(Base):
     enabled = Column(Integer, default=1)  # 1=true, 0=false (sqlite 호환)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+# ---------------------------------------------------------------------------
+# Config management (optional P2)
+# ---------------------------------------------------------------------------
+
+class ConfigItem(Base):
+    __tablename__ = "config_items"
+
+    id = Column(BigInteger, primary_key=True, index=True)
+    scope_env = Column(Text, nullable=True)
+    scope_service = Column(Text, nullable=True)
+    scope_tenant = Column(Text, nullable=True)
+    key = Column(Text, nullable=False)
+    value_plain = Column(Text, nullable=True)
+    value_json = Column(JSON, nullable=True)
+    is_secret = Column(Boolean, nullable=False, default=False)
+    secret_ciphertext = Column(LargeBinary, nullable=True)
+    secret_key_id = Column(Text, nullable=True)
+    version = Column(Integer, nullable=False, default=1)
+    enabled = Column(Boolean, nullable=False, default=True)
+    updated_by = Column(Text, nullable=True)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class ConfigAudit(Base):
+    __tablename__ = "config_audit"
+
+    id = Column(BigInteger, primary_key=True, index=True)
+    item_id = Column(BigInteger, index=True, nullable=False)
+    action = Column(Text, nullable=False)
+    diff = Column(JSON, nullable=True)
+    actor = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)

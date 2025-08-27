@@ -39,3 +39,15 @@ markdown-pdf  # Temporarily disabled due to compatibility issues
 pytest-mock  # provide 'mocker' fixture for tests
 python-multipart
 APScheduler
+celery
+redis
+# OpenTelemetry (optional but recommended)
+opentelemetry-sdk
+opentelemetry-exporter-otlp
+opentelemetry-instrumentation-fastapi
+opentelemetry-instrumentation-asgi
+opentelemetry-instrumentation-requests
+opentelemetry-instrumentation-httpx
+opentelemetry-instrumentation-psycopg2
+opentelemetry-instrumentation-redis
+opentelemetry-instrumentation-celery

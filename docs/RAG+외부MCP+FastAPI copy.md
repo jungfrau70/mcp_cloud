@@ -1,7 +1,5 @@
-> ⚠️ 본 문서는 프로토타입 기준(LangChain 중심)입니다. 프로덕션 전환 시에는 [RAG+외부MCP+FastAPI.md](mdc:docs/RAG+외부MCP+FastAPI.md)를 우선 참조하세요.
-
 좋습니다 👍
-말씀하신 **외부 MCP 서버(K8s, GitHub)**와 내부 MCP 서버(LangChain + RAG + Terraform) 간 연동 구조를 상세히 풀어드릴게요.
+말씀하신 **외부 MCP 서버(K8s, GitHub)**와 내부 MCP 서버(FastAPI + RAG + Neo4j + Postgres) 간 연동 구조를 상세히 풀어드릴게요.
 
 ---
 
@@ -10,7 +8,7 @@
 ## 1. 전체 아키텍처 개요
 
 ```
-[사용자] 
+[사용자]
    ↓
 [AI Agent (LLM)]
    - Persona 주입 (DevOps / Security / SRE)
@@ -18,7 +16,9 @@
    - Tool 선택 (Terraform / K8s / GitHub)
    ↓
 [Internal MCP]
+   - FastAPI (오케스트레이터)
    - RAG Layer (LlamaIndex + Neo4j)
+   - Postgres (이력/상태 저장)
    - Terraform Generator + Validator
    ↓
 ┌───────────────────────────────┐
@@ -43,11 +43,12 @@
 
    > "AWS EKS 클러스터에 Nginx 배포하고 ArgoCD로 관리해줘."
 
-2. **Internal MCP 처리**
+2. **Internal MCP 처리** (FastAPI 기반)
 
-   * LLM → Terraform 코드로 EKS/GKE/AKS 클러스터 정의
-   * RAG(Neo4j) → 기존 네트워크/보안 규칙 탐색
+   * FastAPI → Terraform 코드로 EKS/GKE/AKS 클러스터 정의
+   * Neo4j → 기존 네트워크/보안 규칙 탐색
    * 보안 Persona → PodSecurityPolicy, RBAC 검증
+   * Postgres → 실행 이력 기록
 
 3. **외부 MCP (K8s 관련)**
 
@@ -58,7 +59,7 @@
 4. **실행 결과**
 
    * 클러스터 내부 배포 상태를 Neo4j 그래프에 업데이트
-   * LLM이 “배포 성공, Pod 3개 Running 중” 같은 피드백 제공
+   * FastAPI가 “배포 성공, Pod 3개 Running 중” 같은 피드백 제공
 
 ---
 
@@ -70,11 +71,12 @@
 
    > "Terraform 코드 리뷰 후 GitHub Actions로 배포 실행해줘."
 
-2. **Internal MCP 처리**
+2. **Internal MCP 처리** (FastAPI 기반)
 
    * Terraform 코드 생성 (RAG + Neo4j 기반)
    * Policy Validator (OPA/Regula) 실행
    * Security Persona → 코드 리뷰 가이드라인 적용
+   * Postgres → 이력 저장
 
 3. **외부 MCP (GitHub)**
 
@@ -84,8 +86,9 @@
 
 4. **실행 결과**
 
-   * GitHub Actions 로그를 Internal MCP로 가져와 요약
+   * GitHub Actions 로그를 Internal MCP(FastAPI)로 가져와 요약
    * Neo4j에 배포 상태 업데이트
+   * Postgres에 최종 성공/실패 기록
 
 ---
 
@@ -106,7 +109,7 @@
   * Security Persona → Policy 검증 후 GitHub PR 리뷰 요청
   * SRE Persona → 실행 로그/모니터링 데이터 요약
 
-* **규정(Guardrail)**을 LangChain Chain/Tool 레벨에서 주입
+* **규정(Guardrail)**을 FastAPI 내 모듈/서비스 레벨에서 주입
 
   * 예: “퍼블릭 S3 금지” → Terraform Validator 단계에서 차단
   * 예: “Root 권한 Pod 금지” → K8s MCP 호출 전 검사
@@ -115,18 +118,14 @@
 
 ## 6. 장점
 
-1. **내부 MCP = 두뇌 (LLM + RAG + 정책 검증)**
+1. **내부 MCP = 두뇌 (FastAPI + Neo4j + Postgres + 정책 검증)**
 2. **외부 MCP = 손발 (실제 배포/운영 수행)**
 3. **K8s + GitHub 결합**으로 IaC + GitOps + CI/CD를 완성
 4. **Neo4j 그래프**로 멀티클라우드 + K8s + GitOps 상태를 통합 관리
 
 ---
 
-✅ 즉, 외부 MCP(K8s, GitHub)는 **실행 주체**이고, 내부 MCP는 **지능형 지휘본부**라고 보시면 됩니다.
-
----
-
-**시퀀스 다이어그램**
+✅ 즉, 외부 MCP(K8s, GitHub)는 **실행 주체**이고, 내부 MCP는 **지능형 지휘본부**입니다. LangChain은 프로토타입 검증용으로만 사용하며, 프로덕션은 **FastAPI 중심 구조**가 권장됩니다.
 
 ---
 
@@ -137,7 +136,7 @@ sequenceDiagram
     autonumber
     participant User as 사용자
     participant LLM as AI Agent (LLM)
-    participant IMCP as Internal MCP (RAG+Neo4j+Policy)
+    participant IMCP as Internal MCP (FastAPI+Neo4j+Postgres)
     participant KMCP as K8s MCP (API/ArgoCD)
     participant GMCP as GitHub MCP (API/Actions)
     participant Infra as Multi-Cloud Infra & K8s Cluster
@@ -162,11 +161,11 @@ sequenceDiagram
 # 🔹 흐름 요약
 
 1. **사용자 요청** → LLM (Persona & Guardrail 적용)
-2. **Internal MCP** → RAG + Neo4j에서 맥락 검색 후 Terraform 코드 생성
+2. **Internal MCP (FastAPI)** → RAG + Neo4j에서 맥락 검색 후 Terraform 코드 생성
 3. **GitHub MCP** → 코드 PR & Actions 실행
 4. **K8s MCP** → GitOps 방식(ArgoCD/Flux)으로 클러스터에 배포
 5. **Infra** → 실제 멀티클라우드 + K8s 실행
-6. **피드백 루프** → Neo4j에 기록 + 요약 리포트 사용자 전달
+6. **피드백 루프** → Neo4j에 기록 + Postgres 로그 저장 + 사용자 보고
 
 ---
 
@@ -199,7 +198,7 @@ docker compose down
 ```
 
 ### 서비스 포트
-- Backend: http://localhost:8000
+- Backend(FastAPI): http://localhost:8000
 - Frontend: http://localhost:3000
 - Postgres: localhost:5432
 - Redis: localhost:6379
@@ -250,6 +249,4 @@ CREATE TABLE config_audit (
 - docker-compose만으로 풀스택 기동 가능
 - Neo4j/DB/Redis/Backend/Frontend 정상 동작
 - 기본 배포 플로우 시연(스텁 포함), 문서/가이드 최신화
-
-
 

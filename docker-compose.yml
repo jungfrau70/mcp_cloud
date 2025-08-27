@@ -36,6 +36,19 @@ services:
       timeout: 5s
       retries: 5
   
+  # OpenTelemetry Collector (receives OTLP gRPC/HTTP)
+  otel-collector:
+    image: otel/opentelemetry-collector:0.104.0
+    container_name: otel_collector
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol/config.yaml:ro
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+    networks:
+      - mcp_cloud_network
+
   # Redis for caching
   mcp_redis:
     image: redis:7-alpine
@@ -56,6 +69,7 @@ services:
       - "8000:8000"
     environment:
       - REDIS_URL=redis://mcp_redis:6379
+      - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
       - GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-sa-key.json
       - CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=/app/gcp-sa-key.json
       # HF offline-friendly defaults
@@ -85,6 +99,56 @@ services:
       mcp_neo4j:
         condition: service_healthy
 
+    networks:
+      - mcp_cloud_network
+  
+  # Celery worker (plan/apply/test)
+  mcp_celery:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.app
+    container_name: mcp_celery
+    env_file: ./backend/env/.env
+    environment:
+      - CELERY_BROKER_URL=redis://mcp_redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://mcp_redis:6379/0
+      - OTEL_SERVICE_NAME=mcp-backend
+      - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
+    volumes:
+      - ./backend:/app
+      - terraform_modules_data:/app/terraform_modules
+    depends_on:
+      mcp_redis:
+        condition: service_started
+      otel-collector:
+        condition: service_started
+    command: ["sh", "-lc", "python -m celery -A worker.celery_app worker -Q plan,apply,test -c 4"]
+    healthcheck:
+      disable: true
+    networks:
+      - mcp_cloud_network
+
+  # Optional: Celery beat (enable if scheduled tasks are defined)
+  mcp_celery_beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.app
+    container_name: mcp_celery_beat
+    env_file: ./backend/env/.env
+    environment:
+      - CELERY_BROKER_URL=redis://mcp_redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://mcp_redis:6379/0
+      - OTEL_SERVICE_NAME=mcp-backend
+      - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
+    volumes:
+      - ./backend:/app
+    depends_on:
+      mcp_redis:
+        condition: service_started
+    command: ["sh", "-lc", "python -m celery -A worker.celery_app beat -l info"]
+    healthcheck:
+      disable: true
+    profiles: ["scheduler"]
     networks:
       - mcp_cloud_network
     

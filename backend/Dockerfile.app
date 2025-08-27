@@ -6,6 +6,10 @@ WORKDIR /app
 # Copy application code
 COPY . . 
 
+# Ensure Python dependencies available in runtime image (defensive against stale base)
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
 # Health check (fix malformed URL + allow longer startup for embeddings/RAG init)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
     CMD curl -fsS http://localhost:8000/health || exit 1
