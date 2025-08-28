@@ -68,20 +68,10 @@ const titleText = computed(() => {
   return props.path ? props.path.split('/').pop().replace(/_/g, ' ').replace(/\.md$/i, '') : '';
 });
 
-// Render content without the first heading line
+// Render content (preserve first heading so titles are visible)
 const renderedContent = computed(() => {
   if (!props.content) return '';
-  const lines = props.content.split(/\r?\n/);
-  let removed = false;
-  const rest = [];
-  for (const line of lines) {
-    if (!removed && /^\s*#{1,6}\s+.+$/.test(line)) {
-      removed = true;
-      continue;
-    }
-    rest.push(line);
-  }
-  let body = removed ? rest.join('\n') : props.content;
+  let body = props.content;
   // Preprocess: auto-tag mermaid code fences without language
   try{
     body = body.replace(/```(?!\w)[ \t]*\n([\s\S]*?)```/g, (m, code) => {
@@ -170,6 +160,87 @@ const setupLinkIntercepts = async () => {
         emit('navigate-tool', { tool });
       });
     });
+    // Auto-linkify plain URLs and .md references in text nodes
+    try{
+      const basePathFull = props && props.path ? String(props.path) : ''
+      const baseRel = basePathFull.replace(/^mdc:/,'').replace(/^\//,'').replace(/^mcp_knowledge_base\//,'')
+      const baseDirParts = baseRel.split('/').slice(0,-1)
+      const urlRegex = /(https?:\/\/[^\s)\]\}]+)(?=[\s)\]\}.]|$)/g
+      const mdRegex = /(?<![\w/.-])([\w\-./]+\.md)(?![\w/.-])/g
+      const walker = document.createTreeWalker(contentContainer.value, NodeFilter.SHOW_TEXT, {
+        acceptNode: (node) => {
+          const text = node && node.nodeValue ? String(node.nodeValue) : ''
+          if(!text) return NodeFilter.FILTER_REJECT
+          const parent = (node.parentElement || node.parentNode)
+          const tag = parent && parent.tagName ? String(parent.tagName).toLowerCase() : ''
+          if(['a','script','style','code','pre'].includes(tag)) return NodeFilter.FILTER_REJECT
+          if(!(urlRegex.test(text) || mdRegex.test(text))) return NodeFilter.FILTER_REJECT
+          return NodeFilter.FILTER_ACCEPT
+        }
+      })
+      const resolveRelative = (rel) => {
+        const parts = []
+        for(const p of baseDirParts){ if(p && p!=='.') parts.push(p) }
+        for(const seg of String(rel).split('/')){
+          if(!seg || seg==='.') continue
+          if(seg==='..'){ if(parts.length) parts.pop(); continue }
+          parts.push(seg)
+        }
+        return parts.join('/')
+      }
+      const nodesToProcess = []
+      while(walker.nextNode()) nodesToProcess.push(walker.currentNode)
+      for(const textNode of nodesToProcess){
+        const text = String(textNode.nodeValue||'')
+        if(!(urlRegex.test(text) || mdRegex.test(text))) continue
+        const frag = document.createDocumentFragment()
+        let idx = 0
+        const pushText = (s) => { if(s) frag.appendChild(document.createTextNode(s)) }
+        const matches = []
+        text.replace(urlRegex, (m, url, off) => { matches.push({ off, len: m.length, type:'url', val:url }); return m })
+        text.replace(mdRegex, (m, md, off) => { matches.push({ off, len: m.length, type:'md', val:md }); return m })
+        matches.sort((a,b)=> a.off - b.off)
+        const merged = []
+        for(const cur of matches){ if(!merged.length || cur.off >= merged[merged.length-1].off + merged[merged.length-1].len){ merged.push(cur) } }
+        for(const m of merged){
+          pushText(text.slice(idx, m.off))
+          if(m.type==='url'){
+            const a = document.createElement('a')
+            a.href = m.val; a.textContent = m.val
+            a.setAttribute('target','_blank'); a.setAttribute('rel','noopener noreferrer')
+            frag.appendChild(a)
+          }else{
+            const rawMd = String(m.val)
+            let resolved
+            if(rawMd.includes('/')){
+              const first = rawMd.split('/')[0]
+              if(['cloud_basic','textbook','slides','mcp_knowledge_base'].includes(first)) resolved = rawMd.replace(/^mcp_knowledge_base\//,'')
+              else resolved = resolveRelative(rawMd)
+            }else{
+              resolved = resolveRelative(rawMd)
+            }
+            const a = document.createElement('a')
+            a.href = 'mcp_knowledge_base/' + resolved
+            a.textContent = m.val
+            try{ a.classList.add('kb-link') }catch{}
+            frag.appendChild(a)
+          }
+          idx = m.off + m.len
+        }
+        pushText(text.slice(idx))
+        if(textNode.parentNode){ textNode.parentNode.replaceChild(frag, textNode) }
+      }
+    }catch{}
+    // Responsive tables: wrap tables with a horizontal scroll container
+    try{
+      const tables = contentContainer.value.querySelectorAll('table')
+      tables.forEach((tbl) => {
+        if((tbl.parentElement && tbl.parentElement.classList.contains('table-scroll'))) return
+        const wrapper = document.createElement('div')
+        wrapper.className = 'table-scroll'
+        if(tbl.parentNode){ tbl.parentNode.insertBefore(wrapper, tbl); wrapper.appendChild(tbl) }
+      })
+    }catch{}
     // Intercept KB links (mdc:mcp_knowledge_base/.. or sanitized to mcp_knowledge_base/...)
     contentContainer.value.querySelectorAll('a[href^="mdc:mcp_knowledge_base/"], a[href^="mcp_knowledge_base/"], a[href^="/mcp_knowledge_base/"]').forEach(link => {
       try{ link.classList.add('kb-link') }catch{}
@@ -219,7 +290,29 @@ const setupLinkIntercepts = async () => {
           const noScheme = href.replace(/^mdc:/,'').replace(/^\//,'')
           const rel = noScheme.replace(/^mcp_knowledge_base\//,'')
           const decoded = decodeURIComponent(rel)
-          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'textbook' } }))
+          const originPath = props && props.path ? String(props.path) : ''
+          const originRel = originPath.replace(/^mdc:/,'').replace(/^\//,'').replace(/^mcp_knowledge_base\//,'')
+          const originDir = originRel.split('/').slice(0,-1).join('/')
+          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'textbook', originDir } }))
+          return
+        }
+        // Handle relative links like './a.md', '../b.md', 'c.md'
+        const isHash = /^#/.test(href)
+        const hasScheme = /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(href)
+        const isAbsolutePath = /^\//.test(href)
+        if(!isHash && !hasScheme && !isAbsolutePath && href){
+          ev.preventDefault()
+          const basePath = props && props.path ? String(props.path) : ''
+          const baseParts = basePath.split('/').slice(0,-1)
+          const hrefParts = href.split('/')
+          const stack = []
+          for(const part of baseParts){ if(part && part!=='.') stack.push(part) }
+          for(const part of hrefParts){ if(!part || part==='.') continue; if(part==='..'){ if(stack.length) stack.pop(); continue } stack.push(part) }
+          const resolved = stack.join('/')
+          const decoded = decodeURIComponent(resolved)
+          const originRel = basePath.replace(/^mdc:/,'').replace(/^\//,'').replace(/^mcp_knowledge_base\//,'')
+          const originDir = originRel.split('/').slice(0,-1).join('/')
+          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'textbook', originDir } }))
           return
         }
         if(/^https?:\/\//i.test(href)){

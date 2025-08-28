@@ -62,3 +62,6 @@
 - CLI: `cloud_basic/automation/cli/aws/ch4_network.sh`, `cloud_basic/automation/cli/azure/ch4_network.sh`, `cloud_basic/automation/cli/gcp/ch4_network.sh`
 - Terraform: `cloud_basic/automation/terraform/aws/ch4_network`, `cloud_basic/automation/terraform/azure/ch4_network`, `cloud_basic/automation/terraform/gcp/ch4_network`
 - 참고: `cloud_basic/자동화_사용안내.md`
+
+---
+◀ 이전: [Chapter3_Storage.md](Chapter3_Storage.md)

@@ -76,3 +76,5 @@ gsutil iam ch allUsers:objectViewer gs://lab-static-<uid>
 - Terraform: `cloud_basic/automation/terraform/aws/ch3_storage`, `cloud_basic/automation/terraform/azure/ch3_storage`, `cloud_basic/automation/terraform/gcp/ch3_storage`
 - 참고: `cloud_basic/자동화_사용안내.md`
 
+---
+◀ 이전: [Chapter2_VM.md](Chapter2_VM.md) | 다음 ▶: [Chapter4_Network_DNS.md](Chapter4_Network_DNS.md)

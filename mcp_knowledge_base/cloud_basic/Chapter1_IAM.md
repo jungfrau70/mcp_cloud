@@ -125,3 +125,5 @@ gcloud projects add-iam-policy-binding <PROJECT_ID> \
 - IT관리자 계정으로 청구/예산 화면 접근이 차단되는가?
 - 태깅 미준수 리소스가 비용 리포트에서 탐지되는가?
 
+---
+◀ 이전: [실습_시나리오.md](실습_시나리오.md) | 다음 ▶: [Chapter2_VM.md](Chapter2_VM.md)

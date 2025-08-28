@@ -28,5 +28,20 @@
     "name": "k8s",
     "query": "k8s 오늘 기술 트렌드",
     "enabled": true
+  },
+  {
+    "name": "aws",
+    "query": "aws 오늘 기술 트렌드",
+    "enabled": true
+  },
+  {
+    "name": "gcp",
+    "query": "Google GCP Platform 오늘 기술 트렌드",
+    "enabled": true
+  },
+  {
+    "name": "Azure",
+    "query": "Azure 오늘 기술 트렌드",
+    "enabled": true
   }
 ]

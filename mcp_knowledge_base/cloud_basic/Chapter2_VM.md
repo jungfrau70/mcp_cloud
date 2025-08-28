@@ -81,3 +81,5 @@ gcloud compute autoscalers create web-as --target-instance-group=web-mig \
 - Terraform: `cloud_basic/automation/terraform/aws/ch2_vm`, `cloud_basic/automation/terraform/azure/ch2_vm`, `cloud_basic/automation/terraform/gcp/ch2_vm`
 - 참고: `cloud_basic/자동화_사용안내.md`
 
+---
+◀ 이전: [Chapter1_IAM.md](Chapter1_IAM.md) | 다음 ▶: [Chapter3_Storage.md](Chapter3_Storage.md)
