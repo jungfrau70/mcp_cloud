@@ -56,6 +56,19 @@
 
 .prose ul {
   @apply mb-4 pl-6;
+  list-style: disc outside;
+}
+
+.prose ol {
+  @apply mb-4 pl-6;
+  list-style: decimal outside;
+}
+
+.prose ul ul,
+.prose ul ol,
+.prose ol ul,
+.prose ol ol {
+  @apply mb-2 pl-6;
 }
 
 .prose li {
@@ -70,6 +83,22 @@
   @apply bg-gray-100 p-4 rounded-lg overflow-x-auto mb-4;
 }
 
+/* Easy copy button for code blocks */
+.prose pre { position: relative; }
+.kb-copy-btn {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 11px;
+  padding: 2px 8px;
+  background: #ffffffcc;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  color: #111827;
+  cursor: pointer;
+}
+.kb-copy-btn:hover { background: #fff; }
+
 .prose blockquote {
   @apply border-l-4 border-primary-500 pl-4 italic text-gray-700 mb-4;
 }
@@ -77,6 +106,15 @@
 /* 링크 가시성 개선: 본문(.prose) 내 앵커에 아이콘과 스타일 표시 */
 .prose a {
   @apply text-blue-600 underline underline-offset-2;
+}
+
+/* 내부 문서 링크 가독성 개선 */
+.prose a.kb-link {
+  @apply text-indigo-600 font-medium underline underline-offset-4;
+}
+.prose a.kb-link::after {
+  content: ' (문서 열기)';
+  @apply text-indigo-400 text-xs;
 }
 
 .prose a::before {

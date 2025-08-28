@@ -136,6 +136,30 @@ const setupLinkIntercepts = async () => {
           await embedVega(mount, spec, { actions:false })
         }catch{}
       })
+      // Easy Copy buttons on code blocks
+      const codeBlocks = contentContainer.value.querySelectorAll('pre > code')
+      codeBlocks.forEach((codeEl) => {
+        const pre = codeEl.closest('pre')
+        if(!pre || pre.dataset.kbCopyBound === '1') return
+        pre.style.position = pre.style.position || 'relative'
+        const btn = document.createElement('button')
+        btn.type = 'button'
+        btn.className = 'kb-copy-btn'
+        btn.textContent = 'Copy'
+        btn.title = 'Copy code to clipboard'
+        btn.addEventListener('click', async (e) => {
+          e.preventDefault(); e.stopPropagation()
+          try{
+            const text = (codeEl.textContent||'')
+            await navigator.clipboard.writeText(text)
+            const old = btn.textContent
+            btn.textContent = 'Copied'
+            setTimeout(()=>{ btn.textContent = old || 'Copy' }, 1200)
+          }catch{}
+        })
+        pre.appendChild(btn)
+        pre.dataset.kbCopyBound = '1'
+      })
     }catch{}
     // Open tool links (mcp://)
     contentContainer.value.querySelectorAll('a[href^="mcp://"]').forEach(link => {
@@ -148,6 +172,7 @@ const setupLinkIntercepts = async () => {
     });
     // Intercept KB links (mdc:mcp_knowledge_base/.. or sanitized to mcp_knowledge_base/...)
     contentContainer.value.querySelectorAll('a[href^="mdc:mcp_knowledge_base/"], a[href^="mcp_knowledge_base/"], a[href^="/mcp_knowledge_base/"]').forEach(link => {
+      try{ link.classList.add('kb-link') }catch{}
       link.addEventListener('click', (event) => {
         event.preventDefault()
         try{
