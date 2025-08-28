@@ -74,6 +74,7 @@
               <button role="tab" :aria-selected="kbTab==='tiptap'" @click="switchKbTab('tiptap')" :class="kbTab==='tiptap' ? 'px-3 py-1 rounded bg-indigo-600 text-white' : 'px-3 py-1 rounded bg-gray-200'">WYSIWYG</button>
               <button role="tab" :aria-selected="kbTab==='markdown'" @click="switchKbTab('markdown')" :class="kbTab==='markdown' ? 'px-3 py-1 rounded bg-indigo-600 text-white' : 'px-3 py-1 rounded bg-gray-200'">Markdown</button>
               <div class="flex-1"></div>
+              <button @click="goKbBack" :disabled="!kbHistory.length" class="px-2 py-1 rounded bg-gray-200 disabled:opacity-50">뒤로</button>
               <span class="text-xs text-gray-500" v-if="activePath">{{ activePath }}</span>
             </div>
             <div class="flex-1 overflow-hidden">
@@ -130,6 +131,7 @@ const activeContent = computed(()=> docStore.content)
 const activePath = computed(()=> docStore.path)
 const lastVersion = computed(()=> docStore.version)
 const kbTab = ref('tree')
+const kbHistory = ref([])
 const editorKey = computed(()=> `${kbTab.value}`)
 // Avoid re-mounting editors on each keystroke: do not include content length in key
 // 안정적인 레이아웃 유지: 저장 시 버전 갱신으로 에디터가 재마운트되지 않도록 key에서 버전을 제외
@@ -223,7 +225,16 @@ onMounted(async () => {
   if (typeof window !== 'undefined'){
     window.addEventListener('kb:open', (e) => {
       const p = e?.detail?.path
-      if(p){ handleKbFileSelect(p) }
+      if(!p) return
+      // Open in-place depending on current container
+      if(isKnowledgeBase.value){
+        handleKbFileSelect(p)
+      } else if(route.path.startsWith('/textbook')){
+        handleFileClick(p)
+      } else {
+        // default to curriculum container
+        try{ router.push({ path: '/textbook', query: { path: p, force: '1' } }) }catch{ handleFileClick(p) }
+      }
     })
     window.addEventListener('kb:mode', (e) => {
       if(e?.detail?.to === 'view'){
@@ -331,8 +342,15 @@ const handleFileClick = async (path) => {
 
 const handleKbFileSelect = async (path) => {
   activeSlide.value = null
+  if(activePath.value && activePath.value !== path){ kbHistory.value.push(activePath.value) }
   await docStore.open(path)
   if(docStore.error) toast.push('error','로드 실패: ' + docStore.error)
+}
+
+function goKbBack(){
+  const prev = kbHistory.value.pop()
+  if(!prev) return
+  handleKbFileSelect(prev)
 }
 
 const handleKbSave = async ({ path, content, message, force }) => {

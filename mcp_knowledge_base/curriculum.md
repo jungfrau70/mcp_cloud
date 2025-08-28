@@ -10,10 +10,10 @@
 ## Day 0 · 사전준비 (계정 등록/보안/예산)
 
 - 참고 문서
-  - 🔗 [사전준비_1_공통사항.md](mdc:mcp_knowledge_base/cloud_basic/prerequisite/사전준비_1_공통사항.md)
-  - 🔗 [사전준비_2_계정등록.md](mdc:mcp_knowledge_base/cloud_basic/prerequisite/사전준비_2_계정등록.md)
-  - 🔗 [사전준비_3_역할분담.md](mdc:mcp_knowledge_base/cloud_basic/prerequisite/사전준비_3_역할분담.md)
-  - 🔗 [사전준비_4_자동화_사용안내.md](mdc:mcp_knowledge_base/cloud_basic/prerequisite/사전준비_4_자동화_사용안내.md)
+  - 🔗 [2_공통사항.md](mdc:mcp_knowledge_base/cloud_basic/prerequisite/2_공통사항.md)
+  - 🔗 [1_계정등록.md](mdc:mcp_knowledge_base/cloud_basic/prerequisite/1_계정등록.md)
+  - 🔗 [3_역할분담.md](mdc:mcp_knowledge_base/cloud_basic/prerequisite/3_역할분담.md)
+  - 🔗 [4_생산성툴.md](mdc:mcp_knowledge_base/cloud_basic/prerequisite/4_생산성툴.md)
 - 핵심 목표
   - AWS/GCP/Azure 계정(또는 프로젝트/구독) 준비, MFA 등록, 역할 분리(비용관리자 vs IT 관리자)
   - 예산 알림 설정(AWS/GCP/Azure) 및 CLI 초기화(aws/gcloud/az)

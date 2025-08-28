@@ -90,10 +90,13 @@ const renderedContent = computed(() => {
         ? '```mermaid\n' + code + '```'
         : m
     })
+    // Normalize KB links: convert mdc:mcp_knowledge_base/... → /mcp_knowledge_base/...
+    body = body.replace(/\]\(mdc:mcp_knowledge_base\//g, '](\/mcp_knowledge_base/')
   }catch{ /* ignore */ }
   // KB Markdown 탭과 동일한 marked 옵션
   marked.setOptions({ breaks: true, gfm: true, headerIds: true, mangle: false })
-  return DOMPurify.sanitize(marked.parse(body));
+  // Allow custom KB scheme 'mdc:' so hrefs are preserved for interception
+  return DOMPurify.sanitize(marked.parse(body), { ADD_URI_SAFE: ['mdc'] });
 });
 
 let mermaidInitialized = false
@@ -134,6 +137,7 @@ const setupLinkIntercepts = async () => {
         }catch{}
       })
     }catch{}
+    // Open tool links (mcp://)
     contentContainer.value.querySelectorAll('a[href^="mcp://"]').forEach(link => {
       link.addEventListener('click', (event) => {
         event.preventDefault();
@@ -142,6 +146,48 @@ const setupLinkIntercepts = async () => {
         emit('navigate-tool', { tool });
       });
     });
+    // Intercept KB links (mdc:mcp_knowledge_base/.. or sanitized to mcp_knowledge_base/...)
+    contentContainer.value.querySelectorAll('a[href^="mdc:mcp_knowledge_base/"], a[href^="mcp_knowledge_base/"], a[href^="/mcp_knowledge_base/"]').forEach(link => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault()
+        try{
+          const raw = link.getAttribute('href') || ''
+          // normalize: remove mdc: scheme if present, and any leading '/'
+          const noScheme = raw.replace(/^mdc:/,'').replace(/^\//,'')
+          // strip leading root 'mcp_knowledge_base/'
+          const rel = noScheme.replace(/^mcp_knowledge_base\//,'')
+          const decoded = decodeURIComponent(rel)
+          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded } }))
+        }catch{}
+      })
+    })
+    // External http(s) links → open in new tab
+    contentContainer.value.querySelectorAll('a[href^="http://"], a[href^="https://"]').forEach(link => {
+      try{
+        link.setAttribute('target','_blank')
+        link.setAttribute('rel','noopener noreferrer')
+      }catch{}
+    })
+    // Delegate click: robust fallback to catch all anchors
+    const onClick = (ev) => {
+      try{
+        const a = ev.target && (ev.target.closest ? ev.target.closest('a') : null)
+        if(!a) return
+        const href = a.getAttribute('href') || ''
+        if(/^mdc:/.test(href) || /^mcp_knowledge_base\//.test(href) || /^\/mcp_knowledge_base\//.test(href)){
+          ev.preventDefault()
+          const noScheme = href.replace(/^mdc:/,'').replace(/^\//,'')
+          const rel = noScheme.replace(/^mcp_knowledge_base\//,'')
+          const decoded = decodeURIComponent(rel)
+          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded } }))
+          return
+        }
+        if(/^https?:\/\//i.test(href)){
+          a.setAttribute('target','_blank'); a.setAttribute('rel','noopener noreferrer')
+        }
+      }catch{}
+    }
+    contentContainer.value.addEventListener('click', onClick)
   }
 };
 
@@ -198,6 +244,15 @@ const closeSlides = () => {
 <style>
 .fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
+
+/* 링크 가시성 및 상호작용 개선 */
+.prose a {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.prose a:hover {
+  text-decoration: underline;
+}
 
 /* 스크롤바 스타일링 */
 .overflow-y-auto::-webkit-scrollbar {
