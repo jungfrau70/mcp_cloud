@@ -225,16 +225,18 @@ onMounted(async () => {
   if (typeof window !== 'undefined'){
     window.addEventListener('kb:open', (e) => {
       const p = e?.detail?.path
+      const container = e?.detail?.container
       if(!p) return
-      // Open in-place depending on current container
-      if(isKnowledgeBase.value){
-        handleKbFileSelect(p)
-      } else if(route.path.startsWith('/textbook')){
-        handleFileClick(p)
-      } else {
-        // default to curriculum container
-        try{ router.push({ path: '/textbook', query: { path: p, force: '1' } }) }catch{ handleFileClick(p) }
+      // If caller specifies container, respect it
+      if(container === 'textbook'){
+        if(route.path.startsWith('/textbook')) handleFileClick(p)
+        else try{ router.push({ path: '/textbook', query: { path: p, force: '1' } }) }catch{ handleFileClick(p) }
+        return
       }
+      // Default: open based on current route
+      if(isKnowledgeBase.value){ handleKbFileSelect(p) }
+      else if(route.path.startsWith('/textbook')){ handleFileClick(p) }
+      else { try{ router.push({ path: '/textbook', query: { path: p, force: '1' } }) }catch{ handleFileClick(p) } }
     })
     window.addEventListener('kb:mode', (e) => {
       if(e?.detail?.to === 'view'){

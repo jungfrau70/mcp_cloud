@@ -157,13 +157,21 @@ const setupLinkIntercepts = async () => {
           // strip leading root 'mcp_knowledge_base/'
           const rel = noScheme.replace(/^mcp_knowledge_base\//,'')
           const decoded = decodeURIComponent(rel)
-          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded } }))
+          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'textbook' } }))
         }catch{}
       })
     })
-    // External http(s) links → open in new tab
+    // External http(s) links → open in new tab (avoid internal KB absolute links)
     contentContainer.value.querySelectorAll('a[href^="http://"], a[href^="https://"]').forEach(link => {
       try{
+        const href = link.getAttribute('href') || ''
+        try{
+          const u = new URL(href, window.location.origin)
+          if(u.origin === window.location.origin && /^\/mcp_knowledge_base\//.test(u.pathname)){
+            // internal absolute KB link: let delegated handler process
+            return
+          }
+        }catch{}
         link.setAttribute('target','_blank')
         link.setAttribute('rel','noopener noreferrer')
       }catch{}
@@ -174,12 +182,19 @@ const setupLinkIntercepts = async () => {
         const a = ev.target && (ev.target.closest ? ev.target.closest('a') : null)
         if(!a) return
         const href = a.getAttribute('href') || ''
-        if(/^mdc:/.test(href) || /^mcp_knowledge_base\//.test(href) || /^\/mcp_knowledge_base\//.test(href)){
+        let isKb = /^mdc:/.test(href) || /^mcp_knowledge_base\//.test(href) || /^\/mcp_knowledge_base\//.test(href)
+        if(!isKb && /^https?:\/\//i.test(href)){
+          try{
+            const u = new URL(href, window.location.origin)
+            if(u.origin === window.location.origin && /^\/mcp_knowledge_base\//.test(u.pathname)) isKb = true
+          }catch{}
+        }
+        if(isKb){
           ev.preventDefault()
           const noScheme = href.replace(/^mdc:/,'').replace(/^\//,'')
           const rel = noScheme.replace(/^mcp_knowledge_base\//,'')
           const decoded = decodeURIComponent(rel)
-          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded } }))
+          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'textbook' } }))
           return
         }
         if(/^https?:\/\//i.test(href)){
