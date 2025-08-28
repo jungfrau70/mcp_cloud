@@ -1,0 +1,43 @@
+name: IaC CI
+on:
+  pull_request:
+    paths:
+      - 'cloud_basic/automation/terraform/**'
+      - 'cloud_basic/**/*.md'
+      - 'cloud_basic/automation/validate_md_links.py'
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: fmt & validate
+        working-directory: cloud_basic/automation/terraform/aws/ch2_vm
+        run: |
+          terraform fmt -check
+          terraform init -input=false
+          terraform validate
+      - name: tfsec scan
+        uses: aquasecurity/tfsec-action@v1.0.3
+        with:
+          working_directory: cloud_basic/automation/terraform
+      - name: checkov scan
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: cloud_basic/automation/terraform
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Validate Markdown Links
+        run: |
+          python3 cloud_basic/automation/validate_md_links.py
+      - name: Lint Markdown
+        uses: avto-dev/markdown-lint@v1
+        with:
+          config: cloud_basic/.markdownlint.json
+          args: cloud_basic/**/*.md
+

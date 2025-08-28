@@ -1,0 +1,5 @@
+skip_checks:
+  - CKV_AWS_18  # S3 logging optional in lab
+  - CKV2_AWS_65 # IAM wildcard (controlled in lab)
+soft_fail: true
+

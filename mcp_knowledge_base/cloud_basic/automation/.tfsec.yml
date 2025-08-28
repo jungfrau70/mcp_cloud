@@ -1,0 +1,8 @@
+severity: MEDIUM
+exclude:
+  - aws-iam-no-policy-wildcards
+  - aws-s3-enable-bucket-logging
+  - azure-storage-queue-encryption-enabled
+  - google-compute-no-external-ip
+soft_fail: true
+
