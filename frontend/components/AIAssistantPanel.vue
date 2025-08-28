@@ -2,7 +2,7 @@
   <div class="h-full flex flex-col bg-white">
 
     <!-- 메시지/출력 영역 -->
-    <div class="flex-grow overflow-y-auto p-4 space-y-2">
+    <div class="flex-grow overflow-y-auto p-4 space-y-2" ref="messagesEl">
       <template v-if="activeMessages.length">
         <div v-for="(m, i) in activeMessages" :key="i" :class="m.role === 'user' ? 'text-right' : 'text-left'">
           <div :class="m.role === 'user' ? 'inline-block bg-blue-100 rounded px-3 py-2' : 'inline-block bg-gray-100 rounded px-3 py-2'">
@@ -62,6 +62,7 @@ const storageKey = `mcp_terminal_topics_${userKey}`
 
 const input = ref('')
 const inputEl = ref(null)
+const messagesEl = ref(null)
 const loading = ref(false)
 const newTopicName = ref('')
 
@@ -150,10 +151,10 @@ function pushMessage(role, text, mode='chat') {
   activeTopic.value.messages.push({ role, text, mode })
   persist()
   nextTick(() => {
-    if (typeof document !== 'undefined') {
-      const container = document.scrollingElement || document.documentElement
-      container.scrollTop = container.scrollHeight
-    }
+    try{
+      if(messagesEl.value){ messagesEl.value.scrollTop = messagesEl.value.scrollHeight }
+      if(inputEl.value && inputEl.value.focus) inputEl.value.focus()
+    }catch{}
   })
 }
 

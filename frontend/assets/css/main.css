@@ -99,6 +99,48 @@
 }
 .kb-copy-btn:hover { background: #fff; }
 
+/* Chat handle (green pill) */
+.chat-handle {
+  position: relative;
+  right: 0;
+  background: #fff8e7; /* ivory */
+  color: #374151; /* gray-700 for contrast */
+  border-radius: 9999px 0 0 9999px;
+  width: 28px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+.chat-handle:hover { background: #efe9d4; }
+
+/* Left sidebar handle (gray) */
+.sidebar-handle {
+  position: relative;
+  left: 0;
+  background: #fff8e7; /* ivory */
+  color: #374151; /* gray-700 for contrast */
+  border-radius: 0 9999px 9999px 0;
+  width: 28px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+.sidebar-handle:hover { background: #efe9d4; }
+
+/* Chat resizer gutter */
+.chat-resizer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  cursor: col-resize;
+  z-index: 30;
+}
+
 .prose blockquote {
   @apply border-l-4 border-primary-500 pl-4 italic text-gray-700 mb-4;
 }

@@ -48,20 +48,18 @@
         @mousedown="startResize"
       ></div>
       
-      <!-- 사이드바 토글 버튼 -->
+      <!-- 왼쪽 사이드바 토글 핸들 (회색) -->
       <div
         v-if="!isKnowledgeBase"
-        class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10"
-        :style="{ left: isSidebarCollapsed ? '0px' : sidebarWidth + 'px' }"
+        class="absolute top-1/2 -translate-y-1/2 z-20"
+        :style="{ left: isSidebarCollapsed ? '0px' : (sidebarWidth + 'px') }"
       >
-        <button
-          @click="toggleSidebar"
-          class="bg-white border border-gray-200 rounded-r-lg p-2 shadow-md hover:bg-gray-50 transition-colors"
-          :title="isSidebarCollapsed ? '사이드바 열기' : '사이드바 닫기'"
-        >
-          <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
+        <button @click="toggleSidebar"
+                class="sidebar-handle"
+                :aria-label="isSidebarCollapsed ? '사이드바 열기' : '사이드바 닫기'"
+                :aria-expanded="isSidebarCollapsed ? 'false' : 'true'">
+          <span v-if="isSidebarCollapsed">›</span>
+          <span v-else>‹</span>
         </button>
       </div>
 
@@ -94,14 +92,39 @@
           <div v-else-if="isHome" class="h-full">
             <slot />
           </div>
-          <WorkspaceView v-else :active-content="tbContent" :active-slide="tbSlide" :active-path="tbPath" :readonly="true" ref="workspaceView" />
+          <template v-else>
+            <transition name="fade" mode="out-in">
+              <WorkspaceView :active-content="tbContent" :active-slide="tbSlide" :active-path="tbPath" :readonly="true" ref="workspaceView" />
+            </transition>
+          </template>
         </div>
       </main>
 
       <!-- Right Panel: AI Assistant -->
-      <aside v-if="!isKnowledgeBase" class="w-80 bg-white border-l border-gray-200 flex-shrink-0 overflow-y-auto shadow-md">
-        <AIAssistantPanel />
-      </aside>
+      <!-- Chat reveal handle -->
+      <div v-if="!isKnowledgeBase"
+           class="absolute top-1/2 -translate-y-1/2 right-0 z-20">
+        <button @click="chatVisible = !chatVisible"
+                class="chat-handle"
+                :aria-label="chatVisible ? '채팅 숨김' : '채팅 표시'"
+                :aria-expanded="chatVisible ? 'true' : 'false'">
+          <span v-if="chatVisible">›</span>
+          <span v-else>‹</span>
+        </button>
+      </div>
+
+      <!-- Chat resizer (visible only when chat is open) -->
+      <div v-if="!isKnowledgeBase && chatVisible"
+           class="chat-resizer"
+           @mousedown="startChatResize"
+           :style="{ right: (chatWidth + 'px') }"></div>
+
+      <transition name="fade" mode="out-in">
+        <aside v-if="!isKnowledgeBase && chatVisible" class="bg-white border-l border-gray-200 flex-shrink-0 overflow-y-auto shadow-md"
+               :style="{ width: chatWidth + 'px' }">
+          <AIAssistantPanel />
+        </aside>
+      </transition>
     </div>
   <TaskStatusBar v-if="isKnowledgeBase" />
   <ToastStack />
@@ -133,6 +156,31 @@ const lastVersion = computed(()=> docStore.version)
 const kbTab = ref('tree')
 const kbHistory = ref([])
 const editorKey = computed(()=> `${kbTab.value}`)
+const chatVisible = ref(true)
+const chatWidth = ref(320)
+let chatDrag = false
+let chatStartX = 0
+let chatStartWidth = 320
+
+function startChatResize(ev){
+  chatDrag = true
+  chatStartX = ev.clientX
+  chatStartWidth = chatWidth.value
+  window.addEventListener('mousemove', onChatResize)
+  window.addEventListener('mouseup', stopChatResize)
+}
+function onChatResize(ev){
+  if(!chatDrag) return
+  const dx = chatStartX - ev.clientX
+  let next = chatStartWidth + dx
+  next = Math.max(240, Math.min(600, next))
+  chatWidth.value = next
+}
+function stopChatResize(){
+  chatDrag = false
+  window.removeEventListener('mousemove', onChatResize)
+  window.removeEventListener('mouseup', stopChatResize)
+}
 // Avoid re-mounting editors on each keystroke: do not include content length in key
 // 안정적인 레이아웃 유지: 저장 시 버전 갱신으로 에디터가 재마운트되지 않도록 key에서 버전을 제외
 const editorKeyFull = computed(()=> `${kbTab.value}:${activePath.value || ''}`)
