@@ -15,7 +15,7 @@
             </a>
           </div>
           <div class="flex items-center space-x-4">
-            <NuxtLink to="/textbook?path=curriculum.md&force=1" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+            <NuxtLink to="/textbook" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
               커리큘럼
             </NuxtLink>
             <a href="/knowledge-base" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
@@ -109,7 +109,7 @@
 
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useRuntimeConfig } from '#app'
 import SyllabusExplorer from '~/components/SyllabusExplorer.vue'
 import KnowledgeBaseExplorer from '~/components/KnowledgeBaseExplorer.vue'
@@ -169,6 +169,7 @@ const apiKey = 'my_mcp_eagle_tiger';
 
 // Load default content: textbook/index.md when on knowledge-base route
 const route = useRoute();
+const router = useRouter();
 const isKnowledgeBase = computed(() => route.path.startsWith('/knowledge-base'))
 const isHomeRedirect = computed(() => {
   try{ return String((route.query||{}).force||'') === '1' }catch{ return false }
@@ -196,7 +197,7 @@ onMounted(async () => {
         }
       }catch{ /* ignore */ }
     })()
-  } else {
+  } else if (route.path.startsWith('/textbook')) {
     // Restore last opened textbook path if available unless forced path in query
     try {
       const q = route.query || {}
@@ -207,7 +208,7 @@ onMounted(async () => {
       else if (last) { handleFileClick(last) }
       else { ;(async ()=>{ await showCurriculumIndex() })() }
     } catch { ;(async ()=>{ await showCurriculumIndex() })() }
-  }
+  } // else: home('/') — index.vue handles index.md
   
   // 대화형 CLI 이벤트 리스너 설정
   if (workspaceMain.value) {
@@ -226,8 +227,17 @@ onMounted(async () => {
     })
     window.addEventListener('kb:mode', (e) => {
       if(e?.detail?.to === 'view'){
-        // simply no-op here; content view is default when not directly using WorkspaceView
+        // 취소 동작 시 FileTree 탭으로 전환
+        kbTab.value = 'tree'
       }
+    })
+    // 파일 삭제(휴지통 이동) 후 처리: FileTree 탭으로 전환하고 상태 정리
+    window.addEventListener('kb:deleted', (e) => {
+      try{
+        kbTab.value = 'tree'
+        if(docStore){ docStore.path = ''; docStore.content = '' }
+        toast.push('success','문서가 휴지통으로 이동되었습니다')
+      }catch{}
     })
   }
 });
@@ -286,6 +296,13 @@ async function showCurriculumIndex(){
 }
 
 const handleFileClick = async (path) => {
+  // 홈('/') 등에서는 '/textbook'로 전환하여 가운데 패널이 WorkspaceView를 렌더하도록 함
+  try {
+    if (!route.path.startsWith('/textbook')) {
+      await router.push({ path: '/textbook', query: { path, force: '1' } })
+      return
+    }
+  } catch { /* ignore navigation errors */ }
   try {
     tbPath.value = path;
     // persist last opened textbook file

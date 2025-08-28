@@ -1,6 +1,6 @@
 <template>
   <div class="h-full flex flex-col bg-white">
-    <KbToolbar :saving="saving" save-label="저장" cancel-label="취소" saving-text="저장 중…" aria-label="WYSIWYG toolbar" save-aria-label="문서 저장 (Ctrl+S)" cancel-aria-label="편집 취소" @save="save" @cancel="cancel">
+    <KbToolbar :saving="saving" save-label="저장" cancel-label="취소" delete-label="삭제" saving-text="저장 중…" aria-label="WYSIWYG toolbar" save-aria-label="문서 저장 (Ctrl+S)" cancel-aria-label="편집 취소" delete-aria-label="현재 문서 삭제" @save="save" @cancel="cancel" @delete="deleteCurrent">
       <input v-model="saveMessage" placeholder="commit message" class="px-2 py-1 text-xs border rounded w-48 focus:outline-none focus:ring" />
       <button class="px-2 py-1 border rounded" aria-label="굵게" @click="cmd('toggleBold')"><b>B</b></button>
       <button class="px-2 py-1 border rounded italic" aria-label="기울임" @click="cmd('toggleItalic')">I</button>
@@ -106,6 +106,7 @@ import jsonLang from 'highlight.js/lib/languages/json'
 import yamlLang from 'highlight.js/lib/languages/yaml'
 import markdownLang from 'highlight.js/lib/languages/markdown'
 import { useDocStore } from '../stores/doc'
+import { resolveApiBase } from '../composables/useKbApi'
 import { useKbApi } from '../composables/useKbApi'
 import { useToastStore } from '../stores/toast'
 import KbToolbar from './KbToolbar.vue'
@@ -158,6 +159,19 @@ async function save(){
   } catch(e){ toast.push('error','저장 실패') } finally{ saving.value = false }
 }
 function cancel(){ try{ window.dispatchEvent(new CustomEvent('kb:mode', { detail:{ to:'view' } })) }catch{} }
+
+async function deleteCurrent(){
+  try{
+    if(!props.path){ return }
+    const ok = window.confirm('이 문서를 휴지통으로 이동할까요?')
+    if(!ok) return
+    const p = props.path
+    const ts = new Date().toISOString().replace(/[-:T.Z]/g,'').slice(0,14)
+    const trashPath = `.trash/${ts}/${p}`
+    await fetch(`${resolveApiBase()}/api/v1/knowledge-base/move`, { method:'POST', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path: p, new_path: trashPath }) })
+    try{ window.dispatchEvent(new CustomEvent('kb:deleted', { detail:{ path: p, trashPath } })) }catch{}
+  }catch{ alert('삭제 실패') }
+}
 
 function onKey(e: KeyboardEvent){
   if((e.ctrlKey || e.metaKey) && e.key.toLowerCase()==='s'){

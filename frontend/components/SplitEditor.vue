@@ -24,7 +24,7 @@
     <!-- Editor & Preview -->
     <div class="flex-1 flex flex-col">
       <!-- Toolbar -->
-      <KbToolbar :saving="saving" save-label="Save" cancel-label="Cancel" saving-text="Saving..." aria-label="Markdown toolbar" @save="emitSave" @cancel="cancelEdit">
+      <KbToolbar :saving="saving" save-label="Save" cancel-label="Cancel" delete-label="Delete" saving-text="Saving..." aria-label="Markdown toolbar" @save="emitSave" @cancel="cancelEdit" @delete="deleteCurrent">
         <input v-model="saveMessage" placeholder="commit message" class="px-2 py-1 text-xs border rounded w-48 focus:outline-none focus:ring" />
         <button @click="toggleOutline" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Outline</button>
         <button @click="toggleVersions" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Versions</button>
@@ -433,6 +433,20 @@ function cancelEdit(){
   draft.value = baseContent.value || draft.value
   // navigate back to view
   try { window.dispatchEvent(new CustomEvent('kb:mode', { detail: { to: 'view' }})) } catch{}
+}
+
+async function deleteCurrent(){
+  try{
+    const p = props.path
+    if(!p) return
+    const ok = confirm('이 문서를 휴지통으로 이동할까요?')
+    if(!ok) return
+    const apiBase = resolveApiBase()
+    const ts = new Date().toISOString().replace(/[-:T.Z]/g,'').slice(0,14)
+    const trashPath = `.trash/${ts}/${p}`
+    await fetch(`${apiBase}/api/v1/knowledge-base/move`, { method:'POST', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path: p, new_path: trashPath }) })
+    try { window.dispatchEvent(new CustomEvent('kb:deleted', { detail:{ path: p, trashPath } })) } catch {}
+  }catch{ alert('삭제 실패') }
 }
 
 function scrollToLine(line){

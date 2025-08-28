@@ -1,20 +1,5 @@
 [
   {
-    "name": "aws",
-    "query": "aws 오늘 기술 트렌드",
-    "enabled": true
-  },
-  {
-    "name": "gcp",
-    "query": "gcp 오늘 기술 트렌드",
-    "enabled": true
-  },
-  {
-    "name": "azure",
-    "query": "azure 오늘 기술 트렌드",
-    "enabled": true
-  },
-  {
     "name": "terraform",
     "query": "terraform 오늘 기술 트렌드",
     "enabled": true

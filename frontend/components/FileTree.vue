@@ -66,8 +66,10 @@
     <div v-if="showFileContextMenu" 
          :style="{ left: contextMenuX + 'px', top: contextMenuY + 'px' }" 
          class="context-menu">
-      <div @click="renameFile" class="context-menu-item">✏️ 이름 변경</div>
-      <div @click="deleteFile" class="context-menu-item text-red-600">🗑️ 삭제</div>
+      <div v-if="!isSelectedInTrash" @click="renameFile" class="context-menu-item">✏️ 이름 변경</div>
+      <div v-if="!isSelectedInTrash" @click="deleteFile" class="context-menu-item text-red-600">🗑️ 삭제(휴지통으로)</div>
+      <div v-if="isSelectedInTrash" @click="restoreFile" class="context-menu-item">↩️ 복구</div>
+      <div v-if="isSelectedInTrash" @click="purgeFile" class="context-menu-item text-red-600">❌ 영구 삭제</div>
     </div>
 
     <!-- Create Menu -->
@@ -156,6 +158,13 @@ const showCreateMenu = ref(false);
 const contextMenuX = ref(0);
 const contextMenuY = ref(0);
 const selectedItem = ref(null);
+const isSelectedInTrash = computed(() => {
+  try{
+    if(!selectedItem.value) return false
+    const p = (selectedItem.value.item?.path) || constructPath(selectedItem.value.name)
+    return typeof p === 'string' && /(^|\/)\.trash(\/|$)/.test(p)
+  }catch{ return false }
+})
 
 // Dialog state
 const showRenameDialog = ref(false);
@@ -362,6 +371,28 @@ const deleteFile = () => {
     emit('directory-delete', { path, type: 'file' });
   }
 };
+
+const restoreFile = () => {
+  closeContextMenus();
+  try{
+    const orig = selectedItem.value?.item?.original_path
+    const cur = selectedItem.value?.item?.path || constructPath(selectedItem.value?.name)
+    if(!cur){ return }
+    // '/.trash/<timestamp>/' 세그먼트를 제거하여 원래 경로로 복구
+    const dest = orig || cur.replace(/(^|\/)\.trash\/[^\/]+\//, '$1')
+    emit('directory-rename', { oldPath: cur, newPath: dest, type: 'file' })
+  }catch{}
+}
+
+const purgeFile = () => {
+  closeContextMenus();
+  try{
+    const cur = selectedItem.value?.item?.path || constructPath(selectedItem.value?.name)
+    if(!cur) return
+    if(!confirm('이 항목을 영구 삭제하시겠습니까? (되돌릴 수 없음)')) return
+    emit('directory-delete', { path: cur, type: 'file' })
+  }catch{}
+}
 
 const confirmCreate = () => {
   const raw = newName.value.trim()

@@ -74,6 +74,18 @@
   @apply border-l-4 border-primary-500 pl-4 italic text-gray-700 mb-4;
 }
 
+/* 링크 가시성 개선: 본문(.prose) 내 앵커에 아이콘과 스타일 표시 */
+.prose a {
+  @apply text-blue-600 underline underline-offset-2;
+}
+
+.prose a::before {
+  content: "🔗";
+  margin-right: 0.2em;
+  font-size: 0.95em;
+  opacity: 0.85;
+}
+
 /* 애니메이션 */
 .fade-enter-active,
 .fade-leave-active {

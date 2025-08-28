@@ -1,104 +1,120 @@
-# 클라우드 엔지니어링 부트캠프: AWS & GCP (8일 과정)
+## 클라우드실무력강화_활용법(기초) 커리큘럼 — cloud_basic 전용
 
-7일 동안 AWS와 GCP의 핵심을 배우고, 클라우드 네이티브 전문가로 거듭나는 여정에 오신 것을 환영합니다.
+본 커리큘럼은 클라우드실무력 강화 기초반에 맞게 설계되었습니다. 
+사전준비(계정 등록)부터 Chapter 1~4 실습까지, 자동화 스크립트와 제출물 기준을 포함합니다.
 
-## 🎯 과정 목표
-이 부트캠프는 **기초 → 중급 → 실전** 단계별로 진행되어, 클라우드 실무력을 체계적으로 강화합니다.
-
----
-
-## 📚 **Part 1: 기초 과정 (Day 1-2)**
-### **Day 1: 클라우드 첫걸음**
-> 클라우드 컴퓨팅의 기본 개념을 이해하고, 실습을 위한 AWS/GCP 계정을 생성 및 설정합니다.
-
-*   [1-1. 클라우드 컴퓨팅 소개](./part1/day1/1-1_introduction_to_cloud.md)
-*   [1-2. AWS/GCP 계정 생성 및 초기 설정](./part1/day1/1-2_account_setup.md)
-*   [1-3. 클라우드 서비스 유형 및 사례 분석](./part1/day1/1-3_customers_and_services.md)
-
-### **Day 2: 개발 환경 구축과 핵심 개념**
-> CLI를 사용하여 클라우드를 제어하는 방법을 배우고, 가장 중요한 핵심 서비스(컴퓨팅, 스토리지, 네트워크)의 개념을 다집니다.
-
-*   [2-1. AWS/GCP CLI 설치 및 인증](./part1/day2/2-1_cli_setup.md)
-*   [2-2. 클라우드 핵심 서비스 개념 (VPC, S3, EC2)](./part1/day2/2-2_cloud_fundamentals.md)
+> 표기 안내: 🔗 아이콘이 붙은 항목은 클릭 가능한 링크입니다.
 
 ---
 
-## 🚀 **Part 2: 중급 과정 (Day 3-5)**
-### **Day 3: 아키텍처 비교 분석**
-> 동일한 목표를 AWS와 GCP에서 어떻게 다르게 달성하는지, 주요 서비스들을 비교하며 아키텍처 설계 능력을 기릅니다.
+## Day 0 · 사전준비 (계정 등록/보안/예산)
 
-*   [3-1. 컴퓨팅 서비스 비교 (EC2 vs Compute Engine, Lambda vs Cloud Functions)](./part2/day3/3-1_compute_comparison.md)
-*   [3-2. 스토리지 서비스 비교 (S3 vs Cloud Storage)](./part2/day3/3-2_storage_comparison.md)
-*   [3-3. 네트워크 서비스 비교 (VPC)](./part2/day3/3-3_network_comparison.md)
-*   [3-4. 데이터베이스 서비스 비교 (RDS vs Cloud SQL)](./part2/day3/3-4_database_comparison.md)
-
-### **Day 4: 코드로 인프라 관리하기 (IaC)**
-> Terraform을 사용하여 인프라를 코드로 관리하는 방법을 배우고, AWS와 GCP에 직접 인프라를 구축하는 실습을 진행합니다.
-
-*   [4-1. Terraform 소개 및 기본 사용법](./part2/day4/4-1_terraform_basics.md)
-*   [4-2. Terraform으로 AWS/GCP 인프라 구축 실습](./part2/day4/4-2_terraform_practice.md)
-
-### **Day 5: 비용 최적화와 CI/CD 파이프라인**
-> 클라우드 비용 구조를 이해하고 절감하는 전략을 배우며, CI/CD 파이프라인을 구축하여 배포를 자동화합니다.
-
-*   [5-1. 비용 최적화 전략 및 도구](./part2/day5/5-1_cost_optimization.md)
-*   [5-2. CI/CD 파이프라인 구축 (GitHub Actions, Docker)](./part2/day5/5-2_devops_cicd.md)
+- 참고 문서
+  - 🔗 [사전준비_1_공통사항.md](mdc:mcp_knowledge_base/cloud_basic/prerequisite/사전준비_1_공통사항.md)
+  - 🔗 [사전준비_2_계정등록.md](mdc:mcp_knowledge_base/cloud_basic/prerequisite/사전준비_2_계정등록.md)
+  - 🔗 [사전준비_3_역할분담.md](mdc:mcp_knowledge_base/cloud_basic/prerequisite/사전준비_3_역할분담.md)
+  - 🔗 [사전준비_4_자동화_사용안내.md](mdc:mcp_knowledge_base/cloud_basic/prerequisite/사전준비_4_자동화_사용안내.md)
+- 핵심 목표
+  - AWS/GCP/Azure 계정(또는 프로젝트/구독) 준비, MFA 등록, 역할 분리(비용관리자 vs IT 관리자)
+  - 예산 알림 설정(AWS/GCP/Azure) 및 CLI 초기화(aws/gcloud/az)
+- 권장 산출물
+  - 체크리스트: 🔗 [실습_계정등록_검증체크리스트.md](mdc:mcp_knowledge_base/cloud_basic/templates/실습_계정등록_검증체크리스트.md)
 
 ---
 
-## 🏆 **Part 3: 실전 과정 (Day 6-7)**
-### **Day 6: 컨테이너와 고급 배포 전략**
-> 애플리케이션 배포의 표준인 컨테이너 기술(Docker, Kubernetes)을 깊이 있게 탐구하고, 고가용성을 위한 고급 배포 관리 기법을 학습합니다.
+## Day 1 · Chapter 1: 클라우드 계정 및 IAM
 
-*   [6-1. 컨테이너 심화 (Docker, Kubernetes)](./part3/day6/6-1_container_deep_dive.md)
-*   [6-2. 심화 배포 관리 (Auto Scaling, 로드밸런싱)](./part3/day6/6-2_advanced_deployment.md)
-
-### **Day 7: 보안 및 DevOps 심화**
-> 클라우드 환경을 안전하게 보호하기 위한 보안 원칙과 서비스를 배우고, GitOps와 같은 고급 DevOps 워크플로우를 실습합니다.
-
-*   [7-1. 클라우드 보안 및 규정 준수](./part3/day7/7-1_security_compliance.md)
-*   [7-2. 클라우드 기반 DevOps(CI/CD) 심화 실습](./part3/day7/7-2_advanced_devops.md)
-
----
-
-## 📋 **학습 성과 및 실무 적용**
-
-### **기초 과정 완료 후**
-- 클라우드 컴퓨팅 기초 개념 이해
-- 클라우드 서비스 유형 및 사례 분석 능력
-- 클라우드 서비스 환경 구성 실습 경험
-
-### **중급 과정 완료 후**
-- 클라우드 심화 서비스 활용 전략 수립
-- 컨테이너 및 심화 배포 관리 실습 능력
-- 클라우드 기반 DevOps(CI/CD) 심화 실습 경험
-
-### **실전 과정 완료 후**
-- GitHub Actions, Docker로 자동 배포 실습 완료
-- Auto Scaling, 로드밸런싱 구성 실습 능력
-- 비용 분석, 절감 사례 기반 전략 수립 및 발표
+- 본문: 🔗 [Chapter1_IAM.md](mdc:mcp_knowledge_base/cloud_basic/Chapter1_IAM.md)
+- 자동화 스크립트(선택)
+  - AWS: 🔗 [ch1_iam.sh](mdc:mcp_knowledge_base/cloud_basic/automation/cli/aws/ch1_iam.sh)
+  - Azure: 🔗 [ch1_iam.sh](mdc:mcp_knowledge_base/cloud_basic/automation/cli/azure/ch1_iam.sh)
+  - GCP: 🔗 [ch1_iam.sh](mdc:mcp_knowledge_base/cloud_basic/automation/cli/gcp/ch1_iam.sh)
+- Terraform 예제(선택)
+  - AWS: `cloud_basic/automation/terraform/aws/ch1_iam`
+  - Azure: `cloud_basic/automation/terraform/azure/ch1_iam`
+  - GCP: `cloud_basic/automation/terraform/gcp/ch1_iam`
+- 학습 목표
+  - 최소 권한 원칙에 따른 사용자/그룹/역할 설계, 서비스 계정/권한 경계 실습
+  - 비용관리자와 IT 관리자 권한 분리 검증
+- 검증/제출
+  - MFA/정책 증빙, 허용/거부 테스트 결과, 역할 분리 스크린샷
 
 ---
 
-## 🛠️ **실습 환경 및 도구**
+## Day 2 · Chapter 2: VM과 웹 서비스 배포
 
-### **필수 도구**
-- AWS CLI, gcloud CLI
-- Terraform
-- Docker, Docker Compose
-- Kubernetes (minikube 또는 클라우드 서비스)
-- GitHub Actions
-- VS Code 또는 선호하는 IDE
-
-### **실습 계정**
-- AWS Free Tier 계정
-- GCP Free Tier 계정
-- GitHub 계정
+- 본문: 🔗 [Chapter2_VM.md](mdc:mcp_knowledge_base/cloud_basic/Chapter2_VM.md)
+- 자동화 스크립트(선택)
+  - AWS: 🔗 [ch2_vm.sh](mdc:mcp_knowledge_base/cloud_basic/automation/cli/aws/ch2_vm.sh)
+  - Azure: 🔗 [ch2_vm.sh](mdc:mcp_knowledge_base/cloud_basic/automation/cli/azure/ch2_vm.sh)
+  - GCP: 🔗 [ch2_vm.sh](mdc:mcp_knowledge_base/cloud_basic/automation/cli/gcp/ch2_vm.sh)
+- Terraform 예제(선택)
+  - AWS: `cloud_basic/automation/terraform/aws/ch2_vm`
+  - Azure: `cloud_basic/automation/terraform/azure/ch2_vm`
+  - GCP: `cloud_basic/automation/terraform/gcp/ch2_vm`
+- 학습 목표
+  - 단일 VM 웹 서버 → 고가용성(오토스케일+로드밸런서) 전환 흐름 이해
+  - 보안/비용 기본 체크(SSH 제한, 작은 타입/스케줄)
+- 검증/제출
+  - 웹 서비스 접근 스크린샷, 오토스케일 정책/헬스체크 결과
 
 ---
 
-### **부록**
+## Day 3 · Chapter 3: 스토리지와 정적 웹/아카이빙
 
-*   [실습 환경 구성 가이드](./appendix/practice_guide.md)
-*   [비용 최적화 체크리스트](./appendix/cost_optimization_checklist.md)
-*   [보안 모범 사례 가이드](./appendix/security_best_practices.md)
+- 본문: 🔗 [Chapter3_Storage.md](mdc:mcp_knowledge_base/cloud_basic/Chapter3_Storage.md)
+- 자동화 스크립트(선택)
+  - AWS: 🔗 [ch3_storage.sh](mdc:mcp_knowledge_base/cloud_basic/automation/cli/aws/ch3_storage.sh)
+  - Azure: 🔗 [ch3_storage.sh](mdc:mcp_knowledge_base/cloud_basic/automation/cli/azure/ch3_storage.sh)
+  - GCP: 🔗 [ch3_storage.sh](mdc:mcp_knowledge_base/cloud_basic/automation/cli/gcp/ch3_storage.sh)
+- Terraform 예제(선택)
+  - AWS: `cloud_basic/automation/terraform/aws/ch3_storage`
+  - Azure: `cloud_basic/automation/terraform/azure/ch3_storage`
+  - GCP: `cloud_basic/automation/terraform/gcp/ch3_storage`
+- 학습 목표
+  - 정적 웹 호스팅 보안 공개와 라이프사이클/버전관리/아카이빙 실습
+  - 액세스 로그, 암호화/전송 보호, 퍼블릭 최소화 원칙
+- 검증/제출
+  - 정적 사이트 공개 확인, 라이프사이클/버전 설정 증빙
+
+---
+
+## Day 4 · Chapter 4: 네트워크 & DNS
+
+- 본문: 🔗 [Chapter4_Network_DNS.md](mdc:mcp_knowledge_base/cloud_basic/Chapter4_Network_DNS.md)
+- 자동화 스크립트(선택)
+  - AWS: 🔗 [ch4_network.sh](mdc:mcp_knowledge_base/cloud_basic/automation/cli/aws/ch4_network.sh)
+  - Azure: 🔗 [ch4_network.sh](mdc:mcp_knowledge_base/cloud_basic/automation/cli/azure/ch4_network.sh)
+  - GCP: 🔗 [ch4_network.sh](mdc:mcp_knowledge_base/cloud_basic/automation/cli/gcp/ch4_network.sh)
+- Terraform 예제(선택)
+  - AWS: `cloud_basic/automation/terraform/aws/ch4_network`
+  - Azure: `cloud_basic/automation/terraform/azure/ch4_network`
+  - GCP: `cloud_basic/automation/terraform/gcp/ch4_network`
+- 학습 목표
+  - 퍼블릭/프라이빗 분리, NAT, L4/L7 LB, DNS 연결 구성
+  - 인바운드 최소/소스 제한, 모니터링/알림
+- 검증/제출
+  - LB 헬스체크 OK, DNS 레코드 유효성 확인
+
+---
+
+## 자동화 · 검증 · 운영
+
+- 예산 스크립트
+  - AWS: 🔗 [aws_budget.sh](mdc:mcp_knowledge_base/cloud_basic/automation/cli/budget/aws_budget.sh)
+  - GCP: 🔗 [gcp_budget.sh](mdc:mcp_knowledge_base/cloud_basic/automation/cli/budget/gcp_budget.sh)
+  - Azure: 🔗 [azure_budget.sh](mdc:mcp_knowledge_base/cloud_basic/automation/cli/budget/azure_budget.sh)
+- Terraform 가드(권장)
+  - 🔗 [guard.sh](mdc:mcp_knowledge_base/cloud_basic/automation/terraform/guard.sh) 로 `ROLE=cost-manager` 실행 차단
+- 시나리오 종합 가이드
+  - 🔗 [실습_시나리오.md](mdc:mcp_knowledge_base/cloud_basic/실습_시나리오.md)
+
+---
+
+## 최종 제출물(요약)
+
+- 아키텍처/구성 다이어그램(Chapter 반영)
+- 계정 등록/역할 분리/예산 설정 증빙(체크리스트 포함)
+- 각 Chapter 결과(스크린샷/명령/설정 요약)
+- 개선 포인트 3가지 이상(보안/비용/운영)
+

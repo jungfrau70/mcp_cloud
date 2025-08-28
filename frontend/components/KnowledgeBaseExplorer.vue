@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 space-y-4">
+  <div class="p-4 space-y-4 h-full flex flex-col">
     <template v-if="mode !== 'search'">
       <h2 class="text-lg font-semibold" v-if="mode!=='search'">지식베이스</h2>
     </template>
@@ -11,29 +11,7 @@
           <button @click="showTrending=true" class="mb-2 px-2 py-1 text-xs border rounded">관심 카테고리</button>
         </div>
       </div>
-      <div v-if="isInitialLoading" class="text-center py-8 text-sm text-gray-500">로딩 중…</div>
-      <FileTreePanel
-        v-else
-        :tree="treeData"
-        :selected-file="props.selectedFile ? ('mcp_knowledge_base/' + stripBasePath(props.selectedFile)) : null"
-        @file-select="handleFileSelect"
-        @file-open="handleFileOpen"
-        @directory-create="handleDirectoryCreate"
-        @directory-rename="handleDirectoryRename"
-        @directory-delete="handleDirectoryDelete"
-        @file-move="handleFileMove"
-      />
-    </template>
-    <template v-else>
-        <div class="flex items-center justify-between mb-2">
-          <div></div>
-          <div class="flex items-center gap-2">
-            <button @click="showAdmin=true; loadAdminPanel()" class="px-2 py-1 text-xs border rounded" title="슬라이드 디렉토리 설정">설정</button>
-            <button @click="showTrending=true" class="px-2 py-1 text-xs border rounded">관심 카테고리</button>
-          </div>
-        </div>
-        <SearchPanel :api-base="apiBase" :api-key="apiKey" @open="emit('file-select',$event)" />
-      <div class="border rounded bg-white overflow-hidden">
+      <div class="flex-1 min-h-0 overflow-auto">
         <div v-if="isInitialLoading" class="text-center py-8 text-sm text-gray-500">로딩 중…</div>
         <FileTreePanel
           v-else
@@ -46,6 +24,32 @@
           @directory-delete="handleDirectoryDelete"
           @file-move="handleFileMove"
         />
+      </div>
+    </template>
+    <template v-else>
+        <div class="flex items-center justify-between mb-2">
+          <div></div>
+          <div class="flex items-center gap-2">
+            <button @click="showAdmin=true; loadAdminPanel()" class="px-2 py-1 text-xs border rounded" title="슬라이드 디렉토리 설정">설정</button>
+            <button @click="showTrending=true" class="px-2 py-1 text-xs border rounded">관심 카테고리</button>
+          </div>
+        </div>
+        <SearchPanel :api-base="apiBase" :api-key="apiKey" @open="emit('file-select',$event)" />
+      <div class="border rounded bg-white flex-1 min-h-0 overflow-hidden">
+        <div class="h-full min-h-0 overflow-auto">
+          <div v-if="isInitialLoading" class="text-center py-8 text-sm text-gray-500">로딩 중…</div>
+          <FileTreePanel
+            v-else
+            :tree="treeData"
+            :selected-file="props.selectedFile ? ('mcp_knowledge_base/' + stripBasePath(props.selectedFile)) : null"
+            @file-select="handleFileSelect"
+            @file-open="handleFileOpen"
+            @directory-create="handleDirectoryCreate"
+            @directory-rename="handleDirectoryRename"
+            @directory-delete="handleDirectoryDelete"
+            @file-move="handleFileMove"
+          />
+        </div>
       </div>
       <button
         class="fixed bottom-6 right-6 z-20 rounded-full w-14 h-14 bg-blue-600 text-white shadow-lg hover:bg-blue-700"
