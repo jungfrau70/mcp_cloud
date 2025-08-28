@@ -3,7 +3,10 @@ import os
 import time
 import logging
 from typing import List, Dict, Optional
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote_plus
+import requests
+from bs4 import BeautifulSoup
+import xml.etree.ElementTree as ET
 
 # 로깅 설정
 logging.basicConfig(level=logging.INFO)
@@ -22,6 +25,102 @@ class ExternalSearchService:
             except ImportError:
                 logger.warning("default_api not found. External search will not function.")
                 self.api_client = None
+
+    # ---------------------------- Fallback searchers ---------------------------- #
+    def _fallback_web_search(self, query: str, num_results: int) -> List[Dict]:
+        """API 클라이언트가 없을 때 사용할 경량 웹 검색 폴백.
+        우선 DuckDuckGo, 실패 시 Bing HTML 결과를 파싱합니다.
+        외부 의존성 없이 requests + BeautifulSoup만 사용합니다.
+        """
+        results: List[Dict] = []
+        q = quote_plus(query)
+        # Try DuckDuckGo
+        try:
+            resp = requests.get(f"https://duckduckgo.com/html/?q={q}", timeout=8)
+            if resp.ok:
+                soup = BeautifulSoup(resp.text, 'html.parser')
+                for a in soup.select('a.result__a'):
+                    title = a.get_text(strip=True)
+                    href = a.get('href', '')
+                    if title and href:
+                        results.append({
+                            "title": title,
+                            "link": href,
+                            "snippet": "",
+                            "source": "duckduckgo",
+                            "date": ""
+                        })
+                        if len(results) >= num_results * 3:
+                            break
+        except Exception as e:
+            logger.debug(f"DuckDuckGo fallback failed: {e}")
+
+        # Fallback: Bing
+        if not results:
+            try:
+                resp = requests.get(f"https://www.bing.com/search?q={q}", timeout=8)
+                if resp.ok:
+                    soup = BeautifulSoup(resp.text, 'html.parser')
+                    for h2 in soup.select('li.b_algo h2'):
+                        a = h2.find('a')
+                        if not a:
+                            continue
+                        title = a.get_text(strip=True)
+                        href = a.get('href', '')
+                        if title and href:
+                            # Try to capture a nearby snippet
+                            snippet_el = h2.find_parent().select_one('p') if h2.find_parent() else None
+                            snippet = snippet_el.get_text(strip=True) if snippet_el else ""
+                            results.append({
+                                "title": title,
+                                "link": href,
+                                "snippet": snippet,
+                                "source": "bing",
+                                "date": ""
+                            })
+                            if len(results) >= num_results * 3:
+                                break
+            except Exception as e:
+                logger.debug(f"Bing fallback failed: {e}")
+
+        return results
+
+    def _fallback_news_search(self, query: str, num_results: int) -> List[Dict]:
+        """Google News RSS 기반 뉴스 검색 폴백."""
+        results: List[Dict] = []
+        q = quote_plus(query)
+        try:
+            url = f"https://news.google.com/rss/search?q={q}&hl=ko&gl=KR&ceid=KR:ko"
+            resp = requests.get(url, timeout=8)
+            if not resp.ok:
+                return results
+            root = ET.fromstring(resp.content)
+            # items
+            for item in root.findall('.//item'):
+                title = (item.findtext('title') or '').strip()
+                link = (item.findtext('link') or '').strip()
+                pub_date = (item.findtext('pubDate') or '').strip()
+                if title and link:
+                    results.append({
+                        "title": title,
+                        "link": link,
+                        "snippet": "",
+                        "source": "google_news",
+                        "date": pub_date
+                    })
+                if len(results) >= num_results * 3:
+                    break
+        except Exception as e:
+            logger.debug(f"News RSS fallback failed: {e}")
+        return results
+
+    def _fallback_docs_search(self, query: str, num_results: int) -> List[Dict]:
+        """공식 문서 위주 사이트로 쿼리를 보강하여 일반 웹 검색 폴백."""
+        docs_query = (
+            f"({query}) site:docs.aws.amazon.com OR site:cloud.google.com OR "
+            f"site:developer.hashicorp.com OR site:registry.terraform.io"
+        )
+        return self._fallback_web_search(docs_query, num_results)
 
     def _is_valid_url(self, url: str) -> bool:
         """URL 유효성 검사"""
@@ -61,8 +160,20 @@ class ExternalSearchService:
         logger.info(f"Performing {search_type} search for: {query}")
         
         if self.api_client is None:
-            logger.error("API client not available for search.")
-            return []
+            # 폴백 검색 수행 (API 키 없이 동작)
+            try:
+                if search_type == "news":
+                    raw_results = self._fallback_news_search(query, num_results)
+                elif search_type == "docs":
+                    raw_results = self._fallback_docs_search(query, num_results)
+                else:
+                    raw_results = self._fallback_web_search(query, num_results)
+                # 폴백 결과 필터링 및 슬라이싱
+                filtered = self._filter_search_results(raw_results)
+                return filtered[:num_results]
+            except Exception as e:
+                logger.error(f"Fallback search failed: {e}")
+                return []
 
         # 재시도 로직
         for attempt in range(self.max_retries):
