@@ -2106,6 +2106,51 @@ async def get_curriculum_content(path: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read content: {e}")
 
+@app.get("/api/v1/curriculum/pdf", dependencies=[Depends(get_api_key)], tags=["Curriculum"])
+async def get_curriculum_pdf(path: str):
+    """
+    Convert a markdown file under the textbook directory to PDF and return it.
+    Fallback: if PDF library is unavailable, return the markdown content.
+    """
+    try:
+        # Normalize and secure the path
+        normalized = path.replace("\\", "/").lstrip("/ ")
+        relative_path = os.path.normpath(normalized)
+        secure_path = os.path.join(TEXTBOOK_DIR, relative_path)
+
+        # Security: ensure path is within TEXTBOOK_DIR
+        if not os.path.commonpath([TEXTBOOK_DIR]) == os.path.commonpath([TEXTBOOK_DIR, secure_path]):
+            raise HTTPException(status_code=400, detail="Invalid file path.")
+
+        if not os.path.exists(secure_path) or not secure_path.endswith('.md'):
+            raise HTTPException(status_code=404, detail="File not found or not a markdown file.")
+
+        with open(secure_path, 'r', encoding='utf-8') as f:
+            markdown_content = f.read()
+
+        if not HAS_MARKDOWN_PDF:
+            # Fallback to returning markdown as attachment
+            return StreamingResponse(
+                iter([markdown_content]),
+                media_type="text/markdown; charset=utf-8",
+                headers={'Content-Disposition': f'attachment; filename="{os.path.splitext(os.path.basename(secure_path))[0]}.md"'}
+            )
+
+        pdf = MarkdownPdf()
+        pdf.add_section(Section(markdown_content, toc=False))
+        buffer = BytesIO()
+        pdf.save(buffer)
+        buffer.seek(0)
+        return StreamingResponse(
+            buffer,
+            media_type="application/pdf",
+            headers={'Content-Disposition': f'attachment; filename="{os.path.splitext(os.path.basename(secure_path))[0]}.pdf"'}
+        )
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to convert curriculum markdown to PDF: {e}")
+
 @app.get("/api/v1/slides", dependencies=[Depends(get_api_key)], tags=["Slides"])
 async def get_slide_download(textbook_path: str):
     """Simplified slide resolver tailored for test expectations (markdown only)."""
@@ -2800,6 +2845,137 @@ async def terminal_agent(payload: TerminalAgentInput):
         raise
     except Exception as e:
         return {"error": str(e), "conversation_id": cid, "mode": "chat"}
+
+# ===================================
+# CLI 환경 설정 전용 엔드포인트 (/env 플로우)
+# ===================================
+
+class CliSetupRequest(BaseModel):
+    provider: str  # 'azure' | 'gcp' | 'aws'
+    action: str    # 'login' | 'set-context'
+    args: Optional[Dict[str, str]] = None
+
+
+def _run_command_capture(command: str, timeout: int = 30) -> Dict[str, Any]:
+    env = os.environ.copy()
+    env["AWS_PAGER"] = ""
+    env["PAGER"] = "cat"
+    env["MANPAGER"] = "cat"
+    env["CLOUDSDK_CORE_DISABLE_PROMPTS"] = "1"
+    try:
+        result = subprocess.run(
+            command,
+            shell=True,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            env=env,
+        )
+        return {
+            "returncode": result.returncode,
+            "stdout": result.stdout,
+            "stderr": result.stderr,
+            "command": command,
+        }
+    except subprocess.TimeoutExpired:
+        return {"returncode": 124, "stdout": "", "stderr": "timeout", "command": command}
+
+
+@app.post("/api/v1/cli/setup", dependencies=[Depends(get_api_key)], tags=["CLI Setup"])
+async def cli_setup(payload: CliSetupRequest):
+    provider = (payload.provider or "").lower()
+    action = (payload.action or "").lower()
+    args = payload.args or {}
+
+    if provider not in {"azure", "gcp", "aws"}:
+        raise HTTPException(status_code=400, detail="Unsupported provider")
+
+    if provider == "azure":
+        if action == "login":
+            client_id = os.environ.get("AZURE_CLIENT_ID")
+            tenant_id = os.environ.get("AZURE_TENANT_ID")
+            client_secret = os.environ.get("AZURE_CLIENT_SECRET")
+            if client_id and tenant_id and client_secret:
+                cmd = f"az login --service-principal -u {client_id} -p {client_secret} --tenant {tenant_id}"
+                res = _run_command_capture(cmd)
+                return {"success": res["returncode"] == 0, "provider": provider, "action": action, "result": res}
+            return {
+                "success": False,
+                "provider": provider,
+                "action": action,
+                "requires_interactive": True,
+                "instructions": "Step CLI에서 '/cli az login --use-device-code' 실행 후 인증을 완료하세요.",
+            }
+        if action == "set-context":
+            subscription = args.get("subscription") or args.get("subscription_id")
+            if not subscription:
+                raise HTTPException(status_code=400, detail="subscription is required")
+            res = _run_command_capture(f"az account set --subscription {subscription}")
+            verify = _run_command_capture("az account show -o json")
+            ok = res["returncode"] == 0 and verify["returncode"] == 0
+            return {"success": ok, "provider": provider, "action": action, "result": res, "verify": verify}
+
+    if provider == "gcp":
+        if action == "login":
+            keyfile = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS") or os.environ.get("CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE")
+            if keyfile and os.path.exists(keyfile):
+                res = _run_command_capture(f"gcloud auth activate-service-account --key-file={keyfile}")
+                project = args.get("project") or os.environ.get("GOOGLE_CLOUD_PROJECT")
+                set_proj = _run_command_capture(f"gcloud config set project {project}") if project else {"returncode": 0}
+                ok = res["returncode"] == 0 and set_proj.get("returncode", 0) == 0
+                return {"success": ok, "provider": provider, "action": action, "result": res, "set_project": set_proj}
+            return {
+                "success": False,
+                "provider": provider,
+                "action": action,
+                "requires_interactive": True,
+                "instructions": "Step CLI에서 '/cli gcloud auth login --no-launch-browser' 실행 후 인증을 완료하세요.",
+            }
+        if action == "set-context":
+            project = args.get("project")
+            if not project:
+                raise HTTPException(status_code=400, detail="project is required")
+            res = _run_command_capture(f"gcloud config set project {project}")
+            verify = _run_command_capture("gcloud config get-value project")
+            ok = res["returncode"] == 0 and verify["returncode"] == 0 and project in (verify.get("stdout") or "")
+            return {"success": ok, "provider": provider, "action": action, "result": res, "verify": verify}
+
+    if provider == "aws":
+        if action == "login":
+            key_ok = bool(os.environ.get("AWS_ACCESS_KEY_ID") and os.environ.get("AWS_SECRET_ACCESS_KEY"))
+            if key_ok:
+                who = _run_command_capture("aws sts get-caller-identity")
+                return {"success": who["returncode"] == 0, "provider": provider, "action": action, "whoami": who}
+            return {
+                "success": False,
+                "provider": provider,
+                "action": action,
+                "requires_interactive": True,
+                "instructions": "Step CLI에서 '/cli aws sso login --profile <name>' 실행 후 재시도하세요.",
+            }
+        if action == "set-context":
+            region = args.get("region")
+            res_region = _run_command_capture(f"aws configure set region {region}") if region else {"returncode": 0}
+            who = _run_command_capture("aws sts get-caller-identity")
+            ok = res_region.get("returncode", 0) == 0 and who["returncode"] == 0
+            return {"success": ok, "provider": provider, "action": action, "set_region": res_region, "whoami": who}
+
+    raise HTTPException(status_code=400, detail="Unsupported action")
+
+
+@app.get("/api/v1/cli/setup/status", dependencies=[Depends(get_api_key)], tags=["CLI Setup"])
+async def cli_setup_status(provider: str):
+    p = (provider or "").lower()
+    if p == "azure":
+        res = _run_command_capture("az account show -o json")
+        return {"provider": p, "logged_in": res["returncode"] == 0, "result": res}
+    if p == "gcp":
+        res = _run_command_capture("gcloud auth list --filter=status:ACTIVE --format=json")
+        return {"provider": p, "logged_in": res["returncode"] == 0, "result": res}
+    if p == "aws":
+        res = _run_command_capture("aws sts get-caller-identity")
+        return {"provider": p, "logged_in": res["returncode"] == 0, "result": res}
+    raise HTTPException(status_code=400, detail="Unsupported provider")
 
 @app.post("/api/v1/ai/knowledge/update", dependencies=[Depends(get_api_key)], tags=["AI Knowledge"])
 async def update_knowledge_base():

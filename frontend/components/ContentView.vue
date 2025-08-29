@@ -23,6 +23,13 @@
       >
         Textbook으로
       </button>
+      <button
+        v-if="path && !isSlideView"
+        @click="downloadPdf"
+        class="px-3 py-1 text-sm rounded bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
+      >
+        PDF로 저장
+      </button>
     </div>
 
     <!-- Fade between content and slides in-place -->
@@ -371,6 +378,29 @@ const closeSlides = () => {
   slidePdfUrl.value = '';
   slideHtml.value = '';
   isSlideView.value = false;
+};
+
+const downloadPdf = async () => {
+  if (!props.path) return;
+  try {
+    const url = `${apiBase}/api/v1/curriculum/pdf?path=${encodeURIComponent(props.path)}`;
+    const res = await fetch(url, { headers: { 'X-API-Key': API_KEY } });
+    if (!res.ok) throw new Error(`Failed to export PDF: ${res.status}`);
+    const ct = (res.headers.get('content-type') || '').toLowerCase();
+    const blob = await res.blob();
+    const a = document.createElement('a');
+    const objectUrl = URL.createObjectURL(blob);
+    a.href = objectUrl;
+    const base = props.path.split('/').pop()?.replace(/\.md$/i,'') || 'document';
+    a.download = base + (ct.includes('application/pdf') ? '.pdf' : '.md');
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
+  } catch (e) {
+    console.error(e);
+    alert('PDF 생성 중 오류가 발생했습니다.');
+  }
 };
 </script>
 

@@ -8,9 +8,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && mkdir -p -m 755 /usr/share/keyrings \
     && curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg \
     && echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list \
-    && apt-get update && apt-get install -y google-cloud-sdk \
+    && apt-get update && apt-get install -y google-cloud-sdk groff less \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+    RUN apt-get update && apt-get install -y groff less
 
 # Install Azure CLI
 RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg \
@@ -23,7 +25,7 @@ RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -
 RUN npm install -g @marp-team/marp-cli
 
 # Install Terraform
-ARG TERRAFORM_VERSION="1.8.5"
+ARG TERRAFORM_VERSION="1.13.1"
 RUN curl -fsSLo terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
     && unzip -q terraform.zip -d /usr/local/bin/ \
     && rm terraform.zip
@@ -48,7 +50,6 @@ RUN curl -fsSLo awscliv2.zip "https://awscli.amazonaws.com/awscli-exe-linux-${AW
     && ./aws/install --update \
     && rm -rf aws awscliv2.zip \
     && aws --version
-
 # Verify key installations
 RUN python -c "import uvicorn; print('uvicorn version:', uvicorn.__version__)"
 RUN python -c "import fastapi; print('fastapi version:', fastapi.__version__)"

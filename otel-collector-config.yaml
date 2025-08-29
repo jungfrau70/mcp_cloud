@@ -8,12 +8,15 @@ receivers:
 
 exporters:
   logging:
-    loglevel: info
+    verbosity: normal
 
 processors:
   batch: {}
 
 service:
+  telemetry:
+    logs:
+      level: warn
   pipelines:
     traces:
       receivers: [otlp]

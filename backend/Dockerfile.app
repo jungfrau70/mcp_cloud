@@ -1,6 +1,8 @@
 # App stage - Build and runtime for backend
 FROM mcp-backend:package AS app
 
+RUN apt-get update && apt-get install -y groff less
+
 WORKDIR /app
 
 # Copy application code
@@ -17,4 +19,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
 EXPOSE 8000
 
 # Use system Python directly with reload for hot-reload in dev
-CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--log-level", "warning", "--no-access-log"]

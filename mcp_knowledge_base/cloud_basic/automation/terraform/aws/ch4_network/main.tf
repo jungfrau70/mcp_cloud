@@ -45,9 +45,24 @@ resource "aws_subnet" "private" {
   tags = { Name = "private-subnet" }
 }
 
+# EIP for NAT Gateway
+resource "aws_eip" "nat" {
+  domain = "vpc"
+}
+
+# NAT Gateway
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet.public.id
+  tags = { Name = "lab-nat-gw" }
+  depends_on = [aws_internet_gateway.igw]
+}
+
+# Public Route Table
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.this.id
   route { cidr_block = "0.0.0.0/0" gateway_id = aws_internet_gateway.igw.id }
+  tags = { Name = "public-rtb" }
 }
 
 resource "aws_route_table_association" "pub_assoc" {
@@ -55,9 +70,22 @@ resource "aws_route_table_association" "pub_assoc" {
   route_table_id = aws_route_table.public.id
 }
 
+# Private Route Table
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.this.id
+  route { cidr_block = "0.0.0.0/0" nat_gateway_id = aws_nat_gateway.nat.id }
+  tags = { Name = "private-rtb" }
+}
+
+resource "aws_route_table_association" "priv_assoc" {
+  subnet_id      = aws_subnet.private.id
+  route_table_id = aws_route_table.private.id
+}
+
 output "vpc_id" { value = aws_vpc.this.id }
 output "public_subnet_id" { value = aws_subnet.public.id }
 output "private_subnet_id" { value = aws_subnet.private.id }
+output "nat_gateway_ip" { value = aws_eip.nat.public_ip }
 
 variable "project" { type = string default = "cloud-basic" }
 variable "department" { type = string default = "it" }

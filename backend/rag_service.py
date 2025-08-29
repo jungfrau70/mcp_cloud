@@ -45,8 +45,7 @@ VECTOR_STORE_PATH = os.path.abspath(os.path.join(BASE_DIR, "..", "vector_store")
 # Embedding model
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "jhgan/ko-sroberta-multitask")
 
-# Logging
-logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
+# Logging (delegate to app/uvicorn config; no basicConfig to avoid duplicates)
 logger = logging.getLogger(__name__)
 
 # ----------------------------------------------------------------------------

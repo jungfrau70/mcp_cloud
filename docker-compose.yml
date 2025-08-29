@@ -40,7 +40,7 @@ services:
   otel-collector:
     image: otel/opentelemetry-collector:0.104.0
     container_name: otel_collector
-    command: ["--config=/etc/otelcol/config.yaml"]
+    command: ["--config=/etc/otelcol/config.yaml", "--set=service.telemetry.logs.level=warn"]
     volumes:
       - ./otel-collector-config.yaml:/etc/otelcol/config.yaml:ro
     ports:
@@ -91,6 +91,8 @@ services:
       - ./mcp_knowledge_base:/mcp_knowledge_base
       - hf_cache:/cache/hf
       - azure_config:/root/.azure
+      - aws_config:/root/.aws
+      - gcloud_config:/root/.config/gcloud
     depends_on:
       mcp_postgres:
         condition: service_healthy
@@ -117,12 +119,15 @@ services:
     volumes:
       - ./backend:/app
       - terraform_modules_data:/app/terraform_modules
+      - azure_config:/root/.azure
+      - aws_config:/root/.aws
+      - gcloud_config:/root/.config/gcloud
     depends_on:
       mcp_redis:
         condition: service_started
       otel-collector:
         condition: service_started
-    command: ["sh", "-lc", "python -m celery -A worker.celery_app worker -Q plan,apply,test -c 4"]
+    command: ["sh", "-lc", "python -m celery -A worker.celery_app worker -Q plan,apply,test -c 4 -l warning"]
     healthcheck:
       disable: true
     networks:
@@ -145,7 +150,7 @@ services:
     depends_on:
       mcp_redis:
         condition: service_started
-    command: ["sh", "-lc", "python -m celery -A worker.celery_app beat -l info"]
+    command: ["sh", "-lc", "python -m celery -A worker.celery_app beat -l warning"]
     healthcheck:
       disable: true
     profiles: ["scheduler"]
@@ -180,6 +185,8 @@ volumes:
   terraform_modules_data:
   hf_cache:
   azure_config:
+  aws_config:
+  gcloud_config:
   neo4j_data:
 
 networks:

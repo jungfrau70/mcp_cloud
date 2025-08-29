@@ -9,8 +9,7 @@ import time
 from urllib.parse import urlparse
 import json
 
-# 로깅 설정
-logging.basicConfig(level=logging.INFO)
+# 로깅 설정 (루트 설정은 앱에서 통합 관리)
 logger = logging.getLogger(__name__)
 
 class ContentExtractor:
