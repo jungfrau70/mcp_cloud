@@ -1,0 +1,35 @@
+server:
+  address: tcp://0.0.0.0:9091/
+
+session:
+  secret: "change_me_generate_strong_secret"
+  name: authelia_session
+  same_site: lax
+  cookies:
+    - domain: "gostock.us"
+      authelia_url: "https://auth.gostock.us"
+      default_redirection_url: "https://app.gostock.us"
+
+storage:
+  encryption_key: "change_me_storage_encryption_key_at_least_32_chars"
+  local:
+    path: /config/db.sqlite3
+
+authentication_backend:
+  file:
+    path: /config/users_database.yml
+
+access_control:
+  default_policy: deny
+  rules:
+    - domain: "app.gostock.us"
+      policy: one_factor
+
+identity_validation:
+  reset_password:
+    jwt_secret: "change_me_reset_password_jwt_secret"
+
+notifier:
+  filesystem:
+    filename: /config/notification.txt
+

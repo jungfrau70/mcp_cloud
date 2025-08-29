@@ -65,8 +65,8 @@ services:
       dockerfile: Dockerfile.app
     container_name: mcp_backend
     env_file: ./backend/env/.env
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     environment:
       - REDIS_URL=redis://mcp_redis:6379
       - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
@@ -169,8 +169,8 @@ services:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
       - NUXT_TELEMETRY_DISABLED=1
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -180,11 +180,62 @@ services:
     networks:
       - mcp_cloud_network
 
+  # Nginx Proxy Manager (내부 프록시, 외부 포트 미개방)
+  npm:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: mcp_npm
+    env_file:
+      - ./.env
+    expose:
+      - "80"   # HTTP (내부에서만 노출)
+      - "81"   # Admin UI (내부에서만 노출)
+      - "443"  # HTTPS (내부에서만 노출)
+    volumes:
+      - npm_data:/data
+      - npm_letsencrypt:/etc/letsencrypt
+    depends_on:
+      - mcp_frontend
+    networks:
+      - mcp_cloud_network
+
+  # Authelia (SSO/2FA 게이트웨이)
+  authelia:
+    image: authelia/authelia:latest
+    container_name: mcp_authelia
+    env_file:
+      - ./.env
+    expose:
+      - "9091"
+    volumes:
+      - ./authelia/config:/config
+    command: ["--config", "/config/configuration.yml"]
+    networks:
+      - mcp_cloud_network
+
+  # Cloudflare Tunnel (외부 → NPM 프록시, 호스트 포트 불필요)
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    command: ["--config", "/etc/cloudflared/config.yml", "--no-autoupdate", "tunnel", "run"]
+    volumes:
+      - ./cloudflared/config/config.yml:/etc/cloudflared/config.yml:ro
+      - ./cloudflared/config/config.yml:/home/nonroot/.cloudflared/config.yml:ro
+      - ./cloudflared/data:/home/nonroot/.cloudflared
+    depends_on:
+      - npm
+    networks:
+      - mcp_cloud_network
+
 volumes:
   postgres_data:
   terraform_modules_data:
   hf_cache:
   azure_config:
+  npm_data:
+  npm_letsencrypt:
   aws_config:
   gcloud_config:
   neo4j_data:

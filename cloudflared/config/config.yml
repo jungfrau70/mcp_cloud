@@ -1,0 +1,14 @@
+tunnel: aa6f6903-4f08-45dc-a322-194e17c8cd87
+credentials-file: /home/nonroot/.cloudflared/aa6f6903-4f08-45dc-a322-194e17c8cd87.json
+ingress:
+  - hostname: app.gostock.us
+    service: http://npm:80
+    originRequest:
+      noTLSVerify: true
+  - hostname: auth.gostock.us
+    service: http://authelia:9091
+    originRequest:
+      noTLSVerify: true
+  - service: http_status:404
+loglevel: info
+
