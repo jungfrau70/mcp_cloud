@@ -48,6 +48,7 @@ import FileTreePanel from './FileTreePanel.vue';
 import { useRuntimeConfig } from '#app'
 
 const kbTree = ref(null);
+const slidesTree = ref(null);
 const loading = ref(false);
 const error = ref(null);
 // 관리자 설정 UI는 지식베이스로 이동
@@ -176,6 +177,11 @@ onMounted(async () => {
     const r2 = await fetch(`${apiBase}/api/v1/slides/selection`, { headers: { 'X-API-Key': apiKey } });
     const sel = await r2.json();
     selectedDirs.value = Array.isArray(sel?.selected_dirs) ? sel.selected_dirs : []
+    // 선택 디렉토리를 기준으로 서버가 머지한 트리 가져오기 (중첩 경로 지원)
+    const r3 = await fetch(`${apiBase}/api/v1/slides/tree`, { headers: { 'X-API-Key': apiKey } });
+    if (r3.ok) {
+      slidesTree.value = await r3.json();
+    }
   } catch (e) {
     error.value = e.message;
   } finally {
@@ -201,6 +207,9 @@ const openCurriculum = () => {
 // 선택된 디렉토리만 필터링해 표시
 const selectedDirs = ref([])
 const displayTree = computed(() => {
+  // slidesTree가 있으면 우선 사용 (서버에서 중첩 경로 포함 머지된 결과)
+  if (slidesTree.value) return slidesTree.value
+  // fallback: 기존 KB 트리 + 1레벨 필터
   const t = kbTree.value || {}
   const picked = selectedDirs.value || []
   if(!picked.length) return t

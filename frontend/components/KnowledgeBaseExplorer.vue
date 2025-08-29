@@ -368,7 +368,19 @@ async function loadAllKbDirs(){
   try{
     const r = await fetch(`${apiBase}/api/v1/knowledge-base/tree`, { headers: { 'X-API-Key': apiKey }})
     const data = await r.json()
-    allKbDirs.value = Object.keys(data || {}).filter(k => k !== 'files').sort()
+    // 재귀적으로 모든 하위 디렉토리 경로 수집 (files 키 제외)
+    const collected = []
+    function walk(node, prefix = ''){
+      if(!node || typeof node !== 'object') return
+      for(const key of Object.keys(node)){
+        if(key === 'files') continue
+        const next = prefix ? `${prefix}/${key}` : key
+        collected.push(next)
+        walk(node[key], next)
+      }
+    }
+    walk(data)
+    allKbDirs.value = collected.sort()
   } finally { allDirsLoading.value = false }
 }
 async function loadSelection(){

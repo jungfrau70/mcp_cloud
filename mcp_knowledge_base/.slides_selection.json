@@ -1,7 +1,7 @@
 {
   "selected_dirs": [
-    "cloud_basic",
     "slides",
-    "textbook"
+    "cloud_basic/prerequisite",
+    "cloud_basic/textbook"
   ]
 }

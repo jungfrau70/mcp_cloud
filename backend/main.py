@@ -1889,33 +1889,36 @@ async def generate_document_from_external(request: GenerateDocumentRequest):
                 document_path=None
             )
 
-        # Determine target path and filename
-        target_filename = f"{generated_doc_data['slug']}.md"
-        if request.target_path:
-            # Ensure target_path is relative to KNOWLEDGE_BASE_DIR and ends with .md
-            # Use pathlib for robust path manipulation
-            base_path = pathlib.Path(KNOWLEDGE_BASE_DIR)
-            requested_relative_path = pathlib.Path(request.target_path)
-            
-            # If target_path is a directory, append the generated slug
-            if requested_relative_path.suffix == '': # It's a directory
-                final_relative_path = requested_relative_path / target_filename
-            else: # It's a file path, use it directly
-                final_relative_path = requested_relative_path
-                # Ensure it ends with .md
-                if final_relative_path.suffix != '.md':
-                    final_relative_path = final_relative_path.with_suffix('.md')
+        # Determine target path and filename (under documents/ with date prefix)
+        from datetime import datetime
+        date_prefix = datetime.now().strftime('%Y-%m-%d')
+        documents_root = pathlib.Path(KNOWLEDGE_BASE_DIR) / 'documents'
 
-            # Construct the full absolute path
+        if request.target_path:
+            base_path = documents_root
+            requested_relative_path = pathlib.Path(request.target_path)
+            # Directory case: use AI-generated slug as filename
+            if requested_relative_path.suffix == '':
+                base_name = f"{generated_doc_data['slug']}.md"
+                base_name = f"{date_prefix}-{base_name}"
+                final_relative_path = requested_relative_path / base_name
+            else:
+                # File case: respect provided name but ensure .md and add date prefix
+                provided_name = requested_relative_path.name
+                if not provided_name.endswith('.md'):
+                    provided_name = str(pathlib.Path(provided_name).with_suffix('.md').name)
+                base_name = f"{date_prefix}-{provided_name}"
+                final_relative_path = requested_relative_path.with_name(base_name)
             full_target_path = base_path / final_relative_path
         else:
-            # Default path: root of KNOWLEDGE_BASE_DIR
-            full_target_path = pathlib.Path(KNOWLEDGE_BASE_DIR) / target_filename
+            # Default path: documents root with date-prefixed slug
+            base_name = f"{date_prefix}-{generated_doc_data['slug']}.md"
+            full_target_path = documents_root / base_name
 
         # Ensure parent directories exist
         full_target_path.parent.mkdir(parents=True, exist_ok=True)
 
-        # 4. Save the generated document
+        # 4. Save the generated document (prepend metadata frontmatter)
         content_value = generated_doc_data.get('content', '')
         if not isinstance(content_value, str):
             # Attempt to coerce common mock artifacts
@@ -1923,8 +1926,23 @@ async def generate_document_from_external(request: GenerateDocumentRequest):
                 content_value = content_value.return_value  # type: ignore[assignment]
             else:
                 content_value = str(content_value)
+        # Build sources list for frontmatter
+        fm_lines = ["---"]
+        fm_lines.append(f"date: {datetime.now().isoformat()}")
+        fm_lines.append("sources:")
+        try:
+            for item in search_results:
+                title = str(item.get('title', '')).replace('\n', ' ').strip()
+                link = str(item.get('link', '')).strip()
+                if title or link:
+                    fm_lines.append(f"  - title: \"{title}\"")
+                    fm_lines.append(f"    link: \"{link}\"")
+        except Exception:
+            pass
+        fm_lines.append("---")
+        final_content = "\n".join(fm_lines) + "\n\n" + content_value
         with open(full_target_path, 'w', encoding='utf-8') as f:
-            f.write(content_value)
+            f.write(final_content)
 
         # Update RAG service knowledge base if available
         if rag_service_instance:
@@ -1963,13 +1981,22 @@ def _load_selected_slide_dirs() -> List[str]:
             with open(SLIDES_SELECTION_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 if isinstance(data, dict) and isinstance(data.get('selected_dirs'), list):
-                    # sanitize entries to be simple path segments
+                    # sanitize entries to normalized relative paths (allow nested subdirectories safely)
                     out: List[str] = []
-                    for name in data['selected_dirs']:
-                        if isinstance(name, str):
-                            name = name.strip().strip('/\\')
-                            if name and not any(seg in name for seg in ['..', '/', '\\']):
-                                out.append(name)
+                    kb_root_real = os.path.realpath(KNOWLEDGE_BASE_DIR)
+                    for entry in data['selected_dirs']:
+                        if not isinstance(entry, str):
+                            continue
+                        normalized = os.path.normpath(entry.strip().strip('/\\')).lstrip('./').replace('\\', '/')
+                        if not normalized or os.path.isabs(normalized):
+                            continue
+                        try:
+                            abs_path = os.path.realpath(os.path.join(KNOWLEDGE_BASE_DIR, normalized))
+                            if not abs_path.startswith(kb_root_real):
+                                continue
+                            out.append(normalized)
+                        except Exception:
+                            continue
                     return out
     except Exception as e:
         print(f"Failed to load slides selection: {e}")
@@ -1999,17 +2026,23 @@ def get_slides_selection():
 
 @app.post("/api/v1/slides/selection", dependencies=[Depends(get_api_key)], tags=["Slides"])
 def set_slides_selection(payload: SlidesSelection):
-    # sanitize and keep only directories under KB root
+    # sanitize and keep only directories under KB root (allow nested paths)
     cleaned: List[str] = []
-    for name in payload.selected_dirs:
-        if not isinstance(name, str):
+    kb_root_real = os.path.realpath(KNOWLEDGE_BASE_DIR)
+    for entry in payload.selected_dirs:
+        if not isinstance(entry, str):
             continue
-        name = name.strip().strip('/\\')
-        if not name or any(seg in name for seg in ['..', '/', '\\']):
+        normalized = os.path.normpath(entry.strip().strip('/\\')).lstrip('./').replace('\\', '/')
+        if not normalized or os.path.isabs(normalized):
             continue
-        abs_path = os.path.join(KNOWLEDGE_BASE_DIR, name)
-        if os.path.isdir(abs_path):
-            cleaned.append(name)
+        try:
+            abs_path = os.path.realpath(os.path.join(KNOWLEDGE_BASE_DIR, normalized))
+            if not abs_path.startswith(kb_root_real):
+                continue
+            if os.path.isdir(abs_path):
+                cleaned.append(normalized)
+        except Exception:
+            continue
     try:
         with open(SLIDES_SELECTION_FILE, 'w', encoding='utf-8') as f:
             json.dump({ 'selected_dirs': cleaned }, f, ensure_ascii=False, indent=2)

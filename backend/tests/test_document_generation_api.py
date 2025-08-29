@@ -103,12 +103,21 @@ async def test_generate_document_from_external_success(
     data = response.json()
     assert data["success"] is True
     assert f"Document '{generated_title}' generated and saved." in data["message"]
-    assert data["document_path"] == target_path
+    # Expect path under documents/ with date-prefixed filename
+    from datetime import datetime
+    today = datetime.now().strftime('%Y-%m-%d')
+    expected_rel_path = f"documents/aws/{today}-fastapi-lambda-deployment.md"
+    assert data["document_path"] == expected_rel_path
 
     # Verify file creation
-    expected_file_path = tmp_path / target_path
+    expected_file_path = tmp_path / expected_rel_path
     assert expected_file_path.exists()
-    assert expected_file_path.read_text(encoding='utf-8') == generated_content
+    file_text = expected_file_path.read_text(encoding='utf-8')
+    # Frontmatter should exist and content should follow
+    assert file_text.startswith("---\n")
+    assert "date:" in file_text
+    assert "sources:" in file_text
+    assert generated_content in file_text
 
     # Verify mocks were called
     mock_external_search.search.assert_called_once_with(query, num_results=3)
@@ -167,12 +176,18 @@ async def test_generate_document_from_external_no_target_path(
     data = response.json()
     assert data["success"] is True
     assert f"Document '{generated_title}' generated and saved." in data["message"]
-    assert data["document_path"] == f"{generated_slug}.md" # Default path
+    from datetime import datetime
+    today = datetime.now().strftime('%Y-%m-%d')
+    assert data["document_path"] == f"documents/{today}-{generated_slug}.md" # Default path with date prefix
 
     # Verify file creation in root of tmp_path
-    expected_file_path = tmp_path / f"{generated_slug}.md"
+    expected_file_path = tmp_path / f"documents/{today}-{generated_slug}.md"
     assert expected_file_path.exists()
-    assert expected_file_path.read_text(encoding='utf-8') == generated_content
+    file_text = expected_file_path.read_text(encoding='utf-8')
+    assert file_text.startswith("---\n")
+    assert "date:" in file_text
+    assert "sources:" in file_text
+    assert generated_content in file_text
 
     mock_external_search.search.assert_called_once_with(query, num_results=3)
     mock_content_extractor.extract_content.assert_called_once_with("http://example.com/serverless")
