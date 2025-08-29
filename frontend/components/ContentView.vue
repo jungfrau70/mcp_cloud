@@ -1,34 +1,13 @@
 <template>
   <div v-if="content" class="h-full overflow-y-auto bg-white" ref="contentContainer">
     <!-- Action row (optional) -->
-    <div class="flex items-center justify-end gap-2 px-4 pt-3" v-if="!readonly">
-      <button
-        v-if="path && !isSlideView"
-        @click="openSlides"
-        class="px-3 py-1 text-sm rounded bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
-      >
-        Slides 보기
-      </button>
-      <button
-        v-if="path && !isSlideView"
-        @click="emit('navigate-tool',{ tool:'content-edit' })"
-        class="px-3 py-1 text-sm rounded bg-gray-200 hover:bg-gray-300 transition-colors"
-      >
-        편집
-      </button>
-      <button
-        v-if="isSlideView"
-        @click="closeSlides"
-        class="px-3 py-1 text-sm rounded bg-gray-200 hover:bg-gray-300 transition-colors"
-      >
-        Textbook으로
-      </button>
+    <div class="flex items-center justify-end gap-2 px-4 pt-3" v-if="path">
       <button
         v-if="path && !isSlideView"
         @click="downloadPdf"
         class="px-3 py-1 text-sm rounded bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
       >
-        PDF로 저장
+        PDF
       </button>
     </div>
 
@@ -83,10 +62,13 @@ const renderedContent = computed(() => {
   try{
     body = body.replace(/```(?!\w)[ \t]*\n([\s\S]*?)```/g, (m, code) => {
       const first = (code.split(/\r?\n/).find(l => l.trim().length>0) || '').trim()
-      return /^\s*(graph|flowchart|sequenceDiagram|classDiagram|stateDiagram|erDiagram)\b/.test(first)
+      return /^\s*(graph|flowchart|sequenceDiagram|classDiagram|stateDiagram|erDiagram|gantt)\b/.test(first)
         ? '```mermaid\n' + code + '```'
         : m
     })
+    // Strip Marp/slide front-matter or metadata lines at top
+    body = body.replace(/^---\s*[\r\n]+[\s\S]*?[\r\n]---\s*[\r\n]*/m, '')
+               .replace(/^(?:\s*(?:marp|theme|size|header|footer)\s*:[^\n]*\n)+/i, '')
     // Normalize KB links: convert mdc:mcp_knowledge_base/... → /mcp_knowledge_base/...
     body = body.replace(/\]\(mdc:mcp_knowledge_base\//g, '](\/mcp_knowledge_base/')
   }catch{ /* ignore */ }
@@ -106,7 +88,7 @@ const setupLinkIntercepts = async () => {
       allCodeBlocks.forEach(async (node) => {
         const cls = String(node.className||'')
         const text = String(node.textContent||'').trim()
-        const isMermaid = cls.includes('language-mermaid') || /^(graph|flowchart|sequenceDiagram|classDiagram|stateDiagram|erDiagram)\b/.test(text)
+        const isMermaid = cls.includes('language-mermaid') || /^(graph|flowchart|sequenceDiagram|classDiagram|stateDiagram|erDiagram|gantt)\b/.test(text)
         if(!isMermaid) return
         const parent = (node.parentElement && node.parentElement.tagName.toLowerCase() === 'pre') ? node.parentElement : node
         if(parent.getAttribute('data-rendered-mermaid') === '1') return
@@ -339,7 +321,21 @@ const isSlideView = ref(false);
 const slideHtml = ref('');
 const slidePdfUrl = ref('');
 const config = useRuntimeConfig();
-const apiBase = config.public.apiBaseUrl || 'http://localhost:8000';
+function resolveApiBase(){
+  const configured = (config.public?.apiBaseUrl) || 'http://localhost:8000'
+  if (typeof window !== 'undefined'){
+    try{
+      const u = new URL(configured)
+      const browserHost = window.location.hostname
+      if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== browserHost){
+        const port = u.port || '8000'
+        return `${window.location.protocol}//${browserHost}:${port}`
+      }
+    }catch{ /* ignore */ }
+  }
+  return configured
+}
+const apiBase = resolveApiBase()
 const API_KEY = 'my_mcp_eagle_tiger';
 
 const slideTitle = computed(() => {
@@ -383,7 +379,14 @@ const closeSlides = () => {
 const downloadPdf = async () => {
   if (!props.path) return;
   try {
-    const url = `${apiBase}/api/v1/curriculum/pdf?path=${encodeURIComponent(props.path)}`;
+    // Normalize path for backend (strip leading mdc:, ensure textbook-relative when needed)
+    const raw = String(props.path||'')
+    let normalized = raw.replace(/^mdc:/,'').replace(/^\/+/, '')
+    // Remove repository-root prefixes if present to send path relative to textbook root
+    normalized = normalized.replace(/^mcp_knowledge_base\//,'')
+    normalized = normalized.replace(/^cloud_basic\/textbook\//,'')
+    normalized = normalized.replace(/^textbook\//,'')
+    const url = `${apiBase}/api/v1/curriculum/pdf?path=${encodeURIComponent(normalized)}`;
     const res = await fetch(url, { headers: { 'X-API-Key': API_KEY } });
     if (!res.ok) throw new Error(`Failed to export PDF: ${res.status}`);
     const ct = (res.headers.get('content-type') || '').toLowerCase();
@@ -416,6 +419,13 @@ const downloadPdf = async () => {
 .prose a:hover {
   text-decoration: underline;
 }
+
+/* 표(Table) 렌더링 및 가독성 개선 */
+.table-scroll { overflow-x: auto; }
+.prose table { width: 100%; border-collapse: collapse; table-layout: auto; }
+.prose thead th { background: #f9fafb; }
+.prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.5rem 0.75rem; vertical-align: top; }
+.prose tbody tr:nth-child(odd) { background: #fafafa; }
 
 /* 스크롤바 스타일링 */
 .overflow-y-auto::-webkit-scrollbar {

@@ -31,9 +31,9 @@
 
     <!-- Main IDE Layout -->
     <div class="flex flex-grow overflow-hidden bg-gray-100 relative">
-      <!-- Left Panel: hidden entirely on knowledge-base -->
+      <!-- Left Panel: hidden entirely on knowledge-base when Markdown tab active -->
       <aside
-        v-if="!isKnowledgeBase"
+        v-if="!isKnowledgeBase || (isKnowledgeBase && kbTab!=='markdown')"
         class="bg-white border-r border-gray-200 flex-shrink-0 overflow-y-auto shadow-md transition-all duration-200"
         :style="{ width: isSidebarCollapsed ? '0px' : sidebarWidth + 'px' }"
       >
@@ -43,7 +43,7 @@
       </aside>
       <!-- Resizer -->
       <div
-        v-if="!isKnowledgeBase && !isSidebarCollapsed"
+        v-if="(!isKnowledgeBase || (isKnowledgeBase && kbTab!=='markdown')) && !isSidebarCollapsed"
         class="w-1 cursor-col-resize bg-gray-200 hover:bg-gray-300"
         @mousedown="startResize"
       ></div>
@@ -83,8 +83,11 @@
                 <div v-if="activePath" class="h-full"><TipTapKbEditor :key="editorKeyFull" :path="activePath" :content="activeContent" /></div>
                 <div v-else class="p-6 text-sm text-gray-500">좌측 FileTree 탭에서 문서를 선택해 주세요.</div>
               </div>
-              <div v-else class="h-full">
-                <div v-if="activePath" class="h-full"><SplitEditor :key="editorKeyFull" :path="activePath" :content="activeContent" ref="splitEditor" @save="handleKbSave" /></div>
+              <div v-else class="h-full flex flex-col">
+                <!-- Markdown view: full-width container view with scroll -->
+                <div v-if="activePath" class="h-full overflow-y-auto">
+                  <SplitEditor :key="editorKeyFull" :path="activePath" :content="activeContent" ref="splitEditor" @save="handleKbSave" />
+                </div>
                 <div v-else class="p-6 text-sm text-gray-500">좌측 FileTree 탭에서 문서를 선택해 주세요.</div>
               </div>
             </div>

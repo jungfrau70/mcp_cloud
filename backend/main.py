@@ -1969,7 +1969,8 @@ async def generate_document_from_external(request: GenerateDocumentRequest):
 # ===================================
 # Curriculum Endpoints
 # ===================================
-TEXTBOOK_DIR = os.path.join(KNOWLEDGE_BASE_DIR, 'textbook')
+# Curriculum (textbook) root points to cloud_basic/textbook in this repository
+TEXTBOOK_DIR = os.path.join(KNOWLEDGE_BASE_DIR, 'cloud_basic', 'textbook')
 SLIDES_DIR = os.path.join(KNOWLEDGE_BASE_DIR, 'slides')
 
 # Slides directory selection (admin configurable): default to ['slides'] if exists
@@ -2115,6 +2116,13 @@ async def get_curriculum_pdf(path: str):
     try:
         # Normalize and secure the path
         normalized = path.replace("\\", "/").lstrip("/ ")
+        # Strip known KB roots if included by client (defensive)
+        if normalized.startswith('mcp_knowledge_base/'):
+            normalized = normalized[len('mcp_knowledge_base/'):]
+        if normalized.startswith('cloud_basic/textbook/'):
+            normalized = normalized[len('cloud_basic/textbook/'):]
+        if normalized.startswith('textbook/'):
+            normalized = normalized[len('textbook/'):]
         relative_path = os.path.normpath(normalized)
         secure_path = os.path.join(TEXTBOOK_DIR, relative_path)
 
@@ -2126,7 +2134,11 @@ async def get_curriculum_pdf(path: str):
             raise HTTPException(status_code=404, detail="File not found or not a markdown file.")
 
         with open(secure_path, 'r', encoding='utf-8') as f:
-            markdown_content = f.read()
+            raw = f.read()
+        # Strip Marp front-matter (--- ... ---) and slide metadata lines at top
+        import re
+        markdown_content = re.sub(r"^---\s*[\r\n]+[\s\S]*?[\r\n]---\s*[\r\n]*", "", raw, flags=re.M)
+        markdown_content = re.sub(r"^(?:\s*(?:marp|theme|size|header|footer)\s*:[^\n]*\n)+", "", markdown_content, flags=re.I)
 
         if not HAS_MARKDOWN_PDF:
             # Fallback to returning markdown as attachment
