@@ -15,6 +15,17 @@
 
 ## 2. 교육 진행 순서: "나만의 블로그 만들기"
 
+### 비주얼 개요
+
+```mermaid
+flowchart LR
+  S0[FinOps/Setup] --> S1[IAM]
+  S1 --> S2[Storage]
+  S2 --> S3[VM]
+  S3 --> S4[Network]
+  S4 --> S5[Practice]
+```
+
 | 단계 | 블로그 구축 과정 | 주요 학습 내용 | 핵심 활동 (실습) | 관련 교재 |
 | :--- | :--- | :--- | :--- | :--- |
 | 0 | **프로젝트 준비 및 예산 설정** | - FinOps 기초: 예산, 알림<br>- 개발 환경 준비 | - **월 $5 예산 및 알림 설정하기**<br>- 실습 후 리소스 정리의 중요성 인지 | [Chapter5_Practice.md](Chapter5_Practice.md) |

@@ -13,6 +13,35 @@
 - **통합 실습 가이드**: [Chapter5_Practice.md](mdc:mcp_knowledge_base/cloud_basic/textbook/Chapter5_Practice.md)
 - **각 챕터 교재**: [Chapter1_IAM.md](mdc:mcp_knowledge_base/cloud_basic/textbook/Chapter1_IAM.md), [Chapter2_Storage.md](mdc:mcp_knowledge_base/cloud_basic/textbook/Chapter2_Storage.md), [Chapter3_VM.md](mdc:mcp_knowledge_base/cloud_basic/textbook/Chapter3_VM.md), [Chapter4_Network.md](mdc:mcp_knowledge_base/cloud_basic/textbook/Chapter4_Network.md)
 
+비주얼 목차 (Quick Visual Index)
+------------------
+
+| 장 | 주제 | 한줄 요약 | 바로가기 |
+|---|---|---|---|
+| 1 | 🔑 IAM | 최소권한·역할분리·MFA | [Chapter1_IAM](mdc:mcp_knowledge_base/cloud_basic/textbook/Chapter1_IAM.md) |
+| 2 | 🗄️ Storage | 정적 웹·버전관리·라이프사이클 | [Chapter2_Storage](mdc:mcp_knowledge_base/cloud_basic/textbook/Chapter2_Storage.md) |
+| 3 | 💻 VM | 고가용성(LB+오토스케일)·관리형 접속 | [Chapter3_VM](mdc:mcp_knowledge_base/cloud_basic/textbook/Chapter3_VM.md) |
+| 4 | 🌐 Network | VPC/VNet·SG/NSG·DNS/LB | [Chapter4_Network](mdc:mcp_knowledge_base/cloud_basic/textbook/Chapter4_Network.md) |
+| 5 | 🧪 Practice | 서버리스 분석·3‑Tier 웹서비스 | [Chapter5_Practice](mdc:mcp_knowledge_base/cloud_basic/textbook/Chapter5_Practice.md) |
+
+학습 로드맵 (Timeline)
+-------------
+
+```mermaid
+gantt
+  title Cloud Basics Roadmap
+  dateFormat  YYYY-MM-DD
+  section Basics
+  Step 0 • FinOps/Setup   :done,    s0, 2025-08-01, 1d
+  Step 1 • IAM             :active,  s1, 2025-08-02, 1d
+  Step 2 • Storage         :         s2, 2025-08-03, 1d
+  section Build
+  Step 3 • Serverless DA   :         s3, 2025-08-04, 1d
+  Step 4 • VM(HA)          :         s4, 2025-08-05, 1d
+  Step 5 • Network/DNS     :         s5, 2025-08-06, 1d
+  Step 6 • 3‑Tier Service  :         s6, 2025-08-07, 1d
+```
+
 블로그 아키텍처 구성 개요
 -------------------------
 

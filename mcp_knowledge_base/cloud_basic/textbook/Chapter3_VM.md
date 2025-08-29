@@ -18,6 +18,28 @@ footer: '© MentorAi Cloud & DevOps Education'
 4.  **생성 및 연결**: VM 생성 및 원격 연결 방법을 익힌다.
 5.  **고가용성**: 로드밸런싱과 오토스케일링을 통한 고가용성(HA) 구성 원리를 이해한다.
 
+---
+
+### 비주얼 요약 (HA 패턴)
+
+```mermaid
+graph TD
+  User --> LB[Load Balancer]
+  LB --> ASG1((AZ1 VM))
+  LB --> ASG2((AZ2 VM))
+  subgraph ASG[Auto Scaling Group]
+    ASG1
+    ASG2
+  end
+  LB -- HealthCheck --> ASG
+```
+
+| 체크 | 항목 |
+|---|---|
+| [ ] | 헬스체크 경로/응답코드 설정 |
+| [ ] | 최소/최대/희망 용량 정의 |
+| [ ] | 관리형 접속(SSM/Bastion/IAP) 적용 |
+
 ### **운영 목표 & 승인 포인트**
 
 - 운영 목표: 안전한 접속, 표준 템플릿 기반 배포, 가용성/비용 균형

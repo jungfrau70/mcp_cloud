@@ -18,6 +18,29 @@ footer: '© MentorAi Cloud & DevOps Education'
 4.  **방화벽**: SG, NACL, NSG 등 핵심 보안 요소를 비교하고 트래픽 흐름을 제어한다.
 5.  **트래픽 관리**: 클라우드 DNS와 로드밸런서의 역할을 이해하고 설명할 수 있다.
 
+---
+
+### 비주얼 요약 (방화벽 흐름)
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant RT as RouteTable
+  participant N as NACL
+  participant S as SG/NSG
+  participant I as Instance
+  U->>RT: Request
+  RT->>N: Subnet 체크
+  N->>S: Instance 보안 체크
+  S->>I: 허용 시 전달
+```
+
+| 체크 | 항목 |
+|---|---|
+| [ ] | 인바운드 최소/소스 제한 |
+| [ ] | 아웃바운드 제어 및 로깅 |
+| [ ] | DNS 레코드/TTL 검증 |
+
 ### **운영 목표 & 승인 포인트**
 
 - 운영 목표: 퍼블릭/프라이빗 분리, 최소 개방, 관측/알림 일원화
