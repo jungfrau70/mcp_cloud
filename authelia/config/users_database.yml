@@ -15,5 +15,12 @@ users:
     groups:
       - admins
       - dev
+  admin:
+    disabled: false
+    displayname: "Admin User"
+    password: "$argon2id$v=19$m=65536,t=3,p=4$0AYLJCN6te/8bcmXi5gGUQ$ikqw/IC3TRNeTGpSvl27CQC1BdFGh/BJwe2YJU/1nd0"
+    email: admin@gostock.us
+    groups:
+      - admins
 ...
 # yamllint enable rule:line-length
