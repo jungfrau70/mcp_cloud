@@ -12,7 +12,10 @@
           <input v-model="form.query" placeholder="검색 쿼리" class="border rounded px-2 py-1 text-sm flex-1" />
           <label class="text-xs flex items-center gap-1"><input type="checkbox" v-model="form.enabled" class="accent-indigo-600"/> enabled</label>
           <button @click="save" class="px-2 py-1 text-xs bg-indigo-600 text-white rounded">저장</button>
-          <button @click="runNow" class="px-2 py-1 text-xs border rounded">Run Now</button>
+          <button @click="runNow" :disabled="isRunning" :class="[
+            'px-2 py-1 text-xs rounded shadow',
+            isRunning ? 'bg-indigo-300 text-white opacity-70 cursor-not-allowed' : 'bg-indigo-600 text-white hover:bg-indigo-700'
+          ]">Run Now</button>
         </div>
         <div class="border rounded">
           <table class="w-full text-sm">
@@ -50,6 +53,7 @@ const emit = defineEmits(['close'])
 const api = useKbApi()
 const categories = ref<{name:string;query:string;enabled:boolean}[]>([])
 const form = ref<{name:string;query:string;enabled:boolean}>({ name:'', query:'', enabled:true })
+const isRunning = ref(false)
 
 async function load(){
   const r = await api.listTrending()
@@ -67,8 +71,15 @@ async function remove(name:string){
   await load()
 }
 async function runNow(){
-  await api.runTrendingNow()
-  alert('즉시 실행 요청을 보냈습니다.')
+  if(isRunning.value) return
+  try{
+    isRunning.value = true
+    await api.runTrendingNow()
+    alert('트렌드 문서 생성이 시작되었습니다.')
+    emit('close')
+  } finally {
+    isRunning.value = false
+  }
 }
 
 onMounted(load)
