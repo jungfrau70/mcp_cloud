@@ -50,12 +50,12 @@ export function useKbApi(){
   }
 
   async function getItem(path: string): Promise<any>{
-    return request<any>(`${apiBase}/api/v1/knowledge-base/item?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey }}, 'getItem failed')
+    return request<any>(`${apiBase}/v1/knowledge-base/item?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey }}, 'getItem failed')
   }
 
   async function saveItem(path: string, content: string, message?: string, expectedVersion?: number): Promise<KbSaveResponse>{
     // Use content-saving endpoint (v1 alias is rename-only)
-    return request<KbSaveResponse>(`${apiBase}/api/_deprecated/kb/item`, {
+    return request<KbSaveResponse>(`${apiBase}/_deprecated/kb/item`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
       body: JSON.stringify({ path, content, message, expected_version_no: expectedVersion })
@@ -63,11 +63,11 @@ export function useKbApi(){
   }
 
   async function listVersions(path: string): Promise<KbVersionsResponse>{
-    return request<KbVersionsResponse>(`${apiBase}/api/v1/knowledge-base/versions?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey }}, 'listVersions failed')
+    return request<KbVersionsResponse>(`${apiBase}/v1/knowledge-base/versions?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey }}, 'listVersions failed')
   }
 
   async function outline(content: string): Promise<KbOutlineResponse>{
-    return request<KbOutlineResponse>(`${apiBase}/api/v1/knowledge-base/outline`, {
+    return request<KbOutlineResponse>(`${apiBase}/v1/knowledge-base/outline`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
       body: JSON.stringify({ content })
@@ -77,30 +77,30 @@ export function useKbApi(){
   async function startCompose(topic: string, failStage?: string): Promise<KbTask>{
     const qs = new URLSearchParams({ topic })
     if(failStage) qs.append('fail_stage', failStage)
-    return request<KbTask>(`${apiBase}/api/v1/knowledge-base/compose/external?${qs.toString()}`, { method: 'POST', headers: { 'X-API-Key': apiKey }}, 'compose failed')
+    return request<KbTask>(`${apiBase}/v1/knowledge-base/compose/external?${qs.toString()}`, { method: 'POST', headers: { 'X-API-Key': apiKey }}, 'compose failed')
   }
 
   async function getTask(id: string): Promise<KbTask>{
-    return request<KbTask>(`${apiBase}/api/v1/knowledge-base/tasks/${id}`, { headers: { 'X-API-Key': apiKey }}, 'task failed')
+    return request<KbTask>(`${apiBase}/v1/knowledge-base/tasks/${id}`, { headers: { 'X-API-Key': apiKey }}, 'task failed')
   }
 
   async function diff(path: string, v1: number, v2: number): Promise<KbUnifiedDiff>{
-    return request<KbUnifiedDiff>(`${apiBase}/api/v1/knowledge-base/diff?path=${encodeURIComponent(path)}&v1=${v1}&v2=${v2}`, { headers: { 'X-API-Key': apiKey }}, 'diff failed')
+    return request<KbUnifiedDiff>(`${apiBase}/v1/knowledge-base/diff?path=${encodeURIComponent(path)}&v1=${v1}&v2=${v2}`, { headers: { 'X-API-Key': apiKey }}, 'diff failed')
   }
 
   async function structuredDiff(path: string, v1: number, v2: number): Promise<KbStructuredDiff>{
-    return request<KbStructuredDiff>(`${apiBase}/api/v1/knowledge-base/diff/structured?path=${encodeURIComponent(path)}&v1=${v1}&v2=${v2}`, { headers: { 'X-API-Key': apiKey }}, 'structured diff failed')
+    return request<KbStructuredDiff>(`${apiBase}/v1/knowledge-base/diff/structured?path=${encodeURIComponent(path)}&v1=${v1}&v2=${v2}`, { headers: { 'X-API-Key': apiKey }}, 'structured diff failed')
   }
 
   async function recentTasks(limit = 20): Promise<KbTaskList>{
-    return request<KbTaskList>(`${apiBase}/api/v1/knowledge-base/tasks/recent?limit=${limit}`, { headers: { 'X-API-Key': apiKey }}, 'recent tasks failed')
+    return request<KbTaskList>(`${apiBase}/v1/knowledge-base/tasks/recent?limit=${limit}`, { headers: { 'X-API-Key': apiKey }}, 'recent tasks failed')
   }
 
   async function uploadAsset(file: File, subdir = 'assets'): Promise<{ path: string }>{
     const form = new FormData()
     form.append('file', file)
     form.append('subdir', subdir)
-    const r = await fetch(`${apiBase}/api/v1/assets/upload`, { method: 'POST', headers: { 'X-API-Key': apiKey }, body: form })
+    const r = await fetch(`${apiBase}/v1/assets/upload`, { method: 'POST', headers: { 'X-API-Key': apiKey }, body: form })
     if(!r.ok){
       let detail: string|undefined
       try{ const d = await r.json(); detail = (d as any)?.detail }catch{}
@@ -110,7 +110,7 @@ export function useKbApi(){
   }
 
   async function transform(text: string, kind: 'table'|'mermaid'|'summary', opts?: { cols?: number; diagramType?: 'flow'|'sequence'|'gantt'; summaryLen?: number; use_rag?: boolean }): Promise<{ result: string }>{
-    return request<{ result: string }>(`${apiBase}/api/v1/knowledge-base/transform`, {
+    return request<{ result: string }>(`${apiBase}/v1/knowledge-base/transform`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
       body: JSON.stringify({ text, kind, ...(opts||{}) })
@@ -118,7 +118,7 @@ export function useKbApi(){
   }
 
   async function lint(text: string): Promise<{ issues: { line:number; column:number; message:string; rule?:string }[] }>{
-    return request<{ issues: { line:number; column:number; message:string; rule?:string }[] }>(`${apiBase}/api/v1/knowledge-base/lint`, {
+    return request<{ issues: { line:number; column:number; message:string; rule?:string }[] }>(`${apiBase}/v1/knowledge-base/lint`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
       body: JSON.stringify({ text })
@@ -127,20 +127,20 @@ export function useKbApi(){
 
   // Trending categories
   async function listTrending(): Promise<{ categories: { name:string; query:string; enabled:boolean }[] }>{
-    return request(`${apiBase}/api/v1/trending/categories`, { headers: { 'X-API-Key': apiKey }}, 'trending list failed')
+    return request(`${apiBase}/v1/trending/categories`, { headers: { 'X-API-Key': apiKey }}, 'trending list failed')
   }
   async function upsertTrending(item: { name:string; query:string; enabled?: boolean }): Promise<{ ok: boolean }>{
-    return request(`${apiBase}/api/v1/trending/categories`, {
+    return request(`${apiBase}/v1/trending/categories`, {
       method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey }, body: JSON.stringify(item)
     }, 'trending upsert failed')
   }
   async function deleteTrending(name: string): Promise<{ ok: boolean }>{
-    return request(`${apiBase}/api/v1/trending/categories/${encodeURIComponent(name)}`, {
+    return request(`${apiBase}/v1/trending/categories/${encodeURIComponent(name)}`, {
       method: 'DELETE', headers: { 'X-API-Key': apiKey }
     }, 'trending delete failed')
   }
   async function runTrendingNow(): Promise<{ ok: boolean }>{
-    return request(`${apiBase}/api/v1/trending/run-now`, { method: 'POST', headers: { 'X-API-Key': apiKey } }, 'trending run failed')
+    return request(`${apiBase}/v1/trending/run-now`, { method: 'POST', headers: { 'X-API-Key': apiKey } }, 'trending run failed')
   }
 
   return { getItem, saveItem, listVersions, outline, startCompose, getTask, diff, structuredDiff, recentTasks, uploadAsset, transform, lint, listTrending, upsertTrending, deleteTrending, runTrendingNow, request }

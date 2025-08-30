@@ -20,7 +20,7 @@ export function useKbFile(){
     error.value = undefined
     try {
       path.value = targetPath
-      const res = await fetch(`${apiBase()}/api/v1/knowledge-base/item?path=${encodeURIComponent(stripBasePath(targetPath))}`, { headers: headers(), signal: currentAbort.signal })
+      const res = await fetch(`${apiBase()}/v1/knowledge-base/item?path=${encodeURIComponent(stripBasePath(targetPath))}`, { headers: headers(), signal: currentAbort.signal })
       if(!res.ok) throw new Error('Load failed')
       const data = await res.json()
       content.value = data.content || ''
@@ -56,7 +56,7 @@ export function useKbFile(){
 
   async function save(newContent: string, opts: SaveOptions = {}){
     const expected = opts.force ? undefined : lastVersion.value
-    const res = await fetch(`${apiBase()}/api/v1/knowledge-base/item`, {
+    const res = await fetch(`${apiBase()}/v1/knowledge-base/item`, {
       method: 'PATCH',
       headers: headers(),
       body: JSON.stringify({ path: stripBasePath(path.value), content: newContent, message: opts.message, expected_version_no: expected })

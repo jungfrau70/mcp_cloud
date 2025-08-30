@@ -171,7 +171,12 @@ services:
     # 프론트엔드는 민감키 불필요: env_file 제거
     environment:
       - NUXT_PUBLIC_API_BASE_URL=/api
-      - NODE_ENV=development
+      - NUXT_PUBLIC_WS_BASE_URL=wss://api.gostock.us/api
+      - NODE_ENV=production
+      - YARN_PRODUCTION=false
+      - NPM_CONFIG_PRODUCTION=false
+      - NITRO_HOST=0.0.0.0
+      - NITRO_PORT=3000
       - CHOKIDAR_USEPOLLING=true
       - NUXT_TELEMETRY_DISABLED=1
     ports:
@@ -181,7 +186,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    command: ["sh", "-lc", "rm -rf .nuxt .output && yarn dev --host 0.0.0.0 --port 3000"]
+    command: ["sh", "-lc", "rm -rf .nuxt .output && yarn install --frozen-lockfile --production=false || yarn install --production=false && yarn build && node .output/server/index.mjs"]
     depends_on:
       - mcp_backend
     networks:

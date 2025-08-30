@@ -348,7 +348,7 @@ const slideTitle = computed(() => {
 const openSlides = async () => {
   if (!props.path) return;
   try {
-    const url = `${apiBase}/api/v1/slides?textbook_path=${encodeURIComponent(props.path)}`;
+    const url = `${apiBase}/v1/slides?textbook_path=${encodeURIComponent(props.path)}`;
     const res = await fetch(url, { headers: { 'X-API-Key': API_KEY } });
     if (!res.ok) throw new Error(`Failed to load slides: ${res.status}`);
     const ct = (res.headers.get('content-type') || '').toLowerCase();
@@ -388,7 +388,7 @@ const downloadPdf = async () => {
     normalized = normalized.replace(/^mcp_knowledge_base\//,'')
     normalized = normalized.replace(/^cloud_basic\/textbook\//,'')
     normalized = normalized.replace(/^textbook\//,'')
-    const url = `${apiBase}/api/v1/curriculum/pdf?path=${encodeURIComponent(normalized)}`;
+    const url = `${apiBase}/v1/curriculum/pdf?path=${encodeURIComponent(normalized)}`;
     const res = await fetch(url, { headers: { 'X-API-Key': API_KEY } });
     if (!res.ok) throw new Error(`Failed to export PDF: ${res.status}`);
     const ct = (res.headers.get('content-type') || '').toLowerCase();

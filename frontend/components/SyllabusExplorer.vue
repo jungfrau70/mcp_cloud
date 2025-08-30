@@ -170,15 +170,15 @@ onMounted(async () => {
   loading.value = true;
   try {
     // KB 전체 트리
-    const r1 = await fetch(`${apiBase}/api/v1/knowledge-base/tree`, { headers: { 'X-API-Key': apiKey } });
+    const r1 = await fetch(`${apiBase}/v1/knowledge-base/tree`, { headers: { 'X-API-Key': apiKey } });
     if (!r1.ok) throw new Error('Failed to fetch KB tree');
     kbTree.value = await r1.json();
     // 선택 디렉토리
-    const r2 = await fetch(`${apiBase}/api/v1/slides/selection`, { headers: { 'X-API-Key': apiKey } });
+    const r2 = await fetch(`${apiBase}/v1/slides/selection`, { headers: { 'X-API-Key': apiKey } });
     const sel = await r2.json();
     selectedDirs.value = Array.isArray(sel?.selected_dirs) ? sel.selected_dirs : []
     // 선택 디렉토리를 기준으로 서버가 머지한 트리 가져오기 (중첩 경로 지원)
-    const r3 = await fetch(`${apiBase}/api/v1/slides/tree`, { headers: { 'X-API-Key': apiKey } });
+    const r3 = await fetch(`${apiBase}/v1/slides/tree`, { headers: { 'X-API-Key': apiKey } });
     if (r3.ok) {
       slidesTree.value = await r3.json();
     }

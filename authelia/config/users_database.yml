@@ -22,5 +22,16 @@ users:
     email: admin@gostock.us
     groups:
       - admins
+access_control:
+  default_policy: deny
+  rules:
+    - domain: ["app.gostock.us"]
+      policy: bypass
+    - domain: ["app.gostock.us"]
+      resources: ["/admin*", "/kb/manage*"]
+      policy: one_factor
+    - domain: ["api.gostock.us"]
+      resources: ["/api/v1/*"]
+      policy: one_factor
 ...
 # yamllint enable rule:line-length

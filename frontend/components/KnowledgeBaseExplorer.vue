@@ -148,7 +148,7 @@ const statusMessage = ref('');
 // Methods
 const loadKnowledgeBaseStructure = async () => {
   try {
-    const response = await fetch(`${apiBase}/api/v1/knowledge-base/tree`, {
+    const response = await fetch(`${apiBase}/v1/knowledge-base/tree`, {
       headers: { 'X-API-Key': apiKey }
     });
     
@@ -368,7 +368,7 @@ async function loadAdminPanel(){
 async function loadAllKbDirs(){
   allDirsLoading.value = true
   try{
-    const r = await fetch(`${apiBase}/api/v1/knowledge-base/tree`, { headers: { 'X-API-Key': apiKey }})
+    const r = await fetch(`${apiBase}/v1/knowledge-base/tree`, { headers: { 'X-API-Key': apiKey }})
     const data = await r.json()
     // 재귀적으로 모든 하위 디렉토리 경로 수집 (files 키 제외)
     const collected = []
@@ -387,7 +387,7 @@ async function loadAllKbDirs(){
 }
 async function loadSelection(){
   try{
-    const r = await fetch(`${apiBase}/api/v1/slides/selection`, { headers: { 'X-API-Key': apiKey }})
+    const r = await fetch(`${apiBase}/v1/slides/selection`, { headers: { 'X-API-Key': apiKey }})
     const d = await r.json()
     selectedDirs.value = Array.isArray(d?.selected_dirs) ? d.selected_dirs : []
   } catch { selectedDirs.value = [] }
@@ -395,7 +395,7 @@ async function loadSelection(){
 async function saveSelection(){
   saving.value = true
   try{
-    await fetch(`${apiBase}/api/v1/slides/selection`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey }, body: JSON.stringify({ selected_dirs: selectedDirs.value }) })
+    await fetch(`${apiBase}/v1/slides/selection`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey }, body: JSON.stringify({ selected_dirs: selectedDirs.value }) })
     showAdmin.value = false
   } finally { saving.value = false }
 }

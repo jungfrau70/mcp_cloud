@@ -331,7 +331,7 @@ watch(() => route.path, async (p) => {
 async function showCurriculumIndex(){
   // 1) Try slides index through slides endpoint (if admin selected dirs contain index.md)
   try {
-    const s = await fetch(`${apiBase}/api/v1/slides?textbook_path=${encodeURIComponent('index')}`, { headers: { 'X-API-Key': apiKey } })
+    const s = await fetch(`${apiBase}/v1/slides?textbook_path=${encodeURIComponent('index')}`, { headers: { 'X-API-Key': apiKey } })
     if (s.ok) {
       const ct = (s.headers.get('content-type')||'').toLowerCase()
       if (ct.includes('application/pdf')){
@@ -348,7 +348,7 @@ async function showCurriculumIndex(){
   } catch { /* ignore */ }
   // 2) Fallback to knowledge-base root index.md
   try{
-    const r = await fetch(`${apiBase}/api/v1/knowledge-base/item?path=${encodeURIComponent('index.md')}`, { headers: { 'X-API-Key': apiKey } })
+    const r = await fetch(`${apiBase}/v1/knowledge-base/item?path=${encodeURIComponent('index.md')}`, { headers: { 'X-API-Key': apiKey } })
     if(!r.ok){ throw new Error('failed') }
     const d = await r.json()
     tbContent.value = d?.content || '# Welcome'
@@ -375,7 +375,7 @@ const handleFileClick = async (path) => {
     try { if (typeof window !== 'undefined') localStorage.setItem('textbook_last_path', path) } catch {}
 
     // KB 아이템 API로 직접 로드(지식베이스와 동일 경로/함수)
-    const url = `${apiBase}/api/v1/knowledge-base/item?path=${encodeURIComponent(path)}`
+    const url = `${apiBase}/v1/knowledge-base/item?path=${encodeURIComponent(path)}`
     const r = await fetch(url, {
       headers: { 'X-API-Key': apiKey }
     })
@@ -414,7 +414,7 @@ const handleKbSave = async ({ path, content, message, force }) => {
     try {
       const config = useRuntimeConfig();
       const apiBase = config.public.apiBaseUrl || '/api';
-      await fetch(`${apiBase}/api/v1/knowledge-base/item`, { method:'PATCH', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path, content, message }) })
+      await fetch(`${apiBase}/v1/knowledge-base/item`, { method:'PATCH', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path, content, message }) })
       toast.push('success','강제 저장 완료')
     } catch(e){ toast.push('error','강제 저장 실패') }
     return
@@ -463,7 +463,7 @@ async function ensureKbIndex(){
     if(docStore.error){ throw new Error(docStore.error) }
   }catch{
     try{
-      await fetch(`${apiBase}/api/v1/knowledge-base/item`, {
+      await fetch(`${apiBase}/v1/knowledge-base/item`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
         body: JSON.stringify({ path: 'index.md', type: 'file', content: '# Knowledge Base\n\n시작 문서입니다.' })
