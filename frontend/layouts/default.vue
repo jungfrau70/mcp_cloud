@@ -42,7 +42,7 @@
     <div class="flex flex-grow overflow-hidden bg-gray-100 relative">
       <!-- Left Panel: hidden entirely on knowledge-base when Markdown tab active -->
       <aside
-        v-if="!isKnowledgeBase || (isKnowledgeBase && kbTab!=='markdown')"
+        v-if="!isKnowledgeBase"
         class="bg-white border-r border-gray-200 flex-shrink-0 overflow-y-auto shadow-md transition-all duration-200"
         :style="{ width: isSidebarCollapsed ? '0px' : sidebarWidth + 'px' }"
       >
@@ -52,7 +52,7 @@
       </aside>
       <!-- Resizer -->
       <div
-        v-if="(!isKnowledgeBase || (isKnowledgeBase && kbTab!=='markdown')) && !isSidebarCollapsed"
+        v-if="!isKnowledgeBase && !isSidebarCollapsed"
         class="w-1 cursor-col-resize bg-gray-200 hover:bg-gray-300"
         @mousedown="startResize"
       ></div>

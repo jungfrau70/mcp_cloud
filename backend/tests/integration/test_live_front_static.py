@@ -64,9 +64,10 @@ def test_front_page_loads_and_static_assets_resolve():
         r = _head_or_get(url)
         assert r.status_code == 200, f"{url} -> {r.status_code}"
         ctype = (r.headers.get("Content-Type") or "").lower()
-        if url.endswith(".js") or "/_nuxt/" in url and (".js" in url):
-            assert "javascript" in ctype or "ecmascript" in ctype,
-            f"Unexpected JS content-type for {url}: {ctype}"
+        if url.endswith(".js") or ("/_nuxt/" in url and ".js" in url):
+            assert ("javascript" in ctype) or ("ecmascript" in ctype), (
+                f"Unexpected JS content-type for {url}: {ctype}"
+            )
         if url.endswith(".css") or "/assets/" in url and (".css" in url):
             assert "text/css" in ctype, f"Unexpected CSS content-type for {url}: {ctype}"
 

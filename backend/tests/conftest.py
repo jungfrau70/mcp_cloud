@@ -5,9 +5,14 @@ from unittest.mock import Mock, patch
 
 # 백엔드 루트(현재 디렉터리 상위) 경로를 sys.path에 추가
 # 기존 경로는 backend/backend 를 가리켜 ModuleNotFoundError 발생
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+# 프로젝트 루트 경로를 sys.path 에 추가 (backend 패키지 인식)
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
+    # also add backend root for legacy 'models' import in tests
+BACKEND_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if BACKEND_ROOT not in sys.path:
+    sys.path.insert(0, BACKEND_ROOT)
 
 # 테스트용 환경 변수 설정
 # 통합/라이브 테스트 시 실제 실행중인 백엔드의 키를 덮어쓰면 안되므로 LIVE_API_BASE 존재 시 MCP_API_KEY 미변경

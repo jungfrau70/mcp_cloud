@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime, timedelta
 
 # conftest.py sets up the path, so we can do top-level imports here
-from models import User
+import models
 
 # NOTE: DO NOT import app from backend.main at the top level.
 # It needs to be imported *after* environment variables are patched.
@@ -21,21 +21,45 @@ def client(monkeypatch, tmp_path):
     # 1. Set environment variables for the test
     monkeypatch.setenv("DATABASE_URL", f"sqlite:///{tmp_path / 'test_auth.db'}")
     monkeypatch.setenv("MCP_API_KEY", "test_api_key")
-    monkeypatch.setenv("DISABLE_AUTH", "true") # Disable API key auth for these tests
+    monkeypatch.setenv("DISABLE_AUTH", "false") # Enable API key auth for these tests
 
-    # 2. Now, safely import the app and models
-    from main import app, get_db
-    from models import Base, User
+    # 2. Import necessary modules for app creation
+    from fastapi import FastAPI
+    from fastapi.middleware.cors import CORSMiddleware
+    from models import Base, User # User model is needed for tests
+    from main import get_db # Only get_db is needed from main for overriding
 
-    # 3. Create a fresh, in-memory SQLite database for this test
+    # Import all routers explicitly
+    from app.api.routes.kb import router as kb_router
+    from app.api.routes.knowledge import router as knowledge_router
+    from app.api.routes.users import router as users_router
+    # Add other routers as needed by the tests, or only those relevant to auth/user
+    # For this test file, kb_router and users_router are essential.
+
+    # 3. Create a fresh FastAPI app instance
+    app = FastAPI(title="Test MCP Cloud API", version="1.0.0")
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"], # Allow all for testing
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    # 4. Include routers with their dependencies
+    app.include_router(kb_router)
+    app.include_router(users_router)
+    app.include_router(knowledge_router) # Include knowledge_router as well
+
+    # 5. Create a fresh, in-memory SQLite database for this test
     engine = create_engine(
         f"sqlite:///{tmp_path / 'test_auth.db'}", connect_args={"check_same_thread": False}
     )
     TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     
-    Base.metadata.create_all(bind=engine) # Create tables
+    models.Base.metadata.create_all(bind=engine) # Create tables
 
-    # 4. Override the `get_db` dependency to use the in-memory database
+    # 6. Override the `get_db` dependency to use the in-memory database
     def override_get_db():
         db = TestingSessionLocal()
         try:
@@ -45,7 +69,7 @@ def client(monkeypatch, tmp_path):
 
     app.dependency_overrides[get_db] = override_get_db
 
-    # 5. Yield the test client and the session maker for verification
+    # 7. Yield the test client and the session maker for verification
     yield TestClient(app), TestingSessionLocal
 
     # Teardown: clear dependency overrides and drop tables
@@ -69,10 +93,10 @@ def test_rbac_guard_student_forbidden(client):
     test_client, _ = client
     response = test_client.get(
         "/api/v1/knowledge-base/versions?path=some/doc.md",
-        headers={"X-Forwarded-Groups": "student"}
+        headers={"X-Forwarded-Groups": "student", "X-API-Key": "test_api_key"}
     )
     assert response.status_code == 403
-    assert response.json() == {"detail": "Forbidden: admin only"}
+    assert response.json() == {"detail": "Not authorized: Requires admin privileges"}
 
 def test_jit_provisioning_new_user(client):
     """Tests that a new user is created in the DB upon first visit to /users/me."""
@@ -94,7 +118,7 @@ def test_jit_provisioning_new_user(client):
     # 2. Verify the user was created in the database
     db = SessionLocal()
     try:
-        user_in_db = db.scalar(select(User).where(User.email == "new.user@example.com"))
+        user_in_db = db.scalar(select(models.User).where(models.User.email == "new.user@example.com"))
         assert user_in_db is not None
         assert user_in_db.role == "student"
         assert (datetime.utcnow() - user_in_db.created_at) < timedelta(seconds=5)
@@ -109,7 +133,7 @@ def test_jit_provisioning_update_existing_user(client):
     db = SessionLocal()
     try:
         initial_time = datetime.utcnow() - timedelta(minutes=10)
-        existing_user = User(
+        existing_user = models.User(
             email="existing.user@example.com",
             role="student",
             last_login_at=initial_time
@@ -126,7 +150,8 @@ def test_jit_provisioning_update_existing_user(client):
         "/api/v1/users/me",
         headers={
             "X-Forwarded-Email": "existing.user@example.com",
-            "X-Forwarded-Groups": "admins,tutors"
+            "X-Forwarded-Groups": "admins,tutors",
+            "X-API-Key": "test_api_key"
         }
     )
     assert response.status_code == 200
@@ -135,7 +160,7 @@ def test_jit_provisioning_update_existing_user(client):
     # 3. Verify the user was updated in the database
     db = SessionLocal()
     try:
-        user_in_db = db.scalar(select(User).where(User.email == "existing.user@example.com"))
+        user_in_db = db.scalar(select(models.User).where(models.User.email == "existing.user@example.com"))
         assert user_in_db is not None
         assert user_in_db.id == initial_id
         assert user_in_db.role == "admin"

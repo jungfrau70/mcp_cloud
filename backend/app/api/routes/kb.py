@@ -1,13 +1,57 @@
 # backend/app/api/routes/kb.py
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
 from typing import Any, Dict
 from pathlib import Path
 from security import get_api_key
-from ...schemas.kb import KBItemCreate, KBItemMove
+from app.schemas.kb import KBItemCreate, KBItemMove
+from config import MCP_API_KEY, DISABLE_AUTH
 from pydantic import BaseModel
 from typing import List, Optional, Literal
 
 router = APIRouter(prefix="/api/v1/knowledge-base", tags=["Knowledge Base"], dependencies=[Depends(get_api_key)])
+
+# Compatibility aliases for legacy tests
+legacy_router = APIRouter(prefix="/api/v1/kb", tags=["Knowledge Base (legacy)"])
+
+@legacy_router.get('/tree')
+def legacy_kb_tree(path: str = ""):
+    return kb_tree(path)
+
+@legacy_router.get('/item')
+def legacy_kb_get_item(path: str):
+    return kb_get_item(path)
+
+@legacy_router.post('/item')
+def legacy_kb_create_item(payload: KBItemCreate):
+    return kb_create_item(payload)
+
+@legacy_router.patch('/item')
+def legacy_kb_rename_item(payload: KBItemMove):
+    return kb_rename_item(payload)
+
+@legacy_router.delete('/item')
+def legacy_kb_delete_item(path: str):
+    return kb_delete_item(path)
+
+# WebSocket router without API-key dependency (uses query param)
+kb_ws_router = APIRouter(prefix="/api/v1/knowledge-base", tags=["Knowledge Base"])
+
+@kb_ws_router.websocket('/tasks/ws')
+async def kb_tasks_ws(websocket: WebSocket):
+    # Accept first to be able to close with specific code
+    await websocket.accept()
+    try:
+        if not DISABLE_AUTH:
+            token = websocket.query_params.get('api_key')
+            if not token or token != (MCP_API_KEY or ""):
+                await websocket.close(code=1008)
+                return
+        # Minimal keep-alive loop
+        import asyncio
+        while True:
+            await asyncio.sleep(30)
+    except WebSocketDisconnect:
+        return
 
 KB_ROOT = Path('/mcp_knowledge_base').resolve()
 

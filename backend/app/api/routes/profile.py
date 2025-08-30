@@ -3,11 +3,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from pydantic import BaseModel
-from security import get_api_key
 from app.api.deps import get_db, get_current_user
 from app.models import User, UserKey
 
-router = APIRouter(prefix="/api/v1/profile", tags=["User Profile"], dependencies=[Depends(get_api_key)])
+router = APIRouter(prefix="/api/v1/profile", tags=["User Profile"])  # 헤더 기반 사용자 인증만 사용
 
 class UserKeyCreate(BaseModel):
     name: str

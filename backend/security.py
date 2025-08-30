@@ -26,3 +26,16 @@ async def get_api_key(api_key: str = Security(api_key_header), request: Request 
         raise HTTPException(status_code=403, detail="Could not validate credentials")
 
     return provided
+
+async def get_current_admin_user(request: Request):
+    # Authelia passes groups in X-Forwarded-Groups header, comma-separated
+    groups_header = request.headers.get("X-Forwarded-Groups")
+    print(f"DEBUG: X-Forwarded-Groups received: {groups_header}") # DEBUG PRINT
+    if not groups_header:
+        raise HTTPException(status_code=403, detail="Not authorized: Group information missing")
+
+    groups = [g.strip() for g in groups_header.split(',')]
+    print(f"DEBUG: Parsed groups: {groups}") # DEBUG PRINT
+    if "admins" not in groups:
+        raise HTTPException(status_code=403, detail="Not authorized: Requires admin privileges")
+    return True # Or return user info if needed

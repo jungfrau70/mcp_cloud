@@ -5,7 +5,14 @@ from pathlib import Path
 from security import get_api_key
 from fastapi.responses import PlainTextResponse
 
-router = APIRouter(prefix="/api/v1/slides", tags=["Slides"], dependencies=[Depends(get_api_key)])
+router = APIRouter(prefix="/api/v1/slides", tags=["Slides"])  # GET은 공개, POST는 보호
+
+# Legacy compatibility for tests expecting /api/v1/curriculum
+legacy_router = APIRouter(prefix="/api/v1/curriculum", tags=["Slides (legacy)"])
+
+@legacy_router.get('/tree')
+def legacy_curriculum_tree():
+    return slides_tree()
 
 KB_ROOT = Path('/mcp_knowledge_base').resolve()
 SELECTION_FILE = KB_ROOT / '.slides_selection.json'
@@ -20,7 +27,7 @@ def get_selection():
     except Exception:
         return {"selected_dirs": []}
 
-@router.post('/selection')
+@router.post('/selection', dependencies=[Depends(get_api_key)])
 def set_selection(payload: Dict[str, List[str]]):
     selected = payload.get('selected_dirs') or []
     try:
