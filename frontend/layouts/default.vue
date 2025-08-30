@@ -21,9 +21,18 @@
             <a href="/knowledge-base" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
               지식베이스
             </a>
-            <a href="/login" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-              로그인
-            </a>
+            <!-- Auth Status -->
+            <div v-if="user" class="flex items-center space-x-2">
+              <NuxtLink to="/profile" class="text-sm text-gray-600 hover:underline">{{ user.email }}</NuxtLink>
+              <a href="https://auth.gostock.us/api/logout" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+                로그아웃
+              </a>
+            </div>
+            <div v-else>
+              <button @click="redirectToLogin" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+                로그인
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -148,6 +157,42 @@ import TaskStatusBar from '~/components/TaskStatusBar.vue'
 import ToastStack from '~/components/ToastStack.vue'
 import { useToastStore } from '~/stores/toast'
 const toast = useToastStore()
+
+// User authentication state
+const user = useState('user', () => null)
+
+function redirectToLogin() {
+  // Force a full page navigation to a protected route to trigger Authelia
+  window.location.href = '/knowledge-base';
+}
+
+// Fetch current user status on client-side mount
+onMounted(async () => {
+  try {
+    const { data: fetchedUser, error } = await useFetch('/api/v1/users/me', {
+      lazy: true,
+      server: false, // Ensure this only runs on the client
+      retry: 0 // Do not retry on 401/403 errors
+    });
+
+    // Watch for the data to be populated
+    watch(fetchedUser, (newVal) => {
+      if (newVal) {
+        user.value = newVal;
+      }
+    }, { immediate: true });
+
+    // Also watch for errors to clear user state
+    watch(error, (newError) => {
+      if (newError) {
+        user.value = null;
+      }
+    });
+
+  } catch (e) {
+    user.value = null;
+  }
+});
 import { useSidebarResize } from '~/composables/useSidebarResize'
 import { useDocStore } from '~/stores/doc'
 
@@ -220,7 +265,7 @@ function resolveApiBase(){
   return configured
 }
 const apiBase = resolveApiBase()
-const apiKey = 'my_mcp_eagle_tiger';
+const apiKey = (config.public?.apiKey) || 'my_mcp_eagle_tiger';
 
 // Load default content: textbook/index.md when on knowledge-base route
 const route = useRoute();
@@ -346,19 +391,10 @@ async function showCurriculumIndex(){
       return
     }
   } catch { /* ignore */ }
-  // 2) Fallback to knowledge-base root index.md
-  try{
-    const r = await fetch(`${apiBase}/v1/knowledge-base/item?path=${encodeURIComponent('index.md')}`, { headers: { 'X-API-Key': apiKey } })
-    if(!r.ok){ throw new Error('failed') }
-    const d = await r.json()
-    tbContent.value = d?.content || '# Welcome'
-    tbSlide.value = null
-    tbPath.value = 'index.md'
-  } catch {
-    tbContent.value = '# Knowledge Base\n\n좌측에서 문서를 선택하거나 index.md를 생성하세요.'
-    tbSlide.value = null
-    tbPath.value = ''
-  }
+  // 2) Public-only: no fallback to KB; show guidance
+  tbContent.value = '# 공개 커리큘럼\n\n관리자가 공개한 자료가 없습니다.'
+  tbSlide.value = null
+  tbPath.value = ''
 }
 
 const handleFileClick = async (path) => {
@@ -374,24 +410,34 @@ const handleFileClick = async (path) => {
     // persist last opened textbook file
     try { if (typeof window !== 'undefined') localStorage.setItem('textbook_last_path', path) } catch {}
 
-    // KB 아이템 API로 직접 로드(지식베이스와 동일 경로/함수)
-    const url = `${apiBase}/v1/knowledge-base/item?path=${encodeURIComponent(path)}`
-    const r = await fetch(url, {
-      headers: { 'X-API-Key': apiKey }
-    })
-    if(!r.ok){
-      let detail = ''
-      try{ const d = await r.json(); detail = d?.detail || '' }catch{ try{ detail = await r.text() }catch{} }
-      throw new Error(`KB item ${r.status} ${detail}`)
+    // 커리큘럼은 공개 자료만: 슬라이드 API를 우선 사용
+    const s = await fetch(`${apiBase}/v1/slides?textbook_path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey } })
+    if (s.ok){
+      const ct = (s.headers.get('content-type')||'').toLowerCase()
+      if (ct.includes('application/pdf')){
+        const blob = await s.blob();
+        tbContent.value = ''
+        tbSlide.value = { type: 'pdf', url: URL.createObjectURL(blob) }
+      } else {
+        tbContent.value = await s.text()
+        tbSlide.value = null
+      }
+    } else {
+      // 공개되지 않은 자료
+      tbContent.value = '# 공개되지 않은 자료입니다.'
+      tbSlide.value = null
     }
-    const d = await r.json()
-    tbContent.value = d?.content || ''
-    tbSlide.value = null
 
   } catch (error) {
     console.error('Error fetching textbook content:', error);
-    tbContent.value = `Error loading content. ${error?.message||''}`;
-    tbSlide.value = null;
+    const msg = String(error?.message||'');
+    if (msg.includes('403') || msg.toLowerCase().includes('forbidden')){
+      tbContent.value = '# 읽기 권한이 필요한 문서입니다.'
+      tbSlide.value = null
+    } else {
+      tbContent.value = `Error loading content. ${msg}`
+      tbSlide.value = null
+    }
   }
 };
 

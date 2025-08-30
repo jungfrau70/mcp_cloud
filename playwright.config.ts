@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const useExternalServer = !!process.env.PLAYWRIGHT_BASE_URL;
+
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
@@ -13,7 +15,8 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'retain-on-failure'
   },
-  webServer: {
+  // If PLAYWRIGHT_BASE_URL is provided (e.g., Dockerized app running), do not start a dev server
+  webServer: useExternalServer ? undefined : {
     command: 'yarn --cwd frontend dev --host 127.0.0.1 --port 3000',
     url: 'http://localhost:3000',
     reuseExistingServer: true,

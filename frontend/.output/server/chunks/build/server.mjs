@@ -1,4 +1,4 @@
-import { hasInjectionContext, getCurrentInstance, defineAsyncComponent, defineComponent, h, inject, computed, unref, shallowRef, provide, shallowReactive, ref, Suspense, Fragment, createApp, toRef, onErrorCaptured, onServerPrefetch, createVNode, resolveDynamicComponent, reactive, effectScope, isReadonly, isRef, isShallow, isReactive, toRaw, mergeProps, withCtx, getCurrentScope, nextTick, useSSRContext } from 'vue';
+import { toRef, isRef, hasInjectionContext, getCurrentInstance, defineAsyncComponent, defineComponent, h, inject, computed, unref, shallowRef, provide, shallowReactive, ref, Suspense, Fragment, createApp, onErrorCaptured, onServerPrefetch, createVNode, resolveDynamicComponent, reactive, effectScope, isReadonly, isShallow, isReactive, toRaw, mergeProps, withCtx, getCurrentScope, nextTick, useSSRContext } from 'vue';
 import { h as hasProtocol, i as isScriptProtocol, k as joinURL, w as withQuery, s as sanitizeStatusCode, l as getContext, $ as $fetch, m as createHooks, n as executeAsync, c as createError$1, t as toRouteMatcher, o as createRouter$1, p as defu } from '../nitro/nitro.mjs';
 import { b as baseURL } from '../routes/renderer.mjs';
 import { useRoute as useRoute$1, RouterView, createMemoryHistory, createRouter, START_LOCATION } from 'vue-router';
@@ -401,13 +401,23 @@ const _routes = [
     name: "index",
     path: "/",
     meta: __nuxt_page_meta$5 || {},
-    component: () => import('./index-DdqEiJHR.mjs')
+    component: () => import('./index-CIqqR6PY.mjs')
   },
   {
     name: "login",
     path: "/login",
     meta: __nuxt_page_meta$4 || {},
-    component: () => import('./login-DA-fY3L4.mjs')
+    component: () => import('./login-1OZACRhX.mjs')
+  },
+  {
+    name: "billing",
+    path: "/billing",
+    component: () => import('./billing-BKsrM_Bo.mjs')
+  },
+  {
+    name: "profile",
+    path: "/profile",
+    component: () => import('./profile-Cug0xkxK.mjs')
   },
   {
     name: "cli",
@@ -436,7 +446,7 @@ const _routes = [
     name: "knowledge-base",
     path: "/knowledge-base",
     meta: __nuxt_page_meta || {},
-    component: () => import('./index-BlkHOQ16.mjs')
+    component: () => import('./index-DwgRIeBL.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -547,6 +557,39 @@ const validate = /* @__PURE__ */ defineNuxtRouteMiddleware(async (to, from) => {
   });
   return error;
 });
+const useStateKeyPrefix = "$s";
+function useState(...args) {
+  const autoKey = typeof args[args.length - 1] === "string" ? args.pop() : void 0;
+  if (typeof args[0] !== "string") {
+    args.unshift(autoKey);
+  }
+  const [_key, init] = args;
+  if (!_key || typeof _key !== "string") {
+    throw new TypeError("[nuxt] [useState] key must be a string: " + _key);
+  }
+  if (init !== void 0 && typeof init !== "function") {
+    throw new Error("[nuxt] [useState] init must be a function: " + init);
+  }
+  const key = useStateKeyPrefix + _key;
+  const nuxtApp = useNuxtApp();
+  const state = toRef(nuxtApp.payload.state, key);
+  if (state.value === void 0 && init) {
+    const initialValue = init();
+    if (isRef(initialValue)) {
+      nuxtApp.payload.state[key] = initialValue;
+      return initialValue;
+    }
+    state.value = initialValue;
+  }
+  return state;
+}
+const kb_45auth_45global = /* @__PURE__ */ defineNuxtRouteMiddleware((to) => {
+  if (!to.path.startsWith("/knowledge-base")) return;
+  const user = useState("user");
+  if (!user.value) {
+    return navigateTo({ path: "/login", query: { redirect: to.fullPath } });
+  }
+});
 const manifest_45route_45rule = /* @__PURE__ */ defineNuxtRouteMiddleware(async (to) => {
   {
     return;
@@ -554,6 +597,7 @@ const manifest_45route_45rule = /* @__PURE__ */ defineNuxtRouteMiddleware(async 
 });
 const globalMiddleware = [
   validate,
+  kb_45auth_45global,
   manifest_45route_45rule
 ];
 const namedMiddleware = {};
@@ -790,7 +834,7 @@ const plugins = [
   pinia_Ab1D_QMMf_egrzVdVYpZ5xs6QSwaKU60pkFvRWVq_9Y
 ];
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-D43ei22H.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-NLNFFFao.mjs').then((m) => m.default || m))
 };
 const LayoutLoader = defineComponent({
   name: "LayoutLoader",
@@ -1053,7 +1097,7 @@ const _sfc_main$1 = {
     const statusMessage = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack = void 0;
-    const _Error404 = defineAsyncComponent(() => import('./error-404-EJWAS3x5.mjs'));
+    const _Error404 = defineAsyncComponent(() => import('./error-404-ihX7RbeE.mjs'));
     const _Error = defineAsyncComponent(() => import('./error-500-B_VjxHa_.mjs'));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _push, _parent, _attrs) => {
@@ -1135,5 +1179,5 @@ let entry;
 }
 const entry$1 = (ssrContext) => entry(ssrContext);
 
-export { useRouter as a, useNuxtApp as b, nuxtLinkDefaults as c, entry$1 as default, navigateTo as n, resolveRouteObject as r, tryUseNuxtApp as t, useRuntimeConfig as u };
+export { useState as a, useRouter as b, useNuxtApp as c, nuxtLinkDefaults as d, entry$1 as default, navigateTo as n, resolveRouteObject as r, tryUseNuxtApp as t, useRuntimeConfig as u };
 //# sourceMappingURL=server.mjs.map

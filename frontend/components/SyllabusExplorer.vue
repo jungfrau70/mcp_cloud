@@ -62,7 +62,7 @@ function resolveApiBase(){
   return configured
 }
 const apiBase = resolveApiBase()
-const apiKey = 'my_mcp_eagle_tiger'
+const apiKey = (useRuntimeConfig().public?.apiKey) || 'my_mcp_eagle_tiger'
 
 // 통합터미널 주제 관리 동기화 (guest 기준)
 const userKey = 'guest'

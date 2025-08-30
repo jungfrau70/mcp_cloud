@@ -67,11 +67,14 @@ services:
     env_file: ./backend/env/.env
     expose:
       - "8000"
+    ports:
+      - "8000:8000"
     environment:
       - REDIS_URL=redis://mcp_redis:6379
       - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
       - GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-sa-key.json
       - CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=/app/gcp-sa-key.json
+      - MCP_API_KEY=${MCP_API_KEY:-my_mcp_eagle_tiger}
       # HF offline-friendly defaults
       - EMBEDDING_BACKEND=${EMBEDDING_BACKEND:-local}
       - EMBEDDING_MODEL=${EMBEDDING_MODEL:-jhgan/ko-sroberta-multitask}
@@ -172,6 +175,7 @@ services:
     environment:
       - NUXT_PUBLIC_API_BASE_URL=/api
       - NUXT_PUBLIC_WS_BASE_URL=wss://api.gostock.us/api
+      - NUXT_PUBLIC_API_KEY=${MCP_API_KEY:-my_mcp_eagle_tiger}
       - NODE_ENV=production
       - YARN_PRODUCTION=false
       - NPM_CONFIG_PRODUCTION=false

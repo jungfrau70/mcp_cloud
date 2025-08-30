@@ -122,7 +122,7 @@ function resolveApiBase(){
   return configured
 }
 const apiBase = resolveApiBase()
-const apiKey = 'my_mcp_eagle_tiger'
+const apiKey = (config.public?.apiKey) || 'my_mcp_eagle_tiger'
 const taskStore = useTaskStore()
 const showGenModal = ref(false)
 const showTrending = ref(false)
@@ -208,7 +208,7 @@ const handleDirectoryCreate = async (data) => {
   try {
     console.log('Creating item:', data);
     
-    const response = await fetch(`${apiBase}/api/v1/knowledge-base/item`, {
+    const response = await fetch(`${apiBase}/v1/knowledge-base/item`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -243,7 +243,7 @@ const handleDirectoryRename = async (data) => {
   try {
     console.log('Renaming item:', data);
     
-    const response = await fetch(`${apiBase}/api/v1/knowledge-base/item`, {
+    const response = await fetch(`${apiBase}/v1/knowledge-base/item`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -279,7 +279,7 @@ const handleDirectoryDelete = async (data) => {
     
     if (data.type === 'file') {
       // Delete file
-      const response = await fetch(`${apiBase}/api/v1/knowledge-base/item?path=${encodeURIComponent(stripBasePath(data.path))}`, {
+      const response = await fetch(`${apiBase}/v1/knowledge-base/item?path=${encodeURIComponent(stripBasePath(data.path))}`, {
         method: 'DELETE',
         headers: { 'X-API-Key': apiKey }
       });
@@ -292,7 +292,7 @@ const handleDirectoryDelete = async (data) => {
       statusMessage.value = '파일 삭제 완료';
     } else {
       // Delete directory
-      const response = await fetch(`${apiBase}/api/v1/knowledge-base/directory?path=${encodeURIComponent(stripBasePath(data.path))}&recursive=true`, {
+      const response = await fetch(`${apiBase}/v1/knowledge-base/directory?path=${encodeURIComponent(stripBasePath(data.path))}&recursive=true`, {
         method: 'DELETE',
         headers: { 'X-API-Key': apiKey }
       });
@@ -327,7 +327,7 @@ const handleFileMove = async (data) => {
       new_path: newPath
     };
     
-    const response = await fetch(`${apiBase}/api/v1/knowledge-base/move`, {
+    const response = await fetch(`${apiBase}/v1/knowledge-base/move`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 const interopDefault = r => r.default || r || [];
 const styles = {
-  "node_modules/nuxt/dist/app/entry.js": () => import('./entry-styles.B5RAvwTJ.mjs').then(interopDefault),
+  "node_modules/nuxt/dist/app/entry.js": () => import('./entry-styles.DTnW56Tv.mjs').then(interopDefault),
   "app.vue": () => import('./app-styles.BMwBPSKZ.mjs').then(interopDefault),
   "app.vue?vue&type=style&index=0&lang.css": () => import('./app-styles.Rn1LlYMu.mjs').then(interopDefault),
   "pages/ai-assistant.vue": () => import('./ai-assistant-styles.BHjewJCq.mjs').then(interopDefault),
@@ -13,11 +13,11 @@ const styles = {
   "components/ContentView.vue?vue&type=style&index=0&lang.css": () => import('./ContentView-styles.B32fql8m.mjs').then(interopDefault),
   "layouts/default.vue": () => import('./default-styles.BCTZsLd1.mjs').then(interopDefault),
   "layouts/default.vue?vue&type=style&index=0&lang.css": () => import('./default-styles.nh0L71Le.mjs').then(interopDefault),
-  "components/WorkspaceView.vue": () => import('./WorkspaceView-styles.D2ViTYTW.mjs').then(interopDefault),
   "components/SplitEditor.vue": () => import('./SplitEditor-styles.Blhh--uf.mjs').then(interopDefault),
-  "components/WorkspaceView.vue?vue&type=style&index=0&lang.css": () => import('./WorkspaceView-styles.Lbn1lGhh.mjs').then(interopDefault),
-  "components/SplitEditor.vue?vue&type=style&index=0&scoped=03e0ffcf&lang.css": () => import('./SplitEditor-styles.DXGCyiRp.mjs').then(interopDefault),
+  "components/WorkspaceView.vue": () => import('./WorkspaceView-styles.D2ViTYTW.mjs').then(interopDefault),
   "components/ToastStack.vue": () => import('./ToastStack-styles.vptWcP6g.mjs').then(interopDefault),
+  "components/SplitEditor.vue?vue&type=style&index=0&scoped=03e0ffcf&lang.css": () => import('./SplitEditor-styles.DXGCyiRp.mjs').then(interopDefault),
+  "components/WorkspaceView.vue?vue&type=style&index=0&lang.css": () => import('./WorkspaceView-styles.Lbn1lGhh.mjs').then(interopDefault),
   "components/ToastStack.vue?vue&type=style&index=0&scoped=4b6192b5&lang.css": () => import('./ToastStack-styles.Djh9mNhX.mjs').then(interopDefault),
   "components/FileTree.vue": () => import('./FileTree-styles.DH3DB5Ie.mjs').then(interopDefault),
   "components/FileTree.vue?vue&type=style&index=0&scoped=08685139&lang.css": () => import('./FileTree-styles.DaQ10ndx.mjs').then(interopDefault)

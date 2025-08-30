@@ -23,7 +23,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 # Add your model's MetaData object here for 'autogenerate' support
-from models import Base  # type: ignore
+from app.db.base import Base  # type: ignore
 target_metadata = Base.metadata
 
 def get_url():

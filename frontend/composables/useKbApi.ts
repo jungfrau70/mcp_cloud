@@ -35,8 +35,8 @@ export function resolveApiBase(): string {
 
 export function useKbApi(){
   const apiBase: string = resolveApiBase()
-  // NOTE: For production, inject apiKey via runtime config / cookie / header
-  const apiKey: string = 'my_mcp_eagle_tiger'
+  const config = useRuntimeConfig() as any
+  const apiKey: string = (config?.public?.apiKey as string) || 'my_mcp_eagle_tiger'
 
   async function request<T>(url: string, init?: RequestInit, errorMessage = 'request failed'): Promise<T> {
     const r = await fetch(url, init)
