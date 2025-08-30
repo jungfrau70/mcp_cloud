@@ -26,8 +26,19 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // 브라우저에서 접근 가능한 호스트로 기본값 설정
-      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'https://api.gostock.us'
+      // 동일 오리진 프록시 사용: 기본 '/api' → 서버에서 https://api.gostock.us 로 프록시
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || '/api',
+      // WebSocket 전용 베이스(선택). 설정 시 우선 사용. 기본은 공개 API 도메인 사용
+      wsBaseUrl: process.env.NUXT_PUBLIC_WS_BASE_URL || 'wss://api.gostock.us/api'
     }
+  },
+  nitro: {
+    routeRules: {
+      '/api/**': { proxy: 'https://api.gostock.us/**' },
+    },
+    devProxy: {
+      '/api': { target: 'https://api.gostock.us', changeOrigin: true, secure: true },
+    },
   },
   // 개발 서버 설정
   devServer: {

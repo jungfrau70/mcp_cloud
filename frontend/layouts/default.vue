@@ -204,11 +204,12 @@ const tbPath = ref('')
 // API configuration (browser-safe host resolution)
 const config = useRuntimeConfig();
 function resolveApiBase(){
-  const configured = (config.public?.apiBaseUrl) || 'https://api.gostock.us'
+  const configured = (config.public?.apiBaseUrl) || '/api'
   if (typeof window !== 'undefined'){
     try{
       const u = new URL(configured)
       const browserHost = window.location.hostname
+      if (u.origin === 'null') return configured
       if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== 'api.gostock.us' && u.hostname !== browserHost){
         const port = u.port || '8000'
         const scheme = u.protocol.replace(':','') || 'https'
@@ -412,7 +413,7 @@ const handleKbSave = async ({ path, content, message, force }) => {
     // force bypass optimistic (call API directly)
     try {
       const config = useRuntimeConfig();
-      const apiBase = config.public.apiBaseUrl || 'https://api.gostock.us';
+      const apiBase = config.public.apiBaseUrl || '/api';
       await fetch(`${apiBase}/api/v1/knowledge-base/item`, { method:'PATCH', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path, content, message }) })
       toast.push('success','강제 저장 완료')
     } catch(e){ toast.push('error','강제 저장 실패') }

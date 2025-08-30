@@ -53,9 +53,9 @@ describe('resolveApiBase', () => {
     expect(result).toBe('http://127.0.0.1:8000');
   });
 
-  it('should return the browser\'s hostname and port if apiBaseUrl is different and not localhost', () => {
+  it('should return the browser\'s hostname and port if apiBaseUrl is different and not localhost (keeps https when configured)', () => {
     (useRuntimeConfig as vi.Mock).mockReturnValue({
-      public: { apiBaseUrl: 'http://remote-api.com:8000' },
+      public: { apiBaseUrl: 'https://remote-api.com:8000' },
     });
 
     vi.stubGlobal('window', {
@@ -63,12 +63,12 @@ describe('resolveApiBase', () => {
     });
 
     const result = resolveApiBase();
-    expect(result).toBe('https://my-app.com:8000'); // Should use configured port
+    expect(result).toBe('https://my-app.com:8000'); // keep https
   });
 
-  it('should handle apiBaseUrl without a port and use default 8000', () => {
+  it('should handle apiBaseUrl without a port and use default 8000 (https default)', () => {
     (useRuntimeConfig as vi.Mock).mockReturnValue({
-      public: { apiBaseUrl: 'http://remote-api.com' },
+      public: { apiBaseUrl: 'https://remote-api.com' },
     });
 
     vi.stubGlobal('window', {
@@ -76,12 +76,12 @@ describe('resolveApiBase', () => {
     });
 
     const result = resolveApiBase();
-    expect(result).toBe('https://my-app.com:8000'); // Default port 8000 should be used
+    expect(result).toBe('https://my-app.com:8000'); // Default port 8000, https
   });
 
-  it('should use the configured port if browser port is different', () => {
+  it('should use the configured port if browser port is different (https)', () => {
     (useRuntimeConfig as vi.Mock).mockReturnValue({
-      public: { apiBaseUrl: 'http://remote-api.com:8080' },
+      public: { apiBaseUrl: 'https://remote-api.com:8080' },
     });
 
     vi.stubGlobal('window', {
@@ -89,7 +89,7 @@ describe('resolveApiBase', () => {
     });
 
     const result = resolveApiBase();
-    expect(result).toBe('https://my-app.com:8080'); // Configured port 8080 should be used
+    expect(result).toBe('https://my-app.com:8080'); // Configured port 8080, https
   });
 });
 

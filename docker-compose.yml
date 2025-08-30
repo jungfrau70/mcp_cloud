@@ -170,7 +170,7 @@ services:
     container_name: mcp_frontend
     # 프론트엔드는 민감키 불필요: env_file 제거
     environment:
-      - NUXT_PUBLIC_API_BASE_URL=https://api.gostock.us
+      - NUXT_PUBLIC_API_BASE_URL=/api
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
       - NUXT_TELEMETRY_DISABLED=1

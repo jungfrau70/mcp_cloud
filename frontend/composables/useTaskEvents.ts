@@ -29,9 +29,26 @@ function scheduleHeartbeat(){
 }
 
 function connect(){
-  const base = resolveApiBase()
-  const wsBase = base.replace(/^http/,'ws')
-  socket = new WebSocket(`${wsBase}/api/v1/knowledge-base/tasks/ws`)
+  // Prefer explicit WS base from runtime config for cross-origin WS
+  // Fallback to HTTP base → ws scheme conversion
+  // @ts-ignore Nuxt runtime
+  const { public: pub } = useRuntimeConfig()
+  const configuredWs: string = (pub?.wsBaseUrl as string) || ''
+  if(configuredWs){
+    socket = new WebSocket(`${configuredWs.replace(/\/$/,'')}/v1/knowledge-base/tasks/ws`)
+  } else {
+    const httpBase = resolveApiBase()
+    const absolute = httpBase.startsWith('/') && typeof window !== 'undefined'
+      ? `${window.location.protocol}//${window.location.host}${httpBase}`
+      : httpBase
+    const wsBase = absolute.replace(/^http/,'ws')
+    let join = ''
+    try {
+      const u = new URL(absolute)
+      if(!/\/api\/?$/.test(u.pathname)) join = '/api'
+    } catch {}
+    socket = new WebSocket(`${wsBase}${join}/v1/knowledge-base/tasks/ws`)
+  }
   socket.onopen = () => {
     reconnectAttempts = 0
     scheduleHeartbeat()

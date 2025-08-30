@@ -496,7 +496,7 @@ import { ref, reactive, watch, onMounted, computed } from 'vue';
 import AIDocumentGenerator from './AIDocumentGenerator.vue';
 
 const config = useRuntimeConfig()
-const apiBase = config.public.apiBaseUrl || 'https://api.gostock.us'
+const apiBase = config.public.apiBaseUrl || '/api'
 const apiKey = 'my_mcp_eagle_tiger'
 
 // 탭 상태

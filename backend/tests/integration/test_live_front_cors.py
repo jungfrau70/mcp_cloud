@@ -19,6 +19,10 @@ def _get(url: str) -> requests.Response:
     headers = {
         "Origin": APP_ORIGIN,
         "X-API-Key": API_KEY,
+        "Accept": "application/json",
+        # 일부 WAF/프록시가 브라우저 UA가 아닐 때 차단할 수 있어 UA를 브라우저 유사로 설정
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36",
+        "Referer": APP_ORIGIN + "/knowledge-base",
     }
     return requests.get(url, headers=headers, timeout=20)
 

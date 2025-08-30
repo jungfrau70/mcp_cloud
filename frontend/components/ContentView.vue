@@ -322,11 +322,12 @@ const slideHtml = ref('');
 const slidePdfUrl = ref('');
 const config = useRuntimeConfig();
 function resolveApiBase(){
-  const configured = (config.public?.apiBaseUrl) || 'https://api.gostock.us'
+  const configured = (config.public?.apiBaseUrl) || '/api'
   if (typeof window !== 'undefined'){
     try{
       const u = new URL(configured)
       const browserHost = window.location.hostname
+      if (u.origin === 'null') return configured
       if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== 'api.gostock.us' && u.hostname !== browserHost){
         const port = u.port || '8000'
         const scheme = u.protocol.replace(':','') || 'https'
