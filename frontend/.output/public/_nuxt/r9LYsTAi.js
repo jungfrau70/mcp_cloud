@@ -1,0 +1,3 @@
+import{r,_ as d}from"./CKCK7RVh.js";import{r as o,g as l,c as i,a as _,b as m,j as s,o as p}from"./DrDt6dME.js";const f={class:"h-full flex flex-col"},u={class:"flex-1 overflow-hidden"},w={__name:"index",setup(h){const e=o(""),a=o("index.md");return l(async()=>{const n=r();try{const t=await fetch(`${n}/api/v1/knowledge-base/item?path=${encodeURIComponent(a.value)}`,{headers:{"X-API-Key":"my_mcp_eagle_tiger"}});if(!t.ok)throw new Error("failed");const c=await t.json();e.value=c?.content||""}catch{e.value=`# Welcome
+
+index.md not found. Create it under mcp_knowledge_base/index.md.`}}),(n,t)=>(p(),i("div",f,[_("div",u,[m(d,{content:s(e),path:s(a),readonly:!0},null,8,["content","path"])])]))}};export{w as default};
