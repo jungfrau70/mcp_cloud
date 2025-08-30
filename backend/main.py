@@ -491,6 +491,8 @@ except Exception:
 origins = [
     "http://localhost",
     "http://localhost:3000", # React frontend origin
+    "https://app.gostock.us",
+    "https://api.gostock.us",
 ]
 
 app.add_middleware(

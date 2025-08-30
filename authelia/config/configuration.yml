@@ -6,7 +6,7 @@ session:
   name: authelia_session
   same_site: lax
   cookies:
-    - domain: "gostock.us"
+    - domain: ".gostock.us"
       authelia_url: "https://auth.gostock.us"
       default_redirection_url: "https://app.gostock.us"
 
@@ -20,7 +20,7 @@ authentication_backend:
     path: /config/users_database.yml
 
 access_control:
-  default_policy: deny
+  default_policy: bypass
   rules:
     - domain: "app.gostock.us"
       policy: one_factor

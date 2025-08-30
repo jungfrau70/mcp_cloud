@@ -372,7 +372,10 @@ const isAuditing = ref(false)
 
 // API 키 설정
 const API_KEY = process.env.MCP_API_KEY || 'my_mcp_eagle_tiger'
-const API_BASE_URL = process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:7000'
+
+// Nuxt 런타임 설정을 사용하여 API 기본 URL 가져오기
+const config = useRuntimeConfig()
+const API_BASE_URL = config.public.apiBaseUrl
 
 // 메시지 전송
 const sendMessage = async () => {

@@ -103,6 +103,11 @@ services:
 
     networks:
       - mcp_cloud_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
   
   # Celery worker (plan/apply/test)
   mcp_celery:
@@ -165,10 +170,12 @@ services:
     container_name: mcp_frontend
     # 프론트엔드는 민감키 불필요: env_file 제거
     environment:
-      - NUXT_PUBLIC_API_BASE_URL=http://mcp_backend:8000
+      - NUXT_PUBLIC_API_BASE_URL=https://api.gostock.us
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
       - NUXT_TELEMETRY_DISABLED=1
+    ports:
+      - "3000:3000"
     expose:
       - "3000"
     volumes:

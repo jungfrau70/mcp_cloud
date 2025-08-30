@@ -55,9 +55,9 @@ const error = ref(null);
 
 const config = useRuntimeConfig()
 function resolveApiBase(){
-  const configured = (config.public?.apiBaseUrl) || 'http://localhost:8000'
+  const configured = (config.public?.apiBaseUrl) || 'https://api.gostock.us'
   if (typeof window !== 'undefined'){
-    try{ const u = new URL(configured); const host = window.location.hostname; const port = u.port || '8000'; if(!['localhost','127.0.0.1',host].includes(u.hostname)) return `${window.location.protocol}//${host}:${port}` }catch{}
+    try{ const u = new URL(configured); const host = window.location.hostname; const port = u.port || '8000'; if(!['localhost','127.0.0.1','api.gostock.us',host].includes(u.hostname)) { const scheme = u.protocol.replace(':','') || 'https'; return `${scheme}://${host}:${port}` } }catch{}
   }
   return configured
 }

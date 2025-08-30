@@ -106,14 +106,15 @@ const props = defineProps({
 
 const config = useRuntimeConfig()
 function resolveApiBase(){
-  const configured = (config.public?.apiBaseUrl) || 'http://localhost:8000'
+  const configured = (config.public?.apiBaseUrl) || 'https://api.gostock.us'
   if (typeof window !== 'undefined'){
     try{
       const u = new URL(configured)
       const browserHost = window.location.hostname
-      if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== browserHost){
+      if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== 'api.gostock.us' && u.hostname !== browserHost){
         const port = u.port || '8000'
-        return `${window.location.protocol}//${browserHost}:${port}`
+        const scheme = u.protocol.replace(':','') || 'https'
+        return `${scheme}://${browserHost}:${port}`
       }
     }catch{ /* ignore */ }
   }

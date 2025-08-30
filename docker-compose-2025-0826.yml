@@ -80,7 +80,7 @@ services:
     container_name: mcp_frontend
     environment:
       - MCP_API_KEY=${MCP_API_KEY}
-      - NUXT_PUBLIC_API_BASE_URL=http://mcp_backend:8000
+      - NUXT_PUBLIC_API_BASE_URL=https://api.gostock.us
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
       - NUXT_TELEMETRY_DISABLED=1

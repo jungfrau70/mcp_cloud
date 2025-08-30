@@ -26,7 +26,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // 브라우저에서 접근 가능한 호스트로 기본값 설정
-      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'https://api.gostock.us'
     }
   },
   // 개발 서버 설정

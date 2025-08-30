@@ -16,14 +16,16 @@ export interface KbStructuredDiff { diff_format: string; hunks: KbStructuredDiff
 
 export function resolveApiBase(): string {
   const config = useRuntimeConfig()
-  const configured = (config.public as any)?.apiBaseUrl || 'http://localhost:8000'
+  const configured = (config.public as any)?.apiBaseUrl || 'https://api.gostock.us'
   if (typeof window !== 'undefined'){
     try{
       const u = new URL(configured)
       const browserHost = window.location.hostname
-      if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== browserHost){
+      if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== 'api.gostock.us' && u.hostname !== browserHost){
         const port = u.port || '8000'
-        return `${window.location.protocol}//${browserHost}:${port}`
+        // When using https backend, keep https scheme even if frontend runs on http
+        const scheme = u.protocol.replace(':','') || 'https'
+        return `${scheme}://${browserHost}:${port}`
       }
     }catch{/* ignore */}
   }

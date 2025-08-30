@@ -60,3 +60,5 @@ docker images | grep "mcp-"
 echo ""
 echo "🚀 Docker Compose로 실행하려면:"
 echo "docker-compose up -d"
+
+

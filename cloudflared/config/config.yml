@@ -14,14 +14,9 @@ protocol: http2
 #   - service: http_status:404
 ingress:
   - hostname: app.gostock.us
-    service: http://npm:80
-    originRequest: { noTLSVerify: true }
-  - hostname: auth.gostock.us
-    service: http://authelia:9091
-    originRequest: { noTLSVerify: true }
-  - hostname: npm.gostock.us
-    service: http://npm:81
-    originRequest: { noTLSVerify: true }
+    service: http://mcp_frontend:3000
+  - hostname: api.gostock.us
+    service: http://mcp_backend:8000
   - service: http_status:404
 loglevel: info
 
