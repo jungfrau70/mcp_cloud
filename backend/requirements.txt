@@ -55,3 +55,4 @@ opentelemetry-instrumentation-celery
 stripe
 PyJWT
 passlib[bcrypt]
+Jinja2

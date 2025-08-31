@@ -36,7 +36,23 @@ async function onSubmit(){
     body: { email: email.value, password: password.value },
   }) as { access_token: string }
   auth.setToken(res.access_token)
-  await router.push('/knowledge-base')
+  try{
+    const apiKey = ((config.public as any)?.apiKey) || 'my_mcp_eagle_tiger'
+    const me = await $fetch(`${base}/v1/users/me`, {
+      headers: {
+        'X-API-Key': apiKey,
+        'Authorization': `Bearer ${res.access_token}`
+      }
+    }) as { email: string, role: string }
+    auth.setUser(me.email, me.role)
+    if (String(me.role).toLowerCase() === 'admin') {
+      await router.push('/knowledge-base')
+    } else {
+      await router.push('/curriculum')
+    }
+  }catch{
+    await router.push('/curriculum')
+  }
 }
 </script>
 

@@ -9,6 +9,7 @@ import os
 import jwt
 from passlib.context import CryptContext
 from app.api.deps import get_db
+from app.services.email_service import render_template, send_email
 from app.models import User
 
 router = APIRouter(prefix="/api/v1/auth", tags=["Auth"])
@@ -58,8 +59,24 @@ def _create_access_token(subject: str) -> str:
 def _send_verification_email(to_email: str, token: str):
     verify_base = os.getenv("FRONTEND_BASE_URL", "http://localhost:3000")
     verify_link = f"{verify_base}/verify-email?token={token}"
-    subject = "Verify your account"
-    body = f"Please click the link to verify your email: {verify_link}"
+    subject = os.getenv("EMAIL_SUBJECT_VERIFY", "Verify your account")
+    # load inline template or external file
+    try:
+        template_path = os.getenv("EMAIL_TEMPLATE_VERIFY", "/app/app/templates/email/verify_email.html")
+        if os.path.exists(template_path):
+            with open(template_path, 'r', encoding='utf-8') as f:
+                template_str = f.read()
+        else:
+            template_str = """
+            <p>Hello {{ email }},</p>
+            <p>Please click the link to verify your email:</p>
+            <p><a href='{{ verify_link }}'>{{ verify_link }}</a></p>
+            """
+        body = render_template(template_str, { 'email': to_email, 'verify_link': verify_link })
+        is_html = True
+    except Exception:
+        body = f"Please click the link to verify your email: {verify_link}"
+        is_html = False
 
     smtp_host = os.getenv("SMTP_HOST")
     smtp_port = int(os.getenv("SMTP_PORT", "587"))
@@ -68,11 +85,11 @@ def _send_verification_email(to_email: str, token: str):
     smtp_from = os.getenv("SMTP_FROM", smtp_user or "no-reply@example.com")
 
     if not smtp_host:
-        # Fallback to log for development
+        # Fallback to dev log
         print(f"[DEV] Verification email to {to_email}: {verify_link}")
         return
 
-    msg = MIMEText(body)
+    msg = MIMEText(body, 'html' if is_html else 'plain', _charset='utf-8')
     msg['Subject'] = subject
     msg['From'] = smtp_from
     msg['To'] = to_email

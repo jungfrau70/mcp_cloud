@@ -41,7 +41,7 @@ async function onSubmit(){
     body: { email: email.value, password: password.value, full_name: fullName.value || null },
   }) as { access_token: string }
   auth.setToken(res.access_token)
-  await router.push('/knowledge-base')
+  await router.push('/verify-email')
 }
 </script>
 

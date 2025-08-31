@@ -161,6 +161,22 @@ const user = useState('user', () => null)
 const auth = useAuthStore()
 auth.loadFromStorage()
 
+async function fetchCurrentUser(){
+  try {
+    const { data: fetchedUser, error } = await useFetch('/api/v1/users/me', {
+      lazy: false,
+      headers: {
+        'X-API-Key': apiKey,
+        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
+      },
+      server: false,
+      retry: 0
+    });
+    if (error.value){ user.value = null; return }
+    if (fetchedUser.value){ user.value = fetchedUser.value }
+  } catch { user.value = null }
+}
+
 function redirectToLogin() {
   // Redirect to Authelia portal with return destination (rd) back to app
   try {
@@ -183,34 +199,18 @@ async function onLogout(){
 // Fetch current user status on client-side mount
 onMounted(async () => {
   try {
-    const { data: fetchedUser, error } = await useFetch('/api/v1/users/me', {
-      lazy: true,
-      headers: {
-        'X-API-Key': apiKey,
-        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
-      },
-      server: false,
-      retry: 0
-    });
-
-    // Watch for the data to be populated
-    watch(fetchedUser, (newVal) => {
-      if (newVal) {
-        user.value = newVal;
-      }
-    }, { immediate: true });
-
-    // Also watch for errors to clear user state
-    watch(error, (newError) => {
-      if (newError) {
-        user.value = null;
-      }
-    });
+    await fetchCurrentUser()
 
   } catch (e) {
     user.value = null;
   }
 });
+
+// Update user state when token changes (e.g., after login/logout)
+watch(() => auth.token, async (t) => {
+  if (t) await fetchCurrentUser()
+  else user.value = null
+})
 import { useSidebarResize } from '~/composables/useSidebarResize'
 import { useDocStore } from '~/stores/doc'
 

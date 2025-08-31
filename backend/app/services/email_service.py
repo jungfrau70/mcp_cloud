@@ -1,8 +1,8 @@
 import os
 import smtplib
 from email.mime.text import MIMEText
-from typing import List
-import requests
+from typing import List, Dict, Any
+from jinja2 import Template
 
 
 def _send_via_smtp(to_emails: List[str], subject: str, body: str, is_html: bool = False) -> None:
@@ -24,35 +24,18 @@ def _send_via_smtp(to_emails: List[str], subject: str, body: str, is_html: bool 
         server.sendmail(smtp_from, to_emails, msg.as_string())
 
 
-def _send_via_sendgrid(to_emails: List[str], subject: str, body: str, is_html: bool = False) -> None:
-    api_key = os.getenv("SENDGRID_API_KEY")
-    sender = os.getenv("SMTP_FROM", "no-reply@example.com")
-    content_type = "text/html" if is_html else "text/plain"
-    data = {
-        "personalizations": [{
-            "to": [{"email": e} for e in to_emails],
-            "subject": subject
-        }],
-        "from": {"email": sender},
-        "content": [{"type": content_type, "value": body}]
-    }
-    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
-    r = requests.post("https://api.sendgrid.com/v3/mail/send", json=data, headers=headers, timeout=10)
-    if r.status_code >= 400:
-        raise RuntimeError(f"SendGrid error: {r.status_code} {r.text}")
+def render_template(template_str: str, context: Dict[str, Any]) -> str:
+    tpl = Template(template_str)
+    return tpl.render(**context)
 
 
 def send_email(to: List[str] | str, subject: str, body: str, is_html: bool = False) -> None:
-    """Send email via SMTP if configured; else via SendGrid if API key provided; else log to console."""
+    """Send email via SMTP if configured; else log to console."""
     to_list = [to] if isinstance(to, str) else list(to)
     smtp_host = os.getenv("SMTP_HOST")
-    sendgrid_key = os.getenv("SENDGRID_API_KEY")
 
     if smtp_host:
         _send_via_smtp(to_list, subject, body, is_html)
-        return
-    if sendgrid_key:
-        _send_via_sendgrid(to_list, subject, body, is_html)
         return
     print(f"[DEV] Email to={to_list} subject={subject} body={(body[:200] + '...') if len(body) > 200 else body}")
 
