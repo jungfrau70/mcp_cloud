@@ -82,10 +82,9 @@ def execute_readonly_cli(provider: str, command_name: str, args: Optional[Dict[s
     if provider not in {"aws","gcp","azure"}:
         raise HTTPException(status_code=400, detail=f"Unsupported provider: {provider}")
 
-    # From 'auth_list' or 'compute_instances_list' tokens
-    key_norm = (command_name or "").replace("/","_").replace("-","_")
-    tokens = [t for t in key_norm.split("_") if t]
-    # no implicit aliasing; preserve tokens as-is for transparency
+    # Raw tokens: do not transform; split by whitespace
+    raw = (command_name or "").strip()
+    tokens = [t for t in raw.split() if t]
     if not tokens:
         raise HTTPException(status_code=400, detail="Empty command")
 

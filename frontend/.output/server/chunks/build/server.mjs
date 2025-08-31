@@ -404,7 +404,7 @@ const _routes = [
     name: "index",
     path: "/",
     meta: __nuxt_page_meta$6 || {},
-    component: () => import('./index-CVvAvzdG.mjs')
+    component: () => import('./index-COwtnO5h.mjs')
   },
   {
     name: "login",
@@ -813,7 +813,7 @@ const plugins = [
   pinia_Ab1D_QMMf_egrzVdVYpZ5xs6QSwaKU60pkFvRWVq_9Y
 ];
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-F_R7iMum.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-B9pEhgPC.mjs').then((m) => m.default || m))
 };
 const LayoutLoader = defineComponent({
   name: "LayoutLoader",

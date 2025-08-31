@@ -59,6 +59,10 @@ async def kb_tasks_ws(websocket: WebSocket):
         return
 
 KB_ROOT = Path('/mcp_knowledge_base').resolve()
+try:
+    from utils.doc_convert import convert_pptx_to_pdf  # correct import within backend package
+except Exception:
+    convert_pptx_to_pdf = None  # fallback when utils not importable in some envs
 
 def _safe_path(rel: str) -> Path:
     rel = (rel or '').strip().lstrip('/\\')
@@ -112,6 +116,26 @@ def kb_get_file(path: str):
     if fp.is_dir():
         raise HTTPException(status_code=400, detail='Path is a directory')
 
+    # Handle PowerPoint → PDF conversion on the fly
+    ext = (fp.suffix or '').lstrip('.').lower()
+    if ext in {'ppt', 'pptx'}:
+        if convert_pptx_to_pdf is None:
+            raise HTTPException(status_code=501, detail='PPTX conversion is not available on server')
+        try:
+            pdf_path = convert_pptx_to_pdf(fp, KB_ROOT)
+        except HTTPException as e:
+            # propagate HTTPException as is
+            raise e
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f'Conversion error: {e}')
+        # Always inline PDF preview for converted output; let Starlette build headers safely
+        return FileResponse(
+            path=str(pdf_path),
+            media_type='application/pdf',
+            filename=pdf_path.name,
+            content_disposition_type='inline'
+        )
+
     # Guess content type
     import mimetypes
     ctype, _ = mimetypes.guess_type(fp.name)
@@ -121,14 +145,13 @@ def kb_get_file(path: str):
     inline_exts = {
         'pdf','png','jpg','jpeg','gif','svg','webp','mp4','webm','mp3','wav'
     }
-    ext = (fp.suffix or '').lstrip('.').lower()
-    headers = {}
-    if ext in inline_exts:
-        headers['Content-Disposition'] = f"inline; filename=\"{fp.name}\""
-    else:
-        headers['Content-Disposition'] = f"attachment; filename=\"{fp.name}\""
-
-    return FileResponse(path=str(fp), media_type=media_type, filename=fp.name, headers=headers)
+    disposition = 'inline' if ext in inline_exts else 'attachment'
+    return FileResponse(
+        path=str(fp),
+        media_type=media_type,
+        filename=fp.name,
+        content_disposition_type=disposition
+    )
 
 @router.post('/item')
 def kb_create_item(payload: KBItemCreate):
@@ -142,6 +165,20 @@ def kb_create_item(payload: KBItemCreate):
 
 @router.patch('/item')
 def kb_rename_item(payload: KBItemMove):
+    src = _safe_path(payload.path)
+    if not src.exists():
+        raise HTTPException(status_code=404, detail='Source not found')
+    dst = _safe_path(payload.new_path)
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    src.rename(dst)
+    return {"moved": {"from": payload.path, "to": payload.new_path}}
+
+@router.post('/move')
+def kb_move(payload: KBItemMove):
+    """Move or rename a file/directory. Alias for PATCH /item for compatibility.
+
+    Expected payload: { "path": "src", "new_path": "dst" }
+    """
     src = _safe_path(payload.path)
     if not src.exists():
         raise HTTPException(status_code=404, detail='Source not found')

@@ -27,30 +27,14 @@ def terminal_agent(req: TerminalAgentRequest) -> Dict[str, Any]:
 
     # Route to RAG service for chat; CLI stays acknowledged (read-only proxy can be wired later)
     if is_cli:
-        # Parse simple format: /cli <provider> <command_name or tokens> [k=v ...]
+        # Raw passthrough: /cli <provider> <anything...>
         payload = text[4:].strip()
         parts = [p for p in payload.split() if p]
         if len(parts) < 2:
-            raise HTTPException(status_code=400, detail="Usage: /cli <provider> <command_name> [k=v ...]")
+            raise HTTPException(status_code=400, detail="Usage: /cli <provider> <command...>")
         provider, *rest = parts
-        # collect k=v args from the tail, remaining tokens form the command key
-        kv: list[str] = []
-        cmd_tokens: list[str] = []
-        for token in rest:
-            if '=' in token and len(token.split('=',1)[0])>0:
-                kv.append(token)
-            else:
-                cmd_tokens.append(token)
-        command_name = cmd_tokens[0] if cmd_tokens else ''
-        # If multiple tokens like "auth list" → "auth_list"
-        if len(cmd_tokens) > 1:
-            command_name = ('_').join(cmd_tokens)
-        args: Dict[str, Any] = {}
-        for item in kv:
-            if '=' in item:
-                k, v = item.split('=', 1)
-                args[k] = v
-        resp = execute_readonly_cli(provider, command_name, args)
+        command_raw = ' '.join(rest)
+        resp = execute_readonly_cli(provider, command_raw, None)
         result = (resp.stdout or '').strip() or (resp.stderr or '').strip() or f"exit={resp.exit_code}"
         mode = "cli"
     else:

@@ -412,23 +412,28 @@ const handleFileClick = async (path) => {
       }
     } catch {}
 
-    // 커리큘럼은 공개 자료만: 슬라이드 API를 우선 사용
-    const s = await fetch(`${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey } })
-    if (s.ok){
-      const ct = (s.headers.get('content-type')||'').toLowerCase()
-      if (ct.includes('application/pdf')){
-        const blob = await s.blob();
-        tbContent.value = ''
-        tbSlide.value = { type: 'pdf', url: URL.createObjectURL(blob) }
-      } else {
+    const ext = getExt(path)
+    // KB와 동일 정책: 미디어/문서는 새 탭(Blob URL)으로 열기
+    if(['pdf','ppt','pptx','png','jpg','jpeg','gif','svg','webp','mp4','webm','mp3','wav'].includes(ext)){
+      await openKbBinary(path)
+      tbContent.value = ''
+      tbSlide.value = null
+      return
+    }
+    // 텍스트 계열은 중앙 패널에 표시
+    if(ext === 'md' || ['txt','log','json','yaml','yml','csv'].includes(ext) || ext === ''){
+      const s = await fetch(`${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey } })
+      if (s.ok){
         tbContent.value = await s.text()
         tbSlide.value = null
+      } else {
+        tbContent.value = '# 공개되지 않은 자료입니다.'
+        tbSlide.value = null
       }
-    } else {
-      // 공개되지 않은 자료
-      tbContent.value = '# 공개되지 않은 자료입니다.'
-      tbSlide.value = null
+      return
     }
+    // 나머지(예: sh 등)는 다운로드
+    await downloadKbFile(path)
 
   } catch (error) {
     console.error('Error fetching textbook content:', error);
@@ -549,7 +554,7 @@ async function onTreeSelect(p){
     return
   }
   // 미디어/문서: 바이너리로 열기 또는 다운로드
-  if(['pdf','png','jpg','jpeg','gif','svg','webp','mp4','webm','mp3','wav'].includes(ext)){
+  if(['pdf','ppt','pptx','png','jpg','jpeg','gif','svg','webp','mp4','webm','mp3','wav'].includes(ext)){
     await openKbBinary(p)
     return
   }

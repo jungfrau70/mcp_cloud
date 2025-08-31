@@ -1,7 +1,15 @@
 # App stage - Build and runtime for backend
 FROM mcp-backend:package AS app
 
-RUN apt-get update && apt-get install -y groff less
+# Ensure runtime has required tools and fonts for PPTX→PDF
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libreoffice \
+    fonts-noto \
+    fonts-noto-cjk \
+    fonts-dejavu-core \
+    groff less \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

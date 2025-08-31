@@ -1,5 +1,5 @@
 <template>
-  <div v-if="content" class="h-full overflow-y-auto bg-white" ref="contentContainer">
+  <div v-if="content || slide" class="h-full overflow-y-auto bg-white" ref="contentContainer">
     <!-- Action row (optional) -->
     <div class="flex items-center justify-end gap-2 px-4 pt-3" v-if="path">
       <button
@@ -371,7 +371,7 @@ const openSlides = async () => {
 
 const closeSlides = () => {
   if (slidePdfUrl.value) {
-    URL.revokeObjectURL(slidePdfUrl.value);
+    try { URL.revokeObjectURL(slidePdfUrl.value); } catch {}
   }
   slidePdfUrl.value = '';
   slideHtml.value = '';
@@ -407,6 +407,36 @@ const downloadPdf = async () => {
     alert('PDF 생성 중 오류가 발생했습니다.');
   }
 };
+
+// React to slide prop: show provided PDF/HTML slides without requiring openSlides()
+watch(() => props.slide, (s) => {
+  // Reset previous view
+  closeSlides();
+  if (s && typeof s === 'object') {
+    if (s.type === 'pdf' && s.url) {
+      // Use provided object URL; do not recreate
+      slidePdfUrl.value = String(s.url);
+      slideHtml.value = '';
+      isSlideView.value = true;
+      return;
+    }
+    if (s.html) {
+      slideHtml.value = String(s.html);
+      slidePdfUrl.value = '';
+      isSlideView.value = true;
+      return;
+    }
+  }
+  // Fallback: when content exists, show content view
+  isSlideView.value = false;
+}, { immediate: true, deep: false })
+
+// When content switches to non-empty, prefer content view
+watch(() => props.content, (c) => {
+  if (c && String(c).length > 0) {
+    isSlideView.value = false;
+  }
+})
 </script>
 
 <style>

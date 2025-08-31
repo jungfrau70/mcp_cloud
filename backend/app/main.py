@@ -37,7 +37,7 @@ def health():
 
 # Routers
 app.include_router(kb_router)
-app.include_router(kb_legacy_router)
+# app.include_router(kb_legacy_router)
 app.include_router(kb_ws_router)
 app.include_router(profile_router)
 app.include_router(curriculum_router)
