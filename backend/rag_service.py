@@ -7,7 +7,7 @@ from dataclasses import dataclass
 
 from dotenv import load_dotenv
 import hashlib
-from langchain_community.document_loaders import DirectoryLoader, UnstructuredMarkdownLoader
+from langchain_community.document_loaders import DirectoryLoader, UnstructuredMarkdownLoader, TextLoader
 from langchain_text_splitters import MarkdownTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -647,15 +647,30 @@ class RAGService:
 
     def _load_documents(self) -> List[Document]:
         logger.info("%s 에서 문서를 로드합니다.", self.knowledge_base_dir)
+        # 1) 우선 UnstructuredMarkdownLoader 시도 (서식/테이블 등 보존)
+        try:
+            loader = DirectoryLoader(
+                self.knowledge_base_dir,
+                glob="**/*.md",
+                recursive=True,
+                show_progress=True,
+                loader_cls=UnstructuredMarkdownLoader,
+            )
+            documents = loader.load()
+            logger.info("총 %d개의 문서를 로드했습니다.(unstructured)", len(documents))
+            return documents
+        except Exception as e:
+            logger.warning("Unstructured 로더 실패, TextLoader로 폴백합니다: %s", e)
+        # 2) 폴백: NLTK/extra deps 없이 동작하는 TextLoader
         loader = DirectoryLoader(
             self.knowledge_base_dir,
             glob="**/*.md",
             recursive=True,
             show_progress=True,
-            loader_cls=UnstructuredMarkdownLoader,
+            loader_cls=TextLoader,
         )
         documents = loader.load()
-        logger.info("총 %d개의 문서를 로드했습니다.", len(documents))
+        logger.info("총 %d개의 문서를 로드했습니다.(text)", len(documents))
         return documents
 
     def _create_vector_store(self) -> FAISS:

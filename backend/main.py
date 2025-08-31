@@ -21,7 +21,7 @@ except Exception:
 
 try:
     from content_extractor import content_extractor_instance  # type: ignore
-        except Exception:
+except Exception:
     content_extractor_instance = None  # type: ignore
 
 # Legacy constants for slide tests

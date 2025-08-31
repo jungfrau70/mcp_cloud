@@ -6,6 +6,11 @@ session:
   name: authelia_session
   same_site: lax
   cookies:
+    # gostock.us zone (covers all subdomains like auth/app/api.gostock.us)
+    - domain: "gostock.us"
+      authelia_url: "https://auth.gostock.us"
+      default_redirection_url: "https://app.gostock.us"
+    # mentorai.local zone (dev/local)
     - domain: "mentorai.local"
       authelia_url: "https://auth.mentorai.local"
       default_redirection_url: "https://app.mentorai.local"
@@ -22,10 +27,28 @@ authentication_backend:
 access_control:
   default_policy: deny
   rules:
+    # app.gostock.us
+    - domain: "app.gostock.us"
+      policy: bypass
+      resources:
+        - "regex:^/curriculum.*"
+    - domain: "app.gostock.us"
+      policy: one_factor
+      subject:
+        - "group:admins"
+      resources:
+        - "regex:^/knowledge-base.*"
+    - domain: "api.gostock.us"
+      policy: one_factor
+      subject:
+        - "group:admins"
+      resources:
+        - "regex:^/api/v1/knowledge-base/.*"
+    # app.mentorai.local (dev/local)
     - domain: "app.mentorai.local"
       policy: bypass
       resources:
-        - "regex:^/textbook.*"
+        - "regex:^/curriculum.*"
     - domain: "app.mentorai.local"
       policy: one_factor
       subject:

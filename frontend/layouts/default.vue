@@ -15,7 +15,7 @@
             </a>
           </div>
           <div class="flex items-center space-x-4">
-            <NuxtLink to="/textbook" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+            <NuxtLink to="/curriculum" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
               커리큘럼
             </NuxtLink>
             <a href="/knowledge-base" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
@@ -162,8 +162,13 @@ const toast = useToastStore()
 const user = useState('user', () => null)
 
 function redirectToLogin() {
-  // Force a full page navigation to a protected route to trigger Authelia
-  window.location.href = '/knowledge-base';
+  // Redirect to Authelia portal with return destination (rd) back to app
+  try {
+    const dest = typeof window !== 'undefined' ? `${window.location.origin}/knowledge-base` : '/knowledge-base'
+    window.location.href = `https://auth.gostock.us/?rd=${encodeURIComponent(dest)}`
+  } catch {
+    window.location.href = '/knowledge-base'
+  }
 }
 
 // Fetch current user status on client-side mount
@@ -284,26 +289,16 @@ onMounted(async () => {
       const lastTab = typeof window !== 'undefined' ? localStorage.getItem('kb_last_tab') : null
       if(lastTab && ['tree','tiptap','markdown'].includes(lastTab)) kbTab.value = lastTab
     }catch{}
-    // 기본 문서 열기: 최근 문서가 없으면 index.ml 자동 로드(없으면 생성)
-    ;(async () => {
-      try{
-        const lastKb = typeof window !== 'undefined' ? localStorage.getItem('kb_last_path') : null
-        if(isHomeRedirect.value && homePathParam.value){
-          await handleKbFileSelect(homePathParam.value)
-        } else if(lastKb){
-          await handleKbFileSelect(lastKb)
-        } else if(!activePath.value){
-          await ensureKbIndex()
-        }
-      }catch{ /* ignore */ }
-    })()
-  } else if (route.path.startsWith('/textbook')) {
-    // Restore last opened textbook path if available unless forced path in query
+    // 지식베이스 초기 화면: 파일 자동 열기 없이 FileTree 전체 화면 유지
+  } else if (route.path.startsWith('/curriculum') || route.path.startsWith('/textbook')) {
+    // Restore last opened curriculum path if available unless forced path in query
     try {
       const q = route.query || {}
       const forced = String(q.force || '') === '1'
       const target = String(q.path || '')
-      const last = typeof window !== 'undefined' ? localStorage.getItem('textbook_last_path') : null
+      const lastNew = typeof window !== 'undefined' ? localStorage.getItem('curriculum_last_path') : null
+      const lastOld = typeof window !== 'undefined' ? localStorage.getItem('textbook_last_path') : null
+      const last = lastNew || lastOld
       if (forced && target){ await handleFileClick(target) }
       else if (last) { handleFileClick(last) }
       else { ;(async ()=>{ await showCurriculumIndex() })() }
@@ -326,15 +321,15 @@ onMounted(async () => {
       const container = e?.detail?.container
       if(!p) return
       // If caller specifies container, respect it
-      if(container === 'textbook'){
-        if(route.path.startsWith('/textbook')) handleFileClick(p)
-        else try{ router.push({ path: '/textbook', query: { path: p, force: '1' } }) }catch{ handleFileClick(p) }
+      if(container === 'curriculum' || container === 'textbook'){
+        if(route.path.startsWith('/curriculum') || route.path.startsWith('/textbook')) handleFileClick(p)
+        else try{ router.push({ path: '/curriculum', query: { path: p, force: '1' } }) }catch{ handleFileClick(p) }
         return
       }
       // Default: open based on current route
       if(isKnowledgeBase.value){ handleKbFileSelect(p) }
-      else if(route.path.startsWith('/textbook')){ handleFileClick(p) }
-      else { try{ router.push({ path: '/textbook', query: { path: p, force: '1' } }) }catch{ handleFileClick(p) } }
+      else if(route.path.startsWith('/curriculum') || route.path.startsWith('/textbook')){ handleFileClick(p) }
+      else { try{ router.push({ path: '/curriculum', query: { path: p, force: '1' } }) }catch{ handleFileClick(p) } }
     })
     window.addEventListener('kb:mode', (e) => {
       if(e?.detail?.to === 'view'){
@@ -355,12 +350,14 @@ onMounted(async () => {
 
 // 라우트 변경 시 커리큘럼 페이지로 전환되면 마지막 경로 복원
 watch(() => route.path, async (p) => {
-  if (p.startsWith('/textbook')) {
+  if (p.startsWith('/curriculum') || p.startsWith('/textbook')) {
     try {
       const q = route.query || {}
       const forced = String(q.force || '') === '1'
       const target = String(q.path || '')
-      const last = typeof window !== 'undefined' ? localStorage.getItem('textbook_last_path') : null
+      const lastNew = typeof window !== 'undefined' ? localStorage.getItem('curriculum_last_path') : null
+      const lastOld = typeof window !== 'undefined' ? localStorage.getItem('textbook_last_path') : null
+      const last = lastNew || lastOld
       // 우선순위: 강제 대상 -> 최근 문서 -> 기본 인덱스
       if (forced && target && tbPath.value !== target) {
         await handleFileClick(target)
@@ -374,9 +371,9 @@ watch(() => route.path, async (p) => {
   }
 })
 async function showCurriculumIndex(){
-  // 1) Try slides index through slides endpoint (if admin selected dirs contain index.md)
+  // 1) Try curriculum index through curriculum endpoint (if admin selected dirs contain index.md)
   try {
-    const s = await fetch(`${apiBase}/v1/slides?textbook_path=${encodeURIComponent('index')}`, { headers: { 'X-API-Key': apiKey } })
+    const s = await fetch(`${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent('index')}`, { headers: { 'X-API-Key': apiKey } })
     if (s.ok) {
       const ct = (s.headers.get('content-type')||'').toLowerCase()
       if (ct.includes('application/pdf')){
@@ -400,18 +397,23 @@ async function showCurriculumIndex(){
 const handleFileClick = async (path) => {
   // 홈('/') 등에서는 '/textbook'로 전환하여 가운데 패널이 WorkspaceView를 렌더하도록 함
   try {
-    if (!route.path.startsWith('/textbook')) {
-      await router.push({ path: '/textbook', query: { path, force: '1' } })
+    if (!route.path.startsWith('/curriculum') && !route.path.startsWith('/textbook')) {
+      await router.push({ path: '/curriculum', query: { path, force: '1' } })
       return
     }
   } catch { /* ignore navigation errors */ }
   try {
     tbPath.value = path;
     // persist last opened textbook file
-    try { if (typeof window !== 'undefined') localStorage.setItem('textbook_last_path', path) } catch {}
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('curriculum_last_path', path)
+        localStorage.setItem('textbook_last_path', path) // legacy for compatibility
+      }
+    } catch {}
 
     // 커리큘럼은 공개 자료만: 슬라이드 API를 우선 사용
-    const s = await fetch(`${apiBase}/v1/slides?textbook_path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey } })
+    const s = await fetch(`${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey } })
     if (s.ok){
       const ct = (s.headers.get('content-type')||'').toLowerCase()
       if (ct.includes('application/pdf')){
@@ -501,7 +503,59 @@ const openKnowledgeBase = async () => {
   }
 };
 
-async function onTreeSelect(p){ await handleKbFileSelect(p); kbTab.value = 'tiptap' }
+function getExt(p){
+  const i = p.lastIndexOf('.')
+  return i >= 0 ? p.slice(i+1).toLowerCase() : ''
+}
+
+async function openKbBinary(path){
+  try{
+    const r = await fetch(`${apiBase}/v1/knowledge-base/file?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey } })
+    if(!r.ok){ toast.push('error', '파일 열기 실패: ' + r.status); return }
+    const blob = await r.blob()
+    const url = URL.createObjectURL(blob)
+    // 새 탭에서 열기
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }catch(e){ toast.push('error','파일 로드 오류') }
+}
+
+async function downloadKbFile(path){
+  try{
+    const r = await fetch(`${apiBase}/v1/knowledge-base/file?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey } })
+    if(!r.ok){ toast.push('error', '다운로드 실패: ' + r.status); return }
+    const blob = await r.blob()
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = path.split('/').pop() || 'download'
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    URL.revokeObjectURL(url)
+  }catch(e){ toast.push('error','다운로드 오류') }
+}
+
+async function onTreeSelect(p){
+  const ext = getExt(p)
+  // md: 편집기로 열기, 텍스트 계열: 읽기 뷰(마크다운 탭)로 열기
+  if(ext === 'md'){
+    await handleKbFileSelect(p)
+    kbTab.value = 'tiptap'
+    return
+  }
+  if(['txt','log','json','yaml','yml','csv'].includes(ext)){
+    await handleKbFileSelect(p)
+    kbTab.value = 'markdown'
+    return
+  }
+  // 미디어/문서: 바이너리로 열기 또는 다운로드
+  if(['pdf','png','jpg','jpeg','gif','svg','webp','mp4','webm','mp3','wav'].includes(ext)){
+    await openKbBinary(p)
+    return
+  }
+  // 나머지는 다운로드만
+  await downloadKbFile(p)
+}
 // KB 인덱스 문서 보장: index.md 우선 시도, 없으면 생성
 async function ensureKbIndex(){
   try{

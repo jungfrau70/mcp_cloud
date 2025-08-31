@@ -51,7 +51,7 @@ describe('SearchPanel.vue', () => {
     await performSearch(wrapper);
 
     expect(global.fetch).toHaveBeenCalledWith(
-      `${apiBase}/api/v1/knowledge/search-enhanced`,
+      `${apiBase}/v1/knowledge/search-enhanced`,
       expect.any(Object)
     );
     

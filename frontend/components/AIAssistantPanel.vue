@@ -187,7 +187,7 @@ async function send() {
   input.value = ''
   loading.value = true
   try {
-    const res = await fetch(`${apiBase}/api/v1/terminal/agent`, {
+    const res = await fetch(`${apiBase}/v1/terminal/agent`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
       body: JSON.stringify({ user_input: value, conversation_id: activeTopic.value.conversationId })

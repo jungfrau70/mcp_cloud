@@ -1,10 +1,7 @@
 export default defineNuxtRouteMiddleware((to) => {
-  // KB 경로에만 적용: 비로그인 사용자는 /login 으로 리디렉트
-  if (!to.path.startsWith('/knowledge-base')) return
-  const user = useState<any>('user')
-  if (!user.value) {
-    return navigateTo({ path: '/login', query: { redirect: to.fullPath } })
-  }
+  // 지식베이스는 공개 열람 허용: 앱 내에서는 로그인 리다이렉트하지 않음
+  // (서버 측 Authelia 정책으로 보호되는 API만 접근 제한)
+  return
 })
 
 

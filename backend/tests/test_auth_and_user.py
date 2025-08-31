@@ -20,7 +20,7 @@ def client(monkeypatch, tmp_path):
     """
     # 1. Set environment variables for the test
     monkeypatch.setenv("DATABASE_URL", f"sqlite:///{tmp_path / 'test_auth.db'}")
-    monkeypatch.setenv("MCP_API_KEY", "test_api_key")
+    monkeypatch.setenv("MCP_API_KEY", "my_mcp_eagle_tiger")
     monkeypatch.setenv("DISABLE_AUTH", "false") # Enable API key auth for these tests
 
     # 2. Import necessary modules for app creation
@@ -93,7 +93,7 @@ def test_rbac_guard_student_forbidden(client):
     test_client, _ = client
     response = test_client.get(
         "/api/v1/knowledge-base/versions?path=some/doc.md",
-        headers={"X-Forwarded-Groups": "student", "X-API-Key": "test_api_key"}
+        headers={"X-Forwarded-Groups": "student", "X-API-Key": "my_mcp_eagle_tiger"}
     )
     assert response.status_code == 403
     assert response.json() == {"detail": "Not authorized: Requires admin privileges"}
@@ -166,4 +166,6 @@ def test_jit_provisioning_update_existing_user(client):
         assert user_in_db.role == "admin"
         assert user_in_db.last_login_at > initial_time
     finally:
+        db.close()
+ finally:
         db.close()

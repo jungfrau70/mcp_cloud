@@ -387,7 +387,7 @@ async function loadAllKbDirs(){
 }
 async function loadSelection(){
   try{
-    const r = await fetch(`${apiBase}/v1/slides/selection`, { headers: { 'X-API-Key': apiKey }})
+    const r = await fetch(`${apiBase}/v1/curriculum/selection`, { headers: { 'X-API-Key': apiKey }})
     const d = await r.json()
     selectedDirs.value = Array.isArray(d?.selected_dirs) ? d.selected_dirs : []
   } catch { selectedDirs.value = [] }
@@ -395,7 +395,7 @@ async function loadSelection(){
 async function saveSelection(){
   saving.value = true
   try{
-    await fetch(`${apiBase}/v1/slides/selection`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey }, body: JSON.stringify({ selected_dirs: selectedDirs.value }) })
+    await fetch(`${apiBase}/v1/curriculum/selection`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey }, body: JSON.stringify({ selected_dirs: selectedDirs.value }) })
     showAdmin.value = false
   } finally { saving.value = false }
 }

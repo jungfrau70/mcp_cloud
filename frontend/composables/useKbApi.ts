@@ -17,6 +17,20 @@ export interface KbStructuredDiff { diff_format: string; hunks: KbStructuredDiff
 export function resolveApiBase(): string {
   const config = useRuntimeConfig()
   const configured = (config.public as any)?.apiBaseUrl || '/api'
+  function ensureApiPath(base: string): string {
+    try {
+      const u = new URL(base)
+      const path = (u.pathname || '/').replace(/\/+/g,'/')
+      if (path === '/' || path === '') {
+        u.pathname = '/api'
+        return u.toString().replace(/\/$/, '')
+      }
+      return base.replace(/\/$/, '')
+    } catch {
+      // relative path like '/api' stays as-is
+      return base
+    }
+  }
   if (typeof window !== 'undefined'){
     try{
       const u = new URL(configured)
@@ -26,11 +40,12 @@ export function resolveApiBase(): string {
       if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== 'api.gostock.us' && u.hostname !== browserHost){
         const port = u.port || '8000'
         const scheme = u.protocol.replace(':','') || 'https'
-        return `${scheme}://${browserHost}:${port}`
+        return ensureApiPath(`${scheme}://${browserHost}:${port}`)
       }
+      return ensureApiPath(configured)
     }catch{/* ignore */}
   }
-  return configured
+  return ensureApiPath(configured)
 }
 
 export function useKbApi(){
@@ -50,7 +65,7 @@ export function useKbApi(){
   }
 
   async function getItem(path: string): Promise<any>{
-    return request<any>(`${apiBase}/v1/knowledge-base/item?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey }}, 'getItem failed')
+    return request<any>(`${apiBase}/v1/curriculum/item?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey }}, 'getItem failed')
   }
 
   async function saveItem(path: string, content: string, message?: string, expectedVersion?: number): Promise<KbSaveResponse>{

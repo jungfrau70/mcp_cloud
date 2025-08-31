@@ -1,0 +1,4 @@
+const ContentView_vue_vue_type_style_index_0_lang = ".fade-enter-active,.fade-leave-active{transition:opacity .2s ease}.fade-enter-from,.fade-leave-to{opacity:0}.prose a{cursor:pointer}.prose a,.prose a:hover{text-decoration:underline}.table-scroll{overflow-x:auto}.prose table{border-collapse:collapse;table-layout:auto;width:100%}.prose thead th{background:#f9fafb}.prose td,.prose th{border:1px solid #e5e7eb;padding:.5rem .75rem;vertical-align:top}.prose tbody tr:nth-child(odd){background:#fafafa}.overflow-y-auto::-webkit-scrollbar{width:8px}.overflow-y-auto::-webkit-scrollbar-track{background:#f1f1f1;border-radius:4px}.overflow-y-auto::-webkit-scrollbar-thumb{background:#c1c1c1;border-radius:4px}.overflow-y-auto::-webkit-scrollbar-thumb:hover{background:#a8a8a8}.overflow-y-auto{scrollbar-color:#c1c1c1 #f1f1f1;scrollbar-width:thin}";
+
+export { ContentView_vue_vue_type_style_index_0_lang as C };
+//# sourceMappingURL=ContentView-styles-1.mjs-Bkmy7OTY.mjs.map

@@ -1,14 +1,19 @@
 # backend/app/api/routes/kb.py
 from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi.responses import FileResponse, Response
 from typing import Any, Dict
 from pathlib import Path
-from security import get_api_key
+from security import get_api_key, get_current_admin_user
 from app.schemas.kb import KBItemCreate, KBItemMove
-from config import MCP_API_KEY, DISABLE_AUTH
+from config import MCP_API_KEY, DISABLE_AUTH, KB_PUBLIC_READ
 from pydantic import BaseModel
 from typing import List, Optional, Literal
 
-router = APIRouter(prefix="/api/v1/knowledge-base", tags=["Knowledge Base"], dependencies=[Depends(get_api_key)])
+router = APIRouter(
+    prefix="/api/v1/knowledge-base",
+    tags=["Knowledge Base"],
+    dependencies=[] if KB_PUBLIC_READ else [Depends(get_api_key), Depends(get_current_admin_user)]
+)
 
 # Compatibility aliases for legacy tests
 legacy_router = APIRouter(prefix="/api/v1/kb", tags=["Knowledge Base (legacy)"])
@@ -94,6 +99,36 @@ def kb_get_item(path: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f'Failed to read file: {e}')
     return {"path": path, "type": "file", "content": content}
+
+@router.get('/file')
+def kb_get_file(path: str):
+    """Return binary/static file contents with appropriate Content-Type.
+
+    Intended for non-markdown assets like pdf/images/video or arbitrary downloads.
+    """
+    fp = _safe_path(path)
+    if not fp.exists():
+        raise HTTPException(status_code=404, detail='Not found')
+    if fp.is_dir():
+        raise HTTPException(status_code=400, detail='Path is a directory')
+
+    # Guess content type
+    import mimetypes
+    ctype, _ = mimetypes.guess_type(fp.name)
+    media_type = ctype or 'application/octet-stream'
+
+    # Inline for common previewable types (pdf/images/video/audio), else download
+    inline_exts = {
+        'pdf','png','jpg','jpeg','gif','svg','webp','mp4','webm','mp3','wav'
+    }
+    ext = (fp.suffix or '').lstrip('.').lower()
+    headers = {}
+    if ext in inline_exts:
+        headers['Content-Disposition'] = f"inline; filename=\"{fp.name}\""
+    else:
+        headers['Content-Disposition'] = f"attachment; filename=\"{fp.name}\""
+
+    return FileResponse(path=str(fp), media_type=media_type, filename=fp.name, headers=headers)
 
 @router.post('/item')
 def kb_create_item(payload: KBItemCreate):

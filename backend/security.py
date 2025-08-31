@@ -28,6 +28,9 @@ async def get_api_key(api_key: str = Security(api_key_header), request: Request 
     return provided
 
 async def get_current_admin_user(request: Request):
+    # When DISABLE_AUTH, bypass admin check for development
+    if DISABLE_AUTH:
+        return True
     # Authelia passes groups in X-Forwarded-Groups header, comma-separated
     groups_header = request.headers.get("X-Forwarded-Groups")
     print(f"DEBUG: X-Forwarded-Groups received: {groups_header}") # DEBUG PRINT

@@ -14,6 +14,7 @@ DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://mcpuser:mcppassword@mcp_p
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 MCP_API_KEY = os.getenv("MCP_API_KEY")
 DISABLE_AUTH = os.getenv("DISABLE_AUTH", "false").lower() == "true"
+KB_PUBLIC_READ = os.getenv("KB_PUBLIC_READ", "false").lower() == "true"
 
 # Create SQLAlchemy engine/session
 if DATABASE_URL.startswith("sqlite"):

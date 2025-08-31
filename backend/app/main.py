@@ -6,13 +6,14 @@ from app.api.routes import (
   kb_legacy_router,
   kb_ws_router,
   profile_router,
-  slides_router,
-  curriculum_legacy_router,
+  curriculum_router,
   users_router,
   trending_router,
   datasources_router,
   deployments_router,
   knowledge_router,
+  terminal_router,
+  cli_router,
 )
 from .db.base import Base
 from .models import *  # noqa: F401,F403 ensure models are imported for metadata
@@ -39,13 +40,14 @@ app.include_router(kb_router)
 app.include_router(kb_legacy_router)
 app.include_router(kb_ws_router)
 app.include_router(profile_router)
-app.include_router(slides_router)
-app.include_router(curriculum_legacy_router)
+app.include_router(curriculum_router)
 app.include_router(users_router)
 app.include_router(trending_router)
 app.include_router(datasources_router)
 app.include_router(deployments_router)
 app.include_router(knowledge_router)
+app.include_router(terminal_router)
+app.include_router(cli_router)
 
 # Create tables on startup (idempotent)
 try:

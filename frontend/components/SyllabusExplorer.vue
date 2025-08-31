@@ -43,12 +43,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
+import { useRoute } from 'vue-router'
 import FileTreePanel from './FileTreePanel.vue';
 import { useRuntimeConfig } from '#app'
 
 const kbTree = ref(null);
-const slidesTree = ref(null);
+const curriculumTree = ref(null);
 const loading = ref(false);
 const error = ref(null);
 // 관리자 설정 UI는 지식베이스로 이동
@@ -63,6 +64,7 @@ function resolveApiBase(){
 }
 const apiBase = resolveApiBase()
 const apiKey = (useRuntimeConfig().public?.apiKey) || 'my_mcp_eagle_tiger'
+const curriculumLoading = ref(false)
 
 // 통합터미널 주제 관리 동기화 (guest 기준)
 const userKey = 'guest'
@@ -166,22 +168,43 @@ const onFileClick = (path) => {
   emit('file-click', path);
 };
 
-onMounted(async () => {
-  loading.value = true;
-  try {
-    // KB 전체 트리
-    const r1 = await fetch(`${apiBase}/v1/knowledge-base/tree`, { headers: { 'X-API-Key': apiKey } });
-    if (!r1.ok) throw new Error('Failed to fetch KB tree');
-    kbTree.value = await r1.json();
+async function loadcurriculumTreeIfCurriculum(){
+  if (curriculumLoading.value) return
+  try{
+    const route = useRoute()
+    const p = String(route?.path || '')
+    if (!(p.startsWith('/curriculum') || p.startsWith('/textbook'))) return
+    curriculumLoading.value = true
     // 선택 디렉토리
-    const r2 = await fetch(`${apiBase}/v1/slides/selection`, { headers: { 'X-API-Key': apiKey } });
+    const r2 = await fetch(`${apiBase}/v1/curriculum/selection`, { headers: { 'X-API-Key': apiKey } });
     const sel = await r2.json();
     selectedDirs.value = Array.isArray(sel?.selected_dirs) ? sel.selected_dirs : []
     // 선택 디렉토리를 기준으로 서버가 머지한 트리 가져오기 (중첩 경로 지원)
-    const r3 = await fetch(`${apiBase}/v1/slides/tree`, { headers: { 'X-API-Key': apiKey } });
+    const r3 = await fetch(`${apiBase}/v1/curriculum/tree`, { headers: { 'X-API-Key': apiKey } });
     if (r3.ok) {
-      slidesTree.value = await r3.json();
+      curriculumTree.value = await r3.json();
     }
+  } finally { curriculumLoading.value = false }
+}
+
+onMounted(async () => {
+  loading.value = true;
+  try {
+    // 슬라이드 관련 호출은 커리큘럼 페이지에서만 수행
+    let isTextbookPage = false
+    let currentPath = ''
+    try {
+      const route = useRoute()
+      currentPath = typeof route?.path === 'string' ? route.path : ''
+      isTextbookPage = currentPath.startsWith('/curriculum') || currentPath.startsWith('/textbook')
+    } catch {}
+
+    // KB 전체 트리
+    const r1 = await fetch(`${apiBase}/v1/curriculum/tree`, { headers: { 'X-API-Key': apiKey } });
+    if (!r1.ok) throw new Error('Failed to fetch KB tree');
+    kbTree.value = await r1.json();
+
+    if (isTextbookPage) { await loadcurriculumTreeIfCurriculum() }
   } catch (e) {
     error.value = e.message;
   } finally {
@@ -195,7 +218,17 @@ onMounted(async () => {
   }
 });
 
-// Open root slide when clicking the title
+// 라우트가 커리큘럼으로 전환될 때 슬라이드 트리/선택 갱신
+try{
+  const route = useRoute()
+  watch(() => route.path, async (p) => {
+    try{
+      if (typeof p === 'string' && (p.startsWith('/curriculum') || p.startsWith('/textbook'))){ await loadcurriculumTreeIfCurriculum() }
+    }catch{ /* ignore */ }
+  })
+}catch{ /* ignore */ }
+
+// Open root Curriculum when clicking the title
 const openCurriculum = () => {
   // 표시 트리의 첫 파일 열기
   const t = displayTree.value
@@ -207,8 +240,8 @@ const openCurriculum = () => {
 // 선택된 디렉토리만 필터링해 표시
 const selectedDirs = ref([])
 const displayTree = computed(() => {
-  // slidesTree가 있으면 우선 사용 (서버에서 중첩 경로 포함 머지된 결과)
-  if (slidesTree.value) return slidesTree.value
+  // curriculumTree가 있으면 우선 사용 (서버에서 중첩 경로 포함 머지된 결과)
+  if (curriculumTree.value) return curriculumTree.value
   // fallback: 기존 KB 트리 + 1레벨 필터
   const t = kbTree.value || {}
   const picked = selectedDirs.value || []

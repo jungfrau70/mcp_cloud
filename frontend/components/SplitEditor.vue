@@ -444,7 +444,7 @@ async function deleteCurrent(){
     const apiBase = resolveApiBase()
     const ts = new Date().toISOString().replace(/[-:T.Z]/g,'').slice(0,14)
     const trashPath = `.trash/${ts}/${p}`
-    await fetch(`${apiBase}/api/v1/knowledge-base/move`, { method:'POST', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path: p, new_path: trashPath }) })
+    await fetch(`${apiBase}/v1/knowledge-base/move`, { method:'POST', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path: p, new_path: trashPath }) })
     try { window.dispatchEvent(new CustomEvent('kb:deleted', { detail:{ path: p, trashPath } })) } catch {}
   }catch{ alert('삭제 실패') }
 }

@@ -203,7 +203,7 @@ const setupLinkIntercepts = async () => {
             let resolved
             if(rawMd.includes('/')){
               const first = rawMd.split('/')[0]
-              if(['cloud_basic','textbook','slides','mcp_knowledge_base'].includes(first)) resolved = rawMd.replace(/^mcp_knowledge_base\//,'')
+              if(['cloud_basic','curriculum','textbook','slides','mcp_knowledge_base'].includes(first)) resolved = rawMd.replace(/^mcp_knowledge_base\//,'')
               else resolved = resolveRelative(rawMd)
             }else{
               resolved = resolveRelative(rawMd)
@@ -242,7 +242,7 @@ const setupLinkIntercepts = async () => {
           // strip leading root 'mcp_knowledge_base/'
           const rel = noScheme.replace(/^mcp_knowledge_base\//,'')
           const decoded = decodeURIComponent(rel)
-          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'textbook' } }))
+          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'curriculum' } }))
         }catch{}
       })
     })
@@ -282,7 +282,7 @@ const setupLinkIntercepts = async () => {
           const originPath = props && props.path ? String(props.path) : ''
           const originRel = originPath.replace(/^mdc:/,'').replace(/^\//,'').replace(/^mcp_knowledge_base\//,'')
           const originDir = originRel.split('/').slice(0,-1).join('/')
-          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'textbook', originDir } }))
+          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'curriculum', originDir } }))
           return
         }
         // Handle relative links like './a.md', '../b.md', 'c.md'
@@ -301,7 +301,7 @@ const setupLinkIntercepts = async () => {
           const decoded = decodeURIComponent(resolved)
           const originRel = basePath.replace(/^mdc:/,'').replace(/^\//,'').replace(/^mcp_knowledge_base\//,'')
           const originDir = originRel.split('/').slice(0,-1).join('/')
-          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'textbook', originDir } }))
+          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'curriculum', originDir } }))
           return
         }
         if(/^https?:\/\//i.test(href)){
@@ -348,7 +348,7 @@ const slideTitle = computed(() => {
 const openSlides = async () => {
   if (!props.path) return;
   try {
-    const url = `${apiBase}/v1/slides?textbook_path=${encodeURIComponent(props.path)}`;
+    const url = `${apiBase}/v1/slides?curriculum_path=${encodeURIComponent(props.path)}`;
     const res = await fetch(url, { headers: { 'X-API-Key': API_KEY } });
     if (!res.ok) throw new Error(`Failed to load slides: ${res.status}`);
     const ct = (res.headers.get('content-type') || '').toLowerCase();
