@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 // Usage:
-// set PLAYWRIGHT_BASE_URL=https://app.gostock.us
+// set PLAYWRIGHT_BASE_URL=https://app.goldencircle.us
 // set AUTHELIA_E2E_USER=admin
 // set AUTHELIA_E2E_PASS=ChangeMe_123
 // yarn test

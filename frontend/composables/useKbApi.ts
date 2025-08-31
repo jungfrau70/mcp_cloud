@@ -37,7 +37,7 @@ export function resolveApiBase(): string {
       const browserHost = window.location.hostname
       // 프록시 상대 경로('/api')는 그대로 사용
       if (u.origin === 'null') return configured
-      if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== 'api.gostock.us' && u.hostname !== browserHost){
+      if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== 'api.goldencircle.us' && u.hostname !== browserHost){
         const port = u.port || '8000'
         const scheme = u.protocol.replace(':','') || 'https'
         return ensureApiPath(`${scheme}://${browserHost}:${port}`)

@@ -8,6 +8,8 @@ from app.api.routes import (
   profile_router,
   curriculum_router,
   users_router,
+  auth_router,
+  email_router,
   trending_router,
   datasources_router,
   deployments_router,
@@ -42,6 +44,8 @@ app.include_router(kb_ws_router)
 app.include_router(profile_router)
 app.include_router(curriculum_router)
 app.include_router(users_router)
+app.include_router(auth_router)
+app.include_router(email_router)
 app.include_router(trending_router)
 app.include_router(datasources_router)
 app.include_router(deployments_router)

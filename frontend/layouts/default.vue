@@ -24,14 +24,11 @@
             <!-- Auth Status -->
             <div v-if="user" class="flex items-center space-x-2">
               <NuxtLink to="/profile" class="text-sm text-gray-600 hover:underline">{{ user.email }}</NuxtLink>
-              <a href="https://auth.gostock.us/api/logout" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                로그아웃
-              </a>
+              <button @click="onLogout" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">로그아웃</button>
             </div>
-            <div v-else>
-              <button class="px-3 py-2 rounded-md text-sm font-medium text-gray-400 opacity-60 cursor-not-allowed" disabled title="로그인 준비 중">
-                로그인
-              </button>
+            <div v-else class="flex items-center space-x-2">
+              <NuxtLink to="/login" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">로그인</NuxtLink>
+              <NuxtLink to="/register" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">회원가입</NuxtLink>
             </div>
           </div>
         </div>
@@ -156,28 +153,44 @@ import TipTapKbEditor from '~/components/TipTapKbEditor.client.vue'
 import TaskStatusBar from '~/components/TaskStatusBar.vue'
 import ToastStack from '~/components/ToastStack.vue'
 import { useToastStore } from '~/stores/toast'
+import { useAuthStore } from '~/stores/auth'
 const toast = useToastStore()
 
 // User authentication state
 const user = useState('user', () => null)
+const auth = useAuthStore()
+auth.loadFromStorage()
 
 function redirectToLogin() {
   // Redirect to Authelia portal with return destination (rd) back to app
   try {
     const dest = typeof window !== 'undefined' ? `${window.location.origin}/knowledge-base` : '/knowledge-base'
-    window.location.href = `https://auth.gostock.us/?rd=${encodeURIComponent(dest)}`
+    window.location.href = `/login?rd=${encodeURIComponent(dest)}`
   } catch {
     window.location.href = '/knowledge-base'
   }
 }
 
+async function onLogout(){
+  try{
+    const base = (config.public?.apiBaseUrl) || '/api'
+    await $fetch(`${base}/v1/auth/logout`, { method: 'POST' })
+  }catch{}
+  auth.clear()
+  user.value = null
+  try{ await router.push('/') }catch{}
+}
 // Fetch current user status on client-side mount
 onMounted(async () => {
   try {
     const { data: fetchedUser, error } = await useFetch('/api/v1/users/me', {
       lazy: true,
-      server: false, // Ensure this only runs on the client
-      retry: 0 // Do not retry on 401/403 errors
+      headers: {
+        'X-API-Key': apiKey,
+        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
+      },
+      server: false,
+      retry: 0
     });
 
     // Watch for the data to be populated
@@ -260,7 +273,7 @@ function resolveApiBase(){
       const u = new URL(configured)
       const browserHost = window.location.hostname
       if (u.origin === 'null') return configured
-      if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== 'api.gostock.us' && u.hostname !== browserHost){
+      if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== 'api.goldencircle.us' && u.hostname !== browserHost){
         const port = u.port || '8000'
         const scheme = u.protocol.replace(':','') || 'https'
         return `${scheme}://${browserHost}:${port}`

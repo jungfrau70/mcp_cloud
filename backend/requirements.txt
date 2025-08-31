@@ -4,6 +4,7 @@ sqlalchemy
 alembic
 psycopg2-binary
 pydantic
+email-validator
 requests
 beautifulsoup4
 httpx
@@ -52,3 +53,5 @@ opentelemetry-instrumentation-psycopg2
 opentelemetry-instrumentation-redis
 opentelemetry-instrumentation-celery
 stripe
+PyJWT
+passlib[bcrypt]

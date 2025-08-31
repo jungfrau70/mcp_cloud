@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from security import get_api_key
 from ..deps import get_db
 from app.models import User
+from .auth import get_user_from_bearer
 
 router = APIRouter(prefix="/api/v1/users", tags=["Users"], dependencies=[Depends(get_api_key)])
 
@@ -22,6 +23,11 @@ def _extract_role_from_headers(request: Request) -> tuple[str|None, Role]:
 
 @router.get("/me")
 def users_me(request: Request, db: Session = Depends(get_db)):
+    # Prefer JWT Bearer if provided; fallback to forwarded headers
+    bearer_user = get_user_from_bearer(request, db)
+    if bearer_user is not None:
+        return {"email": bearer_user.email, "role": bearer_user.role}
+
     email, role = _extract_role_from_headers(request)
     if not email:
         raise HTTPException(status_code=401, detail="Unauthenticated")

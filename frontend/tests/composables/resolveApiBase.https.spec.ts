@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { resolveApiBase } from '../../composables/useKbApi'
 
 vi.mock('#app', () => ({
-  useRuntimeConfig: () => ({ public: { apiBaseUrl: 'https://api.gostock.us' } })
+  useRuntimeConfig: () => ({ public: { apiBaseUrl: 'https://api.goldencircle.us' } })
 }))
 
 describe('resolveApiBase over https', () => {
@@ -10,7 +10,7 @@ describe('resolveApiBase over https', () => {
     vi.stubGlobal('window', { location: { hostname: 'localhost', protocol: 'http:', port: '3000' } })
     const base = resolveApiBase()
     expect(base.startsWith('https://')).toBe(true)
-    expect(base).toContain('api.gostock.us')
+    expect(base).toContain('api.goldencircle.us')
   })
 })
 

@@ -7,7 +7,7 @@ MentorAi 플랫폼의 사용자 관리 기능 구현을 위한 다음 단계는 
 1.  **수동 작업: NPM Forward Auth 설정**
     *   Nginx Proxy Manager(NPM) UI를 통해 수동으로 Forward Auth 설정을 완료해야 합니다.
     *   자세한 설정 방법은 `docs/설정_NPM.md` 문서를 참조하십시오. 특히, "Custom Nginx Configuration" 섹션의 Nginx 설정 스니펫을 해당 Proxy Host에 추가해야 합니다.
-    *   NPM 설정 시, 도메인을 `gostock.us`에서 `mentorai.local`로 업데이트하는 것을 잊지 마십시오.
+    *   NPM 설정 시, 도메인을 `goldencircle.us`에서 `mentorai.local`로 업데이트하는 것을 잊지 마십시오.
 
 2.  **검증 단계: 백엔드 테스트 실행**
     *   FastAPI RBAC 가드 변경 사항이 올바르게 적용되었는지 확인하기 위해 백엔드 테스트를 실행하는 것을 권장합니다.

@@ -19,18 +19,18 @@ users:
     disabled: false
     displayname: "Admin User"
     password: "$argon2id$v=19$m=65536,t=3,p=4$0AYLJCN6te/8bcmXi5gGUQ$ikqw/IC3TRNeTGpSvl27CQC1BdFGh/BJwe2YJU/1nd0"
-    email: admin@gostock.us
+    email: admin@goldencircle.us
     groups:
       - admins
 access_control:
   default_policy: deny
   rules:
-    - domain: ["app.gostock.us"]
+    - domain: ["app.goldencircle.us"]
       policy: bypass
-    - domain: ["app.gostock.us"]
+    - domain: ["app.goldencircle.us"]
       resources: ["/admin*", "/kb/manage*"]
       policy: one_factor
-    - domain: ["api.gostock.us"]
+    - domain: ["api.goldencircle.us"]
       resources: ["/api/v1/*"]
       policy: one_factor
 ...

@@ -75,6 +75,14 @@ services:
       - GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-sa-key.json
       - CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=/app/gcp-sa-key.json
       - MCP_API_KEY=${MCP_API_KEY:-my_mcp_eagle_tiger}
+      - JWT_SECRET=${JWT_SECRET:-change_me}
+      - SMTP_HOST=${SMTP_HOST:-}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASS=${SMTP_PASS:-}
+      - SMTP_FROM=${SMTP_FROM:-no-reply@example.com}
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY:-}
+      - FRONTEND_BASE_URL=${FRONTEND_BASE_URL:-http://localhost:3000}
       # HF offline-friendly defaults
       - EMBEDDING_BACKEND=${EMBEDDING_BACKEND:-local}
       - EMBEDDING_MODEL=${EMBEDDING_MODEL:-jhgan/ko-sroberta-multitask}
@@ -174,7 +182,7 @@ services:
     # 프론트엔드는 민감키 불필요: env_file 제거
     environment:
       - NUXT_PUBLIC_API_BASE_URL=/api
-      - NUXT_PUBLIC_WS_BASE_URL=wss://api.gostock.us/api
+      - NUXT_PUBLIC_WS_BASE_URL=wss://api.goldencircle.us/api
       - NUXT_PUBLIC_API_KEY=${MCP_API_KEY:-my_mcp_eagle_tiger}
       - NODE_ENV=production
       - YARN_PRODUCTION=false

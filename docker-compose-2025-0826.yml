@@ -81,7 +81,7 @@ services:
     environment:
       - MCP_API_KEY=${MCP_API_KEY}
       - NUXT_PUBLIC_API_BASE_URL=/api
-      - NUXT_PUBLIC_WS_BASE_URL=wss://api.gostock.us/api
+      - NUXT_PUBLIC_WS_BASE_URL=wss://api.goldencircle.us/api
       - NODE_ENV=production
       - YARN_PRODUCTION=false
       - NPM_CONFIG_PRODUCTION=false

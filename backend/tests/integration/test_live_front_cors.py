@@ -1,8 +1,8 @@
 import os
 import requests
 
-API_BASE = os.getenv("LIVE_API_BASE", "https://api.gostock.us")
-APP_ORIGIN = os.getenv("LIVE_APP_ORIGIN", "https://app.gostock.us")
+API_BASE = os.getenv("LIVE_API_BASE", "https://api.goldencircle.us")
+APP_ORIGIN = os.getenv("LIVE_APP_ORIGIN", "https://app.goldencircle.us")
 API_KEY = os.getenv("MCP_API_KEY", "my_mcp_eagle_tiger")
 
 

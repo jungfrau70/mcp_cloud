@@ -67,8 +67,8 @@ def create_checkout_session(current_user: models.User = Depends(get_current_user
                 {'price': STRIPE_PRO_PLAN_PRICE_ID, 'quantity': 1},
             ],
             mode='subscription',
-            success_url=f"https://app.gostock.us/profile?payment_success=true", # Replace with your frontend URL
-            cancel_url=f"https://app.gostock.us/profile?payment_canceled=true", # Replace with your frontend URL
+            success_url=f"https://app.goldencircle.us/profile?payment_success=true", # Replace with your frontend URL
+            cancel_url=f"https://app.goldencircle.us/profile?payment_canceled=true", # Replace with your frontend URL
         )
         return {"sessionId": checkout_session.id, "url": checkout_session.url}
     except Exception as e:
@@ -84,7 +84,7 @@ def create_portal_session(current_user: models.User = Depends(get_current_user),
     try:
         portal_session = stripe.billing_portal.Session.create(
             customer=sub.stripe_customer_id,
-            return_url=f"https://app.gostock.us/profile", # Replace with your frontend URL
+            return_url=f"https://app.goldencircle.us/profile", # Replace with your frontend URL
         )
         return {"url": portal_session.url}
     except Exception as e:

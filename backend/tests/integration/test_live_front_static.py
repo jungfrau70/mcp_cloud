@@ -2,7 +2,7 @@ import os
 import re
 import requests
 
-APP_BASE = os.getenv("LIVE_APP_BASE", "https://app.gostock.us").rstrip("/")
+APP_BASE = os.getenv("LIVE_APP_BASE", "https://app.goldencircle.us").rstrip("/")
 
 
 def _get(url: str, headers: dict | None = None) -> requests.Response:

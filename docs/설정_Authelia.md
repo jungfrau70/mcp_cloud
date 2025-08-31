@@ -9,11 +9,11 @@
 - server:
   - address: tcp://0.0.0.0:9091
 - session:
-  - domain: gostock.us
+  - domain: goldencircle.us
   - same_site: lax
   - secret: env:AUTHELIA_SESSION_SECRET
 - storage: sqlite (config/db.sqlite3), encryption_key: env:AUTHELIA_STORAGE_ENCRYPTION_KEY
-- default_redirection_url: https://app.gostock.us
+- default_redirection_url: https://app.goldencircle.us
 - authentication_backend:
   - file: /config/users_database.yml (argon2id 해시 사용)
 
@@ -22,16 +22,16 @@
 access_control:
   default_policy: bypass
   rules:
-    - domain: ["app.gostock.us"]
+    - domain: ["app.goldencircle.us"]
       resources: ["/admin*", "/kb/manage*"]
       policy: one_factor
-    - domain: ["api.gostock.us"]
+    - domain: ["api.goldencircle.us"]
       resources: ["/api/v1/*"]
       policy: one_factor
 ```
 
 ## NPM 연동(Forward Auth, 선택)
-- Forward Auth 주소: `http://authelia:9091/api/verify?rd=https://auth.gostock.us`
+- Forward Auth 주소: `http://authelia:9091/api/verify?rd=https://auth.goldencircle.us`
 - 헤더 전달: X-Forwarded-User, X-Forwarded-Groups, X-Forwarded-Email
 - 전면 보호 대신 특정 경로(/admin, /kb/manage, /api/v1/*)에만 적용 권장
 

@@ -1,5 +1,62 @@
 Cloudflare Tunnel을 사용해 Nuxt 3와 FastAPI로 구성된 Docker Compose 애플리케이션을 노출할 때 프론트엔드에서 백엔드 API 호출이 실패하는 문제는 주로 **CORS(Cross-Origin Resource Sharing) 설정** 또는 **호스트/도메인 경로 설정** 오류 때문에 발생해요. 이 문제를 해결하기 위한 단계는 다음과 같아요.
 
+
+오류 원인을 확인했어요. `tunnel login`과 `tunnel create`에서 마운트 경로가 `./cloudflare/data`와 `./cloudflared/data`로 달라 cert.pem이 공유되지 않아 발생했습니다. 이제 문서를 일관된 경로로 수정하고, 재실행할 정확한 명령을 제시하겠습니다. 수정부터 진행할게요.
+Ran tool
+
+방금 문서의 명령어 경로 불일치를 수정하겠습니다. 그다음, 재실행용 정확한 명령을 안내하겠습니다.
+Ran tool
+
+방금 `docs/설정_CloudFlaire.md`의 볼륨 경로를 일관되게 `./cloudflared/data`로 수정했습니다. 이제 동일 경로로 재로그인 후 터널을 생성·연결하세요.
+
+### 재실행 순서
+1) 디렉토리 확인
+```bash
+mkdir -p ./cloudflared/data
+```
+
+2) 터널 로그인(동일 볼륨 경로)
+```bash
+docker run --rm -it -v ./cloudflared/data:/home/nonroot/.cloudflared cloudflare/cloudflared:latest tunnel login
+# 로그인 후 ./cloudflared/data/cert.pem 생성 확인
+```
+
+3) 터널 생성(도메인 넣지 않음)
+```bash
+docker run --rm -v ./cloudflared/data:/home/nonroot/.cloudflared cloudflare/cloudflared:latest tunnel create goldencircle
+# 출력되는 Tunnel UUID와 ./cloudflared/data/<UUID>.json 확인
+```
+
+4) DNS 라우팅 연결
+```bash
+docker run --rm -v ./cloudflared/data:/home/nonroot/.cloudflared cloudflare/cloudflared:latest tunnel route dns goldencircle goldencircle.us
+```
+
+5) 설정 파일 업데이트 후 실행
+- `cloudflared/config/config.yml`의 `tunnel`, `credentials-file`를 아래 형식으로 맞추세요:
+```yaml
+tunnel: <YOUR_TUNNEL_UUID>
+credentials-file: /home/nonroot/.cloudflared/<YOUR_TUNNEL_UUID>.json
+
+ingress:
+  - hostname: goldencircle.us
+    service: http://nuxt-service:3000
+  - hostname: api.goldencircle.us
+    service: http://fastapi-service:8000
+  - service: http_status:404
+```
+- 실행
+```bash
+docker run --rm \
+  -v ./cloudflared/data:/home/nonroot/.cloudflared \
+  -v ./cloudflared/config:/etc/cloudflared \
+  cloudflare/cloudflared:latest tunnel run goldencircle
+```
+
+참고: 기존에 `./cloudflared/data` 아래 `<UUID>.json`이 이미 있다면 그 UUID를 그대로 사용해도 됩니다. 위 절차 후에도 오류가 나면 오류 로그 전체를 알려주세요.
+
+- 방금 문서 `docs/설정_CloudFlaire.md`의 명령 경로를 `./cloudflared/data`로 통일했고, `create`에서 도메인 인자를 제거해 CLI 사용법을 바로잡았습니다.
+
 -----
 
 ### 1\. CORS 설정 확인

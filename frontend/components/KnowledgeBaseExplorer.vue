@@ -112,7 +112,7 @@ function resolveApiBase(){
       const u = new URL(configured)
       const browserHost = window.location.hostname
       if (u.origin === 'null') return configured
-      if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== 'api.gostock.us' && u.hostname !== browserHost){
+      if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== 'api.goldencircle.us' && u.hostname !== browserHost){
         const port = u.port || '8000'
         const scheme = u.protocol.replace(':','') || 'https'
         return `${scheme}://${browserHost}:${port}`
