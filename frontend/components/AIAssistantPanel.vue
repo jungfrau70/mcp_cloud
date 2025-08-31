@@ -192,17 +192,30 @@ async function send() {
       headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
       body: JSON.stringify({ user_input: value, conversation_id: activeTopic.value.conversationId })
     })
-    const data = await res.json()
-    if (data.conversation_id && !activeTopic.value.conversationId) {
-      activeTopic.value.conversationId = data.conversation_id
+    // JSON 우선, 실패 시 텍스트로 폴백
+    let text = ''
+    try {
+      const ct = (res.headers.get('content-type') || '').toLowerCase()
+      if (ct.includes('application/json')) {
+        const data = await res.json()
+        if (data && data.conversation_id && !activeTopic.value.conversationId) {
+          activeTopic.value.conversationId = data.conversation_id
+        }
+        // 첫 질문으로 자동 제목 지정
+        if (activeTopic.value && (activeTopic.value.name === '새 대화' || activeTopic.value.name === '기본' || !activeTopic.value.name)) {
+          const base = value.replace(/^\/(cli|c)\s*/i, '').trim()
+          activeTopic.value.name = base.slice(0, 30) || '새 대화'
+          persist()
+        }
+        text = (data?.result || data?.error || JSON.stringify(data))
+      } else {
+        // HTML/텍스트 등은 그대로 표시
+        text = await res.text()
+      }
+    } catch {
+      // JSON 파싱 에러 시에도 텍스트로 폴백
+      try { text = await res.text() } catch { text = '응답 처리 오류' }
     }
-    // 첫 질문으로 자동 제목 지정
-    if (activeTopic.value && (activeTopic.value.name === '새 대화' || activeTopic.value.name === '기본' || !activeTopic.value.name)) {
-      const base = value.replace(/^\/(cli|c)\s*/i, '').trim()
-      activeTopic.value.name = base.slice(0, 30) || '새 대화'
-      persist()
-    }
-    const text = data.result || data.error || ''
     pushMessage('assistant', text, isCli ? 'cli' : 'chat')
   } catch (e) {
     pushMessage('assistant', `오류: ${e.message}`, isCli ? 'cli' : 'chat')

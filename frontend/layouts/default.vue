@@ -29,7 +29,7 @@
               </a>
             </div>
             <div v-else>
-              <button @click="redirectToLogin" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+              <button class="px-3 py-2 rounded-md text-sm font-medium text-gray-400 opacity-60 cursor-not-allowed" disabled title="로그인 준비 중">
                 로그인
               </button>
             </div>

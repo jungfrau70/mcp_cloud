@@ -813,7 +813,7 @@ const plugins = [
   pinia_Ab1D_QMMf_egrzVdVYpZ5xs6QSwaKU60pkFvRWVq_9Y
 ];
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-XsboEWTH.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-F_R7iMum.mjs').then((m) => m.default || m))
 };
 const LayoutLoader = defineComponent({
   name: "LayoutLoader",

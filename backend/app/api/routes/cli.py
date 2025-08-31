@@ -3,6 +3,8 @@ from pydantic import BaseModel
 from typing import Dict, Any, Optional, List
 from security import get_api_key
 import subprocess
+import time
+import select
 
 router = APIRouter(prefix="/api/v1/cli", tags=["CLI Commands"], dependencies=[Depends(get_api_key)])
 
@@ -21,28 +23,15 @@ class ReadOnlyCliResponse(BaseModel):
     stderr: str
 
 
-# Strict read-only whitelist
-READ_ONLY_COMMAND_WHITELIST: Dict[str, Dict[str, List[str]]] = {
-    "aws": {
-        "s3_ls": ["aws", "s3", "ls"],
-        "ec2_describe_instances": ["aws", "ec2", "describe-instances", "--output", "json"],
-        "iam_list_users": ["aws", "iam", "list-users", "--output", "json"],
-        "sts_get_caller_identity": ["aws", "sts", "get-caller-identity"],
-    },
-    "gcp": {
-        "gcloud_zones_list": ["gcloud", "compute", "zones", "list"],
-        "gcloud_projects_list": ["gcloud", "projects", "list"],
-        "gcloud_compute_instances_list": ["gcloud", "compute", "instances", "list", "--format", "json"],
-        "gcloud_auth_list": ["gcloud", "auth", "list"],
-    },
-    "azure": {
-        "account_show": ["az", "account", "show"],
-        "resource_groups_list": ["az", "group", "list"],
-        "vm_list": ["az", "vm", "list"],
-        "storage_accounts_list": ["az", "storage", "account", "list"],
-        "aks_list": ["az", "aks", "list"],
-    },
-}
+# Blacklist-based safety (default allow, block destructive verbs/flags)
+DENY_TOKENS = {}
+# DENY_TOKENS = { 
+#     "create", "update", "delete", "remove", "rm", "put", "apply", "patch", "write",
+#     "terminate", "reboot", "stop", "start", "format", "mkfs", "attach", "detach",
+#     "insert", "enable", "disable", "set", "add", "grant", "revoke", "deploy",
+# }
+DENY_FLAG_PREFIXES = {}
+# DENY_FLAG_PREFIXES = {"--delete", "--remove", "--force", "--yes", "-y"}
 
 # Common aliases for provider and command keys
 PROVIDER_ALIASES = {
@@ -53,47 +42,110 @@ PROVIDER_ALIASES = {
     "microsoft": "azure",
 }
 
-COMMAND_ALIASES: Dict[str, Dict[str, str]] = {
-    "aws": {
-        "sts_get-caller-identity": "sts_get_caller_identity",
-    },
-    "gcp": {
-        "auth_list": "gcloud_auth_list",
-        "compute_instances_list": "gcloud_compute_instances_list",
-        "projects_list": "gcloud_projects_list",
-        "zones_list": "gcloud_zones_list",
-    },
-    "azure": {
-        "group_list": "resource_groups_list",
-    },
-}
+COMMAND_ALIASES: Dict[str, Dict[str, str]] = {}
+
+
+def _provider_binary(provider: str) -> str:
+    if provider == "gcp":
+        return "gcloud"
+    if provider == "azure":
+        return "az"
+    return "aws"
+
+
+def _build_args_for_provider(provider: str, args: Dict[str, Any]) -> List[str]:
+    out: List[str] = []
+    for k, v in (args or {}).items():
+        flag = f"--{str(k).replace('_','-')}"
+        if v is None or v == "":
+            out.append(flag)
+        else:
+            out.append(f"{flag}={v}")
+    return out
+
+
+def _is_denied(tokens: List[str], args: Dict[str, Any]) -> Optional[str]:
+    for t in tokens:
+        lt = (t or "").lower()
+        if lt in DENY_TOKENS:
+            return lt
+    for k in (args or {}).keys():
+        fk = f"--{str(k).replace('_','-')}".lower()
+        if any(fk.startswith(p) for p in DENY_FLAG_PREFIXES):
+            return fk
+    return None
 
 
 def execute_readonly_cli(provider: str, command_name: str, args: Optional[Dict[str, Any]] = None) -> ReadOnlyCliResponse:
     p = (provider or "").lower()
     provider = PROVIDER_ALIASES.get(p, p)
-    commands = READ_ONLY_COMMAND_WHITELIST.get(provider)
-    if not commands:
+    if provider not in {"aws","gcp","azure"}:
         raise HTTPException(status_code=400, detail=f"Unsupported provider: {provider}")
 
-    # Normalize command key: unify with whitelist/aliases
-    key = command_name.replace("/", "_").replace("-", "_")
-    key = COMMAND_ALIASES.get(provider, {}).get(key, key)
+    # From 'auth_list' or 'compute_instances_list' tokens
+    key_norm = (command_name or "").replace("/","_").replace("-","_")
+    tokens = [t for t in key_norm.split("_") if t]
+    # no implicit aliasing; preserve tokens as-is for transparency
+    if not tokens:
+        raise HTTPException(status_code=400, detail="Empty command")
 
-    template = commands.get(key)
-    if not template:
-        raise HTTPException(status_code=400, detail=f"Command '{command_name}' is not a valid or allowed read-only command.")
+    denied = _is_denied(tokens, args or {})
+    if denied:
+        raise HTTPException(status_code=403, detail=f"Command blocked by blacklist: {denied}")
 
-    # Simple placeholder injection if template contains {key}
-    final: List[str] = []
-    a = args or {}
-    for token in template:
-        if token.startswith("{") and token.endswith("}"):
-            key = token[1:-1]
-            value = str(a.get(key, ""))
-            final.append(value)
-        else:
-            final.append(token)
+    final: List[str] = [_provider_binary(provider)] + tokens + _build_args_for_provider(provider, args or {})
+
+    # Special handling for interactive login commands: return initial prompt promptly
+    is_login = (
+        (provider == "azure" and tokens[:1] == ["login"]) or
+        (provider == "gcp" and tokens[:2] == ["auth", "login"]) or
+        (provider == "aws" and tokens[:2] == ["sso", "login"]) or
+        (provider == "aws" and tokens[:1] == ["configure"])  # may prompt
+    )
+
+    if is_login:
+        try:
+            proc = subprocess.Popen(
+                final,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                bufsize=1
+            )
+            start = time.time()
+            out_buf: List[str] = []
+            err_buf: List[str] = []
+            # collect a few seconds of initial output (device code prompt etc.)
+            while (time.time() - start) < 8.0 and proc.poll() is None:
+                rlist, _, _ = select.select(
+                    [fd for fd in [proc.stdout, proc.stderr] if fd], [], [], 0.2
+                )
+                for fd in rlist:
+                    try:
+                        line = fd.readline()
+                        if not line:
+                            continue
+                        if fd is proc.stdout:
+                            out_buf.append(line)
+                        else:
+                            err_buf.append(line)
+                    except Exception:
+                        pass
+            try:
+                proc.terminate()
+            except Exception:
+                pass
+            stdout = ''.join(out_buf).strip()
+            stderr = ''.join(err_buf).strip()
+            return ReadOnlyCliResponse(
+                provider=provider,
+                command_name=command_name,
+                exit_code=-1,
+                stdout=stdout,
+                stderr=stderr
+            )
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"CLI execution failed: {e}")
 
     try:
         proc = subprocess.run(final, capture_output=True, text=True, timeout=45)
