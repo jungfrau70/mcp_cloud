@@ -46,12 +46,13 @@ def client(monkeypatch, tmp_path):
 
     app.dependency_overrides[get_db] = override_get_db
 
-    yield TestClient(app)
+    yield TestClient(app), TestingSessionLocal
 
 
 def test_register_login_and_me(client):
+    test_client, SessionLocal = client
     # Register
-    r = client.post("/api/v1/auth/register", json={
+    r = test_client.post("/api/v1/auth/register", json={
         "email": "test@example.com",
         "password": "Password123!",
         "full_name": "Tester"
@@ -61,34 +62,44 @@ def test_register_login_and_me(client):
     assert token
 
     # Login should fail before verification
-    r2 = client.post("/api/v1/auth/login", json={
+    r2 = test_client.post("/api/v1/auth/login", json={
         "email": "test@example.com",
         "password": "Password123!"
     })
     assert r2.status_code == 403
 
-    # users/me via JWT requires X-API-Key because users router depends on it
-    # Verify email: extract token from DB
-    from sqlalchemy import select
+    # Verify email token from DB
     from models import User
-    from main import get_db
-    # Build a quick session
-    # Reuse same sqlite path
-    # Query user
-    # NOTE: Using the same test app's override session is tricky here; simply call verify endpoint using token
-    # Fetch token via private knowledge - simulate by re-registering isn't possible; instead, rely on development log or query directly in a new engine
-    # For simplicity in this test, hit verify endpoint with a known token by reading DB through a new engine
-    # Create engine mirror
-    # However we don't have variable to engine path here; skip direct DB access: call login should still fail; we will create a second user flow below
+    db = SessionLocal()
+    try:
+        u = db.query(User).filter(User.email == "test@example.com").first()
+        assert u and u.email_verification_token
+        verify_token = u.email_verification_token
+    finally:
+        db.close()
 
+    r_verify = test_client.post('/api/v1/auth/verify-email', json={ 'token': verify_token })
+    assert r_verify.status_code == 200
+
+    # Login should now succeed
+    r3 = test_client.post("/api/v1/auth/login", json={
+        "email": "test@example.com",
+        "password": "Password123!"
+    })
+    assert r3.status_code == 200
+    token2 = r3.json()["access_token"]
+    assert token2
+
+    # users/me via JWT requires X-API-Key because users router depends on it
+    r4 = test_client.get(
         "/api/v1/users/me",
         headers={
             "Authorization": f"Bearer {token2}",
             "X-API-Key": "my_mcp_eagle_tiger"
         }
     )
-    assert r3.status_code == 200
-    body = r3.json()
+    assert r4.status_code == 200
+    body = r4.json()
     assert body["email"] == "test@example.com"
     assert body["role"] == "student"
 

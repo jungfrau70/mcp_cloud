@@ -3,7 +3,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import (
   kb_router,
-  kb_legacy_router,
   kb_ws_router,
   profile_router,
   curriculum_router,
@@ -39,7 +38,6 @@ def health():
 
 # Routers
 app.include_router(kb_router)
-# app.include_router(kb_legacy_router)
 app.include_router(kb_ws_router)
 app.include_router(profile_router)
 app.include_router(curriculum_router)

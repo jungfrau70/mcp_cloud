@@ -167,5 +167,3 @@ def test_jit_provisioning_update_existing_user(client):
         assert user_in_db.last_login_at > initial_time
     finally:
         db.close()
- finally:
-        db.close()

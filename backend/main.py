@@ -34,10 +34,9 @@ if PROJECT_ROOT not in sys.path:
 # Build a FastAPI app here to avoid circulars
 from app.api.routes import (
     kb_router,
-    kb_legacy_router,
+    kb_ws_router,
     profile_router,
-    slides_router,
-    curriculum_legacy_router,
+    curriculum_router,
     users_router,
     trending_router,
     datasources_router,
@@ -59,10 +58,9 @@ def _health():
     return {"ok": True}
 
 app.include_router(kb_router)
-app.include_router(kb_legacy_router)
+app.include_router(kb_ws_router)
+app.include_router(curriculum_router)
 app.include_router(profile_router)
-app.include_router(slides_router)
-app.include_router(curriculum_legacy_router)
 app.include_router(users_router)
 app.include_router(trending_router)
 app.include_router(datasources_router)
