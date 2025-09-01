@@ -15,37 +15,7 @@ export interface KbStructuredDiffHunk { header: string; lines: { type: string; o
 export interface KbStructuredDiff { diff_format: string; hunks: KbStructuredDiffHunk[]; v1: number; v2: number }
 
 export function resolveApiBase(): string {
-  const config = useRuntimeConfig()
-  const configured = (config.public as any)?.apiBaseUrl || '/api'
-  function ensureApiPath(base: string): string {
-    try {
-      const u = new URL(base)
-      const path = (u.pathname || '/').replace(/\/+/g,'/')
-      if (path === '/' || path === '') {
-        u.pathname = '/api'
-        return u.toString().replace(/\/$/, '')
-      }
-      return base.replace(/\/$/, '')
-    } catch {
-      // relative path like '/api' stays as-is
-      return base
-    }
-  }
-  if (typeof window !== 'undefined'){
-    try{
-      const u = new URL(configured)
-      const browserHost = window.location.hostname
-      // 프록시 상대 경로('/api')는 그대로 사용
-      if (u.origin === 'null') return configured
-      if (u.hostname !== 'localhost' && u.hostname !== '127.0.0.1' && u.hostname !== 'api.goldencircle.us' && u.hostname !== browserHost){
-        const port = u.port || '8000'
-        const scheme = u.protocol.replace(':','') || 'https'
-        return ensureApiPath(`${scheme}://${browserHost}:${port}`)
-      }
-      return ensureApiPath(configured)
-    }catch{/* ignore */}
-  }
-  return ensureApiPath(configured)
+  return '/api'
 }
 
 export function useKbApi(){

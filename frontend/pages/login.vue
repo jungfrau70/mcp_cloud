@@ -31,7 +31,7 @@ const password = ref('')
 const router = useRouter()
 const config = useRuntimeConfig()
 const auth = useAuthStore()
-auth.loadFromStorage()
+// 중복 토큰 로드 방지: auth.loadFromStorage() 제거
 
 const showVerifyNotice = ref(false)
 const sending = ref(false)
@@ -47,19 +47,7 @@ async function onSubmit(){
       body: { email: email.value, password: password.value },
     }) as { access_token: string }
     auth.setToken(res.access_token)
-    const apiKey = ((config.public as any)?.apiKey) || 'my_mcp_eagle_tiger'
-    const me = await $fetch(`${base}/v1/users/me`, {
-      headers: {
-        'X-API-Key': apiKey,
-        'Authorization': `Bearer ${res.access_token}`
-      }
-    }) as { email: string, role: string }
-    auth.setUser(me.email, me.role)
-    if (String(me.role).toLowerCase() === 'admin') {
-      await router.push('/knowledge-base')
-    } else {
-      await router.push('/curriculum')
-    }
+    await router.push('/curriculum')
   } catch(e: any) {
     const detail = e?.data?.detail || e?.data || {}
     if (detail?.code === 'EMAIL_NOT_VERIFIED'){

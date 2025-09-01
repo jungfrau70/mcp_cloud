@@ -29,7 +29,7 @@
               지식베이스
             </NuxtLink>
             <!-- Auth Status -->
-            <div v-if="user" class="relative" ref="userMenuRef">
+            <div v-if="isLoggedIn" class="relative" ref="userMenuRef">
               <button @click="userMenuOpen = !userMenuOpen" class="px-3 py-2 rounded-md text-sm text-gray-700 hover:text-gray-900 flex items-center gap-2" aria-haspopup="menu" :aria-expanded="userMenuOpen ? 'true':'false'">
                 <span class="truncate max-w-[180px]">{{ displayName }}</span>
                 <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.188l3.71-3.957a.75.75 0 111.08 1.04l-4.25 4.53a.75.75 0 01-1.08 0l-4.25-4.53a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
@@ -155,13 +155,13 @@
           <div class="space-y-3">
             <div>
               <div class="text-xs text-gray-500">이메일</div>
-              <div class="text-sm">{{ profile.email || user?.email }}</div>
+              <div class="text-sm">{{ profile.email || auth.email || user?.email }}</div>
             </div>
             <div>
               <label class="text-xs text-gray-500">이름</label>
               <input v-model="profile.full_name" type="text" class="mt-1 w-full border rounded px-2 py-1" />
             </div>
-            <div class="text-xs text-gray-500">역할: <span class="font-medium">{{ profile.role || user?.role || 'student' }}</span></div>
+            <div class="text-xs text-gray-500">역할: <span class="font-medium">{{ profile.role || auth.role || user?.role || 'student' }}</span></div>
           </div>
           <div class="mt-4 flex justify-end gap-2">
             <button class="px-3 py-1 border rounded" @click="showProfile=false">닫기</button>
@@ -194,26 +194,45 @@ const toast = useToastStore()
 const user = useState('user', () => null)
 const auth = useAuthStore()
 const userMenuOpen = ref(false)
-auth.loadFromStorage()
+// 중복 토큰 로드 방지: auth.loadFromStorage() 제거
 
 async function fetchCurrentUser(){
   try {
-    if (!auth.token) { user.value = null; return }
+    if (!auth.token) { 
+      user.value = null; 
+      // 토큰이 없으면 auth 스토어도 초기화
+      auth.setUser(null, null);
+      return; 
+    }
+
+    console.log('Fetching user with token:', auth.token);
+
+    const headers = {
+      'X-API-Key': apiKey,
+      'Authorization': `Bearer ${auth.token}`
+    }
+
     const { data: fetchedUser, error } = await useFetch('/api/v1/users/me', {
+      key: auth.token,
       lazy: false,
-      headers: {
-        'X-API-Key': apiKey,
-        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
-      },
+      headers: headers,
       server: false,
       retry: 0
     });
-    if (error.value){ user.value = null; return }
+    if (error.value){ 
+      user.value = null; 
+      auth.setUser(null, null);
+      return; 
+    }
     if (fetchedUser.value){
       user.value = fetchedUser.value
-      try { auth.setUser(fetchedUser.value.email || null, fetchedUser.value.role || null) } catch {}
+      // auth 스토어도 함께 업데이트하여 동기화
+      auth.setUser(fetchedUser.value.email || null, fetchedUser.value.role || null)
     }
-  } catch { user.value = null }
+  } catch { 
+    user.value = null; 
+    auth.setUser(null, null);
+  }
 }
 
 function redirectToLogin() {
@@ -246,11 +265,18 @@ onMounted(async () => {
 });
 
 // Update user state when token changes (e.g., after login/logout)
-watch(() => auth.token, async (t) => {
-  if (t) {
+watch(() => auth.token, async (newToken, oldToken) => {
+  // 토큰이 변경되면 기존 사용자 정보 초기화
+  if (newToken !== oldToken) {
+    user.value = null
+    auth.setUser(null, null)
+  }
+  
+  if (newToken) {
     await fetchCurrentUser()
   } else {
     user.value = null
+    auth.setUser(null, null)
   }
 }, { immediate: true })
 // Guard KB when user role changes
@@ -348,15 +374,17 @@ const apiBase = resolveApiBase()
 const apiKey = (config.public?.apiKey) || 'my_mcp_eagle_tiger';
 
 const displayName = computed(() => {
-  const nm = (user.value?.full_name || '').trim()
-  return nm ? nm : (user.value?.email || '사용자')
+  // auth 스토어를 우선으로 사용하여 일관성 보장
+  const nm = (auth.email ? (user.value?.full_name || '').trim() : '') || auth.email || '사용자'
+  return nm ? nm : (auth.email || '사용자')
 })
 
 const isAdmin = computed(() => {
-  const r = String(user.value?.role || auth.role || '').toLowerCase()
+  // auth 스토어를 우선으로 사용하여 일관성 보장
+  const r = String(auth.role || user.value?.role || '').toLowerCase()
   return r === 'admin' || r === 'administrator'
 })
-const isTutor = computed(() => String(user.value?.role || auth.role || '').toLowerCase() === 'tutor')
+const isTutor = computed(() => String(auth.role || user.value?.role || '').toLowerCase() === 'tutor')
 const isTutorOrAdmin = computed(() => isTutor.value || isAdmin.value)
 
 // Profile modal state
@@ -376,8 +404,8 @@ async function openProfileModal(){
     profile.value = { email: data.email, full_name: data.full_name || '', role: data.role || '' }
     showProfile.value = true
   }catch{
-    // fallback to current user state
-    profile.value = { email: user.value?.email || '', full_name: user.value?.full_name || '', role: user.value?.role || '' }
+    // fallback to auth store first, then user state
+    profile.value = { email: auth.email || user.value?.email || '', full_name: user.value?.full_name || '', role: auth.role || user.value?.role || '' }
     showProfile.value = true
   }
 }
@@ -394,9 +422,9 @@ async function saveProfile(){
         ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
       }
     })
-    // sync state
-    user.value = { ...(user.value||{}), full_name: res.full_name }
+    // sync state: auth 스토어를 우선으로 업데이트
     auth.setUser(res.email || auth.email, res.role || auth.role)
+    user.value = { ...(user.value||{}), full_name: res.full_name, email: res.email, role: res.role }
     showProfile.value = false
   }catch{
     // ignore

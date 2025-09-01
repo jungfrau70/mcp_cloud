@@ -410,7 +410,7 @@ const _routes = [
   {
     name: "login",
     path: "/login",
-    component: () => import('./login-roJejMI2.mjs')
+    component: () => import('./login-C8aPOB0T.mjs')
   },
   {
     name: "billing",
@@ -823,7 +823,7 @@ const plugins = [
   pinia_Ab1D_QMMf_egrzVdVYpZ5xs6QSwaKU60pkFvRWVq_9Y
 ];
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-BxASau8t.mjs').then((n) => n.b).then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-lU1l8psw.mjs').then((n) => n.b).then((m) => m.default || m))
 };
 const LayoutLoader = defineComponent({
   name: "LayoutLoader",

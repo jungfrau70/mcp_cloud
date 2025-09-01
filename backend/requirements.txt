@@ -54,5 +54,6 @@ opentelemetry-instrumentation-redis
 opentelemetry-instrumentation-celery
 stripe
 PyJWT
-passlib[bcrypt]
+passlib==1.7.4
+bcrypt==4.0.1
 Jinja2
