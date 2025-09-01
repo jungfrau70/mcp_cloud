@@ -1,0 +1,3 @@
+import{_ as r}from"./DpUxzRVN.js";import{r as d}from"./xEEKv031.js";import{r as a,g as l,c as i,a as m,b as _,j as c,o as f}from"./CVsq0yOE.js";const p={class:"h-full flex flex-col"},u={class:"flex-1 overflow-hidden"},y={__name:"index",setup(h){const e=a(""),o=a("index.md");return l(async()=>{const n=d();try{const t=await fetch(`${n}/v1/curriculum/item?path=${encodeURIComponent(o.value)}`,{headers:{"X-API-Key":"my_mcp_eagle_tiger"}});if(!t.ok)throw new Error("failed");const s=await t.json();e.value=s?.content||""}catch{e.value=`# Welcome
+
+index.md not found. Create it under mcp_knowledge_base/index.md.`}}),(n,t)=>(f(),i("div",p,[m("div",u,[_(r,{content:c(e),path:c(o),readonly:!0},null,8,["content","path"])])]))}};export{y as default};

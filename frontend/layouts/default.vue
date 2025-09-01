@@ -393,6 +393,7 @@ const profile = ref({ email: '', full_name: '', role: '' })
 const savingProfile = ref(false)
 
 async function openProfileModal(){
+  console.log('openProfileModal called', new Error().stack)
   try{
     const base = (config.public?.apiBaseUrl) || '/api'
     const data = await $fetch(`${base}/v1/profile/me`, {

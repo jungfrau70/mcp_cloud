@@ -465,7 +465,7 @@ const _routes = [
     name: "knowledge-base-__index",
     path: "/knowledge-base/__index",
     meta: __nuxt_page_meta || {},
-    component: () => import('./__index-Cdtbx4YK.mjs')
+    component: () => import('./__index-CszvsGN3.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -823,7 +823,7 @@ const plugins = [
   pinia_Ab1D_QMMf_egrzVdVYpZ5xs6QSwaKU60pkFvRWVq_9Y
 ];
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-lU1l8psw.mjs').then((n) => n.b).then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-CAKjEFeF.mjs').then((n) => n.b).then((m) => m.default || m))
 };
 const LayoutLoader = defineComponent({
   name: "LayoutLoader",
