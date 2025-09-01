@@ -14,6 +14,7 @@ export default defineNuxtConfig({
   ],
   css: ['~/assets/css/main.css'],
   app: {
+    buildAssetsDir: '/_nuxt/',
     head: {
       title: 'Bigs',
       meta: [
@@ -35,6 +36,7 @@ export default defineNuxtConfig({
     }
   },
   nitro: {
+    publicAssetsURL: '/_nuxt/',
     routeRules: {
       '/api/**': { proxy: 'https://api.goldencircle.us/**' },
     },
@@ -53,6 +55,10 @@ export default defineNuxtConfig({
       hmr: {
         timeout: 30000
       }
-    }
+    },
+    build: {
+      chunkSizeWarningLimit: 2400
+    },
+    cssMinify: 'lightningcss'
   }
 })

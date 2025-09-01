@@ -9,8 +9,10 @@
           @drop="handleDrop($event, name, item)"
           @dragenter="handleDragEnter($event, name, item)"
           @dragleave="handleDragLeave($event, name, item)"
+          @dragstart="handleDirectoryDragStart($event, name, item)"
           :class="['tree-item', { 'is-directory': isDirectory(item), 'is-open': isOpen(name), 'drag-over': dragOverTarget === name }]"
           :style="{ 'padding-left': (depth * 15) + 'px' }"
+          :draggable="isDirectory(item)"
         >
           <span v-if="isDirectory(item)" class="icon">{{ isOpen(name) ? '▼' : '▶' }}</span>
           <span v-else class="icon">📄</span>
@@ -218,10 +220,19 @@ const constructPath = (fileName) => {
 // Drag and drop functions
 const handleDragStart = (event, file) => {
   const filePath = file.path || constructPath(file);
-  console.log('Drag start:', { file, filePath });
+  console.log('Drag start (file):', { file, filePath });
   event.dataTransfer.setData('text/plain', filePath);
   event.dataTransfer.effectAllowed = 'move';
-  draggedItem.value = file;
+  draggedItem.value = { type: 'file', data: file };
+};
+
+const handleDirectoryDragStart = (event, name, item) => {
+  if (!isDirectory(item)) return;
+  const dirPath = constructPath(name);
+  console.log('Drag start (directory):', { name, dirPath });
+  event.dataTransfer.setData('text/plain', dirPath);
+  event.dataTransfer.effectAllowed = 'move';
+  draggedItem.value = { type: 'directory', data: { name, path: dirPath } };
 };
 
 const handleDragOver = (event, name, item) => {
@@ -258,8 +269,15 @@ const handleDrop = (event, name, item) => {
   // Only allow dropping on directories
   if (isDirectory(item) && draggedPath) {
     const targetPath = constructPath(name);
-    const fileName = draggedPath.split('/').pop();
-    const newPath = `${targetPath}/${fileName}`;
+    // Prevent dropping a directory into itself or its descendants
+    if (draggedItem.value?.type === 'directory'){
+      if (targetPath === draggedPath || targetPath.startsWith(draggedPath + '/')){
+        console.warn('Drop prevented: cannot move a directory into itself or its descendant');
+        return;
+      }
+    }
+    const leafName = draggedPath.split('/').pop();
+    const newPath = `${targetPath}/${leafName}`;
     
     console.log('Emitting file-move event:', { oldPath: draggedPath, newPath: newPath });
     

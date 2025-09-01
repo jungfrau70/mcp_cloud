@@ -91,7 +91,7 @@ import TableHeader from '@tiptap/extension-table-header'
 import TableCell from '@tiptap/extension-table-cell'
 import TaskList from '@tiptap/extension-task-list'
 import TaskItem from '@tiptap/extension-task-item'
-import * as lowlight from 'lowlight'
+import { createLowlight } from 'lowlight'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import Placeholder from '@tiptap/extension-placeholder'
 import Typography from '@tiptap/extension-typography'
@@ -182,13 +182,14 @@ function onKey(e: KeyboardEvent){
 onMounted(async ()=>{
   html.value = marked.parse(props.content || '')
   // register lowlight languages (best-effort)
-  try{ (lowlight as any).register?.('javascript', javascript) }catch{}
-  try{ (lowlight as any).register?.('typescript', typescript) }catch{}
-  try{ (lowlight as any).register?.('python', python) }catch{}
-  try{ (lowlight as any).register?.('bash', bash) }catch{}
-  try{ (lowlight as any).register?.('json', jsonLang) }catch{}
-  try{ (lowlight as any).register?.('yaml', yamlLang) }catch{}
-  try{ (lowlight as any).register?.('markdown', markdownLang) }catch{}
+  const lowlight = createLowlight()
+  try{ (lowlight as any).register('javascript', javascript as any) }catch{}
+  try{ (lowlight as any).register('typescript', typescript as any) }catch{}
+  try{ (lowlight as any).register('python', python as any) }catch{}
+  try{ (lowlight as any).register('bash', bash as any) }catch{}
+  try{ (lowlight as any).register('json', jsonLang as any) }catch{}
+  try{ (lowlight as any).register('yaml', yamlLang as any) }catch{}
+  try{ (lowlight as any).register('markdown', markdownLang as any) }catch{}
 
   async function initEditor(extensions: any[]){
   editor.value = new Editor({

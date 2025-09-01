@@ -16,8 +16,8 @@
 
     
 
-    <!-- 채팅 섹션 -->
-    <div class="mt-6">
+    <!-- 채팅 섹션 (커리큘럼/텍스트북에서는 Tutor/Admin만 표시) -->
+    <div class="mt-6" v-if="showChatSection">
       <div class="flex items-center justify-between mb-2">
         <h4 class="text-sm font-semibold text-gray-800">채팅</h4>
         <button class="text-xs px-2 py-1 bg-blue-600 text-white rounded" @click="startNewChat">새 채팅</button>
@@ -45,6 +45,7 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
 import { useRoute } from 'vue-router'
+import { useAuthStore } from '~/stores/auth'
 import FileTreePanel from './FileTreePanel.vue';
 import { useRuntimeConfig } from '#app'
 
@@ -78,6 +79,19 @@ const filteredTopics = computed(() => {
   if (!q) return base
   return base.filter(t => (t.name || '').toLowerCase().includes(q))
 })
+
+// Visibility guard for chat section
+const route = useRoute()
+const auth = useAuthStore()
+try { auth.loadFromStorage?.() } catch {}
+const isCurriculum = computed(() => {
+  try { return typeof route?.path === 'string' && (route.path.startsWith('/curriculum') || route.path.startsWith('/textbook')) } catch { return false }
+})
+const isTutorOrAdmin = computed(() => {
+  const r = String(auth.role || '').toLowerCase()
+  return r === 'tutor' || r === 'admin' || r === 'administrator'
+})
+const showChatSection = computed(() => !isCurriculum.value || isTutorOrAdmin.value)
 
 function loadTopics() {
   try {

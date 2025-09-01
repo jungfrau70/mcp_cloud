@@ -20,8 +20,9 @@ test('textbook is public and loads without auth', async ({ page, baseURL }) => {
 // 2) KB requires login: anonymous → redirected to /login (or SSO gateway)
 test('knowledge-base requires login and redirects', async ({ page, baseURL }) => {
   const appUrl = (baseURL || 'http://localhost:3000') + '/knowledge-base';
-  await page.goto(appUrl, { waitUntil: 'domcontentloaded' });
-  await page.waitForLoadState('networkidle');
+  await page.goto(appUrl);
+  await page.waitForURL('**/login**');
+  await expect(page.getByRole('heading', { name: '로그인' })).toBeVisible({ timeout: 10000 });
   const url = new URL(page.url());
   // Either local /login route or external IdP (auth.*)
   expect(url.pathname === '/login' || url.hostname.startsWith('auth.')).toBeTruthy();

@@ -107,13 +107,19 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    verify_token = secrets.token_urlsafe(32)
+    # Check for test mode to bypass email verification
+    is_test_mode = os.getenv("TEST_MODE", "false").lower() == "true"
+
+    verify_token = secrets.token_urlsafe(32) if not is_test_mode else None
+    # Determine role: first user becomes admin
+    users_count = db.query(User).count()
+    default_role = "admin" if users_count == 0 else "student"
     user = User(
         email=str(payload.email),
         full_name=payload.full_name,
-        role="student",
+        role=default_role,
         password_hash=_hash_password(payload.password),
-        is_active=False,
+        is_active=is_test_mode,  # Activate immediately in test mode
         email_verification_token=verify_token,
         last_login_at=datetime.utcnow(),
     )
@@ -121,10 +127,11 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(user)
 
-    try:
-        _send_verification_email(user.email, verify_token)
-    except Exception as e:
-        print(f"[WARN] Failed to send verification email: {e}")
+    if not is_test_mode:
+        try:
+            _send_verification_email(user.email, verify_token)
+        except Exception as e:
+            print(f"[WARN] Failed to send verification email: {e}")
 
     token = _create_access_token(user.email)
     return TokenResponse(access_token=token)
@@ -136,7 +143,8 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
     if not user or not _verify_password(payload.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     if not user.is_active:
-        raise HTTPException(status_code=403, detail="Email not verified")
+        # Return a structured error so clients can offer resend verification
+        raise HTTPException(status_code=403, detail={"code": "EMAIL_NOT_VERIFIED", "message": "Email not verified"})
 
     user.last_login_at = datetime.utcnow()
     db.add(user)
@@ -166,6 +174,29 @@ def verify_email(payload: VerifyEmailRequest, db: Session = Depends(get_db)):
     user.email_verification_token = None
     db.add(user)
     db.commit()
+    return {"ok": True}
+
+
+class ResendVerificationRequest(BaseModel):
+    email: EmailStr
+
+
+@router.post("/resend-verification")
+def resend_verification(payload: ResendVerificationRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == str(payload.email)).first()
+    if not user:
+        # Do not leak if user exists
+        return {"ok": True}
+    if user.is_active:
+        return {"ok": True}
+    verify_token = user.email_verification_token or secrets.token_urlsafe(32)
+    user.email_verification_token = verify_token
+    db.add(user)
+    db.commit()
+    try:
+        _send_verification_email(user.email, verify_token)
+    except Exception as e:
+        print(f"[WARN] Resend verification failed: {e}")
     return {"ok": True}
 
 

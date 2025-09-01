@@ -106,6 +106,7 @@
     "micromark-util-subtokenize": "1.1.0",
     "node-fetch": "2.7.0",
     "orderedmap": "2.1.1",
+    "perfect-debounce": "1.0.0",
     "pinia": "2.3.1",
     "prosemirror-commands": "1.7.1",
     "prosemirror-dropcursor": "1.8.2",

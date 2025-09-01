@@ -1,7 +1,8 @@
 <template>
   <div class="p-4 sm:p-6 lg:p-8">
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-2xl font-bold text-gray-900 mb-6">내 프로필</h1>
+      <h1 class="text-2xl font-bold text-gray-900 mb-2">내 프로필</h1>
+      <p class="mb-6 text-sm text-gray-600">사용자 유형: <span class="font-semibold" :class="roleLabelClass">{{ roleLabel }}</span></p>
 
       <!-- API Keys Section -->
       <div class="bg-white shadow-md rounded-lg p-6">
@@ -64,9 +65,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { $fetch } from 'ofetch'
+import { useAuthStore } from '~/stores/auth';
 
-const keys = ref([]);
+type ApiKey = {
+  id: number
+  name: string
+  platform: string
+  created_at: string | number | Date
+}
+
+const keys = ref<ApiKey[]>([]);
 const isLoading = ref(true);
 const showAddKeyModal = ref(false);
 const newKey = ref({
@@ -78,10 +88,12 @@ const newKey = ref({
 async function fetchKeys() {
   try {
     isLoading.value = true;
-    const response = await useFetch('/api/v1/profile/keys', { server: false });
-    if (response.data.value) {
-      keys.value = response.data.value;
-    }
+    const data = await $fetch<ApiKey[]>('/api/v1/profile/keys', {
+      headers: {
+        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
+      }
+    });
+    keys.value = (data || []) as ApiKey[];
   } catch (error) {
     console.error("Failed to fetch API keys:", error);
     // Handle error display to user
@@ -92,10 +104,12 @@ async function fetchKeys() {
 
 async function addKey() {
   try {
-    await useFetch('/api/v1/profile/keys', {
+    await $fetch('/api/v1/profile/keys', {
       method: 'POST',
       body: newKey.value,
-      server: false
+      headers: {
+        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
+      }
     });
     showAddKeyModal.value = false;
     newKey.value = { name: '', platform: 'aws', secret_value: '' }; // Reset form
@@ -109,10 +123,12 @@ async function deleteKey(keyId: number) {
   if (!confirm("정말로 이 키를 삭제하시겠습니까?")) return;
 
   try {
-    await useFetch(`/api/v1/profile/keys/${keyId}`,
+    await $fetch(`/api/v1/profile/keys/${keyId}`,
     {
       method: 'DELETE',
-      server: false
+      headers: {
+        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
+      }
     });
     await fetchKeys(); // Refresh list
   } catch (error) {
@@ -123,4 +139,12 @@ async function deleteKey(keyId: number) {
 onMounted(() => {
   fetchKeys();
 });
+
+const auth = useAuthStore();
+const roleLabel = computed(() => {
+  const r = (auth.role || '').toLowerCase();
+  if (r === 'admin' || r === 'administrator') return '관리자';
+  return '일반회원';
+});
+const roleLabelClass = computed(() => roleLabel.value === '관리자' ? 'text-red-600' : 'text-gray-800');
 </script>

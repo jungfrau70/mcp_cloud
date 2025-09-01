@@ -24,6 +24,15 @@ class UserKeyResponse(BaseModel):
     class Config:
         from_attributes = True
 
+class ProfileResponse(BaseModel):
+    email: str
+    full_name: Optional[str] = None
+    role: Optional[str] = None
+    is_active: Optional[bool] = None
+
+class ProfileUpdate(BaseModel):
+    full_name: Optional[str] = None
+
 @router.post("/keys", response_model=UserKeyResponse)
 def create_api_key(key_in: UserKeyCreate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     new_key = UserKey(
@@ -40,3 +49,29 @@ def create_api_key(key_in: UserKeyCreate, current_user: User = Depends(get_curre
 @router.get("/keys", response_model=List[UserKeyResponse])
 def list_api_keys(current_user: User = Depends(get_current_user)):
     return [UserKeyResponse.from_orm(k) for k in current_user.keys]
+
+@router.get("/me", response_model=ProfileResponse)
+def get_profile(current_user: User = Depends(get_current_user)):
+    return ProfileResponse(
+        email=current_user.email,
+        full_name=current_user.full_name,
+        role=current_user.role,
+        is_active=current_user.is_active,
+    )
+
+@router.patch("", response_model=ProfileResponse)
+def update_profile(payload: ProfileUpdate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    changed = False
+    if payload.full_name is not None and payload.full_name != current_user.full_name:
+        current_user.full_name = payload.full_name
+        changed = True
+    if changed:
+        db.add(current_user)
+        db.commit()
+        db.refresh(current_user)
+    return ProfileResponse(
+        email=current_user.email,
+        full_name=current_user.full_name,
+        role=current_user.role,
+        is_active=current_user.is_active,
+    )

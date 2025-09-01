@@ -11,24 +11,37 @@
               </svg>
             </button>
             <a href="/" class="text-xl font-bold text-gray-900">
-              MentorAi
+              GoldenCicle
             </a>
           </div>
-          <div class="flex items-center space-x-4">
-            <NuxtLink to="/curriculum" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+          <div class="flex items-center space-x-4 relative">
+            <NuxtLink
+              to="/curriculum"
+              :class="['px-3 py-2 rounded-md text-sm', route.path.startsWith('/curriculum') ? 'font-bold text-gray-900' : 'text-gray-700 hover:text-gray-900']"
+            >
               커리큘럼
             </NuxtLink>
-            <a href="/knowledge-base" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+            <NuxtLink
+              v-if="isAdmin"
+              to="/knowledge-base"
+              :class="['px-3 py-2 rounded-md text-sm', route.path.startsWith('/knowledge-base') ? 'font-bold text-gray-900' : 'text-gray-700 hover:text-gray-900']"
+            >
               지식베이스
-            </a>
+            </NuxtLink>
             <!-- Auth Status -->
-            <div v-if="user" class="flex items-center space-x-2">
-              <NuxtLink to="/profile" class="text-sm text-gray-600 hover:underline">{{ user.email }}</NuxtLink>
-              <button @click="onLogout" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">로그아웃</button>
+            <div v-if="user" class="relative" ref="userMenuRef">
+              <button @click="userMenuOpen = !userMenuOpen" class="px-3 py-2 rounded-md text-sm text-gray-700 hover:text-gray-900 flex items-center gap-2" aria-haspopup="menu" :aria-expanded="userMenuOpen ? 'true':'false'">
+                <span class="truncate max-w-[180px]">{{ displayName }}</span>
+                <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.188l3.71-3.957a.75.75 0 111.08 1.04l-4.25 4.53a.75.75 0 01-1.08 0l-4.25-4.53a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+              </button>
+              <div v-if="userMenuOpen" class="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-30" role="menu">
+                <button @click="openProfileModal" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">프로파일</button>
+                <button @click="onLogout" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">로그아웃</button>
+              </div>
             </div>
             <div v-else class="flex items-center space-x-2">
-              <NuxtLink to="/login" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">로그인</NuxtLink>
-              <NuxtLink to="/register" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">회원가입</NuxtLink>
+              <NuxtLink to="/login" :class="['px-3 py-2 rounded-md text-sm', route.path.startsWith('/login') ? 'font-bold text-gray-900' : 'text-gray-700 hover:text-gray-900']">로그인</NuxtLink>
+              <NuxtLink to="/register" :class="['px-3 py-2 rounded-md text-sm', route.path.startsWith('/register') ? 'font-bold text-gray-900' : 'text-gray-700 hover:text-gray-900']">회원가입</NuxtLink>
             </div>
           </div>
         </div>
@@ -98,7 +111,7 @@
               </div>
             </div>
           </div>
-          <div v-else-if="isHome" class="h-full">
+          <div v-else-if="isHome || isAuthRoute" class="h-full">
             <slot />
           </div>
           <template v-else>
@@ -111,7 +124,7 @@
 
       <!-- Right Panel: AI Assistant -->
       <!-- Chat reveal handle -->
-      <div v-if="!isKnowledgeBase"
+      <div v-if="!isKnowledgeBase && (!isCurriculumRoute || isTutorOrAdmin)"
            class="absolute top-1/2 -translate-y-1/2 right-0 z-20">
         <button @click="chatVisible = !chatVisible"
                 class="chat-handle"
@@ -123,17 +136,39 @@
       </div>
 
       <!-- Chat resizer (visible only when chat is open) -->
-      <div v-if="!isKnowledgeBase && chatVisible"
+      <div v-if="!isKnowledgeBase && chatVisible && (!isCurriculumRoute || isTutorOrAdmin)"
            class="chat-resizer"
            @mousedown="startChatResize"
            :style="{ right: (chatWidth + 'px') }"></div>
 
       <transition name="fade" mode="out-in">
-        <aside v-if="!isKnowledgeBase && chatVisible" class="bg-white border-l border-gray-200 flex-shrink-0 overflow-y-auto shadow-md"
+        <aside v-if="!isKnowledgeBase && chatVisible && (!isCurriculumRoute || isTutorOrAdmin)" class="bg-white border-l border-gray-200 flex-shrink-0 overflow-y-auto shadow-md"
                :style="{ width: chatWidth + 'px' }">
           <AIAssistantPanel />
         </aside>
       </transition>
+
+      <!-- Profile Modal -->
+      <div v-if="showProfile" class="fixed inset-0 z-40 bg-black/30 flex items-center justify-center" @click.self="showProfile=false">
+        <div class="bg-white rounded-lg shadow-xl w-[440px] max-w-[92vw] p-4">
+          <div class="text-lg font-semibold mb-2">프로파일</div>
+          <div class="space-y-3">
+            <div>
+              <div class="text-xs text-gray-500">이메일</div>
+              <div class="text-sm">{{ profile.email || user?.email }}</div>
+            </div>
+            <div>
+              <label class="text-xs text-gray-500">이름</label>
+              <input v-model="profile.full_name" type="text" class="mt-1 w-full border rounded px-2 py-1" />
+            </div>
+            <div class="text-xs text-gray-500">역할: <span class="font-medium">{{ profile.role || user?.role || 'student' }}</span></div>
+          </div>
+          <div class="mt-4 flex justify-end gap-2">
+            <button class="px-3 py-1 border rounded" @click="showProfile=false">닫기</button>
+            <button class="px-3 py-1 bg-indigo-600 text-white rounded" @click="saveProfile" :disabled="savingProfile">{{ savingProfile ? '저장 중...' : '저장' }}</button>
+          </div>
+        </div>
+      </div>
     </div>
   <TaskStatusBar v-if="isKnowledgeBase" />
   <ToastStack />
@@ -149,7 +184,6 @@ import KnowledgeBaseExplorer from '~/components/KnowledgeBaseExplorer.vue'
 import WorkspaceView from '~/components/WorkspaceView.vue'
 import AIAssistantPanel from '~/components/AIAssistantPanel.vue'
 import SplitEditor from '~/components/SplitEditor.vue'
-import TipTapKbEditor from '~/components/TipTapKbEditor.client.vue'
 import TaskStatusBar from '~/components/TaskStatusBar.vue'
 import ToastStack from '~/components/ToastStack.vue'
 import { useToastStore } from '~/stores/toast'
@@ -159,10 +193,12 @@ const toast = useToastStore()
 // User authentication state
 const user = useState('user', () => null)
 const auth = useAuthStore()
+const userMenuOpen = ref(false)
 auth.loadFromStorage()
 
 async function fetchCurrentUser(){
   try {
+    if (!auth.token) { user.value = null; return }
     const { data: fetchedUser, error } = await useFetch('/api/v1/users/me', {
       lazy: false,
       headers: {
@@ -173,7 +209,10 @@ async function fetchCurrentUser(){
       retry: 0
     });
     if (error.value){ user.value = null; return }
-    if (fetchedUser.value){ user.value = fetchedUser.value }
+    if (fetchedUser.value){
+      user.value = fetchedUser.value
+      try { auth.setUser(fetchedUser.value.email || null, fetchedUser.value.role || null) } catch {}
+    }
   } catch { user.value = null }
 }
 
@@ -192,15 +231,15 @@ async function onLogout(){
     const base = (config.public?.apiBaseUrl) || '/api'
     await $fetch(`${base}/v1/auth/logout`, { method: 'POST' })
   }catch{}
-  auth.clear()
+  // Ensure local token/email/role are fully cleared and in-memory user reset
+  try { auth.clear() } catch {}
   user.value = null
   try{ await router.push('/') }catch{}
 }
 // Fetch current user status on client-side mount
 onMounted(async () => {
   try {
-    await fetchCurrentUser()
-
+    // 사용자 상태는 watcher(immediate)에서 처리
   } catch (e) {
     user.value = null;
   }
@@ -208,8 +247,31 @@ onMounted(async () => {
 
 // Update user state when token changes (e.g., after login/logout)
 watch(() => auth.token, async (t) => {
-  if (t) await fetchCurrentUser()
-  else user.value = null
+  if (t) {
+    await fetchCurrentUser()
+  } else {
+    user.value = null
+  }
+}, { immediate: true })
+// Guard KB when user role changes
+watch(() => user.value?.role, async () => {
+  if (route.path.startsWith('/knowledge-base') && !isAdmin.value) {
+    try { await router.replace('/curriculum') } catch {}
+  }
+})
+// Close user menu when clicking outside the menu
+const userMenuRef = ref(null)
+onMounted(() => {
+  try{
+    const onDocClick = (e) => {
+      if(!userMenuOpen.value) return
+      const el = userMenuRef.value
+      if(el && !el.contains(e.target)) userMenuOpen.value = false
+    }
+    window.addEventListener('click', onDocClick)
+    // cleanup
+    onUnmounted(() => { try{ window.removeEventListener('click', onDocClick) }catch{} })
+  }catch{}
 })
 import { useSidebarResize } from '~/composables/useSidebarResize'
 import { useDocStore } from '~/stores/doc'
@@ -285,10 +347,70 @@ function resolveApiBase(){
 const apiBase = resolveApiBase()
 const apiKey = (config.public?.apiKey) || 'my_mcp_eagle_tiger';
 
+const displayName = computed(() => {
+  const nm = (user.value?.full_name || '').trim()
+  return nm ? nm : (user.value?.email || '사용자')
+})
+
+const isAdmin = computed(() => {
+  const r = String(user.value?.role || auth.role || '').toLowerCase()
+  return r === 'admin' || r === 'administrator'
+})
+const isTutor = computed(() => String(user.value?.role || auth.role || '').toLowerCase() === 'tutor')
+const isTutorOrAdmin = computed(() => isTutor.value || isAdmin.value)
+
+// Profile modal state
+const showProfile = ref(false)
+const profile = ref({ email: '', full_name: '', role: '' })
+const savingProfile = ref(false)
+
+async function openProfileModal(){
+  try{
+    const base = (config.public?.apiBaseUrl) || '/api'
+    const data = await $fetch(`${base}/v1/profile/me`, {
+      headers: {
+        'X-API-Key': apiKey,
+        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
+      }
+    })
+    profile.value = { email: data.email, full_name: data.full_name || '', role: data.role || '' }
+    showProfile.value = true
+  }catch{
+    // fallback to current user state
+    profile.value = { email: user.value?.email || '', full_name: user.value?.full_name || '', role: user.value?.role || '' }
+    showProfile.value = true
+  }
+}
+
+async function saveProfile(){
+  try{
+    savingProfile.value = true
+    const base = (config.public?.apiBaseUrl) || '/api'
+    const res = await $fetch(`${base}/v1/profile`, {
+      method: 'PATCH',
+      body: { full_name: profile.value.full_name },
+      headers: {
+        'X-API-Key': apiKey,
+        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
+      }
+    })
+    // sync state
+    user.value = { ...(user.value||{}), full_name: res.full_name }
+    auth.setUser(res.email || auth.email, res.role || auth.role)
+    showProfile.value = false
+  }catch{
+    // ignore
+  } finally {
+    savingProfile.value = false
+  }
+}
+
 // Load default content: textbook/index.md when on knowledge-base route
 const route = useRoute();
 const router = useRouter();
 const isKnowledgeBase = computed(() => route.path.startsWith('/knowledge-base'))
+const isLoggedIn = computed(() => !!auth.token)
+const isCurriculumRoute = computed(() => route.path.startsWith('/curriculum') || route.path.startsWith('/textbook'))
 const isHomeRedirect = computed(() => {
   try{ return String((route.query||{}).force||'') === '1' }catch{ return false }
 })
@@ -296,14 +418,24 @@ const homePathParam = computed(() => {
   try{ return String((route.query||{}).path||'') }catch{ return '' }
 })
 const isHome = computed(() => route.path === '/')
+const isAuthRoute = computed(() => route.path.startsWith('/login') || route.path.startsWith('/register') || route.path.startsWith('/verify-email'))
 onMounted(async () => {
   if (isKnowledgeBase.value) {
+    if (!isAdmin.value) {
+      try { await router.replace('/curriculum') } catch {}
+      return
+    }
     try{
       const lastTab = typeof window !== 'undefined' ? localStorage.getItem('kb_last_tab') : null
       if(lastTab && ['tree','tiptap','markdown'].includes(lastTab)) kbTab.value = lastTab
     }catch{}
     // 지식베이스 초기 화면: 파일 자동 열기 없이 FileTree 전체 화면 유지
   } else if (route.path.startsWith('/curriculum') || route.path.startsWith('/textbook')) {
+    // Guard: curriculum/textbook require login
+    if (!isLoggedIn.value) {
+      try { await router.replace({ path: '/login', query: { rd: encodeURIComponent(route.fullPath) } }) } catch {}
+      return
+    }
     // Restore last opened curriculum path if available unless forced path in query
     try {
       const q = route.query || {}
@@ -317,6 +449,11 @@ onMounted(async () => {
       else { ;(async ()=>{ await showCurriculumIndex() })() }
     } catch { ;(async ()=>{ await showCurriculumIndex() })() }
   } // else: home('/') — index.vue handles index.md
+
+  // Global guest guard: allow only home and auth routes when not logged in
+  if (!isLoggedIn.value && !(isHome.value || isAuthRoute.value)) {
+    try { await router.replace('/login') } catch {}
+  }
   
   // 대화형 CLI 이벤트 리스너 설정
   if (workspaceMain.value) {
@@ -363,7 +500,17 @@ onMounted(async () => {
 
 // 라우트 변경 시 커리큘럼 페이지로 전환되면 마지막 경로 복원
 watch(() => route.path, async (p) => {
+  // Global guest guard
+  if (!isLoggedIn.value && !(isHome.value || isAuthRoute.value)) {
+    try { await router.replace('/login') } catch {}
+    return
+  }
   if (p.startsWith('/curriculum') || p.startsWith('/textbook')) {
+    // curriculum/textbook require login
+    if (!isLoggedIn.value) {
+      try { await router.replace({ path: '/login', query: { rd: encodeURIComponent(route.fullPath) } }) } catch {}
+      return
+    }
     try {
       const q = route.query || {}
       const forced = String(q.force || '') === '1'

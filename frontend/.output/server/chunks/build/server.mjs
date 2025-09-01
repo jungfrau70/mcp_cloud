@@ -1,5 +1,5 @@
 import { hasInjectionContext, inject, getCurrentInstance, defineAsyncComponent, defineComponent, h, computed, unref, shallowRef, provide, shallowReactive, ref, Suspense, Fragment, createApp, toRef, onErrorCaptured, onServerPrefetch, createVNode, resolveDynamicComponent, reactive, effectScope, isReadonly, isRef, isShallow, isReactive, toRaw, mergeProps, withCtx, getCurrentScope, nextTick, useSSRContext } from 'vue';
-import { h as hasProtocol, i as isScriptProtocol, k as joinURL, w as withQuery, s as sanitizeStatusCode, l as getContext, $ as $fetch, m as createHooks, n as executeAsync, c as createError$1, t as toRouteMatcher, o as createRouter$1, p as defu } from '../nitro/nitro.mjs';
+import { c as createError$1, h as hasProtocol, i as isScriptProtocol, k as joinURL, w as withQuery, s as sanitizeStatusCode, l as getContext, $ as $fetch, m as createHooks, n as executeAsync, t as toRouteMatcher, o as createRouter$1, p as defu } from '../nitro/nitro.mjs';
 import { b as baseURL } from '../routes/renderer.mjs';
 import { useRoute as useRoute$1, RouterView, createMemoryHistory, createRouter, START_LOCATION } from 'vue-router';
 import { createPinia } from 'pinia';
@@ -28,6 +28,8 @@ if (!("global" in globalThis)) {
 }
 const appLayoutTransition = false;
 const nuxtLinkDefaults = { "componentName": "NuxtLink" };
+const asyncDataDefaults = { "value": null, "errorValue": null, "deep": true };
+const fetchDefaults = {};
 const appId = "nuxt-app";
 function getNuxtAppCtx(id = appId) {
   return getContext(id, {
@@ -403,27 +405,27 @@ const _routes = [
     name: "index",
     path: "/",
     meta: __nuxt_page_meta$5 || {},
-    component: () => import('./index-COwtnO5h.mjs')
+    component: () => import('./index-Dy8tzIWD.mjs')
   },
   {
     name: "login",
     path: "/login",
-    component: () => import('./login-BOClTXL8.mjs')
+    component: () => import('./login-roJejMI2.mjs')
   },
   {
     name: "billing",
     path: "/billing",
-    component: () => import('./billing-BKsrM_Bo.mjs')
+    component: () => import('./billing-BlT1mHHr.mjs')
   },
   {
     name: "profile",
     path: "/profile",
-    component: () => import('./profile-Cug0xkxK.mjs')
+    component: () => import('./profile-B0zAfkEP.mjs')
   },
   {
     name: "register",
     path: "/register",
-    component: () => import('./register-wwy3expH.mjs')
+    component: () => import('./register-PAyA4Krk.mjs')
   },
   {
     name: "cli",
@@ -439,7 +441,7 @@ const _routes = [
   {
     name: "verify-email",
     path: "/verify-email",
-    component: () => import('./verify-email-DBVtZaiU.mjs')
+    component: () => import('./verify-email-Dm0zDSbb.mjs')
   },
   {
     name: "curriculum",
@@ -463,7 +465,7 @@ const _routes = [
     name: "knowledge-base-__index",
     path: "/knowledge-base/__index",
     meta: __nuxt_page_meta || {},
-    component: () => import('./__index-BFn39Z7r.mjs')
+    component: () => import('./__index-Cdtbx4YK.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -821,7 +823,7 @@ const plugins = [
   pinia_Ab1D_QMMf_egrzVdVYpZ5xs6QSwaKU60pkFvRWVq_9Y
 ];
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-CqHWfo7r.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-BxASau8t.mjs').then((n) => n.b).then((m) => m.default || m))
 };
 const LayoutLoader = defineComponent({
   name: "LayoutLoader",
@@ -1084,7 +1086,7 @@ const _sfc_main$1 = {
     const statusMessage = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack = void 0;
-    const _Error404 = defineAsyncComponent(() => import('./error-404-Bp37nLjS.mjs'));
+    const _Error404 = defineAsyncComponent(() => import('./error-404-dCeXDb4N.mjs'));
     const _Error = defineAsyncComponent(() => import('./error-500-B_VjxHa_.mjs'));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _push, _parent, _attrs) => {
@@ -1166,5 +1168,5 @@ let entry;
 }
 const entry$1 = (ssrContext) => entry(ssrContext);
 
-export { useRoute as a, useNuxtApp as b, useRouter as c, nuxtLinkDefaults as d, entry$1 as default, navigateTo as n, resolveRouteObject as r, tryUseNuxtApp as t, useRuntimeConfig as u };
+export { useRoute as a, useNuxtApp as b, asyncDataDefaults as c, createError as d, entry$1 as default, useRouter as e, fetchDefaults as f, nuxtLinkDefaults as g, navigateTo as n, resolveRouteObject as r, tryUseNuxtApp as t, useRuntimeConfig as u };
 //# sourceMappingURL=server.mjs.map
