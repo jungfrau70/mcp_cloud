@@ -118,62 +118,75 @@ setup_azure_environment() {
 create_users_and_roles() {
     log_info "=== 2단계: Entra ID 사용자 및 역할 생성 ==="
     
+    # Guest User 권한 체크
+    CURRENT_USER=$(az account show --query user.name -o tsv)
+    log_info "현재 사용자: $CURRENT_USER"
+    
+    # Guest User인지 확인 (외부 도메인 사용자)
+    if [[ "$CURRENT_USER" == *"@gmail.com"* ]] || [[ "$CURRENT_USER" == *"@hotmail.com"* ]] || [[ "$CURRENT_USER" == *"@outlook.com"* ]]; then
+        log_warning "Guest User로 감지되었습니다. 사용자 생성 및 역할 할당을 건너뜁니다."
+        log_info "Guest User는 Azure AD에서 사용자 생성 및 역할 할당 권한이 제한됩니다."
+        log_info "리소스 생성 단계로 진행합니다."
+        return 0
+    fi
+    
     # 사용자 존재 여부 확인 및 생성
     log_info "재무팀 사용자 존재 여부를 확인합니다..."
-    if az ad user show --id "finance_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com" &> /dev/null; then
-        log_warning "재무팀 사용자가 이미 존재합니다: finance_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com"
+    if az ad user show --id "finance_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN" &> /dev/null; then
+        log_warning "재무팀 사용자가 이미 존재합니다: finance_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN"
     else
         log_info "재무팀 사용자를 생성합니다..."
         az ad user create \
             --display-name "Finance User" \
-            --user-principal-name "finance_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com" \
+            --user-principal-name "finance_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN" \
             --password "TempPass123!"
     fi
     
     log_info "IT 관리자 사용자 존재 여부를 확인합니다..."
-    if az ad user show --id "itadmin_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com" &> /dev/null; then
-        log_warning "IT 관리자 사용자가 이미 존재합니다: itadmin_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com"
+    if az ad user show --id "itadmin_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN" &> /dev/null; then
+        log_warning "IT 관리자 사용자가 이미 존재합니다: itadmin_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN"
     else
         log_info "IT 관리자 사용자를 생성합니다..."
         az ad user create \
             --display-name "IT Admin User" \
-            --user-principal-name "itadmin_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com" \
+            --user-principal-name "itadmin_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN" \
             --password "TempPass123!"
     fi
     
     log_info "IT 엔지니어 사용자 존재 여부를 확인합니다..."
-    if az ad user show --id "engineer_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com" &> /dev/null; then
-        log_warning "IT 엔지니어 사용자가 이미 존재합니다: engineer_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com"
+    if az ad user show --id "engineer_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN" &> /dev/null; then
+        log_warning "IT 엔지니어 사용자가 이미 존재합니다: engineer_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN"
     else
         log_info "IT 엔지니어 사용자를 생성합니다..."
         az ad user create \
             --display-name "IT Engineer User" \
-            --user-principal-name "engineer_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com" \
+            --user-principal-name "engineer_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN" \
             --password "TempPass123!"
     fi
     
-    # 구독 ID 확인
+    # 구독 ID 확인 및 설정
     SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+    log_info "구독 ID: $SUBSCRIPTION_ID"
     
     # 역할 할당 (이미 할당되어 있는지 확인)
     log_info "재무팀 사용자 역할 할당을 확인합니다..."
-    if az role assignment list --assignee "finance_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com" --role "Cost Management Reader" --scope "/subscriptions/$SUBSCRIPTION_ID" --query "[].id" --output tsv | grep -q .; then
+    if az role assignment list --assignee "finance_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN" --role "Cost Management Reader" --scope "/subscriptions/$SUBSCRIPTION_ID" --query "[].id" --output tsv | grep -q .; then
         log_warning "재무팀 사용자에게 이미 Cost Management Reader 역할이 할당되어 있습니다."
     else
         log_info "재무팀 사용자에게 Cost Management Reader 역할을 할당합니다..."
         az role assignment create \
-            --assignee "finance_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com" \
+            --assignee "finance_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN" \
             --role "Cost Management Reader" \
             --scope "/subscriptions/$SUBSCRIPTION_ID"
     fi
     
     log_info "IT 관리자 역할 할당을 확인합니다..."
-    if az role assignment list --assignee "itadmin_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com" --role "Contributor" --scope "/subscriptions/$SUBSCRIPTION_ID" --query "[].id" --output tsv | grep -q .; then
+    if az role assignment list --assignee "itadmin_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN" --role "Contributor" --scope "/subscriptions/$SUBSCRIPTION_ID" --query "[].id" --output tsv | grep -q .; then
         log_warning "IT 관리자에게 이미 Contributor 역할이 할당되어 있습니다."
     else
         log_info "IT 관리자에게 Contributor 역할을 할당합니다..."
         az role assignment create \
-            --assignee "itadmin_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com" \
+            --assignee "itadmin_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN" \
             --role "Contributor" \
             --scope "/subscriptions/$SUBSCRIPTION_ID"
     fi
@@ -225,17 +238,22 @@ create_resources() {
             --auth-mode login
     fi
     
-    # IT 엔지니어 역할 할당 확인
-    log_info "IT 엔지니어 Storage Blob Data Contributor 역할 할당을 확인합니다..."
-    STORAGE_ACCOUNT_ID=$(az storage account show --name "$STORAGE_ACCOUNT_NAME" --resource-group "$RESOURCE_GROUP_NAME" --query id -o tsv)
-    if az role assignment list --assignee "engineer_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com" --role "Storage Blob Data Contributor" --scope "$STORAGE_ACCOUNT_ID" --query "[].id" --output tsv | grep -q .; then
-        log_warning "IT 엔지니어에게 이미 Storage Blob Data Contributor 역할이 할당되어 있습니다."
+    # IT 엔지니어 역할 할당 확인 (Guest User인 경우 건너뛰기)
+    CURRENT_USER=$(az account show --query user.name -o tsv)
+    if [[ "$CURRENT_USER" == *"@gmail.com"* ]] || [[ "$CURRENT_USER" == *"@hotmail.com"* ]] || [[ "$CURRENT_USER" == *"@outlook.com"* ]]; then
+        log_warning "Guest User로 감지되었습니다. 역할 할당을 건너뜁니다."
     else
-        log_info "IT 엔지니어에게 Storage Blob Data Contributor 역할을 할당합니다..."
-        az role assignment create \
-            --assignee "engineer_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com" \
-            --role "Storage Blob Data Contributor" \
-            --scope "$STORAGE_ACCOUNT_ID"
+        log_info "IT 엔지니어 Storage Blob Data Contributor 역할 할당을 확인합니다..."
+        STORAGE_ACCOUNT_ID=$(az storage account show --name "$STORAGE_ACCOUNT_NAME" --resource-group "$RESOURCE_GROUP_NAME" --query id -o tsv)
+        if az role assignment list --assignee "engineer_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN" --role "Storage Blob Data Contributor" --scope "$STORAGE_ACCOUNT_ID" --query "[].id" --output tsv | grep -q .; then
+            log_warning "IT 엔지니어에게 이미 Storage Blob Data Contributor 역할이 할당되어 있습니다."
+        else
+            log_info "IT 엔지니어에게 Storage Blob Data Contributor 역할을 할당합니다..."
+            az role assignment create \
+                --assignee "engineer_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN" \
+                --role "Storage Blob Data Contributor" \
+                --scope "$STORAGE_ACCOUNT_ID"
+        fi
     fi
     
     log_success "리소스 생성이 완료되었습니다."
@@ -293,15 +311,25 @@ EOF
     ASSIGNMENT_NAME="AllowedLocationsAssignment-$UNIQUE_SUFFIX"
     SUBSCRIPTION_ID=$(az account show --query id -o tsv)
     log_info "정책 할당 존재 여부를 확인합니다: $ASSIGNMENT_NAME"
-    if az policy assignment show --name "$ASSIGNMENT_NAME" --scope "/subscriptions/$SUBSCRIPTION_ID" &> /dev/null; then
-        log_warning "정책 할당이 이미 존재합니다: $ASSIGNMENT_NAME"
+    log_info "구독 ID: $SUBSCRIPTION_ID"
+    
+    # Guest User인 경우 정책 할당 건너뛰기
+    CURRENT_USER=$(az account show --query user.name -o tsv)
+    if [[ "$CURRENT_USER" == *"@gmail.com"* ]] || [[ "$CURRENT_USER" == *"@hotmail.com"* ]] || [[ "$CURRENT_USER" == *"@outlook.com"* ]]; then
+        log_warning "Guest User로 감지되었습니다. 정책 할당을 건너뜁니다."
+        log_info "Guest User는 정책 할당 권한이 제한됩니다."
     else
-        # 정책 할당
-        az policy assignment create \
-            --name "$ASSIGNMENT_NAME" \
-            --display-name "Allowed Locations Assignment" \
-            --policy-definition "$POLICY_NAME" \
-            --scope "/subscriptions/$SUBSCRIPTION_ID"
+        if az policy assignment show --name "$ASSIGNMENT_NAME" --scope "/subscriptions/$SUBSCRIPTION_ID" &> /dev/null; then
+            log_warning "정책 할당이 이미 존재합니다: $ASSIGNMENT_NAME"
+        else
+            # 정책 할당
+            log_info "정책을 구독에 할당합니다..."
+            az policy assignment create \
+                --name "$ASSIGNMENT_NAME" \
+                --display-name "Allowed Locations Assignment" \
+                --policy "$POLICY_NAME" \
+                --scope "/subscriptions/$SUBSCRIPTION_ID"
+        fi
     fi
     
     log_success "거버넌스 설정이 완료되었습니다."
@@ -310,6 +338,15 @@ EOF
 # 5단계: FinOps 비용 관리
 setup_cost_management() {
     log_info "=== 5단계: FinOps 비용 관리 ==="
+    
+    # Guest User인 경우 예산 생성 건너뛰기
+    CURRENT_USER=$(az account show --query user.name -o tsv)
+    if [[ "$CURRENT_USER" == *"@gmail.com"* ]] || [[ "$CURRENT_USER" == *"@hotmail.com"* ]] || [[ "$CURRENT_USER" == *"@outlook.com"* ]]; then
+        log_warning "Guest User로 감지되었습니다. 예산 생성을 건너뜁니다."
+        log_info "Azure Consumption Budget API는 preview 상태이며 Guest User 권한이 제한됩니다."
+        log_info "비용 관리 설정을 건너뛰고 다음 단계로 진행합니다."
+        return 0
+    fi
     
     # 예산 존재 여부 확인
     BUDGET_NAME="MonthlyBudget-$UNIQUE_SUFFIX"
@@ -349,7 +386,8 @@ EOF
             --time-grain "Monthly" \
             --start-date "2024-01-01" \
             --end-date "2024-12-31" \
-            --notifications "{\"Actual_GreaterThan_80_Percent\":{\"enabled\":true,\"operator\":\"GreaterThan\",\"threshold\":80,\"contactEmails\":[\"finance_user_$UNIQUE_SUFFIX@contoso.onmicrosoft.com\"]}}"
+            --category "Cost" \
+            --notifications "{\"Actual_GreaterThan_80_Percent\":{\"enabled\":true,\"operator\":\"GreaterThan\",\"threshold\":80,\"contactEmails\":[\"finance_user_$UNIQUE_SUFFIX@$AZURE_DOMAIN\"]}}"
     fi
     
     log_success "비용 관리 설정이 완료되었습니다."
@@ -358,6 +396,25 @@ EOF
 # 6단계: 역할별 테스트
 test_roles() {
     log_info "=== 6단계: 역할별 테스트 ==="
+    
+    # Guest User인 경우 역할 테스트 건너뛰기
+    CURRENT_USER=$(az account show --query user.name -o tsv)
+    if [[ "$CURRENT_USER" == *"@gmail.com"* ]] || [[ "$CURRENT_USER" == *"@hotmail.com"* ]] || [[ "$CURRENT_USER" == *"@outlook.com"* ]]; then
+        log_warning "Guest User로 감지되었습니다. 역할별 테스트를 건너뜁니다."
+        log_info "Guest User는 스토리지 Blob 데이터 접근 권한이 제한됩니다."
+        log_info "스토리지 계정 및 컨테이너는 생성되었지만 데이터 접근 테스트는 건너뜁니다."
+        
+        # 리소스 그룹 삭제 시도 (실패해야 함) - 잠금 테스트만 진행
+        log_info "리소스 그룹 삭제를 시도합니다 (실패해야 함)..."
+        if az group delete --name "$RESOURCE_GROUP_NAME" --yes 2>&1 | grep -q "잠금"; then
+            log_success "잠금이 정상적으로 작동합니다."
+        else
+            log_warning "잠금 테스트 결과를 확인하세요."
+        fi
+        
+        log_success "역할별 테스트를 건너뛰었습니다."
+        return 0
+    fi
     
     # 테스트 파일 생성
     log_info "테스트 파일을 생성합니다..."
