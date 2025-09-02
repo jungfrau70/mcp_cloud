@@ -1,0 +1,16 @@
+{
+  "amount": 100,
+  "timeGrain": "Monthly",
+  "timePeriod": {
+    "startDate": "2024-01-01T00:00:00Z",
+    "endDate": "2024-12-31T23:59:59Z"
+  },
+  "notifications": {
+    "Actual_GreaterThan_80_Percent": {
+      "enabled": true,
+      "operator": "GreaterThan",
+      "threshold": 80,
+      "contactEmails": ["finance_user_nuo4vdrn@contoso.onmicrosoft.com"]
+    }
+  }
+}
