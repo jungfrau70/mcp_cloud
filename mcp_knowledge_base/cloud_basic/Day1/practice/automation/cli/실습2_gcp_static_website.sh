@@ -2,6 +2,7 @@
 
 # GCP 정적 웹사이트 배포 실습 자동화 스크립트
 # 실습2: GCP Cloud Storage 정적 웹사이트 배포
+# v2: 프로젝트 존재 여부 확인 및 사용 로직 추가
 
 set -e  # 오류 발생 시 스크립트 중단
 
@@ -31,12 +32,12 @@ log_error() {
 
 # 랜덤 문자열 생성 함수
 generate_random_string() {
-    local length=${1:-8}
+    local length=${1:-6}
     cat /dev/urandom | tr -dc 'a-z0-9' | fold -w $length | head -n 1
 }
 
 # 고유 식별자 생성
-UNIQUE_SUFFIX=$(generate_random_string 8)
+UNIQUE_SUFFIX=$(generate_random_string 6)
 log_info "고유 식별자 생성: $UNIQUE_SUFFIX"
 
 # 환경 변수 로드
@@ -46,7 +47,7 @@ if [ -f "실습2_gcp_static_website.env" ]; then
 else
     log_warning ".env 파일이 없습니다. 기본값을 사용합니다."
     # 기본값 설정 (고유 식별자 추가)
-    PROJECT_ID="my-static-website-$UNIQUE_SUFFIX"
+    PROJECT_ID="static-website-2-$UNIQUE_SUFFIX"
     BUCKET_NAME="my-static-website-bucket-$UNIQUE_SUFFIX"
     LOCATION="asia-northeast3"
 fi
@@ -99,14 +100,14 @@ setup_gcp_environment() {
     log_info "현재 프로젝트를 확인합니다..."
     gcloud config get-value project
     
-    # BigQuery API 활성화 상태 확인
-    log_info "BigQuery API 활성화 상태를 확인합니다..."
-    if gcloud services list --enabled --filter="name:bigquery.googleapis.com" | grep -q "bigquery.googleapis.com"; then
-        log_warning "BigQuery API가 이미 활성화되어 있습니다."
+    # Cloud Storage API 활성화 상태 확인
+    log_info "Cloud Storage API 활성화 상태를 확인합니다..."
+    if gcloud services list --enabled --filter="name:storage.googleapis.com" | grep -q "storage.googleapis.com"; then
+        log_warning "Cloud Storage API가 이미 활성화되어 있습니다."
     else
-        # BigQuery API 활성화
-        log_info "BigQuery API를 활성화합니다..."
-        gcloud services enable bigquery.googleapis.com
+        # Cloud Storage API 활성화
+        log_info "Cloud Storage API를 활성화합니다..."
+        gcloud services enable storage.googleapis.com
     fi
     
     log_success "GCP 환경 준비가 완료되었습니다."
