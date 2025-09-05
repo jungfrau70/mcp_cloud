@@ -12,7 +12,7 @@
 ## 1️⃣ 기본 개념 정리
 
 ### 계정 유형 구분
-- **GCP 가입 계정**: `hong.gildong@gmail.com` (Google 계정)
+- **GCP 가입 계정**: `hong.gildong@<domain-name>.com` (Google 계정)
   - GCP에 처음 가입한 계정
   - 기본적으로 **프로젝트의 Owner** 역할 보유
 - **itadmin 계정**: Google Workspace 또는 Cloud Identity에 새로 만든 조직 계정
@@ -25,8 +25,12 @@ GCP에서는 **프로젝트 레벨**과 **조직 레벨** 권한을 구분하며
 
 ## 2️⃣ itadmin 계정 생성
 
+GCP에서는 조직(Organization) 단위에서 사용자 관리 기능이 활성화됩니다.
+개인 계정(예: Gmail 계정)으로 만든 프로젝트는 조직이 없으므로, IAM에서 사용자 초대는 가능하지만 일부 UI 기능이 제한됩니다.
+즉, Gmail 계정 프로젝트에서는 사용자 추가 버튼 대신 프로젝트 수준에서 직접 IAM 멤버를 추가해야 합니다.
+
 ### 방법 1: Google Workspace 사용 (권장)
-1. `hong.gildong@gmail.com` 계정으로 [Google Cloud Console](https://console.cloud.google.com) 로그인
+1. `hong.gildong@<domain-name>.com` 계정으로 [Google Cloud Console](https://console.cloud.google.com) 로그인
 2. **IAM 및 관리자(IAM & Admin)** → **사용자(Users)**
 3. **사용자 추가(Add users)** 클릭
 4. 계정 정보 입력:
@@ -149,7 +153,7 @@ API 호출이나 자동화를 위한 서비스 계정을 생성할 수 있습니
 
 | 계정 | 역할 | 권한 범위 |
 |------|------|-----------|
-| `hong.gildong@gmail.com` | 프로젝트 Owner | GCP 프로젝트 전체 관리, 결제 계정 관리 |
+| `hong.gildong@<domain-name>.com` | 프로젝트 Owner | GCP 프로젝트 전체 관리, 결제 계정 관리 |
 | `itadmin@<domain>.com` | Owner + Billing Account Administrator | GCP 서비스 + 비용 관리 전체 |
 
 ### 상세 권한 내역
@@ -157,7 +161,7 @@ API 호출이나 자동화를 위한 서비스 계정을 생성할 수 있습니
 - **Billing Account Administrator**: 결제 정보, 청구서, 결제 방법 관리
 - **Cost Management Admin**: 비용 분석, 예산 설정, 알림 관리
 
-> 💡 **결과**: `hong.gildong@gmail.com`은 초기 가입 계정(백업 관리자)으로 두고, 실제 운영은 `itadmin`이 **GCP 서비스 + 비용 관리 풀 관리자** 권한으로 운영할 수 있습니다.
+> 💡 **결과**: `hong.gildong@<domain-name>.com`은 초기 가입 계정(백업 관리자)으로 두고, 실제 운영은 `itadmin`이 **GCP 서비스 + 비용 관리 풀 관리자** 권한으로 운영할 수 있습니다.
 
 ---
 
