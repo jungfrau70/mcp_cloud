@@ -42,7 +42,7 @@ GCP에서는 조직(Organization) 단위에서 사용자 관리 기능이 활성
 2. **사용자(Users)** → **사용자 추가(Add user)**
 3. 계정 정보 입력:
    - 이름: `itadmin`
-   - 이메일: `itadmin@<domain>.com`
+   - 이메일: `itadmin@gmail.com`
    - 임시 비밀번호 설정
 
 ---

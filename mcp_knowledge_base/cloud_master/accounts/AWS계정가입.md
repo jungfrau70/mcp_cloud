@@ -12,7 +12,7 @@
 ## 1️⃣ 기본 개념 정리
 
 ### 계정 유형 구분
-- **AWS 계정 가입 계정**: `hong.gildong@example.com` (Root 계정)
+- **AWS 계정 가입 계정**: `hong.gildong@<domain-name>.com` (Root 계정)
   - AWS에 처음 가입한 계정
   - 기본적으로 **Root 사용자** 권한 보유
 - **itadmin 계정**: IAM에 새로 만든 조직 계정
@@ -26,7 +26,7 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 ## 2️⃣ itadmin 계정 생성
 
 ### 단계별 진행
-1. `hong.gildong@example.com` 계정으로 [AWS Management Console](https://console.aws.amazon.com) 로그인
+1. `hong.gildong@<domain-name>.com` 계정으로 [AWS Management Console](https://console.aws.amazon.com) 로그인
 2. **IAM (Identity and Access Management)** 서비스 이동
 3. **사용자(Users)** → **사용자 생성(Create user)** 클릭
 4. 계정 정보 입력:
@@ -141,7 +141,7 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 
 | 계정 | 역할 | 권한 범위 |
 |------|------|-----------|
-| `hong.gildong@example.com` | Root 사용자 | AWS 계정 전체 관리, 결제 계정 관리 |
+| `hong.gildong@<domain-name>.com` | Root 사용자 | AWS 계정 전체 관리, 결제 계정 관리 |
 | `itadmin` | AdministratorAccess + Billing | AWS 서비스 + 비용 관리 전체 |
 
 ### 상세 권한 내역
@@ -149,7 +149,7 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 - **Billing**: 청구서, 결제 정보, 크레딧 관리
 - **CostExplorerServiceFullAccess**: 비용 분석, 예산 설정, 알림 관리
 
-> 💡 **결과**: `hong.gildong@example.com`은 Root 계정(백업 관리자)으로 두고, 실제 운영은 `itadmin`이 **AWS 서비스 + 비용 관리 풀 관리자** 권한으로 운영할 수 있습니다.
+> 💡 **결과**: `hong.gildong@<domain-name>.com`은 Root 계정(백업 관리자)으로 두고, 실제 운영은 `itadmin`이 **AWS 서비스 + 비용 관리 풀 관리자** 권한으로 운영할 수 있습니다.
 
 ---
 

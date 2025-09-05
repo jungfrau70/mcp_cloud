@@ -12,7 +12,7 @@
 ## 1️⃣ 기본 개념 정리
 
 ### 계정 유형 구분
-- **Azure 구독 가입 계정**: `hong.gildong@example.com` (Microsoft 계정 MSA)
+- **Azure 구독 가입 계정**: `hong.gildong@<domain-name>.com` (Microsoft 계정 MSA)
   - Azure에 처음 가입한 계정
   - 기본적으로 **구독의 Account Administrator** 역할 보유
 - **itadmin 계정**: Azure AD(Entra ID)에 새로 만든 조직 계정
@@ -26,7 +26,7 @@ Azure에서는 **ID 권한(Entra ID)**과 **구독 권한(Azure RBAC)**을 각�
 ## 2️⃣ itadmin 계정 생성
 
 ### 단계별 진행
-1. `hong.gildong@example.com` 계정으로 [Azure Portal](https://portal.azure.com) 로그인
+1. `hong.gildong@<domain-name>.com` 계정으로 [Azure Portal](https://portal.azure.com) 로그인
 2. **Microsoft Entra ID** → **사용자(User)** → **새 사용자(New user)**
 3. 계정 정보 입력:
    - 사용자 이름: `itadmin@<tenant>.onmicrosoft.com`
