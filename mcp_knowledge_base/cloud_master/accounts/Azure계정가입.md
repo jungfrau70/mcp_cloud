@@ -110,6 +110,22 @@ Azure에서는 **ID 권한(Entra ID)**과 **구독 권한(Azure RBAC)**을 각�
    - **Billing Administrator** 또는 **Cost Management Contributor** 표시 확인
    - 또는 구독 → IAM에서 **Billing Administrator** 확인
 
+### Billing 관련 권한
+
+Azure는 Role-Based Access Control (RBAC) 방식으로 권한을 부여합니다. Billing 관련 역할은 Subscription 또는 Billing scope에서 할당됩니다.
+
+역할 권한 범위 특징
+   - Billing Reader	구독/청구 정보 조회	비용, 청구서, 사용량 데이터 조회 가능
+   - Billing Contributor	구독/청구 관리	결제 정보 수정 가능 (카드, 인보이스 등)
+   - Cost Management Contributor	비용 관리	Cost Analysis, 예산 설정 가능
+   - Owner / Contributor	전체 구독 관리	청구 정보 포함 모든 권한
+
+핵심 특징
+   Azure에서는 IAM 사용자 개념 대신 Azure AD 사용자/그룹을 구독 또는 Billing scope에 연결합니다.
+
+**조건부 액세스(Conditions)**를 통해 특정 서비스나 리소스 범위 제한 가능.
+
+
 ---
 
 ## ✅ 최종 권한 구조
