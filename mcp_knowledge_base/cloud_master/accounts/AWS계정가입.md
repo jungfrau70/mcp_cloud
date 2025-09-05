@@ -47,15 +47,15 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 
 > ✅ 이렇게 하면 `itadmin`은 AWS 서비스 전체 관리 권한을 가집니다.
 
-중요> IAM 사용자에게 Billing 권한 허용 필요
+> **중요** IAM 사용자에게 Billing 권한 허용 필요
 
 기본적으로 AWS 계정 root 외 IAM 사용자는 Billing 콘솔 접근 불가
 
-해결 방법:
-   루트 계정으로 로그인
-   계정 설정(Account Settings) → IAM 사용자 및 역할에 결제 정보 접근 허용(Activate IAM Access for Billing) 체크
-   화면 위치: https://console.aws.amazon.com/billing/home?#/account → "IAM 사용자 및 역할이 결제 정보에 접근할 수 있도록 활성화"
-   활성화 후 IAM 사용자에 Billing 관련 정책 할당
+**해결 방법:**
+1. **루트 계정으로 로그인**
+2. **계정 설정(Account Settings)** → **IAM 사용자 및 역할에 결제 정보 접근 허용(Activate IAM Access for Billing)** 체크
+3. **화면 위치**: https://console.aws.amazon.com/billing/home?#/account → "IAM 사용자 및 역할이 결제 정보에 접근할 수 있도록 활성화"
+4. **활성화 후** IAM 사용자에 Billing 관련 정책 할당
 
 ---
 
@@ -64,7 +64,16 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 ### Billing 권한 추가
 비용 관리와 결제 정보 접근을 위해 추가 권한이 필요합니다.
 
-#### 방법 1: 기존 정책에 Billing 권한 추가
+> **⚠️ 사전 요구사항**: Root 계정에서 IAM 사용자의 Billing 접근을 먼저 활성화해야 합니다.
+
+#### 1단계: Root 계정에서 IAM Billing 접근 활성화
+1. **Root 계정으로 로그인** (hong.gildong@<domain-name>.com)
+2. **Billing 콘솔** 이동: https://console.aws.amazon.com/billing/home
+3. **계정 설정(Account Settings)** 클릭
+4. **"IAM 사용자 및 역할이 결제 정보에 접근할 수 있도록 활성화"** 체크박스 선택
+5. **업데이트** 클릭
+
+#### 2단계: IAM 사용자에 Billing 권한 추가
 1. **IAM** → **사용자(Users)** → `itadmin` 선택
 2. **권한(Permissions)** 탭 → **권한 추가(Add permissions)**
 3. **기존 정책 직접 연결** 선택
@@ -72,7 +81,7 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
    - **Billing** (청구서 및 결제 정보 관리)
    - **CostExplorerServiceFullAccess** (비용 분석 도구 접근)
 
-#### 방법 2: 사용자 정의 정책 생성
+#### 3단계: 사용자 정의 정책 생성 (선택사항)
 ```json
 {
     "Version": "2012-10-17",
