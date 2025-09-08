@@ -367,7 +367,7 @@ docker-compose logs -f web
 #### 데이터베이스 연결 테스트
 ```bash
 # MongoDB 컨테이너에 접속
-docker-compose exec db mongosh
+docker-compose exec db mongosh -u admin -p secret --authenticationDatabase admin
 
 # MongoDB 쿼리 실행
 use test
@@ -447,9 +447,11 @@ const client = new MongoClient(mongoUrl);
 
 // Redis 연결
 const redisClient = redis.createClient({
-  host: 'redis',
-  port: 6379
+  url: 'redis://redis:6379'
 });
+
+// Redis 연결 시작
+redisClient.connect().catch(console.error);
 
 app.get('/', async (req, res) => {
   try {
