@@ -12,21 +12,33 @@
 ## 1️⃣ 기본 개념 정리
 
 ### 계정 유형 구분
-- **Azure 구독 가입 계정**: `hong.gildong@example.com` (Microsoft 계정 MSA)
+- **Azure 구독 가입 계정**: `hong.gildong@<domain-name>.com` (Microsoft 계정 MSA)
   - Azure에 처음 가입한 계정
   - 기본적으로 **구독의 Account Administrator** 역할 보유
 - **itadmin 계정**: Azure AD(Entra ID)에 새로 만든 조직 계정
   - 예: `itadmin@<tenant>.onmicrosoft.com`
 
 ### 권한 구조 이해
-Azure에서는 **ID 권한(Entra ID)**과 **구독 권한(Azure RBAC)**을 각각 따로 부여해야 **완전 관리자**가 됩니다.
+Azure에서는 **이중 권한 구조**를 가지고 있습니다:
+
+#### 1️⃣ Entra ID 권한 (디렉토리 관리)
+- **Global Administrator**: 사용자, 그룹, 앱 등록, 보안 정책 관리
+- **User Administrator**: 사용자 계정 관리
+- **Security Administrator**: 보안 설정 관리
+
+#### 2️⃣ Azure 구독 권한 (리소스 관리)  
+- **Owner**: 구독 내 모든 리소스 생성/삭제/수정
+- **Contributor**: 리소스 생성/수정 (역할 할당 제외)
+- **Reader**: 리소스 조회만 가능
+
+> **💡 중요**: 완전한 관리자 권한을 위해서는 **Entra ID 권한**과 **Azure 구독 권한**을 모두 부여해야 합니다.
 
 ---
 
 ## 2️⃣ itadmin 계정 생성
 
 ### 단계별 진행
-1. `hong.gildong@example.com` 계정으로 [Azure Portal](https://portal.azure.com) 로그인
+1. `hong.gildong@<domain-name>.com` 계정으로 [Azure Portal](https://portal.azure.com) 로그인
 2. **Microsoft Entra ID** → **사용자(User)** → **새 사용자(New user)**
 3. 계정 정보 입력:
    - 사용자 이름: `itadmin@<tenant>.onmicrosoft.com`
@@ -110,13 +122,29 @@ Azure에서는 **ID 권한(Entra ID)**과 **구독 권한(Azure RBAC)**을 각�
    - **Billing Administrator** 또는 **Cost Management Contributor** 표시 확인
    - 또는 구독 → IAM에서 **Billing Administrator** 확인
 
+### Billing 관련 권한
+
+Azure는 Role-Based Access Control (RBAC) 방식으로 권한을 부여합니다. Billing 관련 역할은 Subscription 또는 Billing scope에서 할당됩니다.
+
+역할 권한 범위 특징
+   - Billing Reader	구독/청구 정보 조회	비용, 청구서, 사용량 데이터 조회 가능
+   - Billing Contributor	구독/청구 관리	결제 정보 수정 가능 (카드, 인보이스 등)
+   - Cost Management Contributor	비용 관리	Cost Analysis, 예산 설정 가능
+   - Owner / Contributor	전체 구독 관리	청구 정보 포함 모든 권한
+
+핵심 특징
+   Azure에서는 IAM 사용자 개념 대신 Azure AD 사용자/그룹을 구독 또는 Billing scope에 연결합니다.
+
+**조건부 액세스(Conditions)**를 통해 특정 서비스나 리소스 범위 제한 가능.
+
+
 ---
 
 ## ✅ 최종 권한 구조
 
 | 계정 | 역할 | 권한 범위 |
 |------|------|-----------|
-| `inhwan.jung@naver.com` | Account Administrator | 초기 가입자, 결제 계정 및 백업 관리자 |
+| `hong.gildong@<domain-name>.com` | Account Administrator | 초기 가입자, 결제 계정 및 백업 관리자 |
 | `itadmin@<tenant>.onmicrosoft.com` | Global Administrator + Owner + Billing Administrator | Entra ID + Azure 리소스 + 비용 관리 전체 |
 
 ### 상세 권한 내역
@@ -124,7 +152,7 @@ Azure에서는 **ID 권한(Entra ID)**과 **구독 권한(Azure RBAC)**을 각�
 - **Owner**: 구독 내 모든 리소스 생성/삭제/수정
 - **Billing Administrator**: 결제 정보, 청구서, 비용 분석, 예산 관리
 
-> 💡 **결과**: `inhwan.jung@naver.com`은 초기 가입 계정(백업 관리자)으로 두고, 실제 운영은 `itadmin`이 **Entra ID + Azure 리소스 + 비용 관리 풀 관리자** 권한으로 운영할 수 있습니다.
+> 💡 **결과**: `hong.gildong@<domain-name>.com`은 초기 가입 계정(백업 관리자)으로 두고, 실제 운영은 `itadmin`이 **Entra ID + Azure 리소스 + 비용 관리 풀 관리자** 권한으로 운영할 수 있습니다.
 
 
 
@@ -214,18 +242,21 @@ New-AzRoleAssignment -SignInName "itadmin@<tenant>.onmicrosoft.com" -RoleDefinit
 
 ### Q4: Assigned roles vs Azure role assignments 차이가 뭔가요?
 
-**A**: 관리 범위가 다릅니다.
+**A**: Azure의 이중 권한 구조로 인해 두 가지 다른 권한 체계가 있습니다.
 
-| 구분 | Assigned roles | Azure role assignments |
-|------|----------------|----------------------|
-| **관리 범위** | Entra ID (디렉토리) | Azure 리소스(구독, 리소스 그룹, VM 등) |
+| 구분 | Assigned roles (Entra ID) | Azure role assignments (RBAC) |
+|------|---------------------------|-------------------------------|
+| **관리 범위** | 디렉토리 (사용자, 그룹, 앱) | Azure 리소스 (구독, 리소스 그룹, VM 등) |
 | **역할 예시** | Global Administrator, User Administrator | Owner, Contributor, Reader |
 | **저장 위치** | Entra ID | Azure Resource Manager |
 | **계정 유형** | 조직 사용자만 가능 | 조직 사용자 + 외부 사용자(MSA, Guest) 모두 가능 |
+| **권한 범위** | 사용자 관리, 보안 정책 | 리소스 생성/수정/삭제 |
 
 #### 확인 방법:
 - **Assigned roles**: Microsoft Entra ID → 사용자 → Assigned roles
 - **Azure role assignments**: 구독 → IAM → Role assignments 또는 사용자 → Azure role assignments
+
+> **💡 이해하기**: `itadmin`이 완전한 관리자가 되려면 **두 권한 모두** 필요합니다!
 
 ### Q5: 비용 관리 권한이 왜 필요한가요?
 

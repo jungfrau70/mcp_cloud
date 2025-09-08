@@ -69,24 +69,28 @@ git config --global user.email "your.email@example.com"
 
 #### AWS 계정 설정
 - [ ] AWS 계정 생성 (무료 티어 가능)
+- [ ] 사용자 액세스 키 생성 (사용자->보안자격증명->액세스 키 만들기)
 - [ ] AWS CLI 설치 및 설정
 ```bash
 # AWS CLI 설치 확인
 aws --version
 
-# AWS 자격증명 설정
+# AWS 자격증명 설정, 액세스 키 필요 
 aws configure
 ```
 
 #### Google Cloud Platform 계정 설정
 - [ ] GCP 계정 생성 ($300 크레딧)
 - [ ] Google Cloud SDK 설치
+  (PowerShell) Get-Command python
+  (PowerShell) setx CLOUDSDK_PYTHON "C:\Python312\python.exe" /M
+  (cmd) echo %CLOUDSDK_PYTHON%
 ```bash
 # gcloud CLI 설치 확인
 gcloud --version
 
-# GCP 인증
-gcloud auth login
+# GCP 인증: Windows PC 경우, 별도로 해당 폴더에대해 사용자 접한 추가 필요 
+gcloud auth login 
 ```
 
 #### GitHub 계정 설정
