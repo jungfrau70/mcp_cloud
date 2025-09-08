@@ -4,10 +4,12 @@
 1. [Docker 관련 문제](#docker-관련-문제)
 2. [GitHub Actions 관련 문제](#github-actions-관련-문제)
 3. [AWS ECS 관련 문제](#aws-ecs-관련-문제)
-4. [GCP GKE 관련 문제](#gcp-gke-관련-문제)
-5. [네트워크 및 연결 문제](#네트워크-및-연결-문제)
-6. [성능 및 최적화 문제](#성능-및-최적화-문제)
-7. [일반적인 오류 코드](#일반적인-오류-코드)
+4. [GCP Cloud Run 관련 문제](#gcp-cloud-run-관련-문제)
+5. [멀티클라우드 배포 문제](#멀티클라우드-배포-문제)
+6. [권한 및 인증 문제](#권한-및-인증-문제)
+7. [네트워크 및 연결 문제](#네트워크-및-연결-문제)
+8. [성능 및 최적화 문제](#성능-및-최적화-문제)
+9. [일반적인 오류 코드](#일반적인-오류-코드)
 
 ---
 
@@ -84,6 +86,151 @@ docker-compose logs web
 # 3. 서비스 재시작
 docker-compose down
 docker-compose up -d
+```
+
+---
+
+## ⚡ GitHub Actions 관련 문제
+
+### 문제 1: 워크플로우 실행 실패
+
+#### 증상
+```yaml
+Error: Process completed with exit code 1
+```
+
+#### 원인
+- 시크릿 설정 누락
+- 권한 부족
+- 워크플로우 문법 오류
+
+#### 해결 방법
+```bash
+# 1. 시크릿 확인
+# GitHub Repository → Settings → Secrets and variables → Actions
+
+# 2. 워크플로우 문법 검사
+# GitHub Actions 탭에서 오류 메시지 확인
+
+# 3. 권한 확인
+# Repository Settings → Actions → General
+```
+
+### 문제 2: Docker Hub 푸시 실패
+
+#### 증상
+```bash
+Error: denied: requested access to the resource is denied
+```
+
+#### 원인
+- Docker Hub 토큰 누락 또는 만료
+- 저장소 권한 부족
+
+#### 해결 방법
+```bash
+# 1. Docker Hub 토큰 재생성
+# Docker Hub → Account Settings → Security → New Access Token
+
+# 2. GitHub 시크릿 업데이트
+# DOCKERHUB_TOKEN 시크릿 업데이트
+```
+
+---
+
+## 🔐 권한 및 인증 문제
+
+### 문제 1: AWS ECS 배포 실패
+
+#### 증상
+```bash
+Error: User is not authorized to perform: ecs:UpdateService
+```
+
+#### 원인
+- IAM 권한 부족
+- 액세스 키 만료
+
+#### 해결 방법
+```bash
+# 1. IAM 정책 확인
+aws iam list-attached-user-policies --user-name github-actions-deploy
+
+# 2. 필요한 권한 추가
+# ECS: UpdateService, DescribeServices, RegisterTaskDefinition
+# ECR: GetAuthorizationToken, BatchGetImage
+```
+
+### 문제 2: GCP Cloud Run 배포 실패
+
+#### 증상
+```bash
+Error: Permission 'run.services.create' denied
+```
+
+#### 원인
+- 서비스 계정 권한 부족
+- API 미활성화
+
+#### 해결 방법
+```bash
+# 1. 서비스 계정 권한 확인
+gcloud projects get-iam-policy PROJECT_ID
+
+# 2. 필요한 권한 부여
+gcloud projects add-iam-policy-binding PROJECT_ID \
+  --member="serviceAccount:github-actions-deploy@PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/run.admin"
+
+# 3. API 활성화
+gcloud services enable run.googleapis.com
+```
+
+---
+
+## 🌐 멀티클라우드 배포 문제
+
+### 문제 1: AWS와 GCP 동시 배포 실패
+
+#### 증상
+```bash
+# AWS 배포는 성공, GCP 배포는 실패
+AWS ECS Status: success
+GCP Cloud Run Status: failure
+```
+
+#### 원인
+- 클라우드별 독립적인 권한 문제
+- 네트워크 연결 문제
+
+#### 해결 방법
+```bash
+# 1. 각 클라우드별 권한 독립 확인
+# AWS: IAM 정책 확인
+# GCP: 서비스 계정 권한 확인
+
+# 2. 워크플로우에서 continue-on-error: true 사용
+# 한 클라우드 실패 시 다른 클라우드는 계속 진행
+```
+
+### 문제 2: Docker 이미지 태그 불일치
+
+#### 증상
+```bash
+Error: image not found in registry
+```
+
+#### 원인
+- 이미지 태그 불일치
+- 레지스트리 동기화 문제
+
+#### 해결 방법
+```bash
+# 1. 이미지 태그 확인
+docker images | grep actions-demo
+
+# 2. 레지스트리 동기화 확인
+# Docker Hub와 GCR 모두에 동일한 태그로 푸시되었는지 확인
 ```
 
 ---

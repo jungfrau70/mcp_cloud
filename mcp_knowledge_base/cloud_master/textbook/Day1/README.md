@@ -4,9 +4,11 @@
 1. [실습 환경 준비](#실습-환경-준비)
 2. [1교시: Docker 개념과 Compose 실습](./docker-compose-guide.md)
 3. [2교시: GitHub Actions로 CI/CD 구성](./github-actions-guide.md)
-4. [3교시: AWS ECS / GCP GKE로 배포 실습](./container-orchestration-guide.md)
+4. [3교시: 클라우드 배포 기초 실습](./cloud-deployment-guide.md)
 5. [4교시: 전체 자동 배포 파이프라인 구성](./cicd-pipeline-guide.md)
-6. [트러블슈팅 가이드](./troubleshooting-guide.md)
+6. [AWS & GCP 멀티클라우드 배포 가이드](./aws-gcp-deployment-guide.md)
+7. [AWS & GCP 권한 설정 가이드](./aws-gcp-permissions-setup.md)
+8. [트러블슈팅 가이드](./troubleshooting-guide.md)
 
 ---
 
@@ -16,8 +18,9 @@
 
 - **Docker 컨테이너 기술**의 이해와 실습
 - **GitHub Actions**를 활용한 CI/CD 파이프라인 구축
-- **AWS ECS**와 **GCP GKE**를 이용한 컨테이너 오케스트레이션
-- **완전 자동화된 배포 파이프라인** 구축
+- **클라우드 배포 기초** 및 배포 방식 이해
+- **자동 배포 파이프라인** 구축 및 운영
+- **멀티클라우드 배포 전략** (고급 과정 대비)
 
 ---
 
@@ -27,9 +30,10 @@
 |------|------|-----------|
 | 1교시 | Docker 개념과 Compose 실습 | 60분 |
 | 2교시 | GitHub Actions로 CI/CD 구성 | 45분 |
-| 3교시 | AWS ECS / GCP GKE로 배포 실습 | 90분 |
+| 3교시 | 클라우드 배포 기초 실습 | 60분 |
 | 4교시 | 전체 자동 배포 파이프라인 구성 | 75분 |
-| **총 소요 시간** | | **4시간 30분** |
+| **추가 학습** | AWS & GCP 멀티클라우드 배포 | 60분 |
+| **총 소요 시간** | | **5시간** |
 
 ---
 
@@ -124,8 +128,9 @@ gcloud auth list
 
 #### 계정 준비
 - [ ] AWS 계정에 ECS, ECR 서비스 접근 권한이 있는가?
-- [ ] GCP 계정에 GKE, GCR 서비스 접근 권한이 있는가?
+- [ ] GCP 계정에 Cloud Run, GCR 서비스 접근 권한이 있는가?
 - [ ] GitHub 계정에 Actions 사용 권한이 있는가?
+- [ ] Docker Hub 계정이 있는가? (토큰 생성 필요)
 
 ---
 

@@ -192,9 +192,10 @@ cd actions-demo
 
 # Git 저장소 초기화
 git init
+git branch -M main
 
 # 원격 저장소 연결
-git remote add origin https://github.com/YOUR_USERNAME/actions-demo.git
+git remote add origin git@github.com:<YOUR_USERNAME>/actions-demo.git
 ```
 
 ### 2단계: 프로젝트 코드 작성
@@ -210,14 +211,18 @@ git remote add origin https://github.com/YOUR_USERNAME/actions-demo.git
     "start": "node app.js",
     "test": "jest",
     "build": "echo 'Building application...'",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "docker:build": "docker build -t actions-demo .",
+    "docker:run": "docker run -p 3000:3000 actions-demo",
+    "docker:run:prod": "docker run -d -p 80:3000 --name actions-demo-prod actions-demo"
   },
   "dependencies": {
     "express": "^4.18.2"
   },
   "devDependencies": {
     "jest": "^29.5.0",
-    "eslint": "^8.40.0"
+    "eslint": "^8.40.0",
+    "supertest": "^6.3.3"
   }
 }
 ```
@@ -241,10 +246,12 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', uptime: process.uptime() });
 });
 
-// 서버 시작
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+// 서버 시작 (테스트 환경이 아닐 때만)
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
+}
 
 module.exports = app;
 ```
@@ -255,6 +262,11 @@ const request = require('supertest');
 const app = require('../app');
 
 describe('App Tests', () => {
+  // 테스트 환경 설정
+  beforeAll(() => {
+    process.env.NODE_ENV = 'test';
+  });
+
   test('GET / should return welcome message', async () => {
     const response = await request(app).get('/');
     expect(response.status).toBe(200);
@@ -288,6 +300,13 @@ module.exports = {
   }
 };
 ```
+
+#### Package Lock 파일 생성 (package-lock.json)
+```bash
+npm install
+echo "*/node_modules/*" > .gitignore
+```
+
 
 ### 3단계: GitHub Actions 워크플로우 작성
 
@@ -525,8 +544,8 @@ on:
 
 env:
   NODE_VERSION: '18'
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  REGISTRY: docker.io
+  IMAGE_NAME: ${{ github.actor }}/actions-demo
 
 jobs:
   # 코드 품질 검사
@@ -588,7 +607,7 @@ jobs:
           CI: true
       
       - name: Upload test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-results-${{ matrix.os }}-${{ matrix.node-version }}
@@ -636,7 +655,8 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        continue-on-error: true
       
       - name: Extract metadata
         id: meta
@@ -654,11 +674,12 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: true
+          push: ${{ secrets.DOCKERHUB_TOKEN != '' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+        continue-on-error: true
 
   # 배포
   deploy:
@@ -677,19 +698,234 @@ jobs:
           echo "Deploying to ${{ github.event.inputs.environment || 'staging' }} environment"
           echo "Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
           # 실제 배포 스크립트 실행
+          # docker run -d -p 3000:3000 --name actions-demo-staging ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
       
       - name: Health check
         run: |
           echo "Performing health check..."
           # 헬스체크 스크립트 실행
       
+      - name: Check Slack webhook
+        id: check-slack
+        run: |
+          if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+            echo "slack_enabled=true" >> $GITHUB_OUTPUT
+          else
+            echo "slack_enabled=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Notify deployment
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
           channel: '#deployments'
-          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-        if: always()
+          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always() && steps.check-slack.outputs.slack_enabled == 'true'
+        continue-on-error: true
+```
+
+---
+
+## 🔧 문제 해결
+
+### Jest 경고 해결
+
+테스트 실행 시 다음과 같은 경고가 나타날 수 있습니다:
+
+```
+Jest did not exit one second after the test run has completed.
+This usually means that there are asynchronous operations that weren't stopped in your tests.
+```
+
+**원인**: Express 서버가 테스트 후에도 계속 실행되어 Jest가 종료되지 않음
+
+**해결 방법**:
+
+1. **app.js 수정**: 테스트 환경에서는 서버를 자동 시작하지 않도록 수정
+2. **테스트 파일 수정**: `beforeAll` 훅에서 `NODE_ENV=test` 설정
+
+이미 위의 코드 예시에 해결책이 포함되어 있습니다.
+
+### CI vs CD 환경에서의 서버 실행
+
+**CI (Continuous Integration)**:
+- 테스트만 실행하므로 서버가 시작되지 않아도 됨
+- `NODE_ENV=test`로 설정하여 서버 자동 시작 방지
+
+**CD (Continuous Deployment)**:
+- 실제 서비스로 배포되므로 서버가 실행되어야 함
+- **Docker 컨테이너**를 통해 서버 실행 (권장)
+- 컨테이너화로 일관된 배포 환경 보장
+
+### 일반적인 문제들
+
+| 문제 | 원인 | 해결 방법 |
+|------|------|-----------|
+| `ModuleNotFoundError: supertest` | 의존성 누락 | `package.json`에 `supertest` 추가 |
+| Jest 경고 | 서버가 종료되지 않음 | `NODE_ENV=test` 조건부 서버 시작 |
+| ESLint 에러 | 코드 스타일 문제 | `npm run lint` 실행 후 수정 |
+| CD에서 서버가 실행되지 않음 | 배포 환경 설정 누락 | Docker 컨테이너 설정 추가 |
+| `actions/upload-artifact: v3` deprecated 에러 | GitHub Actions 버전 업데이트 필요 | v4로 업데이트 |
+| `installation not allowed to Create organization package` | GitHub Container Registry 권한 부족 | 권한 설정 또는 Docker Hub 사용 |
+| Slack 웹훅 에러 | `webhook_url` 파라미터 또는 시크릿 누락 | 올바른 파라미터명과 시크릿 설정 |
+
+### GitHub Container Registry 권한 설정
+
+#### 문제: `installation not allowed to Create organization package`
+
+**원인**: GitHub Container Registry (ghcr.io)에 패키지를 푸시할 권한이 없음
+
+**해결 방법**:
+
+1. **GitHub 설정에서 권한 확인**:
+   - GitHub → Settings → Developer settings → Personal access tokens
+   - `write:packages` 권한이 있는지 확인
+
+2. **조직 설정 확인** (조직 저장소인 경우):
+   - Organization → Settings → Actions → General
+   - "Allow GitHub Actions to create and approve pull requests" 활성화
+
+3. **대안: Docker Hub 사용** (권장):
+   ```yaml
+   env:
+     REGISTRY: docker.io
+     IMAGE_NAME: ${{ github.actor }}/actions-demo
+   ```
+   
+   **Docker Hub 설정**:
+   1. https://hub.docker.com 에서 계정 생성
+   2. Access Token 생성 (Account Settings → Security → New Access Token)
+   3. GitHub 시크릿에 `DOCKERHUB_TOKEN` 추가
+
+4. **로컬에서만 빌드** (푸시 없이):
+   ```yaml
+   - name: Build Docker image
+     uses: docker/build-push-action@v5
+     with:
+       context: .
+       push: false  # 푸시하지 않고 빌드만
+   ```
+
+### Slack 알림 설정
+
+#### 문제: Slack 웹훅 에러
+
+**해결 방법**:
+
+1. **Slack 웹훅 URL 생성**:
+   - Slack → Apps → Incoming Webhooks
+   - 웹훅 URL 복사
+
+2. **GitHub 시크릿 설정**:
+   - Repository → Settings → Secrets and variables → Actions
+   - `SLACK_WEBHOOK_URL` 시크릿 추가
+
+3. **워크플로우에서 조건부 실행**:
+   ```yaml
+   - name: Check Slack webhook
+     id: check-slack
+     run: |
+       if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+         echo "slack_enabled=true" >> $GITHUB_OUTPUT
+       else
+         echo "slack_enabled=false" >> $GITHUB_OUTPUT
+       fi
+
+   - name: Notify deployment
+     uses: 8398a7/action-slack@v3
+     with:
+       status: ${{ job.status }}
+       channel: '#deployments'
+       webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+     if: always() && steps.check-slack.outputs.slack_enabled == 'true'
+     continue-on-error: true
+   ```
+
+---
+
+## 🐳 Docker 배포 가이드
+
+### Docker 파일 구조
+
+#### Dockerfile
+```dockerfile
+# Node.js 18 Alpine 이미지 사용
+FROM node:18-alpine
+
+# 작업 디렉토리 설정
+WORKDIR /app
+
+# package.json과 package-lock.json 복사
+COPY package*.json ./
+
+# 의존성 설치 (프로덕션만)
+RUN npm ci --only=production && npm cache clean --force
+
+# 애플리케이션 코드 복사
+COPY . .
+
+# 포트 노출
+EXPOSE 3000
+
+# 헬스체크 추가
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
+
+# 애플리케이션 실행
+CMD ["node", "app.js"]
+```
+
+#### .dockerignore
+```
+node_modules
+npm-debug.log
+.git
+.gitignore
+README.md
+.env
+.nyc_output
+coverage
+.github
+tests
+.eslintrc.js
+```
+
+### 로컬 Docker 테스트
+
+```bash
+# Docker 이미지 빌드
+npm run docker:build
+
+# 개발 환경에서 실행
+npm run docker:run
+
+# 프로덕션 환경에서 실행
+npm run docker:run:prod
+```
+
+### Docker 명령어 참고
+
+```bash
+# 이미지 빌드
+docker build -t actions-demo .
+
+# 컨테이너 실행 (개발)
+docker run -p 3000:3000 actions-demo
+
+# 컨테이너 실행 (프로덕션)
+docker run -d -p 80:3000 --name actions-demo-prod actions-demo
+
+# 실행 중인 컨테이너 확인
+docker ps
+
+# 컨테이너 로그 확인
+docker logs actions-demo-prod
+
+# 컨테이너 중지
+docker stop actions-demo-prod
+
+# 컨테이너 제거
+docker rm actions-demo-prod
 ```
 
 ---
