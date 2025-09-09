@@ -7,3 +7,10 @@ DOCKERHUB_TOKEN 시크릿 설정 관련 사용자 안내 추가 필요
 요청1) mcp_knowledge_base\cloud_master\textbook\Day1 디렉토리에 위치한 교재와 코드가 맥락에 맞게 구성되었는지 실습 코드 포함하여 점검해 줘.  진행 전 질문있으면 하고. 
 
   - 질문에 대한 답: Day1 디렉토리 진행, AWS/GCP 배포 관련 파일들도 포함, 전체적인 맥락 점검 후 actions-demo 에 집중
+
+요청2) 스크립트 수정 요청: 스크립트가 중단되어도 다시 시작할 때 기존 리소스를 재사용하도록 수정. (각 스크립트에 리소스 존재 확인 및 재사용 로직을 추가)
+
+google cloud 에 프로젝트, 네트워크 및 VM 생성 및 설정 스크립트로, 스크립트가 중단되어도 다시 시작할 때 기존 리소스를 재사용하도록 수정. (각 스크립트에 리소스 존재 확인 및 재사용 로직을 추가)
+
+
+gcloud projects create mcp-cloud-2025-12345 --name="MCP Cloud Project"

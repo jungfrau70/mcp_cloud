@@ -48,7 +48,12 @@
 ```
 scripts/
 ├── aws-ec2-create.sh      # AWS EC2 인스턴스 자동 생성
+├── aws-resource-cleanup.sh # AWS 리소스 정리 및 삭제
+├── aws-setup-helper.sh    # AWS 설정 도우미
 ├── gcp-compute-create.sh  # GCP Compute Engine 인스턴스 자동 생성
+├── gcp-project-cleanup.sh # GCP 프로젝트 및 리소스 정리
+├── gcp-setup-helper.sh    # GCP 설정 도우미
+├── gcp-ssh-key-add.sh     # GCP VM에 SSH 키 추가 (기존 VM용)
 user-data.sh               # AWS EC2 초기화 스크립트
 startup-script.sh          # GCP Compute Engine 초기화 스크립트
 ```
@@ -59,6 +64,9 @@ startup-script.sh          # GCP Compute Engine 초기화 스크립트
 - **색상 출력**: 진행 상황을 시각적으로 표시
 - **설정 가능**: 변수 수정으로 환경에 맞게 조정 가능
 - **안전성**: 기존 리소스 중복 생성 방지
+- **재시작 안전성**: 중단되어도 다시 시작 시 기존 리소스 재사용
+- **체크포인트 기능**: 스크립트 중단 시 마지막 성공 지점부터 재시작
+- **자동 정리**: 리소스 정리 스크립트로 완전한 정리 가능
 
 ### 사용 전 준비사항
 1. **AWS 사용 시:**
@@ -82,11 +90,17 @@ startup-script.sh          # GCP Compute Engine 초기화 스크립트
 **자동화 스크립트 사용 (권장):**
 
 ```bash
-# 스크립트 실행 권한 부여 (Linux/macOS)
-chmod +x scripts/aws-ec2-create.sh
+# 1. AWS 설정 도우미 실행 (권장)
+chmod +x scripts/aws-setup-helper.sh
+./scripts/aws-setup-helper.sh
 
-# AWS EC2 인스턴스 자동 생성
+# 2. AWS EC2 인스턴스 자동 생성
+chmod +x scripts/aws-ec2-create.sh
 ./scripts/aws-ec2-create.sh
+
+# 3. 리소스 정리 (실습 완료 후)
+chmod +x scripts/aws-resource-cleanup.sh
+./scripts/aws-resource-cleanup.sh
 ```
 
 **수동 명령어 실행:**
@@ -102,8 +116,8 @@ aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-xxxxxxxx" --query 'Su
 
 # 3. 보안 그룹 생성
 aws ec2 create-security-group \
-    --group-name mcp-cloud-sg \
-    --description "Security group for MCP Cloud deployment" \
+    --group-name cloud-deployment-sg \
+    --description "Security group for Cloud Deployment" \
     --vpc-id vpc-xxxxxxxx
 
 # 4. 보안 그룹 규칙 추가 (SSH, HTTP, HTTPS)
@@ -127,26 +141,26 @@ aws ec2 authorize-security-group-ingress \
 
 # 5. 키 페어 생성 (없는 경우)
 aws ec2 create-key-pair \
-    --key-name mcp-cloud-key \
+    --key-name cloud-deployment-key \
     --query 'KeyMaterial' \
-    --output text > mcp-cloud-key.pem
+    --output text > cloud-deployment-key.pem
 
-chmod 400 mcp-cloud-key.pem
+chmod 400 cloud-deployment-key.pem
 
 # 6. EC2 인스턴스 생성
 aws ec2 run-instances \
     --image-id ami-0c02fb55956c7d316 \
     --count 1 \
     --instance-type t3.medium \
-    --key-name mcp-cloud-key \
+    --key-name cloud-deployment-key \
     --security-group-ids sg-xxxxxxxx \
     --subnet-id subnet-xxxxxxxx \
-    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=mcp-cloud-server},{Key=Environment,Value=production}]' \
+    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=cloud-deployment-server},{Key=Environment,Value=production}]' \
     --user-data file://user-data.sh
 
 # 7. 인스턴스 상태 확인
 aws ec2 describe-instances \
-    --filters "Name=tag:Name,Values=mcp-cloud-server" \
+    --filters "Name=tag:Name,Values=cloud-deployment-server" \
     --query 'Reservations[*].Instances[*].[InstanceId,State.Name,PublicIpAddress,PrivateIpAddress]'
 
 # 8. Elastic IP 할당 (선택사항)
@@ -156,7 +170,7 @@ aws ec2 associate-address \
     --allocation-id eipalloc-xxxxxxxx
 
 # 9. 인스턴스 연결
-ssh -i mcp-cloud-key.pem ec2-user@your-public-ip
+ssh -i cloud-deployment-key.pem ec2-user@your-public-ip
 
 # 10. 인스턴스 종료 (정리용)
 aws ec2 terminate-instances --instance-ids i-xxxxxxxx
@@ -255,11 +269,17 @@ aws ecs create-service --cluster my-cluster --service-name my-app
 **자동화 스크립트 사용 (권장):**
 
 ```bash
-# 스크립트 실행 권한 부여 (Linux/macOS)
-chmod +x scripts/gcp-compute-create.sh
+# 1. GCP 설정 도우미 실행 (권장)
+chmod +x scripts/gcp-setup-helper.sh
+./scripts/gcp-setup-helper.sh
 
-# GCP Compute Engine 인스턴스 자동 생성
+# 2. GCP Compute Engine 인스턴스 자동 생성
+chmod +x scripts/gcp-compute-create.sh
 ./scripts/gcp-compute-create.sh
+
+# 3. 리소스 정리 (실습 완료 후)
+chmod +x scripts/gcp-project-cleanup.sh
+./scripts/gcp-project-cleanup.sh PROJECT_ID
 ```
 
 **수동 명령어 실행:**
@@ -276,29 +296,29 @@ gcloud config set compute/region asia-northeast3
 gcloud config set compute/zone asia-northeast3-a
 
 # 3. VPC 네트워크 생성 (선택사항)
-gcloud compute networks create mcp-cloud-vpc --subnet-mode custom
+gcloud compute networks create cloud-deployment-vpc --subnet-mode custom
 
 # 4. 서브넷 생성
-gcloud compute networks subnets create mcp-cloud-subnet \
-    --network mcp-cloud-vpc \
+gcloud compute networks subnets create cloud-deployment-subnet \
+    --network cloud-deployment-vpc \
     --range 10.0.0.0/24 \
     --region asia-northeast3
 
 # 5. 방화벽 규칙 생성
 gcloud compute firewall-rules create allow-ssh \
-    --network mcp-cloud-vpc \
+    --network cloud-deployment-vpc \
     --allow tcp:22 \
     --source-ranges 0.0.0.0/0 \
     --description "Allow SSH access"
 
 gcloud compute firewall-rules create allow-http \
-    --network mcp-cloud-vpc \
+    --network cloud-deployment-vpc \
     --allow tcp:80 \
     --source-ranges 0.0.0.0/0 \
     --description "Allow HTTP access"
 
 gcloud compute firewall-rules create allow-https \
-    --network mcp-cloud-vpc \
+    --network cloud-deployment-vpc \
     --allow tcp:443 \
     --source-ranges 0.0.0.0/0 \
     --description "Allow HTTPS access"
@@ -307,33 +327,33 @@ gcloud compute firewall-rules create allow-https \
 gcloud compute os-login ssh-keys add --key-file ~/.ssh/id_rsa.pub
 
 # 7. Compute Engine 인스턴스 생성
-gcloud compute instances create mcp-cloud-server \
+gcloud compute instances create cloud-deployment-server \
     --zone=asia-northeast3-a \
     --machine-type=e2-medium \
-    --network-interface=network-tier=PREMIUM,subnet=mcp-cloud-subnet \
+    --network-interface=network-tier=PREMIUM,subnet=cloud-deployment-subnet \
     --maintenance-policy=MIGRATE \
     --provisioning-model=STANDARD \
     --service-account=your-service-account@your-project.iam.gserviceaccount.com \
     --scopes=https://www.googleapis.com/auth/cloud-platform \
-    --create-disk=auto-delete=yes,boot=yes,device-name=mcp-cloud-server,image=projects/ubuntu-os-cloud/global/images/ubuntu-2204-jammy-v20231213,mode=rw,size=20,type=projects/your-project/zones/asia-northeast3-a/diskTypes/pd-standard \
+    --create-disk=auto-delete=yes,boot=yes,device-name=cloud-deployment-server,image=projects/ubuntu-os-cloud/global/images/ubuntu-2204-jammy-v20231213,mode=rw,size=20,type=projects/your-project/zones/asia-northeast3-a/diskTypes/pd-standard \
     --metadata-from-file startup-script=startup-script.sh \
-    --tags=mcp-cloud
+    --tags=cloud-deployment
 
 # 8. 인스턴스 상태 확인
 gcloud compute instances list
-gcloud compute instances describe mcp-cloud-server --zone=asia-northeast3-a
+gcloud compute instances describe cloud-deployment-server --zone=asia-northeast3-a
 
 # 9. 외부 IP 할당 (선택사항)
-gcloud compute addresses create mcp-cloud-ip --region=asia-northeast3
-gcloud compute instances add-access-config mcp-cloud-server \
+gcloud compute addresses create cloud-deployment-ip --region=asia-northeast3
+gcloud compute instances add-access-config cloud-deployment-server \
     --zone=asia-northeast3-a \
-    --address=mcp-cloud-ip
+    --address=cloud-deployment-ip
 
 # 10. 인스턴스 연결
-gcloud compute ssh mcp-cloud-server --zone=asia-northeast3-a
+gcloud compute ssh cloud-deployment-server --zone=asia-northeast3-a
 
 # 11. 인스턴스 삭제 (정리용)
-gcloud compute instances delete mcp-cloud-server --zone=asia-northeast3-a --quiet
+gcloud compute instances delete cloud-deployment-server --zone=asia-northeast3-a --quiet
 ```
 
 #### GCP CLI 설정 및 인증
@@ -403,20 +423,20 @@ gcloud run deploy --source .
 gcloud compute instances list --format="table(name,zone,machineType,status,EXTERNAL_IP)"
 
 # 특정 인스턴스 상세 정보
-gcloud compute instances describe mcp-cloud-server --zone=asia-northeast3-a
+gcloud compute instances describe cloud-deployment-server --zone=asia-northeast3-a
 
 # 인스턴스 시작/중지
-gcloud compute instances start mcp-cloud-server --zone=asia-northeast3-a
-gcloud compute instances stop mcp-cloud-server --zone=asia-northeast3-a
+gcloud compute instances start cloud-deployment-server --zone=asia-northeast3-a
+gcloud compute instances stop cloud-deployment-server --zone=asia-northeast3-a
 
 # 스냅샷 생성
-gcloud compute disks snapshot mcp-cloud-server \
-    --snapshot-names=mcp-cloud-backup \
+gcloud compute disks snapshot cloud-deployment-server \
+    --snapshot-names=cloud-deployment-backup \
     --zone=asia-northeast3-a
 
 # 이미지 생성
-gcloud compute images create mcp-cloud-image \
-    --source-disk=mcp-cloud-server \
+gcloud compute images create cloud-deployment-image \
+    --source-disk=cloud-deployment-server \
     --source-disk-zone=asia-northeast3-a
 
 # 방화벽 규칙 목록
@@ -783,6 +803,123 @@ Deployment Time: 2024-01-15 14:30:25
 1. **팀 프로젝트**: 실제 프로젝트에 배포 파이프라인 적용
 2. **CI/CD 완성**: 테스트 → 빌드 → 배포 전체 자동화
 3. **배포 최적화**: 배포 시간 단축 및 안정성 향상
+
+---
+
+## 🚀 고급 기능
+
+### 체크포인트 기능
+
+스크립트는 **체크포인트 기능**을 제공하여 중단되어도 안전하게 재시작할 수 있습니다.
+
+#### 체크포인트 동작 원리
+```bash
+# 스크립트 실행 중 중단 시
+./scripts/aws-ec2-create.sh
+# ... 진행 중 네트워크 오류로 중단 ...
+
+# 다시 실행 시 자동으로 마지막 성공 지점부터 재시작
+./scripts/aws-ec2-create.sh
+# [INFO] 이전 실행에서 중단된 지점을 발견했습니다: vpc_ready
+# [INFO] 네트워크 및 보안 설정이 완료되었습니다. 인스턴스 생성부터 재시작합니다.
+```
+
+#### 체크포인트 파일 관리
+```bash
+# 체크포인트 파일 확인
+ls -la cloud-deployment-checkpoint.txt
+
+# 체크포인트 파일 삭제 (처음부터 다시 시작하려면)
+rm cloud-deployment-checkpoint.txt
+```
+
+### 자동 리소스 정리
+
+실습 완료 후 **자동 정리 스크립트**로 모든 리소스를 깔끔하게 정리할 수 있습니다.
+
+#### AWS 리소스 정리
+```bash
+# AWS 리소스 자동 정리
+chmod +x scripts/aws-resource-cleanup.sh
+./scripts/aws-resource-cleanup.sh
+
+# 정리되는 리소스:
+# - EC2 인스턴스 (종료 및 삭제)
+# - 보안 그룹
+# - 키 페어 (AWS 및 로컬 파일)
+# - Elastic IP (해제)
+# - 체크포인트 파일
+```
+
+#### GCP 리소스 정리
+```bash
+# GCP 프로젝트 자동 정리
+chmod +x scripts/gcp-project-cleanup.sh
+./scripts/gcp-project-cleanup.sh PROJECT_ID
+
+# 정리되는 리소스:
+# - Compute Engine 인스턴스
+# - VPC 네트워크 및 서브넷
+# - 방화벽 규칙
+# - 정적 IP 주소
+# - 프로젝트 (선택사항)
+```
+
+### SSH 키 사전 등록 (GCP)
+
+GCP 스크립트는 **SSH 키를 인스턴스 생성 전에 사전 등록**하여 연결 문제를 방지합니다.
+
+#### SSH 키 등록 과정
+```bash
+# 1. SSH 키 생성
+ssh-keygen -t rsa -b 4096 -f cloud-deployment-key
+
+# 2. 프로젝트 메타데이터에 등록 (모든 VM에서 사용 가능)
+gcloud compute project-info add-metadata \
+    --metadata-from-file ssh-keys=cloud-deployment-key.pub
+
+# 3. OS Login에 등록 (Google 계정으로 자동 인증)
+gcloud compute os-login ssh-keys add \
+    --key-file=cloud-deployment-key.pub
+```
+
+#### 기존 VM에 SSH 키 추가
+```bash
+# 기존 VM에 SSH 키 추가
+chmod +x scripts/gcp-ssh-key-add.sh
+./scripts/gcp-ssh-key-add.sh
+```
+
+### 설정 도우미 활용
+
+복잡한 설정을 **도우미 스크립트**로 간편하게 처리할 수 있습니다.
+
+#### AWS 설정 도우미
+```bash
+# AWS 설정 도우미 실행
+chmod +x scripts/aws-setup-helper.sh
+./scripts/aws-setup-helper.sh
+
+# 확인하는 항목:
+# - AWS CLI 설치 상태
+# - 인증 설정
+# - 기본 리전 설정
+# - VPC 및 서브넷 확인
+```
+
+#### GCP 설정 도우미
+```bash
+# GCP 설정 도우미 실행
+chmod +x scripts/gcp-setup-helper.sh
+./scripts/gcp-setup-helper.sh
+
+# 확인하는 항목:
+# - gcloud CLI 설치 상태
+# - 인증 설정
+# - 프로젝트 설정
+# - 리전 및 존 설정
+# - API 활성화 상태
+```
 
 ---
 

@@ -129,6 +129,22 @@ aws sts get-caller-identity
 gcloud auth list
 ```
 
+#### 스크립트 실행 환경
+- [ ] 스크립트 실행 권한이 있는가?
+```bash
+# Windows (PowerShell)
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# Linux/macOS
+chmod +x scripts/*.sh
+```
+
+- [ ] 체크포인트 기능 이해
+```bash
+# 스크립트 중단 시 자동으로 마지막 성공 지점부터 재시작
+# 체크포인트 파일: cloud-deployment-checkpoint.txt
+```
+
 #### 계정 준비
 - [ ] AWS 계정에 ECS, ECR 서비스 접근 권한이 있는가?
 - [ ] GCP 계정에 Cloud Run, GCR 서비스 접근 권한이 있는가?
@@ -150,6 +166,116 @@ gcloud auth list
 - [GitHub Actions 마켓플레이스](https://github.com/marketplace?type=actions)
 - [AWS ECR](https://aws.amazon.com/ecr/)
 - [Google Container Registry](https://cloud.google.com/container-registry)
+
+---
+
+## 🚀 고급 스크립트 기능
+
+### 체크포인트 시스템
+
+모든 스크립트는 **체크포인트 기능**을 제공하여 안전한 재시작을 지원합니다.
+
+#### 체크포인트 동작 방식
+```bash
+# 스크립트 실행 중 중단 시
+./scripts/aws-ec2-create.sh
+# ... 네트워크 오류로 중단 ...
+
+# 다시 실행 시 자동으로 마지막 성공 지점부터 재시작
+./scripts/aws-ec2-create.sh
+# [INFO] 이전 실행에서 중단된 지점을 발견했습니다: security_group_ready
+# [INFO] AWS 설정이 완료되었습니다. 인스턴스 생성부터 재시작합니다.
+```
+
+#### 체크포인트 관리
+```bash
+# 체크포인트 파일 확인
+ls -la *-checkpoint.txt
+
+# 체크포인트 파일 삭제 (처음부터 다시 시작)
+rm cloud-deployment-checkpoint.txt
+```
+
+### 자동 리소스 정리
+
+실습 완료 후 **자동 정리 스크립트**로 모든 리소스를 깔끔하게 정리할 수 있습니다.
+
+#### AWS 리소스 정리
+```bash
+# AWS 리소스 자동 정리
+chmod +x scripts/aws-resource-cleanup.sh
+./scripts/aws-resource-cleanup.sh
+
+# 정리되는 리소스:
+# ✅ EC2 인스턴스 (종료 및 삭제)
+# ✅ 보안 그룹
+# ✅ 키 페어 (AWS 및 로컬 파일)
+# ✅ Elastic IP (해제)
+# ✅ 체크포인트 파일
+```
+
+#### GCP 리소스 정리
+```bash
+# GCP 프로젝트 자동 정리
+chmod +x scripts/gcp-project-cleanup.sh
+./scripts/gcp-project-cleanup.sh PROJECT_ID
+
+# 정리되는 리소스:
+# ✅ Compute Engine 인스턴스
+# ✅ VPC 네트워크 및 서브넷
+# ✅ 방화벽 규칙
+# ✅ 정적 IP 주소
+# ✅ 프로젝트 (선택사항)
+```
+
+### 설정 도우미 활용
+
+복잡한 설정을 **도우미 스크립트**로 간편하게 처리할 수 있습니다.
+
+#### AWS 설정 도우미
+```bash
+# AWS 설정 도우미 실행
+chmod +x scripts/aws-setup-helper.sh
+./scripts/aws-setup-helper.sh
+
+# 확인하는 항목:
+# - AWS CLI 설치 상태
+# - 인증 설정
+# - 기본 리전 설정
+# - VPC 및 서브넷 확인
+```
+
+#### GCP 설정 도우미
+```bash
+# GCP 설정 도우미 실행
+chmod +x scripts/gcp-setup-helper.sh
+./scripts/gcp-setup-helper.sh
+
+# 확인하는 항목:
+# - gcloud CLI 설치 상태
+# - 인증 설정
+# - 프로젝트 설정
+# - 리전 및 존 설정
+# - API 활성화 상태
+```
+
+### SSH 키 사전 등록 (GCP)
+
+GCP 스크립트는 **SSH 키를 인스턴스 생성 전에 사전 등록**하여 연결 문제를 방지합니다.
+
+#### SSH 키 등록 과정
+```bash
+# 1. SSH 키 생성
+ssh-keygen -t rsa -b 4096 -f cloud-deployment-key
+
+# 2. 프로젝트 메타데이터에 등록 (모든 VM에서 사용 가능)
+gcloud compute project-info add-metadata \
+    --metadata-from-file ssh-keys=cloud-deployment-key.pub
+
+# 3. OS Login에 등록 (Google 계정으로 자동 인증)
+gcloud compute os-login ssh-keys add \
+    --key-file=cloud-deployment-key.pub
+```
 
 ---
 
