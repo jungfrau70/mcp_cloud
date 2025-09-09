@@ -732,4 +732,4 @@ jobs:
 - [GCP GKE 배포 가이드](https://docs.github.com/ko/actions/how-tos/managing-workflow-runs-and-deployments/deploying-to-third-party-platforms/deploying-to-google-kubernetes-engine)
 - [CI/CD 모범 사례](https://docs.github.com/en/actions/learn-github-actions)
 
-다음 단계: [트러블슈팅 가이드](../Day1/troubleshooting-guide.md)
+다음 단계: [트러블슈팅 가이드](./troubleshooting-guide.md)

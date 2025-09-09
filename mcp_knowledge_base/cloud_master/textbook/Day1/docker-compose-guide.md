@@ -547,4 +547,4 @@ app.listen(port, () => {
 - [Docker Hub](https://hub.docker.com/)
 - [Dockerfile 모범 사례](https://docs.docker.com/develop/dev-best-practices/)
 
-다음 단계: [2교시: GitHub Actions로 CI/CD 구성](../Day1/github-actions-guide.md)
+다음 단계: [2교시: GitHub Actions로 CI/CD 구성](./github-actions-guide.md)

@@ -44,7 +44,7 @@
 
 ### GitHub Actions란?
 
-GitHub Actions는 GitHub 저장소 내에서 **이벤트(예: 코드 푸시, PR 생성 등)를 트리거로 하여 자동으로 워크플로우를 실행**하는 CI/CD 플랫폼입니다.
+GitHub Actions는 GitHub 저장소 내에서 **이벤트(예: push, pull_request 등)를 트리거로 하여 자동으로 워크플로우를 실행**하는 CI/CD 플랫폼입니다.
 
 ### GitHub Actions의 특징
 
@@ -212,6 +212,8 @@ git remote add origin git@github.com:<YOUR_USERNAME>/actions-demo.git
     "test": "jest",
     "build": "echo 'Building application...'",
     "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "docker:build": "docker build -t actions-demo .",
     "docker:run": "docker run -p 3000:3000 actions-demo",
     "docker:run:prod": "docker run -d -p 80:3000 --name actions-demo-prod actions-demo"
@@ -222,7 +224,11 @@ git remote add origin git@github.com:<YOUR_USERNAME>/actions-demo.git
   "devDependencies": {
     "jest": "^29.5.0",
     "eslint": "^8.40.0",
-    "supertest": "^6.3.3"
+    "supertest": "^6.3.3",
+    "prettier": "^2.8.8",
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "jest-junit": "^16.0.0"
   }
 }
 ```
@@ -299,6 +305,43 @@ module.exports = {
     'no-unused-vars': 'error'
   }
 };
+```
+
+#### Jest 설정 파일 생성 (jest.config.js)
+```javascript
+module.exports = {
+  testEnvironment: 'node',
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  testResultsProcessor: 'jest-junit',
+  reporters: [
+    'default',
+    ['jest-junit', { 
+      outputDirectory: 'test-results',
+      outputName: 'junit.xml'
+    }]
+  ],
+  testMatch: [
+    '**/tests/**/*.test.js',
+    '**/__tests__/**/*.js'
+  ],
+  collectCoverageFrom: [
+    'app.js',
+    '!**/node_modules/**',
+    '!**/coverage/**'
+  ]
+};
+```
+
+#### Prettier 설정 파일 생성 (.prettierrc)
+```json
+{
+  "semi": true,
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "printWidth": 80,
+  "tabWidth": 2
+}
 ```
 
 #### Package Lock 파일 생성 (package-lock.json)
@@ -515,6 +558,70 @@ git push -u origin main
 1. 실행 중인 워크플로우 클릭
 2. 각 Job 클릭하여 상세 로그 확인
 3. 실패한 경우 로그를 통해 원인 파악
+
+#### Docker Hub 배포 확인
+1. 'Deploy to Docker Hub' 워크플로우 실행 확인
+2. Docker Hub에서 이미지 확인: `https://hub.docker.com/r/YOUR_USERNAME/actions-demo`
+3. 로컬에서 테스트: `docker run -p 3000:3000 YOUR_USERNAME/actions-demo:main-COMMIT_SHA`
+
+**📖 Docker Hub 설정이 필요하다면**: [Docker Hub 가입 및 토큰 설정 가이드](./docker-hub-setup-guide.md)
+
+---
+
+## 📁 워크플로우 파일 구조
+
+### ✅ **기본 워크플로우 (활성화됨)**
+
+#### 1. **CI Pipeline** (`.github/workflows/ci.yml`)
+```yaml
+name: CI Pipeline
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+```
+- **기능**: 코드 품질 검사, 테스트, 빌드
+- **실행 시간**: 약 2-3분
+- **목적**: 코드 변경 시 자동으로 품질 검증
+
+#### 2. **Docker Hub 배포** (`.github/workflows/deploy.yml`)
+```yaml
+name: Deploy to Docker Hub
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+```
+- **기능**: Docker 이미지 빌드 및 Docker Hub 푸시
+- **실행 시간**: 약 3-5분
+- **목적**: main 브랜치 푸시 시 자동 배포
+
+### 🔧 **고급 워크플로우 (비활성화됨)**
+
+고급 워크플로우들은 현재 **비활성화**되어 있습니다. 사용하려면 파일명에서 `.disabled`를 제거하세요.
+
+| 워크플로우 | 설명 | 활성화 방법 |
+|-----------|------|-------------|
+| `advanced-ci.yml.disabled` | 고급 CI/CD 기능 | `advanced-ci.yml`로 이름 변경 |
+| `aws-deploy.yml.disabled` | AWS ECS 배포 | `aws-deploy.yml`로 이름 변경 |
+| `gcp-deploy.yml.disabled` | GCP Cloud Run 배포 | `gcp-deploy.yml`로 이름 변경 |
+| `multi-cloud-deploy.yml.disabled` | 멀티클라우드 배포 | `multi-cloud-deploy.yml`로 이름 변경 |
+| `vm-docker-deploy.yml.disabled` | VM Docker 배포 | `vm-docker-deploy.yml`로 이름 변경 |
+
+### 🎯 **워크플로우 활성화 방법**
+
+#### Windows (CMD)
+```cmd
+ren advanced-ci.yml.disabled advanced-ci.yml
+ren aws-deploy.yml.disabled aws-deploy.yml
+```
+
+#### Linux/Mac
+```bash
+mv advanced-ci.yml.disabled advanced-ci.yml
+mv aws-deploy.yml.disabled aws-deploy.yml
+```
 
 ---
 
@@ -859,7 +966,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # 의존성 설치 (프로덕션만)
-RUN npm ci --only=production && npm cache clean --force
+RUN npm ci --omit=dev && npm cache clean --force
 
 # 애플리케이션 코드 복사
 COPY . .
@@ -888,6 +995,10 @@ coverage
 .github
 tests
 .eslintrc.js
+jest.config.js
+test-results
+*.md
+.DS_Store
 ```
 
 ### 로컬 Docker 테스트
@@ -997,4 +1108,4 @@ docker rm actions-demo-prod
 - [워크플로우 예제 모음](https://github.com/actions/starter-workflows)
 - [YAML 문법 가이드](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)
 
-다음 단계: [3교시: AWS ECS / GCP GKE로 배포 실습](../Day1/container-orchestration-guide.md)
+다음 단계: [3교시: 클라우드 배포 기초 실습](./cloud-deployment-guide.md)

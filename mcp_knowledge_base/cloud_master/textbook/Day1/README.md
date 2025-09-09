@@ -8,7 +8,9 @@
 5. [4교시: 전체 자동 배포 파이프라인 구성](./cicd-pipeline-guide.md)
 6. [AWS & GCP 멀티클라우드 배포 가이드](./aws-gcp-deployment-guide.md)
 7. [AWS & GCP 권한 설정 가이드](./aws-gcp-permissions-setup.md)
-8. [트러블슈팅 가이드](./troubleshooting-guide.md)
+8. [Docker Hub 가입 및 토큰 설정 가이드](./docker-hub-setup-guide.md)
+9. [트러블슈팅 가이드](./troubleshooting-guide.md)
+10. [actions-demo 프로젝트](./actions-demo/README.md)
 
 ---
 
@@ -33,7 +35,8 @@
 | 3교시 | 클라우드 배포 기초 실습 | 60분 |
 | 4교시 | 전체 자동 배포 파이프라인 구성 | 75분 |
 | **추가 학습** | AWS & GCP 멀티클라우드 배포 | 60분 |
-| **총 소요 시간** | | **5시간** |
+| **실습 프로젝트** | actions-demo 프로젝트 실습 | 30분 |
+| **총 소요 시간** | | **5시간 30분** |
 
 ---
 
