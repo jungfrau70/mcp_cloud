@@ -4,6 +4,6 @@ DOCKERHUB_TOKEN 시크릿 설정 관련 사용자 안내 추가 필요
 
 현재 문서가 코드가 위에서 언급된 내용으로 맥락을 같이 하는지 점검
 
-요청1) mcp_knowledge_base\cloud_master\textbook\Day1 디렉토리에 위치한 교재와 코드가 맥락에 맞게 구성되었는지 MCP 사용하여 재 점검. 진행 전 질문 ? 
+요청1) mcp_knowledge_base\cloud_master\textbook\Day1 디렉토리에 위치한 교재와 코드가 맥락에 맞게 구성되었는지 실습 코드 포함하여 점검해 줘.  진행 전 질문있으면 하고. 
 
   - 질문에 대한 답: Day1 디렉토리 진행, AWS/GCP 배포 관련 파일들도 포함, 전체적인 맥락 점검 후 actions-demo 에 집중
