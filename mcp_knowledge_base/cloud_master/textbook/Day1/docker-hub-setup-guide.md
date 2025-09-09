@@ -64,11 +64,12 @@ Password: 안전한 비밀번호 입력
 2. 오른쪽 상단의 **사용자 아이콘** 클릭
 3. **"Account Settings"** 선택
 
-### 2단계: Security 탭으로 이동
-1. 왼쪽 메뉴에서 **"Security"** 클릭
-2. **"New Access Token"** 버튼 클릭
+### 2단계: Settings 메뉴로 이동
+1. 왼쪽 메뉴에서 **"Settings"** 클릭
+2. **"Personal access token"** 블레이드 클릭
+3. **"Generate new token"** 버튼 클릭
 
-### 3단계: 토큰 정보 입력
+### 3단계: 토큰 생성
 ```
 Access Token Description: GitHub Actions
 Access Permissions: Read, Write, Delete (권장)
