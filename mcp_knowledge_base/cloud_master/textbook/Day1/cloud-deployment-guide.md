@@ -1,6 +1,8 @@
 # 3교시: 클라우드 배포 기초 실습
 
-## 📋 목차
+<details>
+<summary>📋 목차 (클릭하여 펼치기)</summary>
+
 1. [클라우드 배포 개념](#클라우드-배포-개념)
 2. [배포 방식 비교](#배포-방식-비교)
 3. [실습 목표](#실습-목표)
@@ -8,6 +10,8 @@
 5. [실습 코드 예시](#실습-코드-예시)
 6. [예상 결과](#예상-결과)
 7. [혼자 해보기](#혼자-해보기)
+
+</details>
 
 ---
 
@@ -44,7 +48,9 @@
 
 ## 🚀 가상머신 생성 스크립트 사용법
 
-### 스크립트 파일 구조
+<details>
+<summary>📁 스크립트 파일 구조 (클릭하여 펼치기)</summary>
+
 ```
 scripts/
 ├── aws-ec2-create.sh      # AWS EC2 인스턴스 자동 생성
@@ -53,12 +59,15 @@ scripts/
 ├── gcp-compute-create.sh  # GCP Compute Engine 인스턴스 자동 생성
 ├── gcp-project-cleanup.sh # GCP 프로젝트 및 리소스 정리
 ├── gcp-setup-helper.sh    # GCP 설정 도우미
-├── gcp-ssh-key-add.sh     # GCP VM에 SSH 키 추가 (기존 VM용)
 user-data.sh               # AWS EC2 초기화 스크립트
 startup-script.sh          # GCP Compute Engine 초기화 스크립트
 ```
 
-### 스크립트 특징
+</details>
+
+<details>
+<summary>✨ 스크립트 특징 (클릭하여 펼치기)</summary>
+
 - **자동화**: 복잡한 CLI 명령어를 자동으로 실행
 - **오류 처리**: 각 단계별 오류 검증 및 처리
 - **색상 출력**: 진행 상황을 시각적으로 표시
@@ -67,6 +76,8 @@ startup-script.sh          # GCP Compute Engine 초기화 스크립트
 - **재시작 안전성**: 중단되어도 다시 시작 시 기존 리소스 재사용
 - **체크포인트 기능**: 스크립트 중단 시 마지막 성공 지점부터 재시작
 - **자동 정리**: 리소스 정리 스크립트로 완전한 정리 가능
+
+</details>
 
 ### 사용 전 준비사항
 1. **AWS 사용 시:**
