@@ -16,5 +16,6 @@ google cloud 에 프로젝트, 네트워크 및 VM 생성 및 설정 스크립�
 gcloud projects create mcp-cloud-2025-12345 --name="MCP Cloud Project"
 
 
+# 2025-09-10
+## 요청1) mcp_knowledge_base 디렉토리 하위에 구성된, cloud_basic, cloud_master, cloud_container 과정 확인 후, 각 과정이 맥락에 맞게 구성되었는지 실습 코드 포함하여 점검해 줘.  진행 전 질문있으면 하고. 
 
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSM06ULO0goKY74s9TZ6lteH76r0IrAEvv58ke2ayAXw/zrH8t51JI1RucbbZy4yoQAQCWoeEje9ClmOJ3OtvcchqrKlh5J5Wy4XghsgeZn0Ap+efDHyhzzdu0FS087pF90xJztQDHssHJ1JdUhw61R2wr5h4j4lfHJam1jVFDQAqU+LewfKggzBwNB3jNkULrP2aVUGA+CCNTQqHRp02ltySWgZ3r4CEixZLqSwPaY1I/RgsWdv0VYb0LVZ2iDwcq1LAtgho2kfKTyPRdsGyr8fRa33CmPIszovPBXmTmGT5iRJokASOFu3ZRZnioQOPm7lmRiXjaytip350LJc/3 DESKTOP-0TCBR9U\JIH@DESKTOP-0TCBR9U

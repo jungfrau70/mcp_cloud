@@ -1,7 +1,7 @@
 # 3교시: GitHub Actions를 통한 가상머신 배포 실습
 
 <details>
-<summary>📋 목차 (클릭하여 펼치기)</summary>
+<summary>📋 목차 </summary>
 
 1. [🎯 학습 목표](#-학습-목표)
 2. [📦 actions-demo 프로젝트 소개](#-actions-demo-프로젝트-소개)
@@ -17,7 +17,7 @@
 ## 🎯 학습 목표
 
 <details>
-<summary>📖 이번 실습에서 배우게 될 내용 (클릭하여 펼치기)</summary>
+<summary>📖 이번 실습에서 배우게 될 내용 </summary>
 
 ### 핵심 학습 목표
 - **GitHub Actions CI/CD 파이프라인** 구축 및 이해
@@ -43,7 +43,7 @@
 ## 📦 actions-demo 프로젝트 소개
 
 <details>
-<summary>🎯 프로젝트 개요 (클릭하여 펼치기)</summary>
+<summary>🎯 프로젝트 개요 </summary>
 
 ### 프로젝트 정보
 - **저장소**: [https://github.com/jungfrau70/actions-demo.git](https://github.com/jungfrau70/actions-demo.git)
@@ -64,7 +64,7 @@ actions-demo/
 </details>
 
 <details>
-<summary>🚀 애플리케이션 특징 (클릭하여 펼치기)</summary>
+<summary>🚀 애플리케이션 특징 </summary>
 
 ### Node.js Express 애플리케이션
 - **프레임워크**: Express.js
@@ -85,7 +85,7 @@ actions-demo/
 </details>
 
 <details>
-<summary>🔧 현재 활성화된 워크플로우 (클릭하여 펼치기)</summary>
+<summary>🔧 현재 활성화된 워크플로우 </summary>
 
 ### ✅ 기본 워크플로우 (활성화됨)
 
@@ -99,13 +99,6 @@ actions-demo/
    - 기능: Docker 이미지 빌드 및 Docker Hub 푸시
    - 소요 시간: 약 3-5분
 
-### 🔧 고급 워크플로우 (비활성화됨)
-
-- `aws-deploy.yml.disabled`: AWS ECS 배포
-- `gcp-deploy.yml.disabled`: GCP Cloud Run 배포
-- `vm-docker-deploy.yml.disabled`: VM Docker 배포
-- `multi-cloud-deploy.yml.disabled`: 멀티클라우드 배포
-
 </details>
 
 ---
@@ -113,13 +106,13 @@ actions-demo/
 ## 🚀 실습 환경 준비
 
 <details>
-<summary>📋 필수 계정 및 도구 (클릭하여 펼치기)</summary>
+<summary>📋 필수 계정 및 도구 </summary>
 
 ### 필수 계정
 - **GitHub 계정**: 저장소 포크 및 Actions 사용
 - **Docker Hub 계정**: Docker 이미지 저장소
-- **AWS 계정** (선택): EC2 인스턴스 배포용
-- **GCP 계정** (선택): Compute Engine 배포용
+- **AWS 계정**: EC2 인스턴스 배포용
+- **GCP 계정**: Compute Engine 배포용
 
 ### 필수 도구
 - **Git**: 코드 버전 관리
@@ -129,7 +122,7 @@ actions-demo/
 </details>
 
 <details>
-<summary>🔧 GitHub 저장소 설정 (클릭하여 펼치기)</summary>
+<summary>🔧 GitHub 저장소 설정 </summary>
 
 ### 1단계: 저장소 포크
 1. [actions-demo 저장소](https://github.com/jungfrau70/actions-demo.git) 방문
@@ -156,7 +149,7 @@ cd actions-demo
 </details>
 
 <details>
-<summary>🔑 AWS 설정 (선택)</summary>
+<summary>🔑 AWS 설정 </summary>
 
 **AWS_ACCESS_KEY_ID** 및 **AWS_SECRET_ACCESS_KEY** 추가:
 1. AWS IAM → Users → Create user
@@ -167,7 +160,7 @@ cd actions-demo
 </details>
 
 <details>
-<summary>🔑 GCP 설정 (선택)</summary>
+<summary>🔑 GCP 설정 </summary>
 
 **GCP_SA_KEY** 추가:
 1. GCP Console → IAM & Admin → Service Accounts
@@ -181,7 +174,7 @@ cd actions-demo
 </details>
 
 <details>
-<summary>🐳 Docker 환경 설정 (클릭하여 펼치기)</summary>
+<summary>🐳 Docker 환경 설정 </summary>
 
 ### Docker 설치 확인
 ```bash
@@ -209,7 +202,7 @@ docker system info | grep Username
 ## ⚖️ 가상머신 배포 실습
 
 <details>
-<summary>🖥️ AWS EC2 가상머신 배포 (클릭하여 펼치기)</summary>
+<summary>🖥️ AWS EC2 가상머신 배포 </summary>
 
 ### 🚀 GitHub Actions를 통한 자동 배포
 
@@ -274,7 +267,7 @@ curl http://YOUR_EC2_PUBLIC_IP:3000
 </details>
 
 <details>
-<summary>☁️ GCP Compute Engine 가상머신 배포 (클릭하여 펼치기)</summary>
+<summary>☁️ GCP Compute Engine 가상머신 배포 </summary>
 
 ### 🚀 GitHub Actions를 통한 자동 배포
 
@@ -332,7 +325,7 @@ curl http://YOUR_GCE_EXTERNAL_IP:3000
 ## 🔧 GitHub Actions 워크플로우 설정
 
 <details>
-<summary>📝 워크플로우 파일 구조 (클릭하여 펼치기)</summary>
+<summary>📝 워크플로우 파일 구조 </summary>
 
 ### 기본 워크플로우 파일들
 
@@ -448,7 +441,7 @@ jobs:
 </details>
 
 <details>
-<summary>⚙️ 워크플로우 커스터마이징 (클릭하여 펼치기)</summary>
+<summary>⚙️ 워크플로우 커스터마이징 </summary>
 
 ### 환경별 배포 설정
 
@@ -506,7 +499,7 @@ env:
 ## 📚 문제 해결 및 참고 자료
 
 <details>
-<summary>🐛 자주 발생하는 문제 (클릭하여 펼치기)</summary>
+<summary>🐛 자주 발생하는 문제 </summary>
 
 ### GitHub Actions 관련 문제
 
@@ -571,7 +564,7 @@ aws ec2 describe-instances --instance-ids i-xxxxxxxx
 </details>
 
 <details>
-<summary>📖 추가 학습 자료 (클릭하여 펼치기)</summary>
+<summary>📖 추가 학습 자료 </summary>
 
 ### 공식 문서
 - [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
@@ -592,7 +585,7 @@ aws ec2 describe-instances --instance-ids i-xxxxxxxx
 </details>
 
 <details>
-<summary>🚀 다음 단계 (클릭하여 펼치기)</summary>
+<summary>🚀 다음 단계 </summary>
 
 ### 고급 기능 구현
 1. **멀티클라우드 배포**: AWS와 GCP 동시 배포

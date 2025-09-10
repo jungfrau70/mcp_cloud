@@ -83,7 +83,7 @@ let mermaidInitialized = false
 // Setup details/summary interaction handlers
 const setupDetailsHandlers = () => {
   if (!contentContainer.value) return;
-  
+
   const detailsElements = contentContainer.value.querySelectorAll('details');
   detailsElements.forEach((details, index) => {
     // Add click handler to summary elements
@@ -93,33 +93,33 @@ const setupDetailsHandlers = () => {
       summary.setAttribute('tabindex', '0');
       summary.setAttribute('role', 'button');
       summary.setAttribute('aria-expanded', details.hasAttribute('open') ? 'true' : 'false');
-      
+
       // Click handler
       summary.addEventListener('click', (e) => {
         e.preventDefault();
         details.toggleAttribute('open');
         summary.setAttribute('aria-expanded', details.hasAttribute('open') ? 'true' : 'false');
-        
+
         // Save state to localStorage
         const path = props.path || 'default';
         const key = `details-state-${path}-${index}`;
         localStorage.setItem(key, details.hasAttribute('open') ? 'open' : 'closed');
       });
-      
+
       // Keyboard handler
       summary.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           details.toggleAttribute('open');
           summary.setAttribute('aria-expanded', details.hasAttribute('open') ? 'true' : 'false');
-          
+
           // Save state to localStorage
           const path = props.path || 'default';
           const key = `details-state-${path}-${index}`;
           localStorage.setItem(key, details.hasAttribute('open') ? 'open' : 'closed');
         }
       });
-      
+
       // Restore state from localStorage
       const path = props.path || 'default';
       const key = `details-state-${path}-${index}`;
@@ -132,6 +132,64 @@ const setupDetailsHandlers = () => {
         summary.setAttribute('aria-expanded', 'false');
       }
     }
+  });
+};
+
+// Setup code block copy functionality
+const setupCodeBlockHandlers = () => {
+  if (!contentContainer.value) return;
+
+  const codeBlocks = contentContainer.value.querySelectorAll('pre code');
+  codeBlocks.forEach((codeBlock) => {
+    const pre = codeBlock.parentElement;
+    if (!pre || pre.querySelector('.copy-button')) return;
+
+    // Create copy button
+    const copyButton = document.createElement('button');
+    copyButton.className = 'copy-button';
+    copyButton.innerHTML = 'Copy';
+
+    // Copy functionality
+    copyButton.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      try {
+        const text = codeBlock.textContent || '';
+        await navigator.clipboard.writeText(text);
+        
+        // Visual feedback
+        const originalText = copyButton.innerHTML;
+        copyButton.innerHTML = 'Copied!';
+        copyButton.style.background = '#10b981';
+        
+        setTimeout(() => {
+          copyButton.innerHTML = originalText;
+          copyButton.style.background = '#374151';
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = codeBlock.textContent || '';
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Visual feedback
+        const originalText = copyButton.innerHTML;
+        copyButton.innerHTML = 'Copied!';
+        copyButton.style.background = '#10b981';
+        
+        setTimeout(() => {
+          copyButton.innerHTML = originalText;
+          copyButton.style.background = '#374151';
+        }, 2000);
+      }
+    });
+
+    pre.appendChild(copyButton);
   });
 };
 
@@ -369,13 +427,15 @@ const setupLinkIntercepts = async () => {
   }
 };
 
-onMounted(() => { 
+onMounted(() => {
   setupLinkIntercepts()
   setupDetailsHandlers()
+  setupCodeBlockHandlers()
 })
-watch(() => props.content, () => { 
+watch(() => props.content, () => {
   setupLinkIntercepts()
   setupDetailsHandlers()
+  setupCodeBlockHandlers()
 })
 
 // Slides overlay logic
@@ -622,5 +682,116 @@ watch(() => props.content, (c) => {
 .overflow-y-auto {
   scrollbar-width: thin;
   scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
+/* 코드 블록 스타일링 개선 */
+.prose pre {
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 1rem 0;
+  border: 1px solid #374151;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.prose code {
+  background: #f3f4f6;
+  color: #1f2937;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.875em;
+  font-weight: 500;
+}
+
+.prose pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/* 인라인 코드와 블록 코드 구분 */
+.prose p code {
+  background: #f3f4f6;
+  color: #dc2626;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-size: 0.875em;
+}
+
+/* 코드 블록 내부 스타일링 */
+.prose pre code {
+  display: block;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* 코드 블록 복사 버튼 스타일 */
+.prose pre {
+  position: relative;
+}
+
+.prose pre .copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #374151;
+  color: #f9fafb;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  border: none;
+  z-index: 10;
+}
+
+.prose pre:hover .copy-button {
+  opacity: 0.7;
+}
+
+.prose pre .copy-button:hover {
+  opacity: 1;
+}
+
+/* 코드 블록 내부 링크 스타일 */
+.prose pre a {
+  color: #60a5fa;
+  text-decoration: underline;
+}
+
+.prose pre a:hover {
+  color: #93c5fd;
+}
+
+/* 코드 블록 내부 주석 스타일 */
+.prose pre .comment {
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* 코드 블록 내부 키워드 스타일 */
+.prose pre .keyword {
+  color: #f472b6;
+  font-weight: bold;
+}
+
+/* 코드 블록 내부 문자열 스타일 */
+.prose pre .string {
+  color: #34d399;
+}
+
+/* 코드 블록 내부 숫자 스타일 */
+.prose pre .number {
+  color: #fbbf24;
 }
 </style>
