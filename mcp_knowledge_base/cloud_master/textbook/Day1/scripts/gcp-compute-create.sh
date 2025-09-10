@@ -29,18 +29,19 @@ log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# 변수 설정 (필요에 따라 수정)
+# 변수 설정 (gcp-setup-helper.sh에서 설정된 값 사용)
 PROJECT_NAME="cloud-deployment"
-PROJECT_ID="cloud-deployment-2025-12345"  # 새로 생성된 프로젝트
-REGION="asia-northeast3"  # 서울 리전으로 변경
-ZONE="asia-northeast3-a"  # 서울 존으로 변경
+PROJECT_ID=$(gcloud config get-value project 2>/dev/null)
+REGION=$(gcloud config get-value compute/region 2>/dev/null)
+ZONE=$(gcloud config get-value compute/zone 2>/dev/null)
 MACHINE_TYPE="e2-medium"
 IMAGE_FAMILY="ubuntu-2204-lts"
 IMAGE_PROJECT="ubuntu-os-cloud"
-# 사용자 이름 설정 (GCP OS Login 사용 시 Google 계정 이메일)
+# 사용자 이름 설정 (프로젝트 메타데이터 SSH 키 사용)
 CURRENT_USER=$(gcloud config get-value account 2>/dev/null)
 if [ -n "$CURRENT_USER" ]; then
-    USER="$CURRENT_USER"  # GCP OS Login 사용자 (Google 계정 이메일)
+    # 이메일에서 @ 앞부분만 추출하여 사용자 이름으로 사용
+    USER=$(echo "$CURRENT_USER" | cut -d'@' -f1)
 else
     USER="ubuntu"  # 기본 Ubuntu 사용자
 fi
@@ -85,7 +86,7 @@ clear_checkpoint() {
 
 # 체크포인트 기반 재시작 로직
 if check_checkpoint; then
-    local checkpoint=$(cat "$CHECKPOINT_FILE")
+    checkpoint=$(cat "$CHECKPOINT_FILE")
     log_info "이전 실행에서 중단된 지점을 발견했습니다: $checkpoint"
     log_info "중단된 지점부터 재시작합니다..."
     
@@ -495,7 +496,7 @@ echo ""
 if [ -n "$EXTERNAL_IP" ]; then
     log_info "SSH 연결 명령어:"
     echo "1. gcloud 명령어 (권장 - OS Login 사용):"
-    echo "   gcloud compute ssh $INSTANCE_NAME --zone=$ZONE"
+    echo "   gcloud compute ssh $USER@$INSTANCE_NAME --zone=$ZONE"
     echo ""
     echo "2. 일반 SSH 명령어 (메타데이터 SSH 키 사용):"
     echo "   ssh -i $KEY_FILE $USER@$EXTERNAL_IP"
@@ -552,7 +553,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo ""
     log_info "SSH 연결 명령어:"
     echo "1. gcloud 명령어 (권장 - OS Login 사용):"
-    echo "   gcloud compute ssh $INSTANCE_NAME --zone=$ZONE"
+    echo "   gcloud compute ssh $USER@$INSTANCE_NAME --zone=$ZONE"
     echo ""
     echo "2. 일반 SSH 명령어 (메타데이터 SSH 키 사용):"
     echo "   ssh -i $KEY_FILE $USER@$STATIC_IP"

@@ -37,8 +37,8 @@ INSTANCE_TYPE="t3.medium"
 AMI_ID="ami-0ae2c887094315bed"  # Amazon Linux 2
 KEY_NAME="${PROJECT_NAME}-key"
 SECURITY_GROUP_NAME="${PROJECT_NAME}-sg"
-VPC_ID=""
-SUBNET_ID=""
+VPC_ID="vpc-0cda6aa4e12d0242b"
+SUBNET_ID="subnet-0a711e414b1d0dede"
 
 log_info "=== AWS EC2 가상머신 생성 시작 ==="
 log_info "프로젝트명: $PROJECT_NAME"
