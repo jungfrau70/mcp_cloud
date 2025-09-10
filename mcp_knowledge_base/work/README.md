@@ -14,3 +14,7 @@ google cloud 에 프로젝트, 네트워크 및 VM 생성 및 설정 스크립�
 
 
 gcloud projects create mcp-cloud-2025-12345 --name="MCP Cloud Project"
+
+
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSM06ULO0goKY74s9TZ6lteH76r0IrAEvv58ke2ayAXw/zrH8t51JI1RucbbZy4yoQAQCWoeEje9ClmOJ3OtvcchqrKlh5J5Wy4XghsgeZn0Ap+efDHyhzzdu0FS087pF90xJztQDHssHJ1JdUhw61R2wr5h4j4lfHJam1jVFDQAqU+LewfKggzBwNB3jNkULrP2aVUGA+CCNTQqHRp02ltySWgZ3r4CEixZLqSwPaY1I/RgsWdv0VYb0LVZ2iDwcq1LAtgho2kfKTyPRdsGyr8fRa33CmPIszovPBXmTmGT5iRJokASOFu3ZRZnioQOPm7lmRiXjaytip350LJc/3 DESKTOP-0TCBR9U\JIH@DESKTOP-0TCBR9U

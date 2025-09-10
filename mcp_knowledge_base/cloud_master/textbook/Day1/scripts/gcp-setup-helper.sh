@@ -34,7 +34,7 @@ echo ""
 
 # 1. 인증 확인
 log_info "GCP 인증 상태 확인 중..."
-if ! gcloud auth list --filter=status:ACTIVE --format="value(account)" | grep -q .; then
+if ! gcloud auth list > /dev/null 2>&1; then
     log_error "GCP 인증이 설정되지 않았습니다."
     log_info "다음 명령어로 인증하세요:"
     echo "gcloud auth login"
@@ -63,27 +63,95 @@ else
 fi
 echo ""
 
-# 4. 프로젝트 선택
-read -p "사용할 프로젝트 ID를 입력하세요 (또는 Enter로 현재 프로젝트 유지): " SELECTED_PROJECT
+# 4. 프로젝트 선택 또는 생성
+echo ""
+log_info "프로젝트 옵션을 선택하세요:"
+echo "1) 기존 프로젝트 사용"
+echo "2) 새 프로젝트 생성"
+echo "3) 현재 프로젝트 유지"
+echo ""
+read -p "선택하세요 (1/2/3) [기본값: 3]: " PROJECT_OPTION
+PROJECT_OPTION=${PROJECT_OPTION:-3}
 
-if [ -n "$SELECTED_PROJECT" ]; then
+case $PROJECT_OPTION in
+    1)
+        # 기존 프로젝트 사용
+        read -p "사용할 프로젝트 ID를 입력하세요: " SELECTED_PROJECT
+        if [ -z "$SELECTED_PROJECT" ]; then
+            log_error "프로젝트 ID를 입력해야 합니다."
+            exit 1
+        fi
+        
     # 프로젝트 유효성 검사
-    if ! gcloud projects describe "$SELECTED_PROJECT" &> /dev/null; then
+        if ! gcloud projects describe "$SELECTED_PROJECT" &> /dev/null; then
         log_error "프로젝트 '$SELECTED_PROJECT'에 접근할 수 없습니다."
         exit 1
     fi
     
     # 프로젝트 설정
-    gcloud config set project "$SELECTED_PROJECT"
+        gcloud config set project "$SELECTED_PROJECT"
     log_success "프로젝트가 '$SELECTED_PROJECT'로 설정되었습니다."
     CURRENT_PROJECT=$SELECTED_PROJECT
-else
+        ;;
+    2)
+        # 새 프로젝트 생성
+        read -p "새 프로젝트 이름을 입력하세요: " NEW_PROJECT_NAME
+        if [ -z "$NEW_PROJECT_NAME" ]; then
+            log_error "프로젝트 이름을 입력해야 합니다."
+            exit 1
+        fi
+        
+        # 프로젝트 ID 생성 (이름 + 타임스탬프)
+        NEW_PROJECT_ID="${NEW_PROJECT_NAME}-$(date +%s)"
+        log_info "프로젝트 ID: $NEW_PROJECT_ID"
+        
+        # 프로젝트 생성
+        log_info "프로젝트 생성 중..."
+        if gcloud projects create "$NEW_PROJECT_ID" --name="$NEW_PROJECT_NAME"; then
+            log_success "프로젝트가 생성되었습니다: $NEW_PROJECT_ID"
+            
+            # 프로젝트 설정
+            gcloud config set project "$NEW_PROJECT_ID"
+            log_success "프로젝트가 '$NEW_PROJECT_ID'로 설정되었습니다."
+            CURRENT_PROJECT=$NEW_PROJECT_ID
+            
+            # 빌링 계정 연결 확인
+            log_info "빌링 계정 연결을 확인합니다..."
+            BILLING_ACCOUNTS=$(gcloud billing accounts list --format="get(name)" 2>/dev/null | head -1)
+            if [ -n "$BILLING_ACCOUNTS" ]; then
+                log_info "빌링 계정에 연결합니다: $BILLING_ACCOUNTS"
+                gcloud billing projects link "$NEW_PROJECT_ID" --billing-account="$BILLING_ACCOUNTS" 2>/dev/null || {
+                    log_warning "빌링 계정 연결에 실패했습니다. 수동으로 연결해주세요."
+                    log_info "GCP 콘솔에서 빌링 계정을 연결해주세요: https://console.cloud.google.com/billing"
+                }
+            else
+                log_warning "빌링 계정이 없습니다. 수동으로 설정해주세요."
+                log_info "GCP 콘솔에서 빌링 계정을 설정해주세요: https://console.cloud.google.com/billing"
+            fi
+            
+            # 필요한 API 활성화
+            log_info "필요한 API를 활성화합니다..."
+            gcloud services enable compute.googleapis.com
+            gcloud services enable oslogin.googleapis.com
+            log_success "API 활성화 완료"
+        else
+            log_error "프로젝트 생성에 실패했습니다."
+            exit 1
+        fi
+        ;;
+    3)
+        # 현재 프로젝트 유지
     if [ -z "$CURRENT_PROJECT" ]; then
-        log_error "프로젝트를 선택해야 합니다."
+            log_error "현재 프로젝트가 설정되지 않았습니다. 프로젝트를 선택하거나 생성해주세요."
         exit 1
     fi
     log_info "현재 프로젝트 '$CURRENT_PROJECT'를 사용합니다."
-fi
+        ;;
+    *)
+        log_error "잘못된 선택입니다."
+        exit 1
+        ;;
+esac
 echo ""
 
 # 5. 리전 목록 표시

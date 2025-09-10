@@ -142,4 +142,15 @@ dev-debug.log
 # Task files
 # tasks.json
 # tasks/ .terraform/ 
-AWS_GCP/terraform/.terraform/ 
+AWS_GCP/terraform/.terraform/
+
+# SSH Keys and Certificates
+*-key
+*-key.*
+*.pem
+*.p12
+*.pfx
+*.key
+*.crt
+*.cer
+*.der 
