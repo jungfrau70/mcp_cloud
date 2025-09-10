@@ -1,244 +1,411 @@
-# 클라우드 실무력 강화! AWS & GCP 활용법(컨테이너 심화) - 2일차
+# Cloud Container - 2일차: 고가용성 및 확장성 아키텍처
 
-## 📌 2일차 개요
+<details>
+<summary>📋 목차</summary>
 
-2일차는 **고가용성 및 확장성 아키텍처**에 집중하여 실무 환경에서 요구되는 안정성과 성능을 확보하는 방법을 학습합니다.
+1. [🎯 학습 목표](#-학습-목표)
+2. [📚 실습 가이드](#-실습-가이드)
+3. [🔧 실습 환경 준비](#-실습-환경-준비)
+4. [🏗️ 고가용성 아키텍처 설계](#-고가용성-아키텍처-설계)
+5. [⚖️ 로드 밸런싱 및 Auto Scaling](#-로드-밸런싱-및-auto-scaling)
+6. [📊 모니터링 및 로깅 시스템](#-모니터링-및-로깅-시스템)
+7. [🎯 종합 프로젝트 및 최적화](#-종합-프로젝트-및-최적화)
+8. [📚 문제 해결 및 참고 자료](#-문제-해결-및-참고-자료)
 
-### 📋 학습 목표
-- AWS Multi-AZ 및 GCP Multi-Region 아키텍처 설계
-- 로드 밸런싱 및 Auto Scaling 고급 설정
-- 모니터링 및 로깅 시스템 구축
-- 종합 프로젝트를 통한 실무 역량 강화
-
----
-
-## 🚀 실습 환경 준비
-
-### 1단계: 1일차 실습 결과 확인
-```bash
-# 1일차에서 배포한 리소스 확인
-kubectl get pods -n container-demo
-kubectl get services -n container-demo
-kubectl get ingress -n container-demo
-```
-
-### 2단계: 2일차 실습 환경 설정
-```bash
-# 2일차 실습 디렉토리로 이동
-cd mcp_knowledge_base/cloud_container/textbook/Day2
-
-# 실습 환경 확인
-ls -la
-```
+</details>
 
 ---
 
-## 📚 실습 순서
+## 🎯 학습 목표
 
-### 1교시: 고가용성 아키텍처 설계 (90분)
+<details>
+<summary>📖 이번 실습에서 배우게 될 내용</summary>
 
-#### 1.1 AWS Multi-AZ 구성 (45분)
-- **학습 내용**: RDS Multi-AZ, EC2 Auto Scaling Group 설정
-- **실습 파일**: `high-availability-architecture.md`
-- **실습 목표**: 
-  - RDS Multi-AZ 인스턴스 생성
-  - EC2 Auto Scaling Group 구성
-  - Application Load Balancer 설정
+### 핵심 학습 목표
+- **고가용성 아키텍처** Multi-AZ, Multi-Region 설계 및 구현
+- **로드 밸런싱** ELB, Cloud Load Balancing 고급 구성
+- **Auto Scaling** 정책 및 메트릭 기반 확장
+- **모니터링 및 로깅** CloudWatch, Cloud Monitoring 고급 설정
 
-#### 1.2 GCP Multi-Region 구성 (45분)
-- **학습 내용**: GKE Multi-Region 클러스터, Global Load Balancer
-- **실습 파일**: `high-availability-architecture.md`
-- **실습 목표**:
-  - Multi-Region GKE 클러스터 생성
-  - Global Load Balancer 설정
-  - Cloud SQL Multi-Region 구성
+### 실습 후 달성할 수 있는 능력
+- ✅ Multi-AZ/Multi-Region 고가용성 아키텍처 구성
+- ✅ 고급 로드 밸런싱 및 Auto Scaling 정책 설정
+- ✅ 종합적인 모니터링 및 로깅 시스템 구축
+- ✅ 실제 서비스 시나리오 아키텍처 구현
 
-### 2교시: 로드 밸런싱 및 Auto Scaling (90분)
+### 예상 소요 시간
+- **고가용성 아키텍처**: 90-120분
+- **로드 밸런싱 및 Auto Scaling**: 90-120분
+- **모니터링 및 로깅**: 90-120분
+- **종합 프로젝트**: 90-120분
+- **전체 과정**: 6-8시간
 
-#### 2.1 AWS ELB 및 Auto Scaling (45분)
-- **학습 내용**: Application Load Balancer, Auto Scaling 정책
-- **실습 파일**: `high-availability-architecture.md`
-- **실습 목표**:
-  - ALB 타겟 그룹 설정
-  - Auto Scaling 정책 구성
-  - 헬스체크 및 알림 설정
-
-#### 2.2 GCP Load Balancing 및 MIG (45분)
-- **학습 내용**: Cloud Load Balancing, Managed Instance Group
-- **실습 파일**: `high-availability-architecture.md`
-- **실습 목표**:
-  - Global Load Balancer 설정
-  - Managed Instance Group 구성
-  - 자동 스케일링 정책 설정
-
-### 3교시: 모니터링 및 로깅 시스템 (90분)
-
-#### 3.1 AWS CloudWatch 설정 (45분)
-- **학습 내용**: CloudWatch 메트릭, 로그, 알림
-- **실습 파일**: `monitoring-setup.md`
-- **실습 목표**:
-  - 커스텀 메트릭 전송
-  - CloudWatch 알림 설정
-  - 로그 기반 모니터링
-
-#### 3.2 GCP Cloud Monitoring 설정 (45분)
-- **학습 내용**: Cloud Monitoring, Cloud Logging
-- **실습 파일**: `monitoring-setup.md`
-- **실습 목표**:
-  - Cloud Monitoring 메트릭 설정
-  - Cloud Logging 구성
-  - 알림 정책 설정
-
-### 4교시: 종합 프로젝트 및 최적화 (90분)
-
-#### 4.1 고가용성 웹 서비스 아키텍처 설계 (45분)
-- **학습 내용**: 전체 아키텍처 설계 및 구현
-- **실습 파일**: `comprehensive-project.md`
-- **실습 목표**:
-  - 고가용성 아키텍처 설계
-  - 비용 최적화 방안 수립
-  - 성능 최적화 전략
-
-#### 4.2 실제 서비스 시나리오 구현 (45분)
-- **학습 내용**: 실제 운영 환경 시뮬레이션
-- **실습 파일**: `comprehensive-project.md`
-- **실습 목표**:
-  - 장애 복구 시나리오 테스트
-  - 부하 테스트 및 성능 측정
-  - 모니터링 및 알림 시스템 검증
+</details>
 
 ---
 
-## 🔧 필요한 권한 및 설정
+## 📚 실습 가이드
 
-### AWS 권한
-- RDS Multi-AZ 인스턴스 생성 권한
-- Auto Scaling Group 관리 권한
-- Application Load Balancer 생성 권한
-- CloudWatch 메트릭 및 로그 권한
+<details>
+<summary>📖 실습 가이드 개요</summary>
 
-### GCP 권한
-- GKE Multi-Region 클러스터 관리 권한
-- Global Load Balancer 생성 권한
-- Cloud SQL Multi-Region 관리 권한
-- Cloud Monitoring 및 Logging 권한
+### 실습 구성
+1. **고가용성 아키텍처 설계** (120분)
+2. **로드 밸런싱 및 Auto Scaling** (120분)
+3. **모니터링 및 로깅 시스템** (120분)
+4. **종합 프로젝트 및 최적화** (120분)
 
-### GitHub Secrets (1일차와 동일)
-```bash
-# AWS 관련
-AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY
-AWS_REGION
+### 실습 방식
+- **고가용성**: Multi-AZ, Multi-Region 아키텍처
+- **로드 밸런싱**: ELB, Cloud Load Balancing 고급 설정
+- **모니터링**: CloudWatch, Cloud Monitoring, Prometheus
+- **종합 프로젝트**: 실제 서비스 시나리오 구현
 
-# GCP 관련
-GCP_PROJECT_ID
-GCP_SA_KEY
-GCP_REGION
-```
+### 실습 결과물
+- Multi-AZ/Multi-Region 고가용성 아키텍처
+- 고급 로드 밸런싱 및 Auto Scaling 구성
+- 종합적인 모니터링 및 로깅 시스템
+- 실제 서비스 시나리오 아키텍처
 
----
+</details>
 
-## 📋 실습 체크리스트
+<details>
+<summary>🔗 관련 실습 가이드</summary>
 
-### 고가용성 아키텍처
-- [ ] AWS RDS Multi-AZ 인스턴스 생성
-- [ ] AWS EC2 Auto Scaling Group 설정
-- [ ] AWS Application Load Balancer 구성
-- [ ] GCP Multi-Region GKE 클러스터 생성
-- [ ] GCP Global Load Balancer 설정
-- [ ] GCP Cloud SQL Multi-Region 구성
+### 📖 상세 실습 가이드
+- 🔗 [고가용성 아키텍처 실습](./practice/high-availability-architecture.md)
+- 🔗 [로드 밸런싱 고급 실습](./practice/advanced-load-balancing.md)
+- 🔗 [모니터링 시스템 구축](./practice/monitoring-system-setup.md)
+- 🔗 [종합 프로젝트 실습](./practice/comprehensive-project.md)
 
-### 로드 밸런싱 및 Auto Scaling
-- [ ] AWS ALB 타겟 그룹 설정
-- [ ] AWS Auto Scaling 정책 구성
-- [ ] GCP Managed Instance Group 설정
-- [ ] GCP 자동 스케일링 정책 구성
-- [ ] 헬스체크 및 알림 설정
-- [ ] 로드 밸런싱 테스트
+### 📚 개념 학습 가이드
+- 🔗 [고가용성 아키텍처 가이드](./high-availability-architecture-guide.md)
+- 🔗 [로드 밸런싱 고급 가이드](./advanced-load-balancing-guide.md)
+- 🔗 [모니터링 시스템 가이드](./monitoring-system-guide.md)
+- 🔗 [비용 최적화 가이드](./cost-optimization-guide.md)
 
-### 모니터링 및 로깅
-- [ ] AWS CloudWatch 메트릭 설정
-- [ ] AWS CloudWatch 알림 구성
-- [ ] GCP Cloud Monitoring 설정
-- [ ] GCP Cloud Logging 구성
-- [ ] Prometheus + Grafana 스택 구축
-- [ ] ELK Stack 로그 분석 시스템
+### 🛠️ 문제 해결 가이드
+- 🔗 [고가용성 트러블슈팅](./troubleshooting-high-availability.md)
+- 🔗 [로드 밸런싱 트러블슈팅](./troubleshooting-load-balancing.md)
+- 🔗 [모니터링 트러블슈팅](./troubleshooting-monitoring.md)
 
-### 종합 프로젝트
-- [ ] 고가용성 아키텍처 설계 완료
-- [ ] 비용 최적화 방안 수립
-- [ ] 성능 최적화 전략 구현
-- [ ] 장애 복구 시나리오 테스트
-- [ ] 부하 테스트 및 성능 측정
-- [ ] 모니터링 및 알림 시스템 검증
+### 🔗 관련 과정 링크
+- 🔗 [Cloud Container 1일차](../Day1/README.md)
+- 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md)
+- 🔗 [전체 커리큘럼](../../../curriculum.md)
+
+</details>
 
 ---
 
-## 🐛 문제 해결
+## 🔧 실습 환경 준비
 
-### 자주 발생하는 문제
+<details>
+<summary>📋 필수 계정 및 도구</summary>
 
-#### 1. RDS Multi-AZ 생성 실패
+### 필수 계정
+- **AWS 계정**: Free Tier 계정
+- **GCP 계정**: $300 크레딧 계정
+- **GitHub 계정**: 저장소 관리 및 Actions 사용
+- **Docker Hub 계정**: 컨테이너 이미지 저장소
+
+### 필수 도구
+- **kubectl**: Kubernetes 클러스터 관리
+- **gcloud**: Google Cloud CLI
+- **aws**: AWS CLI
+- **Docker**: 컨테이너 이미지 빌드
+- **Helm**: Kubernetes 패키지 관리자
+
+</details>
+
+<details>
+<summary>🔧 1일차 실습 완료 확인</summary>
+
+### 필수 완료 사항
+- [ ] Kubernetes 클러스터 아키텍처 이해
+- [ ] GKE 클러스터 생성 및 고급 설정
+- [ ] 마이크로서비스 아키텍처 구성
+- [ ] ECS Fargate 서비스 배포
+
+### 실습 환경 확인
 ```bash
-# 해결방법: 서브넷 그룹 확인
-aws rds describe-db-subnet-groups
-aws rds create-db-subnet-group --db-subnet-group-name container-demo-subnet-group
-```
+# kubectl 설정 확인
+kubectl cluster-info
 
-#### 2. Auto Scaling Group 생성 실패
-```bash
-# 해결방법: Launch Template 확인
-aws ec2 describe-launch-templates
-aws autoscaling describe-auto-scaling-groups
-```
-
-#### 3. GCP Multi-Region 클러스터 생성 실패
-```bash
-# 해결방법: 프로젝트 및 권한 확인
-gcloud config get-value project
+# gcloud 설정 확인
 gcloud auth list
-gcloud container clusters list
+
+# aws 설정 확인
+aws sts get-caller-identity
+
+# Docker 설정 확인
+docker --version
 ```
 
-#### 4. 모니터링 데이터 수집 실패
+</details>
+
+<details>
+<summary>🔧 추가 도구 설치</summary>
+
+### 모니터링 도구 설치
 ```bash
-# 해결방법: Prometheus 설정 확인
-kubectl get configmap prometheus-config -o yaml
-kubectl logs -f deployment/prometheus -n container-demo
+# Prometheus (선택사항)
+docker run -d --name prometheus -p 9090:9090 prom/prometheus
+
+# Grafana (선택사항)
+docker run -d --name grafana -p 3000:3000 grafana/grafana
+
+# ELK Stack (선택사항)
+docker-compose up -d elasticsearch kibana logstash
 ```
+
+### 네트워크 도구 설치
+```bash
+# Windows
+winget install Microsoft.AzureCLI
+
+# macOS
+brew install curl wget
+
+# Ubuntu
+sudo apt install curl wget netcat
+```
+
+</details>
 
 ---
 
-## 📚 참고 자료
+## 🏗️ 고가용성 아키텍처 설계
 
-### 1일차 연계
-- [1일차 README](../Day1/README.md)
-- [Container 오케스트레이션 가이드](../Day1/container-orchestration-guide.md)
-- [Kubernetes 고급 가이드](../Day1/kubernetes-advanced-guide.md)
+<details>
+<summary>📖 고가용성 개념 이해</summary>
 
-### 2일차 실습 가이드
-- [고가용성 아키텍처 가이드](./high-availability-architecture.md)
-- [모니터링 설정 가이드](./monitoring-setup.md)
-- [종합 프로젝트 가이드](./comprehensive-project.md)
+### 고가용성의 3가지 기둥
+- **가용성**: 서비스 중단 시간 최소화
+- **내결함성**: 장애 발생 시 자동 복구
+- **확장성**: 트래픽 증가에 따른 자동 확장
+
+### Multi-AZ vs Multi-Region
+| 구분 | Multi-AZ | Multi-Region |
+|------|----------|--------------|
+| **거리** | 같은 리전 내 | 다른 리전 간 |
+| **복구 시간** | 빠름 (분) | 느림 (시간) |
+| **비용** | 낮음 | 높음 |
+| **데이터 일관성** | 강함 | 약함 |
+
+### 고가용성 아키텍처 패턴
+- **Active-Active**: 모든 인스턴스가 활성 상태
+- **Active-Passive**: 주 인스턴스와 대기 인스턴스
+- **N+1**: N개 운영 + 1개 대기
+- **N+M**: N개 운영 + M개 대기
+
+</details>
+
+<details>
+<summary>🔗 상세 실습 가이드</summary>
+
+### 📖 실습 파일
+- 🔗 [AWS Multi-AZ 구성 실습](./practice/aws-multi-az-setup.md)
+- 🔗 [GCP Multi-Region 구성 실습](./practice/gcp-multi-region-setup.md)
+- 🔗 [Kubernetes 고가용성 설정](./practice/kubernetes-high-availability.md)
+- 🔗 [데이터베이스 고가용성](./practice/database-high-availability.md)
+
+### 📚 개념 학습
+- 🔗 [고가용성 아키텍처 가이드](./high-availability-architecture-guide.md)
+- 🔗 [재해 복구 전략](./disaster-recovery-strategy.md)
+
+</details>
+
+---
+
+## ⚖️ 로드 밸런싱 및 Auto Scaling
+
+<details>
+<summary>📖 고급 로드 밸런싱</summary>
+
+### 로드 밸런싱 전략
+- **Round Robin**: 순차적 분산
+- **Least Connections**: 연결 수가 적은 서버 선택
+- **IP Hash**: 클라이언트 IP 기반 분산
+- **Weighted**: 가중치 기반 분산
+
+### Health Check 고급 설정
+- **HTTP Health Check**: 애플리케이션 레벨 상태 확인
+- **TCP Health Check**: 포트 연결 상태 확인
+- **Custom Health Check**: 사용자 정의 상태 확인
+
+### 로드 밸런싱 타입 비교
+| 타입 | 계층 | 특징 | 사용 사례 |
+|------|------|------|-----------|
+| **ALB** | Layer 7 | HTTP/HTTPS, 라우팅 | 웹 애플리케이션 |
+| **NLB** | Layer 4 | TCP/UDP, 고성능 | 게임, IoT |
+| **CLB** | Layer 4 | 레거시 | 기존 애플리케이션 |
+
+</details>
+
+<details>
+<summary>🔗 상세 실습 가이드</summary>
+
+### 📖 실습 파일
+- 🔗 [AWS 고급 로드 밸런싱](./practice/aws-advanced-load-balancing.md)
+- 🔗 [GCP 고급 로드 밸런싱](./practice/gcp-advanced-load-balancing.md)
+- 🔗 [Auto Scaling 고급 설정](./practice/advanced-auto-scaling.md)
+- 🔗 [Kubernetes HPA 설정](./practice/kubernetes-hpa.md)
+
+### 📚 개념 학습
+- 🔗 [로드 밸런싱 고급 가이드](./advanced-load-balancing-guide.md)
+- 🔗 [Auto Scaling 전략](./auto-scaling-strategy.md)
+
+</details>
+
+---
+
+## 📊 모니터링 및 로깅 시스템
+
+<details>
+<summary>📖 종합 모니터링 시스템</summary>
+
+### 모니터링 계층
+- **인프라 모니터링**: CPU, 메모리, 네트워크
+- **애플리케이션 모니터링**: 응답 시간, 에러율, 처리량
+- **비즈니스 모니터링**: 사용자 수, 매출, 전환율
+
+### 로깅 전략
+- **구조화된 로그**: JSON 형식 로그
+- **로그 집계**: 중앙화된 로그 수집
+- **로그 분석**: 실시간 로그 분석 및 알림
+
+### 모니터링 도구 비교
+| 구분 | AWS | GCP | 오픈소스 |
+|------|-----|-----|----------|
+| **메트릭** | CloudWatch | Cloud Monitoring | Prometheus |
+| **로그** | CloudWatch Logs | Cloud Logging | ELK Stack |
+| **트레이스** | X-Ray | Cloud Trace | Jaeger |
+| **대시보드** | CloudWatch | Cloud Monitoring | Grafana |
+
+</details>
+
+<details>
+<summary>🔗 상세 실습 가이드</summary>
+
+### 📖 실습 파일
+- 🔗 [AWS CloudWatch 고급 설정](./practice/aws-cloudwatch-advanced.md)
+- 🔗 [GCP Cloud Monitoring 설정](./practice/gcp-cloud-monitoring.md)
+- 🔗 [Prometheus + Grafana 설정](./practice/prometheus-grafana-setup.md)
+- 🔗 [ELK Stack 로깅 시스템](./practice/elk-stack-setup.md)
+
+### 📚 개념 학습
+- 🔗 [모니터링 시스템 가이드](./monitoring-system-guide.md)
+- 🔗 [로깅 전략 가이드](./logging-strategy-guide.md)
+
+</details>
+
+---
+
+## 🎯 종합 프로젝트 및 최적화
+
+<details>
+<summary>📖 실제 서비스 시나리오</summary>
+
+### 프로젝트 요구사항
+- **고가용성**: 99.9% 가용성 보장
+- **확장성**: 트래픽 증가에 따른 자동 확장
+- **모니터링**: 실시간 모니터링 및 알림
+- **비용 최적화**: 비용 효율적인 아키텍처
+
+### 아키텍처 설계
+```
+Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
+                ↓
+            CloudWatch → SNS → Slack/Email
+```
+
+### 성능 목표
+- **응답 시간**: 95% 요청이 200ms 이내
+- **가용성**: 99.9% 이상
+- **처리량**: 초당 1000 요청 처리
+- **복구 시간**: 장애 발생 시 5분 이내 복구
+
+</details>
+
+<details>
+<summary>🔗 상세 실습 가이드</summary>
+
+### 📖 실습 파일
+- 🔗 [종합 프로젝트 구현](./practice/comprehensive-project.md)
+- 🔗 [성능 최적화 실습](./practice/performance-optimization.md)
+- 🔗 [비용 최적화 실습](./practice/cost-optimization.md)
+- 🔗 [보안 강화 실습](./practice/security-hardening.md)
+
+### 📚 개념 학습
+- 🔗 [비용 최적화 가이드](./cost-optimization-guide.md)
+- 🔗 [성능 최적화 가이드](./performance-optimization-guide.md)
+
+</details>
+
+---
+
+## 📚 문제 해결 및 참고 자료
+
+<details>
+<summary>🐛 자주 발생하는 문제</summary>
+
+### 고가용성 관련 문제
+- 🔗 [Multi-AZ 구성 실패](./troubleshooting/multi-az-issues.md)
+- 🔗 [Auto Scaling 작동 안함](./troubleshooting/auto-scaling-issues.md)
+- 🔗 [로드 밸런서 502 오류](./troubleshooting/load-balancer-502.md)
+
+### 모니터링 관련 문제
+- 🔗 [CloudWatch 메트릭 표시 안됨](./troubleshooting/cloudwatch-metrics.md)
+- 🔗 [알림이 오지 않음](./troubleshooting/notification-issues.md)
+- 🔗 [로그 수집 실패](./troubleshooting/log-collection-issues.md)
+
+</details>
+
+<details>
+<summary>📖 추가 학습 자료</summary>
 
 ### 공식 문서
-- [AWS RDS Multi-AZ 공식 문서](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html)
-- [AWS Auto Scaling 공식 문서](https://docs.aws.amazon.com/autoscaling/)
-- [GCP Multi-Region 공식 문서](https://cloud.google.com/architecture/best-practices-for-enterprise-organizations)
-- [GCP Global Load Balancing 공식 문서](https://cloud.google.com/load-balancing/docs/https)
+- [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)
+- [GCP Architecture Center](https://cloud.google.com/architecture)
+- [Kubernetes 고가용성](https://kubernetes.io/docs/setup/production-environment/)
+- [Prometheus 공식 문서](https://prometheus.io/docs/)
+- [Grafana 공식 문서](https://grafana.com/docs/)
+
+### 유용한 리소스
+- [AWS 샘플 프로젝트](https://github.com/aws-samples)
+- [GCP 샘플 프로젝트](https://github.com/GoogleCloudPlatform)
+- [Kubernetes 샘플 프로젝트](https://github.com/kubernetes/examples)
+- [ELK Stack 가이드](https://www.elastic.co/guide/)
+
+</details>
+
+<details>
+<summary>🚀 다음 단계</summary>
+
+### 실무 적용
+1. **실제 프로젝트**: 자신의 프로젝트에 고가용성 아키텍처 적용
+2. **모니터링**: 종합적인 모니터링 시스템 구축
+3. **자동화**: 완전 자동화된 운영 환경
+4. **비용 최적화**: 지속적인 비용 최적화
+
+### 고급 기능
+1. **서비스 메시**: Istio, Linkerd 구현
+2. **보안**: Pod Security Policy, Network Policy
+3. **성능**: HPA, VPA, Cluster Autoscaler
+4. **운영**: 백업, 재해 복구
+
+</details>
 
 ---
 
-## 🎯 학습 성과
+## 🚀 시작하기
 
-2일차 과정을 완료한 후 수강생은 다음을 수행할 수 있습니다:
+1일차 실습이 완료되었다면 [고가용성 아키텍처 실습](./practice/high-availability-architecture.md)부터 시작하세요.
 
-- **고가용성 아키텍처 설계**: AWS Multi-AZ, GCP Multi-Region 아키텍처 구현
-- **로드 밸런싱 및 Auto Scaling**: ELB, ALB, GCP Load Balancer, MIG 설정
-- **모니터링 시스템 구축**: CloudWatch, Cloud Monitoring, Prometheus, Grafana 구성
-- **장애 복구 전략 수립**: RTO/RPO 목표 달성, 자동 복구 시스템 구현
-- **실무 프로젝트 수행**: 실제 서비스 시나리오 기반 아키텍처 설계 및 구현
+### 문제가 있나요?
+실습 중 문제가 발생하면 [트러블슈팅 가이드](./troubleshooting/)를 참고하세요.
 
 ---
 
-**💡 팁**: 2일차는 1일차에서 학습한 컨테이너 기술을 바탕으로 실제 운영 환경에서 요구되는 고가용성과 안정성을 확보하는 방법을 학습합니다. 각 실습을 차근차근 따라하면서 실무 역량을 강화해보세요!
+**🎯 이제 클라우드 컨테이너 기술의 모든 기본기를 갖추었습니다! 실제 프로젝트에 적용해보세요.**

@@ -1,104 +1,423 @@
-# 클라우드 엔지니어링 부트캠프: AWS · GCP · Azure (8일 과정)
+# 클라우드 실무력 강화! AWS & GCP 활용법 - 통합 인덱스
 
-7일 동안 AWS, GCP, Azure의 핵심을 배우고, 클라우드 네이티브 전문가로 거듭나는 여정에 오신 것을 환영합니다.
+<details>
+<summary>📋 목차</summary>
 
-## 🎯 과정 목표
-이 부트캠프는 **기초 → 중급 → 실전** 단계별로 진행되어, 클라우드 실무력을 체계적으로 강화합니다.
+1. [🎯 전체 과정 개요](#-전체-과정-개요)
+2. [📚 과정별 상세 정보](#-과정별-상세-정보)
+3. [🔗 과정 간 연계성](#-과정-간-연계성)
+4. [🛠️ 실습 환경 및 도구](#-실습-환경-및-도구)
+5. [📋 학습 경로 및 체크리스트](#-학습-경로-및-체크리스트)
+6. [📚 참고 자료 및 리소스](#-참고-자료-및-리소스)
 
----
-
-## 📚 **Part 1: 기초 과정 (Day 1-2)**
-### **Day 1: 클라우드 첫걸음**
-> 클라우드 컴퓨팅의 기본 개념을 이해하고, 실습을 위한 AWS/GCP/Azure 계정을 생성 및 설정합니다.
-
-*   [1-1. 클라우드 컴퓨팅 소개](./part1/day1/1-1_introduction_to_cloud.md)
-*   [1-2. AWS/GCP 계정 생성 및 초기 설정](./part1/day1/1-2_account_setup.md)
-*   [1-3. 클라우드 서비스 유형 및 사례 분석](./part1/day1/1-3_customers_and_services.md)
-
-### **Day 2: 개발 환경 구축과 핵심 개념**
-> CLI를 사용하여 클라우드를 제어하는 방법을 배우고, 가장 중요한 핵심 서비스(컴퓨팅, 스토리지, 네트워크)의 개념을 다집니다.
-
-*   [2-1. AWS/GCP CLI 설치 및 인증](./part1/day2/2-1_cli_setup.md)
-*   [2-2. 클라우드 핵심 서비스 개념 (VPC, S3, EC2)](./part1/day2/2-2_cloud_fundamentals.md)
+</details>
 
 ---
 
-## 🚀 **Part 2: 중급 과정 (Day 3-5)**
-### **Day 3: 아키텍처 비교 분석**
-> 동일한 목표를 AWS/GCP/Azure에서 어떻게 달성하는지, 주요 서비스들을 비교하며 아키텍처 설계 능력을 기릅니다.
+## 🎯 전체 과정 개요
 
-*   [3-1. 컴퓨팅 서비스 비교 (EC2 vs Compute Engine vs Azure VMs, Lambda vs Cloud Functions vs Azure Functions)](./part2/day3/3-1_compute_comparison.md)
-*   [3-2. 스토리지 서비스 비교 (S3 vs Cloud Storage vs Azure Blob Storage)](./part2/day3/3-2_storage_comparison.md)
-*   [3-3. 네트워크 서비스 비교 (VPC vs VNet)](./part2/day3/3-3_network_comparison.md)
-*   [3-4. 데이터베이스 서비스 비교 (RDS vs Cloud SQL vs Azure SQL)](./part2/day3/3-4_database_comparison.md)
+<details>
+<summary>📖 4단계 과정 구조</summary>
 
-### **Day 4: 코드로 인프라 관리하기 (IaC)**
-> Terraform을 사용하여 인프라를 코드로 관리하는 방법을 배우고, AWS/GCP/Azure에 직접 인프라를 구축하는 실습을 진행합니다.
+### 과정 구성
+| 과정 | 일정 | 대상 | 주요 내용 | 선수 요구사항 |
+|------|------|------|-----------|---------------|
+| **Cloud Basic** | 2일 | 클라우드 입문자 | AWS/GCP 기초 서비스, IAM, VM, 스토리지, 네트워크 | IT 기초 지식 |
+| **Cloud Intermediate** | 1일 | Basic 수료자 | Docker, Git/GitHub, GitHub Actions, VM 배포 | Cloud Basic 수료 |
+| **Cloud Master** | 2일 | Intermediate 수료자 | CI/CD, VM 기반 컨테이너 배포, 로드 밸런싱 | Cloud Intermediate 수료 |
+| **Cloud Container** | 2일 | Master 수료자 | K8s, ECS, Fargate, 고가용성 아키텍처 | Cloud Master 수료 |
 
-*   [4-1. Terraform 소개 및 기본 사용법](./part2/day4/4-1_terraform_basics.md)
-*   [4-2. Terraform으로 AWS/GCP/Azure 인프라 구축 실습](./part2/day4/4-2_terraform_practice.md)
+### 학습 경로
+```
+Cloud Basic (2일) → Cloud Intermediate (1일) → Cloud Master (2일) → Cloud Container (2일)
+     ↓                    ↓                        ↓                        ↓
+기초 서비스 실습    →   Docker/Git/GitHub    →   CI/CD/VM 컨테이너    →   K8s/ECS/Fargate
+```
 
-### **Day 5: 비용 최적화와 CI/CD 파이프라인**
-> 클라우드 비용 구조를 이해하고 절감하는 전략을 배우며, CI/CD 파이프라인을 구축하여 배포를 자동화합니다.
-
-*   [5-1. 비용 최적화 전략 및 도구](./part2/day5/5-1_cost_optimization.md)
-*   [5-2. CI/CD 파이프라인 구축 (GitHub Actions, Docker)](./part2/day5/5-2_devops_cicd.md)
-
----
-
-## 🏆 **Part 3: 실전 과정 (Day 6-7)**
-### **Day 6: 컨테이너와 고급 배포 전략**
-> 애플리케이션 배포의 표준인 컨테이너 기술(Docker, Kubernetes)을 깊이 있게 탐구하고, 고가용성을 위한 고급 배포 관리 기법을 학습합니다.
-
-*   [6-1. 컨테이너 심화 (Docker, Kubernetes)](./part3/day6/6-1_container_deep_dive.md)
-*   [6-2. 심화 배포 관리 (Auto Scaling, 로드밸런싱)](./part3/day6/6-2_advanced_deployment.md)
-
-### **Day 7: 보안 및 DevOps 심화**
-> 클라우드 환경을 안전하게 보호하기 위한 보안 원칙과 서비스를 배우고, GitOps와 같은 고급 DevOps 워크플로우를 실습합니다.
-
-*   [7-1. 클라우드 보안 및 규정 준수](./part3/day7/7-1_security_compliance.md)
-*   [7-2. 클라우드 기반 DevOps(CI/CD) 심화 실습](./part3/day7/7-2_advanced_devops.md)
+</details>
 
 ---
 
-## 📋 **학습 성과 및 실무 적용**
+## 📚 과정별 상세 정보
 
-### **기초 과정 완료 후**
-- 클라우드 컴퓨팅 기초 개념 이해
-- 클라우드 서비스 유형 및 사례 분석 능력
-- 클라우드 서비스 환경 구성 실습 경험
+<details>
+<summary>📖 Cloud Basic - 클라우드 기초</summary>
 
-### **중급 과정 완료 후**
-- 클라우드 심화 서비스 활용 전략 수립
-- 컨테이너 및 심화 배포 관리 실습 능력
-- 클라우드 기반 DevOps(CI/CD) 심화 실습 경험
+### 과정 개요
+- **교육명**: 클라우드 실무력 강화! AWS & GCP 활용법(기초)
+- **교육일정**: 9/2(수) ~ 9/3(목)
+- **교육시간**: 9:00 ~ 17:00 (7시간/일)
+- **교육방식**: 오프라인
+- **실습 환경**: AWS Free Tier + GCP Free Tier ($300 크레딧)
 
-### **실전 과정 완료 후**
-- GitHub Actions, Docker로 자동 배포 실습 완료
-- Auto Scaling, 로드밸런싱 구성 실습 능력
-- 비용 분석, 절감 사례 기반 전략 수립 및 발표
+### 주요 내용
+1. **클라우드 개념 및 계정 생성** (30분)
+2. **IAM 기초 실습** (45분)
+3. **가상머신 서비스 기초** (60분)
+4. **스토리지 서비스 기초** (45분)
+
+### 실습 자료
+- 🔗 [1일차 실습 가이드](./cloud_basic/textbook/Day1/README.md)
+- 🔗 [2일차 실습 가이드](./cloud_basic/textbook/Day2/README.md)
+- 🔗 [AWS 기초 실습](./cloud_basic/textbook/Day1/practice/aws_basic_practice.md)
+- 🔗 [GCP 기초 실습](./cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
+- 🔗 [통합 실습 가이드](./cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md)
+
+</details>
+
+<details>
+<summary>📖 Cloud Intermediate - 중급 과정</summary>
+
+### 과정 개요
+- **교육명**: 클라우드 실무력 강화! AWS & GCP 활용법(중급)
+- **교육일정**: 9/10(화) (1일, 총 7시간)
+- **교육시간**: 9:00 ~ 17:00 (7시간)
+- **교육방식**: 온라인/오프라인 혼합
+- **실습 환경**: AWS Free Tier + GCP Free Tier ($300 크레딧) + GitHub Free
+
+### 주요 내용
+1. **Docker 기초 및 컨테이너 기술** (90분)
+2. **Git/GitHub 기초 및 협업** (45분)
+3. **GitHub Actions CI/CD 파이프라인** (120분)
+4. **VM 기반 웹 애플리케이션 배포** (90분)
+
+### 실습 자료
+- 🔗 [1일차 실습 가이드](./cloud_intermediate/textbook/Day1/README.md)
+- 🔗 [Docker 기초 실습](./cloud_intermediate/textbook/Day1/practice/docker-basics.md)
+- 🔗 [GitHub Actions 기초 실습](./cloud_intermediate/textbook/Day1/practice/github-actions-basics.md)
+- 🔗 [VM 배포 실습](./cloud_intermediate/textbook/Day1/practice/vm-deployment.md)
+
+</details>
+
+<details>
+<summary>📖 Cloud Master - 마스터 과정</summary>
+
+### 과정 개요
+- **교육명**: 클라우드 실무력 강화! AWS & GCP 활용법(마스터)
+- **교육일정**: 9/22(월) ~ 9/23(화)
+- **교육시간**: 9:00 ~ 17:00 (7시간/일)
+- **교육방식**: 온라인
+- **실습 환경**: AWS Free Tier + GCP Free Tier ($300 크레딧) + GitHub Free
+
+### 주요 내용
+1. **Docker 기초 및 Dockerfile 최적화** (120분)
+2. **GitHub Actions CI/CD 파이프라인** (150분)
+3. **VM 기반 컨테이너 배포** (120분)
+4. **완전 자동화된 VM 배포 파이프라인** (90분)
+
+### 실습 자료
+- 🔗 [1일차 실습 가이드](./cloud_master/textbook/Day1/README.md)
+- 🔗 [2일차 실습 가이드](./cloud_master/textbook/Day2/README.md)
+- 🔗 [Docker 고급 실습](./cloud_master/textbook/Day1/docker-advanced-guide.md)
+- 🔗 [GitHub Actions 고급 실습](./cloud_master/textbook/Day1/github-actions-advanced-guide.md)
+- 🔗 [VM 배포 자동화](./cloud_master/textbook/Day1/vm-deployment-automation-guide.md)
+
+</details>
+
+<details>
+<summary>📖 Cloud Container - 컨테이너 심화</summary>
+
+### 과정 개요
+- **교육명**: 클라우드 실무력 강화! AWS & GCP 활용법(컨테이너 심화)
+- **교육일정**: 10/1(수) ~ 10/2(목)
+- **교육시간**: 9:00 ~ 17:00 (7시간/일)
+- **교육방식**: 오프라인
+- **실습 환경**: AWS Free Tier + GCP Free Tier ($300 크레딧) + GitHub Free
+
+### 주요 내용
+1. **Kubernetes 고급 아키텍처** (150분)
+2. **컨테이너 오케스트레이션 고급 기법** (150분)
+3. **AWS ECS 및 Fargate 심화** (120분)
+4. **고급 CI/CD 파이프라인** (90분)
+
+### 실습 자료
+- 🔗 [1일차 실습 가이드](./cloud_container/textbook/Day1/README.md)
+- 🔗 [2일차 실습 가이드](./cloud_container/textbook/Day2/README.md)
+- 🔗 [Kubernetes 기초 실습](./cloud_container/textbook/Day1/practice/kubernetes-basics.md)
+- 🔗 [GKE 클러스터 관리](./cloud_container/textbook/Day1/practice/gke-cluster-management.md)
+- 🔗 [ECS/Fargate 실습](./cloud_container/textbook/Day1/practice/ecs-fargate-practice.md)
+
+</details>
 
 ---
 
-## 🛠️ **실습 환경 및 도구**
+## 🔗 과정 간 연계성
 
-### **필수 도구**
-- AWS CLI, Azure CLI, gcloud CLI
-- Terraform
-- Docker, Docker Compose
-- Kubernetes (minikube 또는 클라우드 서비스)
-- GitHub Actions
-- VS Code 또는 선호하는 IDE
+<details>
+<summary>📖 학습 경로</summary>
 
-- AWS Free Tier 계정
-- Azure Free 계정
-- GCP Free Tier 계정
-- GitHub 계정
+### 단계별 학습 경로
+```
+Cloud Basic (2일)
+    ↓
+    ├── AWS/GCP 기초 서비스 실습
+    ├── IAM 사용자 및 권한 관리
+    ├── EC2/Compute Engine 인스턴스 생성
+    └── S3/Cloud Storage 버킷 관리
+    ↓
+Cloud Intermediate (1일)
+    ↓
+    ├── Docker 컨테이너 기술
+    ├── Git/GitHub 버전 관리
+    ├── GitHub Actions CI/CD
+    └── VM 기반 웹 애플리케이션 배포
+    ↓
+Cloud Master (2일)
+    ↓
+    ├── Docker 고급 기술 및 최적화
+    ├── GitHub Actions 고급 워크플로우
+    ├── VM 기반 컨테이너 배포 자동화
+    └── 로드 밸런싱 및 모니터링
+    ↓
+Cloud Container (2일)
+    ↓
+    ├── Kubernetes 클러스터 아키텍처
+    ├── GKE 클러스터 관리
+    ├── ECS/Fargate 서버리스 컨테이너
+    └── 고가용성 아키텍처 설계
+```
+
+</details>
+
+<details>
+<summary>📖 선수 요구사항 체크리스트</summary>
+
+### Cloud Basic
+- [ ] IT 기초 지식 (OS, 네트워크 기본 이해)
+- [ ] Linux 기본 명령어 경험 권장
+- [ ] 웹 브라우저 사용 가능
+
+### Cloud Intermediate
+- [ ] Cloud Basic 과정 수료
+- [ ] AWS/GCP 기초 서비스 실습 완료
+- [ ] 기본적인 명령줄 사용 경험
+
+### Cloud Master
+- [ ] Cloud Intermediate 과정 수료
+- [ ] Docker, Git, CI/CD 기초 학습 완료
+- [ ] VM 기반 웹 애플리케이션 배포 경험
+
+### Cloud Container
+- [ ] Cloud Master 과정 수료
+- [ ] CI/CD, VM 기반 컨테이너 배포 완료
+- [ ] 고급 컨테이너 오케스트레이션 학습 준비
+
+</details>
 
 ---
 
-### **부록**
+## 🛠️ 실습 환경 및 도구
 
-*   [실습 환경 구성 가이드](./appendix/practice_guide.md)
-*   [비용 최적화 체크리스트](./appendix/cost_optimization_checklist.md)
-*   [보안 모범 사례 가이드](./appendix/security_best_practices.md)
+<details>
+<summary>📋 공통 도구</summary>
+
+### 필수 도구
+- **웹 브라우저**: Chrome, Firefox, Safari 등
+- **터미널/명령 프롬프트**: CLI 명령어 실행용
+- **SSH 클라이언트**: 가상머신 접속용
+- **VS Code**: 코드 편집 (권장)
+
+### 클라우드 도구
+- **AWS CLI**: AWS 서비스 관리
+- **gcloud CLI**: Google Cloud 서비스 관리
+- **Docker**: 컨테이너 이미지 빌드 및 실행
+- **kubectl**: Kubernetes 클러스터 관리
+
+</details>
+
+<details>
+<summary>📋 계정 및 환경</summary>
+
+### 필수 계정
+- **AWS 계정**: Free Tier 계정
+- **GCP 계정**: $300 크레딧 활성화
+- **GitHub 계정**: 저장소 관리 및 Actions 사용
+- **Docker Hub 계정**: 컨테이너 이미지 저장소
+
+### 실습 환경
+- **로컬 환경**: Docker, Git, CLI 도구
+- **클라우드 환경**: AWS, GCP 서비스
+- **협업 환경**: GitHub, Docker Hub
+
+</details>
+
+---
+
+## 📋 학습 경로 및 체크리스트
+
+<details>
+<summary>📖 전체 학습 체크리스트</summary>
+
+### Cloud Basic 체크리스트
+- [ ] AWS 계정 생성 및 기본 설정
+- [ ] GCP 계정 생성 및 기본 설정
+- [ ] IAM 사용자 및 권한 관리
+- [ ] EC2/Compute Engine 인스턴스 생성
+- [ ] S3/Cloud Storage 버킷 생성 및 관리
+- [ ] 네트워킹 기본 개념 이해
+- [ ] 보안 그룹 및 방화벽 설정
+
+### Cloud Intermediate 체크리스트
+- [ ] Docker 컨테이너 기본 사용법
+- [ ] Dockerfile 작성 및 이미지 빌드
+- [ ] Git/GitHub 버전 관리
+- [ ] GitHub Actions CI/CD 파이프라인
+- [ ] VM 기반 웹 애플리케이션 배포
+- [ ] 자동화된 배포 파이프라인 구축
+
+### Cloud Master 체크리스트
+- [ ] Docker 고급 기술 및 최적화
+- [ ] 멀티스테이지 빌드 및 Docker Compose
+- [ ] GitHub Actions 고급 워크플로우
+- [ ] 환경별 배포 전략
+- [ ] VM 기반 컨테이너 배포 자동화
+- [ ] 로드 밸런싱 및 Auto Scaling
+- [ ] 모니터링 및 로깅 시스템
+
+### Cloud Container 체크리스트
+- [ ] Kubernetes 클러스터 아키텍처 이해
+- [ ] GKE 클러스터 생성 및 관리
+- [ ] Deployment, Service, Ingress 설정
+- [ ] ConfigMap, Secret, PersistentVolume 관리
+- [ ] ECS 클러스터 구성 및 태스크 정의
+- [ ] Fargate 서버리스 컨테이너 실행
+- [ ] GitOps 기반 배포 자동화
+
+</details>
+
+<details>
+<summary>📖 실무 적용 체크리스트</summary>
+
+### 프로젝트 적용
+- [ ] 자신의 프로젝트에 클라우드 서비스 적용
+- [ ] CI/CD 파이프라인 구축
+- [ ] 컨테이너화 및 오케스트레이션
+- [ ] 모니터링 및 로깅 시스템 구축
+- [ ] 보안 정책 및 컴플라이언스 적용
+
+### 고급 기능
+- [ ] 마이크로서비스 아키텍처 설계
+- [ ] 서비스 메시 구현
+- [ ] 자동 스케일링 및 로드 밸런싱
+- [ ] 재해 복구 및 백업 전략
+- [ ] 비용 최적화 및 성능 튜닝
+
+</details>
+
+---
+
+## 📚 참고 자료 및 리소스
+
+<details>
+<summary>📖 공식 문서</summary>
+
+### AWS 공식 문서
+- [AWS 공식 문서](https://docs.aws.amazon.com/)
+- [AWS CLI 공식 문서](https://docs.aws.amazon.com/cli/)
+- [AWS EC2 공식 문서](https://docs.aws.amazon.com/ec2/)
+- [AWS ECS 공식 문서](https://docs.aws.amazon.com/ecs/)
+- [AWS Fargate 공식 문서](https://docs.aws.amazon.com/fargate/)
+
+### GCP 공식 문서
+- [GCP 공식 문서](https://cloud.google.com/docs)
+- [gcloud CLI 공식 문서](https://cloud.google.com/sdk/docs)
+- [GCP Compute Engine 공식 문서](https://cloud.google.com/compute/docs)
+- [GKE 공식 문서](https://cloud.google.com/kubernetes-engine/docs)
+
+### 기타 공식 문서
+- [Docker 공식 문서](https://docs.docker.com/)
+- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
+- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
+
+</details>
+
+<details>
+<summary>📖 유용한 리소스</summary>
+
+### 학습 자료
+- [AWS Free Tier](https://aws.amazon.com/free/)
+- [GCP Free Tier](https://cloud.google.com/free)
+- [Docker Hub](https://hub.docker.com/)
+- [GitHub Marketplace](https://github.com/marketplace?type=actions)
+
+### 샘플 프로젝트
+- [AWS 샘플 프로젝트](https://github.com/aws-samples)
+- [GCP 샘플 프로젝트](https://github.com/GoogleCloudPlatform)
+- [Docker 샘플 프로젝트](https://github.com/docker/awesome-compose)
+- [Kubernetes 샘플 프로젝트](https://github.com/kubernetes/examples)
+
+### 도구 및 유틸리티
+- [AWS CLI](https://aws.amazon.com/cli/)
+- [gcloud CLI](https://cloud.google.com/sdk/docs)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+
+</details>
+
+<details>
+<summary>📖 커뮤니티 및 지원</summary>
+
+### 커뮤니티
+- [AWS 한국 사용자 그룹](https://www.meetup.com/awskrug/)
+- [GCP 한국 사용자 그룹](https://www.meetup.com/gcp-korea/)
+- [Kubernetes 한국 사용자 그룹](https://www.meetup.com/kubernetes-korea/)
+- [Docker 한국 사용자 그룹](https://www.meetup.com/docker-korea/)
+
+### 지원 및 문의
+- [AWS 지원](https://aws.amazon.com/support/)
+- [GCP 지원](https://cloud.google.com/support/)
+- [GitHub 지원](https://support.github.com/)
+- [Docker 지원](https://www.docker.com/support/)
+
+</details>
+
+---
+
+## 🎉 시작하기
+
+<details>
+<summary>📖 첫 번째 단계</summary>
+
+### 1. 환경 준비
+1. **계정 생성**: AWS, GCP, GitHub, Docker Hub 계정 생성
+2. **도구 설치**: CLI 도구, Docker, VS Code 설치
+3. **환경 설정**: 각 계정의 CLI 설정 및 인증
+
+### 2. Cloud Basic 시작
+1. **과정 상세 확인**: [Cloud Basic 과정 상세](./cloud_basic/과정상세.md)
+2. **실습 가이드 확인**: [1일차 실습 가이드](./cloud_basic/textbook/Day1/README.md)
+3. **실습 시작**: AWS/GCP 기초 서비스 실습
+
+### 3. 학습 진행
+1. **단계별 학습**: 각 과정을 순서대로 학습
+2. **실습 완료**: 각 실습을 완료하고 체크리스트 확인
+3. **다음 단계**: 다음 과정으로 진행
+
+</details>
+
+<details>
+<summary>📖 도움이 필요하신가요?</summary>
+
+### 자주 묻는 질문
+- **Q: 어떤 과정부터 시작해야 하나요?**
+  - A: Cloud Basic부터 시작하세요. 클라우드 경험이 없으시다면 반드시 기초 과정부터 시작하는 것을 권장합니다.
+
+- **Q: 실습 환경을 어떻게 준비하나요?**
+  - A: 각 과정의 "실습 환경 준비" 섹션을 참고하세요. AWS Free Tier와 GCP Free Tier를 활용하면 비용 없이 실습할 수 있습니다.
+
+- **Q: 과정을 건너뛸 수 있나요?**
+  - A: 각 과정은 이전 과정의 내용을 기반으로 구성되어 있으므로, 순서대로 학습하는 것을 권장합니다.
+
+- **Q: 실습 중 문제가 발생하면 어떻게 하나요?**
+  - A: 각 과정의 "문제 해결 및 참고 자료" 섹션을 참고하세요. 자주 발생하는 문제와 해결 방법이 정리되어 있습니다.
+
+### 추가 지원
+- **이메일 문의**: cloud-training@example.com
+- **슬랙 채널**: #cloud-training-support
+- **오피스 아워**: 매주 화요일, 목요일 14:00-16:00
+
+</details>
+
+---
+
+**🎯 이제 클라우드 실무력 강화 과정을 시작할 준비가 되었습니다! Cloud Basic부터 차근차근 학습해보세요.**
