@@ -1,1004 +1,642 @@
-# 3교시: 클라우드 배포 기초 실습
+# 3교시: GitHub Actions를 통한 가상머신 배포 실습
 
 <details>
 <summary>📋 목차 (클릭하여 펼치기)</summary>
 
-1. [클라우드 배포 개념](#클라우드-배포-개념)
-2. [배포 방식 비교](#배포-방식-비교)
-3. [실습 목표](#실습-목표)
-4. [실습 절차](#실습-절차)
-5. [실습 코드 예시](#실습-코드-예시)
-6. [예상 결과](#예상-결과)
-7. [혼자 해보기](#혼자-해보기)
+1. [🎯 학습 목표](#-학습-목표)
+2. [📦 actions-demo 프로젝트 소개](#-actions-demo-프로젝트-소개)
+3. [🚀 실습 환경 준비](#-실습-환경-준비)
+4. [⚖️ 가상머신 배포 실습](#-가상머신-배포-실습)
+5. [🔧 GitHub Actions 워크플로우 설정](#-github-actions-워크플로우-설정)
+6. [📚 문제 해결 및 참고 자료](#-문제-해결-및-참고-자료)
 
 </details>
 
 ---
 
-## ☁️ 클라우드 배포 개념
+## 🎯 학습 목표
 
-### 클라우드 배포란?
+<details>
+<summary>📖 이번 실습에서 배우게 될 내용 (클릭하여 펼치기)</summary>
 
-클라우드 배포는 **개발한 애플리케이션을 클라우드 환경에서 실행할 수 있도록 배치하는 과정**입니다.
+### 핵심 학습 목표
+- **GitHub Actions CI/CD 파이프라인** 구축 및 이해
+- **가상머신에 Node.js 애플리케이션** 자동 배포
+- **Docker 컨테이너**를 활용한 배포 방식 학습
+- **AWS EC2와 GCP Compute Engine** 두 플랫폼에서의 실습
 
-### 배포의 필요성
+### 실습 후 달성할 수 있는 능력
+- ✅ GitHub Actions 워크플로우 작성 및 관리
+- ✅ 가상머신 인프라 자동 생성 및 설정
+- ✅ Docker를 활용한 애플리케이션 배포
+- ✅ CI/CD 파이프라인 구축 및 모니터링
 
-#### 로컬 개발의 한계
-- 다른 사람이 접근할 수 없음
-- 24시간 실행 불가능
-- 확장성 부족
-- 보안 취약
+### 예상 소요 시간
+- **기본 실습**: 45-60분
+- **고급 실습**: 90-120분
+- **전체 과정**: 2-3시간
 
-#### 클라우드 배포의 장점
-- **전 세계 접근 가능**: 인터넷이 있는 곳 어디서나 접근
-- **24시간 가동**: 서버가 계속 실행되어 서비스 제공
-- **자동 확장**: 트래픽 증가 시 자동으로 리소스 확장
-- **보안 강화**: 클라우드 제공업체의 보안 인프라 활용
-
-### 주요 배포 방식
-
-| 배포 방식 | 설명 | 장점 | 단점 | 적합한 경우 |
-|-----------|------|------|------|-------------|
-| **가상머신** | VM에 애플리케이션 배포 | 완전한 제어 가능 | 관리 복잡 | 전통적인 애플리케이션 |
-| **컨테이너** | Docker 컨테이너로 배포 | 이식성, 일관성 | 오케스트레이션 필요 | 마이크로서비스 |
-| **서버리스** | 함수 단위로 배포 | 비용 효율적, 관리 불필요 | 제한적 | 이벤트 기반 애플리케이션 |
-| **PaaS** | 플랫폼에서 직접 배포 | 간단한 배포 | 제한적 커스터마이징 | 웹 애플리케이션 |
+</details>
 
 ---
 
-## 🚀 가상머신 생성 스크립트 사용법
+## 📦 actions-demo 프로젝트 소개
 
 <details>
-<summary>📁 스크립트 파일 구조 (클릭하여 펼치기)</summary>
+<summary>🎯 프로젝트 개요 (클릭하여 펼치기)</summary>
 
+### 프로젝트 정보
+- **저장소**: [https://github.com/jungfrau70/actions-demo.git](https://github.com/jungfrau70/actions-demo.git)
+- **언어**: JavaScript (76.2%), Dockerfile (23.8%)
+- **목적**: GitHub Actions를 사용한 CI/CD 파이프라인 학습용 데모 프로젝트
+
+### 프로젝트 구조
 ```
-scripts/
-├── aws-ec2-create.sh      # AWS EC2 인스턴스 자동 생성
-├── aws-resource-cleanup.sh # AWS 리소스 정리 및 삭제
-├── aws-setup-helper.sh    # AWS 설정 도우미
-├── gcp-compute-create.sh  # GCP Compute Engine 인스턴스 자동 생성
-├── gcp-project-cleanup.sh # GCP 프로젝트 및 리소스 정리
-├── gcp-setup-helper.sh    # GCP 설정 도우미
-user-data.sh               # AWS EC2 초기화 스크립트
-startup-script.sh          # GCP Compute Engine 초기화 스크립트
+actions-demo/
+├── .github/workflows/     # GitHub Actions 워크플로우
+├── tests/                 # 테스트 파일
+├── app.js                 # Node.js 애플리케이션
+├── package.json           # 의존성 관리
+├── Dockerfile             # Docker 이미지 빌드
+└── README.md              # 프로젝트 문서
 ```
 
 </details>
 
 <details>
-<summary>✨ 스크립트 특징 (클릭하여 펼치기)</summary>
+<summary>🚀 애플리케이션 특징 (클릭하여 펼치기)</summary>
 
-- **자동화**: 복잡한 CLI 명령어를 자동으로 실행
-- **오류 처리**: 각 단계별 오류 검증 및 처리
-- **색상 출력**: 진행 상황을 시각적으로 표시
-- **설정 가능**: 변수 수정으로 환경에 맞게 조정 가능
-- **안전성**: 기존 리소스 중복 생성 방지
-- **재시작 안전성**: 중단되어도 다시 시작 시 기존 리소스 재사용
-- **체크포인트 기능**: 스크립트 중단 시 마지막 성공 지점부터 재시작
-- **자동 정리**: 리소스 정리 스크립트로 완전한 정리 가능
+### Node.js Express 애플리케이션
+- **프레임워크**: Express.js
+- **포트**: 3000 (기본)
+- **기능**: 간단한 웹 서버 및 API 엔드포인트
+- **테스트**: Jest를 사용한 단위 테스트
+
+### Docker 지원
+- **멀티스테이지 빌드**: 최적화된 이미지 크기
+- **보안**: 비루트 사용자로 실행
+- **포트**: 3000번 포트 노출
+
+### GitHub Actions 워크플로우
+- **CI Pipeline**: 코드 품질 검사, 테스트, 빌드
+- **Docker Hub 배포**: Docker 이미지 빌드 및 푸시
+- **가상머신 배포**: AWS EC2, GCP Compute Engine 지원
 
 </details>
 
-### 사용 전 준비사항
-1. **AWS 사용 시:**
-   - AWS CLI 설치 및 설정 (`aws configure`)
-   - 적절한 IAM 권한 보유
-   - 기본 VPC 존재 확인
+<details>
+<summary>🔧 현재 활성화된 워크플로우 (클릭하여 펼치기)</summary>
 
-2. **GCP 사용 시:**
-   - Google Cloud CLI 설치 및 설정 (`gcloud auth login`)
-   - 프로젝트 설정 (`gcloud config set project PROJECT_ID`)
-   - Compute Engine API 활성화
+### ✅ 기본 워크플로우 (활성화됨)
+
+1. **CI Pipeline** (`ci.yml`)
+   - 트리거: `push` (main, develop), `pull_request` (main)
+   - 기능: 코드 품질 검사, 테스트, 빌드
+   - 소요 시간: 약 2-3분
+
+2. **Docker Hub 배포** (`deploy.yml`)
+   - 트리거: `push` (main), `tags` (v*)
+   - 기능: Docker 이미지 빌드 및 Docker Hub 푸시
+   - 소요 시간: 약 3-5분
+
+### 🔧 고급 워크플로우 (비활성화됨)
+
+- `aws-deploy.yml.disabled`: AWS ECS 배포
+- `gcp-deploy.yml.disabled`: GCP Cloud Run 배포
+- `vm-docker-deploy.yml.disabled`: VM Docker 배포
+- `multi-cloud-deploy.yml.disabled`: 멀티클라우드 배포
+
+</details>
 
 ---
 
-## ⚖️ 배포 방식 비교
+## 🚀 실습 환경 준비
 
-### 1. AWS 배포 옵션
+<details>
+<summary>📋 필수 계정 및 도구 (클릭하여 펼치기)</summary>
 
-#### (옵션) AWS EC2 가상머신 생성
+### 필수 계정
+- **GitHub 계정**: 저장소 포크 및 Actions 사용
+- **Docker Hub 계정**: Docker 이미지 저장소
+- **AWS 계정** (선택): EC2 인스턴스 배포용
+- **GCP 계정** (선택): Compute Engine 배포용
 
-**자동화 스크립트 사용 (권장):**
+### 필수 도구
+- **Git**: 코드 버전 관리
+- **Docker**: 컨테이너 이미지 빌드 및 실행
+- **Node.js**: 로컬 개발 및 테스트
+
+</details>
+
+<details>
+<summary>🔧 GitHub 저장소 설정 (클릭하여 펼치기)</summary>
+
+### 1단계: 저장소 포크
+1. [actions-demo 저장소](https://github.com/jungfrau70/actions-demo.git) 방문
+2. "Fork" 버튼 클릭하여 자신의 계정으로 포크
+3. 포크된 저장소를 로컬로 클론
 
 ```bash
-# 1. AWS 설정 도우미 실행 (권장)
-chmod +x scripts/aws-setup-helper.sh
-./scripts/aws-setup-helper.sh
-
-# 2. AWS EC2 인스턴스 자동 생성
-chmod +x scripts/aws-ec2-create.sh
-./scripts/aws-ec2-create.sh
-
-# 3. 리소스 정리 (실습 완료 후)
-chmod +x scripts/aws-resource-cleanup.sh
-./scripts/aws-resource-cleanup.sh
+git clone https://github.com/YOUR_USERNAME/actions-demo.git
+cd actions-demo
 ```
 
-**수동 명령어 실행:**
+### 2단계: GitHub Secrets 설정
+저장소 → Settings → Secrets and variables → Actions
+
+<details>
+<summary>🔑 Docker Hub 설정</summary>
+
+**DOCKERHUB_TOKEN** 추가:
+1. Docker Hub → Account Settings → Security
+2. "New Access Token" 클릭
+3. 토큰 이름 입력 후 생성
+4. 생성된 토큰을 GitHub Secrets에 추가
+
+</details>
+
+<details>
+<summary>🔑 AWS 설정 (선택)</summary>
+
+**AWS_ACCESS_KEY_ID** 및 **AWS_SECRET_ACCESS_KEY** 추가:
+1. AWS IAM → Users → Create user
+2. Programmatic access 선택
+3. EC2FullAccess, VPCFullAccess 권한 부여
+4. Access Key ID와 Secret Access Key를 GitHub Secrets에 추가
+
+</details>
+
+<details>
+<summary>🔑 GCP 설정 (선택)</summary>
+
+**GCP_SA_KEY** 추가:
+1. GCP Console → IAM & Admin → Service Accounts
+2. Service Account 생성
+3. Compute Instance Admin 역할 부여
+4. JSON 키 파일 다운로드
+5. JSON 내용을 GitHub Secrets에 추가
+
+</details>
+
+</details>
+
+<details>
+<summary>🐳 Docker 환경 설정 (클릭하여 펼치기)</summary>
+
+### Docker 설치 확인
+```bash
+# Docker 버전 확인
+docker --version
+docker-compose --version
+
+# Docker 서비스 상태 확인
+docker info
+```
+
+### Docker Hub 로그인
+```bash
+# Docker Hub에 로그인
+docker login
+
+# 로그인 확인
+docker system info | grep Username
+```
+
+</details>
+
+---
+
+## ⚖️ 가상머신 배포 실습
+
+<details>
+<summary>🖥️ AWS EC2 가상머신 배포 (클릭하여 펼치기)</summary>
+
+### 🚀 GitHub Actions를 통한 자동 배포
+
+<details>
+<summary>⚡ 1단계: VM Docker 배포 워크플로우 활성화</summary>
 
 ```bash
-# 1. AWS CLI 설정 확인
-aws configure list
-aws sts get-caller-identity
+# 1. 저장소 클론
+git clone https://github.com/YOUR_USERNAME/actions-demo.git
+cd actions-demo
 
-# 2. 기본 VPC 및 서브넷 확인
-aws ec2 describe-vpcs --query 'Vpcs[?IsDefault==`true`]'
-aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-xxxxxxxx" --query 'Subnets[*].[SubnetId,AvailabilityZone,CidrBlock]'
+# 2. VM Docker 배포 워크플로우 활성화
+mv .github/workflows/vm-docker-deploy.yml.disabled .github/workflows/vm-docker-deploy.yml
 
-# 3. 보안 그룹 생성
-aws ec2 create-security-group \
-    --group-name cloud-deployment-sg \
-    --description "Security group for Cloud Deployment" \
-    --vpc-id vpc-xxxxxxxx
+# 3. 변경사항 커밋 및 푸시
+git add .
+git commit -m "Enable VM Docker deployment workflow"
+git push origin main
+```
 
-# 4. 보안 그룹 규칙 추가 (SSH, HTTP, HTTPS)
-aws ec2 authorize-security-group-ingress \
-    --group-id sg-xxxxxxxx \
-    --protocol tcp \
-    --port 22 \
-    --cidr 0.0.0.0/0
+</details>
 
-aws ec2 authorize-security-group-ingress \
-    --group-id sg-xxxxxxxx \
-    --protocol tcp \
-    --port 80 \
-    --cidr 0.0.0.0/0
+<details>
+<summary>⚡ 2단계: GitHub Actions 워크플로우 확인</summary>
 
-aws ec2 authorize-security-group-ingress \
-    --group-id sg-xxxxxxxx \
-    --protocol tcp \
-    --port 443 \
-    --cidr 0.0.0.0/0
+### 워크플로우 실행 확인
+1. GitHub 저장소 → Actions 탭
+2. "VM Docker Deploy" 워크플로우 실행 확인
+3. 각 단계별 로그 확인
 
-# 5. 키 페어 생성 (없는 경우)
-aws ec2 create-key-pair \
-    --key-name cloud-deployment-key \
-    --query 'KeyMaterial' \
-    --output text > cloud-deployment-key.pem
+### 배포 과정
+1. **코드 체크아웃**: 저장소 코드 다운로드
+2. **Docker 이미지 빌드**: 애플리케이션을 Docker 이미지로 빌드
+3. **Docker Hub 푸시**: 빌드된 이미지를 Docker Hub에 업로드
+4. **EC2 인스턴스 생성**: AWS에서 가상머신 자동 생성
+5. **Docker 컨테이너 배포**: EC2에 애플리케이션 배포
+6. **헬스 체크**: 배포된 애플리케이션 상태 확인
 
-chmod 400 cloud-deployment-key.pem
+</details>
 
-# 6. EC2 인스턴스 생성
-aws ec2 run-instances \
-    --image-id ami-0c02fb55956c7d316 \
-    --count 1 \
-    --instance-type t3.medium \
-    --key-name cloud-deployment-key \
-    --security-group-ids sg-xxxxxxxx \
-    --subnet-id subnet-xxxxxxxx \
-    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=cloud-deployment-server},{Key=Environment,Value=production}]' \
-    --user-data file://user-data.sh
+<details>
+<summary>⚡ 3단계: 배포 결과 확인</summary>
 
-# 7. 인스턴스 상태 확인
+### 배포 성공 확인
+- **GitHub Actions**: 모든 단계가 성공적으로 완료
+- **Docker Hub**: 이미지가 정상적으로 업로드됨
+- **AWS EC2**: 인스턴스가 실행 중이고 애플리케이션 접근 가능
+
+### 접속 정보 확인
+```bash
+# EC2 인스턴스 정보 조회
 aws ec2 describe-instances \
-    --filters "Name=tag:Name,Values=cloud-deployment-server" \
-    --query 'Reservations[*].Instances[*].[InstanceId,State.Name,PublicIpAddress,PrivateIpAddress]'
+    --filters "Name=tag:Name,Values=actions-demo" \
+    --query 'Reservations[*].Instances[*].[InstanceId,State.Name,PublicIpAddress]'
 
-# 8. Elastic IP 할당 (선택사항)
-aws ec2 allocate-address --domain vpc
-aws ec2 associate-address \
-    --instance-id i-xxxxxxxx \
-    --allocation-id eipalloc-xxxxxxxx
-
-# 9. 인스턴스 연결
-ssh -i cloud-deployment-key.pem ec2-user@your-public-ip
-
-# 10. 인스턴스 종료 (정리용)
-aws ec2 terminate-instances --instance-ids i-xxxxxxxx
+# 애플리케이션 접속 테스트
+curl http://YOUR_EC2_PUBLIC_IP:3000
 ```
 
-**추가 유용한 AWS CLI 명령어들:**
-```bash
-# 인스턴스 목록 조회
-aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,State.Name,PublicIpAddress,PrivateIpAddress,Tags[?Key==`Name`].Value|[0]]' --output table
+</details>
 
-# 특정 인스턴스 상세 정보
-aws ec2 describe-instances --instance-ids i-xxxxxxxx
+</details>
 
-# 인스턴스 시작/중지
-aws ec2 start-instances --instance-ids i-xxxxxxxx
-aws ec2 stop-instances --instance-ids i-xxxxxxxx
+<details>
+<summary>☁️ GCP Compute Engine 가상머신 배포 (클릭하여 펼치기)</summary>
 
-# 스냅샷 생성
-aws ec2 create-snapshot --volume-id vol-xxxxxxxx --description "MCP Cloud backup"
+### 🚀 GitHub Actions를 통한 자동 배포
 
-# AMI 생성
-aws ec2 create-image --instance-id i-xxxxxxxx --name "mcp-cloud-ami" --description "MCP Cloud AMI"
-```
-
-#### AWS CLI 설정 및 인증
-```bash
-# AWS CLI 설치 (Linux)
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo ./aws/install
-
-# AWS CLI 설정
-aws configure
-# AWS Access Key ID: [입력]
-# AWS Secret Access Key: [입력]
-# Default region name: ap-northeast-2 (서울)
-# Default output format: json
-
-# 프로필별 설정
-aws configure --profile mcp-cloud
-aws configure list-profiles
-
-# 환경 변수로 설정
-export AWS_ACCESS_KEY_ID=your-access-key
-export AWS_SECRET_ACCESS_KEY=your-secret-key
-export AWS_DEFAULT_REGION=ap-northeast-2
-
-# IAM 역할 사용 (EC2에서 권장)
-# 인스턴스에 IAM 역할을 연결하면 별도 설정 불필요
-aws sts get-caller-identity
-```
-
-
-#### AWS EC2 (가상머신) - Docker 배포
-```bash
-# EC2 인스턴스에 Docker로 배포
-ssh ec2-user@your-instance.com
-
-# Docker 이미지 다운로드 및 실행
-docker pull your-registry/your-app:latest
-docker stop your-app || true
-docker rm your-app || true
-docker run -d -p 80:3000 --name your-app your-registry/your-app:latest
-
-# 또는 Docker Compose 사용
-docker-compose up -d
-```
-
-#### AWS EC2 (가상머신) - 직접 배포
-```bash
-# EC2 인스턴스에 직접 배포
-ssh ec2-user@your-instance.com
-git clone https://github.com/your-repo.git
-npm install
-npm start
-```
-
-#### AWS Elastic Beanstalk (PaaS)
-```bash
-# EB CLI로 간단 배포
-eb init
-eb create production
-eb deploy
-```
-
-#### AWS ECS (컨테이너)
-```bash
-# ECS에 컨테이너 배포
-aws ecs create-service --cluster my-cluster --service-name my-app
-```
-
-### 2. GCP 배포 옵션
-
-#### (옵션) GCP Compute Engine 가상머신 생성
-
-**자동화 스크립트 사용 (권장):**
+<details>
+<summary>⚡ 1단계: GCP 배포 워크플로우 활성화</summary>
 
 ```bash
-# 1. GCP 설정 도우미 실행 (권장)
-chmod +x scripts/gcp-setup-helper.sh
-./scripts/gcp-setup-helper.sh
+# 1. GCP 배포 워크플로우 활성화
+mv .github/workflows/gcp-deploy.yml.disabled .github/workflows/gcp-deploy.yml
 
-# 2. GCP Compute Engine 인스턴스 자동 생성
-chmod +x scripts/gcp-compute-create.sh
-./scripts/gcp-compute-create.sh
-
-# 3. 리소스 정리 (실습 완료 후)
-chmod +x scripts/gcp-project-cleanup.sh
-./scripts/gcp-project-cleanup.sh PROJECT_ID
+# 2. 변경사항 커밋 및 푸시
+git add .
+git commit -m "Enable GCP deployment workflow"
+git push origin main
 ```
 
-**수동 명령어 실행:**
+</details>
 
+<details>
+<summary>⚡ 2단계: GCP 배포 과정 확인</summary>
+
+### 배포 과정
+1. **코드 체크아웃**: 저장소 코드 다운로드
+2. **Docker 이미지 빌드**: 애플리케이션을 Docker 이미지로 빌드
+3. **Docker Hub 푸시**: 빌드된 이미지를 Docker Hub에 업로드
+4. **GCE 인스턴스 생성**: GCP에서 가상머신 자동 생성
+5. **Docker 컨테이너 배포**: GCE에 애플리케이션 배포
+6. **헬스 체크**: 배포된 애플리케이션 상태 확인
+
+</details>
+
+<details>
+<summary>⚡ 3단계: GCP 배포 결과 확인</summary>
+
+### 배포 성공 확인
+- **GitHub Actions**: 모든 단계가 성공적으로 완료
+- **Docker Hub**: 이미지가 정상적으로 업로드됨
+- **GCP Compute Engine**: 인스턴스가 실행 중이고 애플리케이션 접근 가능
+
+### 접속 정보 확인
 ```bash
-# 1. GCP CLI 설정 확인
-gcloud auth list
-gcloud config list
-gcloud projects list
+# GCE 인스턴스 정보 조회
+gcloud compute instances list --filter="name:actions-demo"
 
-# 2. 프로젝트 설정
-gcloud config set project your-project-id
-gcloud config set compute/region asia-northeast3
-gcloud config set compute/zone asia-northeast3-a
-
-# 3. VPC 네트워크 생성 (선택사항)
-gcloud compute networks create cloud-deployment-vpc --subnet-mode custom
-
-# 4. 서브넷 생성
-gcloud compute networks subnets create cloud-deployment-subnet \
-    --network cloud-deployment-vpc \
-    --range 10.0.0.0/24 \
-    --region asia-northeast3
-
-# 5. 방화벽 규칙 생성
-gcloud compute firewall-rules create allow-ssh \
-    --network cloud-deployment-vpc \
-    --allow tcp:22 \
-    --source-ranges 0.0.0.0/0 \
-    --description "Allow SSH access"
-
-gcloud compute firewall-rules create allow-http \
-    --network cloud-deployment-vpc \
-    --allow tcp:80 \
-    --source-ranges 0.0.0.0/0 \
-    --description "Allow HTTP access"
-
-gcloud compute firewall-rules create allow-https \
-    --network cloud-deployment-vpc \
-    --allow tcp:443 \
-    --source-ranges 0.0.0.0/0 \
-    --description "Allow HTTPS access"
-
-# 6. SSH 키 생성
-gcloud compute os-login ssh-keys add --key-file ~/.ssh/id_rsa.pub
-
-# 7. Compute Engine 인스턴스 생성
-gcloud compute instances create cloud-deployment-server \
-    --zone=asia-northeast3-a \
-    --machine-type=e2-medium \
-    --network-interface=network-tier=PREMIUM,subnet=cloud-deployment-subnet \
-    --maintenance-policy=MIGRATE \
-    --provisioning-model=STANDARD \
-    --service-account=your-service-account@your-project.iam.gserviceaccount.com \
-    --scopes=https://www.googleapis.com/auth/cloud-platform \
-    --create-disk=auto-delete=yes,boot=yes,device-name=cloud-deployment-server,image=projects/ubuntu-os-cloud/global/images/ubuntu-2204-jammy-v20231213,mode=rw,size=20,type=projects/your-project/zones/asia-northeast3-a/diskTypes/pd-standard \
-    --metadata-from-file startup-script=startup-script.sh \
-    --tags=cloud-deployment
-
-# 8. 인스턴스 상태 확인
-gcloud compute instances list
-gcloud compute instances describe cloud-deployment-server --zone=asia-northeast3-a
-
-# 9. 외부 IP 할당 (선택사항)
-gcloud compute addresses create cloud-deployment-ip --region=asia-northeast3
-gcloud compute instances add-access-config cloud-deployment-server \
-    --zone=asia-northeast3-a \
-    --address=cloud-deployment-ip
-
-# 10. 인스턴스 연결
-gcloud compute ssh cloud-deployment-server --zone=asia-northeast3-a
-
-# 11. 인스턴스 삭제 (정리용)
-gcloud compute instances delete cloud-deployment-server --zone=asia-northeast3-a --quiet
+# 애플리케이션 접속 테스트
+curl http://YOUR_GCE_EXTERNAL_IP:3000
 ```
 
-#### GCP CLI 설정 및 인증
-```bash
-# GCP CLI 설치 (Linux)
-curl https://sdk.cloud.google.com | bash
-exec -l $SHELL
+</details>
 
-# GCP CLI 설치 (macOS)
-brew install google-cloud-sdk
-
-# GCP CLI 설치 (Windows)
-# https://cloud.google.com/sdk/docs/install-sdk#windows
-
-# 인증 설정
-gcloud auth login
-gcloud auth application-default login
-
-# 프로젝트 설정
-gcloud projects list
-gcloud config set project your-project-id
-
-# 서비스 계정 키 사용
-gcloud auth activate-service-account --key-file=path/to/service-account-key.json
-
-# 환경 변수로 설정
-export GOOGLE_APPLICATION_CREDENTIALS="path/to/service-account-key.json"
-export GOOGLE_CLOUD_PROJECT="your-project-id"
-```
-
-#### Google Compute Engine (가상머신) - Docker 배포
-```bash
-# GCE 인스턴스에 Docker로 배포
-gcloud compute ssh mcp-cloud-server --zone=asia-northeast3-a
-
-# Docker 이미지 다운로드 및 실행
-docker pull your-registry/your-app:latest
-docker stop your-app || true
-docker rm your-app || true
-docker run -d -p 80:3000 --name your-app your-registry/your-app:latest
-
-# 또는 Docker Compose 사용
-docker-compose up -d
-```
-
-#### Google Compute Engine (가상머신) - 직접 배포
-```bash
-# GCE 인스턴스에 직접 배포
-gcloud compute ssh my-instance
-git clone https://github.com/your-repo.git
-npm install && npm start
-```
-
-#### Google App Engine (PaaS)
-```bash
-# App Engine에 배포
-gcloud app deploy
-```
-
-#### Google Cloud Run (서버리스 컨테이너)
-```bash
-# Cloud Run에 컨테이너 배포
-gcloud run deploy --source .
-
-# 추가 유용한 GCP CLI 명령어들
-# 인스턴스 목록 조회
-gcloud compute instances list --format="table(name,zone,machineType,status,EXTERNAL_IP)"
-
-# 특정 인스턴스 상세 정보
-gcloud compute instances describe cloud-deployment-server --zone=asia-northeast3-a
-
-# 인스턴스 시작/중지
-gcloud compute instances start cloud-deployment-server --zone=asia-northeast3-a
-gcloud compute instances stop cloud-deployment-server --zone=asia-northeast3-a
-
-# 스냅샷 생성
-gcloud compute disks snapshot cloud-deployment-server \
-    --snapshot-names=cloud-deployment-backup \
-    --zone=asia-northeast3-a
-
-# 이미지 생성
-gcloud compute images create cloud-deployment-image \
-    --source-disk=cloud-deployment-server \
-    --source-disk-zone=asia-northeast3-a
-
-# 방화벽 규칙 목록
-gcloud compute firewall-rules list
-
-# 네트워크 목록
-gcloud compute networks list
-
-# 서브넷 목록
-gcloud compute networks subnets list
-```
-
-#### 추가 유용한 클라우드 CLI 명령어들
-
-##### AWS S3 관리
-```bash
-# S3 버킷 생성
-aws s3 mb s3://mcp-cloud-bucket
-
-# 파일 업로드
-aws s3 cp local-file.txt s3://mcp-cloud-bucket/
-
-# 파일 다운로드
-aws s3 cp s3://mcp-cloud-bucket/file.txt ./
-
-# 버킷 목록
-aws s3 ls
-
-# 버킷 내용 조회
-aws s3 ls s3://mcp-cloud-bucket/
-
-# 버킷 삭제
-aws s3 rb s3://mcp-cloud-bucket --force
-```
-
-##### GCP Cloud Storage 관리
-```bash
-# Cloud Storage 버킷 생성
-gsutil mb gs://mcp-cloud-bucket
-
-# 파일 업로드
-gsutil cp local-file.txt gs://mcp-cloud-bucket/
-
-# 파일 다운로드
-gsutil cp gs://mcp-cloud-bucket/file.txt ./
-
-# 버킷 목록
-gsutil ls
-
-# 버킷 내용 조회
-gsutil ls gs://mcp-cloud-bucket/
-
-# 버킷 삭제
-gsutil rm -r gs://mcp-cloud-bucket
-```
-
-##### Docker 및 컨테이너 관리
-```bash
-# Docker 이미지 빌드
-docker build -t mcp-cloud-app .
-
-# Docker 이미지 태그 지정
-docker tag mcp-cloud-app:latest your-registry/mcp-cloud-app:latest
-
-# Docker 이미지 푸시
-docker push your-registry/mcp-cloud-app:latest
-
-# 실행 중인 컨테이너 목록
-docker ps
-
-# 모든 컨테이너 목록
-docker ps -a
-
-# 컨테이너 로그 확인
-docker logs container-name
-
-# 컨테이너 실행
-docker run -d -p 3000:3000 --name mcp-app mcp-cloud-app
-
-# 컨테이너 중지 및 삭제
-docker stop mcp-app
-docker rm mcp-app
-
-# Docker Compose 사용
-docker-compose up -d
-docker-compose down
-docker-compose logs
-```
-
-##### Kubernetes 관리 (kubectl)
-```bash
-# 클러스터 정보 확인
-kubectl cluster-info
-
-# 노드 목록
-kubectl get nodes
-
-# 파드 목록
-kubectl get pods
-
-# 서비스 목록
-kubectl get services
-
-# 배포 목록
-kubectl get deployments
-
-# 파드 로그 확인
-kubectl logs pod-name
-
-# 파드에 접속
-kubectl exec -it pod-name -- /bin/bash
-
-# 매니페스트 적용
-kubectl apply -f deployment.yaml
-
-# 매니페스트 삭제
-kubectl delete -f deployment.yaml
-```
+</details>
 
 ---
 
-## 🎯 실습 목표
+## 🔧 GitHub Actions 워크플로우 설정
 
-이 실습을 통해 다음을 달성합니다:
+<details>
+<summary>📝 워크플로우 파일 구조 (클릭하여 펼치기)</summary>
 
-1. **배포 개념 이해**: 클라우드 배포의 기본 개념과 필요성을 이해합니다.
+### 기본 워크플로우 파일들
 
-2. **간단한 배포 실습**: GitHub Actions를 통해 간단한 배포를 자동화합니다.
-
-3. **배포 결과 확인**: 배포된 애플리케이션이 정상 동작하는지 확인합니다.
-
-4. **배포 방식 비교**: 다양한 배포 방식의 특징을 이해합니다.
-
----
-
-## 📝 실습 절차
-
-### 1단계: 배포 환경 준비
-
-#### GitHub Actions 워크플로우 수정
-기존 `deploy.yml` 파일을 수정하여 실제 배포 시뮬레이션을 추가합니다.
+<details>
+<summary>🔧 CI Pipeline (ci.yml)</summary>
 
 ```yaml
-# .github/workflows/deploy.yml
-name: Deploy to Cloud
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run tests
+      run: npm test
+    
+    - name: Run linting
+      run: npm run lint
+```
+
+</details>
+
+<details>
+<summary>🐳 Docker Hub 배포 (deploy.yml)</summary>
+
+```yaml
+name: Deploy to Docker Hub
 
 on:
   push:
     branches: [ main ]
+  tags:
+    - 'v*'
 
 jobs:
   deploy:
-    name: Deploy Application
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Run tests
-        run: npm test
-      
-      - name: Build application
-        run: npm run build
-      
-      # 배포 시뮬레이션
-      - name: Deploy to AWS EC2 with Docker (Simulation)
-        run: |
-          echo "🚀 Deploying to AWS EC2 with Docker..."
-          echo "📦 Application: actions-demo"
-          echo "🌍 Environment: production"
-          echo "📊 Version: ${{ github.sha }}"
-          echo "🐳 Building Docker image..."
-          echo "🐳 Pushing to Docker Hub..."
-          echo "🖥️  Connecting to EC2 instance..."
-          echo "🐳 Pulling Docker image on EC2..."
-          echo "🚀 Starting container on EC2..."
-          echo "✅ AWS EC2 Docker deployment completed successfully!"
-      
-      - name: Deploy to GCP GCE with Docker (Simulation)
-        run: |
-          echo "🚀 Deploying to GCP GCE with Docker..."
-          echo "📦 Application: actions-demo"
-          echo "🌍 Environment: production"
-          echo "📊 Version: ${{ github.sha }}"
-          echo "🐳 Building Docker image..."
-          echo "🐳 Pushing to Docker Hub..."
-          echo "🖥️  Connecting to GCE instance..."
-          echo "🐳 Pulling Docker image on GCE..."
-          echo "🚀 Starting container on GCE..."
-          echo "✅ GCP GCE Docker deployment completed successfully!"
-      
-      - name: Health Check
-        run: |
-          echo "🔍 Performing health check..."
-          echo "✅ Application is running successfully!"
-          echo "🌐 Service URL: https://your-app.com"
-          echo "📈 Status: Healthy"
-      
-      - name: Deployment Summary
-        run: |
-          echo "=== 🎉 Deployment Summary ==="
-          echo "Application: actions-demo"
-          echo "Version: ${{ github.sha }}"
-          echo "AWS Status: ✅ Success"
-          echo "GCP Status: ✅ Success"
-          echo "Health Check: ✅ Passed"
-          echo "Deployment Time: $(date)"
+    - uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    
+    - name: Build and push
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/actions-demo:latest
 ```
 
-### 2단계: 배포 워크플로우 실행
+</details>
 
-#### 코드 커밋 및 푸시
-```bash
-# 변경사항 커밋
-git add .
-git commit -m "Add cloud deployment simulation"
-git push origin main
+<details>
+<summary>🖥️ VM Docker 배포 (vm-docker-deploy.yml)</summary>
+
+```yaml
+name: Deploy to VM with Docker
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Deploy to AWS EC2
+      if: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/actions-demo:latest
+          docker stop actions-demo || true
+          docker rm actions-demo || true
+          docker run -d -p 3000:3000 --name actions-demo ${{ secrets.DOCKERHUB_USERNAME }}/actions-demo:latest
 ```
 
-#### GitHub Actions 실행 확인
-1. GitHub 저장소 → Actions 탭
-2. "Deploy to Cloud" 워크플로우 실행 확인
-3. 각 단계별 로그 확인
+</details>
 
-### 3단계: 배포 결과 분석
+</details>
 
-#### 성공적인 배포 확인
-- ✅ AWS 배포 시뮬레이션 완료
-- ✅ GCP 배포 시뮬레이션 완료
-- ✅ 헬스체크 통과
-- ✅ 배포 요약 출력
+<details>
+<summary>⚙️ 워크플로우 커스터마이징 (클릭하여 펼치기)</summary>
+
+### 환경별 배포 설정
+
+<details>
+<summary>🌍 환경 변수 설정</summary>
+
+```yaml
+env:
+  NODE_ENV: production
+  PORT: 3000
+  DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/actions-demo
+  DOCKER_TAG: ${{ github.sha }}
+```
+
+</details>
+
+<details>
+<summary>🔄 조건부 배포</summary>
+
+```yaml
+- name: Deploy to Production
+  if: github.ref == 'refs/heads/main'
+  run: echo "Deploying to production"
+
+- name: Deploy to Staging
+  if: github.ref == 'refs/heads/develop'
+  run: echo "Deploying to staging"
+```
+
+</details>
+
+<details>
+<summary>📊 배포 상태 알림</summary>
+
+```yaml
+- name: Notify Deployment Success
+  if: success()
+  run: |
+    echo "✅ Deployment successful!"
+    echo "🌐 Application URL: http://${{ secrets.EC2_HOST }}:3000"
+
+- name: Notify Deployment Failure
+  if: failure()
+  run: |
+    echo "❌ Deployment failed!"
+    echo "🔍 Check the logs for details"
+```
+
+</details>
+
+</details>
 
 ---
 
-## 💻 실습 코드 예시
+## 📚 문제 해결 및 참고 자료
 
-### 배포 상태 확인 스크립트
+<details>
+<summary>🐛 자주 발생하는 문제 (클릭하여 펼치기)</summary>
 
+### GitHub Actions 관련 문제
+
+<details>
+<summary>❌ 워크플로우가 실행되지 않음</summary>
+
+**원인**: 
+- 파일명에 `.disabled`가 있음
+- YAML 문법 오류
+- 권한 부족
+
+**해결방법**:
 ```bash
-#!/bin/bash
-# deploy-check.sh
+# 1. 워크플로우 파일 활성화
+mv .github/workflows/vm-docker-deploy.yml.disabled .github/workflows/vm-docker-deploy.yml
 
-echo "🔍 Checking deployment status..."
+# 2. YAML 문법 검사
+yamllint .github/workflows/*.yml
 
-# 애플리케이션 상태 확인
-echo "📊 Application Status:"
-echo "  - Name: actions-demo"
-echo "  - Version: $GITHUB_SHA"
-echo "  - Environment: production"
-echo "  - Status: Running"
-
-# 서비스 엔드포인트 확인
-echo "🌐 Service Endpoints:"
-echo "  - AWS: https://aws.your-app.com"
-echo "  - GCP: https://gcp.your-app.com"
-
-# 헬스체크
-echo "🔍 Health Check:"
-curl -f https://your-app.com/health && echo "✅ Healthy" || echo "❌ Unhealthy"
-
-echo "✅ Deployment check completed!"
+# 3. 권한 확인
+# GitHub Secrets에 필요한 토큰들이 모두 설정되어 있는지 확인
 ```
 
-### 배포 알림 스크립트
+</details>
 
+<details>
+<summary>❌ Docker Hub 푸시 실패</summary>
+
+**원인**:
+- `DOCKERHUB_TOKEN` 시크릿이 설정되지 않음
+- Docker Hub 계정 권한 부족
+
+**해결방법**:
+1. Docker Hub → Account Settings → Security
+2. Personal Access Token 생성
+3. GitHub Secrets에 `DOCKERHUB_TOKEN` 추가
+
+</details>
+
+<details>
+<summary>❌ AWS EC2 연결 실패</summary>
+
+**원인**:
+- SSH 키 설정 오류
+- 보안 그룹 설정 문제
+- 인스턴스가 아직 시작되지 않음
+
+**해결방법**:
 ```bash
-#!/bin/bash
-# notify-deployment.sh
+# 1. SSH 키 확인
+ssh-keygen -l -f ~/.ssh/id_rsa.pub
 
-DEPLOYMENT_STATUS=$1
-APPLICATION_NAME="actions-demo"
-VERSION=$GITHUB_SHA
+# 2. 보안 그룹 확인
+aws ec2 describe-security-groups --group-ids sg-xxxxxxxx
 
-if [ "$DEPLOYMENT_STATUS" = "success" ]; then
-    echo "🎉 Deployment Successful!"
-    echo "📦 Application: $APPLICATION_NAME"
-    echo "📊 Version: $VERSION"
-    echo "🌍 Environment: production"
-    echo "⏰ Time: $(date)"
-else
-    echo "❌ Deployment Failed!"
-    echo "📦 Application: $APPLICATION_NAME"
-    echo "📊 Version: $VERSION"
-    echo "🔍 Check logs for details"
-fi
+# 3. 인스턴스 상태 확인
+aws ec2 describe-instances --instance-ids i-xxxxxxxx
 ```
+
+</details>
+
+</details>
+
+<details>
+<summary>📖 추가 학습 자료 (클릭하여 펼치기)</summary>
+
+### 공식 문서
+- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
+- [Docker 공식 문서](https://docs.docker.com/)
+- [AWS EC2 공식 문서](https://docs.aws.amazon.com/ec2/)
+- [GCP Compute Engine 공식 문서](https://cloud.google.com/compute/docs)
+
+### 유용한 리소스
+- [GitHub Actions Marketplace](https://github.com/marketplace?type=actions)
+- [Docker Hub](https://hub.docker.com/)
+- [AWS Free Tier](https://aws.amazon.com/free/)
+- [GCP Free Tier](https://cloud.google.com/free)
+
+### 관련 프로젝트
+- [actions-demo 저장소](https://github.com/jungfrau70/actions-demo.git)
+- [GitHub Actions 예제 모음](https://github.com/actions/starter-workflows)
+
+</details>
+
+<details>
+<summary>🚀 다음 단계 (클릭하여 펼치기)</summary>
+
+### 고급 기능 구현
+1. **멀티클라우드 배포**: AWS와 GCP 동시 배포
+2. **자동 스케일링**: 트래픽에 따른 인스턴스 자동 확장
+3. **모니터링**: CloudWatch, Stackdriver 연동
+4. **보안 강화**: SSL/TLS 인증서, WAF 설정
+
+### CI/CD 파이프라인 고도화
+1. **테스트 자동화**: 단위 테스트, 통합 테스트, E2E 테스트
+2. **코드 품질**: SonarQube, CodeClimate 연동
+3. **보안 스캔**: Snyk, OWASP ZAP 연동
+4. **성능 테스트**: JMeter, K6 연동
+
+</details>
 
 ---
 
-## 📊 예상 결과
+## 🎉 완료!
 
-### 성공적인 배포 시
+축하합니다! GitHub Actions를 통한 가상머신 배포 실습을 완료했습니다.
 
-```
-🚀 Deploying to AWS EC2 with Docker...
-📦 Application: actions-demo
-🌍 Environment: production
-📊 Version: abc123def456
-🐳 Building Docker image...
-🐳 Pushing to Docker Hub...
-🖥️  Connecting to EC2 instance...
-🐳 Pulling Docker image on EC2...
-🚀 Starting container on EC2...
-✅ AWS EC2 Docker deployment completed successfully!
+### 📚 학습 요약
 
-🚀 Deploying to GCP GCE with Docker...
-📦 Application: actions-demo
-🌍 Environment: production
-📊 Version: abc123def456
-🐳 Building Docker image...
-🐳 Pushing to Docker Hub...
-🖥️  Connecting to GCE instance...
-🐳 Pulling Docker image on GCE...
-🚀 Starting container on GCE...
-✅ GCP GCE Docker deployment completed successfully!
+이번 실습을 통해 다음을 배웠습니다:
 
-🔍 Performing health check...
-✅ Application is running successfully!
-🌐 Service URL: https://your-app.com
-📈 Status: Healthy
+1. **📦 actions-demo 프로젝트**: Node.js Express 애플리케이션 구조 이해
+2. **🚀 실습 환경 준비**: GitHub, Docker Hub, AWS/GCP 계정 설정
+3. **⚖️ 가상머신 배포**: AWS EC2와 GCP Compute Engine 자동 배포
+4. **🔧 GitHub Actions**: CI/CD 파이프라인 구축 및 관리
+5. **📚 문제 해결**: 일반적인 문제와 해결 방법
 
-=== 🎉 Deployment Summary ===
-Application: actions-demo
-Version: abc123def456
-AWS EC2 Docker Status: ✅ Success
-GCP GCE Docker Status: ✅ Success
-Health Check: ✅ Passed
-Deployment Time: 2024-01-15 14:30:25
-```
+### 🚀 다음 단계
 
-### GitHub Actions 실행 결과
+- **실제 프로젝트 적용**: 자신의 프로젝트에 CI/CD 파이프라인 구축
+- **고급 기능 구현**: 모니터링, 자동 스케일링, 보안 강화
+- **다른 플랫폼 탐색**: Azure, DigitalOcean 등 다른 클라우드 플랫폼
 
-- **워크플로우 상태**: ✅ Success
-- **실행 시간**: 약 2-3분
-- **배포 단계**: 모두 성공
-- **알림**: Slack 또는 이메일 발송 (설정된 경우)
+### 💡 추가 학습 자료
+
+- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
+- [Docker 공식 문서](https://docs.docker.com/)
+- [AWS EC2 공식 문서](https://docs.aws.amazon.com/ec2/)
+- [GCP Compute Engine 공식 문서](https://cloud.google.com/compute/docs)
 
 ---
 
-## 🏃‍♂️ 혼자 해보기
-
-### 기본 실습
-1. **배포 시뮬레이션 확장**: 더 많은 배포 단계 추가
-2. **환경별 배포**: staging, production 환경 구분
-3. **배포 롤백**: 실패 시 이전 버전으로 복구
-
-### 고급 실습
-1. **실제 VM 배포**: AWS EC2/GCP GCE에 Docker로 실제 배포
-2. **배포 전략**: Blue-Green, Canary 배포 구현
-3. **모니터링 연동**: 배포 후 자동 모니터링 설정
-4. **Docker Compose 활용**: 복잡한 애플리케이션 스택 배포
-
-### 실무 적용
-1. **팀 프로젝트**: 실제 프로젝트에 배포 파이프라인 적용
-2. **CI/CD 완성**: 테스트 → 빌드 → 배포 전체 자동화
-3. **배포 최적화**: 배포 시간 단축 및 안정성 향상
-
----
-
-## 🚀 고급 기능
-
-### 체크포인트 기능
-
-스크립트는 **체크포인트 기능**을 제공하여 중단되어도 안전하게 재시작할 수 있습니다.
-
-#### 체크포인트 동작 원리
-```bash
-# 스크립트 실행 중 중단 시
-./scripts/aws-ec2-create.sh
-# ... 진행 중 네트워크 오류로 중단 ...
-
-# 다시 실행 시 자동으로 마지막 성공 지점부터 재시작
-./scripts/aws-ec2-create.sh
-# [INFO] 이전 실행에서 중단된 지점을 발견했습니다: vpc_ready
-# [INFO] 네트워크 및 보안 설정이 완료되었습니다. 인스턴스 생성부터 재시작합니다.
-```
-
-#### 체크포인트 파일 관리
-```bash
-# 체크포인트 파일 확인
-ls -la cloud-deployment-checkpoint.txt
-
-# 체크포인트 파일 삭제 (처음부터 다시 시작하려면)
-rm cloud-deployment-checkpoint.txt
-```
-
-### 자동 리소스 정리
-
-실습 완료 후 **자동 정리 스크립트**로 모든 리소스를 깔끔하게 정리할 수 있습니다.
-
-#### AWS 리소스 정리
-```bash
-# AWS 리소스 자동 정리
-chmod +x scripts/aws-resource-cleanup.sh
-./scripts/aws-resource-cleanup.sh
-
-# 정리되는 리소스:
-# - EC2 인스턴스 (종료 및 삭제)
-# - 보안 그룹
-# - 키 페어 (AWS 및 로컬 파일)
-# - Elastic IP (해제)
-# - 체크포인트 파일
-```
-
-#### GCP 리소스 정리
-```bash
-# GCP 프로젝트 자동 정리
-chmod +x scripts/gcp-project-cleanup.sh
-./scripts/gcp-project-cleanup.sh PROJECT_ID
-
-# 정리되는 리소스:
-# - Compute Engine 인스턴스
-# - VPC 네트워크 및 서브넷
-# - 방화벽 규칙
-# - 정적 IP 주소
-# - 프로젝트 (선택사항)
-```
-
-### SSH 키 사전 등록 (GCP)
-
-GCP 스크립트는 **SSH 키를 인스턴스 생성 전에 사전 등록**하여 연결 문제를 방지합니다.
-
-#### SSH 키 등록 과정
-```bash
-# 1. SSH 키 생성
-ssh-keygen -t rsa -b 4096 -f cloud-deployment-key
-
-# 2. 프로젝트 메타데이터에 등록 (모든 VM에서 사용 가능)
-gcloud compute project-info add-metadata \
-    --metadata-from-file ssh-keys=cloud-deployment-key.pub
-
-# 3. OS Login에 등록 (Google 계정으로 자동 인증)
-gcloud compute os-login ssh-keys add \
-    --key-file=cloud-deployment-key.pub
-```
-
-#### 기존 VM에 SSH 키 추가
-```bash
-# 기존 VM에 SSH 키 추가
-chmod +x scripts/gcp-ssh-key-add.sh
-./scripts/gcp-ssh-key-add.sh
-```
-
-### 설정 도우미 활용
-
-복잡한 설정을 **도우미 스크립트**로 간편하게 처리할 수 있습니다.
-
-#### AWS 설정 도우미
-```bash
-# AWS 설정 도우미 실행
-chmod +x scripts/aws-setup-helper.sh
-./scripts/aws-setup-helper.sh
-
-# 확인하는 항목:
-# - AWS CLI 설치 상태
-# - 인증 설정
-# - 기본 리전 설정
-# - VPC 및 서브넷 확인
-```
-
-#### GCP 설정 도우미
-```bash
-# GCP 설정 도우미 실행
-chmod +x scripts/gcp-setup-helper.sh
-./scripts/gcp-setup-helper.sh
-
-# 확인하는 항목:
-# - gcloud CLI 설치 상태
-# - 인증 설정
-# - 프로젝트 설정
-# - 리전 및 존 설정
-# - API 활성화 상태
-```
-
----
-
-## 🔧 문제 해결
-
-### 배포 실패 시
-```bash
-# 로그 확인
-# GitHub Actions → 해당 워크플로우 → 실패한 Job 클릭
-
-# 일반적인 문제들
-1. 권한 부족: GitHub 시크릿 설정 확인
-2. 네트워크 문제: 인터넷 연결 확인
-3. 코드 오류: 테스트 실패 시 코드 수정
-4. SSH 연결 실패: VM 접근 권한 및 키 확인
-5. Docker 이미지 푸시 실패: Docker Hub 토큰 확인
-```
-
-### VM Docker 배포 문제 해결
-
-#### SSH 연결 문제
-```bash
-# SSH 키 권한 확인
-chmod 600 ~/.ssh/id_rsa
-
-# SSH 연결 테스트
-ssh -i ~/.ssh/id_rsa user@your-vm-ip
-
-# GitHub 시크릿 확인
-# AWS_EC2_HOST, AWS_EC2_USER, AWS_EC2_SSH_KEY
-# GCP_GCE_HOST, GCP_GCE_USER, GCP_GCE_SSH_KEY
-```
-
-#### Docker 이미지 문제
-```bash
-# Docker Hub 로그인 확인
-docker login
-
-# 이미지 존재 확인
-docker pull your-registry/your-app:tag
-
-# 컨테이너 상태 확인
-docker ps -a
-docker logs container-name
-```
-
-### 성능 최적화
-```bash
-# 배포 시간 단축
-1. 캐시 활용: npm cache, Docker layer cache
-2. 병렬 실행: 여러 Job을 동시에 실행
-3. 불필요한 단계 제거: 최소한의 단계만 실행
-```
-
----
-
-## 📚 다음 단계
-
-이 3교시를 완료하면 다음을 학습할 수 있습니다:
-
-- **4교시**: 전체 자동 배포 파이프라인 구성
-- **Advanced 과정**: 실제 클라우드 오케스트레이션 (ECS/GKE)
-- **실무 적용**: 팀 프로젝트에 VM Docker 배포 적용
-
-## 🔗 관련 파일
-
-- **VM Docker 배포 워크플로우**: `actions-demo/.github/workflows/vm-docker-deploy.yml`
-- **Docker Compose 예시**: `actions-demo/docker-compose.yml`
-- **SSH 키 설정 가이드**: `aws-gcp-permissions-setup.md`
-
-**🎯 목표**: 클라우드 배포의 기본 개념을 이해하고, GitHub Actions를 통한 자동 배포 파이프라인을 구축할 수 있습니다.
+**🎯 이제 GitHub Actions를 활용한 자동 배포의 기본기를 갖추었습니다! 실제 프로젝트에 적용해보세요.**
