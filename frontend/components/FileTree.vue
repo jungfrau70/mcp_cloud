@@ -16,7 +16,7 @@
         >
           <span v-if="isDirectory(item)" class="icon">{{ isOpen(name) ? '▼' : '▶' }}</span>
           <span v-else class="icon">📄</span>
-          <span class="name">{{ name }}</span>
+          <span class="name" :class="{ 'hidden-item': name.startsWith('.') }">{{ name }}</span>
           <div v-if="isDirectory(item)" class="directory-actions">
             <button @click.stop="showCreateContextMenu($event, name)" class="action-btn" title="새 항목 생성">+</button>
           </div>
@@ -48,7 +48,7 @@
           draggable="true"
         >
           <span class="icon">📄</span>
-          <span class="name">{{ file.name || file }}</span>
+          <span class="name" :class="{ 'hidden-item': (file.name || file).startsWith('.') }">{{ file.name || file }}</span>
         </div>
       </li>
     </ul>
@@ -582,6 +582,12 @@ onUnmounted(() => {
 
 .tree-item.is-file:active {
   cursor: grabbing;
+}
+
+.hidden-item {
+  opacity: 0.6;
+  font-style: italic;
+  color: #6b7280;
 }
 
 .directory-actions {

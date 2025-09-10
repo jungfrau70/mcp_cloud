@@ -22,7 +22,7 @@
 - ✅ **클라우드 배포 기초**: 배포 개념 및 시뮬레이션
 - ✅ **자동 배포 파이프라인**: 테스트 → 빌드 → 배포 자동화
 
-### Advanced 과정에서 확장하는 내용
+### Container 과정에서 확장하는 내용
 - 🚀 **실제 클라우드 배포**: 시뮬레이션을 넘어 실제 AWS/GCP 환경에 배포
 - 🚀 **컨테이너 오케스트레이션**: 다수의 컨테이너를 대규모로 관리
 - 🚀 **고급 배포 전략**: 무중단 배포, 롤백, 트래픽 분산
@@ -30,12 +30,28 @@
 
 ### 학습 경로
 ```
-Master 과정 (기초) → Advanced 과정 (고급)
+Master 과정 (기초) → Container 과정 (고급)
      ↓                    ↓
 시뮬레이션 배포    →    실제 클라우드 배포
 단일 컨테이너     →    컨테이너 오케스트레이션
 기본 CI/CD       →    고급 배포 전략
 ```
+
+### 📦 actions-demo 프로젝트 활용
+Container 과정에서는 Master 과정의 actions-demo 프로젝트를 기반으로 고급 컨테이너 기술을 학습합니다.
+
+#### 프로젝트 설정
+```bash
+# Container 과정용 환경 설정
+./container-demo-setup.sh
+```
+
+#### 생성되는 파일들
+- `k8s/aws-ecs/task-definition.json`: AWS ECS 태스크 정의
+- `k8s/gcp-gke/deployment.yaml`: GCP GKE 배포 매니페스트
+- `k8s/monitoring/`: Prometheus + Grafana 설정
+- `scripts/`: 배포 자동화 스크립트
+- `Dockerfile.container`: 최적화된 Dockerfile
 
 ---
 

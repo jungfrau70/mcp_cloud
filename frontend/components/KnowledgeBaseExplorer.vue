@@ -7,6 +7,9 @@
       <div class="flex items-center justify-between">
         <div></div>
         <div class="flex items-center gap-2">
+          <button @click="toggleHiddenFiles" class="mb-2 px-2 py-1 text-xs border rounded" :class="showHiddenFiles ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'" title="숨김 파일 표시/숨김">
+            {{ showHiddenFiles ? '숨김 파일 숨기기' : '숨김 파일 보기' }}
+          </button>
           <button @click="showAdmin=true; loadAdminPanel()" class="mb-2 px-2 py-1 text-xs border rounded" title="슬라이드 디렉토리 설정">설정</button>
           <button @click="showTrending=true" class="mb-2 px-2 py-1 text-xs border rounded">관심 카테고리</button>
         </div>
@@ -30,6 +33,9 @@
         <div class="flex items-center justify-between mb-2">
           <div></div>
           <div class="flex items-center gap-2">
+            <button @click="toggleHiddenFiles" class="px-2 py-1 text-xs border rounded" :class="showHiddenFiles ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'" title="숨김 파일 표시/숨김">
+              {{ showHiddenFiles ? '숨김 파일 숨기기' : '숨김 파일 보기' }}
+            </button>
             <button @click="showAdmin=true; loadAdminPanel()" class="px-2 py-1 text-xs border rounded" title="슬라이드 디렉토리 설정">설정</button>
             <button @click="showTrending=true" class="px-2 py-1 text-xs border rounded">관심 카테고리</button>
           </div>
@@ -131,6 +137,7 @@ const allKbDirs = ref([])
 const allDirsLoading = ref(false)
 const selectedDirs = ref([])
 const saving = ref(false)
+const showHiddenFiles = ref(false)
 
 // 탭 제거 (검색 + 플로팅 버튼만 유지)
 
@@ -148,7 +155,7 @@ const statusMessage = ref('');
 // Methods
 const loadKnowledgeBaseStructure = async () => {
   try {
-    const response = await fetch(`${apiBase}/v1/knowledge-base/tree`, {
+    const response = await fetch(`${apiBase}/v1/knowledge-base/tree?show_hidden=${showHiddenFiles.value}`, {
       headers: { 'X-API-Key': apiKey }
     });
     
@@ -179,6 +186,13 @@ const tabBtnClass = (tab) => [
 // legacy search handlers removed
 
 // generation now handled by ExternalGeneratePanel
+
+// Toggle hidden files visibility
+const toggleHiddenFiles = async () => {
+  showHiddenFiles.value = !showHiddenFiles.value;
+  isInitialLoading.value = true;
+  await loadKnowledgeBaseStructure();
+};
 
 function taskStatusClass(st){
   if(st==='done') return 'bg-green-100 text-green-700'
@@ -353,6 +367,14 @@ const handleFileMove = async (data) => {
     statusMessage.value = `파일 이동 실패: ${error.message}`;
   }
 };
+
+// Watch for showHiddenFiles changes
+watch(showHiddenFiles, async () => {
+  if (props.mode === 'tree' || props.mode === 'full' || props.mode === 'search') {
+    isInitialLoading.value = true;
+    await loadKnowledgeBaseStructure();
+  }
+});
 
 // Lifecycle
 onMounted(()=>{

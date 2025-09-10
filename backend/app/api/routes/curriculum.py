@@ -4,6 +4,7 @@ from typing import Any, Dict, List
 from pathlib import Path
 from security import get_api_key
 from fastapi.responses import PlainTextResponse, FileResponse
+import urllib.parse
 
 router = APIRouter(prefix="/api/v1/curriculum", tags=["Curriculum"])
 
@@ -20,6 +21,21 @@ def _safe_path(rel: str) -> Path:
     if not str(p).startswith(str(KB_ROOT)):
         raise HTTPException(status_code=400, detail='Invalid path')
     return p
+
+def _encode_filename(filename: str) -> str:
+    """
+    RFC 5987 표준에 따라 파일명을 인코딩합니다.
+    한글 파일명을 안전하게 처리할 수 있습니다.
+    """
+    try:
+        # ASCII 문자만 포함된 경우 그대로 반환
+        filename.encode('ascii')
+        return f'"{filename}"'
+    except UnicodeEncodeError:
+        # 한글이나 다른 유니코드 문자가 포함된 경우 RFC 5987 표준으로 인코딩
+        encoded = urllib.parse.quote(filename, safe='')
+        return f"filename*=UTF-8''{encoded}"
+
 
 def _build_tree() -> Dict[str, Any]:
     # Simple merge of selected dirs under KB_ROOT
@@ -215,11 +231,59 @@ def download_pdf(path: str):
     if pdf_fp.exists():
         return FileResponse(str(pdf_fp), media_type='application/pdf', filename=pdf_fp.name, content_disposition_type='attachment')
 
-    # Fallback: return original text as attachment
+    # Check if it's a markdown file and try to convert to PDF
+    if fp.suffix.lower() in ('.md', '.markdown'):
+        try:
+            # Import markdown_pdf if available
+            try:
+                from markdown_pdf import MarkdownPdf, Section
+                from io import BytesIO
+            except ImportError:
+                # Fallback to plain text if markdown_pdf not available
+                text = fp.read_text(encoding='utf-8', errors='ignore')
+                filename = f"{stem.name}.md"
+                encoded_filename = _encode_filename(filename)
+                return PlainTextResponse(text, headers={'Content-Disposition': f'attachment; {encoded_filename}'})
+            
+            # Read markdown content
+            markdown_content = fp.read_text(encoding='utf-8', errors='ignore')
+            
+            # Convert markdown to PDF
+            pdf = MarkdownPdf()
+            pdf.add_section(Section(markdown_content, toc=False))
+            
+            # Save PDF to a BytesIO object
+            buffer = BytesIO()
+            pdf.save(buffer)
+            buffer.seek(0)
+            
+            # Return PDF with proper filename encoding
+            pdf_filename = f"{stem.name}.pdf"
+            encoded_filename = _encode_filename(pdf_filename)
+            
+            return PlainTextResponse(
+                buffer.getvalue(),
+                media_type="application/pdf",
+                headers={'Content-Disposition': f'attachment; {encoded_filename}'}
+            )
+            
+        except Exception as e:
+            # If PDF conversion fails, fallback to markdown text
+            text = fp.read_text(encoding='utf-8', errors='ignore')
+            filename = f"{stem.name}.md"
+            encoded_filename = _encode_filename(filename)
+            return PlainTextResponse(text, headers={'Content-Disposition': f'attachment; {encoded_filename}'})
+    
+    # Fallback: return original text as attachment for non-markdown files
     try:
         text = fp.read_text(encoding='utf-8', errors='ignore')
     except Exception as e:
         raise HTTPException(status_code=404, detail=f'Not found or unreadable: {e}')
-    return PlainTextResponse(text, headers={'Content-Disposition': f'attachment; filename="{stem.name}.md"'})
+    
+    # 한글 파일명을 안전하게 인코딩
+    filename = f"{stem.name}.txt"
+    encoded_filename = _encode_filename(filename)
+    
+    return PlainTextResponse(text, headers={'Content-Disposition': f'attachment; {encoded_filename}'})
 
 

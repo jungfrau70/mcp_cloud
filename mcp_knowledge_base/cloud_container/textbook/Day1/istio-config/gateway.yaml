@@ -1,0 +1,90 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: container-demo-gateway
+  namespace: container-demo
+  labels:
+    app: container-demo
+    version: v1.0.0
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - container-demo.example.com
+    - "*.container-demo.example.com"
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: container-demo-tls
+    hosts:
+    - container-demo.example.com
+    - "*.container-demo.example.com"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: container-demo-vs
+  namespace: container-demo
+  labels:
+    app: container-demo
+spec:
+  hosts:
+  - container-demo.example.com
+  - "*.container-demo.example.com"
+  gateways:
+  - container-demo-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /api
+    route:
+    - destination:
+        host: container-demo-service
+        port:
+          number: 80
+        subset: v1
+    timeout: 30s
+    retries:
+      attempts: 3
+      perTryTimeout: 10s
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: container-demo-service
+        port:
+          number: 80
+        subset: v1
+    timeout: 30s
+    retries:
+      attempts: 3
+      perTryTimeout: 10s
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: container-demo-dr
+  namespace: container-demo
+  labels:
+    app: container-demo
+spec:
+  host: container-demo-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1
+    labels:
+      version: v1.0.0
+  - name: v2
+    labels:
+      version: v1.1.0

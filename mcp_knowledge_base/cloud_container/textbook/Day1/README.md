@@ -1,412 +1,204 @@
-# Container 심화 과정 1일차: 컨테이너 기술 심화 및 CI/CD 파이프라인
+# Container 과정 실습 가이드
 
-## 📋 목차
-1. [Master 과정과의 연계](#master-과정과의-연계)
-2. [컨테이너 기술 심화](#컨테이너-기술-심화)
-3. [고급 CI/CD 파이프라인](#고급-cicd-파이프라인)
-4. [컨테이너 오케스트레이션 실습](#컨테이너-오케스트레이션-실습)
-5. [실습 프로젝트](#실습-프로젝트)
+## 🎯 과정 개요
 
----
+Container 과정은 Master 과정을 수료한 학습자를 대상으로 **고급 컨테이너 기술**을 학습하는 과정입니다.
 
-## 🔗 Master 과정과의 연계
-
-### Master 과정에서 학습한 내용
-- ✅ **Docker 기초**: 컨테이너 이미지 빌드 및 실행
-- ✅ **GitHub Actions**: CI/CD 파이프라인 구축
-- ✅ **클라우드 배포 기초**: VM 기반 배포
-- ✅ **자동 배포 파이프라인**: 테스트 → 빌드 → 배포 자동화
-
-### Container 과정에서 확장하는 내용
-- 🚀 **Docker 최적화**: 멀티스테이지 빌드, 보안 강화
-- 🚀 **고급 CI/CD**: 환경별 배포, 롤백 전략
-- 🚀 **컨테이너 오케스트레이션**: ECS, GKE 실제 배포
-- 🚀 **운영 자동화**: 모니터링, 로깅, 알림
-
-### 학습 경로
-```
-Master 과정 (기초) → Container 과정 (심화)
-     ↓                    ↓
-VM 기반 배포      →    컨테이너 오케스트레이션
-기본 CI/CD       →    고급 배포 전략
-단일 서비스      →    마이크로서비스 아키텍처
-```
+### 📋 학습 목표
+- Docker 최적화 및 멀티스테이지 빌드
+- GitHub Actions 고급 CI/CD 파이프라인
+- AWS ECS (Fargate) 및 GCP GKE 배포
+- 고가용성 아키텍처 설계
+- 모니터링 및 운영 자동화
 
 ---
 
-## 🐳 컨테이너 기술 심화
+## 🚀 실습 환경 준비
 
-### 1. Dockerfile 최적화
+### 1단계: Master 과정 프로젝트 확인
+Container 과정은 Master 과정의 `actions-demo` 프로젝트를 기반으로 합니다.
 
-#### 멀티스테이지 빌드
-```dockerfile
-# Build stage
-FROM node:18-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-
-# Production stage
-FROM node:18-alpine AS production
-WORKDIR /app
-COPY --from=builder /app/node_modules ./node_modules
-COPY . .
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
-USER nextjs
-EXPOSE 3000
-CMD ["npm", "start"]
-```
-
-#### 보안 강화
-```dockerfile
-# 비루트 사용자로 실행
-RUN adduser -D -s /bin/sh appuser
-USER appuser
-
-# 최소 권한 원칙
-COPY --chown=appuser:appuser . /app
-```
-
-### 2. Docker Compose 고급 활용
-
-#### 다중 서비스 구성
-```yaml
-version: '3.8'
-services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=production
-    depends_on:
-      - redis
-      - postgres
-    networks:
-      - app-network
-
-  redis:
-    image: redis:7-alpine
-    volumes:
-      - redis_data:/data
-    networks:
-      - app-network
-
-  postgres:
-    image: postgres:15-alpine
-    environment:
-      POSTGRES_DB: myapp
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - app-network
-
-volumes:
-  redis_data:
-  postgres_data:
-
-networks:
-  app-network:
-    driver: bridge
-```
-
----
-
-## 🔄 고급 CI/CD 파이프라인
-
-### 1. 환경별 배포 전략
-
-#### Staging → Production 파이프라인
-```yaml
-name: Advanced CI/CD Pipeline
-
-on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run tests
-        run: |
-          npm ci
-          npm run test
-          npm run test:coverage
-
-  build-and-push:
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build and push Docker image
-        run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }} .
-          echo ${{ secrets.DOCKER_HUB_PASSWORD }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
-
-  deploy-staging:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
-    steps:
-      - name: Deploy to Staging
-        run: |
-          # ECS Staging 배포
-          aws ecs update-service --cluster staging-cluster --service myapp-service --force-new-deployment
-
-  deploy-production:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Deploy to Production
-        run: |
-          # ECS Production 배포
-          aws ecs update-service --cluster production-cluster --service myapp-service --force-new-deployment
-```
-
-### 2. Blue-Green 배포
-
-#### 롤백 전략 포함
-```yaml
-  blue-green-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Blue-Green Deployment
-        run: |
-          # 현재 활성 환경 확인
-          CURRENT_ENV=$(aws ecs describe-services --cluster myapp-cluster --services myapp-service --query 'services[0].deployments[0].status' --output text)
-          
-          if [ "$CURRENT_ENV" = "PRIMARY" ]; then
-            # Green 환경으로 배포
-            aws ecs update-service --cluster myapp-cluster --service myapp-service --task-definition myapp-green
-            # 헬스체크 후 트래픽 전환
-            aws elbv2 modify-target-group --target-group-arn $GREEN_TG_ARN --health-check-path /health
-          else
-            # Blue 환경으로 배포
-            aws ecs update-service --cluster myapp-cluster --service myapp-service --task-definition myapp-blue
-          fi
-```
-
----
-
-## ☸️ 컨테이너 오케스트레이션 실습
-
-### 1. AWS ECS 고급 설정
-
-#### Fargate 서비스 구성
-```json
-{
-  "family": "myapp-task",
-  "networkMode": "awsvpc",
-  "requiresCompatibilities": ["FARGATE"],
-  "cpu": "512",
-  "memory": "1024",
-  "executionRoleArn": "arn:aws:iam::ACCOUNT:role/ecsTaskExecutionRole",
-  "taskRoleArn": "arn:aws:iam::ACCOUNT:role/ecsTaskRole",
-  "containerDefinitions": [
-    {
-      "name": "myapp",
-      "image": "myapp:latest",
-      "portMappings": [
-        {
-          "containerPort": 3000,
-          "protocol": "tcp"
-        }
-      ],
-      "environment": [
-        {
-          "name": "NODE_ENV",
-          "value": "production"
-        }
-      ],
-      "secrets": [
-        {
-          "name": "DATABASE_URL",
-          "valueFrom": "arn:aws:ssm:region:account:parameter/myapp/database-url"
-        }
-      ],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "/ecs/myapp",
-          "awslogs-region": "us-west-1",
-          "awslogs-stream-prefix": "ecs"
-        }
-      },
-      "healthCheck": {
-        "command": [
-          "CMD-SHELL",
-          "curl -f http://localhost:3000/health || exit 1"
-        ],
-        "interval": 30,
-        "timeout": 5,
-        "retries": 3,
-        "startPeriod": 60
-      }
-    }
-  ]
-}
-```
-
-### 2. GCP GKE 고급 설정
-
-#### Kubernetes 매니페스트
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: myapp-deployment
-  labels:
-    app: myapp
-spec:
-  replicas: 3
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-  selector:
-    matchLabels:
-      app: myapp
-  template:
-    metadata:
-      labels:
-        app: myapp
-    spec:
-      containers:
-      - name: myapp
-        image: gcr.io/PROJECT_ID/myapp:latest
-        ports:
-        - containerPort: 3000
-        env:
-        - name: NODE_ENV
-          value: "production"
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: myapp-secrets
-              key: database-url
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 5
-          periodSeconds: 5
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: myapp-service
-spec:
-  selector:
-    app: myapp
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 3000
-  type: LoadBalancer
----
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: myapp-hpa
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: myapp-deployment
-  minReplicas: 1
-  maxReplicas: 10
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70
-```
-
----
-
-## 🎯 실습 프로젝트
-
-### Master 과정 연계 실습
-
-#### 1. Master 과정 프로젝트 활용
 ```bash
-# Master 과정에서 생성한 actions-demo 프로젝트 사용
-git clone https://github.com/your-username/actions-demo.git
-cd actions-demo
-
-# Container 과정용 브랜치 생성
-git checkout -b container-advanced
+# Master 과정 프로젝트 경로 확인
+ls ../cloud_master/textbook/Day1/actions-demo/
 ```
 
-#### 2. Dockerfile 최적화
-```dockerfile
-# 기존 Dockerfile을 멀티스테이지 빌드로 최적화
-FROM node:18-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-
-FROM node:18-alpine AS production
-WORKDIR /app
-COPY --from=builder /app/node_modules ./node_modules
-COPY . .
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
-USER nextjs
-EXPOSE 3000
-CMD ["npm", "start"]
-```
-
-#### 3. ECS/GKE 배포 스크립트
+### 2단계: Container 과정용 환경 설정
 ```bash
-# ECS 배포
-./scripts/deploy-ecs.sh
+# Container 과정용 실습 환경 설정
+./container-demo-setup.sh
+```
 
-# GKE 배포
-./scripts/deploy-gke.sh
+### 3단계: 생성된 파일 확인
+```bash
+# 생성된 디렉토리 구조 확인
+tree container-demo/
 ```
 
 ---
 
-## ✅ 실습 체크리스트
+## 📚 실습 순서
 
-- [ ] Master 과정 프로젝트 복제 및 설정
-- [ ] Dockerfile 멀티스테이지 빌드로 최적화
-- [ ] Docker Compose 다중 서비스 구성
-- [ ] GitHub Actions 고급 워크플로우 작성
-- [ ] ECS Fargate 서비스 배포
-- [ ] GKE 클러스터 배포
-- [ ] Blue-Green 배포 전략 구현
-- [ ] 헬스체크 및 모니터링 설정
+### Day 1: 컨테이너 기술 심화
+
+#### 1교시: Docker 최적화 (60분)
+- [Docker 최적화 실습](./docker-optimization-guide.md)
+- 멀티스테이지 빌드 적용
+- 이미지 크기 최적화
+
+#### 2교시: GitHub Actions 고급 기능 (60분)
+- [고급 CI/CD 파이프라인](./advanced-cicd-guide.md)
+- 매트릭스 빌드 설정
+- 보안 스캔 통합
+
+#### 3교시: 클라우드 컨테이너 서비스 (90분)
+- [AWS ECS 배포](./aws-ecs-deployment.md)
+- [GCP Cloud Run 배포](./gcp-cloudrun-deployment.md)
+- [GCP GKE 배포](./gcp-gke-deployment.md)
+
+#### 4교시: 자동화된 배포 전략 (90분)
+- [Blue-Green 배포](./blue-green-deployment.md)
+- [환경 분리 전략](./environment-separation.md)
+
+### Day 2: 고가용성 아키텍처
+
+#### 1교시: 고가용성 아키텍처 설계 (90분)
+- [Multi-AZ 구성](./multi-az-architecture.md)
+- [로드 밸런싱 설정](./load-balancing-setup.md)
+- [Auto Scaling 구성](./auto-scaling-setup.md)
+
+#### 2교시: 모니터링 및 로깅 (90분)
+- [Prometheus + Grafana 설정](./monitoring-setup.md)
+- [CloudWatch 통합](./cloudwatch-integration.md)
+- [알림 시스템 구성](./alerting-setup.md)
+
+#### 3교시: 운영 자동화 (90분)
+- [자동 복구 시나리오](./auto-recovery.md)
+- [보안 정책 적용](./security-policies.md)
+- [비용 최적화](./cost-optimization.md)
 
 ---
 
-## 📚 다음 단계
+## 🔧 필요한 권한 및 설정
 
-다음 단계: [2일차: 고가용성 아키텍처 설계 및 모니터링 실습](../Day2/README.md)
+### AWS 권한
+- ECS 서비스 접근 권한
+- ECR 이미지 푸시 권한
+- CloudWatch 로그 권한
+- IAM 역할 생성 권한
+
+### GCP 권한
+- GKE 클러스터 관리 권한
+- Cloud Run 배포 권한
+- Container Registry 권한
+- Monitoring 권한
+
+### GitHub Secrets
+```bash
+# AWS 관련
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_REGION
+
+# GCP 관련
+GCP_PROJECT_ID
+GCP_SA_KEY
+GCP_REGION
+
+# Docker Hub
+DOCKERHUB_TOKEN
+```
+
+---
+
+## 📋 실습 체크리스트
+
+### Day 1 체크리스트
+- [ ] Docker 최적화 완료
+- [ ] GitHub Actions 고급 워크플로우 설정
+- [ ] AWS ECS 배포 성공
+- [ ] GCP Cloud Run 배포 성공
+- [ ] GCP GKE 배포 성공
+- [ ] Blue-Green 배포 테스트
+
+### Day 2 체크리스트
+- [ ] Multi-AZ 아키텍처 구성
+- [ ] 로드 밸런싱 설정 완료
+- [ ] Auto Scaling 테스트
+- [ ] 모니터링 대시보드 구성
+- [ ] 알림 시스템 설정
+- [ ] 자동 복구 시나리오 테스트
+
+---
+
+## 🐛 문제 해결
+
+### 자주 발생하는 문제
+
+#### 1. Docker 이미지 빌드 실패
+```bash
+# 해결방법: Dockerfile 문법 확인
+docker build -f Dockerfile.container -t container-demo .
+```
+
+#### 2. AWS ECS 배포 실패
+```bash
+# 해결방법: IAM 권한 확인
+aws sts get-caller-identity
+aws ecs list-clusters
+```
+
+#### 3. GCP GKE 배포 실패
+```bash
+# 해결방법: 프로젝트 설정 확인
+gcloud config get-value project
+gcloud auth list
+```
+
+#### 4. 모니터링 데이터 수집 실패
+```bash
+# 해결방법: Prometheus 설정 확인
+kubectl get configmap prometheus-config -o yaml
+```
+
+---
+
+## 📚 참고 자료
+
+### Master 과정 연계
+- [Master 과정 연계 가이드](./master-integration-guide.md)
+- [actions-demo 프로젝트](../cloud_master/textbook/Day1/actions-demo/)
+
+### 공식 문서
+- [Docker 공식 문서](https://docs.docker.com/)
+- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
+- [AWS ECS 공식 문서](https://docs.aws.amazon.com/ecs/)
+- [GCP GKE 공식 문서](https://cloud.google.com/kubernetes-engine/docs)
+
+### 추가 학습 자료
+- [Container 오케스트레이션 가이드](./container-orchestration-guide.md)
+- [Kubernetes 고급 가이드](./kubernetes-advanced-guide.md)
+- [자동 복구 가이드](./auto-recovery-guide.md)
+- [보안 정책 가이드](./security-policies-guide.md)
+- [비용 최적화 가이드](./cost-optimization-guide.md)
+- [종합 실습 가이드](./comprehensive-practice-guide.md)
+
+---
+
+## 🤝 기여하기
+
+1. 이 저장소를 포크하세요
+2. 새로운 브랜치를 생성하세요 (`git checkout -b feature/amazing-feature`)
+3. 변경사항을 커밋하세요 (`git commit -m 'Add amazing feature'`)
+4. 브랜치에 푸시하세요 (`git push origin feature/amazing-feature`)
+5. Pull Request를 생성하세요
+
+---
+
+## 📄 라이선스
+
+이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
+
+---
+
+**💡 팁**: Container 과정은 Master 과정의 연장선상에 있습니다. Master 과정을 먼저 수료한 후 시작하시기 바랍니다!

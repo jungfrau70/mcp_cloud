@@ -1,0 +1,899 @@
+# 보안 정책 및 네트워크 정책 가이드
+
+## 🎯 학습 목표
+
+이 가이드를 통해 다음을 학습합니다:
+- Kubernetes 보안 모델 이해
+- Pod Security Policy (PSP) 설정
+- Network Policy 구성
+- RBAC (Role-Based Access Control) 설정
+- 시크릿 관리 및 암호화
+- 실제 보안 시나리오 구현
+
+---
+
+## 📋 목차
+
+1. [Kubernetes 보안 모델](#kubernetes-보안-모델)
+2. [Pod Security Policy 설정](#pod-security-policy-설정)
+3. [Network Policy 구성](#network-policy-구성)
+4. [RBAC 설정](#rbac-설정)
+5. [시크릿 관리 및 암호화](#시크릿-관리-및-암호화)
+6. [보안 모니터링](#보안-모니터링)
+7. [실습 시나리오](#실습-시나리오)
+
+---
+
+## 🔒 Kubernetes 보안 모델
+
+### 보안 계층 구조
+
+#### 1. 클러스터 보안
+- API 서버 보안
+- etcd 암호화
+- 네트워크 정책
+- RBAC
+
+#### 2. 노드 보안
+- 컨테이너 런타임 보안
+- 호스트 네트워크 격리
+- 파일시스템 보안
+
+#### 3. Pod 보안
+- Pod Security Policy
+- Security Context
+- 리소스 제한
+
+#### 4. 컨테이너 보안
+- 이미지 보안
+- 실행 권한 제한
+- 네트워크 격리
+
+### 보안 컨텍스트 설정
+
+#### 기본 보안 컨텍스트
+```yaml
+# security-context-basic.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: container-demo-secure
+  namespace: container-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: container-demo
+  template:
+    metadata:
+      labels:
+        app: container-demo
+    spec:
+      # Pod 보안 컨텍스트
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: container-demo
+        image: gcr.io/PROJECT_ID/container-demo:latest
+        ports:
+        - containerPort: 3000
+        # 컨테이너 보안 컨텍스트
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+          capabilities:
+            drop:
+            - ALL
+        # 리소스 제한
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        # 볼륨 마운트 (읽기 전용 파일시스템용)
+        volumeMounts:
+        - name: tmp-volume
+          mountPath: /tmp
+        - name: cache-volume
+          mountPath: /app/cache
+      volumes:
+      - name: tmp-volume
+        emptyDir: {}
+      - name: cache-volume
+        emptyDir: {}
+```
+
+#### 고급 보안 컨텍스트
+```yaml
+# security-context-advanced.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: container-demo-advanced-secure
+  namespace: container-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: container-demo
+  template:
+    metadata:
+      labels:
+        app: container-demo
+    spec:
+      # Pod 보안 컨텍스트
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+        sysctls:
+        - name: net.core.somaxconn
+          value: "1024"
+      containers:
+      - name: container-demo
+        image: gcr.io/PROJECT_ID/container-demo:latest
+        ports:
+        - containerPort: 3000
+        # 컨테이너 보안 컨텍스트
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_BIND_SERVICE
+          seccompProfile:
+            type: RuntimeDefault
+        # 환경 변수
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: SECURITY_MODE
+          value: "strict"
+        # 리소스 제한
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        # 볼륨 마운트
+        volumeMounts:
+        - name: tmp-volume
+          mountPath: /tmp
+        - name: cache-volume
+          mountPath: /app/cache
+        - name: config-volume
+          mountPath: /app/config
+          readOnly: true
+      volumes:
+      - name: tmp-volume
+        emptyDir: {}
+      - name: cache-volume
+        emptyDir: {}
+      - name: config-volume
+        configMap:
+          name: container-demo-config
+```
+
+---
+
+## 🛡️ Pod Security Policy 설정
+
+### PSP 활성화
+
+#### PSP 활성화 (GKE)
+```bash
+# GKE 클러스터에 PSP 활성화
+gcloud container clusters create secure-cluster \
+  --zone asia-northeast3-a \
+  --num-nodes 3 \
+  --machine-type e2-medium \
+  --enable-pod-security-policy
+```
+
+#### PSP 활성화 (EKS)
+```bash
+# EKS 클러스터에 PSP 활성화
+eksctl create cluster \
+  --name secure-cluster \
+  --region ap-northeast-2 \
+  --nodegroup-name workers \
+  --node-type t3.medium \
+  --nodes 3 \
+  --enable-pod-security-policy
+```
+
+### PSP 정책 정의
+
+#### 기본 PSP
+```yaml
+# psp-basic.yaml
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: basic-psp
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+    - ALL
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    - 'persistentVolumeClaim'
+  runAsUser:
+    rule: 'MustRunAsNonRoot'
+  seLinux:
+    rule: 'RunAsAny'
+  fsGroup:
+    rule: 'RunAsAny'
+```
+
+#### 고급 PSP
+```yaml
+# psp-advanced.yaml
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: advanced-psp
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+    - ALL
+  allowedCapabilities:
+    - NET_BIND_SERVICE
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    - 'persistentVolumeClaim'
+  runAsUser:
+    rule: 'MustRunAsNonRoot'
+  seLinux:
+    rule: 'RunAsAny'
+  fsGroup:
+    rule: 'RunAsAny'
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  hostPorts:
+  - min: 3000
+    max: 3000
+```
+
+### PSP RBAC 설정
+
+#### PSP ClusterRole
+```yaml
+# psp-rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: psp-user
+rules:
+- apiGroups: ['policy']
+  resources: ['podsecuritypolicies']
+  verbs: ['use']
+  resourceNames:
+  - basic-psp
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: psp-user-binding
+roleRef:
+  kind: ClusterRole
+  name: psp-user
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: container-demo
+```
+
+---
+
+## 🌐 Network Policy 구성
+
+### 기본 Network Policy
+
+#### 모든 트래픽 차단
+```yaml
+# network-policy-deny-all.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all
+  namespace: container-demo
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+```
+
+#### 특정 Pod만 허용
+```yaml
+# network-policy-allow-specific.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-specific
+  namespace: container-demo
+spec:
+  podSelector:
+    matchLabels:
+      app: container-demo
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: frontend
+    - namespaceSelector:
+        matchLabels:
+          name: istio-system
+    ports:
+    - protocol: TCP
+      port: 3000
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: mysql
+    ports:
+    - protocol: TCP
+      port: 3306
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+```
+
+### 고급 Network Policy
+
+#### 마이크로서비스 간 통신 제어
+```yaml
+# network-policy-microservices.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: microservices-policy
+  namespace: container-demo
+spec:
+  podSelector:
+    matchLabels:
+      app: container-demo
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Istio Gateway에서의 트래픽 허용
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: istio-system
+    - podSelector:
+        matchLabels:
+          app: istio-ingressgateway
+    ports:
+    - protocol: TCP
+      port: 3000
+  # 모니터링 시스템에서의 트래픽 허용
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring
+    - podSelector:
+        matchLabels:
+          app: prometheus
+    ports:
+    - protocol: TCP
+      port: 3000
+  egress:
+  # 데이터베이스 접근
+  - to:
+    - podSelector:
+        matchLabels:
+          app: mysql
+    ports:
+    - protocol: TCP
+      port: 3306
+  # Redis 접근
+  - to:
+    - podSelector:
+        matchLabels:
+          app: redis
+    ports:
+    - protocol: TCP
+      port: 6379
+  # DNS 쿼리
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+  # 외부 API 접근 (HTTPS만)
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+```
+
+#### 환경별 Network Policy
+```yaml
+# network-policy-environment.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: environment-policy
+  namespace: container-demo
+spec:
+  podSelector:
+    matchLabels:
+      app: container-demo
+      environment: production
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # 프로덕션 환경에서만 허용되는 트래픽
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: istio-system
+    ports:
+    - protocol: TCP
+      port: 3000
+  egress:
+  # 프로덕션 데이터베이스만 접근
+  - to:
+    - podSelector:
+        matchLabels:
+          app: mysql
+          environment: production
+    ports:
+    - protocol: TCP
+      port: 3306
+  # 프로덕션 Redis만 접근
+  - to:
+    - podSelector:
+        matchLabels:
+          app: redis
+          environment: production
+    ports:
+    - protocol: TCP
+      port: 6379
+```
+
+---
+
+## 👥 RBAC 설정
+
+### 기본 RBAC
+
+#### ServiceAccount 생성
+```yaml
+# service-account.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: container-demo-sa
+  namespace: container-demo
+  labels:
+    app: container-demo
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: container-demo-sa-secret
+  namespace: container-demo
+  annotations:
+    kubernetes.io/service-account.name: container-demo-sa
+type: kubernetes.io/service-account-token
+```
+
+#### Role 정의
+```yaml
+# role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: container-demo
+  name: container-demo-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "configmaps", "secrets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["networking.k8s.io"]
+  resources: ["networkpolicies"]
+  verbs: ["get", "list", "watch"]
+```
+
+#### RoleBinding
+```yaml
+# role-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: container-demo-role-binding
+  namespace: container-demo
+subjects:
+- kind: ServiceAccount
+  name: container-demo-sa
+  namespace: container-demo
+roleRef:
+  kind: Role
+  name: container-demo-role
+  apiGroup: rbac.authorization.k8s.io
+```
+
+### 고급 RBAC
+
+#### ClusterRole 정의
+```yaml
+# cluster-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: container-demo-cluster-role
+rules:
+- apiGroups: [""]
+  resources: ["nodes", "persistentvolumes"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["storage.k8s.io"]
+  resources: ["storageclasses"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["networking.k8s.io"]
+  resources: ["networkpolicies"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+```
+
+#### ClusterRoleBinding
+```yaml
+# cluster-role-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: container-demo-cluster-role-binding
+subjects:
+- kind: ServiceAccount
+  name: container-demo-sa
+  namespace: container-demo
+roleRef:
+  kind: ClusterRole
+  name: container-demo-cluster-role
+  apiGroup: rbac.authorization.k8s.io
+```
+
+---
+
+## 🔐 시크릿 관리 및 암호화
+
+### 시크릿 생성 및 관리
+
+#### 기본 시크릿
+```yaml
+# secrets-basic.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: container-demo-secrets
+  namespace: container-demo
+type: Opaque
+data:
+  database-password: <base64-encoded-password>
+  api-key: <base64-encoded-api-key>
+  jwt-secret: <base64-encoded-jwt-secret>
+```
+
+#### TLS 시크릿
+```yaml
+# tls-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: container-demo-tls
+  namespace: container-demo
+type: kubernetes.io/tls
+data:
+  tls.crt: <base64-encoded-cert>
+  tls.key: <base64-encoded-key>
+```
+
+### 시크릿 암호화
+
+#### etcd 암호화 설정
+```yaml
+# encryption-config.yaml
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+- resources:
+  - secrets
+  providers:
+  - aescbc:
+      keys:
+      - name: key1
+        secret: <base64-encoded-key>
+  - identity: {}
+```
+
+### 시크릿 사용
+
+#### Pod에서 시크릿 사용
+```yaml
+# pod-with-secrets.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: container-demo-with-secrets
+  namespace: container-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: container-demo
+  template:
+    metadata:
+      labels:
+        app: container-demo
+    spec:
+      serviceAccountName: container-demo-sa
+      containers:
+      - name: container-demo
+        image: gcr.io/PROJECT_ID/container-demo:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: container-demo-secrets
+              key: database-password
+        - name: API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: container-demo-secrets
+              key: api-key
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: container-demo-secrets
+              key: jwt-secret
+        volumeMounts:
+        - name: tls-certs
+          mountPath: /etc/ssl/certs
+          readOnly: true
+      volumes:
+      - name: tls-certs
+        secret:
+          secretName: container-demo-tls
+```
+
+---
+
+## 📊 보안 모니터링
+
+### 보안 이벤트 모니터링
+
+#### Falco 설정
+```yaml
+# falco-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: falco-config
+  namespace: falco
+data:
+  falco.yaml: |
+    rules_file:
+      - /etc/falco/falco_rules.yaml
+      - /etc/falco/falco_rules.local.yaml
+      - /etc/falco/k8s_audit_rules.yaml
+      - /etc/falco/rules.d
+    
+    json_output: true
+    json_include_output_property: true
+    
+    http_output:
+      enabled: true
+      url: http://falco-webhook:8080/webhook
+    
+    stdout_output:
+      enabled: true
+```
+
+#### 보안 알림 규칙
+```yaml
+# security-alerts.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: security-alerts
+  namespace: container-demo
+data:
+  security-rules.yml: |
+    groups:
+    - name: security
+      rules:
+      - alert: PrivilegedContainer
+        expr: kube_pod_container_info{privileged="true"} == 1
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Privileged container detected"
+          description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is running in privileged mode"
+      
+      - alert: RootContainer
+        expr: kube_pod_container_info{run_as_root="true"} == 1
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Container running as root"
+          description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is running as root"
+      
+      - alert: NetworkPolicyViolation
+        expr: increase(kube_networkpolicy_spec_egress_rules[5m]) > 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Network policy violation detected"
+          description: "Network policy violation detected in namespace {{ $labels.namespace }}"
+```
+
+---
+
+## 🚀 실습 시나리오
+
+### 시나리오 1: 기본 보안 설정
+
+#### 1단계: 보안 컨텍스트 설정
+```bash
+# 보안 컨텍스트가 적용된 Pod 배포
+kubectl apply -f security-policies-guide/security-context-basic.yaml
+
+# Pod 상태 확인
+kubectl get pods -l app=container-demo -n container-demo
+
+# 보안 컨텍스트 확인
+kubectl describe pod -l app=container-demo -n container-demo
+```
+
+#### 2단계: 보안 테스트
+```bash
+# Pod 내부 접속
+kubectl exec -it deployment/container-demo-secure -n container-demo -- /bin/sh
+
+# 사용자 확인 (root가 아닌지 확인)
+whoami
+
+# 권한 확인
+id
+
+# 파일시스템 확인 (읽기 전용인지 확인)
+touch /test
+```
+
+### 시나리오 2: Network Policy 테스트
+
+#### 1단계: Network Policy 적용
+```bash
+# 모든 트래픽 차단
+kubectl apply -f security-policies-guide/network-policy-deny-all.yaml
+
+# 특정 트래픽만 허용
+kubectl apply -f security-policies-guide/network-policy-allow-specific.yaml
+```
+
+#### 2단계: 네트워크 테스트
+```bash
+# 테스트 Pod 생성
+kubectl run -i --tty test-pod --rm --image=busybox --restart=Never -- /bin/sh
+
+# 허용되지 않은 접근 시도 (test-pod 내에서)
+wget -q -O- http://container-demo-service:80
+
+# 허용된 접근 확인
+wget -q -O- http://mysql-service:3306
+```
+
+### 시나리오 3: RBAC 테스트
+
+#### 1단계: RBAC 설정
+```bash
+# ServiceAccount 및 Role 생성
+kubectl apply -f security-policies-guide/service-account.yaml
+kubectl apply -f security-policies-guide/role.yaml
+kubectl apply -f security-policies-guide/role-binding.yaml
+```
+
+#### 2단계: 권한 테스트
+```bash
+# ServiceAccount 토큰 확인
+kubectl get secret container-demo-sa-secret -n container-demo -o jsonpath='{.data.token}' | base64 -d
+
+# 권한 테스트
+kubectl auth can-i get pods --as=system:serviceaccount:container-demo:container-demo-sa -n container-demo
+kubectl auth can-i delete pods --as=system:serviceaccount:container-demo:container-demo-sa -n container-demo
+```
+
+---
+
+## ✅ 체크리스트
+
+### 기본 보안 설정
+- [ ] 보안 컨텍스트 설정
+- [ ] 리소스 제한 설정
+- [ ] 읽기 전용 파일시스템 설정
+- [ ] 비루트 사용자 실행
+
+### 고급 보안 설정
+- [ ] Pod Security Policy 설정
+- [ ] Network Policy 구성
+- [ ] RBAC 설정
+- [ ] 시크릿 관리
+
+### 보안 모니터링
+- [ ] 보안 이벤트 모니터링
+- [ ] 알림 규칙 설정
+- [ ] 로그 수집 및 분석
+- [ ] 취약점 스캔
+
+### 보안 테스트
+- [ ] 권한 테스트
+- [ ] 네트워크 격리 테스트
+- [ ] 시크릿 접근 테스트
+- [ ] 보안 정책 위반 테스트
+
+---
+
+## 📚 참고 자료
+
+### 공식 문서
+- [Kubernetes 보안 공식 문서](https://kubernetes.io/docs/concepts/security/)
+- [Network Policy 공식 문서](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
+- [RBAC 공식 문서](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
+
+### 추가 학습 자료
+- [Kubernetes 고급 가이드](./kubernetes-advanced-guide.md)
+- [자동 복구 가이드](./auto-recovery-guide.md)
+- [종합 실습 가이드](./comprehensive-practice-guide.md)
+
+---
+
+**💡 팁**: 보안은 운영 환경에서 가장 중요한 요소입니다. 각 보안 정책을 단계별로 적용하면서 실제 보안 위협에 대한 방어 체계를 구축해보세요!

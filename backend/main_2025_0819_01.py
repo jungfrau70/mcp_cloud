@@ -269,10 +269,11 @@ app.add_middleware(
 # ===================================
 KNOWLEDGE_BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'mcp_knowledge_base'))
 
-def get_knowledge_base_structure(path, is_root: bool = False):
+def get_knowledge_base_structure(path, is_root: bool = False, show_hidden: bool = False):
     """ Recursively builds a dictionary representing the directory structure.
     - Directories are ordered alphabetically with 'appendix' placed last.
     - Markdown files are listed under the special key 'files' and sorted alphabetically.
+    - show_hidden: If True, includes hidden files and directories (starting with '.')
     """
     structure: dict = {}
 
@@ -280,6 +281,10 @@ def get_knowledge_base_structure(path, is_root: bool = False):
     markdown_files: List[str] = []
 
     for item in os.listdir(path):
+        # Skip hidden files/directories unless show_hidden is True
+        if not show_hidden and item.startswith('.'):
+            continue
+            
         item_path = os.path.join(path, item)
         if os.path.isdir(item_path):
             directories.append(item)
@@ -293,7 +298,7 @@ def get_knowledge_base_structure(path, is_root: bool = False):
     directories.sort(key=lambda name: (name.lower() == 'appendix', name.lower()))
 
     for directory_name in directories:
-        structure[directory_name] = get_knowledge_base_structure(os.path.join(path, directory_name), is_root=False)
+        structure[directory_name] = get_knowledge_base_structure(os.path.join(path, directory_name), is_root=False, show_hidden=show_hidden)
 
     if markdown_files:
         markdown_files.sort()
@@ -401,12 +406,13 @@ async def agent_query(request: AgentQueryRequest):
         raise HTTPException(status_code=500, detail=f"An error occurred in the RAG service: {e}")
 
 @app.get("/api/v1/knowledge-base/tree", dependencies=[Depends(get_api_key)], tags=["Knowledge Base"])
-async def get_knowledge_base_tree():
+async def get_knowledge_base_tree(show_hidden: bool = False):
     """
     지식 베이스의 디렉토리 구조를 JSON 형태로 반환합니다.
+    show_hidden: 숨김 파일과 디렉토리(점으로 시작하는)를 포함할지 여부
     """
     try:
-        tree = get_knowledge_base_structure(KNOWLEDGE_BASE_DIR)
+        tree = get_knowledge_base_structure(KNOWLEDGE_BASE_DIR, show_hidden=show_hidden)
         return tree
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read knowledge base structure: {e}")
