@@ -1,0 +1,210 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 커스텀 스타일 */
+@layer base {
+  html {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-primary-600 text-white font-medium rounded-md hover:bg-primary-700 transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply px-4 py-2 bg-gray-200 text-gray-800 font-medium rounded-md hover:bg-gray-300 transition-colors;
+  }
+  
+  .input-field {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow p-6;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* 프로즈 스타일링 */
+.prose {
+  @apply text-gray-900;
+}
+
+.prose h1 {
+  @apply text-3xl font-bold mb-4;
+}
+
+.prose h2 {
+  @apply text-2xl font-bold mb-3 mt-6;
+}
+
+.prose h3 {
+  @apply text-xl font-semibold mb-2 mt-4;
+}
+
+.prose p {
+  @apply mb-4 leading-relaxed;
+}
+
+.prose ul {
+  @apply mb-4 pl-6;
+  list-style: disc outside;
+}
+
+.prose ol {
+  @apply mb-4 pl-6;
+  list-style: decimal outside;
+}
+
+.prose ul ul,
+.prose ul ol,
+.prose ol ul,
+.prose ol ol {
+  @apply mb-2 pl-6;
+}
+
+.prose li {
+  @apply mb-2;
+}
+
+.prose code {
+  @apply bg-gray-100 px-2 py-1 rounded text-sm font-mono;
+}
+
+.prose pre {
+  @apply bg-gray-100 p-4 rounded-lg overflow-x-auto mb-4;
+}
+
+/* Easy copy button for code blocks */
+.prose pre { position: relative; }
+.kb-copy-btn {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 11px;
+  padding: 2px 8px;
+  background: #ffffffcc;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  color: #111827;
+  cursor: pointer;
+}
+.kb-copy-btn:hover { background: #fff; }
+
+/* Chat handle (green pill) */
+.chat-handle {
+  position: relative;
+  right: 0;
+  background: #fff8e7; /* ivory */
+  color: #374151; /* gray-700 for contrast */
+  border-radius: 9999px 0 0 9999px;
+  width: 28px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+.chat-handle:hover { background: #efe9d4; }
+
+/* Left sidebar handle (gray) */
+.sidebar-handle {
+  position: relative;
+  left: 0;
+  background: #fff8e7; /* ivory */
+  color: #374151; /* gray-700 for contrast */
+  border-radius: 0 9999px 9999px 0;
+  width: 28px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+.sidebar-handle:hover { background: #efe9d4; }
+
+/* Chat resizer gutter */
+.chat-resizer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  cursor: col-resize;
+  z-index: 30;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-primary-500 pl-4 italic text-gray-700 mb-4;
+}
+
+/* 링크 가시성 개선: 본문(.prose) 내 앵커에 아이콘과 스타일 표시 */
+.prose a {
+  @apply text-blue-600 underline underline-offset-2;
+}
+
+/* 내부 문서 링크 가독성 개선 */
+.prose a.kb-link {
+  @apply text-indigo-600 font-medium underline underline-offset-4;
+}
+.prose a.kb-link::after {
+  content: ' (문서 열기)';
+  @apply text-indigo-400 text-xs;
+}
+
+.prose a::before {
+  content: "🔗";
+  margin-right: 0.2em;
+  font-size: 0.95em;
+  opacity: 0.85;
+}
+
+/* 애니메이션 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.3s ease;
+}
+
+.slide-enter-from {
+  transform: translateX(-100%);
+}
+
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+/* 스크롤바 스타일링 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

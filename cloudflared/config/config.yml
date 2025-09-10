@@ -1,0 +1,33 @@
+tunnel: 8e543b6e-efd9-4e56-bc4d-89e9be0c9f79
+credentials-file: /home/nonroot/.cloudflared/8e543b6e-efd9-4e56-bc4d-89e9be0c9f79.json
+# 안정성을 위해 QUIC 대신 HTTP/2 사용(네트워크 품질이 낮은 환경 대비)
+protocol: http2
+# ingress:
+#   - hostname: app.goldencircle.us
+#     service: http://npm:80
+#     originRequest:
+#       noTLSVerify: true
+#   - hostname: auth.goldencircle.us
+#     service: http://authelia:9091
+#     originRequest:
+#       noTLSVerify: true
+#   - service: http_status:404
+ingress:
+  - hostname: app.goldencircle.us
+    service: http://npm:80
+    originRequest:
+      noTLSVerify: true
+  - hostname: api.goldencircle.us
+    service: http://npm:80
+    originRequest:
+      noTLSVerify: true
+  - hostname: npm.goldencircle.us
+    service: http://npm:81
+    originRequest:
+      noTLSVerify: true
+  - hostname: auth.goldencircle.us
+    service: http://authelia:9091
+    originRequest:
+      noTLSVerify: true
+  - service: http_status:404
+loglevel: info

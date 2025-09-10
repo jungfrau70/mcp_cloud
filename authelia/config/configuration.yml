@@ -1,0 +1,92 @@
+server:
+  address: tcp://0.0.0.0:9091/
+
+session:
+  secret: "change_me_generate_strong_secret"
+  name: authelia_session
+  same_site: lax
+  cookies:
+    # goldencircle.us zone (covers all subdomains like auth/app/api.goldencircle.us)
+    - domain: "goldencircle.us"
+      authelia_url: "https://auth.goldencircle.us"
+      default_redirection_url: "https://app.goldencircle.us"
+    # mentorai.local zone (dev/local)
+    - domain: "mentorai.local"
+      authelia_url: "https://auth.mentorai.local"
+      default_redirection_url: "https://app.mentorai.local"
+
+storage:
+  encryption_key: "change_me_storage_encryption_key_at_least_32_chars"
+  local:
+    path: /config/db.sqlite3
+
+authentication_backend:
+  file:
+    path: /config/users_database.yml
+
+access_control:
+  default_policy: deny
+  rules:
+    # app.goldencircle.us
+    - domain: "app.goldencircle.us"
+      policy: bypass
+      resources:
+        - "regex:^/curriculum.*"
+    - domain: "app.goldencircle.us"
+      policy: one_factor
+      subject:
+        - "group:admins"
+      resources:
+        - "regex:^/knowledge-base.*"
+    - domain: "api.goldencircle.us"
+      policy: one_factor
+      subject:
+        - "group:admins"
+      resources:
+        - "regex:^/api/v1/knowledge-base/.*"
+    # app.mentorai.local (dev/local)
+    - domain: "app.mentorai.local"
+      policy: bypass
+      resources:
+        - "regex:^/curriculum.*"
+    - domain: "app.mentorai.local"
+      policy: one_factor
+      subject:
+        - "group:admins"
+      resources:
+        - "regex:^/knowledge-base.*"
+    - domain: "api.mentorai.local"
+      policy: one_factor
+      subject:
+        - "group:admins"
+      resources:
+        - "regex:^/api/v1/knowledge-base/.*"
+
+identity_validation:
+  reset_password:
+    jwt_secret: "change_me_reset_password_jwt_secret"
+
+notifier:
+  filesystem:
+    filename: /config/notification.txt
+
+## Note: Authelia acts as an OIDC Provider for your apps. The previous block attempted
+## to configure an external OIDC upstream as a list which is invalid for Authelia v4.
+## Remove or properly configure OIDC clients here only if you intend Authelia to be
+## the Identity Provider (IdP) for relying party apps. Leaving this section absent
+## disables OIDC which is fine for basic session-based auth.
+# identity_providers:
+#   oidc:
+#     hmac_secret: "change_me_add_strong_hmac_secret"
+#     clients:
+#       - id: "mcp-frontend"
+#         client_id: "mcp-frontend"
+#         client_name: "MCP Frontend"
+#         client_secret: "change_me_client_secret"
+#         redirect_uris:
+#           - "https://app.goldencircle.us/callback"
+#         scopes: [openid, profile, email]
+#         grant_types: [authorization_code]
+#         response_types: [code]
+#         token_endpoint_auth_method: client_secret_basic
+

@@ -1,0 +1,37 @@
+# yamllint disable rule:line-length
+---
+###############################################################
+#                         Users Database                      #
+###############################################################
+
+# This file can be used if you do not have an LDAP set up.
+
+users:
+  authelia:
+    disabled: false
+    displayname: "Test User"
+    password: "$argon2id$v=19$m=32768,t=1,p=8$eUhVT1dQa082YVk2VUhDMQ$E8QI4jHbUBt3EdsU1NFDu4Bq5jObKNx7nBKSn1EYQxk"  # Password is 'authelia'
+    email: authelia@authelia.com
+    groups:
+      - admins
+      - dev
+  admin:
+    disabled: false
+    displayname: "Admin User"
+    password: "$argon2id$v=19$m=65536,t=3,p=4$0AYLJCN6te/8bcmXi5gGUQ$ikqw/IC3TRNeTGpSvl27CQC1BdFGh/BJwe2YJU/1nd0"
+    email: admin@goldencircle.us
+    groups:
+      - admins
+access_control:
+  default_policy: deny
+  rules:
+    - domain: ["app.goldencircle.us"]
+      policy: bypass
+    - domain: ["app.goldencircle.us"]
+      resources: ["/admin*", "/kb/manage*"]
+      policy: one_factor
+    - domain: ["api.goldencircle.us"]
+      resources: ["/api/v1/*"]
+      policy: one_factor
+...
+# yamllint enable rule:line-length

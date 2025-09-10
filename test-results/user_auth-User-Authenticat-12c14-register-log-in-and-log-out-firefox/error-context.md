@@ -1,0 +1,76 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e4]:
+  - navigation [ref=e5]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - button "Toggle sidebar" [ref=e9]:
+          - img
+        - link "MentorAi" [ref=e10] [cursor=pointer]:
+          - /url: /
+      - generic [ref=e11]:
+        - link "커리큘럼" [ref=e12] [cursor=pointer]:
+          - /url: /curriculum
+        - link "지식베이스" [ref=e13] [cursor=pointer]:
+          - /url: /knowledge-base
+        - generic [ref=e14]:
+          - link "로그인" [ref=e15] [cursor=pointer]:
+            - /url: /login
+          - link "회원가입" [ref=e16] [cursor=pointer]:
+            - /url: /register
+  - generic [ref=e17]:
+    - complementary [ref=e18]:
+      - generic [ref=e20]:
+        - heading "카테고리" [level=3] [ref=e21]
+        - generic:
+          - generic:
+            - generic:
+              - list
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - heading "채팅" [level=4] [ref=e24]
+            - button "새 채팅" [ref=e25]
+          - textbox "채팅 검색" [ref=e27]
+          - list
+    - button "사이드바 닫기" [expanded] [ref=e29]:
+      - generic [ref=e30]: ‹
+    - main [ref=e31]:
+      - generic [ref=e34]:
+        - heading "회원가입" [level=1] [ref=e35]
+        - generic [ref=e36]:
+          - generic [ref=e37]:
+            - generic [ref=e38]: 이메일
+            - textbox [ref=e39]
+          - generic [ref=e40]:
+            - generic [ref=e41]: 이름(선택)
+            - textbox [ref=e42]
+          - generic [ref=e43]:
+            - generic [ref=e44]: 비밀번호
+            - textbox [ref=e45]
+          - generic [ref=e46]:
+            - generic [ref=e47]: 비밀번호 확인
+            - textbox [ref=e48]
+          - button "회원가입" [ref=e49]
+          - paragraph [ref=e50]: 가입 후 이메일 인증을 완료해야 로그인할 수 있습니다.
+        - paragraph [ref=e51]:
+          - text: 이미 계정이 있나요?
+          - link "로그인" [ref=e52] [cursor=pointer]:
+            - /url: /login
+    - button "채팅 숨김" [expanded] [ref=e54]:
+      - generic [ref=e55]: ›
+    - complementary [ref=e56]:
+      - generic [ref=e57]:
+        - generic [ref=e59]:
+          - generic [ref=e60]: 준비되면 얘기해 주세요.
+          - generic [ref=e61]: /cli 로 시작하면 시스템 명령을 실행합니다.
+          - generic [ref=e62]:
+            - button "gcloud auth list" [ref=e63]
+            - button "AWS vs GCP" [ref=e64]
+            - button "VPC 설계" [ref=e65]
+        - generic [ref=e67]:
+          - generic [ref=e68]:
+            - textbox "/cli gcloud auth list 또는 AI에게 질문" [ref=e69]
+            - generic "음성 입력(향후)" [ref=e71]: 🎤
+          - button "전송" [disabled] [ref=e72]
+```

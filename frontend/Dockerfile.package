@@ -1,0 +1,17 @@
+# Package stage - Dependencies management
+FROM node:20-alpine AS package
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY yarn.lock ./
+
+# Install all dependencies (including dev dependencies for build)
+# Prefer frozen install when lockfile matches; fallback to normal install in CI container
+RUN yarn install --frozen-lockfile || yarn install
+
+# Verify key installations
+RUN yarn nuxt --version
+RUN node --version
+RUN yarn --version
