@@ -188,6 +188,7 @@ import TaskStatusBar from '~/components/TaskStatusBar.vue'
 import ToastStack from '~/components/ToastStack.vue'
 import { useToastStore } from '~/stores/toast'
 import { useAuthStore } from '~/stores/auth'
+import { cleanApiPath } from '~/utils/path'
 const toast = useToastStore()
 
 // User authentication state
@@ -562,7 +563,7 @@ watch(() => route.path, async (p) => {
 async function showCurriculumIndex(){
   // 1) Try curriculum index through curriculum endpoint (if admin selected dirs contain index.md)
   try {
-    const s = await fetch(`${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent('index')}`, { headers: { 'X-API-Key': apiKey } })
+    const s = await fetch(`${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent(cleanApiPath('index'))}`, { headers: { 'X-API-Key': apiKey } })
     if (s.ok) {
       const ct = (s.headers.get('content-type')||'').toLowerCase()
       if (ct.includes('application/pdf')){
@@ -611,7 +612,7 @@ const handleFileClick = async (path) => {
     }
     // 텍스트 계열은 중앙 패널에 표시
     if(ext === 'md' || ['txt','log','json','yaml','yml','csv'].includes(ext) || ext === ''){
-      const s = await fetch(`${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey } })
+      const s = await fetch(`${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent(cleanApiPath(path))}`, { headers: { 'X-API-Key': apiKey } })
       if (s.ok){
         tbContent.value = await s.text()
         tbSlide.value = null
