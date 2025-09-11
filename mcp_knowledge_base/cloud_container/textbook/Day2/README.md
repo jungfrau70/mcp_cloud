@@ -202,8 +202,8 @@ sudo apt install curl wget netcat
 - 🔗 [고가용성 아키텍처 실습](practice/high-availability-architecture.md)
 
 ### 📚 개념 학습
-- 🔗 [고가용성 아키텍처 가이드](./high-availability-architecture-guide.md)
-- 🔗 [재해 복구 전략](./disaster-recovery-strategy.md)
+- 🔗 [고가용성 아키텍처 가이드](high-availability-architecture.md)
+- 🔗 [모니터링 설정 가이드](monitoring-setup.md)
 
 </details>
 
@@ -241,8 +241,7 @@ sudo apt install curl wget netcat
 - 🔗 [고급 로드 밸런싱 실습](practice/advanced-load-balancing.md)
 
 ### 📚 개념 학습
-- 🔗 [로드 밸런싱 고급 가이드](./advanced-load-balancing-guide.md)
-- 🔗 [Auto Scaling 전략](./auto-scaling-strategy.md)
+- 🔗 [고급 로드 밸런싱 가이드](advanced-load-balancing.md)
 
 </details>
 
@@ -280,8 +279,7 @@ sudo apt install curl wget netcat
 - 🔗 [모니터링 시스템 구축](practice/monitoring-system-setup.md)
 
 ### 📚 개념 학습
-- 🔗 [모니터링 시스템 가이드](./monitoring-system-guide.md)
-- 🔗 [로깅 전략 가이드](./logging-strategy-guide.md)
+- 🔗 [모니터링 시스템 가이드](monitoring-setup.md)
 
 </details>
 
@@ -320,8 +318,7 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 - 🔗 [종합 프로젝트 실습](practice/comprehensive-project.md)
 
 ### 📚 개념 학습
-- 🔗 [비용 최적화 가이드](./cost-optimization-guide.md)
-- 🔗 [성능 최적화 가이드](./performance-optimization-guide.md)
+- 🔗 [종합 프로젝트 가이드](comprehensive-project.md)
 
 </details>
 
@@ -333,14 +330,10 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 <summary>🐛 자주 발생하는 문제</summary>
 
 ### 고가용성 관련 문제
-- 🔗 [Multi-AZ 구성 실패](./troubleshooting/multi-az-issues.md)
-- 🔗 [Auto Scaling 작동 안함](./troubleshooting/auto-scaling-issues.md)
-- 🔗 [로드 밸런서 502 오류](./troubleshooting/load-balancer-502.md)
+- 🔗 [종합 트러블슈팅 가이드](troubleshooting/multi-az-issues.md)
 
 ### 모니터링 관련 문제
-- 🔗 [CloudWatch 메트릭 표시 안됨](./troubleshooting/cloudwatch-metrics.md)
-- 🔗 [알림이 오지 않음](./troubleshooting/notification-issues.md)
-- 🔗 [로그 수집 실패](./troubleshooting/log-collection-issues.md)
+- 🔗 [모니터링 트러블슈팅](troubleshooting/multi-az-issues.md)
 
 </details>
 

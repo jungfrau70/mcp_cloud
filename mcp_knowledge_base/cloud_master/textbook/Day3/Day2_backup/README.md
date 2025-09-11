@@ -73,19 +73,17 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [Docker 고급 실습](./docker-advanced-guide.md)
-- 🔗 [GitHub Actions 고급 실습](./github-actions-advanced-guide.md)
-- 🔗 [VM 배포 자동화](./vm-deployment-automation-guide.md)
+- 🔗 [Docker 고급 실습](docker-advanced-guide.md)
+- 🔗 [GitHub Actions 고급 실습](github-actions-guide.md)
+- 🔗 [VM 배포 자동화](aws-gcp-deployment-guide.md)
 
 ### 📚 개념 학습 가이드
-- 🔗 [Docker 최적화 가이드](./docker-optimization-guide.md)
-- 🔗 [GitHub Actions 고급 가이드](./github-actions-advanced-guide.md)
-- 🔗 [VM 배포 전략 가이드](./vm-deployment-strategy-guide.md)
+- 🔗 [Docker 최적화 가이드](docker-advanced-guide.md)
+- 🔗 [GitHub Actions 고급 가이드](github-actions-guide.md)
+- 🔗 [VM 배포 전략 가이드](aws-gcp-deployment-guide.md)
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [Docker 트러블슈팅](./troubleshooting-guide.md)
-- 🔗 [GitHub Actions 트러블슈팅](./troubleshooting-guide.md)
-- 🔗 [VM 배포 트러블슈팅](./troubleshooting-guide.md)
+- 🔗 [종합 트러블슈팅 가이드](troubleshooting-guide.md)
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md)

@@ -78,7 +78,7 @@
 - 🔗 [컨테이너 기초 실습](practice/container-basics.md)
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [종합 트러블슈팅 가이드](./troubleshooting/multi-az-issues.md)
+- 🔗 [종합 트러블슈팅 가이드](troubleshooting/multi-az-issues.md)
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md)
