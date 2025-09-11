@@ -21,12 +21,15 @@
           :tree="treeData"
           :selected-file="props.selectedFile ? ('mcp_knowledge_base/' + stripBasePath(props.selectedFile)) : null"
           :show-hidden-files="showHiddenFiles"
+          :enable-upload="true"
+          :upload-path="''"
           @file-select="handleFileSelect"
           @file-open="handleFileOpen"
           @directory-create="handleDirectoryCreate"
           @directory-rename="handleDirectoryRename"
           @directory-delete="handleDirectoryDelete"
           @file-move="handleFileMove"
+          @file-upload="handleFileUpload"
         />
       </div>
     </template>
@@ -50,12 +53,15 @@
             :tree="treeData"
             :selected-file="props.selectedFile ? ('mcp_knowledge_base/' + stripBasePath(props.selectedFile)) : null"
             :show-hidden-files="showHiddenFiles"
+            :enable-upload="true"
+            :upload-path="''"
             @file-select="handleFileSelect"
             @file-open="handleFileOpen"
             @directory-create="handleDirectoryCreate"
             @directory-rename="handleDirectoryRename"
             @directory-delete="handleDirectoryDelete"
             @file-move="handleFileMove"
+            @file-upload="handleFileUpload"
           />
         </div>
       </div>
@@ -367,6 +373,24 @@ const handleFileMove = async (data) => {
   } catch (error) {
     console.error('Error moving file:', error);
     statusMessage.value = `파일 이동 실패: ${error.message}`;
+  }
+};
+
+const handleFileUpload = async (data) => {
+  try {
+    if (data.success) {
+      console.log('Upload successful:', data.result);
+      statusMessage.value = `파일 업로드 완료: ${data.result.successful}개 파일 업로드됨`;
+      
+      // Reload structure to show new files
+      await loadKnowledgeBaseStructure();
+    } else {
+      console.error('Upload failed:', data.error);
+      statusMessage.value = `파일 업로드 실패: ${data.error}`;
+    }
+  } catch (error) {
+    console.error('Error handling upload result:', error);
+    statusMessage.value = `업로드 처리 중 오류: ${error.message}`;
   }
 };
 

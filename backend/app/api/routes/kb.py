@@ -1,5 +1,5 @@
 # backend/app/api/routes/kb.py
-from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect, UploadFile, File, Form
 from fastapi.responses import FileResponse, Response
 from typing import Any, Dict
 from pathlib import Path
@@ -8,6 +8,8 @@ from app.schemas.kb import KBItemCreate, KBItemMove
 from config import MCP_API_KEY, DISABLE_AUTH, KB_PUBLIC_READ
 from pydantic import BaseModel
 from typing import List, Optional, Literal
+import shutil
+import os
 
 router = APIRouter(
     prefix="/api/v1/knowledge-base",
@@ -212,6 +214,133 @@ def kb_delete_directory(path: str, recursive: bool = False):
     else:
         fp.rmdir()
     return {"deleted": path}
+
+@router.post('/upload')
+async def kb_upload_file(
+    file: UploadFile = File(...),
+    path: str = Form(""),
+    overwrite: bool = Form(False)
+):
+    """
+    Upload a file to the knowledge base.
+    
+    Args:
+        file: The file to upload
+        path: Target directory path (relative to knowledge base root)
+        overwrite: Whether to overwrite existing files
+    """
+    try:
+        # Validate file
+        if not file.filename:
+            raise HTTPException(status_code=400, detail="No filename provided")
+        
+        # Sanitize filename
+        filename = os.path.basename(file.filename)
+        if not filename or filename.startswith('.'):
+            raise HTTPException(status_code=400, detail="Invalid filename")
+        
+        # Determine target path
+        target_dir = _safe_path(path)
+        target_file = target_dir / filename
+        
+        # Check if file exists and overwrite is not allowed
+        if target_file.exists() and not overwrite:
+            raise HTTPException(status_code=409, detail="File already exists. Use overwrite=true to replace.")
+        
+        # Ensure target directory exists
+        target_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Save file
+        with open(target_file, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        
+        # Get file info
+        file_size = target_file.stat().st_size
+        relative_path = str(target_file.relative_to(KB_ROOT))
+        
+        return {
+            "success": True,
+            "message": "File uploaded successfully",
+            "filename": filename,
+            "path": relative_path,
+            "size": file_size,
+            "overwritten": target_file.exists() and overwrite
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
+
+@router.post('/upload-multiple')
+async def kb_upload_multiple_files(
+    files: List[UploadFile] = File(...),
+    path: str = Form(""),
+    overwrite: bool = Form(False)
+):
+    """
+    Upload multiple files to the knowledge base.
+    
+    Args:
+        files: List of files to upload
+        path: Target directory path (relative to knowledge base root)
+        overwrite: Whether to overwrite existing files
+    """
+    results = []
+    errors = []
+    
+    for file in files:
+        try:
+            # Validate file
+            if not file.filename:
+                errors.append({"filename": file.filename or "unknown", "error": "No filename provided"})
+                continue
+            
+            # Sanitize filename
+            filename = os.path.basename(file.filename)
+            if not filename or filename.startswith('.'):
+                errors.append({"filename": file.filename, "error": "Invalid filename"})
+                continue
+            
+            # Determine target path
+            target_dir = _safe_path(path)
+            target_file = target_dir / filename
+            
+            # Check if file exists and overwrite is not allowed
+            if target_file.exists() and not overwrite:
+                errors.append({"filename": filename, "error": "File already exists"})
+                continue
+            
+            # Ensure target directory exists
+            target_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Save file
+            with open(target_file, "wb") as buffer:
+                shutil.copyfileobj(file.file, buffer)
+            
+            # Get file info
+            file_size = target_file.stat().st_size
+            relative_path = str(target_file.relative_to(KB_ROOT))
+            
+            results.append({
+                "filename": filename,
+                "path": relative_path,
+                "size": file_size,
+                "overwritten": target_file.exists() and overwrite
+            })
+            
+        except Exception as e:
+            errors.append({"filename": file.filename or "unknown", "error": str(e)})
+    
+    return {
+        "success": len(errors) == 0,
+        "message": f"Uploaded {len(results)} files successfully",
+        "results": results,
+        "errors": errors,
+        "total_files": len(files),
+        "successful": len(results),
+        "failed": len(errors)
+    }
 
 # ----- Outline / Transform / Lint -----
 class OutlineRequest(BaseModel):

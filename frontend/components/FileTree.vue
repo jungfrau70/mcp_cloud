@@ -1,5 +1,30 @@
 <template>
-  <div class="file-tree">
+  <div 
+    class="file-tree" 
+    :class="{ 'upload-enabled': enableUpload }"
+    @dragover="handleDragOver"
+    @dragenter="handleDragEnter"
+    @drop="handleDrop"
+  >
+    <!-- Upload Area (only show when upload is enabled and no files are selected) -->
+    <div v-if="enableUpload && depth === 0" class="upload-area">
+      <input 
+        ref="fileInput"
+        type="file" 
+        multiple 
+        @change="handleFileSelect"
+        style="display: none"
+        accept="*/*"
+      />
+      <button 
+        @click="$refs.fileInput.click()" 
+        class="upload-button"
+        title="파일 업로드"
+      >
+        📁 파일 업로드
+      </button>
+    </div>
+    
     <ul>
       <li v-for="(item, name) in sortedTree" :key="name">
         <div 
@@ -119,6 +144,65 @@
         </div>
       </div>
     </div>
+
+    <!-- Upload Dialog -->
+    <div v-if="showUploadDialog" class="modal-overlay" @click="cancelUpload">
+      <div class="modal-content upload-dialog" @click.stop>
+        <h3 class="modal-title">파일 업로드</h3>
+        
+        <!-- Upload Path -->
+        <div class="upload-section">
+          <label class="upload-label">업로드 경로:</label>
+          <input 
+            v-model="uploadPath" 
+            class="modal-input" 
+            placeholder="업로드할 디렉토리 경로"
+          />
+        </div>
+        
+        <!-- File List -->
+        <div class="upload-section">
+          <label class="upload-label">선택된 파일 ({{ uploadFiles.length }}개):</label>
+          <div class="file-list">
+            <div v-for="(file, index) in uploadFiles" :key="index" class="file-item">
+              <span class="file-name">{{ file.name }}</span>
+              <span class="file-size">({{ formatFileSize(file.size) }})</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Options -->
+        <div class="upload-section">
+          <label class="checkbox-label">
+            <input 
+              type="checkbox" 
+              v-model="overwriteFiles"
+            />
+            기존 파일 덮어쓰기
+          </label>
+        </div>
+        
+        <!-- Progress -->
+        <div v-if="isUploading" class="upload-section">
+          <div class="progress-bar">
+            <div class="progress-fill" :style="{ width: uploadProgress + '%' }"></div>
+          </div>
+          <div class="progress-text">{{ uploadProgress }}% 업로드 중...</div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="modal-actions">
+          <button 
+            @click="uploadFilesToServer" 
+            class="btn-primary"
+            :disabled="isUploading || uploadFiles.length === 0"
+          >
+            {{ isUploading ? '업로드 중...' : '업로드' }}
+          </button>
+          <button @click="cancelUpload" class="btn-secondary" :disabled="isUploading">취소</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -149,10 +233,18 @@ const props = defineProps({
   showHiddenFiles: {
     type: Boolean,
     default: true
+  },
+  enableUpload: {
+    type: Boolean,
+    default: false
+  },
+  uploadPath: {
+    type: String,
+    default: ''
   }
 });
 
-const emit = defineEmits(['file-click', 'file-open', 'directory-create', 'directory-rename', 'directory-delete', 'file-move']);
+const emit = defineEmits(['file-click', 'file-open', 'directory-create', 'directory-rename', 'directory-delete', 'file-move', 'file-upload']);
 
 const openDirectories = ref({});
 const expandedBySelectionOnce = ref(false)
@@ -183,6 +275,14 @@ const createInput = ref(null);
 // Drag and drop state
 const dragOverTarget = ref(null);
 const draggedItem = ref(null);
+
+// Upload state
+const isUploading = ref(false);
+const uploadProgress = ref(0);
+const uploadFiles = ref([]);
+const showUploadDialog = ref(false);
+const uploadPath = ref('');
+const overwriteFiles = ref(false);
 
 const isDirectory = (item) => {
   return typeof item === 'object' && item !== null && !Array.isArray(item);
@@ -485,6 +585,111 @@ const closeRenameDialog = () => {
   newName.value = '';
 };
 
+// Upload functions
+const handleFileSelect = (event) => {
+  const files = Array.from(event.target.files);
+  if (files.length > 0) {
+    uploadFiles.value = files;
+    uploadPath.value = props.uploadPath || props.basePath;
+    showUploadDialog.value = true;
+  }
+};
+
+const handleDragOver = (event) => {
+  if (!props.enableUpload) return;
+  event.preventDefault();
+  event.dataTransfer.dropEffect = 'copy';
+};
+
+const handleDragEnter = (event) => {
+  if (!props.enableUpload) return;
+  event.preventDefault();
+};
+
+const handleDrop = (event) => {
+  if (!props.enableUpload) return;
+  event.preventDefault();
+  
+  const files = Array.from(event.dataTransfer.files);
+  if (files.length > 0) {
+    uploadFiles.value = files;
+    uploadPath.value = props.uploadPath || props.basePath;
+    showUploadDialog.value = true;
+  }
+};
+
+const uploadFilesToServer = async () => {
+  if (uploadFiles.value.length === 0) return;
+  
+  isUploading.value = true;
+  uploadProgress.value = 0;
+  
+  try {
+    const formData = new FormData();
+    uploadFiles.value.forEach(file => {
+      formData.append('files', file);
+    });
+    formData.append('path', uploadPath.value);
+    formData.append('overwrite', overwriteFiles.value.toString());
+    
+    const response = await fetch('/api/v1/knowledge-base/upload-multiple', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-API-Key': 'my_mcp_eagle_tiger' // TODO: Get from config
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Upload failed: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    uploadProgress.value = 100;
+    
+    // Emit upload success event
+    emit('file-upload', {
+      success: true,
+      result: result,
+      path: uploadPath.value
+    });
+    
+    // Close dialog and reset
+    showUploadDialog.value = false;
+    uploadFiles.value = [];
+    uploadPath.value = '';
+    overwriteFiles.value = false;
+    
+  } catch (error) {
+    console.error('Upload error:', error);
+    emit('file-upload', {
+      success: false,
+      error: error.message,
+      path: uploadPath.value
+    });
+  } finally {
+    isUploading.value = false;
+    uploadProgress.value = 0;
+  }
+};
+
+const cancelUpload = () => {
+  showUploadDialog.value = false;
+  uploadFiles.value = [];
+  uploadPath.value = '';
+  overwriteFiles.value = false;
+  isUploading.value = false;
+  uploadProgress.value = 0;
+};
+
+const formatFileSize = (bytes) => {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+};
+
 // Event handlers for child components
 const handleDirectoryCreate = (data) => {
   emit('directory-create', data);
@@ -726,5 +931,125 @@ onUnmounted(() => {
 
 .btn-secondary:hover {
   background-color: #4b5563;
+}
+
+/* Upload styles */
+.upload-enabled {
+  position: relative;
+}
+
+.upload-area {
+  padding: 16px;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  text-align: center;
+  background-color: #f9fafb;
+  transition: all 0.2s ease;
+}
+
+.upload-area:hover {
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+}
+
+.upload-button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.upload-button:hover {
+  background-color: #2563eb;
+}
+
+.upload-dialog {
+  max-width: 500px;
+  width: 90vw;
+}
+
+.upload-section {
+  margin-bottom: 16px;
+}
+
+.upload-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.file-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 8px;
+  background-color: #f9fafb;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.file-item:last-child {
+  border-bottom: none;
+}
+
+.file-name {
+  font-weight: 500;
+  color: #374151;
+  flex: 1;
+  margin-right: 8px;
+  word-break: break-all;
+}
+
+.file-size {
+  color: #6b7280;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  margin: 0;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #3b82f6;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  text-align: center;
+  font-size: 12px;
+  color: #6b7280;
 }
 </style>
