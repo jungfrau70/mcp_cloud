@@ -73,7 +73,29 @@ const renderedContent = computed(() => {
     body = body.replace(/\]\(mdc:mcp_knowledge_base\//g, '](\/mcp_knowledge_base/')
   }catch{ /* ignore */ }
   // KB Markdown 탭과 동일한 marked 옵션
-  marked.setOptions({ breaks: true, gfm: true, headerIds: true, mangle: false })
+  marked.setOptions({ 
+    breaks: true, 
+    gfm: true, 
+    headerIds: true, 
+    mangle: false,
+    headerPrefix: '' // Remove any prefix from generated IDs
+  })
+  
+  // Custom renderer for Korean header IDs
+  const renderer = new marked.Renderer()
+  renderer.heading = function(text, level) {
+    // Create Korean-friendly ID by converting to lowercase and replacing spaces with hyphens
+    const id = text.toLowerCase()
+      .replace(/[^\w\s-]/g, '') // Remove special characters except word chars, spaces, and hyphens
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+      .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+    
+    return `<h${level} id="${id}">${text}</h${level}>`
+  }
+  
+  marked.use({ renderer })
+  
   // Allow custom KB scheme 'mdc:' so hrefs are preserved for interception
   return DOMPurify.sanitize(marked.parse(body), { ADD_URI_SAFE: ['mdc'] });
 });
@@ -399,11 +421,65 @@ const setupLinkIntercepts = async () => {
           window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'curriculum', originDir } }))
           return
         }
-        // Handle relative links like './a.md', '../b.md', 'c.md'
+        // Handle anchor links like '#학습-목표'
         const isHash = /^#/.test(href)
+        if(isHash){
+          ev.preventDefault()
+          const targetId = href.substring(1) // Remove the # symbol
+          
+          // Try to find the element by exact ID first
+          let targetElement = document.getElementById(targetId)
+          
+          // If not found, try to find by Korean-friendly ID conversion
+          if(!targetElement){
+            const koreanId = targetId.toLowerCase()
+              .replace(/[^\w\s-]/g, '') // Remove special characters except word chars, spaces, and hyphens
+              .replace(/\s+/g, '-') // Replace spaces with hyphens
+              .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+              .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+            
+            targetElement = document.getElementById(koreanId)
+          }
+          
+          if(targetElement){
+            targetElement.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start',
+              inline: 'nearest'
+            })
+            // Add a temporary highlight effect
+            targetElement.style.backgroundColor = '#fef3c7'
+            setTimeout(() => {
+              targetElement.style.backgroundColor = ''
+            }, 2000)
+          } else {
+            console.warn(`Target element with id "${targetId}" not found`)
+            // Try to find by partial match in all headings
+            const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6')
+            for(const heading of headings){
+              const headingText = heading.textContent || ''
+              const headingId = heading.id || ''
+              if(headingText.includes(targetId) || headingId.includes(targetId)){
+                heading.scrollIntoView({ 
+                  behavior: 'smooth', 
+                  block: 'start',
+                  inline: 'nearest'
+                })
+                heading.style.backgroundColor = '#fef3c7'
+                setTimeout(() => {
+                  heading.style.backgroundColor = ''
+                }, 2000)
+                break
+              }
+            }
+          }
+          return
+        }
+        
+        // Handle relative links like './a.md', '../b.md', 'c.md'
         const hasScheme = /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(href)
         const isAbsolutePath = /^\//.test(href)
-        if(!isHash && !hasScheme && !isAbsolutePath && href){
+        if(!hasScheme && !isAbsolutePath && href){
           ev.preventDefault()
           const basePath = props && props.path ? String(props.path) : ''
           const baseParts = basePath.split('/').slice(0,-1)
