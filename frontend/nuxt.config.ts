@@ -27,19 +27,23 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // 브라우저에서 접근 가능한 호스트로 기본값 설정
-      // 동일 오리진 프록시 사용: 기본 '/api' → 서버에서 https://api.goldencircle.us 로 프록시
-      wsBaseUrl: process.env.NUXT_PUBLIC_WS_BASE_URL || 'wss://api.goldencircle.us/api',
+      // 로컬 개발 서버를 기본으로 하고, 환경변수가 있으면 원래 URL 사용
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || '/api',
+      wsBaseUrl: process.env.NUXT_PUBLIC_WS_BASE_URL || 'ws://localhost:8000/api',
       // Public API Key for X-API-Key header (fallback to MCP_API_KEY if present)
       apiKey: process.env.NUXT_PUBLIC_API_KEY || process.env.MCP_API_KEY || 'my_mcp_eagle_tiger'
     }
   },
   nitro: {
-    publicAssetsURL: '/_nuxt/',
     routeRules: {
-      '/api/**': { proxy: 'https://api.goldencircle.us/**' },
+      '/api/**': { proxy: process.env.NUXT_PUBLIC_API_BASE_URL ? `${process.env.NUXT_PUBLIC_API_BASE_URL}/api/**` : 'http://localhost:8000/api/**' },
     },
     devProxy: {
-      '/api': { target: 'https://api.goldencircle.us', changeOrigin: true, secure: true },
+      '/api': { 
+        target: process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:8000', 
+        changeOrigin: true, 
+        secure: process.env.NUXT_PUBLIC_API_BASE_URL?.startsWith('https') || false 
+      },
     },
   },
   // 개발 서버 설정
@@ -56,7 +60,6 @@ export default defineNuxtConfig({
     },
     build: {
       chunkSizeWarningLimit: 2400
-    },
-    cssMinify: 'lightningcss'
+    }
   }
 })

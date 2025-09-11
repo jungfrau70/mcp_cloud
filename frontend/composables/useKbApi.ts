@@ -15,7 +15,8 @@ export interface KbStructuredDiffHunk { header: string; lines: { type: string; o
 export interface KbStructuredDiff { diff_format: string; hunks: KbStructuredDiffHunk[]; v1: number; v2: number }
 
 export function resolveApiBase(): string {
-  return '/api'
+  const config = useRuntimeConfig() as any
+  return (config?.public?.apiBaseUrl as string) || '/api'
 }
 
 export function useKbApi(){

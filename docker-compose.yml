@@ -187,8 +187,8 @@ services:
       - NITRO_PORT=3000
       - CHOKIDAR_USEPOLLING=true
       - NUXT_TELEMETRY_DISABLED=1
-    # ports:
-    #   - "3000:3000"
+    ports:
+      - "3000:3000"
     expose:
       - "3000"
     volumes:

@@ -1,0 +1,6735 @@
+import { defineComponent, ref, mergeProps, withCtx, withDirectives, createVNode, createBlock, createCommentVNode, vModelText, createTextVNode, openBlock, Fragment, renderList, unref, watch, computed, h, getCurrentInstance, watchEffect, nextTick, useSSRContext } from 'vue';
+import { ssrRenderAttrs, ssrRenderComponent, ssrRenderAttr, ssrRenderList, ssrRenderStyle, ssrRenderClass, ssrIncludeBooleanAttr, ssrInterpolate } from 'vue/server-renderer';
+import { marked } from 'marked';
+import Turndown from 'turndown';
+import { Plugin, PluginKey, Selection, TextSelection, NodeSelection, AllSelection } from '@tiptap/pm/state';
+import { Decoration, DecorationSet } from '@tiptap/pm/view';
+import { Fragment as Fragment$1, Slice, Node as Node$1, Schema, DOMParser } from '@tiptap/pm/model';
+import { findWrapping, canJoin, canSplit, joinPoint, liftTarget, Transform, ReplaceStep, ReplaceAroundStep } from '@tiptap/pm/transform';
+import { wrapIn as wrapIn$1, setBlockType, selectTextblockStart as selectTextblockStart$1, selectTextblockEnd as selectTextblockEnd$1, selectParentNode as selectParentNode$1, selectNodeForward as selectNodeForward$1, selectNodeBackward as selectNodeBackward$1, newlineInCode as newlineInCode$1, liftEmptyBlock as liftEmptyBlock$1, lift as lift$1, joinUp as joinUp$1, joinTextblockForward as joinTextblockForward$1, joinTextblockBackward as joinTextblockBackward$1, joinForward as joinForward$1, joinDown as joinDown$1, joinBackward as joinBackward$1, exitCode as exitCode$1, deleteSelection as deleteSelection$1, createParagraphNear as createParagraphNear$1 } from '@tiptap/pm/commands';
+import { wrapInList as wrapInList$1, sinkListItem as sinkListItem$1, liftListItem as liftListItem$1 } from '@tiptap/pm/schema-list';
+import { dropCursor } from '@tiptap/pm/dropcursor';
+import { gapCursor } from '@tiptap/pm/gapcursor';
+import { history, redo, undo } from '@tiptap/pm/history';
+import { reset, registerCustomProtocol, tokenize, find } from 'linkifyjs';
+import { u as useDocStore, a as _sfc_main$6, _ as _sfc_main$7 } from './default-CCixsYwO.mjs';
+import { a as useKbApi, u as useToastStore, r as resolveApiBase } from './KnowledgeBaseExplorer-SrNbTpJE.mjs';
+import './nuxt-link-DnuW-ndg.mjs';
+import '../nitro/nitro.mjs';
+import 'node:http';
+import 'node:https';
+import 'node:events';
+import 'node:buffer';
+import 'node:fs';
+import 'node:path';
+import 'node:crypto';
+import 'node:url';
+import './server.mjs';
+import '../routes/renderer.mjs';
+import 'vue-bundle-renderer/runtime';
+import 'unhead/server';
+import 'devalue';
+import 'unhead/utils';
+import 'unhead/plugins';
+import 'vue-router';
+import 'pinia';
+import '@vue/shared';
+import 'perfect-debounce';
+import './auth-D2H_Myyg.mjs';
+import './ContentView-BowNUhFE.mjs';
+import 'mermaid';
+import 'json-stringify-pretty-compact';
+import 'vega';
+import 'vega-interpreter';
+import 'vega-lite';
+import 'vega-schema-url-parser';
+import 'vega-themes';
+import 'vega-tooltip';
+import 'dompurify';
+import './_plugin-vue_export-helper-1tPrXgE0.mjs';
+
+const _sfc_main$1 = {
+  __name: "KbSidePanel",
+  __ssrInlineRender: true,
+  props: {
+    path: { type: String, required: false },
+    content: { type: String, required: false, default: "" }
+  },
+  emits: ["goto-line"],
+  setup(__props) {
+    const props = __props;
+    const api = useKbApi();
+    const active = ref("outline");
+    const outline = ref([]);
+    const outlineLoading = ref(false);
+    function buildLocalOutline(md) {
+      const out = [];
+      if (!md) return out;
+      const lines = String(md).split(/\r?\n/);
+      let inCode = false;
+      let inFrontmatter = false;
+      if (lines.length && /^\s*---\s*$/.test(lines[0])) {
+        inFrontmatter = true;
+      }
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (inFrontmatter) {
+          if (/^\s*---\s*$/.test(line) && i !== 0) {
+            inFrontmatter = false;
+          }
+          continue;
+        }
+        if (/^\s*```/.test(line) || /^\s*~~~/.test(line)) {
+          inCode = !inCode;
+          continue;
+        }
+        if (inCode) continue;
+        const m = line.match(/^\s{0,3}(#{1,6})\s*(.*?)\s*#*\s*$/);
+        if (m && m[2]) {
+          let text = String(m[2]).trim();
+          text = text.replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1").replace(/[*_]{1,3}([^*_]+)[*_]{1,3}/g, "$1").replace(/`([^`]+)`/g, "$1").replace(/<[^>]+>/g, "").trim();
+          if (text) {
+            out.push({ level: m[1].length, text, line: i + 1 });
+          }
+          continue;
+        }
+        if (i + 1 < lines.length) {
+          const next = lines[i + 1];
+          if (/^=+\s*$/.test(next) && line.trim()) {
+            let text = line.trim();
+            text = text.replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1").replace(/[*_]{1,3}([^*_]+)[*_]{1,3}/g, "$1").replace(/`([^`]+)`/g, "$1").replace(/<[^>]+>/g, "").trim();
+            out.push({ level: 1, text, line: i + 1 });
+            i++;
+            continue;
+          } else if (/^-+\s*$/.test(next) && line.trim()) {
+            let text = line.trim();
+            text = text.replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1").replace(/[*_]{1,3}([^*_]+)[*_]{1,3}/g, "$1").replace(/`([^`]+)`/g, "$1").replace(/<[^>]+>/g, "").trim();
+            out.push({ level: 2, text, line: i + 1 });
+            i++;
+            continue;
+          }
+        }
+      }
+      return out;
+    }
+    async function refreshOutline() {
+      if (props.content === void 0 || props.content === null) {
+        outline.value = [];
+        return;
+      }
+      outlineLoading.value = true;
+      const local = buildLocalOutline(props.content);
+      try {
+        const data = await api.outline(props.content);
+        let server = data && Array.isArray(data.outline) ? data.outline : [];
+        server = server.map((it) => ({
+          level: it == null ? void 0 : it.level,
+          line: it == null ? void 0 : it.line,
+          text: typeof (it == null ? void 0 : it.text) === "string" ? it.text.trim() : ""
+        })).filter((it) => it.level && it.line);
+        const byLine = /* @__PURE__ */ new Map();
+        for (const it of local) {
+          byLine.set(it.line, { ...it });
+        }
+        for (const it of server) {
+          if (!byLine.has(it.line)) {
+            byLine.set(it.line, { ...it });
+          }
+        }
+        outline.value = Array.from(byLine.values()).sort((a, b) => a.line - b.line);
+      } catch {
+        outline.value = local;
+      } finally {
+        outlineLoading.value = false;
+      }
+    }
+    watch(() => props.content, () => {
+      refreshOutline();
+    });
+    watch(() => props.path, () => {
+      refreshOutline();
+      diffLeft.value = null;
+      diffRight.value = null;
+      loadVersions();
+    });
+    const versions = ref([]);
+    const versionsLoading = ref(false);
+    const versionsSorted = computed(() => [...versions.value].sort((a, b) => b.version_no - a.version_no));
+    const diffLeft = ref(null);
+    const diffRight = ref(null);
+    const diffKey = computed(() => `${diffLeft.value || ""}-${diffRight.value || ""}`);
+    async function loadVersions() {
+      if (!props.path) {
+        versions.value = [];
+        return;
+      }
+      versionsLoading.value = true;
+      try {
+        const data = await api.listVersions(props.path);
+        versions.value = data.versions || [];
+      } finally {
+        versionsLoading.value = false;
+      }
+    }
+    function formatTs(ts) {
+      try {
+        return ts ? new Date(ts).toLocaleString() : "";
+      } catch (e) {
+        return ts;
+      }
+    }
+    function tabClass(name) {
+      return name === active.value ? "px-2 py-1 rounded bg-white border text-gray-800" : "px-2 py-1 rounded bg-gray-200 text-gray-700";
+    }
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "w-72 flex-none bg-gray-50 flex flex-col min-h-0" }, _attrs))}><div class="p-2 font-semibold text-xs tracking-wide text-gray-700 border-b flex items-center gap-2"><button class="${ssrRenderClass(tabClass("outline"))}">Outline</button><button class="${ssrRenderClass(tabClass("versions"))}">Versions</button><button class="${ssrRenderClass(tabClass("diff"))}">Diff</button><div class="ml-auto"></div>`);
+      if (active.value === "outline") {
+        _push(`<button class="text-[10px] px-1 py-0.5 bg-white border rounded"${ssrIncludeBooleanAttr(outlineLoading.value) ? " disabled" : ""}>\u21BB</button>`);
+      } else {
+        _push(`<!---->`);
+      }
+      if (active.value !== "outline") {
+        _push(`<button class="text-[10px] px-1 py-0.5 bg-white border rounded"${ssrIncludeBooleanAttr(versionsLoading.value) ? " disabled" : ""}>\u21BB</button>`);
+      } else {
+        _push(`<!---->`);
+      }
+      _push(`</div>`);
+      if (__props.path) {
+        _push(`<div class="px-2 py-1 text-[10px] text-gray-500 truncate"${ssrRenderAttr("title", __props.path || "")}>${ssrInterpolate(__props.path)}</div>`);
+      } else {
+        _push(`<!---->`);
+      }
+      _push(`<div class="flex-1 overflow-auto text-sm">`);
+      if (active.value === "outline") {
+        _push(`<div class="p-2"><ul><!--[-->`);
+        ssrRenderList(outline.value, (item) => {
+          _push(`<li><button class="block w-full text-left px-2 py-1 hover:bg-indigo-50 rounded" style="${ssrRenderStyle({ paddingLeft: (item.level - 1) * 12 + "px" })}"><span class="${ssrRenderClass({ "font-semibold": item.level === 1 })}">${ssrInterpolate(item.text)}</span></button></li>`);
+        });
+        _push(`<!--]--></ul>`);
+        if (!outline.value.length && !outlineLoading.value) {
+          _push(`<div class="text-gray-400 text-xs p-2">No outline</div>`);
+        } else {
+          _push(`<!---->`);
+        }
+        _push(`</div>`);
+      } else if (active.value === "versions") {
+        _push(`<div><ul><!--[-->`);
+        ssrRenderList(versionsSorted.value, (v) => {
+          _push(`<li class="border-b px-2 py-1 hover:bg-indigo-50 cursor-pointer group"><div class="flex items-center justify-between"><div class="font-mono">v${ssrInterpolate(v.version_no)}</div>`);
+          if (v.version_no === diffLeft.value) {
+            _push(`<span class="text-[10px] text-indigo-600">LEFT</span>`);
+          } else if (v.version_no === diffRight.value) {
+            _push(`<span class="text-[10px] text-green-600">RIGHT</span>`);
+          } else {
+            _push(`<!---->`);
+          }
+          _push(`</div><div class="truncate text-[11px]"${ssrRenderAttr("title", v.message)}>${ssrInterpolate(v.message || "\u2014")}</div><div class="text-[10px] text-gray-400">${ssrInterpolate(formatTs(v.created_at))}</div></li>`);
+        });
+        _push(`<!--]-->`);
+        if (!versions.value.length && !versionsLoading.value) {
+          _push(`<li class="px-2 py-4 text-center text-gray-400">No versions</li>`);
+        } else {
+          _push(`<!---->`);
+        }
+        _push(`</ul></div>`);
+      } else {
+        _push(`<div class="p-2">`);
+        if (versions.value.length && diffLeft.value && diffRight.value) {
+          _push(ssrRenderComponent(_sfc_main$7, {
+            key: diffKey.value,
+            path: __props.path,
+            versions: versionsSorted.value,
+            "default-left": diffLeft.value,
+            "default-right": diffRight.value,
+            onClose: ($event) => {
+              diffLeft.value = null;
+              diffRight.value = null;
+            }
+          }, null, _parent));
+        } else {
+          _push(`<div class="text-xs text-gray-500">Select two versions in Versions tab.</div>`);
+        }
+        _push(`</div>`);
+      }
+      _push(`</div></div>`);
+    };
+  }
+};
+const _sfc_setup$1 = _sfc_main$1.setup;
+_sfc_main$1.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/KbSidePanel.vue");
+  return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
+};
+function createChainableState(config) {
+  const { state, transaction } = config;
+  let { selection } = transaction;
+  let { doc } = transaction;
+  let { storedMarks } = transaction;
+  return {
+    ...state,
+    apply: state.apply.bind(state),
+    applyTransaction: state.applyTransaction.bind(state),
+    plugins: state.plugins,
+    schema: state.schema,
+    reconfigure: state.reconfigure.bind(state),
+    toJSON: state.toJSON.bind(state),
+    get storedMarks() {
+      return storedMarks;
+    },
+    get selection() {
+      return selection;
+    },
+    get doc() {
+      return doc;
+    },
+    get tr() {
+      selection = transaction.selection;
+      doc = transaction.doc;
+      storedMarks = transaction.storedMarks;
+      return transaction;
+    }
+  };
+}
+class CommandManager {
+  constructor(props) {
+    this.editor = props.editor;
+    this.rawCommands = this.editor.extensionManager.commands;
+    this.customState = props.state;
+  }
+  get hasCustomState() {
+    return !!this.customState;
+  }
+  get state() {
+    return this.customState || this.editor.state;
+  }
+  get commands() {
+    const { rawCommands, editor, state } = this;
+    const { view } = editor;
+    const { tr } = state;
+    const props = this.buildProps(tr);
+    return Object.fromEntries(Object.entries(rawCommands).map(([name, command2]) => {
+      const method = (...args) => {
+        const callback = command2(...args)(props);
+        if (!tr.getMeta("preventDispatch") && !this.hasCustomState) {
+          view.dispatch(tr);
+        }
+        return callback;
+      };
+      return [name, method];
+    }));
+  }
+  get chain() {
+    return () => this.createChain();
+  }
+  get can() {
+    return () => this.createCan();
+  }
+  createChain(startTr, shouldDispatch = true) {
+    const { rawCommands, editor, state } = this;
+    const { view } = editor;
+    const callbacks = [];
+    const hasStartTransaction = !!startTr;
+    const tr = startTr || state.tr;
+    const run2 = () => {
+      if (!hasStartTransaction && shouldDispatch && !tr.getMeta("preventDispatch") && !this.hasCustomState) {
+        view.dispatch(tr);
+      }
+      return callbacks.every((callback) => callback === true);
+    };
+    const chain = {
+      ...Object.fromEntries(Object.entries(rawCommands).map(([name, command2]) => {
+        const chainedCommand = (...args) => {
+          const props = this.buildProps(tr, shouldDispatch);
+          const callback = command2(...args)(props);
+          callbacks.push(callback);
+          return chain;
+        };
+        return [name, chainedCommand];
+      })),
+      run: run2
+    };
+    return chain;
+  }
+  createCan(startTr) {
+    const { rawCommands, state } = this;
+    const dispatch = false;
+    const tr = startTr || state.tr;
+    const props = this.buildProps(tr, dispatch);
+    const formattedCommands = Object.fromEntries(Object.entries(rawCommands).map(([name, command2]) => {
+      return [name, (...args) => command2(...args)({ ...props, dispatch: void 0 })];
+    }));
+    return {
+      ...formattedCommands,
+      chain: () => this.createChain(tr, dispatch)
+    };
+  }
+  buildProps(tr, shouldDispatch = true) {
+    const { rawCommands, editor, state } = this;
+    const { view } = editor;
+    const props = {
+      tr,
+      editor,
+      view,
+      state: createChainableState({
+        state,
+        transaction: tr
+      }),
+      dispatch: shouldDispatch ? () => void 0 : void 0,
+      chain: () => this.createChain(tr, shouldDispatch),
+      can: () => this.createCan(tr),
+      get commands() {
+        return Object.fromEntries(Object.entries(rawCommands).map(([name, command2]) => {
+          return [name, (...args) => command2(...args)(props)];
+        }));
+      }
+    };
+    return props;
+  }
+}
+function getExtensionField(extension, field, context) {
+  if (extension.config[field] === void 0 && extension.parent) {
+    return getExtensionField(extension.parent, field, context);
+  }
+  if (typeof extension.config[field] === "function") {
+    const value = extension.config[field].bind({
+      ...context,
+      parent: extension.parent ? getExtensionField(extension.parent, field, context) : null
+    });
+    return value;
+  }
+  return extension.config[field];
+}
+function splitExtensions(extensions) {
+  const baseExtensions = extensions.filter((extension) => extension.type === "extension");
+  const nodeExtensions = extensions.filter((extension) => extension.type === "node");
+  const markExtensions = extensions.filter((extension) => extension.type === "mark");
+  return {
+    baseExtensions,
+    nodeExtensions,
+    markExtensions
+  };
+}
+function getNodeType(nameOrType, schema) {
+  if (typeof nameOrType === "string") {
+    if (!schema.nodes[nameOrType]) {
+      throw Error(`There is no node type named '${nameOrType}'. Maybe you forgot to add the extension?`);
+    }
+    return schema.nodes[nameOrType];
+  }
+  return nameOrType;
+}
+function mergeAttributes(...objects) {
+  return objects.filter((item) => !!item).reduce((items, item) => {
+    const mergedAttributes = { ...items };
+    Object.entries(item).forEach(([key, value]) => {
+      const exists = mergedAttributes[key];
+      if (!exists) {
+        mergedAttributes[key] = value;
+        return;
+      }
+      if (key === "class") {
+        const valueClasses = value ? String(value).split(" ") : [];
+        const existingClasses = mergedAttributes[key] ? mergedAttributes[key].split(" ") : [];
+        const insertClasses = valueClasses.filter((valueClass) => !existingClasses.includes(valueClass));
+        mergedAttributes[key] = [...existingClasses, ...insertClasses].join(" ");
+      } else if (key === "style") {
+        const newStyles = value ? value.split(";").map((style2) => style2.trim()).filter(Boolean) : [];
+        const existingStyles = mergedAttributes[key] ? mergedAttributes[key].split(";").map((style2) => style2.trim()).filter(Boolean) : [];
+        const styleMap = /* @__PURE__ */ new Map();
+        existingStyles.forEach((style2) => {
+          const [property, val] = style2.split(":").map((part) => part.trim());
+          styleMap.set(property, val);
+        });
+        newStyles.forEach((style2) => {
+          const [property, val] = style2.split(":").map((part) => part.trim());
+          styleMap.set(property, val);
+        });
+        mergedAttributes[key] = Array.from(styleMap.entries()).map(([property, val]) => `${property}: ${val}`).join("; ");
+      } else {
+        mergedAttributes[key] = value;
+      }
+    });
+    return mergedAttributes;
+  }, {});
+}
+function isFunction$1(value) {
+  return typeof value === "function";
+}
+function callOrReturn(value, context = void 0, ...props) {
+  if (isFunction$1(value)) {
+    if (context) {
+      return value.bind(context)(...props);
+    }
+    return value(...props);
+  }
+  return value;
+}
+function isRegExp(value) {
+  return Object.prototype.toString.call(value) === "[object RegExp]";
+}
+class InputRule {
+  constructor(config) {
+    this.find = config.find;
+    this.handler = config.handler;
+  }
+}
+function getType(value) {
+  return Object.prototype.toString.call(value).slice(8, -1);
+}
+function isPlainObject(value) {
+  if (getType(value) !== "Object") {
+    return false;
+  }
+  return value.constructor === Object && Object.getPrototypeOf(value) === Object.prototype;
+}
+function mergeDeep(target, source2) {
+  const output = { ...target };
+  if (isPlainObject(target) && isPlainObject(source2)) {
+    Object.keys(source2).forEach((key) => {
+      if (isPlainObject(source2[key]) && isPlainObject(target[key])) {
+        output[key] = mergeDeep(target[key], source2[key]);
+      } else {
+        output[key] = source2[key];
+      }
+    });
+  }
+  return output;
+}
+class Mark {
+  constructor(config = {}) {
+    this.type = "mark";
+    this.name = "mark";
+    this.parent = null;
+    this.child = null;
+    this.config = {
+      name: this.name,
+      defaultOptions: {}
+    };
+    this.config = {
+      ...this.config,
+      ...config
+    };
+    this.name = this.config.name;
+    if (config.defaultOptions && Object.keys(config.defaultOptions).length > 0) {
+      console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${this.name}".`);
+    }
+    this.options = this.config.defaultOptions;
+    if (this.config.addOptions) {
+      this.options = callOrReturn(getExtensionField(this, "addOptions", {
+        name: this.name
+      }));
+    }
+    this.storage = callOrReturn(getExtensionField(this, "addStorage", {
+      name: this.name,
+      options: this.options
+    })) || {};
+  }
+  static create(config = {}) {
+    return new Mark(config);
+  }
+  configure(options = {}) {
+    const extension = this.extend({
+      ...this.config,
+      addOptions: () => {
+        return mergeDeep(this.options, options);
+      }
+    });
+    extension.name = this.name;
+    extension.parent = this.parent;
+    return extension;
+  }
+  extend(extendedConfig = {}) {
+    const extension = new Mark(extendedConfig);
+    extension.parent = this;
+    this.child = extension;
+    extension.name = extendedConfig.name ? extendedConfig.name : extension.parent.name;
+    if (extendedConfig.defaultOptions && Object.keys(extendedConfig.defaultOptions).length > 0) {
+      console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${extension.name}".`);
+    }
+    extension.options = callOrReturn(getExtensionField(extension, "addOptions", {
+      name: extension.name
+    }));
+    extension.storage = callOrReturn(getExtensionField(extension, "addStorage", {
+      name: extension.name,
+      options: extension.options
+    }));
+    return extension;
+  }
+  static handleExit({ editor, mark }) {
+    const { tr } = editor.state;
+    const currentPos = editor.state.selection.$from;
+    const isAtEnd = currentPos.pos === currentPos.end();
+    if (isAtEnd) {
+      const currentMarks = currentPos.marks();
+      const isInMark = !!currentMarks.find((m) => (m === null || m === void 0 ? void 0 : m.type.name) === mark.name);
+      if (!isInMark) {
+        return false;
+      }
+      const removeMark = currentMarks.find((m) => (m === null || m === void 0 ? void 0 : m.type.name) === mark.name);
+      if (removeMark) {
+        tr.removeStoredMark(removeMark);
+      }
+      tr.insertText(" ", currentPos.pos);
+      editor.view.dispatch(tr);
+      return true;
+    }
+    return false;
+  }
+}
+class PasteRule {
+  constructor(config) {
+    this.find = config.find;
+    this.handler = config.handler;
+  }
+}
+class Extension {
+  constructor(config = {}) {
+    this.type = "extension";
+    this.name = "extension";
+    this.parent = null;
+    this.child = null;
+    this.config = {
+      name: this.name,
+      defaultOptions: {}
+    };
+    this.config = {
+      ...this.config,
+      ...config
+    };
+    this.name = this.config.name;
+    if (config.defaultOptions && Object.keys(config.defaultOptions).length > 0) {
+      console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${this.name}".`);
+    }
+    this.options = this.config.defaultOptions;
+    if (this.config.addOptions) {
+      this.options = callOrReturn(getExtensionField(this, "addOptions", {
+        name: this.name
+      }));
+    }
+    this.storage = callOrReturn(getExtensionField(this, "addStorage", {
+      name: this.name,
+      options: this.options
+    })) || {};
+  }
+  static create(config = {}) {
+    return new Extension(config);
+  }
+  configure(options = {}) {
+    const extension = this.extend({
+      ...this.config,
+      addOptions: () => {
+        return mergeDeep(this.options, options);
+      }
+    });
+    extension.name = this.name;
+    extension.parent = this.parent;
+    return extension;
+  }
+  extend(extendedConfig = {}) {
+    const extension = new Extension({ ...this.config, ...extendedConfig });
+    extension.parent = this;
+    this.child = extension;
+    extension.name = extendedConfig.name ? extendedConfig.name : extension.parent.name;
+    if (extendedConfig.defaultOptions && Object.keys(extendedConfig.defaultOptions).length > 0) {
+      console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${extension.name}".`);
+    }
+    extension.options = callOrReturn(getExtensionField(extension, "addOptions", {
+      name: extension.name
+    }));
+    extension.storage = callOrReturn(getExtensionField(extension, "addStorage", {
+      name: extension.name,
+      options: extension.options
+    }));
+    return extension;
+  }
+}
+function getTextBetween(startNode, range, options) {
+  const { from, to } = range;
+  const { blockSeparator = "\n\n", textSerializers = {} } = options || {};
+  let text = "";
+  startNode.nodesBetween(from, to, (node, pos, parent, index2) => {
+    var _a;
+    if (node.isBlock && pos > from) {
+      text += blockSeparator;
+    }
+    const textSerializer = textSerializers === null || textSerializers === void 0 ? void 0 : textSerializers[node.type.name];
+    if (textSerializer) {
+      if (parent) {
+        text += textSerializer({
+          node,
+          pos,
+          parent,
+          index: index2,
+          range
+        });
+      }
+      return false;
+    }
+    if (node.isText) {
+      text += (_a = node === null || node === void 0 ? void 0 : node.text) === null || _a === void 0 ? void 0 : _a.slice(Math.max(from, pos) - pos, to - pos);
+    }
+  });
+  return text;
+}
+function getTextSerializersFromSchema(schema) {
+  return Object.fromEntries(Object.entries(schema.nodes).filter(([, node]) => node.spec.toText).map(([name, node]) => [name, node.spec.toText]));
+}
+Extension.create({
+  name: "clipboardTextSerializer",
+  addOptions() {
+    return {
+      blockSeparator: void 0
+    };
+  },
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: new PluginKey("clipboardTextSerializer"),
+        props: {
+          clipboardTextSerializer: () => {
+            const { editor } = this;
+            const { state, schema } = editor;
+            const { doc, selection } = state;
+            const { ranges } = selection;
+            const from = Math.min(...ranges.map((range2) => range2.$from.pos));
+            const to = Math.max(...ranges.map((range2) => range2.$to.pos));
+            const textSerializers = getTextSerializersFromSchema(schema);
+            const range = { from, to };
+            return getTextBetween(doc, range, {
+              ...this.options.blockSeparator !== void 0 ? { blockSeparator: this.options.blockSeparator } : {},
+              textSerializers
+            });
+          }
+        }
+      })
+    ];
+  }
+});
+const blur = () => ({ editor, view }) => {
+  requestAnimationFrame(() => {
+    var _a;
+    if (!editor.isDestroyed) {
+      view.dom.blur();
+      (_a = void 0) === null || _a === void 0 ? void 0 : _a.removeAllRanges();
+    }
+  });
+  return true;
+};
+const clearContent = (emitUpdate = false) => ({ commands: commands2 }) => {
+  return commands2.setContent("", emitUpdate);
+};
+const clearNodes = () => ({ state, tr, dispatch }) => {
+  const { selection } = tr;
+  const { ranges } = selection;
+  if (!dispatch) {
+    return true;
+  }
+  ranges.forEach(({ $from, $to }) => {
+    state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
+      if (node.type.isText) {
+        return;
+      }
+      const { doc, mapping } = tr;
+      const $mappedFrom = doc.resolve(mapping.map(pos));
+      const $mappedTo = doc.resolve(mapping.map(pos + node.nodeSize));
+      const nodeRange = $mappedFrom.blockRange($mappedTo);
+      if (!nodeRange) {
+        return;
+      }
+      const targetLiftDepth = liftTarget(nodeRange);
+      if (node.type.isTextblock) {
+        const { defaultType } = $mappedFrom.parent.contentMatchAt($mappedFrom.index());
+        tr.setNodeMarkup(nodeRange.start, defaultType);
+      }
+      if (targetLiftDepth || targetLiftDepth === 0) {
+        tr.lift(nodeRange, targetLiftDepth);
+      }
+    });
+  });
+  return true;
+};
+const command = (fn) => (props) => {
+  return fn(props);
+};
+const createParagraphNear = () => ({ state, dispatch }) => {
+  return createParagraphNear$1(state, dispatch);
+};
+const cut = (originRange, targetPos) => ({ editor, tr }) => {
+  const { state } = editor;
+  const contentSlice = state.doc.slice(originRange.from, originRange.to);
+  tr.deleteRange(originRange.from, originRange.to);
+  const newPos = tr.mapping.map(targetPos);
+  tr.insert(newPos, contentSlice.content);
+  tr.setSelection(new TextSelection(tr.doc.resolve(Math.max(newPos - 1, 0))));
+  return true;
+};
+const deleteCurrentNode = () => ({ tr, dispatch }) => {
+  const { selection } = tr;
+  const currentNode = selection.$anchor.node();
+  if (currentNode.content.size > 0) {
+    return false;
+  }
+  const $pos = tr.selection.$anchor;
+  for (let depth = $pos.depth; depth > 0; depth -= 1) {
+    const node = $pos.node(depth);
+    if (node.type === currentNode.type) {
+      if (dispatch) {
+        const from = $pos.before(depth);
+        const to = $pos.after(depth);
+        tr.delete(from, to).scrollIntoView();
+      }
+      return true;
+    }
+  }
+  return false;
+};
+const deleteNode = (typeOrName) => ({ tr, state, dispatch }) => {
+  const type = getNodeType(typeOrName, state.schema);
+  const $pos = tr.selection.$anchor;
+  for (let depth = $pos.depth; depth > 0; depth -= 1) {
+    const node = $pos.node(depth);
+    if (node.type === type) {
+      if (dispatch) {
+        const from = $pos.before(depth);
+        const to = $pos.after(depth);
+        tr.delete(from, to).scrollIntoView();
+      }
+      return true;
+    }
+  }
+  return false;
+};
+const deleteRange = (range) => ({ tr, dispatch }) => {
+  const { from, to } = range;
+  if (dispatch) {
+    tr.delete(from, to);
+  }
+  return true;
+};
+const deleteSelection = () => ({ state, dispatch }) => {
+  return deleteSelection$1(state, dispatch);
+};
+const enter = () => ({ commands: commands2 }) => {
+  return commands2.keyboardShortcut("Enter");
+};
+const exitCode = () => ({ state, dispatch }) => {
+  return exitCode$1(state, dispatch);
+};
+function objectIncludes(object1, object2, options = { strict: true }) {
+  const keys = Object.keys(object2);
+  if (!keys.length) {
+    return true;
+  }
+  return keys.every((key) => {
+    if (options.strict) {
+      return object2[key] === object1[key];
+    }
+    if (isRegExp(object2[key])) {
+      return object2[key].test(object1[key]);
+    }
+    return object2[key] === object1[key];
+  });
+}
+function findMarkInSet(marks, type, attributes = {}) {
+  return marks.find((item) => {
+    return item.type === type && objectIncludes(
+      // Only check equality for the attributes that are provided
+      Object.fromEntries(Object.keys(attributes).map((k) => [k, item.attrs[k]])),
+      attributes
+    );
+  });
+}
+function isMarkInSet(marks, type, attributes = {}) {
+  return !!findMarkInSet(marks, type, attributes);
+}
+function getMarkRange($pos, type, attributes) {
+  var _a;
+  if (!$pos || !type) {
+    return;
+  }
+  let start = $pos.parent.childAfter($pos.parentOffset);
+  if (!start.node || !start.node.marks.some((mark2) => mark2.type === type)) {
+    start = $pos.parent.childBefore($pos.parentOffset);
+  }
+  if (!start.node || !start.node.marks.some((mark2) => mark2.type === type)) {
+    return;
+  }
+  attributes = attributes || ((_a = start.node.marks[0]) === null || _a === void 0 ? void 0 : _a.attrs);
+  const mark = findMarkInSet([...start.node.marks], type, attributes);
+  if (!mark) {
+    return;
+  }
+  let startIndex = start.index;
+  let startPos = $pos.start() + start.offset;
+  let endIndex = startIndex + 1;
+  let endPos = startPos + start.node.nodeSize;
+  while (startIndex > 0 && isMarkInSet([...$pos.parent.child(startIndex - 1).marks], type, attributes)) {
+    startIndex -= 1;
+    startPos -= $pos.parent.child(startIndex).nodeSize;
+  }
+  while (endIndex < $pos.parent.childCount && isMarkInSet([...$pos.parent.child(endIndex).marks], type, attributes)) {
+    endPos += $pos.parent.child(endIndex).nodeSize;
+    endIndex += 1;
+  }
+  return {
+    from: startPos,
+    to: endPos
+  };
+}
+function getMarkType(nameOrType, schema) {
+  if (typeof nameOrType === "string") {
+    if (!schema.marks[nameOrType]) {
+      throw Error(`There is no mark type named '${nameOrType}'. Maybe you forgot to add the extension?`);
+    }
+    return schema.marks[nameOrType];
+  }
+  return nameOrType;
+}
+const extendMarkRange = (typeOrName, attributes = {}) => ({ tr, state, dispatch }) => {
+  const type = getMarkType(typeOrName, state.schema);
+  const { doc, selection } = tr;
+  const { $from, from, to } = selection;
+  if (dispatch) {
+    const range = getMarkRange($from, type, attributes);
+    if (range && range.from <= from && range.to >= to) {
+      const newSelection = TextSelection.create(doc, range.from, range.to);
+      tr.setSelection(newSelection);
+    }
+  }
+  return true;
+};
+const first = (commands2) => (props) => {
+  const items = typeof commands2 === "function" ? commands2(props) : commands2;
+  for (let i = 0; i < items.length; i += 1) {
+    if (items[i](props)) {
+      return true;
+    }
+  }
+  return false;
+};
+function isTextSelection(value) {
+  return value instanceof TextSelection;
+}
+function minMax(value = 0, min = 0, max = 0) {
+  return Math.min(Math.max(value, min), max);
+}
+function resolveFocusPosition(doc, position = null) {
+  if (!position) {
+    return null;
+  }
+  const selectionAtStart = Selection.atStart(doc);
+  const selectionAtEnd = Selection.atEnd(doc);
+  if (position === "start" || position === true) {
+    return selectionAtStart;
+  }
+  if (position === "end") {
+    return selectionAtEnd;
+  }
+  const minPos = selectionAtStart.from;
+  const maxPos = selectionAtEnd.to;
+  if (position === "all") {
+    return TextSelection.create(doc, minMax(0, minPos, maxPos), minMax(doc.content.size, minPos, maxPos));
+  }
+  return TextSelection.create(doc, minMax(position, minPos, maxPos), minMax(position, minPos, maxPos));
+}
+function isAndroid() {
+  return (void 0).platform === "Android" || /android/i.test((void 0).userAgent);
+}
+function isiOS() {
+  return [
+    "iPad Simulator",
+    "iPhone Simulator",
+    "iPod Simulator",
+    "iPad",
+    "iPhone",
+    "iPod"
+  ].includes((void 0).platform) || (void 0).userAgent.includes("Mac") && "ontouchend" in void 0;
+}
+const focus = (position = null, options = {}) => ({ editor, view, tr, dispatch }) => {
+  options = {
+    scrollIntoView: true,
+    ...options
+  };
+  const delayedFocus = () => {
+    if (isiOS() || isAndroid()) {
+      view.dom.focus();
+    }
+    requestAnimationFrame(() => {
+      if (!editor.isDestroyed) {
+        view.focus();
+        if (options === null || options === void 0 ? void 0 : options.scrollIntoView) {
+          editor.commands.scrollIntoView();
+        }
+      }
+    });
+  };
+  if (view.hasFocus() && position === null || position === false) {
+    return true;
+  }
+  if (dispatch && position === null && !isTextSelection(editor.state.selection)) {
+    delayedFocus();
+    return true;
+  }
+  const selection = resolveFocusPosition(tr.doc, position) || editor.state.selection;
+  const isSameSelection = editor.state.selection.eq(selection);
+  if (dispatch) {
+    if (!isSameSelection) {
+      tr.setSelection(selection);
+    }
+    if (isSameSelection && tr.storedMarks) {
+      tr.setStoredMarks(tr.storedMarks);
+    }
+    delayedFocus();
+  }
+  return true;
+};
+const forEach = (items, fn) => (props) => {
+  return items.every((item, index2) => fn(item, { ...props, index: index2 }));
+};
+const insertContent = (value, options) => ({ tr, commands: commands2 }) => {
+  return commands2.insertContentAt({ from: tr.selection.from, to: tr.selection.to }, value, options);
+};
+const removeWhitespaces = (node) => {
+  const children = node.childNodes;
+  for (let i = children.length - 1; i >= 0; i -= 1) {
+    const child = children[i];
+    if (child.nodeType === 3 && child.nodeValue && /^(\n\s\s|\n)$/.test(child.nodeValue)) {
+      node.removeChild(child);
+    } else if (child.nodeType === 1) {
+      removeWhitespaces(child);
+    }
+  }
+  return node;
+};
+function elementFromString(value) {
+  const wrappedValue = `<body>${value}</body>`;
+  const html = new (void 0).DOMParser().parseFromString(wrappedValue, "text/html").body;
+  return removeWhitespaces(html);
+}
+function createNodeFromContent(content, schema, options) {
+  if (content instanceof Node$1 || content instanceof Fragment$1) {
+    return content;
+  }
+  options = {
+    slice: true,
+    parseOptions: {},
+    ...options
+  };
+  const isJSONContent = typeof content === "object" && content !== null;
+  const isTextContent = typeof content === "string";
+  if (isJSONContent) {
+    try {
+      const isArrayContent = Array.isArray(content) && content.length > 0;
+      if (isArrayContent) {
+        return Fragment$1.fromArray(content.map((item) => schema.nodeFromJSON(item)));
+      }
+      const node = schema.nodeFromJSON(content);
+      if (options.errorOnInvalidContent) {
+        node.check();
+      }
+      return node;
+    } catch (error2) {
+      if (options.errorOnInvalidContent) {
+        throw new Error("[tiptap error]: Invalid JSON content", { cause: error2 });
+      }
+      console.warn("[tiptap warn]: Invalid content.", "Passed value:", content, "Error:", error2);
+      return createNodeFromContent("", schema, options);
+    }
+  }
+  if (isTextContent) {
+    if (options.errorOnInvalidContent) {
+      let hasInvalidContent = false;
+      let invalidContent = "";
+      const contentCheckSchema = new Schema({
+        topNode: schema.spec.topNode,
+        marks: schema.spec.marks,
+        // Prosemirror's schemas are executed such that: the last to execute, matches last
+        // This means that we can add a catch-all node at the end of the schema to catch any content that we don't know how to handle
+        nodes: schema.spec.nodes.append({
+          __tiptap__private__unknown__catch__all__node: {
+            content: "inline*",
+            group: "block",
+            parseDOM: [
+              {
+                tag: "*",
+                getAttrs: (e) => {
+                  hasInvalidContent = true;
+                  invalidContent = typeof e === "string" ? e : e.outerHTML;
+                  return null;
+                }
+              }
+            ]
+          }
+        })
+      });
+      if (options.slice) {
+        DOMParser.fromSchema(contentCheckSchema).parseSlice(elementFromString(content), options.parseOptions);
+      } else {
+        DOMParser.fromSchema(contentCheckSchema).parse(elementFromString(content), options.parseOptions);
+      }
+      if (options.errorOnInvalidContent && hasInvalidContent) {
+        throw new Error("[tiptap error]: Invalid HTML content", { cause: new Error(`Invalid element found: ${invalidContent}`) });
+      }
+    }
+    const parser = DOMParser.fromSchema(schema);
+    if (options.slice) {
+      return parser.parseSlice(elementFromString(content), options.parseOptions).content;
+    }
+    return parser.parse(elementFromString(content), options.parseOptions);
+  }
+  return createNodeFromContent("", schema, options);
+}
+function selectionToInsertionEnd(tr, startLen, bias) {
+  const last = tr.steps.length - 1;
+  if (last < startLen) {
+    return;
+  }
+  const step = tr.steps[last];
+  if (!(step instanceof ReplaceStep || step instanceof ReplaceAroundStep)) {
+    return;
+  }
+  const map = tr.mapping.maps[last];
+  let end = 0;
+  map.forEach((_from, _to, _newFrom, newTo) => {
+    if (end === 0) {
+      end = newTo;
+    }
+  });
+  tr.setSelection(Selection.near(tr.doc.resolve(end), bias));
+}
+const isFragment = (nodeOrFragment) => {
+  return !("type" in nodeOrFragment);
+};
+const insertContentAt = (position, value, options) => ({ tr, dispatch, editor }) => {
+  var _a;
+  if (dispatch) {
+    options = {
+      parseOptions: editor.options.parseOptions,
+      updateSelection: true,
+      applyInputRules: false,
+      applyPasteRules: false,
+      ...options
+    };
+    let content;
+    const emitContentError = (error2) => {
+      editor.emit("contentError", {
+        editor,
+        error: error2,
+        disableCollaboration: () => {
+          if (editor.storage.collaboration) {
+            editor.storage.collaboration.isDisabled = true;
+          }
+        }
+      });
+    };
+    const parseOptions = {
+      preserveWhitespace: "full",
+      ...options.parseOptions
+    };
+    if (!options.errorOnInvalidContent && !editor.options.enableContentCheck && editor.options.emitContentError) {
+      try {
+        createNodeFromContent(value, editor.schema, {
+          parseOptions,
+          errorOnInvalidContent: true
+        });
+      } catch (e) {
+        emitContentError(e);
+      }
+    }
+    try {
+      content = createNodeFromContent(value, editor.schema, {
+        parseOptions,
+        errorOnInvalidContent: (_a = options.errorOnInvalidContent) !== null && _a !== void 0 ? _a : editor.options.enableContentCheck
+      });
+    } catch (e) {
+      emitContentError(e);
+      return false;
+    }
+    let { from, to } = typeof position === "number" ? { from: position, to: position } : { from: position.from, to: position.to };
+    let isOnlyTextContent = true;
+    let isOnlyBlockContent = true;
+    const nodes = isFragment(content) ? content : [content];
+    nodes.forEach((node) => {
+      node.check();
+      isOnlyTextContent = isOnlyTextContent ? node.isText && node.marks.length === 0 : false;
+      isOnlyBlockContent = isOnlyBlockContent ? node.isBlock : false;
+    });
+    if (from === to && isOnlyBlockContent) {
+      const { parent } = tr.doc.resolve(from);
+      const isEmptyTextBlock = parent.isTextblock && !parent.type.spec.code && !parent.childCount;
+      if (isEmptyTextBlock) {
+        from -= 1;
+        to += 1;
+      }
+    }
+    let newContent;
+    if (isOnlyTextContent) {
+      if (Array.isArray(value)) {
+        newContent = value.map((v) => v.text || "").join("");
+      } else if (value instanceof Fragment$1) {
+        let text = "";
+        value.forEach((node) => {
+          if (node.text) {
+            text += node.text;
+          }
+        });
+        newContent = text;
+      } else if (typeof value === "object" && !!value && !!value.text) {
+        newContent = value.text;
+      } else {
+        newContent = value;
+      }
+      tr.insertText(newContent, from, to);
+    } else {
+      newContent = content;
+      tr.replaceWith(from, to, newContent);
+    }
+    if (options.updateSelection) {
+      selectionToInsertionEnd(tr, tr.steps.length - 1, -1);
+    }
+    if (options.applyInputRules) {
+      tr.setMeta("applyInputRules", { from, text: newContent });
+    }
+    if (options.applyPasteRules) {
+      tr.setMeta("applyPasteRules", { from, text: newContent });
+    }
+  }
+  return true;
+};
+const joinUp = () => ({ state, dispatch }) => {
+  return joinUp$1(state, dispatch);
+};
+const joinDown = () => ({ state, dispatch }) => {
+  return joinDown$1(state, dispatch);
+};
+const joinBackward = () => ({ state, dispatch }) => {
+  return joinBackward$1(state, dispatch);
+};
+const joinForward = () => ({ state, dispatch }) => {
+  return joinForward$1(state, dispatch);
+};
+const joinItemBackward = () => ({ state, dispatch, tr }) => {
+  try {
+    const point = joinPoint(state.doc, state.selection.$from.pos, -1);
+    if (point === null || point === void 0) {
+      return false;
+    }
+    tr.join(point, 2);
+    if (dispatch) {
+      dispatch(tr);
+    }
+    return true;
+  } catch {
+    return false;
+  }
+};
+const joinItemForward = () => ({ state, dispatch, tr }) => {
+  try {
+    const point = joinPoint(state.doc, state.selection.$from.pos, 1);
+    if (point === null || point === void 0) {
+      return false;
+    }
+    tr.join(point, 2);
+    if (dispatch) {
+      dispatch(tr);
+    }
+    return true;
+  } catch {
+    return false;
+  }
+};
+const joinTextblockBackward = () => ({ state, dispatch }) => {
+  return joinTextblockBackward$1(state, dispatch);
+};
+const joinTextblockForward = () => ({ state, dispatch }) => {
+  return joinTextblockForward$1(state, dispatch);
+};
+function isMacOS() {
+  return false;
+}
+function normalizeKeyName(name) {
+  const parts = name.split(/-(?!$)/);
+  let result = parts[parts.length - 1];
+  if (result === "Space") {
+    result = " ";
+  }
+  let alt;
+  let ctrl;
+  let shift;
+  let meta;
+  for (let i = 0; i < parts.length - 1; i += 1) {
+    const mod = parts[i];
+    if (/^(cmd|meta|m)$/i.test(mod)) {
+      meta = true;
+    } else if (/^a(lt)?$/i.test(mod)) {
+      alt = true;
+    } else if (/^(c|ctrl|control)$/i.test(mod)) {
+      ctrl = true;
+    } else if (/^s(hift)?$/i.test(mod)) {
+      shift = true;
+    } else if (/^mod$/i.test(mod)) {
+      if (isiOS() || isMacOS()) {
+        meta = true;
+      } else {
+        ctrl = true;
+      }
+    } else {
+      throw new Error(`Unrecognized modifier name: ${mod}`);
+    }
+  }
+  if (alt) {
+    result = `Alt-${result}`;
+  }
+  if (ctrl) {
+    result = `Ctrl-${result}`;
+  }
+  if (meta) {
+    result = `Meta-${result}`;
+  }
+  if (shift) {
+    result = `Shift-${result}`;
+  }
+  return result;
+}
+const keyboardShortcut = (name) => ({ editor, view, tr, dispatch }) => {
+  const keys = normalizeKeyName(name).split(/-(?!$)/);
+  const key = keys.find((item) => !["Alt", "Ctrl", "Meta", "Shift"].includes(item));
+  const event = new KeyboardEvent("keydown", {
+    key: key === "Space" ? " " : key,
+    altKey: keys.includes("Alt"),
+    ctrlKey: keys.includes("Ctrl"),
+    metaKey: keys.includes("Meta"),
+    shiftKey: keys.includes("Shift"),
+    bubbles: true,
+    cancelable: true
+  });
+  const capturedTransaction = editor.captureTransaction(() => {
+    view.someProp("handleKeyDown", (f) => f(view, event));
+  });
+  capturedTransaction === null || capturedTransaction === void 0 ? void 0 : capturedTransaction.steps.forEach((step) => {
+    const newStep = step.map(tr.mapping);
+    if (newStep && dispatch) {
+      tr.maybeStep(newStep);
+    }
+  });
+  return true;
+};
+function isNodeActive(state, typeOrName, attributes = {}) {
+  const { from, to, empty } = state.selection;
+  const type = typeOrName ? getNodeType(typeOrName, state.schema) : null;
+  const nodeRanges = [];
+  state.doc.nodesBetween(from, to, (node, pos) => {
+    if (node.isText) {
+      return;
+    }
+    const relativeFrom = Math.max(from, pos);
+    const relativeTo = Math.min(to, pos + node.nodeSize);
+    nodeRanges.push({
+      node,
+      from: relativeFrom,
+      to: relativeTo
+    });
+  });
+  const selectionRange = to - from;
+  const matchedNodeRanges = nodeRanges.filter((nodeRange) => {
+    if (!type) {
+      return true;
+    }
+    return type.name === nodeRange.node.type.name;
+  }).filter((nodeRange) => objectIncludes(nodeRange.node.attrs, attributes, { strict: false }));
+  if (empty) {
+    return !!matchedNodeRanges.length;
+  }
+  const range = matchedNodeRanges.reduce((sum, nodeRange) => sum + nodeRange.to - nodeRange.from, 0);
+  return range >= selectionRange;
+}
+const lift = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
+  const type = getNodeType(typeOrName, state.schema);
+  const isActive2 = isNodeActive(state, type, attributes);
+  if (!isActive2) {
+    return false;
+  }
+  return lift$1(state, dispatch);
+};
+const liftEmptyBlock = () => ({ state, dispatch }) => {
+  return liftEmptyBlock$1(state, dispatch);
+};
+const liftListItem = (typeOrName) => ({ state, dispatch }) => {
+  const type = getNodeType(typeOrName, state.schema);
+  return liftListItem$1(type)(state, dispatch);
+};
+const newlineInCode = () => ({ state, dispatch }) => {
+  return newlineInCode$1(state, dispatch);
+};
+function getSchemaTypeNameByName(name, schema) {
+  if (schema.nodes[name]) {
+    return "node";
+  }
+  if (schema.marks[name]) {
+    return "mark";
+  }
+  return null;
+}
+function deleteProps(obj, propOrProps) {
+  const props = typeof propOrProps === "string" ? [propOrProps] : propOrProps;
+  return Object.keys(obj).reduce((newObj, prop) => {
+    if (!props.includes(prop)) {
+      newObj[prop] = obj[prop];
+    }
+    return newObj;
+  }, {});
+}
+const resetAttributes = (typeOrName, attributes) => ({ tr, state, dispatch }) => {
+  let nodeType = null;
+  let markType = null;
+  const schemaType = getSchemaTypeNameByName(typeof typeOrName === "string" ? typeOrName : typeOrName.name, state.schema);
+  if (!schemaType) {
+    return false;
+  }
+  if (schemaType === "node") {
+    nodeType = getNodeType(typeOrName, state.schema);
+  }
+  if (schemaType === "mark") {
+    markType = getMarkType(typeOrName, state.schema);
+  }
+  if (dispatch) {
+    tr.selection.ranges.forEach((range) => {
+      state.doc.nodesBetween(range.$from.pos, range.$to.pos, (node, pos) => {
+        if (nodeType && nodeType === node.type) {
+          tr.setNodeMarkup(pos, void 0, deleteProps(node.attrs, attributes));
+        }
+        if (markType && node.marks.length) {
+          node.marks.forEach((mark) => {
+            if (markType === mark.type) {
+              tr.addMark(pos, pos + node.nodeSize, markType.create(deleteProps(mark.attrs, attributes)));
+            }
+          });
+        }
+      });
+    });
+  }
+  return true;
+};
+const scrollIntoView = () => ({ tr, dispatch }) => {
+  if (dispatch) {
+    tr.scrollIntoView();
+  }
+  return true;
+};
+const selectAll = () => ({ tr, dispatch }) => {
+  if (dispatch) {
+    const selection = new AllSelection(tr.doc);
+    tr.setSelection(selection);
+  }
+  return true;
+};
+const selectNodeBackward = () => ({ state, dispatch }) => {
+  return selectNodeBackward$1(state, dispatch);
+};
+const selectNodeForward = () => ({ state, dispatch }) => {
+  return selectNodeForward$1(state, dispatch);
+};
+const selectParentNode = () => ({ state, dispatch }) => {
+  return selectParentNode$1(state, dispatch);
+};
+const selectTextblockEnd = () => ({ state, dispatch }) => {
+  return selectTextblockEnd$1(state, dispatch);
+};
+const selectTextblockStart = () => ({ state, dispatch }) => {
+  return selectTextblockStart$1(state, dispatch);
+};
+function createDocument(content, schema, parseOptions = {}, options = {}) {
+  return createNodeFromContent(content, schema, {
+    slice: false,
+    parseOptions,
+    errorOnInvalidContent: options.errorOnInvalidContent
+  });
+}
+const setContent = (content, emitUpdate = false, parseOptions = {}, options = {}) => ({ editor, tr, dispatch, commands: commands2 }) => {
+  var _a, _b;
+  const { doc } = tr;
+  if (parseOptions.preserveWhitespace !== "full") {
+    const document2 = createDocument(content, editor.schema, parseOptions, {
+      errorOnInvalidContent: (_a = options.errorOnInvalidContent) !== null && _a !== void 0 ? _a : editor.options.enableContentCheck
+    });
+    if (dispatch) {
+      tr.replaceWith(0, doc.content.size, document2).setMeta("preventUpdate", !emitUpdate);
+    }
+    return true;
+  }
+  if (dispatch) {
+    tr.setMeta("preventUpdate", !emitUpdate);
+  }
+  return commands2.insertContentAt({ from: 0, to: doc.content.size }, content, {
+    parseOptions,
+    errorOnInvalidContent: (_b = options.errorOnInvalidContent) !== null && _b !== void 0 ? _b : editor.options.enableContentCheck
+  });
+};
+function getMarkAttributes(state, typeOrName) {
+  const type = getMarkType(typeOrName, state.schema);
+  const { from, to, empty } = state.selection;
+  const marks = [];
+  if (empty) {
+    if (state.storedMarks) {
+      marks.push(...state.storedMarks);
+    }
+    marks.push(...state.selection.$head.marks());
+  } else {
+    state.doc.nodesBetween(from, to, (node) => {
+      marks.push(...node.marks);
+    });
+  }
+  const mark = marks.find((markItem) => markItem.type.name === type.name);
+  if (!mark) {
+    return {};
+  }
+  return { ...mark.attrs };
+}
+function combineTransactionSteps(oldDoc, transactions) {
+  const transform = new Transform(oldDoc);
+  transactions.forEach((transaction) => {
+    transaction.steps.forEach((step) => {
+      transform.step(step);
+    });
+  });
+  return transform;
+}
+function defaultBlockAt(match) {
+  for (let i = 0; i < match.edgeCount; i += 1) {
+    const { type } = match.edge(i);
+    if (type.isTextblock && !type.hasRequiredAttrs()) {
+      return type;
+    }
+  }
+  return null;
+}
+function findChildren(node, predicate) {
+  const nodesWithPos = [];
+  node.descendants((child, pos) => {
+    if (predicate(child)) {
+      nodesWithPos.push({
+        node: child,
+        pos
+      });
+    }
+  });
+  return nodesWithPos;
+}
+function findChildrenInRange(node, range, predicate) {
+  const nodesWithPos = [];
+  node.nodesBetween(range.from, range.to, (child, pos) => {
+    if (predicate(child)) {
+      nodesWithPos.push({
+        node: child,
+        pos
+      });
+    }
+  });
+  return nodesWithPos;
+}
+function findParentNodeClosestToPos($pos, predicate) {
+  for (let i = $pos.depth; i > 0; i -= 1) {
+    const node = $pos.node(i);
+    if (predicate(node)) {
+      return {
+        pos: i > 0 ? $pos.before(i) : 0,
+        start: $pos.start(i),
+        depth: i,
+        node
+      };
+    }
+  }
+}
+function findParentNode(predicate) {
+  return (selection) => findParentNodeClosestToPos(selection.$from, predicate);
+}
+function getNodeAttributes(state, typeOrName) {
+  const type = getNodeType(typeOrName, state.schema);
+  const { from, to } = state.selection;
+  const nodes = [];
+  state.doc.nodesBetween(from, to, (node2) => {
+    nodes.push(node2);
+  });
+  const node = nodes.reverse().find((nodeItem) => nodeItem.type.name === type.name);
+  if (!node) {
+    return {};
+  }
+  return { ...node.attrs };
+}
+function getAttributes(state, typeOrName) {
+  const schemaType = getSchemaTypeNameByName(typeof typeOrName === "string" ? typeOrName : typeOrName.name, state.schema);
+  if (schemaType === "node") {
+    return getNodeAttributes(state, typeOrName);
+  }
+  if (schemaType === "mark") {
+    return getMarkAttributes(state, typeOrName);
+  }
+  return {};
+}
+function removeDuplicates(array, by = JSON.stringify) {
+  const seen = {};
+  return array.filter((item) => {
+    const key = by(item);
+    return Object.prototype.hasOwnProperty.call(seen, key) ? false : seen[key] = true;
+  });
+}
+function simplifyChangedRanges(changes) {
+  const uniqueChanges = removeDuplicates(changes);
+  return uniqueChanges.length === 1 ? uniqueChanges : uniqueChanges.filter((change, index2) => {
+    const rest = uniqueChanges.filter((_, i) => i !== index2);
+    return !rest.some((otherChange) => {
+      return change.oldRange.from >= otherChange.oldRange.from && change.oldRange.to <= otherChange.oldRange.to && change.newRange.from >= otherChange.newRange.from && change.newRange.to <= otherChange.newRange.to;
+    });
+  });
+}
+function getChangedRanges(transform) {
+  const { mapping, steps } = transform;
+  const changes = [];
+  mapping.maps.forEach((stepMap, index2) => {
+    const ranges = [];
+    if (!stepMap.ranges.length) {
+      const { from, to } = steps[index2];
+      if (from === void 0 || to === void 0) {
+        return;
+      }
+      ranges.push({ from, to });
+    } else {
+      stepMap.forEach((from, to) => {
+        ranges.push({ from, to });
+      });
+    }
+    ranges.forEach(({ from, to }) => {
+      const newStart = mapping.slice(index2).map(from, -1);
+      const newEnd = mapping.slice(index2).map(to);
+      const oldStart = mapping.invert().map(newStart, -1);
+      const oldEnd = mapping.invert().map(newEnd);
+      changes.push({
+        oldRange: {
+          from: oldStart,
+          to: oldEnd
+        },
+        newRange: {
+          from: newStart,
+          to: newEnd
+        }
+      });
+    });
+  });
+  return simplifyChangedRanges(changes);
+}
+function getMarksBetween(from, to, doc) {
+  const marks = [];
+  if (from === to) {
+    doc.resolve(from).marks().forEach((mark) => {
+      const $pos = doc.resolve(from);
+      const range = getMarkRange($pos, mark.type);
+      if (!range) {
+        return;
+      }
+      marks.push({
+        mark,
+        ...range
+      });
+    });
+  } else {
+    doc.nodesBetween(from, to, (node, pos) => {
+      if (!node || (node === null || node === void 0 ? void 0 : node.nodeSize) === void 0) {
+        return;
+      }
+      marks.push(...node.marks.map((mark) => ({
+        from: pos,
+        to: pos + node.nodeSize,
+        mark
+      })));
+    });
+  }
+  return marks;
+}
+function getSplittedAttributes(extensionAttributes, typeName, attributes) {
+  return Object.fromEntries(Object.entries(attributes).filter(([name]) => {
+    const extensionAttribute = extensionAttributes.find((item) => {
+      return item.type === typeName && item.name === name;
+    });
+    if (!extensionAttribute) {
+      return false;
+    }
+    return extensionAttribute.attribute.keepOnSplit;
+  }));
+}
+function isMarkActive(state, typeOrName, attributes = {}) {
+  const { empty, ranges } = state.selection;
+  const type = typeOrName ? getMarkType(typeOrName, state.schema) : null;
+  if (empty) {
+    return !!(state.storedMarks || state.selection.$from.marks()).filter((mark) => {
+      if (!type) {
+        return true;
+      }
+      return type.name === mark.type.name;
+    }).find((mark) => objectIncludes(mark.attrs, attributes, { strict: false }));
+  }
+  let selectionRange = 0;
+  const markRanges = [];
+  ranges.forEach(({ $from, $to }) => {
+    const from = $from.pos;
+    const to = $to.pos;
+    state.doc.nodesBetween(from, to, (node, pos) => {
+      if (!node.isText && !node.marks.length) {
+        return;
+      }
+      const relativeFrom = Math.max(from, pos);
+      const relativeTo = Math.min(to, pos + node.nodeSize);
+      const range2 = relativeTo - relativeFrom;
+      selectionRange += range2;
+      markRanges.push(...node.marks.map((mark) => ({
+        mark,
+        from: relativeFrom,
+        to: relativeTo
+      })));
+    });
+  });
+  if (selectionRange === 0) {
+    return false;
+  }
+  const matchedRange = markRanges.filter((markRange) => {
+    if (!type) {
+      return true;
+    }
+    return type.name === markRange.mark.type.name;
+  }).filter((markRange) => objectIncludes(markRange.mark.attrs, attributes, { strict: false })).reduce((sum, markRange) => sum + markRange.to - markRange.from, 0);
+  const excludedRange = markRanges.filter((markRange) => {
+    if (!type) {
+      return true;
+    }
+    return markRange.mark.type !== type && markRange.mark.type.excludes(type);
+  }).reduce((sum, markRange) => sum + markRange.to - markRange.from, 0);
+  const range = matchedRange > 0 ? matchedRange + excludedRange : matchedRange;
+  return range >= selectionRange;
+}
+function isList(name, extensions) {
+  const { nodeExtensions } = splitExtensions(extensions);
+  const extension = nodeExtensions.find((item) => item.name === name);
+  if (!extension) {
+    return false;
+  }
+  const context = {
+    name: extension.name,
+    options: extension.options,
+    storage: extension.storage
+  };
+  const group = callOrReturn(getExtensionField(extension, "group", context));
+  if (typeof group !== "string") {
+    return false;
+  }
+  return group.split(" ").includes("list");
+}
+function isNodeEmpty(node, { checkChildren = true, ignoreWhitespace = false } = {}) {
+  var _a;
+  if (ignoreWhitespace) {
+    if (node.type.name === "hardBreak") {
+      return true;
+    }
+    if (node.isText) {
+      return /^\s*$/m.test((_a = node.text) !== null && _a !== void 0 ? _a : "");
+    }
+  }
+  if (node.isText) {
+    return !node.text;
+  }
+  if (node.isAtom || node.isLeaf) {
+    return false;
+  }
+  if (node.content.childCount === 0) {
+    return true;
+  }
+  if (checkChildren) {
+    let isContentEmpty = true;
+    node.content.forEach((childNode) => {
+      if (isContentEmpty === false) {
+        return;
+      }
+      if (!isNodeEmpty(childNode, { ignoreWhitespace, checkChildren })) {
+        isContentEmpty = false;
+      }
+    });
+    return isContentEmpty;
+  }
+  return false;
+}
+function isNodeSelection(value) {
+  return value instanceof NodeSelection;
+}
+function canSetMark(state, tr, newMarkType) {
+  var _a;
+  const { selection } = tr;
+  let cursor = null;
+  if (isTextSelection(selection)) {
+    cursor = selection.$cursor;
+  }
+  if (cursor) {
+    const currentMarks = (_a = state.storedMarks) !== null && _a !== void 0 ? _a : cursor.marks();
+    return !!newMarkType.isInSet(currentMarks) || !currentMarks.some((mark) => mark.type.excludes(newMarkType));
+  }
+  const { ranges } = selection;
+  return ranges.some(({ $from, $to }) => {
+    let someNodeSupportsMark = $from.depth === 0 ? state.doc.inlineContent && state.doc.type.allowsMarkType(newMarkType) : false;
+    state.doc.nodesBetween($from.pos, $to.pos, (node, _pos, parent) => {
+      if (someNodeSupportsMark) {
+        return false;
+      }
+      if (node.isInline) {
+        const parentAllowsMarkType = !parent || parent.type.allowsMarkType(newMarkType);
+        const currentMarksAllowMarkType = !!newMarkType.isInSet(node.marks) || !node.marks.some((otherMark) => otherMark.type.excludes(newMarkType));
+        someNodeSupportsMark = parentAllowsMarkType && currentMarksAllowMarkType;
+      }
+      return !someNodeSupportsMark;
+    });
+    return someNodeSupportsMark;
+  });
+}
+const setMark = (typeOrName, attributes = {}) => ({ tr, state, dispatch }) => {
+  const { selection } = tr;
+  const { empty, ranges } = selection;
+  const type = getMarkType(typeOrName, state.schema);
+  if (dispatch) {
+    if (empty) {
+      const oldAttributes = getMarkAttributes(state, type);
+      tr.addStoredMark(type.create({
+        ...oldAttributes,
+        ...attributes
+      }));
+    } else {
+      ranges.forEach((range) => {
+        const from = range.$from.pos;
+        const to = range.$to.pos;
+        state.doc.nodesBetween(from, to, (node, pos) => {
+          const trimmedFrom = Math.max(pos, from);
+          const trimmedTo = Math.min(pos + node.nodeSize, to);
+          const someHasMark = node.marks.find((mark) => mark.type === type);
+          if (someHasMark) {
+            node.marks.forEach((mark) => {
+              if (type === mark.type) {
+                tr.addMark(trimmedFrom, trimmedTo, type.create({
+                  ...mark.attrs,
+                  ...attributes
+                }));
+              }
+            });
+          } else {
+            tr.addMark(trimmedFrom, trimmedTo, type.create(attributes));
+          }
+        });
+      });
+    }
+  }
+  return canSetMark(state, tr, type);
+};
+const setMeta = (key, value) => ({ tr }) => {
+  tr.setMeta(key, value);
+  return true;
+};
+const setNode = (typeOrName, attributes = {}) => ({ state, dispatch, chain }) => {
+  const type = getNodeType(typeOrName, state.schema);
+  let attributesToCopy;
+  if (state.selection.$anchor.sameParent(state.selection.$head)) {
+    attributesToCopy = state.selection.$anchor.parent.attrs;
+  }
+  if (!type.isTextblock) {
+    console.warn('[tiptap warn]: Currently "setNode()" only supports text block nodes.');
+    return false;
+  }
+  return chain().command(({ commands: commands2 }) => {
+    const canSetBlock = setBlockType(type, { ...attributesToCopy, ...attributes })(state);
+    if (canSetBlock) {
+      return true;
+    }
+    return commands2.clearNodes();
+  }).command(({ state: updatedState }) => {
+    return setBlockType(type, { ...attributesToCopy, ...attributes })(updatedState, dispatch);
+  }).run();
+};
+const setNodeSelection = (position) => ({ tr, dispatch }) => {
+  if (dispatch) {
+    const { doc } = tr;
+    const from = minMax(position, 0, doc.content.size);
+    const selection = NodeSelection.create(doc, from);
+    tr.setSelection(selection);
+  }
+  return true;
+};
+const setTextSelection = (position) => ({ tr, dispatch }) => {
+  if (dispatch) {
+    const { doc } = tr;
+    const { from, to } = typeof position === "number" ? { from: position, to: position } : position;
+    const minPos = TextSelection.atStart(doc).from;
+    const maxPos = TextSelection.atEnd(doc).to;
+    const resolvedFrom = minMax(from, minPos, maxPos);
+    const resolvedEnd = minMax(to, minPos, maxPos);
+    const selection = TextSelection.create(doc, resolvedFrom, resolvedEnd);
+    tr.setSelection(selection);
+  }
+  return true;
+};
+const sinkListItem = (typeOrName) => ({ state, dispatch }) => {
+  const type = getNodeType(typeOrName, state.schema);
+  return sinkListItem$1(type)(state, dispatch);
+};
+function ensureMarks(state, splittableMarks) {
+  const marks = state.storedMarks || state.selection.$to.parentOffset && state.selection.$from.marks();
+  if (marks) {
+    const filteredMarks = marks.filter((mark) => splittableMarks === null || splittableMarks === void 0 ? void 0 : splittableMarks.includes(mark.type.name));
+    state.tr.ensureMarks(filteredMarks);
+  }
+}
+const splitBlock = ({ keepMarks = true } = {}) => ({ tr, state, dispatch, editor }) => {
+  const { selection, doc } = tr;
+  const { $from, $to } = selection;
+  const extensionAttributes = editor.extensionManager.attributes;
+  const newAttributes = getSplittedAttributes(extensionAttributes, $from.node().type.name, $from.node().attrs);
+  if (selection instanceof NodeSelection && selection.node.isBlock) {
+    if (!$from.parentOffset || !canSplit(doc, $from.pos)) {
+      return false;
+    }
+    if (dispatch) {
+      if (keepMarks) {
+        ensureMarks(state, editor.extensionManager.splittableMarks);
+      }
+      tr.split($from.pos).scrollIntoView();
+    }
+    return true;
+  }
+  if (!$from.parent.isBlock) {
+    return false;
+  }
+  const atEnd = $to.parentOffset === $to.parent.content.size;
+  const deflt = $from.depth === 0 ? void 0 : defaultBlockAt($from.node(-1).contentMatchAt($from.indexAfter(-1)));
+  let types = atEnd && deflt ? [
+    {
+      type: deflt,
+      attrs: newAttributes
+    }
+  ] : void 0;
+  let can = canSplit(tr.doc, tr.mapping.map($from.pos), 1, types);
+  if (!types && !can && canSplit(tr.doc, tr.mapping.map($from.pos), 1, deflt ? [{ type: deflt }] : void 0)) {
+    can = true;
+    types = deflt ? [
+      {
+        type: deflt,
+        attrs: newAttributes
+      }
+    ] : void 0;
+  }
+  if (dispatch) {
+    if (can) {
+      if (selection instanceof TextSelection) {
+        tr.deleteSelection();
+      }
+      tr.split(tr.mapping.map($from.pos), 1, types);
+      if (deflt && !atEnd && !$from.parentOffset && $from.parent.type !== deflt) {
+        const first2 = tr.mapping.map($from.before());
+        const $first = tr.doc.resolve(first2);
+        if ($from.node(-1).canReplaceWith($first.index(), $first.index() + 1, deflt)) {
+          tr.setNodeMarkup(tr.mapping.map($from.before()), deflt);
+        }
+      }
+    }
+    if (keepMarks) {
+      ensureMarks(state, editor.extensionManager.splittableMarks);
+    }
+    tr.scrollIntoView();
+  }
+  return can;
+};
+const splitListItem = (typeOrName, overrideAttrs = {}) => ({ tr, state, dispatch, editor }) => {
+  var _a;
+  const type = getNodeType(typeOrName, state.schema);
+  const { $from, $to } = state.selection;
+  const node = state.selection.node;
+  if (node && node.isBlock || $from.depth < 2 || !$from.sameParent($to)) {
+    return false;
+  }
+  const grandParent = $from.node(-1);
+  if (grandParent.type !== type) {
+    return false;
+  }
+  const extensionAttributes = editor.extensionManager.attributes;
+  if ($from.parent.content.size === 0 && $from.node(-1).childCount === $from.indexAfter(-1)) {
+    if ($from.depth === 2 || $from.node(-3).type !== type || $from.index(-2) !== $from.node(-2).childCount - 1) {
+      return false;
+    }
+    if (dispatch) {
+      let wrap = Fragment$1.empty;
+      const depthBefore = $from.index(-1) ? 1 : $from.index(-2) ? 2 : 3;
+      for (let d = $from.depth - depthBefore; d >= $from.depth - 3; d -= 1) {
+        wrap = Fragment$1.from($from.node(d).copy(wrap));
+      }
+      const depthAfter = $from.indexAfter(-1) < $from.node(-2).childCount ? 1 : $from.indexAfter(-2) < $from.node(-3).childCount ? 2 : 3;
+      const newNextTypeAttributes2 = {
+        ...getSplittedAttributes(extensionAttributes, $from.node().type.name, $from.node().attrs),
+        ...overrideAttrs
+      };
+      const nextType2 = ((_a = type.contentMatch.defaultType) === null || _a === void 0 ? void 0 : _a.createAndFill(newNextTypeAttributes2)) || void 0;
+      wrap = wrap.append(Fragment$1.from(type.createAndFill(null, nextType2) || void 0));
+      const start = $from.before($from.depth - (depthBefore - 1));
+      tr.replace(start, $from.after(-depthAfter), new Slice(wrap, 4 - depthBefore, 0));
+      let sel = -1;
+      tr.doc.nodesBetween(start, tr.doc.content.size, (n, pos) => {
+        if (sel > -1) {
+          return false;
+        }
+        if (n.isTextblock && n.content.size === 0) {
+          sel = pos + 1;
+        }
+      });
+      if (sel > -1) {
+        tr.setSelection(TextSelection.near(tr.doc.resolve(sel)));
+      }
+      tr.scrollIntoView();
+    }
+    return true;
+  }
+  const nextType = $to.pos === $from.end() ? grandParent.contentMatchAt(0).defaultType : null;
+  const newTypeAttributes = {
+    ...getSplittedAttributes(extensionAttributes, grandParent.type.name, grandParent.attrs),
+    ...overrideAttrs
+  };
+  const newNextTypeAttributes = {
+    ...getSplittedAttributes(extensionAttributes, $from.node().type.name, $from.node().attrs),
+    ...overrideAttrs
+  };
+  tr.delete($from.pos, $to.pos);
+  const types = nextType ? [
+    { type, attrs: newTypeAttributes },
+    { type: nextType, attrs: newNextTypeAttributes }
+  ] : [{ type, attrs: newTypeAttributes }];
+  if (!canSplit(tr.doc, $from.pos, 2)) {
+    return false;
+  }
+  if (dispatch) {
+    const { selection, storedMarks } = state;
+    const { splittableMarks } = editor.extensionManager;
+    const marks = storedMarks || selection.$to.parentOffset && selection.$from.marks();
+    tr.split($from.pos, 2, types).scrollIntoView();
+    if (!marks || !dispatch) {
+      return true;
+    }
+    const filteredMarks = marks.filter((mark) => splittableMarks.includes(mark.type.name));
+    tr.ensureMarks(filteredMarks);
+  }
+  return true;
+};
+const joinListBackwards = (tr, listType) => {
+  const list = findParentNode((node) => node.type === listType)(tr.selection);
+  if (!list) {
+    return true;
+  }
+  const before = tr.doc.resolve(Math.max(0, list.pos - 1)).before(list.depth);
+  if (before === void 0) {
+    return true;
+  }
+  const nodeBefore = tr.doc.nodeAt(before);
+  const canJoinBackwards = list.node.type === (nodeBefore === null || nodeBefore === void 0 ? void 0 : nodeBefore.type) && canJoin(tr.doc, list.pos);
+  if (!canJoinBackwards) {
+    return true;
+  }
+  tr.join(list.pos);
+  return true;
+};
+const joinListForwards = (tr, listType) => {
+  const list = findParentNode((node) => node.type === listType)(tr.selection);
+  if (!list) {
+    return true;
+  }
+  const after = tr.doc.resolve(list.start).after(list.depth);
+  if (after === void 0) {
+    return true;
+  }
+  const nodeAfter = tr.doc.nodeAt(after);
+  const canJoinForwards = list.node.type === (nodeAfter === null || nodeAfter === void 0 ? void 0 : nodeAfter.type) && canJoin(tr.doc, after);
+  if (!canJoinForwards) {
+    return true;
+  }
+  tr.join(after);
+  return true;
+};
+const toggleList = (listTypeOrName, itemTypeOrName, keepMarks, attributes = {}) => ({ editor, tr, state, dispatch, chain, commands: commands2, can }) => {
+  const { extensions, splittableMarks } = editor.extensionManager;
+  const listType = getNodeType(listTypeOrName, state.schema);
+  const itemType = getNodeType(itemTypeOrName, state.schema);
+  const { selection, storedMarks } = state;
+  const { $from, $to } = selection;
+  const range = $from.blockRange($to);
+  const marks = storedMarks || selection.$to.parentOffset && selection.$from.marks();
+  if (!range) {
+    return false;
+  }
+  const parentList = findParentNode((node) => isList(node.type.name, extensions))(selection);
+  if (range.depth >= 1 && parentList && range.depth - parentList.depth <= 1) {
+    if (parentList.node.type === listType) {
+      return commands2.liftListItem(itemType);
+    }
+    if (isList(parentList.node.type.name, extensions) && listType.validContent(parentList.node.content) && dispatch) {
+      return chain().command(() => {
+        tr.setNodeMarkup(parentList.pos, listType);
+        return true;
+      }).command(() => joinListBackwards(tr, listType)).command(() => joinListForwards(tr, listType)).run();
+    }
+  }
+  if (!keepMarks || !marks || !dispatch) {
+    return chain().command(() => {
+      const canWrapInList = can().wrapInList(listType, attributes);
+      if (canWrapInList) {
+        return true;
+      }
+      return commands2.clearNodes();
+    }).wrapInList(listType, attributes).command(() => joinListBackwards(tr, listType)).command(() => joinListForwards(tr, listType)).run();
+  }
+  return chain().command(() => {
+    const canWrapInList = can().wrapInList(listType, attributes);
+    const filteredMarks = marks.filter((mark) => splittableMarks.includes(mark.type.name));
+    tr.ensureMarks(filteredMarks);
+    if (canWrapInList) {
+      return true;
+    }
+    return commands2.clearNodes();
+  }).wrapInList(listType, attributes).command(() => joinListBackwards(tr, listType)).command(() => joinListForwards(tr, listType)).run();
+};
+const toggleMark = (typeOrName, attributes = {}, options = {}) => ({ state, commands: commands2 }) => {
+  const { extendEmptyMarkRange = false } = options;
+  const type = getMarkType(typeOrName, state.schema);
+  const isActive2 = isMarkActive(state, type, attributes);
+  if (isActive2) {
+    return commands2.unsetMark(type, { extendEmptyMarkRange });
+  }
+  return commands2.setMark(type, attributes);
+};
+const toggleNode = (typeOrName, toggleTypeOrName, attributes = {}) => ({ state, commands: commands2 }) => {
+  const type = getNodeType(typeOrName, state.schema);
+  const toggleType = getNodeType(toggleTypeOrName, state.schema);
+  const isActive2 = isNodeActive(state, type, attributes);
+  let attributesToCopy;
+  if (state.selection.$anchor.sameParent(state.selection.$head)) {
+    attributesToCopy = state.selection.$anchor.parent.attrs;
+  }
+  if (isActive2) {
+    return commands2.setNode(toggleType, attributesToCopy);
+  }
+  return commands2.setNode(type, { ...attributesToCopy, ...attributes });
+};
+const toggleWrap = (typeOrName, attributes = {}) => ({ state, commands: commands2 }) => {
+  const type = getNodeType(typeOrName, state.schema);
+  const isActive2 = isNodeActive(state, type, attributes);
+  if (isActive2) {
+    return commands2.lift(type);
+  }
+  return commands2.wrapIn(type, attributes);
+};
+const undoInputRule = () => ({ state, dispatch }) => {
+  const plugins = state.plugins;
+  for (let i = 0; i < plugins.length; i += 1) {
+    const plugin = plugins[i];
+    let undoable;
+    if (plugin.spec.isInputRules && (undoable = plugin.getState(state))) {
+      if (dispatch) {
+        const tr = state.tr;
+        const toUndo = undoable.transform;
+        for (let j = toUndo.steps.length - 1; j >= 0; j -= 1) {
+          tr.step(toUndo.steps[j].invert(toUndo.docs[j]));
+        }
+        if (undoable.text) {
+          const marks = tr.doc.resolve(undoable.from).marks();
+          tr.replaceWith(undoable.from, undoable.to, state.schema.text(undoable.text, marks));
+        } else {
+          tr.delete(undoable.from, undoable.to);
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+};
+const unsetAllMarks = () => ({ tr, dispatch }) => {
+  const { selection } = tr;
+  const { empty, ranges } = selection;
+  if (empty) {
+    return true;
+  }
+  if (dispatch) {
+    ranges.forEach((range) => {
+      tr.removeMark(range.$from.pos, range.$to.pos);
+    });
+  }
+  return true;
+};
+const unsetMark = (typeOrName, options = {}) => ({ tr, state, dispatch }) => {
+  var _a;
+  const { extendEmptyMarkRange = false } = options;
+  const { selection } = tr;
+  const type = getMarkType(typeOrName, state.schema);
+  const { $from, empty, ranges } = selection;
+  if (!dispatch) {
+    return true;
+  }
+  if (empty && extendEmptyMarkRange) {
+    let { from, to } = selection;
+    const attrs = (_a = $from.marks().find((mark) => mark.type === type)) === null || _a === void 0 ? void 0 : _a.attrs;
+    const range = getMarkRange($from, type, attrs);
+    if (range) {
+      from = range.from;
+      to = range.to;
+    }
+    tr.removeMark(from, to, type);
+  } else {
+    ranges.forEach((range) => {
+      tr.removeMark(range.$from.pos, range.$to.pos, type);
+    });
+  }
+  tr.removeStoredMark(type);
+  return true;
+};
+const updateAttributes = (typeOrName, attributes = {}) => ({ tr, state, dispatch }) => {
+  let nodeType = null;
+  let markType = null;
+  const schemaType = getSchemaTypeNameByName(typeof typeOrName === "string" ? typeOrName : typeOrName.name, state.schema);
+  if (!schemaType) {
+    return false;
+  }
+  if (schemaType === "node") {
+    nodeType = getNodeType(typeOrName, state.schema);
+  }
+  if (schemaType === "mark") {
+    markType = getMarkType(typeOrName, state.schema);
+  }
+  if (dispatch) {
+    tr.selection.ranges.forEach((range) => {
+      const from = range.$from.pos;
+      const to = range.$to.pos;
+      let lastPos;
+      let lastNode;
+      let trimmedFrom;
+      let trimmedTo;
+      if (tr.selection.empty) {
+        state.doc.nodesBetween(from, to, (node, pos) => {
+          if (nodeType && nodeType === node.type) {
+            trimmedFrom = Math.max(pos, from);
+            trimmedTo = Math.min(pos + node.nodeSize, to);
+            lastPos = pos;
+            lastNode = node;
+          }
+        });
+      } else {
+        state.doc.nodesBetween(from, to, (node, pos) => {
+          if (pos < from && nodeType && nodeType === node.type) {
+            trimmedFrom = Math.max(pos, from);
+            trimmedTo = Math.min(pos + node.nodeSize, to);
+            lastPos = pos;
+            lastNode = node;
+          }
+          if (pos >= from && pos <= to) {
+            if (nodeType && nodeType === node.type) {
+              tr.setNodeMarkup(pos, void 0, {
+                ...node.attrs,
+                ...attributes
+              });
+            }
+            if (markType && node.marks.length) {
+              node.marks.forEach((mark) => {
+                if (markType === mark.type) {
+                  const trimmedFrom2 = Math.max(pos, from);
+                  const trimmedTo2 = Math.min(pos + node.nodeSize, to);
+                  tr.addMark(trimmedFrom2, trimmedTo2, markType.create({
+                    ...mark.attrs,
+                    ...attributes
+                  }));
+                }
+              });
+            }
+          }
+        });
+      }
+      if (lastNode) {
+        if (lastPos !== void 0) {
+          tr.setNodeMarkup(lastPos, void 0, {
+            ...lastNode.attrs,
+            ...attributes
+          });
+        }
+        if (markType && lastNode.marks.length) {
+          lastNode.marks.forEach((mark) => {
+            if (markType === mark.type) {
+              tr.addMark(trimmedFrom, trimmedTo, markType.create({
+                ...mark.attrs,
+                ...attributes
+              }));
+            }
+          });
+        }
+      }
+    });
+  }
+  return true;
+};
+const wrapIn = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
+  const type = getNodeType(typeOrName, state.schema);
+  return wrapIn$1(type, attributes)(state, dispatch);
+};
+const wrapInList = (typeOrName, attributes = {}) => ({ state, dispatch }) => {
+  const type = getNodeType(typeOrName, state.schema);
+  return wrapInList$1(type, attributes)(state, dispatch);
+};
+var commands = /* @__PURE__ */ Object.freeze({
+  __proto__: null,
+  blur,
+  clearContent,
+  clearNodes,
+  command,
+  createParagraphNear,
+  cut,
+  deleteCurrentNode,
+  deleteNode,
+  deleteRange,
+  deleteSelection,
+  enter,
+  exitCode,
+  extendMarkRange,
+  first,
+  focus,
+  forEach,
+  insertContent,
+  insertContentAt,
+  joinBackward,
+  joinDown,
+  joinForward,
+  joinItemBackward,
+  joinItemForward,
+  joinTextblockBackward,
+  joinTextblockForward,
+  joinUp,
+  keyboardShortcut,
+  lift,
+  liftEmptyBlock,
+  liftListItem,
+  newlineInCode,
+  resetAttributes,
+  scrollIntoView,
+  selectAll,
+  selectNodeBackward,
+  selectNodeForward,
+  selectParentNode,
+  selectTextblockEnd,
+  selectTextblockStart,
+  setContent,
+  setMark,
+  setMeta,
+  setNode,
+  setNodeSelection,
+  setTextSelection,
+  sinkListItem,
+  splitBlock,
+  splitListItem,
+  toggleList,
+  toggleMark,
+  toggleNode,
+  toggleWrap,
+  undoInputRule,
+  unsetAllMarks,
+  unsetMark,
+  updateAttributes,
+  wrapIn,
+  wrapInList
+});
+Extension.create({
+  name: "commands",
+  addCommands() {
+    return {
+      ...commands
+    };
+  }
+});
+Extension.create({
+  name: "drop",
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: new PluginKey("tiptapDrop"),
+        props: {
+          handleDrop: (_, e, slice, moved) => {
+            this.editor.emit("drop", {
+              editor: this.editor,
+              event: e,
+              slice,
+              moved
+            });
+          }
+        }
+      })
+    ];
+  }
+});
+Extension.create({
+  name: "editable",
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: new PluginKey("editable"),
+        props: {
+          editable: () => this.editor.options.editable
+        }
+      })
+    ];
+  }
+});
+const focusEventsPluginKey = new PluginKey("focusEvents");
+Extension.create({
+  name: "focusEvents",
+  addProseMirrorPlugins() {
+    const { editor } = this;
+    return [
+      new Plugin({
+        key: focusEventsPluginKey,
+        props: {
+          handleDOMEvents: {
+            focus: (view, event) => {
+              editor.isFocused = true;
+              const transaction = editor.state.tr.setMeta("focus", { event }).setMeta("addToHistory", false);
+              view.dispatch(transaction);
+              return false;
+            },
+            blur: (view, event) => {
+              editor.isFocused = false;
+              const transaction = editor.state.tr.setMeta("blur", { event }).setMeta("addToHistory", false);
+              view.dispatch(transaction);
+              return false;
+            }
+          }
+        }
+      })
+    ];
+  }
+});
+Extension.create({
+  name: "keymap",
+  addKeyboardShortcuts() {
+    const handleBackspace = () => this.editor.commands.first(({ commands: commands2 }) => [
+      () => commands2.undoInputRule(),
+      // maybe convert first text block node to default node
+      () => commands2.command(({ tr }) => {
+        const { selection, doc } = tr;
+        const { empty, $anchor } = selection;
+        const { pos, parent } = $anchor;
+        const $parentPos = $anchor.parent.isTextblock && pos > 0 ? tr.doc.resolve(pos - 1) : $anchor;
+        const parentIsIsolating = $parentPos.parent.type.spec.isolating;
+        const parentPos = $anchor.pos - $anchor.parentOffset;
+        const isAtStart = parentIsIsolating && $parentPos.parent.childCount === 1 ? parentPos === $anchor.pos : Selection.atStart(doc).from === pos;
+        if (!empty || !parent.type.isTextblock || parent.textContent.length || !isAtStart || isAtStart && $anchor.parent.type.name === "paragraph") {
+          return false;
+        }
+        return commands2.clearNodes();
+      }),
+      () => commands2.deleteSelection(),
+      () => commands2.joinBackward(),
+      () => commands2.selectNodeBackward()
+    ]);
+    const handleDelete = () => this.editor.commands.first(({ commands: commands2 }) => [
+      () => commands2.deleteSelection(),
+      () => commands2.deleteCurrentNode(),
+      () => commands2.joinForward(),
+      () => commands2.selectNodeForward()
+    ]);
+    const handleEnter = () => this.editor.commands.first(({ commands: commands2 }) => [
+      () => commands2.newlineInCode(),
+      () => commands2.createParagraphNear(),
+      () => commands2.liftEmptyBlock(),
+      () => commands2.splitBlock()
+    ]);
+    const baseKeymap = {
+      Enter: handleEnter,
+      "Mod-Enter": () => this.editor.commands.exitCode(),
+      Backspace: handleBackspace,
+      "Mod-Backspace": handleBackspace,
+      "Shift-Backspace": handleBackspace,
+      Delete: handleDelete,
+      "Mod-Delete": handleDelete,
+      "Mod-a": () => this.editor.commands.selectAll()
+    };
+    const pcKeymap = {
+      ...baseKeymap
+    };
+    const macKeymap = {
+      ...baseKeymap,
+      "Ctrl-h": handleBackspace,
+      "Alt-Backspace": handleBackspace,
+      "Ctrl-d": handleDelete,
+      "Ctrl-Alt-Backspace": handleDelete,
+      "Alt-Delete": handleDelete,
+      "Alt-d": handleDelete,
+      "Ctrl-a": () => this.editor.commands.selectTextblockStart(),
+      "Ctrl-e": () => this.editor.commands.selectTextblockEnd()
+    };
+    if (isiOS() || isMacOS()) {
+      return macKeymap;
+    }
+    return pcKeymap;
+  },
+  addProseMirrorPlugins() {
+    return [
+      // With this plugin we check if the whole document was selected and deleted.
+      // In this case we will additionally call `clearNodes()` to convert e.g. a heading
+      // to a paragraph if necessary.
+      // This is an alternative to ProseMirror's `AllSelection`, which doesn’t work well
+      // with many other commands.
+      new Plugin({
+        key: new PluginKey("clearDocument"),
+        appendTransaction: (transactions, oldState, newState) => {
+          if (transactions.some((tr2) => tr2.getMeta("composition"))) {
+            return;
+          }
+          const docChanges = transactions.some((transaction) => transaction.docChanged) && !oldState.doc.eq(newState.doc);
+          const ignoreTr = transactions.some((transaction) => transaction.getMeta("preventClearDocument"));
+          if (!docChanges || ignoreTr) {
+            return;
+          }
+          const { empty, from, to } = oldState.selection;
+          const allFrom = Selection.atStart(oldState.doc).from;
+          const allEnd = Selection.atEnd(oldState.doc).to;
+          const allWasSelected = from === allFrom && to === allEnd;
+          if (empty || !allWasSelected) {
+            return;
+          }
+          const isEmpty = isNodeEmpty(newState.doc);
+          if (!isEmpty) {
+            return;
+          }
+          const tr = newState.tr;
+          const state = createChainableState({
+            state: newState,
+            transaction: tr
+          });
+          const { commands: commands2 } = new CommandManager({
+            editor: this.editor,
+            state
+          });
+          commands2.clearNodes();
+          if (!tr.steps.length) {
+            return;
+          }
+          return tr;
+        }
+      })
+    ];
+  }
+});
+Extension.create({
+  name: "paste",
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: new PluginKey("tiptapPaste"),
+        props: {
+          handlePaste: (_view, e, slice) => {
+            this.editor.emit("paste", {
+              editor: this.editor,
+              event: e,
+              slice
+            });
+          }
+        }
+      })
+    ];
+  }
+});
+Extension.create({
+  name: "tabindex",
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: new PluginKey("tabindex"),
+        props: {
+          attributes: () => this.editor.isEditable ? { tabindex: "0" } : {}
+        }
+      })
+    ];
+  }
+});
+function markInputRule(config) {
+  return new InputRule({
+    find: config.find,
+    handler: ({ state, range, match }) => {
+      const attributes = callOrReturn(config.getAttributes, void 0, match);
+      if (attributes === false || attributes === null) {
+        return null;
+      }
+      const { tr } = state;
+      const captureGroup = match[match.length - 1];
+      const fullMatch = match[0];
+      if (captureGroup) {
+        const startSpaces = fullMatch.search(/\S/);
+        const textStart = range.from + fullMatch.indexOf(captureGroup);
+        const textEnd = textStart + captureGroup.length;
+        const excludedMarks = getMarksBetween(range.from, range.to, state.doc).filter((item) => {
+          const excluded = item.mark.type.excluded;
+          return excluded.find((type) => type === config.type && type !== item.mark.type);
+        }).filter((item) => item.to > textStart);
+        if (excludedMarks.length) {
+          return null;
+        }
+        if (textEnd < range.to) {
+          tr.delete(textEnd, range.to);
+        }
+        if (textStart > range.from) {
+          tr.delete(range.from + startSpaces, textStart);
+        }
+        const markEnd = range.from + startSpaces + captureGroup.length;
+        tr.addMark(range.from + startSpaces, markEnd, config.type.create(attributes || {}));
+        tr.removeStoredMark(config.type);
+      }
+    }
+  });
+}
+function nodeInputRule(config) {
+  return new InputRule({
+    find: config.find,
+    handler: ({ state, range, match }) => {
+      const attributes = callOrReturn(config.getAttributes, void 0, match) || {};
+      const { tr } = state;
+      const start = range.from;
+      let end = range.to;
+      const newNode2 = config.type.create(attributes);
+      if (match[1]) {
+        const offset = match[0].lastIndexOf(match[1]);
+        let matchStart = start + offset;
+        if (matchStart > end) {
+          matchStart = end;
+        } else {
+          end = matchStart + match[1].length;
+        }
+        const lastChar = match[0][match[0].length - 1];
+        tr.insertText(lastChar, start + match[0].length - 1);
+        tr.replaceWith(matchStart, end, newNode2);
+      } else if (match[0]) {
+        const insertionStart = config.type.isInline ? start : start - 1;
+        tr.insert(insertionStart, config.type.create(attributes)).delete(tr.mapping.map(start), tr.mapping.map(end));
+      }
+      tr.scrollIntoView();
+    }
+  });
+}
+function textblockTypeInputRule(config) {
+  return new InputRule({
+    find: config.find,
+    handler: ({ state, range, match }) => {
+      const $start = state.doc.resolve(range.from);
+      const attributes = callOrReturn(config.getAttributes, void 0, match) || {};
+      if (!$start.node(-1).canReplaceWith($start.index(-1), $start.indexAfter(-1), config.type)) {
+        return null;
+      }
+      state.tr.delete(range.from, range.to).setBlockType(range.from, range.from, config.type, attributes);
+    }
+  });
+}
+function wrappingInputRule(config) {
+  return new InputRule({
+    find: config.find,
+    handler: ({ state, range, match, chain }) => {
+      const attributes = callOrReturn(config.getAttributes, void 0, match) || {};
+      const tr = state.tr.delete(range.from, range.to);
+      const $start = tr.doc.resolve(range.from);
+      const blockRange = $start.blockRange();
+      const wrapping = blockRange && findWrapping(blockRange, config.type, attributes);
+      if (!wrapping) {
+        return null;
+      }
+      tr.wrap(blockRange, wrapping);
+      if (config.keepMarks && config.editor) {
+        const { selection, storedMarks } = state;
+        const { splittableMarks } = config.editor.extensionManager;
+        const marks = storedMarks || selection.$to.parentOffset && selection.$from.marks();
+        if (marks) {
+          const filteredMarks = marks.filter((mark) => splittableMarks.includes(mark.type.name));
+          tr.ensureMarks(filteredMarks);
+        }
+      }
+      if (config.keepAttributes) {
+        const nodeType = config.type.name === "bulletList" || config.type.name === "orderedList" ? "listItem" : "taskList";
+        chain().updateAttributes(nodeType, attributes).run();
+      }
+      const before = tr.doc.resolve(range.from - 1).nodeBefore;
+      if (before && before.type === config.type && canJoin(tr.doc, range.from - 1) && (!config.joinPredicate || config.joinPredicate(match, before))) {
+        tr.join(range.from - 1);
+      }
+    }
+  });
+}
+class Node {
+  constructor(config = {}) {
+    this.type = "node";
+    this.name = "node";
+    this.parent = null;
+    this.child = null;
+    this.config = {
+      name: this.name,
+      defaultOptions: {}
+    };
+    this.config = {
+      ...this.config,
+      ...config
+    };
+    this.name = this.config.name;
+    if (config.defaultOptions && Object.keys(config.defaultOptions).length > 0) {
+      console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${this.name}".`);
+    }
+    this.options = this.config.defaultOptions;
+    if (this.config.addOptions) {
+      this.options = callOrReturn(getExtensionField(this, "addOptions", {
+        name: this.name
+      }));
+    }
+    this.storage = callOrReturn(getExtensionField(this, "addStorage", {
+      name: this.name,
+      options: this.options
+    })) || {};
+  }
+  static create(config = {}) {
+    return new Node(config);
+  }
+  configure(options = {}) {
+    const extension = this.extend({
+      ...this.config,
+      addOptions: () => {
+        return mergeDeep(this.options, options);
+      }
+    });
+    extension.name = this.name;
+    extension.parent = this.parent;
+    return extension;
+  }
+  extend(extendedConfig = {}) {
+    const extension = new Node(extendedConfig);
+    extension.parent = this;
+    this.child = extension;
+    extension.name = extendedConfig.name ? extendedConfig.name : extension.parent.name;
+    if (extendedConfig.defaultOptions && Object.keys(extendedConfig.defaultOptions).length > 0) {
+      console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${extension.name}".`);
+    }
+    extension.options = callOrReturn(getExtensionField(extension, "addOptions", {
+      name: extension.name
+    }));
+    extension.storage = callOrReturn(getExtensionField(extension, "addStorage", {
+      name: extension.name,
+      options: extension.options
+    }));
+    return extension;
+  }
+}
+function markPasteRule(config) {
+  return new PasteRule({
+    find: config.find,
+    handler: ({ state, range, match, pasteEvent }) => {
+      const attributes = callOrReturn(config.getAttributes, void 0, match, pasteEvent);
+      if (attributes === false || attributes === null) {
+        return null;
+      }
+      const { tr } = state;
+      const captureGroup = match[match.length - 1];
+      const fullMatch = match[0];
+      let markEnd = range.to;
+      if (captureGroup) {
+        const startSpaces = fullMatch.search(/\S/);
+        const textStart = range.from + fullMatch.indexOf(captureGroup);
+        const textEnd = textStart + captureGroup.length;
+        const excludedMarks = getMarksBetween(range.from, range.to, state.doc).filter((item) => {
+          const excluded = item.mark.type.excluded;
+          return excluded.find((type) => type === config.type && type !== item.mark.type);
+        }).filter((item) => item.to > textStart);
+        if (excludedMarks.length) {
+          return null;
+        }
+        if (textEnd < range.to) {
+          tr.delete(textEnd, range.to);
+        }
+        if (textStart > range.from) {
+          tr.delete(range.from + startSpaces, textStart);
+        }
+        markEnd = range.from + startSpaces + captureGroup.length;
+        tr.addMark(range.from + startSpaces, markEnd, config.type.create(attributes || {}));
+        tr.removeStoredMark(config.type);
+      }
+    }
+  });
+}
+function canInsertNode(state, nodeType) {
+  const { selection } = state;
+  const { $from } = selection;
+  if (selection instanceof NodeSelection) {
+    const index2 = $from.index();
+    const parent = $from.parent;
+    return parent.canReplaceWith(index2, index2 + 1, nodeType);
+  }
+  let depth = $from.depth;
+  while (depth >= 0) {
+    const index2 = $from.index(depth);
+    const parent = $from.node(depth);
+    const match = parent.contentMatchAt(index2);
+    if (match.matchType(nodeType)) {
+      return true;
+    }
+    depth -= 1;
+  }
+  return false;
+}
+defineComponent({
+  name: "BubbleMenu",
+  props: {
+    pluginKey: {
+      type: [String, Object],
+      default: "bubbleMenu"
+    },
+    editor: {
+      type: Object,
+      required: true
+    },
+    updateDelay: {
+      type: Number,
+      default: void 0
+    },
+    tippyOptions: {
+      type: Object,
+      default: () => ({})
+    },
+    shouldShow: {
+      type: Function,
+      default: null
+    }
+  },
+  setup(props, { slots }) {
+    const root = ref(null);
+    return () => {
+      var _a;
+      return h("div", { ref: root }, (_a = slots.default) === null || _a === void 0 ? void 0 : _a.call(slots));
+    };
+  }
+});
+const EditorContent = defineComponent({
+  name: "EditorContent",
+  props: {
+    editor: {
+      default: null,
+      type: Object
+    }
+  },
+  setup(props) {
+    const rootEl = ref();
+    const instance = getCurrentInstance();
+    watchEffect(() => {
+      const editor = props.editor;
+      if (editor && editor.options.element && rootEl.value) {
+        nextTick(() => {
+          if (!rootEl.value || !editor.options.element.firstChild) {
+            return;
+          }
+          const element = unref(rootEl.value);
+          rootEl.value.append(...editor.options.element.childNodes);
+          editor.contentComponent = instance.ctx._;
+          if (instance) {
+            editor.appContext = {
+              ...instance.appContext,
+              // Vue internally uses prototype chain to forward/shadow injects across the entire component chain
+              // so don't use object spread operator or 'Object.assign' and just set `provides` as is on editor's appContext
+              // @ts-expect-error forward instance's 'provides' into appContext
+              provides: instance.provides
+            };
+          }
+          editor.setOptions({
+            element
+          });
+          editor.createNodeViews();
+        });
+      }
+    });
+    return { rootEl };
+  },
+  render() {
+    return h("div", {
+      ref: (el) => {
+        this.rootEl = el;
+      }
+    });
+  }
+});
+defineComponent({
+  name: "FloatingMenu",
+  props: {
+    pluginKey: {
+      // TODO: TypeScript breaks :(
+      // type: [String, Object as PropType<Exclude<FloatingMenuPluginProps['pluginKey'], string>>],
+      type: null,
+      default: "floatingMenu"
+    },
+    editor: {
+      type: Object,
+      required: true
+    },
+    tippyOptions: {
+      type: Object,
+      default: () => ({})
+    },
+    shouldShow: {
+      type: Function,
+      default: null
+    }
+  },
+  setup(props, { slots }) {
+    const root = ref(null);
+    return () => {
+      var _a;
+      return h("div", { ref: root }, (_a = slots.default) === null || _a === void 0 ? void 0 : _a.call(slots));
+    };
+  }
+});
+defineComponent({
+  name: "NodeViewContent",
+  props: {
+    as: {
+      type: String,
+      default: "div"
+    }
+  },
+  render() {
+    return h(this.as, {
+      style: {
+        whiteSpace: "pre-wrap"
+      },
+      "data-node-view-content": ""
+    });
+  }
+});
+defineComponent({
+  name: "NodeViewWrapper",
+  props: {
+    as: {
+      type: String,
+      default: "div"
+    }
+  },
+  inject: ["onDragStart", "decorationClasses"],
+  render() {
+    var _a, _b;
+    return h(this.as, {
+      // @ts-ignore
+      class: this.decorationClasses,
+      style: {
+        whiteSpace: "normal"
+      },
+      "data-node-view-wrapper": "",
+      // @ts-ignore (https://github.com/vuejs/vue-next/issues/3031)
+      onDragstart: this.onDragStart
+    }, (_b = (_a = this.$slots).default) === null || _b === void 0 ? void 0 : _b.call(_a));
+  }
+});
+const inputRegex$5 = /^\s*>\s$/;
+const Blockquote = Node.create({
+  name: "blockquote",
+  addOptions() {
+    return {
+      HTMLAttributes: {}
+    };
+  },
+  content: "block+",
+  group: "block",
+  defining: true,
+  parseHTML() {
+    return [
+      { tag: "blockquote" }
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["blockquote", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
+  },
+  addCommands() {
+    return {
+      setBlockquote: () => ({ commands: commands2 }) => {
+        return commands2.wrapIn(this.name);
+      },
+      toggleBlockquote: () => ({ commands: commands2 }) => {
+        return commands2.toggleWrap(this.name);
+      },
+      unsetBlockquote: () => ({ commands: commands2 }) => {
+        return commands2.lift(this.name);
+      }
+    };
+  },
+  addKeyboardShortcuts() {
+    return {
+      "Mod-Shift-b": () => this.editor.commands.toggleBlockquote()
+    };
+  },
+  addInputRules() {
+    return [
+      wrappingInputRule({
+        find: inputRegex$5,
+        type: this.type
+      })
+    ];
+  }
+});
+const starInputRegex$1 = /(?:^|\s)(\*\*(?!\s+\*\*)((?:[^*]+))\*\*(?!\s+\*\*))$/;
+const starPasteRegex$1 = /(?:^|\s)(\*\*(?!\s+\*\*)((?:[^*]+))\*\*(?!\s+\*\*))/g;
+const underscoreInputRegex$1 = /(?:^|\s)(__(?!\s+__)((?:[^_]+))__(?!\s+__))$/;
+const underscorePasteRegex$1 = /(?:^|\s)(__(?!\s+__)((?:[^_]+))__(?!\s+__))/g;
+const Bold = Mark.create({
+  name: "bold",
+  addOptions() {
+    return {
+      HTMLAttributes: {}
+    };
+  },
+  parseHTML() {
+    return [
+      {
+        tag: "strong"
+      },
+      {
+        tag: "b",
+        getAttrs: (node) => node.style.fontWeight !== "normal" && null
+      },
+      {
+        style: "font-weight=400",
+        clearMark: (mark) => mark.type.name === this.name
+      },
+      {
+        style: "font-weight",
+        getAttrs: (value) => /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null
+      }
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["strong", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
+  },
+  addCommands() {
+    return {
+      setBold: () => ({ commands: commands2 }) => {
+        return commands2.setMark(this.name);
+      },
+      toggleBold: () => ({ commands: commands2 }) => {
+        return commands2.toggleMark(this.name);
+      },
+      unsetBold: () => ({ commands: commands2 }) => {
+        return commands2.unsetMark(this.name);
+      }
+    };
+  },
+  addKeyboardShortcuts() {
+    return {
+      "Mod-b": () => this.editor.commands.toggleBold(),
+      "Mod-B": () => this.editor.commands.toggleBold()
+    };
+  },
+  addInputRules() {
+    return [
+      markInputRule({
+        find: starInputRegex$1,
+        type: this.type
+      }),
+      markInputRule({
+        find: underscoreInputRegex$1,
+        type: this.type
+      })
+    ];
+  },
+  addPasteRules() {
+    return [
+      markPasteRule({
+        find: starPasteRegex$1,
+        type: this.type
+      }),
+      markPasteRule({
+        find: underscorePasteRegex$1,
+        type: this.type
+      })
+    ];
+  }
+});
+const ListItemName$1 = "listItem";
+const TextStyleName$1 = "textStyle";
+const inputRegex$4 = /^\s*([-+*])\s$/;
+const BulletList = Node.create({
+  name: "bulletList",
+  addOptions() {
+    return {
+      itemTypeName: "listItem",
+      HTMLAttributes: {},
+      keepMarks: false,
+      keepAttributes: false
+    };
+  },
+  group: "block list",
+  content() {
+    return `${this.options.itemTypeName}+`;
+  },
+  parseHTML() {
+    return [
+      { tag: "ul" }
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["ul", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
+  },
+  addCommands() {
+    return {
+      toggleBulletList: () => ({ commands: commands2, chain }) => {
+        if (this.options.keepAttributes) {
+          return chain().toggleList(this.name, this.options.itemTypeName, this.options.keepMarks).updateAttributes(ListItemName$1, this.editor.getAttributes(TextStyleName$1)).run();
+        }
+        return commands2.toggleList(this.name, this.options.itemTypeName, this.options.keepMarks);
+      }
+    };
+  },
+  addKeyboardShortcuts() {
+    return {
+      "Mod-Shift-8": () => this.editor.commands.toggleBulletList()
+    };
+  },
+  addInputRules() {
+    let inputRule = wrappingInputRule({
+      find: inputRegex$4,
+      type: this.type
+    });
+    if (this.options.keepMarks || this.options.keepAttributes) {
+      inputRule = wrappingInputRule({
+        find: inputRegex$4,
+        type: this.type,
+        keepMarks: this.options.keepMarks,
+        keepAttributes: this.options.keepAttributes,
+        getAttributes: () => {
+          return this.editor.getAttributes(TextStyleName$1);
+        },
+        editor: this.editor
+      });
+    }
+    return [
+      inputRule
+    ];
+  }
+});
+const inputRegex$3 = /(^|[^`])`([^`]+)`(?!`)/;
+const pasteRegex$1 = /(^|[^`])`([^`]+)`(?!`)/g;
+const Code = Mark.create({
+  name: "code",
+  addOptions() {
+    return {
+      HTMLAttributes: {}
+    };
+  },
+  excludes: "_",
+  code: true,
+  exitable: true,
+  parseHTML() {
+    return [
+      { tag: "code" }
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["code", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
+  },
+  addCommands() {
+    return {
+      setCode: () => ({ commands: commands2 }) => {
+        return commands2.setMark(this.name);
+      },
+      toggleCode: () => ({ commands: commands2 }) => {
+        return commands2.toggleMark(this.name);
+      },
+      unsetCode: () => ({ commands: commands2 }) => {
+        return commands2.unsetMark(this.name);
+      }
+    };
+  },
+  addKeyboardShortcuts() {
+    return {
+      "Mod-e": () => this.editor.commands.toggleCode()
+    };
+  },
+  addInputRules() {
+    return [
+      markInputRule({
+        find: inputRegex$3,
+        type: this.type
+      })
+    ];
+  },
+  addPasteRules() {
+    return [
+      markPasteRule({
+        find: pasteRegex$1,
+        type: this.type
+      })
+    ];
+  }
+});
+const backtickInputRegex = /^```([a-z]+)?[\s\n]$/;
+const tildeInputRegex = /^~~~([a-z]+)?[\s\n]$/;
+const CodeBlock = Node.create({
+  name: "codeBlock",
+  addOptions() {
+    return {
+      languageClassPrefix: "language-",
+      exitOnTripleEnter: true,
+      exitOnArrowDown: true,
+      defaultLanguage: null,
+      HTMLAttributes: {}
+    };
+  },
+  content: "text*",
+  marks: "",
+  group: "block",
+  code: true,
+  defining: true,
+  addAttributes() {
+    return {
+      language: {
+        default: this.options.defaultLanguage,
+        parseHTML: (element) => {
+          var _a;
+          const { languageClassPrefix } = this.options;
+          const classNames = [...((_a = element.firstElementChild) === null || _a === void 0 ? void 0 : _a.classList) || []];
+          const languages = classNames.filter((className) => className.startsWith(languageClassPrefix)).map((className) => className.replace(languageClassPrefix, ""));
+          const language = languages[0];
+          if (!language) {
+            return null;
+          }
+          return language;
+        },
+        rendered: false
+      }
+    };
+  },
+  parseHTML() {
+    return [
+      {
+        tag: "pre",
+        preserveWhitespace: "full"
+      }
+    ];
+  },
+  renderHTML({ node, HTMLAttributes }) {
+    return [
+      "pre",
+      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
+      [
+        "code",
+        {
+          class: node.attrs.language ? this.options.languageClassPrefix + node.attrs.language : null
+        },
+        0
+      ]
+    ];
+  },
+  addCommands() {
+    return {
+      setCodeBlock: (attributes) => ({ commands: commands2 }) => {
+        return commands2.setNode(this.name, attributes);
+      },
+      toggleCodeBlock: (attributes) => ({ commands: commands2 }) => {
+        return commands2.toggleNode(this.name, "paragraph", attributes);
+      }
+    };
+  },
+  addKeyboardShortcuts() {
+    return {
+      "Mod-Alt-c": () => this.editor.commands.toggleCodeBlock(),
+      // remove code block when at start of document or code block is empty
+      Backspace: () => {
+        const { empty, $anchor } = this.editor.state.selection;
+        const isAtStart = $anchor.pos === 1;
+        if (!empty || $anchor.parent.type.name !== this.name) {
+          return false;
+        }
+        if (isAtStart || !$anchor.parent.textContent.length) {
+          return this.editor.commands.clearNodes();
+        }
+        return false;
+      },
+      // exit node on triple enter
+      Enter: ({ editor }) => {
+        if (!this.options.exitOnTripleEnter) {
+          return false;
+        }
+        const { state } = editor;
+        const { selection } = state;
+        const { $from, empty } = selection;
+        if (!empty || $from.parent.type !== this.type) {
+          return false;
+        }
+        const isAtEnd = $from.parentOffset === $from.parent.nodeSize - 2;
+        const endsWithDoubleNewline = $from.parent.textContent.endsWith("\n\n");
+        if (!isAtEnd || !endsWithDoubleNewline) {
+          return false;
+        }
+        return editor.chain().command(({ tr }) => {
+          tr.delete($from.pos - 2, $from.pos);
+          return true;
+        }).exitCode().run();
+      },
+      // exit node on arrow down
+      ArrowDown: ({ editor }) => {
+        if (!this.options.exitOnArrowDown) {
+          return false;
+        }
+        const { state } = editor;
+        const { selection, doc } = state;
+        const { $from, empty } = selection;
+        if (!empty || $from.parent.type !== this.type) {
+          return false;
+        }
+        const isAtEnd = $from.parentOffset === $from.parent.nodeSize - 2;
+        if (!isAtEnd) {
+          return false;
+        }
+        const after = $from.after();
+        if (after === void 0) {
+          return false;
+        }
+        const nodeAfter = doc.nodeAt(after);
+        if (nodeAfter) {
+          return editor.commands.command(({ tr }) => {
+            tr.setSelection(Selection.near(doc.resolve(after)));
+            return true;
+          });
+        }
+        return editor.commands.exitCode();
+      }
+    };
+  },
+  addInputRules() {
+    return [
+      textblockTypeInputRule({
+        find: backtickInputRegex,
+        type: this.type,
+        getAttributes: (match) => ({
+          language: match[1]
+        })
+      }),
+      textblockTypeInputRule({
+        find: tildeInputRegex,
+        type: this.type,
+        getAttributes: (match) => ({
+          language: match[1]
+        })
+      })
+    ];
+  },
+  addProseMirrorPlugins() {
+    return [
+      // this plugin creates a code block for pasted content from VS Code
+      // we can also detect the copied code language
+      new Plugin({
+        key: new PluginKey("codeBlockVSCodeHandler"),
+        props: {
+          handlePaste: (view, event) => {
+            if (!event.clipboardData) {
+              return false;
+            }
+            if (this.editor.isActive(this.type.name)) {
+              return false;
+            }
+            const text = event.clipboardData.getData("text/plain");
+            const vscode = event.clipboardData.getData("vscode-editor-data");
+            const vscodeData = vscode ? JSON.parse(vscode) : void 0;
+            const language = vscodeData === null || vscodeData === void 0 ? void 0 : vscodeData.mode;
+            if (!text || !language) {
+              return false;
+            }
+            const { tr, schema } = view.state;
+            const textNode = schema.text(text.replace(/\r\n?/g, "\n"));
+            tr.replaceSelectionWith(this.type.create({ language }, textNode));
+            if (tr.selection.$from.parent.type !== this.type) {
+              tr.setSelection(TextSelection.near(tr.doc.resolve(Math.max(0, tr.selection.from - 2))));
+            }
+            tr.setMeta("paste", true);
+            view.dispatch(tr);
+            return true;
+          }
+        }
+      })
+    ];
+  }
+});
+const Document = Node.create({
+  name: "doc",
+  topNode: true,
+  content: "block+"
+});
+const Dropcursor = Extension.create({
+  name: "dropCursor",
+  addOptions() {
+    return {
+      color: "currentColor",
+      width: 1,
+      class: void 0
+    };
+  },
+  addProseMirrorPlugins() {
+    return [
+      dropCursor(this.options)
+    ];
+  }
+});
+const Gapcursor = Extension.create({
+  name: "gapCursor",
+  addProseMirrorPlugins() {
+    return [
+      gapCursor()
+    ];
+  },
+  extendNodeSchema(extension) {
+    var _a;
+    const context = {
+      name: extension.name,
+      options: extension.options,
+      storage: extension.storage
+    };
+    return {
+      allowGapCursor: (_a = callOrReturn(getExtensionField(extension, "allowGapCursor", context))) !== null && _a !== void 0 ? _a : null
+    };
+  }
+});
+const HardBreak = Node.create({
+  name: "hardBreak",
+  addOptions() {
+    return {
+      keepMarks: true,
+      HTMLAttributes: {}
+    };
+  },
+  inline: true,
+  group: "inline",
+  selectable: false,
+  linebreakReplacement: true,
+  parseHTML() {
+    return [
+      { tag: "br" }
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["br", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)];
+  },
+  renderText() {
+    return "\n";
+  },
+  addCommands() {
+    return {
+      setHardBreak: () => ({ commands: commands2, chain, state, editor }) => {
+        return commands2.first([
+          () => commands2.exitCode(),
+          () => commands2.command(() => {
+            const { selection, storedMarks } = state;
+            if (selection.$from.parent.type.spec.isolating) {
+              return false;
+            }
+            const { keepMarks } = this.options;
+            const { splittableMarks } = editor.extensionManager;
+            const marks = storedMarks || selection.$to.parentOffset && selection.$from.marks();
+            return chain().insertContent({ type: this.name }).command(({ tr, dispatch }) => {
+              if (dispatch && marks && keepMarks) {
+                const filteredMarks = marks.filter((mark) => splittableMarks.includes(mark.type.name));
+                tr.ensureMarks(filteredMarks);
+              }
+              return true;
+            }).run();
+          })
+        ]);
+      }
+    };
+  },
+  addKeyboardShortcuts() {
+    return {
+      "Mod-Enter": () => this.editor.commands.setHardBreak(),
+      "Shift-Enter": () => this.editor.commands.setHardBreak()
+    };
+  }
+});
+const Heading = Node.create({
+  name: "heading",
+  addOptions() {
+    return {
+      levels: [1, 2, 3, 4, 5, 6],
+      HTMLAttributes: {}
+    };
+  },
+  content: "inline*",
+  group: "block",
+  defining: true,
+  addAttributes() {
+    return {
+      level: {
+        default: 1,
+        rendered: false
+      }
+    };
+  },
+  parseHTML() {
+    return this.options.levels.map((level) => ({
+      tag: `h${level}`,
+      attrs: { level }
+    }));
+  },
+  renderHTML({ node, HTMLAttributes }) {
+    const hasLevel = this.options.levels.includes(node.attrs.level);
+    const level = hasLevel ? node.attrs.level : this.options.levels[0];
+    return [`h${level}`, mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
+  },
+  addCommands() {
+    return {
+      setHeading: (attributes) => ({ commands: commands2 }) => {
+        if (!this.options.levels.includes(attributes.level)) {
+          return false;
+        }
+        return commands2.setNode(this.name, attributes);
+      },
+      toggleHeading: (attributes) => ({ commands: commands2 }) => {
+        if (!this.options.levels.includes(attributes.level)) {
+          return false;
+        }
+        return commands2.toggleNode(this.name, "paragraph", attributes);
+      }
+    };
+  },
+  addKeyboardShortcuts() {
+    return this.options.levels.reduce((items, level) => ({
+      ...items,
+      ...{
+        [`Mod-Alt-${level}`]: () => this.editor.commands.toggleHeading({ level })
+      }
+    }), {});
+  },
+  addInputRules() {
+    return this.options.levels.map((level) => {
+      return textblockTypeInputRule({
+        find: new RegExp(`^(#{${Math.min(...this.options.levels)},${level}})\\s$`),
+        type: this.type,
+        getAttributes: {
+          level
+        }
+      });
+    });
+  }
+});
+const History = Extension.create({
+  name: "history",
+  addOptions() {
+    return {
+      depth: 100,
+      newGroupDelay: 500
+    };
+  },
+  addCommands() {
+    return {
+      undo: () => ({ state, dispatch }) => {
+        return undo(state, dispatch);
+      },
+      redo: () => ({ state, dispatch }) => {
+        return redo(state, dispatch);
+      }
+    };
+  },
+  addProseMirrorPlugins() {
+    return [
+      history(this.options)
+    ];
+  },
+  addKeyboardShortcuts() {
+    return {
+      "Mod-z": () => this.editor.commands.undo(),
+      "Shift-Mod-z": () => this.editor.commands.redo(),
+      "Mod-y": () => this.editor.commands.redo(),
+      // Russian keyboard layouts
+      "Mod-\u044F": () => this.editor.commands.undo(),
+      "Shift-Mod-\u044F": () => this.editor.commands.redo()
+    };
+  }
+});
+const HorizontalRule = Node.create({
+  name: "horizontalRule",
+  addOptions() {
+    return {
+      HTMLAttributes: {}
+    };
+  },
+  group: "block",
+  parseHTML() {
+    return [{ tag: "hr" }];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["hr", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)];
+  },
+  addCommands() {
+    return {
+      setHorizontalRule: () => ({ chain, state }) => {
+        if (!canInsertNode(state, state.schema.nodes[this.name])) {
+          return false;
+        }
+        const { selection } = state;
+        const { $from: $originFrom, $to: $originTo } = selection;
+        const currentChain = chain();
+        if ($originFrom.parentOffset === 0) {
+          currentChain.insertContentAt({
+            from: Math.max($originFrom.pos - 1, 0),
+            to: $originTo.pos
+          }, {
+            type: this.name
+          });
+        } else if (isNodeSelection(selection)) {
+          currentChain.insertContentAt($originTo.pos, {
+            type: this.name
+          });
+        } else {
+          currentChain.insertContent({ type: this.name });
+        }
+        return currentChain.command(({ tr, dispatch }) => {
+          var _a;
+          if (dispatch) {
+            const { $to } = tr.selection;
+            const posAfter = $to.end();
+            if ($to.nodeAfter) {
+              if ($to.nodeAfter.isTextblock) {
+                tr.setSelection(TextSelection.create(tr.doc, $to.pos + 1));
+              } else if ($to.nodeAfter.isBlock) {
+                tr.setSelection(NodeSelection.create(tr.doc, $to.pos));
+              } else {
+                tr.setSelection(TextSelection.create(tr.doc, $to.pos));
+              }
+            } else {
+              const node = (_a = $to.parent.type.contentMatch.defaultType) === null || _a === void 0 ? void 0 : _a.create();
+              if (node) {
+                tr.insert(posAfter, node);
+                tr.setSelection(TextSelection.create(tr.doc, posAfter + 1));
+              }
+            }
+            tr.scrollIntoView();
+          }
+          return true;
+        }).run();
+      }
+    };
+  },
+  addInputRules() {
+    return [
+      nodeInputRule({
+        find: /^(?:---|—-|___\s|\*\*\*\s)$/,
+        type: this.type
+      })
+    ];
+  }
+});
+const starInputRegex = /(?:^|\s)(\*(?!\s+\*)((?:[^*]+))\*(?!\s+\*))$/;
+const starPasteRegex = /(?:^|\s)(\*(?!\s+\*)((?:[^*]+))\*(?!\s+\*))/g;
+const underscoreInputRegex = /(?:^|\s)(_(?!\s+_)((?:[^_]+))_(?!\s+_))$/;
+const underscorePasteRegex = /(?:^|\s)(_(?!\s+_)((?:[^_]+))_(?!\s+_))/g;
+const Italic = Mark.create({
+  name: "italic",
+  addOptions() {
+    return {
+      HTMLAttributes: {}
+    };
+  },
+  parseHTML() {
+    return [
+      {
+        tag: "em"
+      },
+      {
+        tag: "i",
+        getAttrs: (node) => node.style.fontStyle !== "normal" && null
+      },
+      {
+        style: "font-style=normal",
+        clearMark: (mark) => mark.type.name === this.name
+      },
+      {
+        style: "font-style=italic"
+      }
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["em", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
+  },
+  addCommands() {
+    return {
+      setItalic: () => ({ commands: commands2 }) => {
+        return commands2.setMark(this.name);
+      },
+      toggleItalic: () => ({ commands: commands2 }) => {
+        return commands2.toggleMark(this.name);
+      },
+      unsetItalic: () => ({ commands: commands2 }) => {
+        return commands2.unsetMark(this.name);
+      }
+    };
+  },
+  addKeyboardShortcuts() {
+    return {
+      "Mod-i": () => this.editor.commands.toggleItalic(),
+      "Mod-I": () => this.editor.commands.toggleItalic()
+    };
+  },
+  addInputRules() {
+    return [
+      markInputRule({
+        find: starInputRegex,
+        type: this.type
+      }),
+      markInputRule({
+        find: underscoreInputRegex,
+        type: this.type
+      })
+    ];
+  },
+  addPasteRules() {
+    return [
+      markPasteRule({
+        find: starPasteRegex,
+        type: this.type
+      }),
+      markPasteRule({
+        find: underscorePasteRegex,
+        type: this.type
+      })
+    ];
+  }
+});
+const ListItem = Node.create({
+  name: "listItem",
+  addOptions() {
+    return {
+      HTMLAttributes: {},
+      bulletListTypeName: "bulletList",
+      orderedListTypeName: "orderedList"
+    };
+  },
+  content: "paragraph block*",
+  defining: true,
+  parseHTML() {
+    return [
+      {
+        tag: "li"
+      }
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["li", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
+  },
+  addKeyboardShortcuts() {
+    return {
+      Enter: () => this.editor.commands.splitListItem(this.name),
+      Tab: () => this.editor.commands.sinkListItem(this.name),
+      "Shift-Tab": () => this.editor.commands.liftListItem(this.name)
+    };
+  }
+});
+const ListItemName = "listItem";
+const TextStyleName = "textStyle";
+const inputRegex$2 = /^(\d+)\.\s$/;
+const OrderedList = Node.create({
+  name: "orderedList",
+  addOptions() {
+    return {
+      itemTypeName: "listItem",
+      HTMLAttributes: {},
+      keepMarks: false,
+      keepAttributes: false
+    };
+  },
+  group: "block list",
+  content() {
+    return `${this.options.itemTypeName}+`;
+  },
+  addAttributes() {
+    return {
+      start: {
+        default: 1,
+        parseHTML: (element) => {
+          return element.hasAttribute("start") ? parseInt(element.getAttribute("start") || "", 10) : 1;
+        }
+      },
+      type: {
+        default: null,
+        parseHTML: (element) => element.getAttribute("type")
+      }
+    };
+  },
+  parseHTML() {
+    return [
+      {
+        tag: "ol"
+      }
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    const { start, ...attributesWithoutStart } = HTMLAttributes;
+    return start === 1 ? ["ol", mergeAttributes(this.options.HTMLAttributes, attributesWithoutStart), 0] : ["ol", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
+  },
+  addCommands() {
+    return {
+      toggleOrderedList: () => ({ commands: commands2, chain }) => {
+        if (this.options.keepAttributes) {
+          return chain().toggleList(this.name, this.options.itemTypeName, this.options.keepMarks).updateAttributes(ListItemName, this.editor.getAttributes(TextStyleName)).run();
+        }
+        return commands2.toggleList(this.name, this.options.itemTypeName, this.options.keepMarks);
+      }
+    };
+  },
+  addKeyboardShortcuts() {
+    return {
+      "Mod-Shift-7": () => this.editor.commands.toggleOrderedList()
+    };
+  },
+  addInputRules() {
+    let inputRule = wrappingInputRule({
+      find: inputRegex$2,
+      type: this.type,
+      getAttributes: (match) => ({ start: +match[1] }),
+      joinPredicate: (match, node) => node.childCount + node.attrs.start === +match[1]
+    });
+    if (this.options.keepMarks || this.options.keepAttributes) {
+      inputRule = wrappingInputRule({
+        find: inputRegex$2,
+        type: this.type,
+        keepMarks: this.options.keepMarks,
+        keepAttributes: this.options.keepAttributes,
+        getAttributes: (match) => ({ start: +match[1], ...this.editor.getAttributes(TextStyleName) }),
+        joinPredicate: (match, node) => node.childCount + node.attrs.start === +match[1],
+        editor: this.editor
+      });
+    }
+    return [
+      inputRule
+    ];
+  }
+});
+const Paragraph = Node.create({
+  name: "paragraph",
+  priority: 1e3,
+  addOptions() {
+    return {
+      HTMLAttributes: {}
+    };
+  },
+  group: "block",
+  content: "inline*",
+  parseHTML() {
+    return [
+      { tag: "p" }
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["p", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
+  },
+  addCommands() {
+    return {
+      setParagraph: () => ({ commands: commands2 }) => {
+        return commands2.setNode(this.name);
+      }
+    };
+  },
+  addKeyboardShortcuts() {
+    return {
+      "Mod-Alt-0": () => this.editor.commands.setParagraph()
+    };
+  }
+});
+const inputRegex$1 = /(?:^|\s)(~~(?!\s+~~)((?:[^~]+))~~(?!\s+~~))$/;
+const pasteRegex = /(?:^|\s)(~~(?!\s+~~)((?:[^~]+))~~(?!\s+~~))/g;
+const Strike = Mark.create({
+  name: "strike",
+  addOptions() {
+    return {
+      HTMLAttributes: {}
+    };
+  },
+  parseHTML() {
+    return [
+      {
+        tag: "s"
+      },
+      {
+        tag: "del"
+      },
+      {
+        tag: "strike"
+      },
+      {
+        style: "text-decoration",
+        consuming: false,
+        getAttrs: (style) => style.includes("line-through") ? {} : false
+      }
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["s", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
+  },
+  addCommands() {
+    return {
+      setStrike: () => ({ commands: commands2 }) => {
+        return commands2.setMark(this.name);
+      },
+      toggleStrike: () => ({ commands: commands2 }) => {
+        return commands2.toggleMark(this.name);
+      },
+      unsetStrike: () => ({ commands: commands2 }) => {
+        return commands2.unsetMark(this.name);
+      }
+    };
+  },
+  addKeyboardShortcuts() {
+    return {
+      "Mod-Shift-s": () => this.editor.commands.toggleStrike()
+    };
+  },
+  addInputRules() {
+    return [
+      markInputRule({
+        find: inputRegex$1,
+        type: this.type
+      })
+    ];
+  },
+  addPasteRules() {
+    return [
+      markPasteRule({
+        find: pasteRegex,
+        type: this.type
+      })
+    ];
+  }
+});
+const Text = Node.create({
+  name: "text",
+  group: "inline"
+});
+Extension.create({
+  name: "starterKit",
+  addExtensions() {
+    const extensions = [];
+    if (this.options.bold !== false) {
+      extensions.push(Bold.configure(this.options.bold));
+    }
+    if (this.options.blockquote !== false) {
+      extensions.push(Blockquote.configure(this.options.blockquote));
+    }
+    if (this.options.bulletList !== false) {
+      extensions.push(BulletList.configure(this.options.bulletList));
+    }
+    if (this.options.code !== false) {
+      extensions.push(Code.configure(this.options.code));
+    }
+    if (this.options.codeBlock !== false) {
+      extensions.push(CodeBlock.configure(this.options.codeBlock));
+    }
+    if (this.options.document !== false) {
+      extensions.push(Document.configure(this.options.document));
+    }
+    if (this.options.dropcursor !== false) {
+      extensions.push(Dropcursor.configure(this.options.dropcursor));
+    }
+    if (this.options.gapcursor !== false) {
+      extensions.push(Gapcursor.configure(this.options.gapcursor));
+    }
+    if (this.options.hardBreak !== false) {
+      extensions.push(HardBreak.configure(this.options.hardBreak));
+    }
+    if (this.options.heading !== false) {
+      extensions.push(Heading.configure(this.options.heading));
+    }
+    if (this.options.history !== false) {
+      extensions.push(History.configure(this.options.history));
+    }
+    if (this.options.horizontalRule !== false) {
+      extensions.push(HorizontalRule.configure(this.options.horizontalRule));
+    }
+    if (this.options.italic !== false) {
+      extensions.push(Italic.configure(this.options.italic));
+    }
+    if (this.options.listItem !== false) {
+      extensions.push(ListItem.configure(this.options.listItem));
+    }
+    if (this.options.orderedList !== false) {
+      extensions.push(OrderedList.configure(this.options.orderedList));
+    }
+    if (this.options.paragraph !== false) {
+      extensions.push(Paragraph.configure(this.options.paragraph));
+    }
+    if (this.options.strike !== false) {
+      extensions.push(Strike.configure(this.options.strike));
+    }
+    if (this.options.text !== false) {
+      extensions.push(Text.configure(this.options.text));
+    }
+    return extensions;
+  }
+});
+Extension.create({
+  name: "textAlign",
+  addOptions() {
+    return {
+      types: [],
+      alignments: ["left", "center", "right", "justify"],
+      defaultAlignment: null
+    };
+  },
+  addGlobalAttributes() {
+    return [
+      {
+        types: this.options.types,
+        attributes: {
+          textAlign: {
+            default: this.options.defaultAlignment,
+            parseHTML: (element) => {
+              const alignment = element.style.textAlign;
+              return this.options.alignments.includes(alignment) ? alignment : this.options.defaultAlignment;
+            },
+            renderHTML: (attributes) => {
+              if (!attributes.textAlign) {
+                return {};
+              }
+              return { style: `text-align: ${attributes.textAlign}` };
+            }
+          }
+        }
+      }
+    ];
+  },
+  addCommands() {
+    return {
+      setTextAlign: (alignment) => ({ commands: commands2 }) => {
+        if (!this.options.alignments.includes(alignment)) {
+          return false;
+        }
+        return this.options.types.map((type) => commands2.updateAttributes(type, { textAlign: alignment })).every((response) => response);
+      },
+      unsetTextAlign: () => ({ commands: commands2 }) => {
+        return this.options.types.map((type) => commands2.resetAttributes(type, "textAlign")).every((response) => response);
+      },
+      toggleTextAlign: (alignment) => ({ editor, commands: commands2 }) => {
+        if (!this.options.alignments.includes(alignment)) {
+          return false;
+        }
+        if (editor.isActive({ textAlign: alignment })) {
+          return commands2.unsetTextAlign();
+        }
+        return commands2.setTextAlign(alignment);
+      }
+    };
+  },
+  addKeyboardShortcuts() {
+    return {
+      "Mod-Shift-l": () => this.editor.commands.setTextAlign("left"),
+      "Mod-Shift-e": () => this.editor.commands.setTextAlign("center"),
+      "Mod-Shift-r": () => this.editor.commands.setTextAlign("right"),
+      "Mod-Shift-j": () => this.editor.commands.setTextAlign("justify")
+    };
+  }
+});
+const UNICODE_WHITESPACE_PATTERN = "[\0- \xA0\u1680\u180E\u2000-\u2029\u205F\u3000]";
+const UNICODE_WHITESPACE_REGEX = new RegExp(UNICODE_WHITESPACE_PATTERN);
+const UNICODE_WHITESPACE_REGEX_END = new RegExp(`${UNICODE_WHITESPACE_PATTERN}$`);
+const UNICODE_WHITESPACE_REGEX_GLOBAL = new RegExp(UNICODE_WHITESPACE_PATTERN, "g");
+function isValidLinkStructure(tokens) {
+  if (tokens.length === 1) {
+    return tokens[0].isLink;
+  }
+  if (tokens.length === 3 && tokens[1].isLink) {
+    return ["()", "[]"].includes(tokens[0].value + tokens[2].value);
+  }
+  return false;
+}
+function autolink(options) {
+  return new Plugin({
+    key: new PluginKey("autolink"),
+    appendTransaction: (transactions, oldState, newState) => {
+      const docChanges = transactions.some((transaction) => transaction.docChanged) && !oldState.doc.eq(newState.doc);
+      const preventAutolink = transactions.some((transaction) => transaction.getMeta("preventAutolink"));
+      if (!docChanges || preventAutolink) {
+        return;
+      }
+      const { tr } = newState;
+      const transform = combineTransactionSteps(oldState.doc, [...transactions]);
+      const changes = getChangedRanges(transform);
+      changes.forEach(({ newRange }) => {
+        const nodesInChangedRanges = findChildrenInRange(newState.doc, newRange, (node) => node.isTextblock);
+        let textBlock;
+        let textBeforeWhitespace;
+        if (nodesInChangedRanges.length > 1) {
+          textBlock = nodesInChangedRanges[0];
+          textBeforeWhitespace = newState.doc.textBetween(textBlock.pos, textBlock.pos + textBlock.node.nodeSize, void 0, " ");
+        } else if (nodesInChangedRanges.length) {
+          const endText = newState.doc.textBetween(newRange.from, newRange.to, " ", " ");
+          if (!UNICODE_WHITESPACE_REGEX_END.test(endText)) {
+            return;
+          }
+          textBlock = nodesInChangedRanges[0];
+          textBeforeWhitespace = newState.doc.textBetween(textBlock.pos, newRange.to, void 0, " ");
+        }
+        if (textBlock && textBeforeWhitespace) {
+          const wordsBeforeWhitespace = textBeforeWhitespace.split(UNICODE_WHITESPACE_REGEX).filter(Boolean);
+          if (wordsBeforeWhitespace.length <= 0) {
+            return false;
+          }
+          const lastWordBeforeSpace = wordsBeforeWhitespace[wordsBeforeWhitespace.length - 1];
+          const lastWordAndBlockOffset = textBlock.pos + textBeforeWhitespace.lastIndexOf(lastWordBeforeSpace);
+          if (!lastWordBeforeSpace) {
+            return false;
+          }
+          const linksBeforeSpace = tokenize(lastWordBeforeSpace).map((t) => t.toObject(options.defaultProtocol));
+          if (!isValidLinkStructure(linksBeforeSpace)) {
+            return false;
+          }
+          linksBeforeSpace.filter((link) => link.isLink).map((link) => ({
+            ...link,
+            from: lastWordAndBlockOffset + link.start + 1,
+            to: lastWordAndBlockOffset + link.end + 1
+          })).filter((link) => {
+            if (!newState.schema.marks.code) {
+              return true;
+            }
+            return !newState.doc.rangeHasMark(link.from, link.to, newState.schema.marks.code);
+          }).filter((link) => options.validate(link.value)).filter((link) => options.shouldAutoLink(link.value)).forEach((link) => {
+            if (getMarksBetween(link.from, link.to, newState.doc).some((item) => item.mark.type === options.type)) {
+              return;
+            }
+            tr.addMark(link.from, link.to, options.type.create({
+              href: link.href
+            }));
+          });
+        }
+      });
+      if (!tr.steps.length) {
+        return;
+      }
+      return tr;
+    }
+  });
+}
+function clickHandler(options) {
+  return new Plugin({
+    key: new PluginKey("handleClickLink"),
+    props: {
+      handleClick: (view, pos, event) => {
+        var _a, _b;
+        if (event.button !== 0) {
+          return false;
+        }
+        if (!view.editable) {
+          return false;
+        }
+        let a = event.target;
+        const els = [];
+        while (a.nodeName !== "DIV") {
+          els.push(a);
+          a = a.parentNode;
+        }
+        if (!els.find((value) => value.nodeName === "A")) {
+          return false;
+        }
+        const attrs = getAttributes(view.state, options.type.name);
+        const link = event.target;
+        const href = (_a = link === null || link === void 0 ? void 0 : link.href) !== null && _a !== void 0 ? _a : attrs.href;
+        const target = (_b = link === null || link === void 0 ? void 0 : link.target) !== null && _b !== void 0 ? _b : attrs.target;
+        if (link && href) {
+          (void 0).open(href, target);
+          return true;
+        }
+        return false;
+      }
+    }
+  });
+}
+function pasteHandler(options) {
+  return new Plugin({
+    key: new PluginKey("handlePasteLink"),
+    props: {
+      handlePaste: (view, event, slice) => {
+        const { state } = view;
+        const { selection } = state;
+        const { empty } = selection;
+        if (empty) {
+          return false;
+        }
+        let textContent = "";
+        slice.content.forEach((node) => {
+          textContent += node.textContent;
+        });
+        const link = find(textContent, { defaultProtocol: options.defaultProtocol }).find((item) => item.isLink && item.value === textContent);
+        if (!textContent || !link) {
+          return false;
+        }
+        return options.editor.commands.setMark(options.type, {
+          href: link.href
+        });
+      }
+    }
+  });
+}
+function isAllowedUri(uri, protocols) {
+  const allowedProtocols = [
+    "http",
+    "https",
+    "ftp",
+    "ftps",
+    "mailto",
+    "tel",
+    "callto",
+    "sms",
+    "cid",
+    "xmpp"
+  ];
+  if (protocols) {
+    protocols.forEach((protocol) => {
+      const nextProtocol = typeof protocol === "string" ? protocol : protocol.scheme;
+      if (nextProtocol) {
+        allowedProtocols.push(nextProtocol);
+      }
+    });
+  }
+  return !uri || uri.replace(UNICODE_WHITESPACE_REGEX_GLOBAL, "").match(new RegExp(
+    // eslint-disable-next-line no-useless-escape
+    `^(?:(?:${allowedProtocols.join("|")}):|[^a-z]|[a-z0-9+.-]+(?:[^a-z+.-:]|$))`,
+    "i"
+  ));
+}
+Mark.create({
+  name: "link",
+  priority: 1e3,
+  keepOnSplit: false,
+  exitable: true,
+  onCreate() {
+    if (this.options.validate && !this.options.shouldAutoLink) {
+      this.options.shouldAutoLink = this.options.validate;
+      console.warn("The `validate` option is deprecated. Rename to the `shouldAutoLink` option instead.");
+    }
+    this.options.protocols.forEach((protocol) => {
+      if (typeof protocol === "string") {
+        registerCustomProtocol(protocol);
+        return;
+      }
+      registerCustomProtocol(protocol.scheme, protocol.optionalSlashes);
+    });
+  },
+  onDestroy() {
+    reset();
+  },
+  inclusive() {
+    return this.options.autolink;
+  },
+  addOptions() {
+    return {
+      openOnClick: true,
+      linkOnPaste: true,
+      autolink: true,
+      protocols: [],
+      defaultProtocol: "http",
+      HTMLAttributes: {
+        target: "_blank",
+        rel: "noopener noreferrer nofollow",
+        class: null
+      },
+      isAllowedUri: (url, ctx) => !!isAllowedUri(url, ctx.protocols),
+      validate: (url) => !!url,
+      shouldAutoLink: (url) => !!url
+    };
+  },
+  addAttributes() {
+    return {
+      href: {
+        default: null,
+        parseHTML(element) {
+          return element.getAttribute("href");
+        }
+      },
+      target: {
+        default: this.options.HTMLAttributes.target
+      },
+      rel: {
+        default: this.options.HTMLAttributes.rel
+      },
+      class: {
+        default: this.options.HTMLAttributes.class
+      }
+    };
+  },
+  parseHTML() {
+    return [
+      {
+        tag: "a[href]",
+        getAttrs: (dom) => {
+          const href = dom.getAttribute("href");
+          if (!href || !this.options.isAllowedUri(href, {
+            defaultValidate: (url) => !!isAllowedUri(url, this.options.protocols),
+            protocols: this.options.protocols,
+            defaultProtocol: this.options.defaultProtocol
+          })) {
+            return false;
+          }
+          return null;
+        }
+      }
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    if (!this.options.isAllowedUri(HTMLAttributes.href, {
+      defaultValidate: (href) => !!isAllowedUri(href, this.options.protocols),
+      protocols: this.options.protocols,
+      defaultProtocol: this.options.defaultProtocol
+    })) {
+      return [
+        "a",
+        mergeAttributes(this.options.HTMLAttributes, { ...HTMLAttributes, href: "" }),
+        0
+      ];
+    }
+    return ["a", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
+  },
+  addCommands() {
+    return {
+      setLink: (attributes) => ({ chain }) => {
+        const { href } = attributes;
+        if (!this.options.isAllowedUri(href, {
+          defaultValidate: (url) => !!isAllowedUri(url, this.options.protocols),
+          protocols: this.options.protocols,
+          defaultProtocol: this.options.defaultProtocol
+        })) {
+          return false;
+        }
+        return chain().setMark(this.name, attributes).setMeta("preventAutolink", true).run();
+      },
+      toggleLink: (attributes) => ({ chain }) => {
+        const { href } = attributes;
+        if (!this.options.isAllowedUri(href, {
+          defaultValidate: (url) => !!isAllowedUri(url, this.options.protocols),
+          protocols: this.options.protocols,
+          defaultProtocol: this.options.defaultProtocol
+        })) {
+          return false;
+        }
+        return chain().toggleMark(this.name, attributes, { extendEmptyMarkRange: true }).setMeta("preventAutolink", true).run();
+      },
+      unsetLink: () => ({ chain }) => {
+        return chain().unsetMark(this.name, { extendEmptyMarkRange: true }).setMeta("preventAutolink", true).run();
+      }
+    };
+  },
+  addPasteRules() {
+    return [
+      markPasteRule({
+        find: (text) => {
+          const foundLinks = [];
+          if (text) {
+            const { protocols, defaultProtocol } = this.options;
+            const links = find(text).filter((item) => item.isLink && this.options.isAllowedUri(item.value, {
+              defaultValidate: (href) => !!isAllowedUri(href, protocols),
+              protocols,
+              defaultProtocol
+            }));
+            if (links.length) {
+              links.forEach((link) => foundLinks.push({
+                text: link.value,
+                data: {
+                  href: link.href
+                },
+                index: link.start
+              }));
+            }
+          }
+          return foundLinks;
+        },
+        type: this.type,
+        getAttributes: (match) => {
+          var _a;
+          return {
+            href: (_a = match.data) === null || _a === void 0 ? void 0 : _a.href
+          };
+        }
+      })
+    ];
+  },
+  addProseMirrorPlugins() {
+    const plugins = [];
+    const { protocols, defaultProtocol } = this.options;
+    if (this.options.autolink) {
+      plugins.push(autolink({
+        type: this.type,
+        defaultProtocol: this.options.defaultProtocol,
+        validate: (url) => this.options.isAllowedUri(url, {
+          defaultValidate: (href) => !!isAllowedUri(href, protocols),
+          protocols,
+          defaultProtocol
+        }),
+        shouldAutoLink: this.options.shouldAutoLink
+      }));
+    }
+    if (this.options.openOnClick === true) {
+      plugins.push(clickHandler({
+        type: this.type
+      }));
+    }
+    if (this.options.linkOnPaste) {
+      plugins.push(pasteHandler({
+        editor: this.editor,
+        defaultProtocol: this.options.defaultProtocol,
+        type: this.type
+      }));
+    }
+    return plugins;
+  }
+});
+const inputRegex = /(?:^|\s)(!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\))$/;
+Node.create({
+  name: "image",
+  addOptions() {
+    return {
+      inline: false,
+      allowBase64: false,
+      HTMLAttributes: {}
+    };
+  },
+  inline() {
+    return this.options.inline;
+  },
+  group() {
+    return this.options.inline ? "inline" : "block";
+  },
+  draggable: true,
+  addAttributes() {
+    return {
+      src: {
+        default: null
+      },
+      alt: {
+        default: null
+      },
+      title: {
+        default: null
+      }
+    };
+  },
+  parseHTML() {
+    return [
+      {
+        tag: this.options.allowBase64 ? "img[src]" : 'img[src]:not([src^="data:"])'
+      }
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["img", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)];
+  },
+  addCommands() {
+    return {
+      setImage: (options) => ({ commands: commands2 }) => {
+        return commands2.insertContent({
+          type: this.name,
+          attrs: options
+        });
+      }
+    };
+  },
+  addInputRules() {
+    return [
+      nodeInputRule({
+        find: inputRegex,
+        type: this.type,
+        getAttributes: (match) => {
+          const [, , alt, src, title] = match;
+          return { src, alt, title };
+        }
+      })
+    ];
+  }
+});
+function getDefaultExportFromCjs(x) {
+  return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
+}
+function deepFreeze(obj) {
+  if (obj instanceof Map) {
+    obj.clear = obj.delete = obj.set = function() {
+      throw new Error("map is read-only");
+    };
+  } else if (obj instanceof Set) {
+    obj.add = obj.clear = obj.delete = function() {
+      throw new Error("set is read-only");
+    };
+  }
+  Object.freeze(obj);
+  Object.getOwnPropertyNames(obj).forEach((name) => {
+    const prop = obj[name];
+    const type = typeof prop;
+    if ((type === "object" || type === "function") && !Object.isFrozen(prop)) {
+      deepFreeze(prop);
+    }
+  });
+  return obj;
+}
+class Response {
+  /**
+   * @param {CompiledMode} mode
+   */
+  constructor(mode) {
+    if (mode.data === void 0) mode.data = {};
+    this.data = mode.data;
+    this.isMatchIgnored = false;
+  }
+  ignoreMatch() {
+    this.isMatchIgnored = true;
+  }
+}
+function escapeHTML(value) {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
+}
+function inherit$1(original, ...objects) {
+  const result = /* @__PURE__ */ Object.create(null);
+  for (const key in original) {
+    result[key] = original[key];
+  }
+  objects.forEach(function(obj) {
+    for (const key in obj) {
+      result[key] = obj[key];
+    }
+  });
+  return (
+    /** @type {T} */
+    result
+  );
+}
+const SPAN_CLOSE = "</span>";
+const emitsWrappingTags = (node) => {
+  return !!node.scope;
+};
+const scopeToCSSClass = (name, { prefix }) => {
+  if (name.startsWith("language:")) {
+    return name.replace("language:", "language-");
+  }
+  if (name.includes(".")) {
+    const pieces = name.split(".");
+    return [
+      `${prefix}${pieces.shift()}`,
+      ...pieces.map((x, i) => `${x}${"_".repeat(i + 1)}`)
+    ].join(" ");
+  }
+  return `${prefix}${name}`;
+};
+class HTMLRenderer {
+  /**
+   * Creates a new HTMLRenderer
+   *
+   * @param {Tree} parseTree - the parse tree (must support `walk` API)
+   * @param {{classPrefix: string}} options
+   */
+  constructor(parseTree, options) {
+    this.buffer = "";
+    this.classPrefix = options.classPrefix;
+    parseTree.walk(this);
+  }
+  /**
+   * Adds texts to the output stream
+   *
+   * @param {string} text */
+  addText(text) {
+    this.buffer += escapeHTML(text);
+  }
+  /**
+   * Adds a node open to the output stream (if needed)
+   *
+   * @param {Node} node */
+  openNode(node) {
+    if (!emitsWrappingTags(node)) return;
+    const className = scopeToCSSClass(
+      node.scope,
+      { prefix: this.classPrefix }
+    );
+    this.span(className);
+  }
+  /**
+   * Adds a node close to the output stream (if needed)
+   *
+   * @param {Node} node */
+  closeNode(node) {
+    if (!emitsWrappingTags(node)) return;
+    this.buffer += SPAN_CLOSE;
+  }
+  /**
+   * returns the accumulated buffer
+  */
+  value() {
+    return this.buffer;
+  }
+  // helpers
+  /**
+   * Builds a span element
+   *
+   * @param {string} className */
+  span(className) {
+    this.buffer += `<span class="${className}">`;
+  }
+}
+const newNode = (opts = {}) => {
+  const result = { children: [] };
+  Object.assign(result, opts);
+  return result;
+};
+class TokenTree {
+  constructor() {
+    this.rootNode = newNode();
+    this.stack = [this.rootNode];
+  }
+  get top() {
+    return this.stack[this.stack.length - 1];
+  }
+  get root() {
+    return this.rootNode;
+  }
+  /** @param {Node} node */
+  add(node) {
+    this.top.children.push(node);
+  }
+  /** @param {string} scope */
+  openNode(scope) {
+    const node = newNode({ scope });
+    this.add(node);
+    this.stack.push(node);
+  }
+  closeNode() {
+    if (this.stack.length > 1) {
+      return this.stack.pop();
+    }
+    return void 0;
+  }
+  closeAllNodes() {
+    while (this.closeNode()) ;
+  }
+  toJSON() {
+    return JSON.stringify(this.rootNode, null, 4);
+  }
+  /**
+   * @typedef { import("./html_renderer").Renderer } Renderer
+   * @param {Renderer} builder
+   */
+  walk(builder) {
+    return this.constructor._walk(builder, this.rootNode);
+  }
+  /**
+   * @param {Renderer} builder
+   * @param {Node} node
+   */
+  static _walk(builder, node) {
+    if (typeof node === "string") {
+      builder.addText(node);
+    } else if (node.children) {
+      builder.openNode(node);
+      node.children.forEach((child) => this._walk(builder, child));
+      builder.closeNode(node);
+    }
+    return builder;
+  }
+  /**
+   * @param {Node} node
+   */
+  static _collapse(node) {
+    if (typeof node === "string") return;
+    if (!node.children) return;
+    if (node.children.every((el) => typeof el === "string")) {
+      node.children = [node.children.join("")];
+    } else {
+      node.children.forEach((child) => {
+        TokenTree._collapse(child);
+      });
+    }
+  }
+}
+class TokenTreeEmitter extends TokenTree {
+  /**
+   * @param {*} options
+   */
+  constructor(options) {
+    super();
+    this.options = options;
+  }
+  /**
+   * @param {string} text
+   */
+  addText(text) {
+    if (text === "") {
+      return;
+    }
+    this.add(text);
+  }
+  /** @param {string} scope */
+  startScope(scope) {
+    this.openNode(scope);
+  }
+  endScope() {
+    this.closeNode();
+  }
+  /**
+   * @param {Emitter & {root: DataNode}} emitter
+   * @param {string} name
+   */
+  __addSublanguage(emitter, name) {
+    const node = emitter.root;
+    if (name) node.scope = `language:${name}`;
+    this.add(node);
+  }
+  toHTML() {
+    const renderer = new HTMLRenderer(this, this.options);
+    return renderer.value();
+  }
+  finalize() {
+    this.closeAllNodes();
+    return true;
+  }
+}
+function source(re) {
+  if (!re) return null;
+  if (typeof re === "string") return re;
+  return re.source;
+}
+function lookahead(re) {
+  return concat("(?=", re, ")");
+}
+function anyNumberOfTimes(re) {
+  return concat("(?:", re, ")*");
+}
+function optional(re) {
+  return concat("(?:", re, ")?");
+}
+function concat(...args) {
+  const joined = args.map((x) => source(x)).join("");
+  return joined;
+}
+function stripOptionsFromArgs(args) {
+  const opts = args[args.length - 1];
+  if (typeof opts === "object" && opts.constructor === Object) {
+    args.splice(args.length - 1, 1);
+    return opts;
+  } else {
+    return {};
+  }
+}
+function either(...args) {
+  const opts = stripOptionsFromArgs(args);
+  const joined = "(" + (opts.capture ? "" : "?:") + args.map((x) => source(x)).join("|") + ")";
+  return joined;
+}
+function countMatchGroups(re) {
+  return new RegExp(re.toString() + "|").exec("").length - 1;
+}
+function startsWith(re, lexeme) {
+  const match = re && re.exec(lexeme);
+  return match && match.index === 0;
+}
+const BACKREF_RE = /\[(?:[^\\\]]|\\.)*\]|\(\??|\\([1-9][0-9]*)|\\./;
+function _rewriteBackreferences(regexps, { joinWith }) {
+  let numCaptures = 0;
+  return regexps.map((regex) => {
+    numCaptures += 1;
+    const offset = numCaptures;
+    let re = source(regex);
+    let out = "";
+    while (re.length > 0) {
+      const match = BACKREF_RE.exec(re);
+      if (!match) {
+        out += re;
+        break;
+      }
+      out += re.substring(0, match.index);
+      re = re.substring(match.index + match[0].length);
+      if (match[0][0] === "\\" && match[1]) {
+        out += "\\" + String(Number(match[1]) + offset);
+      } else {
+        out += match[0];
+        if (match[0] === "(") {
+          numCaptures++;
+        }
+      }
+    }
+    return out;
+  }).map((re) => `(${re})`).join(joinWith);
+}
+const MATCH_NOTHING_RE = /\b\B/;
+const IDENT_RE = "[a-zA-Z]\\w*";
+const UNDERSCORE_IDENT_RE = "[a-zA-Z_]\\w*";
+const NUMBER_RE = "\\b\\d+(\\.\\d+)?";
+const C_NUMBER_RE = "(-?)(\\b0[xX][a-fA-F0-9]+|(\\b\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";
+const BINARY_NUMBER_RE = "\\b(0b[01]+)";
+const RE_STARTERS_RE = "!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|>>|>|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";
+const SHEBANG = (opts = {}) => {
+  const beginShebang = /^#![ ]*\//;
+  if (opts.binary) {
+    opts.begin = concat(
+      beginShebang,
+      /.*\b/,
+      opts.binary,
+      /\b.*/
+    );
+  }
+  return inherit$1({
+    scope: "meta",
+    begin: beginShebang,
+    end: /$/,
+    relevance: 0,
+    /** @type {ModeCallback} */
+    "on:begin": (m, resp) => {
+      if (m.index !== 0) resp.ignoreMatch();
+    }
+  }, opts);
+};
+const BACKSLASH_ESCAPE = {
+  begin: "\\\\[\\s\\S]",
+  relevance: 0
+};
+const APOS_STRING_MODE = {
+  scope: "string",
+  begin: "'",
+  end: "'",
+  illegal: "\\n",
+  contains: [BACKSLASH_ESCAPE]
+};
+const QUOTE_STRING_MODE = {
+  scope: "string",
+  begin: '"',
+  end: '"',
+  illegal: "\\n",
+  contains: [BACKSLASH_ESCAPE]
+};
+const PHRASAL_WORDS_MODE = {
+  begin: /\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/
+};
+const COMMENT = function(begin, end, modeOptions = {}) {
+  const mode = inherit$1(
+    {
+      scope: "comment",
+      begin,
+      end,
+      contains: []
+    },
+    modeOptions
+  );
+  mode.contains.push({
+    scope: "doctag",
+    // hack to avoid the space from being included. the space is necessary to
+    // match here to prevent the plain text rule below from gobbling up doctags
+    begin: "[ ]*(?=(TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):)",
+    end: /(TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):/,
+    excludeBegin: true,
+    relevance: 0
+  });
+  const ENGLISH_WORD = either(
+    // list of common 1 and 2 letter words in English
+    "I",
+    "a",
+    "is",
+    "so",
+    "us",
+    "to",
+    "at",
+    "if",
+    "in",
+    "it",
+    "on",
+    // note: this is not an exhaustive list of contractions, just popular ones
+    /[A-Za-z]+['](d|ve|re|ll|t|s|n)/,
+    // contractions - can't we'd they're let's, etc
+    /[A-Za-z]+[-][a-z]+/,
+    // `no-way`, etc.
+    /[A-Za-z][a-z]{2,}/
+    // allow capitalized words at beginning of sentences
+  );
+  mode.contains.push(
+    {
+      // TODO: how to include ", (, ) without breaking grammars that use these for
+      // comment delimiters?
+      // begin: /[ ]+([()"]?([A-Za-z'-]{3,}|is|a|I|so|us|[tT][oO]|at|if|in|it|on)[.]?[()":]?([.][ ]|[ ]|\))){3}/
+      // ---
+      // this tries to find sequences of 3 english words in a row (without any
+      // "programming" type syntax) this gives us a strong signal that we've
+      // TRULY found a comment - vs perhaps scanning with the wrong language.
+      // It's possible to find something that LOOKS like the start of the
+      // comment - but then if there is no readable text - good chance it is a
+      // false match and not a comment.
+      //
+      // for a visual example please see:
+      // https://github.com/highlightjs/highlight.js/issues/2827
+      begin: concat(
+        /[ ]+/,
+        // necessary to prevent us gobbling up doctags like /* @author Bob Mcgill */
+        "(",
+        ENGLISH_WORD,
+        /[.]?[:]?([.][ ]|[ ])/,
+        "){3}"
+      )
+      // look for 3 words in a row
+    }
+  );
+  return mode;
+};
+const C_LINE_COMMENT_MODE = COMMENT("//", "$");
+const C_BLOCK_COMMENT_MODE = COMMENT("/\\*", "\\*/");
+const HASH_COMMENT_MODE = COMMENT("#", "$");
+const NUMBER_MODE = {
+  scope: "number",
+  begin: NUMBER_RE,
+  relevance: 0
+};
+const C_NUMBER_MODE = {
+  scope: "number",
+  begin: C_NUMBER_RE,
+  relevance: 0
+};
+const BINARY_NUMBER_MODE = {
+  scope: "number",
+  begin: BINARY_NUMBER_RE,
+  relevance: 0
+};
+const REGEXP_MODE = {
+  scope: "regexp",
+  begin: /\/(?=[^/\n]*\/)/,
+  end: /\/[gimuy]*/,
+  contains: [
+    BACKSLASH_ESCAPE,
+    {
+      begin: /\[/,
+      end: /\]/,
+      relevance: 0,
+      contains: [BACKSLASH_ESCAPE]
+    }
+  ]
+};
+const TITLE_MODE = {
+  scope: "title",
+  begin: IDENT_RE,
+  relevance: 0
+};
+const UNDERSCORE_TITLE_MODE = {
+  scope: "title",
+  begin: UNDERSCORE_IDENT_RE,
+  relevance: 0
+};
+const METHOD_GUARD = {
+  // excludes method names from keyword processing
+  begin: "\\.\\s*" + UNDERSCORE_IDENT_RE,
+  relevance: 0
+};
+const END_SAME_AS_BEGIN = function(mode) {
+  return Object.assign(
+    mode,
+    {
+      /** @type {ModeCallback} */
+      "on:begin": (m, resp) => {
+        resp.data._beginMatch = m[1];
+      },
+      /** @type {ModeCallback} */
+      "on:end": (m, resp) => {
+        if (resp.data._beginMatch !== m[1]) resp.ignoreMatch();
+      }
+    }
+  );
+};
+var MODES = /* @__PURE__ */ Object.freeze({
+  __proto__: null,
+  APOS_STRING_MODE,
+  BACKSLASH_ESCAPE,
+  BINARY_NUMBER_MODE,
+  BINARY_NUMBER_RE,
+  COMMENT,
+  C_BLOCK_COMMENT_MODE,
+  C_LINE_COMMENT_MODE,
+  C_NUMBER_MODE,
+  C_NUMBER_RE,
+  END_SAME_AS_BEGIN,
+  HASH_COMMENT_MODE,
+  IDENT_RE,
+  MATCH_NOTHING_RE,
+  METHOD_GUARD,
+  NUMBER_MODE,
+  NUMBER_RE,
+  PHRASAL_WORDS_MODE,
+  QUOTE_STRING_MODE,
+  REGEXP_MODE,
+  RE_STARTERS_RE,
+  SHEBANG,
+  TITLE_MODE,
+  UNDERSCORE_IDENT_RE,
+  UNDERSCORE_TITLE_MODE
+});
+function skipIfHasPrecedingDot(match, response) {
+  const before = match.input[match.index - 1];
+  if (before === ".") {
+    response.ignoreMatch();
+  }
+}
+function scopeClassName(mode, _parent) {
+  if (mode.className !== void 0) {
+    mode.scope = mode.className;
+    delete mode.className;
+  }
+}
+function beginKeywords(mode, parent) {
+  if (!parent) return;
+  if (!mode.beginKeywords) return;
+  mode.begin = "\\b(" + mode.beginKeywords.split(" ").join("|") + ")(?!\\.)(?=\\b|\\s)";
+  mode.__beforeBegin = skipIfHasPrecedingDot;
+  mode.keywords = mode.keywords || mode.beginKeywords;
+  delete mode.beginKeywords;
+  if (mode.relevance === void 0) mode.relevance = 0;
+}
+function compileIllegal(mode, _parent) {
+  if (!Array.isArray(mode.illegal)) return;
+  mode.illegal = either(...mode.illegal);
+}
+function compileMatch(mode, _parent) {
+  if (!mode.match) return;
+  if (mode.begin || mode.end) throw new Error("begin & end are not supported with match");
+  mode.begin = mode.match;
+  delete mode.match;
+}
+function compileRelevance(mode, _parent) {
+  if (mode.relevance === void 0) mode.relevance = 1;
+}
+const beforeMatchExt = (mode, parent) => {
+  if (!mode.beforeMatch) return;
+  if (mode.starts) throw new Error("beforeMatch cannot be used with starts");
+  const originalMode = Object.assign({}, mode);
+  Object.keys(mode).forEach((key) => {
+    delete mode[key];
+  });
+  mode.keywords = originalMode.keywords;
+  mode.begin = concat(originalMode.beforeMatch, lookahead(originalMode.begin));
+  mode.starts = {
+    relevance: 0,
+    contains: [
+      Object.assign(originalMode, { endsParent: true })
+    ]
+  };
+  mode.relevance = 0;
+  delete originalMode.beforeMatch;
+};
+const COMMON_KEYWORDS = [
+  "of",
+  "and",
+  "for",
+  "in",
+  "not",
+  "or",
+  "if",
+  "then",
+  "parent",
+  // common variable name
+  "list",
+  // common variable name
+  "value"
+  // common variable name
+];
+const DEFAULT_KEYWORD_SCOPE = "keyword";
+function compileKeywords(rawKeywords, caseInsensitive, scopeName = DEFAULT_KEYWORD_SCOPE) {
+  const compiledKeywords = /* @__PURE__ */ Object.create(null);
+  if (typeof rawKeywords === "string") {
+    compileList(scopeName, rawKeywords.split(" "));
+  } else if (Array.isArray(rawKeywords)) {
+    compileList(scopeName, rawKeywords);
+  } else {
+    Object.keys(rawKeywords).forEach(function(scopeName2) {
+      Object.assign(
+        compiledKeywords,
+        compileKeywords(rawKeywords[scopeName2], caseInsensitive, scopeName2)
+      );
+    });
+  }
+  return compiledKeywords;
+  function compileList(scopeName2, keywordList) {
+    if (caseInsensitive) {
+      keywordList = keywordList.map((x) => x.toLowerCase());
+    }
+    keywordList.forEach(function(keyword) {
+      const pair = keyword.split("|");
+      compiledKeywords[pair[0]] = [scopeName2, scoreForKeyword(pair[0], pair[1])];
+    });
+  }
+}
+function scoreForKeyword(keyword, providedScore) {
+  if (providedScore) {
+    return Number(providedScore);
+  }
+  return commonKeyword(keyword) ? 0 : 1;
+}
+function commonKeyword(keyword) {
+  return COMMON_KEYWORDS.includes(keyword.toLowerCase());
+}
+const seenDeprecations = {};
+const error = (message) => {
+  console.error(message);
+};
+const warn = (message, ...args) => {
+  console.log(`WARN: ${message}`, ...args);
+};
+const deprecated = (version2, message) => {
+  if (seenDeprecations[`${version2}/${message}`]) return;
+  console.log(`Deprecated as of ${version2}. ${message}`);
+  seenDeprecations[`${version2}/${message}`] = true;
+};
+const MultiClassError = new Error();
+function remapScopeNames(mode, regexes, { key }) {
+  let offset = 0;
+  const scopeNames = mode[key];
+  const emit = {};
+  const positions = {};
+  for (let i = 1; i <= regexes.length; i++) {
+    positions[i + offset] = scopeNames[i];
+    emit[i + offset] = true;
+    offset += countMatchGroups(regexes[i - 1]);
+  }
+  mode[key] = positions;
+  mode[key]._emit = emit;
+  mode[key]._multi = true;
+}
+function beginMultiClass(mode) {
+  if (!Array.isArray(mode.begin)) return;
+  if (mode.skip || mode.excludeBegin || mode.returnBegin) {
+    error("skip, excludeBegin, returnBegin not compatible with beginScope: {}");
+    throw MultiClassError;
+  }
+  if (typeof mode.beginScope !== "object" || mode.beginScope === null) {
+    error("beginScope must be object");
+    throw MultiClassError;
+  }
+  remapScopeNames(mode, mode.begin, { key: "beginScope" });
+  mode.begin = _rewriteBackreferences(mode.begin, { joinWith: "" });
+}
+function endMultiClass(mode) {
+  if (!Array.isArray(mode.end)) return;
+  if (mode.skip || mode.excludeEnd || mode.returnEnd) {
+    error("skip, excludeEnd, returnEnd not compatible with endScope: {}");
+    throw MultiClassError;
+  }
+  if (typeof mode.endScope !== "object" || mode.endScope === null) {
+    error("endScope must be object");
+    throw MultiClassError;
+  }
+  remapScopeNames(mode, mode.end, { key: "endScope" });
+  mode.end = _rewriteBackreferences(mode.end, { joinWith: "" });
+}
+function scopeSugar(mode) {
+  if (mode.scope && typeof mode.scope === "object" && mode.scope !== null) {
+    mode.beginScope = mode.scope;
+    delete mode.scope;
+  }
+}
+function MultiClass(mode) {
+  scopeSugar(mode);
+  if (typeof mode.beginScope === "string") {
+    mode.beginScope = { _wrap: mode.beginScope };
+  }
+  if (typeof mode.endScope === "string") {
+    mode.endScope = { _wrap: mode.endScope };
+  }
+  beginMultiClass(mode);
+  endMultiClass(mode);
+}
+function compileLanguage(language) {
+  function langRe(value, global) {
+    return new RegExp(
+      source(value),
+      "m" + (language.case_insensitive ? "i" : "") + (language.unicodeRegex ? "u" : "") + (global ? "g" : "")
+    );
+  }
+  class MultiRegex {
+    constructor() {
+      this.matchIndexes = {};
+      this.regexes = [];
+      this.matchAt = 1;
+      this.position = 0;
+    }
+    // @ts-ignore
+    addRule(re, opts) {
+      opts.position = this.position++;
+      this.matchIndexes[this.matchAt] = opts;
+      this.regexes.push([opts, re]);
+      this.matchAt += countMatchGroups(re) + 1;
+    }
+    compile() {
+      if (this.regexes.length === 0) {
+        this.exec = () => null;
+      }
+      const terminators = this.regexes.map((el) => el[1]);
+      this.matcherRe = langRe(_rewriteBackreferences(terminators, { joinWith: "|" }), true);
+      this.lastIndex = 0;
+    }
+    /** @param {string} s */
+    exec(s) {
+      this.matcherRe.lastIndex = this.lastIndex;
+      const match = this.matcherRe.exec(s);
+      if (!match) {
+        return null;
+      }
+      const i = match.findIndex((el, i2) => i2 > 0 && el !== void 0);
+      const matchData = this.matchIndexes[i];
+      match.splice(0, i);
+      return Object.assign(match, matchData);
+    }
+  }
+  class ResumableMultiRegex {
+    constructor() {
+      this.rules = [];
+      this.multiRegexes = [];
+      this.count = 0;
+      this.lastIndex = 0;
+      this.regexIndex = 0;
+    }
+    // @ts-ignore
+    getMatcher(index) {
+      if (this.multiRegexes[index]) return this.multiRegexes[index];
+      const matcher = new MultiRegex();
+      this.rules.slice(index).forEach(([re, opts]) => matcher.addRule(re, opts));
+      matcher.compile();
+      this.multiRegexes[index] = matcher;
+      return matcher;
+    }
+    resumingScanAtSamePosition() {
+      return this.regexIndex !== 0;
+    }
+    considerAll() {
+      this.regexIndex = 0;
+    }
+    // @ts-ignore
+    addRule(re, opts) {
+      this.rules.push([re, opts]);
+      if (opts.type === "begin") this.count++;
+    }
+    /** @param {string} s */
+    exec(s) {
+      const m = this.getMatcher(this.regexIndex);
+      m.lastIndex = this.lastIndex;
+      let result = m.exec(s);
+      if (this.resumingScanAtSamePosition()) {
+        if (result && result.index === this.lastIndex) ;
+        else {
+          const m2 = this.getMatcher(0);
+          m2.lastIndex = this.lastIndex + 1;
+          result = m2.exec(s);
+        }
+      }
+      if (result) {
+        this.regexIndex += result.position + 1;
+        if (this.regexIndex === this.count) {
+          this.considerAll();
+        }
+      }
+      return result;
+    }
+  }
+  function buildModeRegex(mode) {
+    const mm = new ResumableMultiRegex();
+    mode.contains.forEach((term) => mm.addRule(term.begin, { rule: term, type: "begin" }));
+    if (mode.terminatorEnd) {
+      mm.addRule(mode.terminatorEnd, { type: "end" });
+    }
+    if (mode.illegal) {
+      mm.addRule(mode.illegal, { type: "illegal" });
+    }
+    return mm;
+  }
+  function compileMode(mode, parent) {
+    const cmode = (
+      /** @type CompiledMode */
+      mode
+    );
+    if (mode.isCompiled) return cmode;
+    [
+      scopeClassName,
+      // do this early so compiler extensions generally don't have to worry about
+      // the distinction between match/begin
+      compileMatch,
+      MultiClass,
+      beforeMatchExt
+    ].forEach((ext) => ext(mode, parent));
+    language.compilerExtensions.forEach((ext) => ext(mode, parent));
+    mode.__beforeBegin = null;
+    [
+      beginKeywords,
+      // do this later so compiler extensions that come earlier have access to the
+      // raw array if they wanted to perhaps manipulate it, etc.
+      compileIllegal,
+      // default to 1 relevance if not specified
+      compileRelevance
+    ].forEach((ext) => ext(mode, parent));
+    mode.isCompiled = true;
+    let keywordPattern = null;
+    if (typeof mode.keywords === "object" && mode.keywords.$pattern) {
+      mode.keywords = Object.assign({}, mode.keywords);
+      keywordPattern = mode.keywords.$pattern;
+      delete mode.keywords.$pattern;
+    }
+    keywordPattern = keywordPattern || /\w+/;
+    if (mode.keywords) {
+      mode.keywords = compileKeywords(mode.keywords, language.case_insensitive);
+    }
+    cmode.keywordPatternRe = langRe(keywordPattern, true);
+    if (parent) {
+      if (!mode.begin) mode.begin = /\B|\b/;
+      cmode.beginRe = langRe(cmode.begin);
+      if (!mode.end && !mode.endsWithParent) mode.end = /\B|\b/;
+      if (mode.end) cmode.endRe = langRe(cmode.end);
+      cmode.terminatorEnd = source(cmode.end) || "";
+      if (mode.endsWithParent && parent.terminatorEnd) {
+        cmode.terminatorEnd += (mode.end ? "|" : "") + parent.terminatorEnd;
+      }
+    }
+    if (mode.illegal) cmode.illegalRe = langRe(
+      /** @type {RegExp | string} */
+      mode.illegal
+    );
+    if (!mode.contains) mode.contains = [];
+    mode.contains = [].concat(...mode.contains.map(function(c) {
+      return expandOrCloneMode(c === "self" ? mode : c);
+    }));
+    mode.contains.forEach(function(c) {
+      compileMode(
+        /** @type Mode */
+        c,
+        cmode
+      );
+    });
+    if (mode.starts) {
+      compileMode(mode.starts, parent);
+    }
+    cmode.matcher = buildModeRegex(cmode);
+    return cmode;
+  }
+  if (!language.compilerExtensions) language.compilerExtensions = [];
+  if (language.contains && language.contains.includes("self")) {
+    throw new Error("ERR: contains `self` is not supported at the top-level of a language.  See documentation.");
+  }
+  language.classNameAliases = inherit$1(language.classNameAliases || {});
+  return compileMode(
+    /** @type Mode */
+    language
+  );
+}
+function dependencyOnParent(mode) {
+  if (!mode) return false;
+  return mode.endsWithParent || dependencyOnParent(mode.starts);
+}
+function expandOrCloneMode(mode) {
+  if (mode.variants && !mode.cachedVariants) {
+    mode.cachedVariants = mode.variants.map(function(variant) {
+      return inherit$1(mode, { variants: null }, variant);
+    });
+  }
+  if (mode.cachedVariants) {
+    return mode.cachedVariants;
+  }
+  if (dependencyOnParent(mode)) {
+    return inherit$1(mode, { starts: mode.starts ? inherit$1(mode.starts) : null });
+  }
+  if (Object.isFrozen(mode)) {
+    return inherit$1(mode);
+  }
+  return mode;
+}
+var version = "11.10.0";
+class HTMLInjectionError extends Error {
+  constructor(reason, html) {
+    super(reason);
+    this.name = "HTMLInjectionError";
+    this.html = html;
+  }
+}
+const escape = escapeHTML;
+const inherit = inherit$1;
+const NO_MATCH = Symbol("nomatch");
+const MAX_KEYWORD_HITS = 7;
+const HLJS = function(hljs) {
+  const languages = /* @__PURE__ */ Object.create(null);
+  const aliases = /* @__PURE__ */ Object.create(null);
+  const plugins = [];
+  let SAFE_MODE = true;
+  const LANGUAGE_NOT_FOUND = "Could not find the language '{}', did you forget to load/include a language module?";
+  const PLAINTEXT_LANGUAGE = { disableAutodetect: true, name: "Plain text", contains: [] };
+  let options = {
+    ignoreUnescapedHTML: false,
+    throwUnescapedHTML: false,
+    noHighlightRe: /^(no-?highlight)$/i,
+    languageDetectRe: /\blang(?:uage)?-([\w-]+)\b/i,
+    classPrefix: "hljs-",
+    cssSelector: "pre code",
+    languages: null,
+    // beta configuration options, subject to change, welcome to discuss
+    // https://github.com/highlightjs/highlight.js/issues/1086
+    __emitter: TokenTreeEmitter
+  };
+  function shouldNotHighlight(languageName) {
+    return options.noHighlightRe.test(languageName);
+  }
+  function blockLanguage(block) {
+    let classes = block.className + " ";
+    classes += block.parentNode ? block.parentNode.className : "";
+    const match = options.languageDetectRe.exec(classes);
+    if (match) {
+      const language = getLanguage(match[1]);
+      if (!language) {
+        warn(LANGUAGE_NOT_FOUND.replace("{}", match[1]));
+        warn("Falling back to no-highlight mode for this block.", block);
+      }
+      return language ? match[1] : "no-highlight";
+    }
+    return classes.split(/\s+/).find((_class) => shouldNotHighlight(_class) || getLanguage(_class));
+  }
+  function highlight2(codeOrLanguageName, optionsOrCode, ignoreIllegals) {
+    let code = "";
+    let languageName = "";
+    if (typeof optionsOrCode === "object") {
+      code = codeOrLanguageName;
+      ignoreIllegals = optionsOrCode.ignoreIllegals;
+      languageName = optionsOrCode.language;
+    } else {
+      deprecated("10.7.0", "highlight(lang, code, ...args) has been deprecated.");
+      deprecated("10.7.0", "Please use highlight(code, options) instead.\nhttps://github.com/highlightjs/highlight.js/issues/2277");
+      languageName = codeOrLanguageName;
+      code = optionsOrCode;
+    }
+    if (ignoreIllegals === void 0) {
+      ignoreIllegals = true;
+    }
+    const context = {
+      code,
+      language: languageName
+    };
+    fire("before:highlight", context);
+    const result = context.result ? context.result : _highlight(context.language, context.code, ignoreIllegals);
+    result.code = context.code;
+    fire("after:highlight", result);
+    return result;
+  }
+  function _highlight(languageName, codeToHighlight, ignoreIllegals, continuation) {
+    const keywordHits = /* @__PURE__ */ Object.create(null);
+    function keywordData(mode, matchText) {
+      return mode.keywords[matchText];
+    }
+    function processKeywords() {
+      if (!top.keywords) {
+        emitter.addText(modeBuffer);
+        return;
+      }
+      let lastIndex = 0;
+      top.keywordPatternRe.lastIndex = 0;
+      let match = top.keywordPatternRe.exec(modeBuffer);
+      let buf = "";
+      while (match) {
+        buf += modeBuffer.substring(lastIndex, match.index);
+        const word = language.case_insensitive ? match[0].toLowerCase() : match[0];
+        const data = keywordData(top, word);
+        if (data) {
+          const [kind, keywordRelevance] = data;
+          emitter.addText(buf);
+          buf = "";
+          keywordHits[word] = (keywordHits[word] || 0) + 1;
+          if (keywordHits[word] <= MAX_KEYWORD_HITS) relevance += keywordRelevance;
+          if (kind.startsWith("_")) {
+            buf += match[0];
+          } else {
+            const cssClass = language.classNameAliases[kind] || kind;
+            emitKeyword(match[0], cssClass);
+          }
+        } else {
+          buf += match[0];
+        }
+        lastIndex = top.keywordPatternRe.lastIndex;
+        match = top.keywordPatternRe.exec(modeBuffer);
+      }
+      buf += modeBuffer.substring(lastIndex);
+      emitter.addText(buf);
+    }
+    function processSubLanguage() {
+      if (modeBuffer === "") return;
+      let result2 = null;
+      if (typeof top.subLanguage === "string") {
+        if (!languages[top.subLanguage]) {
+          emitter.addText(modeBuffer);
+          return;
+        }
+        result2 = _highlight(top.subLanguage, modeBuffer, true, continuations[top.subLanguage]);
+        continuations[top.subLanguage] = /** @type {CompiledMode} */
+        result2._top;
+      } else {
+        result2 = highlightAuto(modeBuffer, top.subLanguage.length ? top.subLanguage : null);
+      }
+      if (top.relevance > 0) {
+        relevance += result2.relevance;
+      }
+      emitter.__addSublanguage(result2._emitter, result2.language);
+    }
+    function processBuffer() {
+      if (top.subLanguage != null) {
+        processSubLanguage();
+      } else {
+        processKeywords();
+      }
+      modeBuffer = "";
+    }
+    function emitKeyword(keyword, scope) {
+      if (keyword === "") return;
+      emitter.startScope(scope);
+      emitter.addText(keyword);
+      emitter.endScope();
+    }
+    function emitMultiClass(scope, match) {
+      let i = 1;
+      const max = match.length - 1;
+      while (i <= max) {
+        if (!scope._emit[i]) {
+          i++;
+          continue;
+        }
+        const klass = language.classNameAliases[scope[i]] || scope[i];
+        const text = match[i];
+        if (klass) {
+          emitKeyword(text, klass);
+        } else {
+          modeBuffer = text;
+          processKeywords();
+          modeBuffer = "";
+        }
+        i++;
+      }
+    }
+    function startNewMode(mode, match) {
+      if (mode.scope && typeof mode.scope === "string") {
+        emitter.openNode(language.classNameAliases[mode.scope] || mode.scope);
+      }
+      if (mode.beginScope) {
+        if (mode.beginScope._wrap) {
+          emitKeyword(modeBuffer, language.classNameAliases[mode.beginScope._wrap] || mode.beginScope._wrap);
+          modeBuffer = "";
+        } else if (mode.beginScope._multi) {
+          emitMultiClass(mode.beginScope, match);
+          modeBuffer = "";
+        }
+      }
+      top = Object.create(mode, { parent: { value: top } });
+      return top;
+    }
+    function endOfMode(mode, match, matchPlusRemainder) {
+      let matched = startsWith(mode.endRe, matchPlusRemainder);
+      if (matched) {
+        if (mode["on:end"]) {
+          const resp = new Response(mode);
+          mode["on:end"](match, resp);
+          if (resp.isMatchIgnored) matched = false;
+        }
+        if (matched) {
+          while (mode.endsParent && mode.parent) {
+            mode = mode.parent;
+          }
+          return mode;
+        }
+      }
+      if (mode.endsWithParent) {
+        return endOfMode(mode.parent, match, matchPlusRemainder);
+      }
+    }
+    function doIgnore(lexeme) {
+      if (top.matcher.regexIndex === 0) {
+        modeBuffer += lexeme[0];
+        return 1;
+      } else {
+        resumeScanAtSamePosition = true;
+        return 0;
+      }
+    }
+    function doBeginMatch(match) {
+      const lexeme = match[0];
+      const newMode = match.rule;
+      const resp = new Response(newMode);
+      const beforeCallbacks = [newMode.__beforeBegin, newMode["on:begin"]];
+      for (const cb of beforeCallbacks) {
+        if (!cb) continue;
+        cb(match, resp);
+        if (resp.isMatchIgnored) return doIgnore(lexeme);
+      }
+      if (newMode.skip) {
+        modeBuffer += lexeme;
+      } else {
+        if (newMode.excludeBegin) {
+          modeBuffer += lexeme;
+        }
+        processBuffer();
+        if (!newMode.returnBegin && !newMode.excludeBegin) {
+          modeBuffer = lexeme;
+        }
+      }
+      startNewMode(newMode, match);
+      return newMode.returnBegin ? 0 : lexeme.length;
+    }
+    function doEndMatch(match) {
+      const lexeme = match[0];
+      const matchPlusRemainder = codeToHighlight.substring(match.index);
+      const endMode = endOfMode(top, match, matchPlusRemainder);
+      if (!endMode) {
+        return NO_MATCH;
+      }
+      const origin = top;
+      if (top.endScope && top.endScope._wrap) {
+        processBuffer();
+        emitKeyword(lexeme, top.endScope._wrap);
+      } else if (top.endScope && top.endScope._multi) {
+        processBuffer();
+        emitMultiClass(top.endScope, match);
+      } else if (origin.skip) {
+        modeBuffer += lexeme;
+      } else {
+        if (!(origin.returnEnd || origin.excludeEnd)) {
+          modeBuffer += lexeme;
+        }
+        processBuffer();
+        if (origin.excludeEnd) {
+          modeBuffer = lexeme;
+        }
+      }
+      do {
+        if (top.scope) {
+          emitter.closeNode();
+        }
+        if (!top.skip && !top.subLanguage) {
+          relevance += top.relevance;
+        }
+        top = top.parent;
+      } while (top !== endMode.parent);
+      if (endMode.starts) {
+        startNewMode(endMode.starts, match);
+      }
+      return origin.returnEnd ? 0 : lexeme.length;
+    }
+    function processContinuations() {
+      const list = [];
+      for (let current = top; current !== language; current = current.parent) {
+        if (current.scope) {
+          list.unshift(current.scope);
+        }
+      }
+      list.forEach((item) => emitter.openNode(item));
+    }
+    let lastMatch = {};
+    function processLexeme(textBeforeMatch, match) {
+      const lexeme = match && match[0];
+      modeBuffer += textBeforeMatch;
+      if (lexeme == null) {
+        processBuffer();
+        return 0;
+      }
+      if (lastMatch.type === "begin" && match.type === "end" && lastMatch.index === match.index && lexeme === "") {
+        modeBuffer += codeToHighlight.slice(match.index, match.index + 1);
+        if (!SAFE_MODE) {
+          const err = new Error(`0 width match regex (${languageName})`);
+          err.languageName = languageName;
+          err.badRule = lastMatch.rule;
+          throw err;
+        }
+        return 1;
+      }
+      lastMatch = match;
+      if (match.type === "begin") {
+        return doBeginMatch(match);
+      } else if (match.type === "illegal" && !ignoreIllegals) {
+        const err = new Error('Illegal lexeme "' + lexeme + '" for mode "' + (top.scope || "<unnamed>") + '"');
+        err.mode = top;
+        throw err;
+      } else if (match.type === "end") {
+        const processed = doEndMatch(match);
+        if (processed !== NO_MATCH) {
+          return processed;
+        }
+      }
+      if (match.type === "illegal" && lexeme === "") {
+        return 1;
+      }
+      if (iterations > 1e5 && iterations > match.index * 3) {
+        const err = new Error("potential infinite loop, way more iterations than matches");
+        throw err;
+      }
+      modeBuffer += lexeme;
+      return lexeme.length;
+    }
+    const language = getLanguage(languageName);
+    if (!language) {
+      error(LANGUAGE_NOT_FOUND.replace("{}", languageName));
+      throw new Error('Unknown language: "' + languageName + '"');
+    }
+    const md = compileLanguage(language);
+    let result = "";
+    let top = continuation || md;
+    const continuations = {};
+    const emitter = new options.__emitter(options);
+    processContinuations();
+    let modeBuffer = "";
+    let relevance = 0;
+    let index = 0;
+    let iterations = 0;
+    let resumeScanAtSamePosition = false;
+    try {
+      if (!language.__emitTokens) {
+        top.matcher.considerAll();
+        for (; ; ) {
+          iterations++;
+          if (resumeScanAtSamePosition) {
+            resumeScanAtSamePosition = false;
+          } else {
+            top.matcher.considerAll();
+          }
+          top.matcher.lastIndex = index;
+          const match = top.matcher.exec(codeToHighlight);
+          if (!match) break;
+          const beforeMatch = codeToHighlight.substring(index, match.index);
+          const processedCount = processLexeme(beforeMatch, match);
+          index = match.index + processedCount;
+        }
+        processLexeme(codeToHighlight.substring(index));
+      } else {
+        language.__emitTokens(codeToHighlight, emitter);
+      }
+      emitter.finalize();
+      result = emitter.toHTML();
+      return {
+        language: languageName,
+        value: result,
+        relevance,
+        illegal: false,
+        _emitter: emitter,
+        _top: top
+      };
+    } catch (err) {
+      if (err.message && err.message.includes("Illegal")) {
+        return {
+          language: languageName,
+          value: escape(codeToHighlight),
+          illegal: true,
+          relevance: 0,
+          _illegalBy: {
+            message: err.message,
+            index,
+            context: codeToHighlight.slice(index - 100, index + 100),
+            mode: err.mode,
+            resultSoFar: result
+          },
+          _emitter: emitter
+        };
+      } else if (SAFE_MODE) {
+        return {
+          language: languageName,
+          value: escape(codeToHighlight),
+          illegal: false,
+          relevance: 0,
+          errorRaised: err,
+          _emitter: emitter,
+          _top: top
+        };
+      } else {
+        throw err;
+      }
+    }
+  }
+  function justTextHighlightResult(code) {
+    const result = {
+      value: escape(code),
+      illegal: false,
+      relevance: 0,
+      _top: PLAINTEXT_LANGUAGE,
+      _emitter: new options.__emitter(options)
+    };
+    result._emitter.addText(code);
+    return result;
+  }
+  function highlightAuto(code, languageSubset) {
+    languageSubset = languageSubset || options.languages || Object.keys(languages);
+    const plaintext = justTextHighlightResult(code);
+    const results = languageSubset.filter(getLanguage).filter(autoDetection).map(
+      (name) => _highlight(name, code, false)
+    );
+    results.unshift(plaintext);
+    const sorted = results.sort((a, b) => {
+      if (a.relevance !== b.relevance) return b.relevance - a.relevance;
+      if (a.language && b.language) {
+        if (getLanguage(a.language).supersetOf === b.language) {
+          return 1;
+        } else if (getLanguage(b.language).supersetOf === a.language) {
+          return -1;
+        }
+      }
+      return 0;
+    });
+    const [best, secondBest] = sorted;
+    const result = best;
+    result.secondBest = secondBest;
+    return result;
+  }
+  function updateClassName(element, currentLang, resultLang) {
+    const language = currentLang && aliases[currentLang] || resultLang;
+    element.classList.add("hljs");
+    element.classList.add(`language-${language}`);
+  }
+  function highlightElement(element) {
+    let node = null;
+    const language = blockLanguage(element);
+    if (shouldNotHighlight(language)) return;
+    fire(
+      "before:highlightElement",
+      { el: element, language }
+    );
+    if (element.dataset.highlighted) {
+      console.log("Element previously highlighted. To highlight again, first unset `dataset.highlighted`.", element);
+      return;
+    }
+    if (element.children.length > 0) {
+      if (!options.ignoreUnescapedHTML) {
+        console.warn("One of your code blocks includes unescaped HTML. This is a potentially serious security risk.");
+        console.warn("https://github.com/highlightjs/highlight.js/wiki/security");
+        console.warn("The element with unescaped HTML:");
+        console.warn(element);
+      }
+      if (options.throwUnescapedHTML) {
+        const err = new HTMLInjectionError(
+          "One of your code blocks includes unescaped HTML.",
+          element.innerHTML
+        );
+        throw err;
+      }
+    }
+    node = element;
+    const text = node.textContent;
+    const result = language ? highlight2(text, { language, ignoreIllegals: true }) : highlightAuto(text);
+    element.innerHTML = result.value;
+    element.dataset.highlighted = "yes";
+    updateClassName(element, language, result.language);
+    element.result = {
+      language: result.language,
+      // TODO: remove with version 11.0
+      re: result.relevance,
+      relevance: result.relevance
+    };
+    if (result.secondBest) {
+      element.secondBest = {
+        language: result.secondBest.language,
+        relevance: result.secondBest.relevance
+      };
+    }
+    fire("after:highlightElement", { el: element, result, text });
+  }
+  function configure(userOptions) {
+    options = inherit(options, userOptions);
+  }
+  const initHighlighting = () => {
+    highlightAll();
+    deprecated("10.6.0", "initHighlighting() deprecated.  Use highlightAll() now.");
+  };
+  function initHighlightingOnLoad() {
+    highlightAll();
+    deprecated("10.6.0", "initHighlightingOnLoad() deprecated.  Use highlightAll() now.");
+  }
+  function highlightAll() {
+    if ((void 0).readyState === "loading") {
+      return;
+    }
+    const blocks = (void 0).querySelectorAll(options.cssSelector);
+    blocks.forEach(highlightElement);
+  }
+  function registerLanguage(languageName, languageDefinition) {
+    let lang = null;
+    try {
+      lang = languageDefinition(hljs);
+    } catch (error$1) {
+      error("Language definition for '{}' could not be registered.".replace("{}", languageName));
+      if (!SAFE_MODE) {
+        throw error$1;
+      } else {
+        error(error$1);
+      }
+      lang = PLAINTEXT_LANGUAGE;
+    }
+    if (!lang.name) lang.name = languageName;
+    languages[languageName] = lang;
+    lang.rawDefinition = languageDefinition.bind(null, hljs);
+    if (lang.aliases) {
+      registerAliases(lang.aliases, { languageName });
+    }
+  }
+  function unregisterLanguage(languageName) {
+    delete languages[languageName];
+    for (const alias of Object.keys(aliases)) {
+      if (aliases[alias] === languageName) {
+        delete aliases[alias];
+      }
+    }
+  }
+  function listLanguages() {
+    return Object.keys(languages);
+  }
+  function getLanguage(name) {
+    name = (name || "").toLowerCase();
+    return languages[name] || languages[aliases[name]];
+  }
+  function registerAliases(aliasList, { languageName }) {
+    if (typeof aliasList === "string") {
+      aliasList = [aliasList];
+    }
+    aliasList.forEach((alias) => {
+      aliases[alias.toLowerCase()] = languageName;
+    });
+  }
+  function autoDetection(name) {
+    const lang = getLanguage(name);
+    return lang && !lang.disableAutodetect;
+  }
+  function upgradePluginAPI(plugin) {
+    if (plugin["before:highlightBlock"] && !plugin["before:highlightElement"]) {
+      plugin["before:highlightElement"] = (data) => {
+        plugin["before:highlightBlock"](
+          Object.assign({ block: data.el }, data)
+        );
+      };
+    }
+    if (plugin["after:highlightBlock"] && !plugin["after:highlightElement"]) {
+      plugin["after:highlightElement"] = (data) => {
+        plugin["after:highlightBlock"](
+          Object.assign({ block: data.el }, data)
+        );
+      };
+    }
+  }
+  function addPlugin(plugin) {
+    upgradePluginAPI(plugin);
+    plugins.push(plugin);
+  }
+  function removePlugin(plugin) {
+    const index = plugins.indexOf(plugin);
+    if (index !== -1) {
+      plugins.splice(index, 1);
+    }
+  }
+  function fire(event, args) {
+    const cb = event;
+    plugins.forEach(function(plugin) {
+      if (plugin[cb]) {
+        plugin[cb](args);
+      }
+    });
+  }
+  function deprecateHighlightBlock(el) {
+    deprecated("10.7.0", "highlightBlock will be removed entirely in v12.0");
+    deprecated("10.7.0", "Please use highlightElement now.");
+    return highlightElement(el);
+  }
+  Object.assign(hljs, {
+    highlight: highlight2,
+    highlightAuto,
+    highlightAll,
+    highlightElement,
+    // TODO: Remove with v12 API
+    highlightBlock: deprecateHighlightBlock,
+    configure,
+    initHighlighting,
+    initHighlightingOnLoad,
+    registerLanguage,
+    unregisterLanguage,
+    listLanguages,
+    getLanguage,
+    registerAliases,
+    autoDetection,
+    inherit,
+    addPlugin,
+    removePlugin
+  });
+  hljs.debugMode = function() {
+    SAFE_MODE = false;
+  };
+  hljs.safeMode = function() {
+    SAFE_MODE = true;
+  };
+  hljs.versionString = version;
+  hljs.regex = {
+    concat,
+    lookahead,
+    either,
+    optional,
+    anyNumberOfTimes
+  };
+  for (const key in MODES) {
+    if (typeof MODES[key] === "object") {
+      deepFreeze(MODES[key]);
+    }
+  }
+  Object.assign(hljs, MODES);
+  return hljs;
+};
+const highlight = HLJS({});
+highlight.newInstance = () => HLJS({});
+var core = highlight;
+highlight.HighlightJS = highlight;
+highlight.default = highlight;
+var HighlightJS = /* @__PURE__ */ getDefaultExportFromCjs(core);
+function parseNodes(nodes, className = []) {
+  return nodes.map((node) => {
+    const classes = [...className, ...node.properties ? node.properties.className : []];
+    if (node.children) {
+      return parseNodes(node.children, classes);
+    }
+    return {
+      text: node.value,
+      classes
+    };
+  }).flat();
+}
+function getHighlightNodes(result) {
+  return result.value || result.children || [];
+}
+function registered(aliasOrLanguage) {
+  return Boolean(HighlightJS.getLanguage(aliasOrLanguage));
+}
+function getDecorations({ doc, name, lowlight, defaultLanguage }) {
+  const decorations = [];
+  findChildren(doc, (node) => node.type.name === name).forEach((block) => {
+    var _a;
+    let from = block.pos + 1;
+    const language = block.node.attrs.language || defaultLanguage;
+    const languages = lowlight.listLanguages();
+    const nodes = language && (languages.includes(language) || registered(language) || ((_a = lowlight.registered) === null || _a === void 0 ? void 0 : _a.call(lowlight, language))) ? getHighlightNodes(lowlight.highlight(language, block.node.textContent)) : getHighlightNodes(lowlight.highlightAuto(block.node.textContent));
+    parseNodes(nodes).forEach((node) => {
+      const to = from + node.text.length;
+      if (node.classes.length) {
+        const decoration = Decoration.inline(from, to, {
+          class: node.classes.join(" ")
+        });
+        decorations.push(decoration);
+      }
+      from = to;
+    });
+  });
+  return DecorationSet.create(doc, decorations);
+}
+function isFunction(param) {
+  return typeof param === "function";
+}
+function LowlightPlugin({ name, lowlight, defaultLanguage }) {
+  if (!["highlight", "highlightAuto", "listLanguages"].every((api) => isFunction(lowlight[api]))) {
+    throw Error("You should provide an instance of lowlight to use the code-block-lowlight extension");
+  }
+  const lowlightPlugin = new Plugin({
+    key: new PluginKey("lowlight"),
+    state: {
+      init: (_, { doc }) => getDecorations({
+        doc,
+        name,
+        lowlight,
+        defaultLanguage
+      }),
+      apply: (transaction, decorationSet, oldState, newState) => {
+        const oldNodeName = oldState.selection.$head.parent.type.name;
+        const newNodeName = newState.selection.$head.parent.type.name;
+        const oldNodes = findChildren(oldState.doc, (node) => node.type.name === name);
+        const newNodes = findChildren(newState.doc, (node) => node.type.name === name);
+        if (transaction.docChanged && ([oldNodeName, newNodeName].includes(name) || newNodes.length !== oldNodes.length || transaction.steps.some((step) => {
+          return (
+            // @ts-ignore
+            step.from !== void 0 && step.to !== void 0 && oldNodes.some((node) => {
+              return (
+                // @ts-ignore
+                node.pos >= step.from && node.pos + node.node.nodeSize <= step.to
+              );
+            })
+          );
+        }))) {
+          return getDecorations({
+            doc: transaction.doc,
+            name,
+            lowlight,
+            defaultLanguage
+          });
+        }
+        return decorationSet.map(transaction.mapping, transaction.doc);
+      }
+    },
+    props: {
+      decorations(state) {
+        return lowlightPlugin.getState(state);
+      }
+    }
+  });
+  return lowlightPlugin;
+}
+CodeBlock.extend({
+  addOptions() {
+    var _a;
+    return {
+      ...(_a = this.parent) === null || _a === void 0 ? void 0 : _a.call(this),
+      lowlight: {},
+      languageClassPrefix: "language-",
+      exitOnTripleEnter: true,
+      exitOnArrowDown: true,
+      defaultLanguage: null,
+      HTMLAttributes: {}
+    };
+  },
+  addProseMirrorPlugins() {
+    var _a;
+    return [
+      ...((_a = this.parent) === null || _a === void 0 ? void 0 : _a.call(this)) || [],
+      LowlightPlugin({
+        name: this.name,
+        lowlight: this.options.lowlight,
+        defaultLanguage: this.options.defaultLanguage
+      })
+    ];
+  }
+});
+const mergeNestedSpanStyles = (element) => {
+  if (!element.children.length) {
+    return;
+  }
+  const childSpans = element.querySelectorAll("span");
+  if (!childSpans) {
+    return;
+  }
+  childSpans.forEach((childSpan) => {
+    var _a, _b;
+    const childStyle = childSpan.getAttribute("style");
+    const closestParentSpanStyleOfChild = (_b = (_a = childSpan.parentElement) === null || _a === void 0 ? void 0 : _a.closest("span")) === null || _b === void 0 ? void 0 : _b.getAttribute("style");
+    childSpan.setAttribute("style", `${closestParentSpanStyleOfChild};${childStyle}`);
+  });
+};
+Mark.create({
+  name: "textStyle",
+  priority: 101,
+  addOptions() {
+    return {
+      HTMLAttributes: {},
+      mergeNestedSpanStyles: false
+    };
+  },
+  parseHTML() {
+    return [
+      {
+        tag: "span",
+        getAttrs: (element) => {
+          const hasStyles = element.hasAttribute("style");
+          if (!hasStyles) {
+            return false;
+          }
+          if (this.options.mergeNestedSpanStyles) {
+            mergeNestedSpanStyles(element);
+          }
+          return {};
+        }
+      }
+    ];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ["span", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
+  },
+  addCommands() {
+    return {
+      removeEmptyTextStyle: () => ({ tr }) => {
+        const { selection } = tr;
+        tr.doc.nodesBetween(selection.from, selection.to, (node, pos) => {
+          if (node.isTextblock) {
+            return true;
+          }
+          if (!node.marks.filter((mark) => mark.type === this.type).some((mark) => Object.values(mark.attrs).some((value) => !!value))) {
+            tr.removeMark(pos, pos + node.nodeSize, this.type);
+          }
+        });
+        return true;
+      }
+    };
+  }
+});
+const _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: "TipTapKbEditor.client",
+  __ssrInlineRender: true,
+  props: { path: String, content: String },
+  setup(__props) {
+    const props = __props;
+    const api = useKbApi();
+    const toast = useToastStore();
+    const docStore = useDocStore();
+    const saving = ref(false);
+    const html = ref("");
+    const editor = ref(null);
+    ref(true);
+    const turndown = new Turndown();
+    const imagePicker = ref(null);
+    const currentMarkdown = ref("");
+    const saveMessage = ref("");
+    ref("");
+    const showColorPalette = ref(false);
+    const showHighlightPalette = ref(false);
+    const colorPreset = ["#000000", "#e11d48", "#ef4444", "#f59e0b", "#10b981", "#06b6d4", "#3b82f6", "#8b5cf6", "#ec4899"];
+    const highlightPreset = ["#fff59d", "#fde68a", "#fca5a5", "#bbf7d0", "#bae6fd", "#ddd6fe"];
+    async function save() {
+      try {
+        saving.value = true;
+        const markdown = turndown.turndown(html.value || "");
+        try {
+          docStore.update(markdown);
+        } catch {
+        }
+        const res = await docStore.save(saveMessage.value || "Edit via TipTap");
+        if (res == null ? void 0 : res.conflict) {
+          toast.push("warn", "\uBC84\uC804 \uCDA9\uB3CC \uBC1C\uC0DD: \uBCD1\uD569 \uD544\uC694 (Markdown \uD0ED\uC5D0\uC11C \uCC98\uB9AC)");
+        }
+        try {
+          docStore.update(markdown);
+        } catch {
+        }
+        toast.push("success", "\uC800\uC7A5 \uC644\uB8CC");
+        try {
+          (void 0).dispatchEvent(new CustomEvent("kb:mode", { detail: { to: "view" } }));
+        } catch {
+        }
+      } catch (e) {
+        toast.push("error", "\uC800\uC7A5 \uC2E4\uD328");
+      } finally {
+        saving.value = false;
+      }
+    }
+    function cancel() {
+      try {
+        (void 0).dispatchEvent(new CustomEvent("kb:mode", { detail: { to: "view" } }));
+      } catch {
+      }
+    }
+    async function deleteCurrent() {
+      try {
+        if (!props.path) {
+          return;
+        }
+        const ok = (void 0).confirm("\uC774 \uBB38\uC11C\uB97C \uD734\uC9C0\uD1B5\uC73C\uB85C \uC774\uB3D9\uD560\uAE4C\uC694?");
+        if (!ok) return;
+        const p = props.path;
+        const ts = (/* @__PURE__ */ new Date()).toISOString().replace(/[-:T.Z]/g, "").slice(0, 14);
+        const trashPath = `.trash/${ts}/${p}`;
+        await fetch(`${resolveApiBase()}/api/v1/knowledge-base/move`, { method: "POST", headers: { "Content-Type": "application/json", "X-API-Key": "my_mcp_eagle_tiger" }, body: JSON.stringify({ path: p, new_path: trashPath }) });
+        try {
+          (void 0).dispatchEvent(new CustomEvent("kb:deleted", { detail: { path: p, trashPath } }));
+        } catch {
+        }
+      } catch {
+        alert("\uC0AD\uC81C \uC2E4\uD328");
+      }
+    }
+    function cmd(name, args = {}) {
+      var _a, _b;
+      try {
+        (_b = (_a = editor.value) == null ? void 0 : _a.chain().focus()) == null ? void 0 : _b[name](args).run();
+      } catch {
+      }
+    }
+    function align(dir) {
+      var _a;
+      try {
+        const m = (_a = editor.value) == null ? void 0 : _a.chain().focus();
+        if (dir === "left") m.setTextAlign("left").run();
+        else if (dir === "center") m.setTextAlign("center").run();
+        else if (dir === "right") m.setTextAlign("right").run();
+        else m.setTextAlign("justify").run();
+      } catch {
+      }
+    }
+    function toggleTaskChecked() {
+      var _a, _b;
+      try {
+        const api2 = editor.value;
+        if (!api2) return;
+        const state = api2.state;
+        const { $from } = state.selection;
+        const node = $from == null ? void 0 : $from.node($from.depth);
+        if (node && ((_a = node.type) == null ? void 0 : _a.name) === "taskItem") {
+          const checked = !!((_b = node == null ? void 0 : node.attrs) == null ? void 0 : _b.checked);
+          api2.chain().focus().updateAttributes("taskItem", { checked: !checked }).run();
+        } else {
+          api2.chain().focus().toggleTaskList().run();
+        }
+      } catch {
+      }
+    }
+    function insertTable() {
+      var _a;
+      try {
+        (_a = editor.value) == null ? void 0 : _a.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+      } catch {
+      }
+    }
+    function insertLink() {
+      var _a;
+      try {
+        const url = (void 0).prompt("\uB9C1\uD06C URL \uC785\uB825 (\uBE48\uCE78=\uD574\uC81C):");
+        if (url === null) return;
+        if (url && !/^https?:\/\//i.test(url)) {
+          alert("http(s):// \uB85C \uC2DC\uC791\uD558\uB294 \uC720\uD6A8\uD55C URL\uC744 \uC785\uB825\uD558\uC138\uC694.");
+          return;
+        }
+        const chain = (_a = editor.value) == null ? void 0 : _a.chain().focus();
+        if (!url) {
+          chain.extendMarkRange("link").unsetLink().run();
+          return;
+        }
+        chain.extendMarkRange("link").setLink({ href: url }).run();
+      } catch {
+      }
+    }
+    function unlink() {
+      var _a;
+      try {
+        (_a = editor.value) == null ? void 0 : _a.chain().focus().unsetLink().run();
+      } catch {
+      }
+    }
+    function tableCmd(cmd2) {
+      var _a, _b;
+      try {
+        (_b = (_a = editor.value) == null ? void 0 : _a.chain().focus()) == null ? void 0 : _b[cmd2]().run();
+      } catch {
+      }
+    }
+    function clearFormatting() {
+      var _a;
+      try {
+        (_a = editor.value) == null ? void 0 : _a.chain().focus().unsetAllMarks().clearNodes().run();
+      } catch {
+      }
+    }
+    function indentList() {
+      var _a;
+      try {
+        (_a = editor.value) == null ? void 0 : _a.chain().focus().sinkListItem("listItem").run();
+      } catch {
+      }
+    }
+    function outdentList() {
+      var _a;
+      try {
+        (_a = editor.value) == null ? void 0 : _a.chain().focus().liftListItem("listItem").run();
+      } catch {
+      }
+    }
+    function clearColor() {
+      var _a;
+      try {
+        (_a = editor.value) == null ? void 0 : _a.chain().focus().unsetColor().run();
+      } catch {
+      }
+    }
+    function setCodeLang() {
+      var _a;
+      try {
+        const lang = (void 0).prompt("\uCF54\uB4DC \uBE14\uB85D \uC5B8\uC5B4(\uC608: javascript, typescript, python, bash, json, yaml, markdown):");
+        if (!lang) return;
+        (_a = editor.value) == null ? void 0 : _a.chain().focus().updateAttributes("codeBlock", { language: lang }).run();
+      } catch {
+      }
+    }
+    function toggleColorPalette() {
+      showColorPalette.value = !showColorPalette.value;
+    }
+    function toggleHighlightPalette() {
+      showHighlightPalette.value = !showHighlightPalette.value;
+    }
+    function setColorPreset(c) {
+      var _a;
+      try {
+        (_a = editor.value) == null ? void 0 : _a.chain().focus().setColor(c).run();
+        showColorPalette.value = false;
+      } catch {
+      }
+    }
+    function setHighlightPreset(c) {
+      var _a;
+      try {
+        (_a = editor.value) == null ? void 0 : _a.chain().focus().setHighlight({ color: c }).run();
+        showHighlightPalette.value = false;
+      } catch {
+      }
+    }
+    async function onPickImage(e) {
+      var _a, _b;
+      const input = e == null ? void 0 : e.target;
+      const file = (_a = input == null ? void 0 : input.files) == null ? void 0 : _a[0];
+      if (!file) return;
+      try {
+        const { path } = await api.uploadAsset(file, "assets");
+        (_b = editor.value) == null ? void 0 : _b.chain().focus().setImage({ src: path }).run();
+      } catch {
+        toast.push("error", "\uC774\uBBF8\uC9C0 \uC5C5\uB85C\uB4DC \uC2E4\uD328");
+      }
+      if (imagePicker.value) imagePicker.value.value = "";
+    }
+    async function openAiMenu() {
+      var _a;
+      const choice = (void 0).prompt("AI \uC791\uC5C5 \uC120\uD0DD: table / mermaid / summary / rewrite");
+      if (!choice) return;
+      const kindRaw = choice.trim().toLowerCase();
+      const kind = ["table", "mermaid", "summary"].includes(kindRaw) ? kindRaw : "summary";
+      try {
+        const currentMd = turndown.turndown(html.value || "");
+        const out = await api.transform(currentMd, kind, {});
+        const injected = marked.parse("\n" + ((out == null ? void 0 : out.result) || "") + "\n");
+        (_a = editor.value) == null ? void 0 : _a.chain().focus().insertContent(injected).run();
+      } catch {
+        toast.push("error", "AI \uBCC0\uD658 \uC2E4\uD328");
+      }
+    }
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "h-full flex flex-col bg-white" }, _attrs))}>`);
+      _push(ssrRenderComponent(_sfc_main$6, {
+        saving: saving.value,
+        "save-label": "\uC800\uC7A5",
+        "cancel-label": "\uCDE8\uC18C",
+        "delete-label": "\uC0AD\uC81C",
+        "saving-text": "\uC800\uC7A5 \uC911\u2026",
+        "aria-label": "WYSIWYG toolbar",
+        "save-aria-label": "\uBB38\uC11C \uC800\uC7A5 (Ctrl+S)",
+        "cancel-aria-label": "\uD3B8\uC9D1 \uCDE8\uC18C",
+        "delete-aria-label": "\uD604\uC7AC \uBB38\uC11C \uC0AD\uC81C",
+        onSave: save,
+        onCancel: cancel,
+        onDelete: deleteCurrent
+      }, {
+        default: withCtx((_, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(`<input${ssrRenderAttr("value", saveMessage.value)} placeholder="commit message" class="px-2 py-1 text-xs border rounded w-48 focus:outline-none focus:ring"${_scopeId}><button class="px-2 py-1 border rounded" aria-label="\uAD75\uAC8C"${_scopeId}><b${_scopeId}>B</b></button><button class="px-2 py-1 border rounded italic" aria-label="\uAE30\uC6B8\uC784"${_scopeId}>I</button><button class="px-2 py-1 border rounded" aria-label="\uBC11\uC904"${_scopeId}>U</button><button class="px-2 py-1 border rounded" aria-label="\uCDE8\uC18C\uC120"${_scopeId}>S</button><button class="px-2 py-1 border rounded" aria-label="\uC778\uB77C\uC778 \uCF54\uB4DC"${_scopeId}>\`code\`</button><button class="px-2 py-1 border rounded" aria-label="\uC11C\uC2DD \uC9C0\uC6B0\uAE30"${_scopeId}>Clear</button><div class="w-px h-5 bg-gray-200 mx-1"${_scopeId}></div><button class="px-2 py-1 border rounded" aria-label="\uBB38\uB2E8"${_scopeId}>P</button><button class="px-2 py-1 border rounded" aria-label="\uC81C\uBAA9 H1"${_scopeId}>H1</button><button class="px-2 py-1 border rounded" aria-label="\uC81C\uBAA9 H2"${_scopeId}>H2</button><button class="px-2 py-1 border rounded" aria-label="\uC81C\uBAA9 H3"${_scopeId}>H3</button><button class="px-2 py-1 border rounded" aria-label="\uC81C\uBAA9 H4"${_scopeId}>H4</button><button class="px-2 py-1 border rounded" aria-label="\uC81C\uBAA9 H5"${_scopeId}>H5</button><button class="px-2 py-1 border rounded" aria-label="\uC81C\uBAA9 H6"${_scopeId}>H6</button><button class="px-2 py-1 border rounded" aria-label="\uC778\uC6A9\uBB38"${_scopeId}>\u275D \u275E</button><button class="px-2 py-1 border rounded" aria-label="\uC218\uD3C9\uC120"${_scopeId}>HR</button><div class="w-px h-5 bg-gray-200 mx-1"${_scopeId}></div><button class="px-2 py-1 border rounded" aria-label="\uC67C\uCABD \uC815\uB82C"${_scopeId}>\u27F8</button><button class="px-2 py-1 border rounded" aria-label="\uAC00\uC6B4\uB370 \uC815\uB82C"${_scopeId}>\u21D4</button><button class="px-2 py-1 border rounded" aria-label="\uC624\uB978\uCABD \uC815\uB82C"${_scopeId}>\u27F9</button><button class="px-2 py-1 border rounded" aria-label="\uC591\uCABD \uC815\uB82C"${_scopeId}>\u27F7</button><div class="w-px h-5 bg-gray-200 mx-1"${_scopeId}></div><button class="px-2 py-1 border rounded" aria-label="\uBD88\uB9BF \uB9AC\uC2A4\uD2B8"${_scopeId}>\u2022 List</button><button class="px-2 py-1 border rounded" aria-label="\uBC88\uD638 \uB9AC\uC2A4\uD2B8"${_scopeId}>1. List</button><button class="px-2 py-1 border rounded" aria-label="\uD0DC\uC2A4\uD06C \uB9AC\uC2A4\uD2B8"${_scopeId}>\u2610 Task</button><button class="px-2 py-1 border rounded" aria-label="\uCCB4\uD06C \uD1A0\uAE00"${_scopeId}>\u2611\uFE0E</button><button class="px-2 py-1 border rounded" aria-label="\uBAA9\uB85D \uB4E4\uC5EC\uC4F0\uAE30"${_scopeId}>\u2192</button><button class="px-2 py-1 border rounded" aria-label="\uBAA9\uB85D \uB0B4\uC5B4\uC4F0\uAE30"${_scopeId}>\u2190</button><div class="w-px h-5 bg-gray-200 mx-1"${_scopeId}></div><button class="px-2 py-1 border rounded" aria-label="\uCF54\uB4DC \uBE14\uB85D"${_scopeId}>Code</button><button class="px-2 py-1 border rounded" aria-label="\uCF54\uB4DC \uC5B8\uC5B4 \uC124\uC815"${_scopeId}>Lang</button><button class="px-2 py-1 border rounded" aria-label="\uD558\uC774\uD37C\uB9C1\uD06C"${_scopeId}>Link</button><button class="px-2 py-1 border rounded" aria-label="\uB9C1\uD06C \uD574\uC81C"${_scopeId}>Unlink</button><button class="px-2 py-1 border rounded" aria-label="\uD45C \uC0BD\uC785"${_scopeId}>Table</button><div class="flex items-center gap-1"${_scopeId}><button class="px-2 py-1 border rounded" aria-label="\uC5F4 \uCD94\uAC00"${_scopeId}>+Col</button><button class="px-2 py-1 border rounded" aria-label="\uD589 \uCD94\uAC00"${_scopeId}>+Row</button><button class="px-2 py-1 border rounded" aria-label="\uC5F4 \uC0AD\uC81C"${_scopeId}>-Col</button><button class="px-2 py-1 border rounded" aria-label="\uD589 \uC0AD\uC81C"${_scopeId}>-Row</button><button class="px-2 py-1 border rounded" aria-label="\uC140 \uBCD1\uD569"${_scopeId}>Merge</button><button class="px-2 py-1 border rounded" aria-label="\uC140 \uBD84\uD560"${_scopeId}>Split</button><button class="px-2 py-1 border rounded" aria-label="\uD45C \uC0AD\uC81C"${_scopeId}>DelTbl</button></div><label class="px-2 py-1 border rounded bg-white cursor-pointer" aria-label="\uC774\uBBF8\uC9C0 \uC5C5\uB85C\uB4DC"${_scopeId}> Image<input type="file" accept="image/*" class="hidden"${_scopeId}></label><div class="w-px h-5 bg-gray-200 mx-1"${_scopeId}></div><button class="px-2 py-1 border rounded" aria-label="\uD14D\uC2A4\uD2B8 \uC0C9\uC0C1"${_scopeId}>Color</button>`);
+            if (showColorPalette.value) {
+              _push2(`<div class="flex items-center gap-1"${_scopeId}><!--[-->`);
+              ssrRenderList(colorPreset, (c) => {
+                _push2(`<button class="w-5 h-5 border rounded" style="${ssrRenderStyle({ backgroundColor: c })}"${ssrRenderAttr("title", c)}${_scopeId}></button>`);
+              });
+              _push2(`<!--]--></div>`);
+            } else {
+              _push2(`<!---->`);
+            }
+            _push2(`<button class="px-2 py-1 border rounded" aria-label="\uD558\uC774\uB77C\uC774\uD2B8"${_scopeId}>Mark</button>`);
+            if (showHighlightPalette.value) {
+              _push2(`<div class="flex items-center gap-1"${_scopeId}><!--[-->`);
+              ssrRenderList(highlightPreset, (c) => {
+                _push2(`<button class="w-5 h-5 border rounded" style="${ssrRenderStyle({ backgroundColor: c })}"${ssrRenderAttr("title", c)}${_scopeId}></button>`);
+              });
+              _push2(`<!--]--></div>`);
+            } else {
+              _push2(`<!---->`);
+            }
+            _push2(`<button class="px-2 py-1 border rounded" aria-label="\uC0C9\uC0C1 \uCD08\uAE30\uD654"${_scopeId}>NoColor</button><div class="w-px h-5 bg-gray-200 mx-1"${_scopeId}></div><button class="px-2 py-1 border rounded" aria-label="\uC2E4\uD589 \uCDE8\uC18C"${_scopeId}>Undo</button><button class="px-2 py-1 border rounded" aria-label="\uB2E4\uC2DC \uC2E4\uD589"${_scopeId}>Redo</button><button class="px-2 py-1 rounded bg-indigo-50 hover:bg-indigo-100 text-indigo-700" aria-label="AI \uBCC0\uD658"${_scopeId}>AI</button>`);
+          } else {
+            return [
+              withDirectives(createVNode("input", {
+                "onUpdate:modelValue": ($event) => saveMessage.value = $event,
+                placeholder: "commit message",
+                class: "px-2 py-1 text-xs border rounded w-48 focus:outline-none focus:ring"
+              }, null, 8, ["onUpdate:modelValue"]), [
+                [vModelText, saveMessage.value]
+              ]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uAD75\uAC8C",
+                onClick: ($event) => cmd("toggleBold")
+              }, [
+                createVNode("b", null, "B")
+              ], 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded italic",
+                "aria-label": "\uAE30\uC6B8\uC784",
+                onClick: ($event) => cmd("toggleItalic")
+              }, "I", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uBC11\uC904",
+                onClick: ($event) => cmd("toggleUnderline")
+              }, "U", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uCDE8\uC18C\uC120",
+                onClick: ($event) => cmd("toggleStrike")
+              }, "S", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uC778\uB77C\uC778 \uCF54\uB4DC",
+                onClick: ($event) => cmd("toggleCode")
+              }, "`code`", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uC11C\uC2DD \uC9C0\uC6B0\uAE30",
+                onClick: clearFormatting
+              }, "Clear"),
+              createVNode("div", { class: "w-px h-5 bg-gray-200 mx-1" }),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uBB38\uB2E8",
+                onClick: ($event) => cmd("setParagraph")
+              }, "P", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uC81C\uBAA9 H1",
+                onClick: ($event) => cmd("toggleHeading", { level: 1 })
+              }, "H1", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uC81C\uBAA9 H2",
+                onClick: ($event) => cmd("toggleHeading", { level: 2 })
+              }, "H2", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uC81C\uBAA9 H3",
+                onClick: ($event) => cmd("toggleHeading", { level: 3 })
+              }, "H3", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uC81C\uBAA9 H4",
+                onClick: ($event) => cmd("toggleHeading", { level: 4 })
+              }, "H4", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uC81C\uBAA9 H5",
+                onClick: ($event) => cmd("toggleHeading", { level: 5 })
+              }, "H5", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uC81C\uBAA9 H6",
+                onClick: ($event) => cmd("toggleHeading", { level: 6 })
+              }, "H6", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uC778\uC6A9\uBB38",
+                onClick: ($event) => cmd("toggleBlockquote")
+              }, "\u275D \u275E", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uC218\uD3C9\uC120",
+                onClick: ($event) => cmd("setHorizontalRule")
+              }, "HR", 8, ["onClick"]),
+              createVNode("div", { class: "w-px h-5 bg-gray-200 mx-1" }),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uC67C\uCABD \uC815\uB82C",
+                onClick: ($event) => align("left")
+              }, "\u27F8", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uAC00\uC6B4\uB370 \uC815\uB82C",
+                onClick: ($event) => align("center")
+              }, "\u21D4", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uC624\uB978\uCABD \uC815\uB82C",
+                onClick: ($event) => align("right")
+              }, "\u27F9", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uC591\uCABD \uC815\uB82C",
+                onClick: ($event) => align("justify")
+              }, "\u27F7", 8, ["onClick"]),
+              createVNode("div", { class: "w-px h-5 bg-gray-200 mx-1" }),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uBD88\uB9BF \uB9AC\uC2A4\uD2B8",
+                onClick: ($event) => cmd("toggleBulletList")
+              }, "\u2022 List", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uBC88\uD638 \uB9AC\uC2A4\uD2B8",
+                onClick: ($event) => cmd("toggleOrderedList")
+              }, "1. List", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uD0DC\uC2A4\uD06C \uB9AC\uC2A4\uD2B8",
+                onClick: ($event) => cmd("toggleTaskList")
+              }, "\u2610 Task", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uCCB4\uD06C \uD1A0\uAE00",
+                onClick: toggleTaskChecked
+              }, "\u2611\uFE0E"),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uBAA9\uB85D \uB4E4\uC5EC\uC4F0\uAE30",
+                onClick: indentList
+              }, "\u2192"),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uBAA9\uB85D \uB0B4\uC5B4\uC4F0\uAE30",
+                onClick: outdentList
+              }, "\u2190"),
+              createVNode("div", { class: "w-px h-5 bg-gray-200 mx-1" }),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uCF54\uB4DC \uBE14\uB85D",
+                onClick: ($event) => cmd("toggleCodeBlock")
+              }, "Code", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uCF54\uB4DC \uC5B8\uC5B4 \uC124\uC815",
+                onClick: setCodeLang
+              }, "Lang"),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uD558\uC774\uD37C\uB9C1\uD06C",
+                onClick: insertLink
+              }, "Link"),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uB9C1\uD06C \uD574\uC81C",
+                onClick: unlink
+              }, "Unlink"),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uD45C \uC0BD\uC785",
+                onClick: insertTable
+              }, "Table"),
+              createVNode("div", { class: "flex items-center gap-1" }, [
+                createVNode("button", {
+                  class: "px-2 py-1 border rounded",
+                  "aria-label": "\uC5F4 \uCD94\uAC00",
+                  onClick: ($event) => tableCmd("addColumnAfter")
+                }, "+Col", 8, ["onClick"]),
+                createVNode("button", {
+                  class: "px-2 py-1 border rounded",
+                  "aria-label": "\uD589 \uCD94\uAC00",
+                  onClick: ($event) => tableCmd("addRowAfter")
+                }, "+Row", 8, ["onClick"]),
+                createVNode("button", {
+                  class: "px-2 py-1 border rounded",
+                  "aria-label": "\uC5F4 \uC0AD\uC81C",
+                  onClick: ($event) => tableCmd("deleteColumn")
+                }, "-Col", 8, ["onClick"]),
+                createVNode("button", {
+                  class: "px-2 py-1 border rounded",
+                  "aria-label": "\uD589 \uC0AD\uC81C",
+                  onClick: ($event) => tableCmd("deleteRow")
+                }, "-Row", 8, ["onClick"]),
+                createVNode("button", {
+                  class: "px-2 py-1 border rounded",
+                  "aria-label": "\uC140 \uBCD1\uD569",
+                  onClick: ($event) => tableCmd("mergeCells")
+                }, "Merge", 8, ["onClick"]),
+                createVNode("button", {
+                  class: "px-2 py-1 border rounded",
+                  "aria-label": "\uC140 \uBD84\uD560",
+                  onClick: ($event) => tableCmd("splitCell")
+                }, "Split", 8, ["onClick"]),
+                createVNode("button", {
+                  class: "px-2 py-1 border rounded",
+                  "aria-label": "\uD45C \uC0AD\uC81C",
+                  onClick: ($event) => tableCmd("deleteTable")
+                }, "DelTbl", 8, ["onClick"])
+              ]),
+              createVNode("label", {
+                class: "px-2 py-1 border rounded bg-white cursor-pointer",
+                "aria-label": "\uC774\uBBF8\uC9C0 \uC5C5\uB85C\uB4DC"
+              }, [
+                createTextVNode(" Image"),
+                createVNode("input", {
+                  ref_key: "imagePicker",
+                  ref: imagePicker,
+                  type: "file",
+                  accept: "image/*",
+                  class: "hidden",
+                  onChange: onPickImage
+                }, null, 544)
+              ]),
+              createVNode("div", { class: "w-px h-5 bg-gray-200 mx-1" }),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uD14D\uC2A4\uD2B8 \uC0C9\uC0C1",
+                onClick: toggleColorPalette
+              }, "Color"),
+              showColorPalette.value ? (openBlock(), createBlock("div", {
+                key: 0,
+                class: "flex items-center gap-1"
+              }, [
+                (openBlock(), createBlock(Fragment, null, renderList(colorPreset, (c) => {
+                  return createVNode("button", {
+                    key: "c" + c,
+                    class: "w-5 h-5 border rounded",
+                    style: { backgroundColor: c },
+                    title: c,
+                    onClick: ($event) => setColorPreset(c)
+                  }, null, 12, ["title", "onClick"]);
+                }), 64))
+              ])) : createCommentVNode("", true),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uD558\uC774\uB77C\uC774\uD2B8",
+                onClick: toggleHighlightPalette
+              }, "Mark"),
+              showHighlightPalette.value ? (openBlock(), createBlock("div", {
+                key: 1,
+                class: "flex items-center gap-1"
+              }, [
+                (openBlock(), createBlock(Fragment, null, renderList(highlightPreset, (c) => {
+                  return createVNode("button", {
+                    key: "h" + c,
+                    class: "w-5 h-5 border rounded",
+                    style: { backgroundColor: c },
+                    title: c,
+                    onClick: ($event) => setHighlightPreset(c)
+                  }, null, 12, ["title", "onClick"]);
+                }), 64))
+              ])) : createCommentVNode("", true),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uC0C9\uC0C1 \uCD08\uAE30\uD654",
+                onClick: clearColor
+              }, "NoColor"),
+              createVNode("div", { class: "w-px h-5 bg-gray-200 mx-1" }),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uC2E4\uD589 \uCDE8\uC18C",
+                onClick: ($event) => cmd("undo")
+              }, "Undo", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 border rounded",
+                "aria-label": "\uB2E4\uC2DC \uC2E4\uD589",
+                onClick: ($event) => cmd("redo")
+              }, "Redo", 8, ["onClick"]),
+              createVNode("button", {
+                class: "px-2 py-1 rounded bg-indigo-50 hover:bg-indigo-100 text-indigo-700",
+                "aria-label": "AI \uBCC0\uD658",
+                onClick: openAiMenu
+              }, "AI")
+            ];
+          }
+        }),
+        _: 1
+      }, _parent));
+      _push(`<div class="flex-1 overflow-auto p-3"><div class="h-full grid grid-cols-[18rem_1fr] min-h-0">`);
+      if (__props.path) {
+        _push(ssrRenderComponent(_sfc_main$1, {
+          key: `${__props.path}:${(currentMarkdown.value || "").length}`,
+          path: __props.path,
+          content: currentMarkdown.value
+        }, null, _parent));
+      } else {
+        _push(`<!---->`);
+      }
+      _push(`<div class="min-h-0 h-full overflow-auto">`);
+      if (editor.value) {
+        _push(ssrRenderComponent(unref(EditorContent), {
+          editor: editor.value,
+          class: "tiptap-editor prose max-w-none h-full"
+        }, null, _parent));
+      } else {
+        _push(`<div class="p-4 text-sm text-gray-500">\uC5D0\uB514\uD130 \uB85C\uB529 \uC911\u2026</div>`);
+      }
+      _push(`</div></div></div></div>`);
+    };
+  }
+});
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/TipTapKbEditor.client.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+
+export { _sfc_main as default };
+//# sourceMappingURL=TipTapKbEditor.client-B8piWJH3.mjs.map

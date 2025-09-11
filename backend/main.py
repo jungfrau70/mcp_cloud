@@ -43,6 +43,7 @@ from app.api.routes import (
     deployments_router,
     knowledge_router,
 )
+from app.api.routes.auth import router as auth_router
 
 app = FastAPI(title="MCP Cloud API (compat)", version="1.0.0")
 app.add_middleware(
@@ -57,6 +58,7 @@ app.add_middleware(
 def _health():
     return {"ok": True}
 
+app.include_router(auth_router)
 app.include_router(kb_router)
 app.include_router(kb_ws_router)
 app.include_router(curriculum_router)
