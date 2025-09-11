@@ -74,10 +74,10 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [로드 밸런싱 실습](practice/load-balancing-setup.md)
-- 🔗 [Auto Scaling 실습](practice/auto-scaling-setup.md)
-- 🔗 [모니터링 설정](practice/monitoring-setup.md)
-- 🔗 [장애 복구 실습](practice/disaster-recovery.md)
+- 🔗 [로드 밸런싱 실습](practice/load-balancing-setup)
+- 🔗 [Auto Scaling 실습](practice/auto-scaling-setup)
+- 🔗 [모니터링 설정](practice/monitoring-setup)
+- 🔗 [장애 복구 실습](practice/disaster-recovery)
 
 ### 📚 개념 학습 가이드
 - 🔗 [로드 밸런싱 가이드](load-balancing-guide.md)

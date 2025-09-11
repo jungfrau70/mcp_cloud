@@ -69,22 +69,22 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [Docker 기초 실습](practice/docker-basics.md)
-- 🔗 [Git/GitHub 기초 실습](practice/git-github-basics.md)
-- 🔗 [GitHub Actions 기초 실습](practice/github-actions-basics.md)
-- 🔗 [VM 배포 실습](practice/vm-deployment.md)
+- 🔗 [Docker 기초 실습](practice/docker-basics)
+- 🔗 [Git/GitHub 기초 실습](practice/git-github-basics)
+- 🔗 [GitHub Actions 기초 실습](practice/github-actions-basics)
+- 🔗 [VM 배포 실습](practice/vm-deployment)
 
 ### 📚 개념 학습 가이드
-- 🔗 [Docker 고급 가이드](docker-advanced-guide.md)
-- 🔗 [Docker Compose 가이드](docker-compose-guide.md)
-- 🔗 [GitHub Actions 가이드](github-actions-guide.md)
-- 🔗 [AWS & GCP 배포 가이드](aws-gcp-deployment-guide.md)
+- 🔗 [Docker 고급 가이드](docker-advanced-guide)
+- 🔗 [Docker Compose 가이드](docker-compose-guide)
+- 🔗 [GitHub Actions 가이드](github-actions-guide)
+- 🔗 [AWS & GCP 배포 가이드](aws-gcp-deployment-guide)
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [종합 트러블슈팅 가이드](troubleshooting-guide.md)
-- 🔗 [AWS & GCP 권한 설정](aws-gcp-permissions-setup.md)
-- 🔗 [CI/CD 파이프라인 가이드](cicd-pipeline-guide.md)
-- 🔗 [클라우드 배포 가이드](cloud-deployment-guide.md)
+- 🔗 [종합 트러블슈팅 가이드](troubleshooting-guide)
+- 🔗 [AWS & GCP 권한 설정](aws-gcp-permissions-setup)
+- 🔗 [CI/CD 파이프라인 가이드](cicd-pipeline-guide)
+- 🔗 [클라우드 배포 가이드](cloud-deployment-guide)
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Basic 과정](../../../cloud_basic/textbook/Day1/README.md)

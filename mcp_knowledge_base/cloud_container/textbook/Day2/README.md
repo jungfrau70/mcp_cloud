@@ -74,10 +74,10 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [고가용성 아키텍처 실습](practice/high-availability-architecture.md)
-- 🔗 [고급 로드 밸런싱 실습](practice/advanced-load-balancing.md)
-- 🔗 [모니터링 시스템 구축](practice/monitoring-system-setup.md)
-- 🔗 [종합 프로젝트 실습](practice/comprehensive-project.md)
+- 🔗 [고가용성 아키텍처 실습](practice/high-availability-architecture)
+- 🔗 [고급 로드 밸런싱 실습](practice/advanced-load-balancing)
+- 🔗 [모니터링 시스템 구축](practice/monitoring-system-setup)
+- 🔗 [종합 프로젝트 실습](practice/comprehensive-project)
 
 ### 📚 개념 학습 가이드
 - 🔗 [고가용성 아키텍처 가이드](high-availability-architecture.md)
@@ -199,7 +199,7 @@ sudo apt install curl wget netcat
 <summary>🔗 상세 실습 가이드</summary>
 
 ### 📖 실습 파일
-- 🔗 [고가용성 아키텍처 실습](practice/high-availability-architecture.md)
+- 🔗 [고가용성 아키텍처 실습](practice/high-availability-architecture)
 
 ### 📚 개념 학습
 - 🔗 [고가용성 아키텍처 가이드](high-availability-architecture.md)
@@ -238,7 +238,7 @@ sudo apt install curl wget netcat
 <summary>🔗 상세 실습 가이드</summary>
 
 ### 📖 실습 파일
-- 🔗 [고급 로드 밸런싱 실습](practice/advanced-load-balancing.md)
+- 🔗 [고급 로드 밸런싱 실습](practice/advanced-load-balancing)
 
 ### 📚 개념 학습
 - 🔗 [고급 로드 밸런싱 가이드](advanced-load-balancing.md)
@@ -276,7 +276,7 @@ sudo apt install curl wget netcat
 <summary>🔗 상세 실습 가이드</summary>
 
 ### 📖 실습 파일
-- 🔗 [모니터링 시스템 구축](practice/monitoring-system-setup.md)
+- 🔗 [모니터링 시스템 구축](practice/monitoring-system-setup)
 
 ### 📚 개념 학습
 - 🔗 [모니터링 시스템 가이드](monitoring-setup.md)
@@ -315,7 +315,7 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 <summary>🔗 상세 실습 가이드</summary>
 
 ### 📖 실습 파일
-- 🔗 [종합 프로젝트 실습](practice/comprehensive-project.md)
+- 🔗 [종합 프로젝트 실습](practice/comprehensive-project)
 
 ### 📚 개념 학습
 - 🔗 [종합 프로젝트 가이드](comprehensive-project.md)
@@ -376,7 +376,7 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 
 ## 🚀 시작하기
 
-1일차 실습이 완료되었다면 [고가용성 아키텍처 실습](practice/high-availability-architecture.md)부터 시작하세요.
+1일차 실습이 완료되었다면 [고가용성 아키텍처 실습](practice/high-availability-architecture)부터 시작하세요.
 
 ### 문제가 있나요?
 실습 중 문제가 발생하면 [트러블슈팅 가이드](./troubleshooting/)를 참고하세요.

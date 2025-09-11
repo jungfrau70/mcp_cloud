@@ -74,8 +74,8 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [Kubernetes 기초 실습](practice/kubernetes-basics.md)
-- 🔗 [컨테이너 기초 실습](practice/container-basics.md)
+- 🔗 [Kubernetes 기초 실습](practice/kubernetes-basics)
+- 🔗 [컨테이너 기초 실습](practice/container-basics)
 
 ### 🛠️ 문제 해결 가이드
 - 🔗 [종합 트러블슈팅 가이드](troubleshooting/multi-az-issues.md)
