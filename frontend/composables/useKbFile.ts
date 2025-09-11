@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { useKbApi } from './useKbApi'
-import { stripBasePath } from '../utils/path'
+import { cleanApiPath } from '../utils/path'
 
 interface SaveOptions { message?: string; force?: boolean }
 
@@ -20,8 +20,15 @@ export function useKbFile(){
     error.value = undefined
     try {
       path.value = targetPath
-      const res = await fetch(`${apiBase()}/v1/curriculum/item?path=${encodeURIComponent(stripBasePath(targetPath))}`, { headers: headers(), signal: currentAbort.signal })
-      if(!res.ok) throw new Error('Load failed')
+      // Ensure path is properly cleaned and normalized
+      const cleanPath = cleanApiPath(targetPath)
+      console.log('Loading path:', { original: targetPath, cleaned: cleanPath })
+      const res = await fetch(`${apiBase()}/v1/curriculum/item?path=${encodeURIComponent(cleanPath)}`, { headers: headers(), signal: currentAbort.signal })
+      if(!res.ok) {
+        const errorText = await res.text()
+        console.error('API Error:', res.status, errorText)
+        throw new Error(`Load failed: ${res.status} ${errorText}`)
+      }
       const data = await res.json()
       content.value = data.content || ''
       lastVersion.value = data.version_no
@@ -56,15 +63,21 @@ export function useKbFile(){
 
   async function save(newContent: string, opts: SaveOptions = {}){
     const expected = opts.force ? undefined : lastVersion.value
+    const cleanPath = cleanApiPath(path.value)
+    console.log('Saving path:', { original: path.value, cleaned: cleanPath })
     const res = await fetch(`${apiBase()}/v1/knowledge-base/item`, {
       method: 'PATCH',
       headers: headers(),
-      body: JSON.stringify({ path: stripBasePath(path.value), content: newContent, message: opts.message, expected_version_no: expected })
+      body: JSON.stringify({ path: cleanPath, content: newContent, message: opts.message, expected_version_no: expected })
     })
     if(res.status === 409){
       return { conflict: true }
     }
-    if(!res.ok) throw new Error('Save failed')
+    if(!res.ok) {
+      const errorText = await res.text()
+      console.error('Save API Error:', res.status, errorText)
+      throw new Error(`Save failed: ${res.status} ${errorText}`)
+    }
     const data = await res.json()
     lastVersion.value = data.version_no
     content.value = newContent
