@@ -60,7 +60,7 @@ async def kb_tasks_ws(websocket: WebSocket):
     except WebSocketDisconnect:
         return
 
-KB_ROOT = Path('mcp_knowledge_base').resolve()
+KB_ROOT = Path('../mcp_knowledge_base').resolve()
 try:
     from utils.doc_convert import convert_pptx_to_pdf  # correct import within backend package
 except Exception:
