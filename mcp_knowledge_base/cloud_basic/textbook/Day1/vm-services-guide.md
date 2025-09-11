@@ -560,7 +560,7 @@ gcloud compute instances describe INSTANCE_NAME --zone=ZONE
 
 ### 🚀 다음 단계
 
-- **4교시 실습**: [스토리지 서비스 실습](./storage-services-guide.md)
+- **4교시 실습**: [스토리지 서비스 실습](./storage-services-guide)
 - **실제 프로젝트 적용**: 자신의 프로젝트에 가상머신 적용
 - **고급 기능 학습**: 오토 스케일링, 로드 밸런싱, 모니터링
 
@@ -568,7 +568,7 @@ gcloud compute instances describe INSTANCE_NAME --zone=ZONE
 
 - [AWS EC2 공식 문서](https://docs.aws.amazon.com/ec2/)
 - [GCP Compute Engine 공식 문서](https://cloud.google.com/compute/docs)
-- [스토리지 서비스 실습](./storage-services-guide.md)
+- [스토리지 서비스 실습](./storage-services-guide)
 
 ---
 

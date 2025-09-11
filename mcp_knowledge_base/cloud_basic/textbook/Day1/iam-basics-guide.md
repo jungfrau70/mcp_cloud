@@ -518,7 +518,7 @@ gcloud projects get-iam-policy PROJECT_ID --flatten="bindings[].members"
 
 ### 🚀 다음 단계
 
-- **3교시 실습**: [가상머신 서비스 실습](./vm-services-guide.md)
+- **3교시 실습**: [가상머신 서비스 실습](./vm-services-guide)
 - **실제 프로젝트 적용**: 자신의 프로젝트에 IAM 적용
 - **고급 기능 학습**: 조직 관리, 외부 연동, 자동화
 
@@ -526,7 +526,7 @@ gcloud projects get-iam-policy PROJECT_ID --flatten="bindings[].members"
 
 - [AWS IAM 공식 문서](https://docs.aws.amazon.com/iam/)
 - [GCP IAM 공식 문서](https://cloud.google.com/iam/docs)
-- [가상머신 서비스 실습](./vm-services-guide.md)
+- [가상머신 서비스 실습](./vm-services-guide)
 
 ---
 

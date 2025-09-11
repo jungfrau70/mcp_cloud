@@ -663,7 +663,7 @@ gcloud auth activate-service-account --key-file=key.json
 
 ### 🚀 다음 단계
 
-- **2교시 실습**: [IAM 사용자 및 권한 관리](./iam-basics-guide.md)
+- **2교시 실습**: [IAM 사용자 및 권한 관리](./iam-basics-guide)
 - **실제 프로젝트 적용**: 자신의 프로젝트에 클라우드 서비스 적용
 - **고급 기능 학습**: 조직 관리, 외부 연동, 자동화
 
@@ -671,7 +671,7 @@ gcloud auth activate-service-account --key-file=key.json
 
 - [AWS 공식 문서](https://docs.aws.amazon.com/)
 - [GCP 공식 문서](https://cloud.google.com/docs)
-- [IAM 사용자 및 권한 관리](./iam-basics-guide.md)
+- [IAM 사용자 및 권한 관리](./iam-basics-guide)
 
 ---
 
