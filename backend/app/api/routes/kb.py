@@ -186,6 +186,23 @@ def kb_rename_item(payload: KBItemMove):
     src.rename(dst)
     return {"moved": {"from": payload.path, "to": payload.new_path}}
 
+@router.put('/item')
+def kb_save_item(payload: dict):
+    """Save file content"""
+    path = payload.get('path')
+    content = payload.get('content', '')
+    if not path:
+        raise HTTPException(status_code=400, detail='Path is required')
+    
+    fp = _safe_path(path)
+    fp.parent.mkdir(parents=True, exist_ok=True)
+    
+    try:
+        fp.write_text(content, encoding='utf-8')
+        return {"saved": path, "type": "file", "content": content}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f'Failed to save file: {e}')
+
 @router.post('/move')
 def kb_move(payload: KBItemMove):
     """Move or rename a file/directory. Alias for PATCH /item for compatibility.

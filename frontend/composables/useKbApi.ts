@@ -40,9 +40,9 @@ export function useKbApi(){
   }
 
   async function saveItem(path: string, content: string, message?: string, expectedVersion?: number): Promise<KbSaveResponse>{
-    // Use content-saving endpoint (v1 alias is rename-only)
-    return request<KbSaveResponse>(`${apiBase}/_deprecated/kb/item`, {
-      method: 'PATCH',
+    // Use content-saving endpoint
+    return request<KbSaveResponse>(`${apiBase}/v1/knowledge-base/item`, {
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
       body: JSON.stringify({ path, content, message, expected_version_no: expectedVersion })
     }, 'saveItem failed')
