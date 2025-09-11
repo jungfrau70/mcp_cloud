@@ -2,9 +2,9 @@
   <div 
     class="file-tree" 
     :class="{ 'upload-enabled': enableUpload }"
-    @dragover="handleDragOver"
-    @dragenter="handleDragEnter"
-    @drop="handleDrop"
+    @dragover="handleUploadDragOver"
+    @dragenter="handleUploadDragEnter"
+    @drop="handleUploadDrop"
   >
     <!-- Upload Area (only show when upload is enabled and no files are selected) -->
     <div v-if="enableUpload && depth === 0" class="upload-area">
@@ -595,18 +595,18 @@ const handleFileSelect = (event) => {
   }
 };
 
-const handleDragOver = (event) => {
+const handleUploadDragOver = (event) => {
   if (!props.enableUpload) return;
   event.preventDefault();
   event.dataTransfer.dropEffect = 'copy';
 };
 
-const handleDragEnter = (event) => {
+const handleUploadDragEnter = (event) => {
   if (!props.enableUpload) return;
   event.preventDefault();
 };
 
-const handleDrop = (event) => {
+const handleUploadDrop = (event) => {
   if (!props.enableUpload) return;
   event.preventDefault();
   
