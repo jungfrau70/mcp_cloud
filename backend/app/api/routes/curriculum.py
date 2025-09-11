@@ -8,7 +8,7 @@ import urllib.parse
 
 router = APIRouter(prefix="/api/v1/curriculum", tags=["Curriculum"])
 
-KB_ROOT = Path('mcp_knowledge_base').resolve()
+KB_ROOT = Path('../mcp_knowledge_base').resolve()
 SELECTION_FILE = KB_ROOT / '.slides_selection.json'
 try:
     from utils.doc_convert import convert_pptx_to_pdf  # correct import within backend package
