@@ -1,5 +1,11 @@
 # 모니터링 시스템 구축 실습
 
+<div align="center">
+
+[← 이전: 로드 밸런싱 고급 실습](./advanced-load-balancing.md) | [📚 전체 커리큘럼](../../../../curriculum.md) | [다음: 종합 프로젝트 →](./comprehensive-project.md)
+
+</div>
+
 <details>
 <summary>📋 목차</summary>
 

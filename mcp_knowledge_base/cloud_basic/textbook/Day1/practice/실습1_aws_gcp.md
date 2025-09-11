@@ -1,5 +1,11 @@
 # 🎯 AWS & GCP 기초 실습 통합 가이드
 
+<div align="center">
+
+[← 이전: GCP 기초 실습](./gcp_basic_practice.md) | [📚 전체 커리큘럼](../../../../curriculum.md) | [다음: Cloud Basic 2일차 →](../../Day2/README.md)
+
+</div>
+
 ## 📋 개요
 
 **목적**: AWS와 GCP 환경에서 핵심 기초 서비스를 직접 실습하고 두 플랫폼을 비교 분석

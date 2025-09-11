@@ -1,5 +1,11 @@
 # Kubernetes 기초 실습 가이드
 
+<div align="center">
+
+[← 이전: 컨테이너 기초 실습](./container-basics.md) | [📚 전체 커리큘럼](../../../../curriculum.md) | [다음: Cloud Container 2일차 →](../../Day2/README.md)
+
+</div>
+
 <details>
 <summary>📋 목차</summary>
 

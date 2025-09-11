@@ -9,8 +9,7 @@
 | 과정 | 일정 | 대상 | 주요 내용 | 선수 요구사항 |
 |------|------|------|-----------|---------------|
 | **Cloud Basic** | 2일 | 클라우드 입문자 | AWS/GCP 기초 서비스, IAM, VM, 스토리지, 네트워크 | IT 기초 지식 |
-| **Cloud Intermediate** | 1일 | Basic 수료자 | Docker, Git/GitHub, GitHub Actions, VM 배포 | Cloud Basic 수료 |
-| **Cloud Master** | 2일 | Intermediate 수료자 | CI/CD, VM 기반 컨테이너 배포, 로드 밸런싱 | Cloud Intermediate 수료 |
+| **Cloud Master** | 3일 | Basic 수료자 | Docker, Git/GitHub, CI/CD, VM 배포, 로드 밸런싱, 모니터링 | Cloud Basic 수료 |
 | **Cloud Container** | 2일 | Master 수료자 | K8s, ECS, Fargate, 고가용성 아키텍처 | Cloud Master 수료 |
 
 ---
@@ -76,9 +75,10 @@
 
 ---
 
-## 🚀 Cloud Intermediate (1일) - Docker & CI/CD 기초
 
-### 📅 1일차: Docker, Git/GitHub, GitHub Actions 통합 실습
+## ⚙️ Cloud Master (3일) - Docker, CI/CD & VM 기반 컨테이너 배포
+
+### 📅 1일차: Docker, Git/GitHub, GitHub Actions 기초
 
 - **Docker 기초 및 컨테이너 기술**
   - Docker 개념 및 아키텍처 이해
@@ -104,56 +104,52 @@
   - 기본 모니터링 및 로그 관리
   - 실습: 완전 자동화된 VM 배포 파이프라인
 
-**📚 실습 자료**
-- 🔗 [Docker 기초 실습](mcp_knowledge_base/cloud_intermediate/textbook/Day1/practice/docker-basics.md)
-- 🔗 [GitHub Actions 기초 실습](mcp_knowledge_base/cloud_intermediate/textbook/Day1/practice/github-actions-basics.md)
-- 🔗 [VM 배포 실습](mcp_knowledge_base/cloud_intermediate/textbook/Day1/practice/vm-deployment.md)
+### 📅 2일차: 고급 CI/CD 및 VM 기반 컨테이너 배포
 
----
+- **Docker 고급 기법 및 최적화**
+  - Dockerfile 멀티스테이지 빌드 및 최적화
+  - Docker Compose 고급 설정 및 오케스트레이션
+  - 실습: 프로덕션급 Docker 이미지 빌드 및 최적화
 
-## ⚙️ Cloud Master (2일) - CI/CD & VM 기반 컨테이너 배포
+- **GitHub Actions 고급 워크플로우**
+  - 매트릭스 빌드 및 환경별 배포 전략
+  - 시크릿 관리 및 보안 설정
+  - 실습: 고급 CI/CD 파이프라인 구축
 
-### 📅 1일차: CI/CD와 VM 기반 컨테이너 배포
-
-- **Docker 기초 및 Dockerfile 최적화**
-  - Dockerfile 작성 및 멀티스테이지 빌드
-  - Docker Compose를 활용한 다중 서비스 관리
-  - 실습: 웹 애플리케이션 Docker 이미지 빌드 및 최적화
-
-- **GitHub Actions CI/CD 파이프라인**
-  - Workflow 작성 및 자동화된 빌드/배포 구현
-  - 실습: Docker 이미지 자동 빌드 → Docker Hub 푸시
-
-- **VM 기반 컨테이너 배포**
+- **VM 기반 컨테이너 배포 자동화**
   - AWS EC2 + Docker / GCP Compute Engine + Docker
-  - 실습: Docker 컨테이너를 VM에 배포 및 관리
+  - 컨테이너 오케스트레이션 및 관리
+  - 실습: 고가용성 컨테이너 배포 환경 구성
 
-- **완전 자동화된 VM 배포 파이프라인**
+- **완전 자동화된 배포 파이프라인**
   - GitHub Actions + VM 배포 자동화
   - 실습: GitHub 푸시 → Docker 빌드 → VM 배포 자동화
 
-### 📅 2일차: 로드 밸런싱 및 모니터링
+### 📅 3일차: 로드 밸런싱, 모니터링, 비용 최적화
 
 - **로드 밸런싱 및 Auto Scaling**
   - AWS ELB + Auto Scaling Group / GCP Cloud LB + Managed Instance Group
   - 실습: VM 기반 로드 밸런싱 환경 구성
 
-- **컨테이너 모니터링 및 로깅**
-  - Docker 로그 관리 및 모니터링 도구 연동
-  - 실습: Prometheus + Grafana 모니터링 구축
+- **모니터링 및 로깅 시스템**
+  - CloudWatch, Cloud Monitoring 설정
+  - Prometheus + Grafana 모니터링 구축
+  - 실습: 종합 모니터링 대시보드 구축
 
 - **장애 복구 및 운영 자동화**
   - Health Check 기반 자동 교체 및 복구
   - 실습: 장애 시뮬레이션 및 자동 복구 테스트
 
 - **비용 최적화 및 운영 전략**
-  - VM 기반 아키텍처 비용 분석
+  - 클라우드 비용 구조 및 과금 체계 분석
+  - VM 기반 아키텍처 비용 분석 및 최적화
   - 실습: 비용 최적화 전략 수립 및 발표
 
 **📚 실습 자료**
-- 🔗 [Docker 고급 실습](mcp_knowledge_base/cloud_master/textbook/Day1/scripts/)
-- 🔗 [GitHub Actions 고급 실습](mcp_knowledge_base/cloud_master/textbook/Day1/practice/)
-- 🔗 [VM 배포 자동화](mcp_knowledge_base/cloud_master/textbook/Day2/scripts/)
+- 🔗 [Docker 기초 실습](mcp_knowledge_base/cloud_master/textbook/Day1/)
+- 🔗 [GitHub Actions 실습](mcp_knowledge_base/cloud_master/textbook/Day1/)
+- 🔗 [VM 배포 자동화](mcp_knowledge_base/cloud_master/textbook/Day2/)
+- 🔗 [모니터링 및 비용 최적화](mcp_knowledge_base/cloud_master/textbook/Day3/)
 
 ---
 
@@ -214,15 +210,14 @@
 
 ### 학습 경로
 ```
-Cloud Basic (2일) → Cloud Intermediate (1일) → Cloud Master (2일) → Cloud Container (2일)
-     ↓                    ↓                        ↓                        ↓
-기초 서비스 실습    →   Docker/Git/GitHub    →   CI/CD/VM 컨테이너    →   K8s/ECS/Fargate
+Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일)
+     ↓                    ↓                        ↓
+기초 서비스 실습    →   Docker/Git/CI/CD/VM    →   K8s/ECS/Fargate
 ```
 
 ### 선수 요구사항 체크리스트
-- **Cloud Basic → Intermediate**: AWS/GCP 기초 서비스 실습 완료
-- **Cloud Intermediate → Master**: Docker, Git/GitHub, GitHub Actions 실습 완료
-- **Cloud Master → Container**: CI/CD, VM 기반 컨테이너 배포 실습 완료
+- **Cloud Basic → Master**: AWS/GCP 기초 서비스 실습 완료
+- **Cloud Master → Container**: Docker, Git/GitHub, CI/CD, VM 기반 컨테이너 배포 실습 완료
 
 ---
 

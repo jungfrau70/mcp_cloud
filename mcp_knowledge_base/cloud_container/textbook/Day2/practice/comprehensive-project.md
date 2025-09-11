@@ -1,5 +1,11 @@
 # 종합 프로젝트 실습
 
+<div align="center">
+
+[← 이전: 모니터링 시스템 구축 실습](./monitoring-system-setup.md) | [📚 전체 커리큘럼](../../../../curriculum.md) | [다음 과정 없음]
+
+</div>
+
 <details>
 <summary>📋 목차</summary>
 

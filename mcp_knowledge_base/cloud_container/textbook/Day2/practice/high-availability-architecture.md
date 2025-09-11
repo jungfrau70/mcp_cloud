@@ -1,5 +1,11 @@
 # 고가용성 아키텍처 실습
 
+<div align="center">
+
+[← 이전: Cloud Container 2일차 메인](../README.md) | [📚 전체 커리큘럼](../../../../curriculum.md) | [다음: 고급 로드 밸런싱 →](./advanced-load-balancing.md)
+
+</div>
+
 <details>
 <summary>📋 목차</summary>
 

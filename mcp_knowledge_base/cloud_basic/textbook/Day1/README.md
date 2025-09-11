@@ -1,5 +1,11 @@
 # Cloud Basic - 1일차: AWS & GCP 기초 서비스 실습
 
+<div align="center">
+
+[← 이전 과정 없음] | [📚 전체 커리큘럼](../../../curriculum.md) | [다음 과정: Cloud Master 1일차 →](../../../cloud_master/textbook/Day1/README.md)
+
+</div>
+
 <details>
 <summary>📋 목차</summary>
 

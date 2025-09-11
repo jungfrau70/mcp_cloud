@@ -1,5 +1,11 @@
 # Cloud Container - 2일차: 고가용성 및 확장성 아키텍처
 
+<div align="center">
+
+[← 이전: Cloud Container 1일차](../Day1/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [다음 과정 없음]
+
+</div>
+
 <details>
 <summary>📋 목차</summary>
 

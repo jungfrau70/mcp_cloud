@@ -1,5 +1,11 @@
 # Cloud Basic → Cloud Master 연계 가이드
 
+<div align="center">
+
+[← 이전: Cloud Basic 2일차 메인](../README.md) | [📚 전체 커리큘럼](../../../../curriculum.md) | [다음: Cloud Master 1일차 →](../../../cloud_master/textbook/Day1/README.md)
+
+</div>
+
 ## 📋 개요
 
 **목적**: Cloud Basic 과정 완료 후 Cloud Master 과정으로 자연스럽게 연결되는 중간 단계 학습

@@ -1,5 +1,11 @@
 # 컨테이너 기초 실습 가이드
 
+<div align="center">
+
+[← 이전: Cloud Container 1일차 메인](../README.md) | [📚 전체 커리큘럼](../../../../curriculum.md) | [다음: Kubernetes 기초 실습 →](./kubernetes-basics.md)
+
+</div>
+
 ## 📋 개요
 
 **목적**: Docker 컨테이너 기술의 기초부터 고급까지 실습

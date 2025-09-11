@@ -1,5 +1,11 @@
 # GCP 기초 실습 가이드
 
+<div align="center">
+
+[← 이전: AWS 기초 실습](./aws_basic_practice.md) | [📚 전체 커리큘럼](../../../../curriculum.md) | [다음: 통합 실습 →](./실습1_aws_gcp.md)
+
+</div>
+
 ## 📋 개요
 
 **목적**: GCP Free Tier를 활용한 기초 서비스 실습

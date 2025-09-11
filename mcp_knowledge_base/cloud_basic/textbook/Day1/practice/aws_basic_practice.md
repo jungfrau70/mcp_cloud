@@ -1,5 +1,11 @@
 # AWS 기초 실습 가이드
 
+<div align="center">
+
+[← 이전: Cloud Basic 1일차 메인](../README.md) | [📚 전체 커리큘럼](../../../../curriculum.md) | [다음: GCP 기초 실습 →](./gcp_basic_practice.md)
+
+</div>
+
 <details>
 <summary>📋 목차</summary>
 

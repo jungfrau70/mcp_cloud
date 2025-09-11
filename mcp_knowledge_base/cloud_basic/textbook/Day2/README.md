@@ -1,5 +1,11 @@
 # Cloud Basic - 2일차: 네트워킹, 보안, 데이터베이스 실습
 
+<div align="center">
+
+[← 이전: Cloud Basic 1일차](../Day1/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [다음 과정: Cloud Master 1일차 →](../../../cloud_master/textbook/Day1/README.md)
+
+</div>
+
 <details>
 <summary>📋 목차</summary>
 

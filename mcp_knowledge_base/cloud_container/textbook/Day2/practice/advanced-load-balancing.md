@@ -1,5 +1,11 @@
 # 로드 밸런싱 고급 실습
 
+<div align="center">
+
+[← 이전: 고가용성 아키텍처 실습](./high-availability-architecture.md) | [📚 전체 커리큘럼](../../../../curriculum.md) | [다음: 모니터링 시스템 설정 →](./monitoring-system-setup.md)
+
+</div>
+
 <details>
 <summary>📋 목차</summary>
 
