@@ -56,11 +56,11 @@ Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일)
 4. **스토리지 서비스 기초** (45분)
 
 ### 실습 자료
-- 🔗 [1일차 실습 가이드](./cloud_basic/textbook/Day1/README.md)
-- 🔗 [2일차 실습 가이드](./cloud_basic/textbook/Day2/README.md)
-- 🔗 [AWS 기초 실습](./cloud_basic/textbook/Day1/practice/aws_basic_practice.md)
-- 🔗 [GCP 기초 실습](./cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
-- 🔗 [통합 실습 가이드](./cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md)
+- 🔗 [1일차 실습 가이드](cloud_basic/textbook/Day1/README)
+- 🔗 [2일차 실습 가이드](cloud_basic/textbook/Day2/README)
+- 🔗 [AWS 기초 실습](cloud_basic/textbook/Day1/practice/aws_basic_practice)
+- 🔗 [GCP 기초 실습](cloud_basic/textbook/Day1/practice/gcp_basic_practice)
+- 🔗 [통합 실습 가이드](cloud_basic/textbook/Day1/practice/실습1_aws_gcp)
 
 </details>
 
@@ -82,11 +82,11 @@ Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일)
 4. **완전 자동화된 VM 배포 파이프라인** (90분)
 
 ### 실습 자료
-- 🔗 [1일차 실습 가이드](./cloud_master/textbook/Day1/README.md)
-- 🔗 [2일차 실습 가이드](./cloud_master/textbook/Day2/README.md)
-- 🔗 [Docker 고급 실습](./cloud_master/textbook/Day1/docker-advanced-guide.md)
-- 🔗 [GitHub Actions 고급 실습](./cloud_master/textbook/Day1/github-actions-advanced-guide.md)
-- 🔗 [VM 배포 자동화](./cloud_master/textbook/Day1/vm-deployment-automation-guide.md)
+- 🔗 [1일차 실습 가이드](cloud_master/textbook/Day1/README)
+- 🔗 [2일차 실습 가이드](cloud_master/textbook/Day2/README)
+- 🔗 [Docker 고급 실습](cloud_master/textbook/Day1/docker-advanced-guide)
+- 🔗 [GitHub Actions 고급 실습](cloud_master/textbook/Day1/github-actions-guide)
+- 🔗 [VM 배포 자동화](cloud_master/textbook/Day1/aws-gcp-deployment-guide)
 
 </details>
 
@@ -107,11 +107,11 @@ Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일)
 4. **고급 CI/CD 파이프라인** (90분)
 
 ### 실습 자료
-- 🔗 [1일차 실습 가이드](./cloud_container/textbook/Day1/README.md)
-- 🔗 [2일차 실습 가이드](./cloud_container/textbook/Day2/README.md)
-- 🔗 [Kubernetes 기초 실습](./cloud_container/textbook/Day1/practice/kubernetes-basics.md)
-- 🔗 [GKE 클러스터 관리](./cloud_container/textbook/Day1/practice/gke-cluster-management.md)
-- 🔗 [ECS/Fargate 실습](./cloud_container/textbook/Day1/practice/ecs-fargate-practice.md)
+- 🔗 [1일차 실습 가이드](cloud_container/textbook/Day1/README)
+- 🔗 [2일차 실습 가이드](cloud_container/textbook/Day2/README)
+- 🔗 [Kubernetes 기초 실습](cloud_container/textbook/Day1/practice/kubernetes-basics)
+- 🔗 [컨테이너 기초 실습](cloud_container/textbook/Day1/practice/container-basics)
+- 🔗 [고가용성 아키텍처 실습](cloud_container/textbook/Day2/practice/high-availability-architecture)
 
 </details>
 
@@ -348,8 +348,8 @@ Cloud Container (2일)
 3. **환경 설정**: 각 계정의 CLI 설정 및 인증
 
 ### 2. Cloud Basic 시작
-1. **과정 상세 확인**: [Cloud Basic 과정 상세](./cloud_basic/과정상세.md)
-2. **실습 가이드 확인**: [1일차 실습 가이드](./cloud_basic/textbook/Day1/README.md)
+1. **과정 상세 확인**: [Cloud Basic 과정 상세](cloud_basic/과정상세)
+2. **실습 가이드 확인**: [1일차 실습 가이드](cloud_basic/textbook/Day1/README)
 3. **실습 시작**: AWS/GCP 기초 서비스 실습
 
 ### 3. 학습 진행

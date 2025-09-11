@@ -6,67 +6,6 @@
     @dragenter="handleUploadDragEnter"
     @drop="handleUploadDrop"
   >
-    <!-- Breadcrumb Navigation (only show at root level) -->
-    <div v-if="depth === 0" class="breadcrumb-container">
-      <div class="breadcrumb">
-        <span 
-          class="breadcrumb-item root" 
-          @click="navigateToPath('')"
-          :class="{ 'active': !currentPath }"
-        >
-          🏠 루트
-        </span>
-        <span v-for="(segment, index) in pathSegments" :key="index" class="breadcrumb-separator">/</span>
-        <span 
-          v-for="(segment, index) in pathSegments" 
-          :key="index"
-          class="breadcrumb-item"
-          @click="navigateToPath(getPathUpTo(index))"
-          :class="{ 'active': index === pathSegments.length - 1 }"
-        >
-          {{ segment }}
-        </span>
-      </div>
-      <div class="navigation-controls">
-        <button 
-          @click="goUp" 
-          class="nav-btn" 
-          :disabled="!canGoUp"
-          title="상위 디렉토리로 이동"
-        >
-          ⬆️
-        </button>
-        <button 
-          @click="refreshDirectory" 
-          class="nav-btn" 
-          title="새로고침"
-        >
-          🔄
-        </button>
-        <button 
-          @click="toggleSearch" 
-          class="nav-btn" 
-          :class="{ 'active': showSearch }"
-          title="검색"
-        >
-          🔍
-        </button>
-      </div>
-    </div>
-
-    <!-- Search Bar (only show when enabled) -->
-    <div v-if="showSearch && depth === 0" class="search-container">
-      <input 
-        v-model="searchQuery"
-        @keyup.enter="performSearch"
-        @input="onSearchInput"
-        class="search-input"
-        placeholder="디렉토리 또는 파일 검색..."
-        ref="searchInput"
-      />
-      <button @click="clearSearch" class="search-clear" v-if="searchQuery">✕</button>
-    </div>
-
     <!-- Upload Area (only show when upload is enabled and no files are selected) -->
     <div v-if="enableUpload && depth === 0" class="upload-area">
       <input 
@@ -87,7 +26,7 @@
     </div>
     
     <ul>
-      <li v-for="(item, name) in filteredTree" :key="name">
+      <li v-for="(item, name) in sortedTree" :key="name">
         <div 
           @click="toggle(name)" 
           @contextmenu="showDirectoryMenu($event, name, item)"
@@ -103,13 +42,7 @@
           <span v-if="isDirectory(item)" class="icon">{{ isOpen(name) ? '▼' : '▶' }}</span>
           <span v-else class="icon">📄</span>
           <span class="name" :class="{ 'hidden-item': name.startsWith('.') }">{{ name }}</span>
-          <div v-if="isDirectory(item)" class="directory-info">
-            <span class="directory-stats" @click.stop="showDirectoryDetails(name, item)">
-              {{ getDirectoryStats(item) }}
-            </span>
-          </div>
           <div v-if="isDirectory(item)" class="directory-actions">
-            <button @click.stop="showDirectoryDetails(name, item)" class="action-btn" title="디렉토리 정보">ℹ️</button>
             <button @click.stop="showCreateContextMenu($event, name)" class="action-btn" title="새 항목 생성">+</button>
           </div>
         </div>
@@ -220,11 +153,23 @@
         <!-- Upload Path -->
         <div class="upload-section">
           <label class="upload-label">업로드 경로:</label>
-          <input 
-            v-model="uploadPath" 
-            class="modal-input" 
-            placeholder="업로드할 디렉토리 경로"
-          />
+          <div class="path-input-container">
+            <input 
+              v-model="uploadPath" 
+              class="modal-input path-input" 
+              placeholder="업로드할 디렉토리 경로"
+              readonly
+              @click="showDirectoryBrowser = true"
+            />
+            <button 
+              type="button"
+              @click="showDirectoryBrowser = true"
+              class="browse-button"
+              title="디렉토리 선택"
+            >
+              📁
+            </button>
+          </div>
         </div>
         
         <!-- File List -->
@@ -271,115 +216,56 @@
       </div>
     </div>
 
-    <!-- Directory Details Dialog -->
-    <div v-if="showDirectoryDetailsDialog" class="modal-overlay" @click="closeDirectoryDetails">
-      <div class="modal-content directory-details-dialog" @click.stop>
-        <h3 class="modal-title">📁 디렉토리 정보</h3>
+    <!-- Directory Browser Modal -->
+    <div v-if="showDirectoryBrowser" class="modal-overlay" @click="closeDirectoryBrowser">
+      <div class="modal-content directory-browser" @click.stop>
+        <h3 class="modal-title">디렉토리 선택</h3>
         
-        <!-- Directory Path -->
-        <div class="detail-section">
-          <label class="detail-label">경로:</label>
-          <div class="detail-value path-value">{{ selectedDirectoryPath }}</div>
-        </div>
-        
-        <!-- Directory Stats -->
-        <div class="detail-section">
-          <label class="detail-label">통계:</label>
-          <div class="stats-grid">
-            <div class="stat-item">
-              <span class="stat-label">파일 개수:</span>
-              <span class="stat-value">{{ directoryStats.fileCount }}개</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">하위 디렉토리:</span>
-              <span class="stat-value">{{ directoryStats.directoryCount }}개</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">총 크기:</span>
-              <span class="stat-value">{{ formatFileSize(directoryStats.totalSize) }}</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">마지막 수정:</span>
-              <span class="stat-value">{{ directoryStats.lastModified || '알 수 없음' }}</span>
-            </div>
+        <div class="directory-browser-content">
+          <div class="current-path">
+            <span class="path-label">현재 경로:</span>
+            <span class="path-value">{{ selectedDirectoryPath || '/' }}</span>
           </div>
-        </div>
-        
-        <!-- File Types -->
-        <div v-if="directoryStats.fileTypes.length > 0" class="detail-section">
-          <label class="detail-label">파일 유형:</label>
-          <div class="file-types">
-            <span v-for="type in directoryStats.fileTypes" :key="type.extension" class="file-type-tag">
-              {{ type.extension }} ({{ type.count }}개)
-            </span>
-          </div>
-        </div>
-        
-        <!-- Directory Tree Preview -->
-        <div class="detail-section">
-          <label class="detail-label">구조 미리보기:</label>
-          <div class="directory-preview">
-            <div v-for="(item, name) in selectedDirectoryContent" :key="name" class="preview-item">
-              <span class="preview-icon">{{ isDirectory(item) ? '📁' : '📄' }}</span>
-              <span class="preview-name">{{ name }}</span>
-              <span v-if="isDirectory(item)" class="preview-count">({{ getDirectoryStats(item) }})</span>
+          
+          <div class="directory-tree-container">
+            <div v-if="isLoadingDirectories" class="loading-message">
+              디렉토리 로딩 중...
             </div>
-          </div>
-        </div>
-        
-        <!-- Directory Analysis -->
-        <div v-if="directoryStats.fileCount > 0" class="detail-section">
-          <label class="detail-label">분석:</label>
-          <div class="analysis-grid">
-            <div class="analysis-item">
-              <span class="analysis-label">평균 파일 크기:</span>
-              <span class="analysis-value">{{ formatFileSize(directoryStats.totalSize / directoryStats.fileCount) }}</span>
-            </div>
-            <div class="analysis-item">
-              <span class="analysis-label">가장 많은 파일 유형:</span>
-              <span class="analysis-value">{{ directoryStats.fileTypes[0]?.extension || 'N/A' }}</span>
-            </div>
-            <div class="analysis-item">
-              <span class="analysis-label">디렉토리 밀도:</span>
-              <span class="analysis-value">{{ Math.round((directoryStats.directoryCount / (directoryStats.fileCount + directoryStats.directoryCount)) * 100) }}%</span>
-            </div>
-            <div class="analysis-item">
-              <span class="analysis-label">파일/디렉토리 비율:</span>
-              <span class="analysis-value">{{ Math.round(directoryStats.fileCount / Math.max(directoryStats.directoryCount, 1) * 10) / 10 }}:1</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- File Type Distribution Chart -->
-        <div v-if="directoryStats.fileTypes.length > 0" class="detail-section">
-          <label class="detail-label">파일 유형 분포:</label>
-          <div class="file-type-chart">
-            <div 
-              v-for="type in directoryStats.fileTypes.slice(0, 5)" 
-              :key="type.extension"
-              class="chart-item"
-            >
-              <div class="chart-bar">
-                <div 
-                  class="chart-fill" 
-                  :style="{ 
-                    width: `${(type.count / directoryStats.fileTypes[0].count) * 100}%` 
-                  }"
-                ></div>
+            <div v-else class="directory-tree">
+              <div class="breadcrumb">
+                <button 
+                  v-if="currentPath !== ''"
+                  @click="navigateUp"
+                  class="breadcrumb-item breadcrumb-up"
+                >
+                  ← 상위 폴더
+                </button>
+                <span class="breadcrumb-path">{{ currentPath || '/' }}</span>
               </div>
-              <div class="chart-label">
-                <span class="chart-extension">{{ type.extension }}</span>
-                <span class="chart-count">{{ type.count }}개</span>
+              <div 
+                v-for="(item, name) in currentDirectoryItems" 
+                :key="name"
+                @click="navigateToDirectory(name, item)"
+                :class="['directory-item', { 'is-directory': isDirectory(item), 'is-selected': selectedDirectory === name }]"
+              >
+                <span v-if="isDirectory(item)" class="icon">📁</span>
+                <span v-else class="icon">📄</span>
+                <span class="name">{{ name }}</span>
+                <span v-if="isDirectory(item)" class="expand-icon">▶</span>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- Actions -->
+        
         <div class="modal-actions">
-          <button @click="navigateToDirectory" class="btn-primary">이 디렉토리로 이동</button>
-          <button @click="exportDirectoryInfo" class="btn-secondary">정보 내보내기</button>
-          <button @click="closeDirectoryDetails" class="btn-secondary">닫기</button>
+          <button 
+            @click="confirmDirectorySelection" 
+            class="btn-primary"
+            :disabled="!selectedDirectory"
+          >
+            선택
+          </button>
+          <button @click="closeDirectoryBrowser" class="btn-secondary">취소</button>
         </div>
       </div>
     </div>
@@ -424,7 +310,7 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['file-click', 'file-open', 'directory-create', 'directory-rename', 'directory-delete', 'file-move', 'file-upload', 'navigate', 'refresh']);
+const emit = defineEmits(['file-click', 'file-open', 'directory-create', 'directory-rename', 'directory-delete', 'file-move', 'file-upload']);
 
 const openDirectories = ref({});
 const expandedBySelectionOnce = ref(false)
@@ -464,28 +350,41 @@ const showUploadDialog = ref(false);
 const uploadPath = ref('');
 const overwriteFiles = ref(false);
 
-// Directory details state
-const showDirectoryDetailsDialog = ref(false);
+// Directory browser state
+const showDirectoryBrowser = ref(false);
+const directoryTree = ref({});
+const isLoadingDirectories = ref(false);
+const selectedDirectory = ref('');
 const selectedDirectoryPath = ref('');
-const selectedDirectoryContent = ref({});
-const directoryStats = ref({
-  fileCount: 0,
-  directoryCount: 0,
-  totalSize: 0,
-  lastModified: null,
-  fileTypes: []
-});
-
-// Navigation state
 const currentPath = ref('');
-const showSearch = ref(false);
-const searchQuery = ref('');
-const searchResults = ref([]);
-const searchInput = ref(null);
+const navigationStack = ref([]);
 
 const isDirectory = (item) => {
   return typeof item === 'object' && item !== null && !Array.isArray(item);
 };
+
+// Current directory items for browser
+const currentDirectoryItems = computed(() => {
+  if (!currentPath.value) {
+    return directoryTree.value;
+  }
+  
+  const pathParts = currentPath.value.split('/').filter(Boolean);
+  let current = directoryTree.value;
+  
+  for (const part of pathParts) {
+    if (current && current[part]) {
+      current = current[part];
+    } else {
+      return {};
+    }
+  }
+  
+  // Remove files from the result, only show directories
+  const result = { ...current };
+  delete result.files;
+  return result;
+});
 
 const files = computed(() => {
   const fileList = props.tree.files || [];
@@ -511,45 +410,6 @@ const sortedTree = computed(() => {
         acc[key] = dirs[key];
         return acc;
       }, {});
-});
-
-// Navigation computed properties
-const pathSegments = computed(() => {
-  return currentPath.value ? currentPath.value.split('/').filter(Boolean) : [];
-});
-
-const canGoUp = computed(() => {
-  return currentPath.value && currentPath.value !== '';
-});
-
-const filteredTree = computed(() => {
-  if (!searchQuery.value) return sortedTree.value;
-  
-  const query = searchQuery.value.toLowerCase();
-  const filtered = {};
-  
-  Object.keys(sortedTree.value).forEach(key => {
-    const item = sortedTree.value[key];
-    const keyLower = key.toLowerCase();
-    
-    // Check if directory name matches
-    if (keyLower.includes(query)) {
-      filtered[key] = item;
-    } else if (isDirectory(item)) {
-      // Check files within directory
-      const files = item.files || [];
-      const matchingFiles = files.filter(file => {
-        const fileName = (file.name || file).toLowerCase();
-        return fileName.includes(query);
-      });
-      
-      if (matchingFiles.length > 0) {
-        filtered[key] = { ...item, files: matchingFiles };
-      }
-    }
-  });
-  
-  return filtered;
 });
 
 const toggle = (name) => {
@@ -928,164 +788,70 @@ const formatFileSize = (bytes) => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 };
 
-// Directory statistics functions
-const getDirectoryStats = (item) => {
-  if (!isDirectory(item)) return '';
-  
-  const files = item.files || [];
-  const dirs = Object.keys(item).filter(key => key !== 'files' && isDirectory(item[key]));
-  
-  const fileCount = files.length;
-  const dirCount = dirs.length;
-  
-  return `${fileCount}파일, ${dirCount}폴더`;
-};
-
-const calculateDirectoryStats = (item) => {
-  if (!isDirectory(item)) return { fileCount: 0, directoryCount: 0, totalSize: 0, fileTypes: [] };
-  
-  const files = item.files || [];
-  const dirs = Object.keys(item).filter(key => key !== 'files' && isDirectory(item[key]));
-  
-  let fileCount = files.length;
-  let directoryCount = dirs.length;
-  let totalSize = 0;
-  const fileTypes = {};
-  
-  // Calculate file sizes and types
-  files.forEach(file => {
-    if (file.size) {
-      totalSize += file.size;
-    }
-    const fileName = file.name || file;
-    const extension = fileName.split('.').pop()?.toLowerCase() || 'no-extension';
-    fileTypes[extension] = (fileTypes[extension] || 0) + 1;
-  });
-  
-  // Recursively calculate subdirectory stats
-  dirs.forEach(dirName => {
-    const subStats = calculateDirectoryStats(item[dirName]);
-    fileCount += subStats.fileCount;
-    directoryCount += subStats.directoryCount;
-    totalSize += subStats.totalSize;
+// Directory browser functions
+const loadDirectoryTree = async () => {
+  isLoadingDirectories.value = true;
+  try {
+    const response = await fetch('/api/v1/knowledge-base/tree?show_hidden=true', {
+      headers: {
+        'X-API-Key': 'my_mcp_eagle_tiger' // TODO: Get from config
+      }
+    });
     
-    // Merge file types
-    subStats.fileTypes.forEach(type => {
-      fileTypes[type.extension] = (fileTypes[type.extension] || 0) + type.count;
-    });
-  });
-  
-  const fileTypesArray = Object.entries(fileTypes).map(([extension, count]) => ({
-    extension: extension === 'no-extension' ? '확장자 없음' : `.${extension}`,
-    count
-  })).sort((a, b) => b.count - a.count);
-  
-  return {
-    fileCount,
-    directoryCount,
-    totalSize,
-    fileTypes: fileTypesArray
-  };
+    if (!response.ok) {
+      throw new Error(`Failed to load directory tree: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    directoryTree.value = data;
+  } catch (error) {
+    console.error('Error loading directory tree:', error);
+    directoryTree.value = {};
+  } finally {
+    isLoadingDirectories.value = false;
+  }
 };
 
-const showDirectoryDetails = (name, item) => {
-  selectedDirectoryPath.value = constructPath(name);
-  selectedDirectoryContent.value = item;
-  directoryStats.value = calculateDirectoryStats(item);
-  showDirectoryDetailsDialog.value = true;
+const navigateToDirectory = (name, item) => {
+  if (isDirectory(item)) {
+    // Add to navigation stack
+    navigationStack.value.push(currentPath.value);
+    
+    // Update current path
+    const newPath = currentPath.value ? `${currentPath.value}/${name}` : name;
+    currentPath.value = newPath;
+    
+    // Update selected directory and path
+    selectedDirectory.value = name;
+    selectedDirectoryPath.value = newPath;
+  }
 };
 
-const closeDirectoryDetails = () => {
-  showDirectoryDetailsDialog.value = false;
+const navigateUp = () => {
+  if (navigationStack.value.length > 0) {
+    currentPath.value = navigationStack.value.pop();
+    
+    // Update selected directory to the last part of current path
+    const pathParts = currentPath.value.split('/').filter(Boolean);
+    selectedDirectory.value = pathParts[pathParts.length - 1] || '';
+    selectedDirectoryPath.value = currentPath.value;
+  }
+};
+
+const confirmDirectorySelection = () => {
+  if (selectedDirectory.value) {
+    uploadPath.value = selectedDirectoryPath.value;
+    closeDirectoryBrowser();
+  }
+};
+
+const closeDirectoryBrowser = () => {
+  showDirectoryBrowser.value = false;
+  selectedDirectory.value = '';
   selectedDirectoryPath.value = '';
-  selectedDirectoryContent.value = {};
-  directoryStats.value = {
-    fileCount: 0,
-    directoryCount: 0,
-    totalSize: 0,
-    lastModified: null,
-    fileTypes: []
-  };
-};
-
-const navigateToDirectory = () => {
-  // Emit event to navigate to the selected directory
-  emit('file-click', selectedDirectoryPath.value);
-  closeDirectoryDetails();
-};
-
-// Navigation functions
-const navigateToPath = (path) => {
-  currentPath.value = path;
-  // Emit navigation event to parent component
-  emit('navigate', path);
-};
-
-const getPathUpTo = (index) => {
-  return pathSegments.value.slice(0, index + 1).join('/');
-};
-
-const goUp = () => {
-  if (!canGoUp.value) return;
-  
-  const segments = pathSegments.value;
-  if (segments.length > 1) {
-    const newPath = segments.slice(0, -1).join('/');
-    navigateToPath(newPath);
-  } else {
-    navigateToPath('');
-  }
-};
-
-const refreshDirectory = () => {
-  // Emit refresh event to parent component
-  emit('refresh');
-};
-
-const toggleSearch = () => {
-  showSearch.value = !showSearch.value;
-  if (showSearch.value) {
-    nextTick(() => {
-      searchInput.value?.focus();
-    });
-  } else {
-    clearSearch();
-  }
-};
-
-const onSearchInput = () => {
-  // Real-time search filtering is handled by computed property
-};
-
-const performSearch = () => {
-  // Search is performed in real-time via filteredTree computed property
-  console.log('Search performed:', searchQuery.value);
-};
-
-const clearSearch = () => {
-  searchQuery.value = '';
-  searchResults.value = [];
-};
-
-const exportDirectoryInfo = () => {
-  const info = {
-    path: selectedDirectoryPath.value,
-    stats: directoryStats.value,
-    timestamp: new Date().toISOString(),
-    content: selectedDirectoryContent.value
-  };
-  
-  const dataStr = JSON.stringify(info, null, 2);
-  const dataBlob = new Blob([dataStr], { type: 'application/json' });
-  const url = URL.createObjectURL(dataBlob);
-  
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `directory-info-${selectedDirectoryPath.value.replace(/\//g, '-')}-${Date.now()}.json`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  currentPath.value = '';
+  navigationStack.value = [];
+  directoryTree.value = {};
 };
 
 // Event handlers for child components
@@ -1138,6 +904,13 @@ function expandBySelected(newPath){
 watch(() => props.selectedFile, (newPath) => { expandBySelected(newPath) }, { immediate: true })
 // Re-expand after tree data changes (e.g., initial load or refresh)
 watch(() => props.tree, () => { expandBySelected(props.selectedFile) }, { deep: true })
+
+// Load directory tree when browser opens
+watch(showDirectoryBrowser, (isOpen) => {
+  if (isOpen) {
+    loadDirectoryTree();
+  }
+})
 
 // Add global click listener
 onMounted(() => {
@@ -1451,358 +1224,154 @@ onUnmounted(() => {
   color: #6b7280;
 }
 
-/* Directory info styles */
-.directory-info {
-  margin-left: auto;
-  margin-right: 8px;
-  opacity: 0.7;
-  transition: opacity 0.2s;
+/* Directory browser styles */
+.path-input-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
-.tree-item:hover .directory-info {
-  opacity: 1;
-}
-
-.directory-stats {
-  font-size: 11px;
-  color: #6b7280;
+.path-input {
+  flex: 1;
   cursor: pointer;
-  padding: 2px 6px;
-  border-radius: 3px;
-  transition: background-color 0.2s;
 }
 
-.directory-stats:hover {
+.browse-button {
   background-color: #f3f4f6;
-  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
 }
 
-/* Directory details dialog styles */
-.directory-details-dialog {
+.browse-button:hover {
+  background-color: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.directory-browser {
   max-width: 600px;
   width: 90vw;
   max-height: 80vh;
-  overflow-y: auto;
 }
 
-.detail-section {
-  margin-bottom: 20px;
+.directory-browser-content {
+  max-height: 400px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.detail-label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 8px;
+.current-path {
+  padding: 12px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.path-label {
+  font-weight: 500;
   color: #374151;
-  font-size: 14px;
-}
-
-.detail-value {
-  color: #6b7280;
-  font-size: 14px;
+  margin-right: 8px;
 }
 
 .path-value {
-  background-color: #f9fafb;
-  padding: 8px 12px;
-  border-radius: 4px;
-  border: 1px solid #e5e7eb;
   font-family: monospace;
+  color: #6b7280;
   word-break: break-all;
 }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-}
-
-.stat-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #f9fafb;
-  border-radius: 6px;
+.directory-tree-container {
+  flex: 1;
+  overflow: hidden;
   border: 1px solid #e5e7eb;
+  border-radius: 4px;
 }
 
-.stat-label {
-  font-size: 13px;
+.loading-message {
+  padding: 20px;
+  text-align: center;
   color: #6b7280;
-  font-weight: 500;
+  font-style: italic;
 }
 
-.stat-value {
-  font-size: 13px;
-  color: #374151;
-  font-weight: 600;
+.directory-tree {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 8px;
 }
 
-.file-types {
+.directory-item {
+  padding: 8px 12px;
+  cursor: pointer;
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  align-items: center;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
 }
 
-.file-type-tag {
+.directory-item:hover {
+  background-color: #f3f4f6;
+}
+
+.directory-item.is-selected {
   background-color: #dbeafe;
   color: #1e40af;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 12px;
   font-weight: 500;
 }
 
-.directory-preview {
-  max-height: 200px;
-  overflow-y: auto;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  background-color: #f9fafb;
-}
-
-.preview-item {
-  display: flex;
-  align-items: center;
-  padding: 6px 12px;
-  border-bottom: 1px solid #e5e7eb;
-  font-size: 13px;
-}
-
-.preview-item:last-child {
-  border-bottom: none;
-}
-
-.preview-icon {
+.directory-item .icon {
   margin-right: 8px;
   width: 16px;
   text-align: center;
 }
 
-.preview-name {
+.directory-item .name {
   flex: 1;
-  color: #374151;
-  font-weight: 500;
+  word-break: break-all;
 }
 
-.preview-count {
-  color: #6b7280;
-  font-size: 11px;
+.directory-item .expand-icon {
   margin-left: 8px;
-}
-
-/* Navigation styles */
-.breadcrumb-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
-  margin-bottom: 8px;
+  color: #6b7280;
+  font-size: 12px;
 }
 
 .breadcrumb {
+  padding: 8px 12px;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
   display: flex;
   align-items: center;
-  flex: 1;
-  min-width: 0;
+  gap: 8px;
 }
 
 .breadcrumb-item {
+  background: none;
+  border: none;
+  color: #3b82f6;
   cursor: pointer;
+  font-size: 12px;
   padding: 4px 8px;
   border-radius: 4px;
-  font-size: 13px;
-  color: #64748b;
-  transition: all 0.2s;
-  white-space: nowrap;
-  max-width: 150px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  transition: background-color 0.2s ease;
 }
 
 .breadcrumb-item:hover {
-  background-color: #e2e8f0;
-  color: #475569;
+  background-color: #e0e7ff;
 }
 
-.breadcrumb-item.active {
-  color: #1e293b;
-  font-weight: 600;
-  background-color: #dbeafe;
-}
-
-.breadcrumb-item.root {
-  color: #3b82f6;
-  font-weight: 600;
-}
-
-.breadcrumb-separator {
-  margin: 0 4px;
-  color: #94a3b8;
-  font-size: 12px;
-}
-
-.navigation-controls {
-  display: flex;
-  gap: 4px;
-  margin-left: 12px;
-}
-
-.nav-btn {
-  background: none;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  padding: 6px 8px;
-  cursor: pointer;
-  font-size: 12px;
-  color: #6b7280;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 32px;
-  height: 32px;
-}
-
-.nav-btn:hover:not(:disabled) {
-  background-color: #f3f4f6;
-  border-color: #9ca3af;
-  color: #374151;
-}
-
-.nav-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.nav-btn.active {
-  background-color: #dbeafe;
-  border-color: #3b82f6;
-  color: #1e40af;
-}
-
-/* Search styles */
-.search-container {
-  position: relative;
-  padding: 8px 12px;
-  background-color: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
-  margin-bottom: 8px;
-}
-
-.search-input {
-  width: 100%;
-  padding: 8px 32px 8px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 14px;
-  background-color: white;
-  transition: border-color 0.2s;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.search-clear {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #6b7280;
-  font-size: 16px;
-  padding: 4px;
-  border-radius: 3px;
-  transition: all 0.2s;
-}
-
-.search-clear:hover {
-  background-color: #f3f4f6;
-  color: #374151;
-}
-
-/* Analysis styles */
-.analysis-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-}
-
-.analysis-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 12px;
-  background-color: #f0f9ff;
-  border-radius: 6px;
-  border: 1px solid #bae6fd;
-}
-
-.analysis-label {
-  font-size: 13px;
-  color: #0369a1;
+.breadcrumb-up {
   font-weight: 500;
 }
 
-.analysis-value {
-  font-size: 13px;
-  color: #0c4a6e;
-  font-weight: 600;
-}
-
-.file-type-chart {
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  padding: 12px;
-}
-
-.chart-item {
-  margin-bottom: 12px;
-}
-
-.chart-item:last-child {
-  margin-bottom: 0;
-}
-
-.chart-bar {
-  width: 100%;
-  height: 8px;
-  background-color: #e2e8f0;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 4px;
-}
-
-.chart-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
-  border-radius: 4px;
-  transition: width 0.3s ease;
-}
-
-.chart-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 12px;
-}
-
-.chart-extension {
-  color: #374151;
-  font-weight: 500;
-}
-
-.chart-count {
+.breadcrumb-path {
+  font-family: monospace;
   color: #6b7280;
-  font-weight: 600;
+  font-size: 12px;
+  word-break: break-all;
 }
 </style>
