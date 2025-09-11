@@ -73,7 +73,7 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [종합 실습 프로젝트](practice/basic-to-master-bridge.md)
+- 🔗 [종합 실습 프로젝트](practice/basic-to-master-bridge)
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Basic 1일차](../Day1/README.md)

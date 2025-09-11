@@ -76,23 +76,23 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [AWS 기초 실습 가이드](practice/aws_basic_practice.md)
-- 🔗 [GCP 기초 실습 가이드](practice/gcp_basic_practice.md)
-- 🔗 [통합 실습 가이드](practice/실습1_aws_gcp.md)
+- 🔗 [AWS 기초 실습 가이드](practice/aws_basic_practice)
+- 🔗 [GCP 기초 실습 가이드](practice/gcp_basic_practice)
+- 🔗 [통합 실습 가이드](practice/실습1_aws_gcp)
 
 ### 📚 개념 학습 가이드
-- 🔗 [클라우드 계정 설정 가이드](aws-gcp-account-setup.md)
-- 🔗 [IAM 기초 가이드](iam-basics-guide.md)
-- 🔗 [가상머신 서비스 가이드](vm-services-guide.md)
-- 🔗 [스토리지 서비스 가이드](storage-services-guide.md)
+- 🔗 [클라우드 계정 설정 가이드](aws-gcp-account-setup)
+- 🔗 [IAM 기초 가이드](iam-basics-guide)
+- 🔗 [가상머신 서비스 가이드](vm-services-guide)
+- 🔗 [스토리지 서비스 가이드](storage-services-guide)
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [트러블슈팅 가이드](troubleshooting-guide.md)
+- 🔗 [트러블슈팅 가이드](troubleshooting-guide)
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Basic 2일차](../Day2/README.md)
-- 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md)
-- 🔗 [전체 커리큘럼](../../../curriculum.md)
+- 🔗 [Cloud Basic 2일차](../Day2/README)
+- 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README)
+- 🔗 [전체 커리큘럼](../../../curriculum)
 
 </details>
 

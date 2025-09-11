@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Docker 기초 실습](./docker-basics.md) | [📚 전체 커리큘럼](../../../../curriculum.md) | [다음: GitHub Actions 기초 실습 →](./github-actions-basics.md)
+[← 이전: Docker 기초 실습](./docker-basics) | [📚 전체 커리큘럼](../../../../curriculum) | [다음: GitHub Actions 기초 실습 →](./github-actions-basics)
 
 </div>
 

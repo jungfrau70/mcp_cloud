@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Git/GitHub 기초 실습](./git-github-basics.md) | [📚 전체 커리큘럼](../../../../curriculum.md) | [다음: VM 배포 실습 →](./vm-deployment.md)
+[← 이전: Git/GitHub 기초 실습](./git-github-basics) | [📚 전체 커리큘럼](../../../../curriculum) | [다음: VM 배포 실습 →](./vm-deployment)
 
 </div>
 

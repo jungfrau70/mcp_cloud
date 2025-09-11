@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: GitHub Actions 기초 실습](./github-actions-basics.md) | [📚 전체 커리큘럼](../../../../curriculum.md) | [다음: Cloud Master 2일차 →](../../Day2/README.md)
+[← 이전: GitHub Actions 기초 실습](./github-actions-basics) | [📚 전체 커리큘럼](../../../../curriculum) | [다음: Cloud Master 2일차 →](../../Day2/README)
 
 </div>
 

@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Master 1일차](../Day1/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [다음: Cloud Master 3일차 →](../Day3/README.md)
+[← 이전: Cloud Master 1일차](../Day1/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Master 3일차 →](../Day3/README)
 
 </div>
 
@@ -142,10 +142,10 @@ kubectl version --client
 
 ## 🚀 시작하기
 
-실습을 시작하기 전에 위의 체크리스트를 모두 확인하세요. 모든 준비가 완료되면 [1교시: 클라우드 비용 구조와 서비스 과금 체계](./cost-structure-guide.md)부터 시작하세요.
+실습을 시작하기 전에 위의 체크리스트를 모두 확인하세요. 모든 준비가 완료되면 [1교시: 클라우드 비용 구조와 서비스 과금 체계](./cost-structure-guide)부터 시작하세요.
 
 ### 문제가 있나요?
-실습 중 문제가 발생하면 [트러블슈팅 가이드](./troubleshooting-guide.md)를 참고하세요.
+실습 중 문제가 발생하면 [트러블슈팅 가이드](./troubleshooting-guide)를 참고하세요.
 
 ---
 

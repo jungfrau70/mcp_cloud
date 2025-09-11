@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Master 2일차](../Day2/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [다음 과정: Cloud Container 1일차 →](../../../cloud_container/textbook/Day1/README.md)
+[← 이전: Cloud Master 2일차](../Day2/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음 과정: Cloud Container 1일차 →](../../../cloud_container/textbook/Day1/README)
 
 </div>
 
@@ -80,20 +80,20 @@
 - 🔗 [장애 복구 실습](practice/disaster-recovery)
 
 ### 📚 개념 학습 가이드
-- 🔗 [로드 밸런싱 가이드](load-balancing-guide.md)
-- 🔗 [Auto Scaling 가이드](auto-scaling-guide.md)
-- 🔗 [모니터링 가이드](monitoring-guide.md)
-- 🔗 [비용 최적화 가이드](cost-optimization-guide.md)
+- 🔗 [로드 밸런싱 가이드](load-balancing-guide)
+- 🔗 [Auto Scaling 가이드](auto-scaling-guide)
+- 🔗 [모니터링 가이드](monitoring-guide)
+- 🔗 [비용 최적화 가이드](cost-optimization-guide)
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [로드 밸런싱 트러블슈팅](troubleshooting-load-balancing.md)
-- 🔗 [Auto Scaling 트러블슈팅](troubleshooting-auto-scaling.md)
-- 🔗 [모니터링 트러블슈팅](troubleshooting-monitoring.md)
+- 🔗 [로드 밸런싱 트러블슈팅](troubleshooting-load-balancing)
+- 🔗 [Auto Scaling 트러블슈팅](troubleshooting-auto-scaling)
+- 🔗 [모니터링 트러블슈팅](troubleshooting-monitoring)
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Master 1일차](../Day1/README.md)
-- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README.md)
-- 🔗 [전체 커리큘럼](../../../curriculum.md)
+- 🔗 [Cloud Master 1일차](../Day1/README)
+- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README)
+- 🔗 [전체 커리큘럼](../../../curriculum)
 
 </details>
 
@@ -705,7 +705,7 @@ aws cloudwatch get-metric-statistics \
 
 - [AWS ELB 공식 문서](https://docs.aws.amazon.com/elasticloadbalancing/)
 - [GCP Cloud Load Balancing 공식 문서](https://cloud.google.com/load-balancing/docs)
-- [Cloud Container 과정](../../../cloud_container/textbook/Day1/README.md)
+- [Cloud Container 과정](../../../cloud_container/textbook/Day1/README)
 
 ---
 

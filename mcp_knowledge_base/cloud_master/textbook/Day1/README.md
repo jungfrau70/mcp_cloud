@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전 과정: Cloud Basic 2일차](../../../cloud_basic/textbook/Day2/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [다음: Cloud Master 2일차 →](../Day2/README.md)
+[← 이전 과정: Cloud Basic 2일차](../../../cloud_basic/textbook/Day2/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Master 2일차 →](../Day2/README)
 
 </div>
 
@@ -87,10 +87,10 @@
 - 🔗 [클라우드 배포 가이드](cloud-deployment-guide)
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Basic 과정](../../../cloud_basic/textbook/Day1/README.md)
-- 🔗 [Cloud Master 2일차](../Day2/README.md)
-- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README.md)
-- 🔗 [전체 커리큘럼](../../../curriculum.md)
+- 🔗 [Cloud Basic 과정](../../../cloud_basic/textbook/Day1/README)
+- 🔗 [Cloud Master 2일차](../Day2/README)
+- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README)
+- 🔗 [전체 커리큘럼](../../../curriculum)
 
 </details>
 
@@ -894,7 +894,7 @@ ssh -T git@github.com
 - [Docker 공식 문서](https://docs.docker.com/)
 - [Git 공식 문서](https://git-scm.com/doc)
 - [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [Cloud Master 2일차](../Day2/README.md)
+- [Cloud Master 2일차](../Day2/README)
 
 ---
 
