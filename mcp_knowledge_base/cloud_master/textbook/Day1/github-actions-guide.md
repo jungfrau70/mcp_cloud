@@ -564,7 +564,7 @@ git push -u origin main
 2. Docker Hub에서 이미지 확인: `https://hub.docker.com/r/YOUR_USERNAME/actions-demo`
 3. 로컬에서 테스트: `docker run -p 3000:3000 YOUR_USERNAME/actions-demo:main-COMMIT_SHA`
 
-**📖 Docker Hub 설정이 필요하다면**: [Docker Hub 가입 및 토큰 설정 가이드](./docker-hub-setup-guide.md)
+**📖 Docker Hub 설정이 필요하다면**: [Docker Hub 가입 및 토큰 설정 가이드](./docker-hub-setup-guide)
 
 ---
 
@@ -1108,4 +1108,4 @@ docker rm actions-demo-prod
 - [워크플로우 예제 모음](https://github.com/actions/starter-workflows)
 - [YAML 문법 가이드](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)
 
-다음 단계: [3교시: 클라우드 배포 기초 실습](./cloud-deployment-guide.md)
+다음 단계: [3교시: 클라우드 배포 기초 실습](./cloud-deployment-guide)

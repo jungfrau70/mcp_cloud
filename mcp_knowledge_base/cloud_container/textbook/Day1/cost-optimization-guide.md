@@ -777,9 +777,9 @@ data:
 - [Kubernetes Resource Management 공식 문서](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)
 
 ### 추가 학습 자료
-- [자동 복구 가이드](./auto-recovery-guide.md)
-- [보안 정책 가이드](./security-policies-guide.md)
-- [종합 실습 가이드](./comprehensive-practice-guide.md)
+- [자동 복구 가이드](./auto-recovery-guide)
+- [보안 정책 가이드](./security-policies-guide)
+- [종합 실습 가이드](./comprehensive-practice-guide)
 
 ---
 

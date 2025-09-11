@@ -80,15 +80,15 @@
 - 🔗 [장애 복구 실습](practice/disaster-recovery)
 
 ### 📚 개념 학습 가이드
-- 🔗 [로드 밸런싱 가이드](load-balancing-guide)
-- 🔗 [Auto Scaling 가이드](auto-scaling-guide)
-- 🔗 [모니터링 가이드](monitoring-guide)
-- 🔗 [비용 최적화 가이드](cost-optimization-guide)
+- 🔗 [로드 밸런싱 가이드](./load-balancing-guide)
+- 🔗 [Auto Scaling 가이드](./auto-scaling-guide)
+- 🔗 [모니터링 가이드](./monitoring-guide)
+- 🔗 [비용 최적화 가이드](./cost-optimization-guide)
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [로드 밸런싱 트러블슈팅](troubleshooting-load-balancing)
-- 🔗 [Auto Scaling 트러블슈팅](troubleshooting-auto-scaling)
-- 🔗 [모니터링 트러블슈팅](troubleshooting-monitoring)
+- 🔗 [로드 밸런싱 트러블슈팅](./troubleshooting-load-balancing)
+- 🔗 [Auto Scaling 트러블슈팅](./troubleshooting-auto-scaling)
+- 🔗 [모니터링 트러블슈팅](./troubleshooting-monitoring)
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Master 1일차](../Day1/README)

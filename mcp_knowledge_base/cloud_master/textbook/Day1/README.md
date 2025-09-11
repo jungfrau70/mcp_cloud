@@ -75,16 +75,16 @@
 - 🔗 [VM 배포 실습](practice/vm-deployment)
 
 ### 📚 개념 학습 가이드
-- 🔗 [Docker 고급 가이드](docker-advanced-guide)
-- 🔗 [Docker Compose 가이드](docker-compose-guide)
-- 🔗 [GitHub Actions 가이드](github-actions-guide)
-- 🔗 [AWS & GCP 배포 가이드](aws-gcp-deployment-guide)
+- 🔗 [Docker 고급 가이드](./docker-advanced-guide)
+- 🔗 [Docker Compose 가이드](./docker-compose-guide)
+- 🔗 [GitHub Actions 가이드](./github-actions-guide)
+- 🔗 [AWS & GCP 배포 가이드](./aws-gcp-deployment-guide)
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [종합 트러블슈팅 가이드](troubleshooting-guide)
-- 🔗 [AWS & GCP 권한 설정](aws-gcp-permissions-setup)
-- 🔗 [CI/CD 파이프라인 가이드](cicd-pipeline-guide)
-- 🔗 [클라우드 배포 가이드](cloud-deployment-guide)
+- 🔗 [종합 트러블슈팅 가이드](./troubleshooting-guide)
+- 🔗 [AWS & GCP 권한 설정](./aws-gcp-permissions-setup)
+- 🔗 [CI/CD 파이프라인 가이드](./cicd-pipeline-guide)
+- 🔗 [클라우드 배포 가이드](./cloud-deployment-guide)
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Basic 과정](../../../cloud_basic/textbook/Day1/README)

@@ -890,9 +890,9 @@ kubectl auth can-i delete pods --as=system:serviceaccount:container-demo:contain
 - [RBAC 공식 문서](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
 
 ### 추가 학습 자료
-- [Kubernetes 고급 가이드](./kubernetes-advanced-guide.md)
-- [자동 복구 가이드](./auto-recovery-guide.md)
-- [종합 실습 가이드](./comprehensive-practice-guide.md)
+- [Kubernetes 고급 가이드](./kubernetes-advanced-guide)
+- [자동 복구 가이드](./auto-recovery-guide)
+- [종합 실습 가이드](./comprehensive-practice-guide)
 
 ---
 

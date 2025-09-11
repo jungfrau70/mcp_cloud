@@ -150,7 +150,7 @@ tail -f basic_course_automation.log
 
 ## 📞 지원
 
-- **문서**: [USER_GUIDE.md](USER_GUIDE.md)
+- **문서**: [USER_GUIDE.md](./USER_GUIDE.md)
 - **이슈**: GitHub Issues
 - **문의**: 프로젝트 관리자
 

@@ -1011,9 +1011,9 @@ kubectl logs -f deployment/auto-recovery-webhook -n container-demo
 - [Prometheus 알림 규칙 공식 문서](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/)
 
 ### 추가 학습 자료
-- [Kubernetes 고급 가이드](./kubernetes-advanced-guide.md)
-- [종합 실습 가이드](./comprehensive-practice-guide.md)
-- [모니터링 설정 가이드](./monitoring-setup.md)
+- [Kubernetes 고급 가이드](./kubernetes-advanced-guide)
+- [종합 실습 가이드](./comprehensive-practice-guide)
+- [모니터링 설정 가이드](./monitoring-setup)
 
 ---
 

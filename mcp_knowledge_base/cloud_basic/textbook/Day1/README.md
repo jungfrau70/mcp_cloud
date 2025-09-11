@@ -81,13 +81,13 @@
 - 🔗 [통합 실습 가이드](practice/실습1_aws_gcp)
 
 ### 📚 개념 학습 가이드
-- 🔗 [클라우드 계정 설정 가이드](aws-gcp-account-setup)
-- 🔗 [IAM 기초 가이드](iam-basics-guide)
-- 🔗 [가상머신 서비스 가이드](vm-services-guide)
-- 🔗 [스토리지 서비스 가이드](storage-services-guide)
+- 🔗 [클라우드 계정 설정 가이드](./aws-gcp-account-setup)
+- 🔗 [IAM 기초 가이드](./iam-basics-guide)
+- 🔗 [가상머신 서비스 가이드](./vm-services-guide)
+- 🔗 [스토리지 서비스 가이드](./storage-services-guide)
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [트러블슈팅 가이드](troubleshooting-guide)
+- 🔗 [트러블슈팅 가이드](./troubleshooting-guide)
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Basic 2일차](../Day2/README)

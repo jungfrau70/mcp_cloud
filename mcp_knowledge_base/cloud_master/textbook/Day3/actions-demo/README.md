@@ -28,7 +28,7 @@ cd actions-demo
 
 
 ### 2단계: Docker Hub 토큰 설정 (권장)
-**📖 상세 가이드**: [Docker Hub 가입 및 토큰 설정 가이드](../docker-hub-setup-guide.md)
+**📖 상세 가이드**: [Docker Hub 가입 및 토큰 설정 가이드](../docker-hub-setup-guide)
 
 **간단 설정**:
 1. [Docker Hub](https://hub.docker.com)에서 Personal Access Token 생성

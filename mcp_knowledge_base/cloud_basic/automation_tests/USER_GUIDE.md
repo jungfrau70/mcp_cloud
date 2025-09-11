@@ -93,6 +93,6 @@ ls -la mcp_knowledge_base/cloud_basic/automation/day2/
 
 ## 🆘 도움이 필요하신가요?
 
-- **상세 문서**: [README.md](README.md)
+- **상세 문서**: [README.md](./README.md)
 - **문제 해결**: 로그 파일 확인
 - **지원 요청**: GitHub Issues
