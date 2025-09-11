@@ -232,7 +232,7 @@ Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일)
 ### 자동화 스크립트
 - 🔗 [AWS 자동화 스크립트](mcp_knowledge_base/cloud_basic/textbook/Day1/scripts/)
 - 🔗 [GCP 자동화 스크립트](mcp_knowledge_base/cloud_basic/textbook/Day1/scripts/)
-- 🔗 [Docker 자동화 스크립트](mcp_knowledge_base/cloud_intermediate/textbook/Day1/scripts/)
+- 🔗 [Docker 자동화 스크립트](mcp_knowledge_base/cloud_master/textbook/Day1/scripts/)
 - 🔗 [Kubernetes 자동화 스크립트](mcp_knowledge_base/cloud_container/textbook/Day1/scripts/)
 
 ---

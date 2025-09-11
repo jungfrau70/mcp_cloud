@@ -1,0 +1,54 @@
+{
+  "course_name": "Cloud Container Course",
+  "duration_days": 2,
+  "generated_at": "C:\\Users\\JIH\\githubs\\mcp_cloud\\mcp_knowledge_base\\cloud_container\\automation_tests",
+  "day_plans": [
+    {
+      "day": 1,
+      "title": "Kubernetes 및 GKE 고급 오케스트레이션",
+      "topics": [
+        "Kubernetes 고급 아키텍처",
+        "컨테이너 오케스트레이션 고급 기법",
+        "AWS ECS 및 Fargate 심화",
+        "고급 CI/CD 파이프라인"
+      ],
+      "duration": "7시간",
+      "objectives": [
+        "GKE 클러스터 생성 및 애플리케이션 배포",
+        "마이크로서비스 아키텍처 구성",
+        "ECS Fargate 서비스 배포",
+        "GitOps 기반 배포 자동화"
+      ]
+    },
+    {
+      "day": 2,
+      "title": "고가용성 및 확장성 아키텍처",
+      "topics": [
+        "고가용성 아키텍처 설계",
+        "로드 밸런싱 및 Auto Scaling",
+        "모니터링 및 로깅 시스템",
+        "종합 프로젝트 및 최적화"
+      ],
+      "duration": "7시간",
+      "objectives": [
+        "Multi-AZ/Multi-Region 아키텍처 구현",
+        "Auto Scaling + Load Balancer 연동",
+        "커스텀 메트릭 대시보드 구축",
+        "실제 서비스 시나리오 아키텍처 구현"
+      ]
+    }
+  ],
+  "scripts_generated": {
+    "day1": [
+      "kubernetes_advanced.sh",
+      "gke_cluster.sh",
+      "ecs_fargate.sh",
+      "advanced_cicd.sh"
+    ],
+    "day2": [
+      "high_availability.sh",
+      "monitoring.sh",
+      "comprehensive_project.sh"
+    ]
+  }
+}

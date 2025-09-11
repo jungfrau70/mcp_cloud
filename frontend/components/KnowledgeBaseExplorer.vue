@@ -20,6 +20,7 @@
           v-else
           :tree="treeData"
           :selected-file="props.selectedFile ? ('mcp_knowledge_base/' + stripBasePath(props.selectedFile)) : null"
+          :show-hidden-files="showHiddenFiles"
           @file-select="handleFileSelect"
           @file-open="handleFileOpen"
           @directory-create="handleDirectoryCreate"
@@ -48,6 +49,7 @@
             v-else
             :tree="treeData"
             :selected-file="props.selectedFile ? ('mcp_knowledge_base/' + stripBasePath(props.selectedFile)) : null"
+            :show-hidden-files="showHiddenFiles"
             @file-select="handleFileSelect"
             @file-open="handleFileOpen"
             @directory-create="handleDirectoryCreate"
@@ -137,7 +139,7 @@ const allKbDirs = ref([])
 const allDirsLoading = ref(false)
 const selectedDirs = ref([])
 const saving = ref(false)
-const showHiddenFiles = ref(false)
+const showHiddenFiles = ref(true) // 기본값을 true로 설정하여 숨김파일이 기본적으로 보이도록 함
 
 // 탭 제거 (검색 + 플로팅 버튼만 유지)
 

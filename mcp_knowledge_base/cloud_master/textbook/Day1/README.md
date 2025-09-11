@@ -24,9 +24,6 @@
 
 ## 🎯 학습 목표
 
-<details>
-<summary>📖 이번 실습에서 배우게 될 내용</summary>
-
 ### 핵심 학습 목표
 - **Docker 기초** 컨테이너 개념 및 Dockerfile 작성
 - **Git/GitHub 기초** 버전 관리 및 협업 도구 사용법
@@ -46,14 +43,9 @@
 - **VM 배포**: 90-120분
 - **전체 과정**: 6-8시간
 
-</details>
-
 ---
 
 ## 📚 실습 가이드
-
-<details>
-<summary>📖 실습 가이드 개요</summary>
 
 ### 실습 구성
 1. **Docker 기초 및 컨테이너 기술** (120분)
@@ -73,28 +65,26 @@
 - GitHub Actions CI/CD 파이프라인
 - VM에 배포된 웹 애플리케이션
 
-</details>
-
 <details>
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [Docker 기초 실습](./practice/docker-basics.md)
-- 🔗 [Git/GitHub 기초 실습](./practice/git-github-basics.md)
-- 🔗 [GitHub Actions 기초 실습](./practice/github-actions-basics.md)
-- 🔗 [VM 배포 실습](./practice/vm-deployment.md)
+- 🔗 [Docker 기초 실습](practice/docker-basics.md)
+- 🔗 [Git/GitHub 기초 실습](practice/git-github-basics.md)
+- 🔗 [GitHub Actions 기초 실습](practice/github-actions-basics.md)
+- 🔗 [VM 배포 실습](practice/vm-deployment.md)
 
 ### 📚 개념 학습 가이드
-- 🔗 [Docker 개념 가이드](./docker-basics-guide.md)
-- 🔗 [Git/GitHub 개념 가이드](./git-github-guide.md)
-- 🔗 [GitHub Actions 개념 가이드](./github-actions-guide.md)
-- 🔗 [VM 배포 개념 가이드](./vm-deployment-guide.md)
+- 🔗 [Docker 고급 가이드](docker-advanced-guide.md)
+- 🔗 [Docker Compose 가이드](docker-compose-guide.md)
+- 🔗 [GitHub Actions 가이드](github-actions-guide.md)
+- 🔗 [AWS & GCP 배포 가이드](aws-gcp-deployment-guide.md)
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [Docker 트러블슈팅](./troubleshooting-guide.md)
-- 🔗 [Git/GitHub 트러블슈팅](./troubleshooting-guide.md)
-- 🔗 [GitHub Actions 트러블슈팅](./troubleshooting-guide.md)
-- 🔗 [VM 배포 트러블슈팅](./troubleshooting-guide.md)
+- 🔗 [종합 트러블슈팅 가이드](troubleshooting-guide.md)
+- 🔗 [AWS & GCP 권한 설정](aws-gcp-permissions-setup.md)
+- 🔗 [CI/CD 파이프라인 가이드](cicd-pipeline-guide.md)
+- 🔗 [클라우드 배포 가이드](cloud-deployment-guide.md)
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Basic 과정](../../../cloud_basic/textbook/Day1/README.md)

@@ -17,21 +17,20 @@
 ## 🎯 전체 과정 개요
 
 <details>
-<summary>📖 4단계 과정 구조</summary>
+<summary>📖 3단계 과정 구조</summary>
 
 ### 과정 구성
 | 과정 | 일정 | 대상 | 주요 내용 | 선수 요구사항 |
 |------|------|------|-----------|---------------|
 | **Cloud Basic** | 2일 | 클라우드 입문자 | AWS/GCP 기초 서비스, IAM, VM, 스토리지, 네트워크 | IT 기초 지식 |
-| **Cloud Intermediate** | 1일 | Basic 수료자 | Docker, Git/GitHub, GitHub Actions, VM 배포 | Cloud Basic 수료 |
-| **Cloud Master** | 2일 | Intermediate 수료자 | CI/CD, VM 기반 컨테이너 배포, 로드 밸런싱 | Cloud Intermediate 수료 |
+| **Cloud Master** | 3일 | Basic 수료자 | Docker, Git/GitHub, CI/CD, VM 배포, 로드 밸런싱, 모니터링 | Cloud Basic 수료 |
 | **Cloud Container** | 2일 | Master 수료자 | K8s, ECS, Fargate, 고가용성 아키텍처 | Cloud Master 수료 |
 
 ### 학습 경로
 ```
-Cloud Basic (2일) → Cloud Intermediate (1일) → Cloud Master (2일) → Cloud Container (2일)
-     ↓                    ↓                        ↓                        ↓
-기초 서비스 실습    →   Docker/Git/GitHub    →   CI/CD/VM 컨테이너    →   K8s/ECS/Fargate
+Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일)
+     ↓                    ↓                        ↓
+기초 서비스 실습    →   Docker/Git/CI/CD/VM    →   K8s/ECS/Fargate
 ```
 
 </details>
@@ -65,36 +64,13 @@ Cloud Basic (2일) → Cloud Intermediate (1일) → Cloud Master (2일) → Clo
 
 </details>
 
-<details>
-<summary>📖 Cloud Intermediate - 중급 과정</summary>
-
-### 과정 개요
-- **교육명**: 클라우드 실무력 강화! AWS & GCP 활용법(중급)
-- **교육일정**: 9/10(화) (1일, 총 7시간)
-- **교육시간**: 9:00 ~ 17:00 (7시간)
-- **교육방식**: 온라인/오프라인 혼합
-- **실습 환경**: AWS Free Tier + GCP Free Tier ($300 크레딧) + GitHub Free
-
-### 주요 내용
-1. **Docker 기초 및 컨테이너 기술** (90분)
-2. **Git/GitHub 기초 및 협업** (45분)
-3. **GitHub Actions CI/CD 파이프라인** (120분)
-4. **VM 기반 웹 애플리케이션 배포** (90분)
-
-### 실습 자료
-- 🔗 [1일차 실습 가이드](./cloud_intermediate/textbook/Day1/README.md)
-- 🔗 [Docker 기초 실습](./cloud_intermediate/textbook/Day1/practice/docker-basics.md)
-- 🔗 [GitHub Actions 기초 실습](./cloud_intermediate/textbook/Day1/practice/github-actions-basics.md)
-- 🔗 [VM 배포 실습](./cloud_intermediate/textbook/Day1/practice/vm-deployment.md)
-
-</details>
 
 <details>
 <summary>📖 Cloud Master - 마스터 과정</summary>
 
 ### 과정 개요
 - **교육명**: 클라우드 실무력 강화! AWS & GCP 활용법(마스터)
-- **교육일정**: 9/22(월) ~ 9/23(화)
+- **교육일정**: 9/22(월) ~ 9/24(수)
 - **교육시간**: 9:00 ~ 17:00 (7시간/일)
 - **교육방식**: 온라인
 - **실습 환경**: AWS Free Tier + GCP Free Tier ($300 크레딧) + GitHub Free
@@ -155,17 +131,13 @@ Cloud Basic (2일)
     ├── EC2/Compute Engine 인스턴스 생성
     └── S3/Cloud Storage 버킷 관리
     ↓
-Cloud Intermediate (1일)
+Cloud Master (3일)
     ↓
     ├── Docker 컨테이너 기술
     ├── Git/GitHub 버전 관리
     ├── GitHub Actions CI/CD
-    └── VM 기반 웹 애플리케이션 배포
-    ↓
-Cloud Master (2일)
-    ↓
+    ├── VM 기반 웹 애플리케이션 배포
     ├── Docker 고급 기술 및 최적화
-    ├── GitHub Actions 고급 워크플로우
     ├── VM 기반 컨테이너 배포 자동화
     └── 로드 밸런싱 및 모니터링
     ↓
@@ -187,15 +159,10 @@ Cloud Container (2일)
 - [ ] Linux 기본 명령어 경험 권장
 - [ ] 웹 브라우저 사용 가능
 
-### Cloud Intermediate
+### Cloud Master
 - [ ] Cloud Basic 과정 수료
 - [ ] AWS/GCP 기초 서비스 실습 완료
 - [ ] 기본적인 명령줄 사용 경험
-
-### Cloud Master
-- [ ] Cloud Intermediate 과정 수료
-- [ ] Docker, Git, CI/CD 기초 학습 완료
-- [ ] VM 기반 웹 애플리케이션 배포 경험
 
 ### Cloud Container
 - [ ] Cloud Master 과정 수료
@@ -257,15 +224,12 @@ Cloud Container (2일)
 - [ ] 네트워킹 기본 개념 이해
 - [ ] 보안 그룹 및 방화벽 설정
 
-### Cloud Intermediate 체크리스트
+### Cloud Master 체크리스트
 - [ ] Docker 컨테이너 기본 사용법
 - [ ] Dockerfile 작성 및 이미지 빌드
 - [ ] Git/GitHub 버전 관리
 - [ ] GitHub Actions CI/CD 파이프라인
 - [ ] VM 기반 웹 애플리케이션 배포
-- [ ] 자동화된 배포 파이프라인 구축
-
-### Cloud Master 체크리스트
 - [ ] Docker 고급 기술 및 최적화
 - [ ] 멀티스테이지 빌드 및 Docker Compose
 - [ ] GitHub Actions 고급 워크플로우

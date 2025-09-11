@@ -88,7 +88,7 @@
 - 🔗 [VM 배포 트러블슈팅](./troubleshooting-guide.md)
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Intermediate 과정](../../../cloud_intermediate/textbook/Day1/README.md)
+- 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md)
 - 🔗 [Cloud Master 2일차](../Day2/README.md)
 - 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README.md)
 - 🔗 [전체 커리큘럼](../../../curriculum.md)

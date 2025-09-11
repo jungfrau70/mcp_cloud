@@ -1,14 +1,20 @@
 <template>
   <div class="p-4 select-none">
-    <h3 class="text-lg font-semibold mb-4 whitespace-nowrap text-gray-800">
-      카테고리
-    </h3>
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold whitespace-nowrap text-gray-800">
+        카테고리
+      </h3>
+      <button @click="toggleHiddenFiles" class="px-2 py-1 text-xs border rounded" :class="showHiddenFiles ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'" title="숨김 파일 표시/숨김">
+        {{ showHiddenFiles ? '숨김 파일 숨기기' : '숨김 파일 보기' }}
+      </button>
+    </div>
     <div v-if="loading">Loading...</div>
     <div v-if="error">{{ error }}</div>
     <div v-if="displayTree">
       <FileTreePanel
         :tree="displayTree"
         :selected-file="null"
+        :show-hidden-files="showHiddenFiles"
         @file-select="onFileClick"
         @file-open="onFileClick"
       />
@@ -53,6 +59,7 @@ const kbTree = ref(null);
 const curriculumTree = ref(null);
 const loading = ref(false);
 const error = ref(null);
+const showHiddenFiles = ref(true); // 기본값을 true로 설정하여 숨김파일이 기본적으로 보이도록 함
 // 관리자 설정 UI는 지식베이스로 이동
 
 const config = useRuntimeConfig()
@@ -182,6 +189,26 @@ const onFileClick = (path) => {
   emit('file-click', path);
 };
 
+// Toggle hidden files visibility
+const toggleHiddenFiles = async () => {
+  showHiddenFiles.value = !showHiddenFiles.value;
+  loading.value = true;
+  try {
+    // KB 전체 트리 다시 로드
+    const r1 = await fetch(`${apiBase}/v1/curriculum/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
+    if (r1.ok) {
+      kbTree.value = await r1.json();
+    }
+    
+    // 커리큘럼 트리도 다시 로드
+    await loadcurriculumTreeIfCurriculum();
+  } catch (e) {
+    error.value = e.message;
+  } finally {
+    loading.value = false;
+  }
+};
+
 async function loadcurriculumTreeIfCurriculum(){
   if (curriculumLoading.value) return
   try{
@@ -194,7 +221,7 @@ async function loadcurriculumTreeIfCurriculum(){
     const sel = await r2.json();
     selectedDirs.value = Array.isArray(sel?.selected_dirs) ? sel.selected_dirs : []
     // 선택 디렉토리를 기준으로 서버가 머지한 트리 가져오기 (중첩 경로 지원)
-    const r3 = await fetch(`${apiBase}/v1/curriculum/tree`, { headers: { 'X-API-Key': apiKey } });
+    const r3 = await fetch(`${apiBase}/v1/curriculum/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
     if (r3.ok) {
       curriculumTree.value = await r3.json();
     }
@@ -214,7 +241,7 @@ onMounted(async () => {
     } catch {}
 
     // KB 전체 트리
-    const r1 = await fetch(`${apiBase}/v1/curriculum/tree`, { headers: { 'X-API-Key': apiKey } });
+    const r1 = await fetch(`${apiBase}/v1/curriculum/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
     if (!r1.ok) throw new Error('Failed to fetch KB tree');
     kbTree.value = await r1.json();
 

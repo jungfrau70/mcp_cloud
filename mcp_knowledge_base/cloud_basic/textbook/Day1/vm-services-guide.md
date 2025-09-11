@@ -16,9 +16,6 @@
 
 ## 🎯 학습 목표
 
-<details>
-<summary>📖 이번 교시에서 배우게 될 내용</summary>
-
 ### 핵심 학습 목표
 - **AWS EC2** 인스턴스 생성 및 관리
 - **GCP Compute Engine** 인스턴스 생성 및 관리

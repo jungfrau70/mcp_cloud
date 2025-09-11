@@ -24,9 +24,6 @@
 
 ## 🎯 학습 목표
 
-<details>
-<summary>📖 이번 실습에서 배우게 될 내용</summary>
-
 ### 핵심 학습 목표
 - **로드 밸런싱** ELB, Cloud Load Balancing 구성
 - **Auto Scaling** Auto Scaling Group, Managed Instance Group
@@ -45,8 +42,6 @@
 - **모니터링**: 90-120분
 - **장애 복구**: 60-90분
 - **전체 과정**: 6-8시간
-
-</details>
 
 ---
 
@@ -79,10 +74,10 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [로드 밸런싱 실습](./practice/load-balancing-setup.md)
-- 🔗 [Auto Scaling 실습](./practice/auto-scaling-setup.md)
-- 🔗 [모니터링 설정](./practice/monitoring-setup.md)
-- 🔗 [장애 복구 실습](./practice/disaster-recovery.md)
+- 🔗 [로드 밸런싱 실습](practice/load-balancing-setup.md)
+- 🔗 [Auto Scaling 실습](practice/auto-scaling-setup.md)
+- 🔗 [모니터링 설정](practice/monitoring-setup.md)
+- 🔗 [장애 복구 실습](practice/disaster-recovery.md)
 
 ### 📚 개념 학습 가이드
 - 🔗 [로드 밸런싱 가이드](./load-balancing-guide.md)

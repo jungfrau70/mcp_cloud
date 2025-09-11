@@ -37,7 +37,7 @@ def _encode_filename(filename: str) -> str:
         return f"filename*=UTF-8''{encoded}"
 
 
-def _build_tree() -> Dict[str, Any]:
+def _build_tree(show_hidden: bool = False) -> Dict[str, Any]:
     # Simple merge of selected dirs under KB_ROOT
     data: Dict[str, Any] = {}
     selected = get_selection().get('selected_dirs', [])
@@ -46,6 +46,10 @@ def _build_tree() -> Dict[str, Any]:
         tree: Dict[str, Any] = {}
         files = []
         for child in sorted(d.iterdir()):
+            # Skip hidden files/directories unless show_hidden is True
+            if not show_hidden and child.name.startswith('.'):
+                continue
+                
             if child.is_dir():
                 tree[child.name] = build(child)
             else:
@@ -61,8 +65,12 @@ def _build_tree() -> Dict[str, Any]:
     return data
 
 @router.get('/tree')
-def curriculum_tree():
-    return _build_tree()
+def curriculum_tree(show_hidden: bool = False):
+    """
+    커리큘럼의 디렉토리 구조를 JSON 형태로 반환합니다.
+    show_hidden: 숨김 파일과 디렉토리(점으로 시작하는)를 포함할지 여부
+    """
+    return _build_tree(show_hidden=show_hidden)
 
 
 @router.get('/selection')

@@ -145,6 +145,10 @@ const props = defineProps({
   excludeDirs: {
     type: Array,
     default: () => []
+  },
+  showHiddenFiles: {
+    type: Boolean,
+    default: true
   }
 });
 
@@ -185,7 +189,11 @@ const isDirectory = (item) => {
 };
 
 const files = computed(() => {
-  return props.tree.files || [];
+  const fileList = props.tree.files || [];
+  return fileList.filter(file => {
+    const fileName = file.name || file;
+    return props.showHiddenFiles || !fileName.startsWith('.');
+  });
 });
 
 const directories = computed(() => {
@@ -197,10 +205,13 @@ const directories = computed(() => {
 const sortedTree = computed(() => {
     const dirs = { ...props.tree };
     delete dirs.files;
-    return Object.keys(dirs).sort().reduce((acc, key) => {
+    return Object.keys(dirs)
+      .filter(key => props.showHiddenFiles || !key.startsWith('.'))
+      .sort()
+      .reduce((acc, key) => {
         acc[key] = dirs[key];
         return acc;
-    }, {});
+      }, {});
 });
 
 const toggle = (name) => {

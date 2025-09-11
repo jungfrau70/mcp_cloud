@@ -24,9 +24,6 @@
 
 ## 🎯 학습 목표
 
-<details>
-<summary>📖 이번 실습에서 배우게 될 내용</summary>
-
 ### 핵심 학습 목표
 - **Kubernetes 고급 아키텍처** 클러스터 구성 및 컴포넌트 이해
 - **GKE 클러스터 관리** 고급 설정 및 운영
@@ -45,8 +42,6 @@
 - **컨테이너 오케스트레이션**: 120-150분
 - **ECS/Fargate**: 90-120분
 - **전체 과정**: 7-9시간
-
-</details>
 
 ---
 
@@ -79,19 +74,11 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [Kubernetes 기초 실습](./practice/kubernetes-basics.md)
-- 🔗 [GKE 클러스터 관리](./practice/gke-cluster-management.md)
-- 🔗 [ECS/Fargate 실습](./practice/ecs-fargate-practice.md)
-
-### 📚 개념 학습 가이드
-- 🔗 [Kubernetes 아키텍처 가이드](./kubernetes-architecture-guide.md)
-- 🔗 [GKE 고급 설정 가이드](./gke-advanced-configuration.md)
-- 🔗 [ECS/Fargate 가이드](./ecs-fargate-guide.md)
+- 🔗 [Kubernetes 기초 실습](practice/kubernetes-basics.md)
+- 🔗 [컨테이너 기초 실습](practice/container-basics.md)
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [Kubernetes 트러블슈팅](./troubleshooting-guide.md)
-- 🔗 [GKE 트러블슈팅](./troubleshooting-guide.md)
-- 🔗 [ECS/Fargate 트러블슈팅](./troubleshooting-guide.md)
+- 🔗 [종합 트러블슈팅 가이드](./troubleshooting/multi-az-issues.md)
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md)

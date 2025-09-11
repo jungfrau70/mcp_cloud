@@ -1,0 +1,55 @@
+{
+  "course_name": "Cloud Basic Course",
+  "duration_days": 2,
+  "generated_at": "C:\\Users\\JIH\\githubs\\mcp_cloud\\mcp_knowledge_base\\cloud_basic\\automation_tests",
+  "day_plans": [
+    {
+      "day": 1,
+      "title": "AWS & GCP 기초 서비스 실습",
+      "topics": [
+        "클라우드 개념 및 계정 생성",
+        "IAM 기초 실습",
+        "가상머신 서비스 기초",
+        "스토리지 서비스 기초"
+      ],
+      "duration": "7시간",
+      "objectives": [
+        "AWS/GCP 계정 생성 및 기본 설정",
+        "IAM을 통한 사용자 및 권한 관리",
+        "EC2/Compute Engine 인스턴스 생성 및 관리",
+        "S3/Cloud Storage 버킷 생성 및 파일 관리"
+      ]
+    },
+    {
+      "day": 2,
+      "title": "네트워크, 보안 및 데이터베이스 실습",
+      "topics": [
+        "네트워킹 기초 실습",
+        "보안 그룹 및 방화벽 실습",
+        "데이터베이스 서비스 기초",
+        "종합 실습 및 비교 분석"
+      ],
+      "duration": "7시간",
+      "objectives": [
+        "VPC 네트워크 구성 및 관리",
+        "보안 그룹/방화벽 규칙 설정",
+        "RDS/Cloud SQL 데이터베이스 생성 및 관리",
+        "웹 애플리케이션 클라우드 배포"
+      ]
+    }
+  ],
+  "scripts_generated": {
+    "day1": [
+      "cloud_basics.sh",
+      "iam_basics.sh",
+      "vm_services.sh",
+      "storage_services.sh"
+    ],
+    "day2": [
+      "networking_basics.sh",
+      "security_basics.sh",
+      "database_services.sh",
+      "comprehensive_practice.sh"
+    ]
+  }
+}

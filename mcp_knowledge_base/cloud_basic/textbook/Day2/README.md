@@ -23,9 +23,6 @@
 
 ## 🎯 학습 목표
 
-<details>
-<summary>📖 이번 실습에서 배우게 될 내용</summary>
-
 ### 핵심 학습 목표
 - **네트워킹** VPC, 서브넷, 라우팅 기본 개념
 - **보안** Security Groups, Firewall Rules 설정
@@ -44,8 +41,6 @@
 - **데이터베이스**: 60-90분
 - **종합 실습**: 90-120분
 - **전체 과정**: 5-7시간
-
-</details>
 
 ---
 
@@ -78,24 +73,11 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [네트워킹 기초 실습](./practice/networking-basics.md)
-- 🔗 [보안 설정 실습](./practice/security-setup.md)
-- 🔗 [데이터베이스 실습](./practice/database-setup.md)
-- 🔗 [종합 실습 프로젝트](./practice/comprehensive-project.md)
-
-### 📚 개념 학습 가이드
-- 🔗 [VPC 및 네트워킹 가이드](./vpc-networking-guide.md)
-- 🔗 [보안 모범 사례 가이드](./security-best-practices.md)
-- 🔗 [데이터베이스 서비스 가이드](./database-services-guide.md)
-
-### 🛠️ 문제 해결 가이드
-- 🔗 [네트워킹 트러블슈팅](./troubleshooting-networking.md)
-- 🔗 [보안 트러블슈팅](./troubleshooting-security.md)
-- 🔗 [데이터베이스 트러블슈팅](./troubleshooting-database.md)
+- 🔗 [종합 실습 프로젝트](practice/basic-to-master-bridge.md)
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Basic 1일차](../Day1/README.md)
-- 🔗 [Cloud Intermediate 과정](../../../cloud_intermediate/textbook/Day1/README.md)
+- 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md)
 - 🔗 [전체 커리큘럼](../../../curriculum.md)
 
 </details>
@@ -527,7 +509,7 @@ telnet RDS_ENDPOINT 3306
 
 - [AWS VPC 공식 문서](https://docs.aws.amazon.com/vpc/)
 - [GCP VPC 공식 문서](https://cloud.google.com/vpc/docs)
-- [Cloud Intermediate 과정](../../../cloud_intermediate/textbook/Day1/README.md)
+- [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md)
 
 ---
 

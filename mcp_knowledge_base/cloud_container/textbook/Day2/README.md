@@ -24,9 +24,6 @@
 
 ## 🎯 학습 목표
 
-<details>
-<summary>📖 이번 실습에서 배우게 될 내용</summary>
-
 ### 핵심 학습 목표
 - **고가용성 아키텍처** Multi-AZ, Multi-Region 설계 및 구현
 - **로드 밸런싱** ELB, Cloud Load Balancing 고급 구성
@@ -45,8 +42,6 @@
 - **모니터링 및 로깅**: 90-120분
 - **종합 프로젝트**: 90-120분
 - **전체 과정**: 6-8시간
-
-</details>
 
 ---
 
@@ -79,21 +74,14 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [고가용성 아키텍처 실습](./practice/high-availability-architecture.md)
-- 🔗 [로드 밸런싱 고급 실습](./practice/advanced-load-balancing.md)
-- 🔗 [모니터링 시스템 구축](./practice/monitoring-system-setup.md)
-- 🔗 [종합 프로젝트 실습](./practice/comprehensive-project.md)
+- 🔗 [고가용성 아키텍처 실습](practice/high-availability-architecture.md)
+- 🔗 [고급 로드 밸런싱 실습](practice/advanced-load-balancing.md)
+- 🔗 [모니터링 시스템 구축](practice/monitoring-system-setup.md)
+- 🔗 [종합 프로젝트 실습](practice/comprehensive-project.md)
 
 ### 📚 개념 학습 가이드
-- 🔗 [고가용성 아키텍처 가이드](./high-availability-architecture-guide.md)
-- 🔗 [로드 밸런싱 고급 가이드](./advanced-load-balancing-guide.md)
-- 🔗 [모니터링 시스템 가이드](./monitoring-system-guide.md)
-- 🔗 [비용 최적화 가이드](./cost-optimization-guide.md)
-
-### 🛠️ 문제 해결 가이드
-- 🔗 [고가용성 트러블슈팅](./troubleshooting-high-availability.md)
-- 🔗 [로드 밸런싱 트러블슈팅](./troubleshooting-load-balancing.md)
-- 🔗 [모니터링 트러블슈팅](./troubleshooting-monitoring.md)
+- 🔗 [고가용성 아키텍처 가이드](high-availability-architecture.md)
+- 🔗 [모니터링 설정 가이드](monitoring-setup.md)
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Container 1일차](../Day1/README.md)
@@ -211,10 +199,7 @@ sudo apt install curl wget netcat
 <summary>🔗 상세 실습 가이드</summary>
 
 ### 📖 실습 파일
-- 🔗 [AWS Multi-AZ 구성 실습](./practice/aws-multi-az-setup.md)
-- 🔗 [GCP Multi-Region 구성 실습](./practice/gcp-multi-region-setup.md)
-- 🔗 [Kubernetes 고가용성 설정](./practice/kubernetes-high-availability.md)
-- 🔗 [데이터베이스 고가용성](./practice/database-high-availability.md)
+- 🔗 [고가용성 아키텍처 실습](practice/high-availability-architecture.md)
 
 ### 📚 개념 학습
 - 🔗 [고가용성 아키텍처 가이드](./high-availability-architecture-guide.md)
@@ -253,10 +238,7 @@ sudo apt install curl wget netcat
 <summary>🔗 상세 실습 가이드</summary>
 
 ### 📖 실습 파일
-- 🔗 [AWS 고급 로드 밸런싱](./practice/aws-advanced-load-balancing.md)
-- 🔗 [GCP 고급 로드 밸런싱](./practice/gcp-advanced-load-balancing.md)
-- 🔗 [Auto Scaling 고급 설정](./practice/advanced-auto-scaling.md)
-- 🔗 [Kubernetes HPA 설정](./practice/kubernetes-hpa.md)
+- 🔗 [고급 로드 밸런싱 실습](practice/advanced-load-balancing.md)
 
 ### 📚 개념 학습
 - 🔗 [로드 밸런싱 고급 가이드](./advanced-load-balancing-guide.md)
@@ -295,10 +277,7 @@ sudo apt install curl wget netcat
 <summary>🔗 상세 실습 가이드</summary>
 
 ### 📖 실습 파일
-- 🔗 [AWS CloudWatch 고급 설정](./practice/aws-cloudwatch-advanced.md)
-- 🔗 [GCP Cloud Monitoring 설정](./practice/gcp-cloud-monitoring.md)
-- 🔗 [Prometheus + Grafana 설정](./practice/prometheus-grafana-setup.md)
-- 🔗 [ELK Stack 로깅 시스템](./practice/elk-stack-setup.md)
+- 🔗 [모니터링 시스템 구축](practice/monitoring-system-setup.md)
 
 ### 📚 개념 학습
 - 🔗 [모니터링 시스템 가이드](./monitoring-system-guide.md)
@@ -338,10 +317,7 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 <summary>🔗 상세 실습 가이드</summary>
 
 ### 📖 실습 파일
-- 🔗 [종합 프로젝트 구현](./practice/comprehensive-project.md)
-- 🔗 [성능 최적화 실습](./practice/performance-optimization.md)
-- 🔗 [비용 최적화 실습](./practice/cost-optimization.md)
-- 🔗 [보안 강화 실습](./practice/security-hardening.md)
+- 🔗 [종합 프로젝트 실습](practice/comprehensive-project.md)
 
 ### 📚 개념 학습
 - 🔗 [비용 최적화 가이드](./cost-optimization-guide.md)
@@ -407,7 +383,7 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 
 ## 🚀 시작하기
 
-1일차 실습이 완료되었다면 [고가용성 아키텍처 실습](./practice/high-availability-architecture.md)부터 시작하세요.
+1일차 실습이 완료되었다면 [고가용성 아키텍처 실습](practice/high-availability-architecture.md)부터 시작하세요.
 
 ### 문제가 있나요?
 실습 중 문제가 발생하면 [트러블슈팅 가이드](./troubleshooting/)를 참고하세요.

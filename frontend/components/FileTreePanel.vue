@@ -4,6 +4,7 @@
       :tree="tree"
       :base-path="''"
       :selected-file="selectedFile"
+      :show-hidden-files="showHiddenFiles"
       @file-click="p=>emit('file-select',p)"
       @file-open="p=>emit('file-open',p)"
       @directory-create="d=>emit('directory-create',d)"
@@ -15,6 +16,6 @@
 </template>
 <script setup lang="ts">
 import FileTree from '~/components/FileTree.vue'
-const props = defineProps<{ tree: any; selectedFile?: string | null }>()
+const props = defineProps<{ tree: any; selectedFile?: string | null; showHiddenFiles?: boolean }>()
 const emit = defineEmits(['file-select','file-open','directory-create','directory-rename','directory-delete','file-move'])
 </script>
