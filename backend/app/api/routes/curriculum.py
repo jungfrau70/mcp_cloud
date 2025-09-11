@@ -8,7 +8,7 @@ import urllib.parse
 
 router = APIRouter(prefix="/api/v1/curriculum", tags=["Curriculum"])
 
-KB_ROOT = Path('/mcp_knowledge_base').resolve()
+KB_ROOT = Path('mcp_knowledge_base').resolve()
 SELECTION_FILE = KB_ROOT / '.slides_selection.json'
 try:
     from utils.doc_convert import convert_pptx_to_pdf  # correct import within backend package
@@ -132,10 +132,14 @@ def get_slide(textbook_path: str = None, curriculum_path: str = None):
     if not any(rel.endswith(ext) for ext in ('.md', '.markdown', '.txt', '.log', '.json', '.yaml', '.yml', '.csv', '.sh', '.pdf', '.ppt', '.pptx')):
         rel = f"{rel}.md"
     fp = (KB_ROOT / rel).resolve()
+    print(f"DEBUG: KB_ROOT = {KB_ROOT}")
+    print(f"DEBUG: rel = {rel}")
+    print(f"DEBUG: fp = {fp}")
+    print(f"DEBUG: fp.exists() = {fp.exists()}")
     if not str(fp).startswith(str(KB_ROOT)):
         raise HTTPException(status_code=400, detail='Invalid path')
     if not fp.exists():
-        raise HTTPException(status_code=404, detail='Not found')
+        raise HTTPException(status_code=404, detail=f'Not found: {fp}')
     # If PDF file requested, stream as binary
     if fp.suffix.lower() == '.pdf':
         if not fp.exists():
