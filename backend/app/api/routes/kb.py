@@ -69,8 +69,14 @@ except Exception:
 def _safe_path(rel: str) -> Path:
     rel = (rel or '').strip().lstrip('/\\')
     p = (KB_ROOT / rel).resolve()
+    print(f"DEBUG: _safe_path - rel: {rel}")
+    print(f"DEBUG: _safe_path - KB_ROOT: {KB_ROOT}")
+    print(f"DEBUG: _safe_path - p: {p}")
+    print(f"DEBUG: _safe_path - str(p): {str(p)}")
+    print(f"DEBUG: _safe_path - str(KB_ROOT): {str(KB_ROOT)}")
+    print(f"DEBUG: _safe_path - starts_with: {str(p).startswith(str(KB_ROOT))}")
     if not str(p).startswith(str(KB_ROOT)):
-        raise HTTPException(status_code=400, detail="Invalid path")
+        raise HTTPException(status_code=400, detail=f"Invalid path: {str(p)} does not start with {str(KB_ROOT)}")
     return p
 
 @router.get('/tree')
@@ -95,13 +101,18 @@ def kb_tree(path: str = "") -> Dict[str, Any]:
 
 @router.get('/item')
 def kb_get_item(path: str):
+    print(f"DEBUG: kb_get_item called with path: {path}")
     fp = _safe_path(path)
+    print(f"DEBUG: KB_ROOT = {KB_ROOT}")
+    print(f"DEBUG: fp = {fp}")
+    print(f"DEBUG: fp.exists() = {fp.exists()}")
     if not fp.exists():
         raise HTTPException(status_code=404, detail='Not found')
     if fp.is_dir():
         return {"path": path, "type": "directory"}
     try:
         content = fp.read_text(encoding='utf-8', errors='ignore')
+        print(f"DEBUG: content length = {len(content)}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f'Failed to read file: {e}')
     return {"path": path, "type": "file", "content": content}

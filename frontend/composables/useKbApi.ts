@@ -36,7 +36,7 @@ export function useKbApi(){
   }
 
   async function getItem(path: string): Promise<any>{
-    return request<any>(`${apiBase}/v1/curriculum/item?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey }}, 'getItem failed')
+    return request<any>(`${apiBase}/v1/knowledge-base/item?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey }}, 'getItem failed')
   }
 
   async function saveItem(path: string, content: string, message?: string, expectedVersion?: number): Promise<KbSaveResponse>{

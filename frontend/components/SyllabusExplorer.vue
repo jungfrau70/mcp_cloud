@@ -188,7 +188,7 @@ const toggleHiddenFiles = async () => {
   loading.value = true;
   try {
     // KB 전체 트리 다시 로드
-    const r1 = await fetch(`${apiBase}/v1/curriculum/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
+    const r1 = await fetch(`${apiBase}/v1/knowledge-base/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
     if (r1.ok) {
       kbTree.value = await r1.json();
     }
@@ -234,7 +234,7 @@ onMounted(async () => {
     } catch {}
 
     // KB 전체 트리
-    const r1 = await fetch(`${apiBase}/v1/curriculum/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
+    const r1 = await fetch(`${apiBase}/v1/knowledge-base/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
     if (!r1.ok) throw new Error('Failed to fetch KB tree');
     kbTree.value = await r1.json();
 
