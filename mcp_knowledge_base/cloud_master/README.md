@@ -83,7 +83,7 @@
 
 ---
 
-## 🔗 Container 과정과의 연계
+## Container 과정과의 연계
 
 ### Master 과정에서 학습한 내용
 - ✅ Docker 컨테이너화 및 최적화
@@ -143,7 +143,7 @@ Master 과정을 시작하기 전에 다음을 확인하세요:
 - [ ] 웹 애플리케이션 개발 경험 권장
 - [ ] 프로그래밍 기초 지식 (JavaScript, Python 등)
 
-> 🔗 **다음 과정**: [Cloud Container 과정](../cloud_container/textbook/Day1/README.md) | [전체 커리큘럼](../curriculum.md)
+> **다음 과정**: [Cloud Container 과정](../cloud_container/textbook/Day1/README.md) | [전체 커리큘럼](../curriculum.md)
 
 ### 환경 준비
 - [ ] Docker Desktop 설치 및 설정

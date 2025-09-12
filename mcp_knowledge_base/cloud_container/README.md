@@ -38,7 +38,7 @@
 
 ---
 
-## 🔗 Master 과정과의 연계
+## Master 과정과의 연계
 
 ### Master 과정에서 학습한 내용
 - ✅ Docker 기초
@@ -93,7 +93,7 @@ Advanced 과정을 시작하기 전에 다음을 확인하세요:
 - [ ] GitHub Actions 경험
 - [ ] 클라우드 배포 기초 이해
 
-> 🔗 **관련 과정**: [Cloud Master 과정](../cloud_master/textbook/Day1/README.md) | [전체 커리큘럼](../curriculum.md)
+> **관련 과정**: [Cloud Master 과정](../cloud_master/textbook/Day1/README.md) | [전체 커리큘럼](../curriculum.md)
 
 ### 환경 준비
 - [ ] AWS 계정 (ECS, ECR 권한)

@@ -374,8 +374,8 @@ const setupLinkIntercepts = async () => {
       }
     }catch{}
     // Tables are now wrapped by the custom renderer, no need for additional wrapping
-    // Intercept KB links (mdc:mcp_knowledge_base/.. or sanitized to mcp_knowledge_base/...)
-    contentContainer.value.querySelectorAll('a[href^="mdc:mcp_knowledge_base/"], a[href^="mcp_knowledge_base/"], a[href^="/mcp_knowledge_base/"]').forEach(link => {
+    // Intercept KB links (mdc:mcp_knowledge_base/.. or sanitized to mcp_knowledge_base/... or relative paths)
+    contentContainer.value.querySelectorAll('a[href^="mdc:mcp_knowledge_base/"], a[href^="mcp_knowledge_base/"], a[href^="/mcp_knowledge_base/"], a[href^="./"], a[href^="../"], a[href^="cloud_"]').forEach(link => {
       try{ link.classList.add('kb-link') }catch{}
       link.addEventListener('click', (event) => {
         event.preventDefault()
@@ -383,8 +383,23 @@ const setupLinkIntercepts = async () => {
           const raw = link.getAttribute('href') || ''
           // normalize: remove mdc: scheme if present, and any leading '/'
           const noScheme = raw.replace(/^mdc:/,'').replace(/^\//,'')
-          // strip leading root 'mcp_knowledge_base/'
-          const rel = noScheme.replace(/^mcp_knowledge_base\//,'')
+          
+          let rel = noScheme
+          // Handle different path patterns
+          if (noScheme.startsWith('mcp_knowledge_base/')) {
+            // strip leading root 'mcp_knowledge_base/'
+            rel = noScheme.replace(/^mcp_knowledge_base\//,'')
+          } else if (noScheme.startsWith('./')) {
+            // Handle relative paths starting with ./
+            rel = noScheme.substring(2) // Remove ./
+          } else if (noScheme.startsWith('../')) {
+            // Handle relative paths starting with ../
+            rel = noScheme.substring(3) // Remove ../
+          } else if (noScheme.match(/^cloud_[a-z_]+/)) {
+            // Handle direct cloud_* paths
+            rel = noScheme
+          }
+          
           const decoded = decodeURIComponent(rel)
           window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'curriculum' } }))
         }catch{}

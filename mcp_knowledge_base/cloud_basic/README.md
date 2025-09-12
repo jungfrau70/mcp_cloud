@@ -70,7 +70,7 @@
 
 ---
 
-## 🔗 Master 과정과의 연계
+## Master 과정과의 연계
 
 ### Basic 과정에서 학습한 내용
 - ✅ 클라우드 기본 개념
@@ -122,7 +122,7 @@ Basic 과정을 시작하기 전에 다음을 확인하세요:
 - [ ] Linux 기본 명령어 경험 권장
 - [ ] 인터넷 및 웹 서비스 개념 이해
 
-> 🔗 **다음 과정**: [Cloud Master 과정](../cloud_master/textbook/Day1/README.md) | [전체 커리큘럼](../curriculum.md)
+> **다음 과정**: [Cloud Master 과정](../cloud_master/textbook/Day1/README.md) | [전체 커리큘럼](../curriculum.md)
 
 ### 환경 준비
 - [ ] AWS Free Tier 계정 생성
