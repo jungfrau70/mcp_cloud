@@ -87,7 +87,7 @@ const renderedContent = computed(() => {
   renderer.heading = function(text, level) {
     // Create Korean-friendly ID by converting to lowercase and replacing spaces with hyphens
     const id = text.toLowerCase()
-      .replace(/[^\w\s-]/g, '') // Remove special characters except word chars, spaces, and hyphens
+      .replace(/[^\w\s가-힣-]/g, '') // Remove special characters except word chars, spaces, Korean chars, and hyphens
       .replace(/\s+/g, '-') // Replace spaces with hyphens
       .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
       .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
@@ -441,10 +441,22 @@ const setupLinkIntercepts = async () => {
           // If not found, try to find by Korean-friendly ID conversion
           if(!targetElement){
             const koreanId = targetId.toLowerCase()
-              .replace(/[^\w\s-]/g, '') // Remove special characters except word chars, spaces, and hyphens
+              .replace(/[^\w\s가-힣-]/g, '') // Remove special characters except word chars, spaces, Korean chars, and hyphens
               .replace(/\s+/g, '-') // Replace spaces with hyphens
               .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
               .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+            
+            targetElement = document.getElementById(koreanId)
+          }
+          
+          // If still not found, try removing leading dash (for links like #-학습-목표)
+          if(!targetElement && targetId.startsWith('-')){
+            const withoutDash = targetId.substring(1)
+            const koreanId = withoutDash.toLowerCase()
+              .replace(/[^\w\s가-힣-]/g, '')
+              .replace(/\s+/g, '-')
+              .replace(/-+/g, '-')
+              .replace(/^-|-$/g, '')
             
             targetElement = document.getElementById(koreanId)
           }
