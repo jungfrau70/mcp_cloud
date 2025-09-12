@@ -671,3 +671,11 @@ echo "=== GCP 예산 관리 완료 ==="
 - [GCP Cloud Recommender 공식 문서](https://cloud.google.com/recommender/docs)
 
 다음 단계: [3교시: CloudWatch / Cloud Monitoring을 활용한 서비스 모니터링](./monitoring-guide.md)
+
+---
+
+<div align="center">
+
+[← 이전: Cloud Master 1일차](../Day1/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: 모니터링 가이드 →](./monitoring-guide)
+
+</div>

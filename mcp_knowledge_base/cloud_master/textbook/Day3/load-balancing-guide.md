@@ -546,3 +546,11 @@ gcloud compute forwarding-rules create web-https-forwarding-rule \
 - [고가용성 설계 패턴](https://aws.amazon.com/architecture/well-architected/)
 
 다음 단계: [2교시: 오토 스케일링](./auto-scaling-guide.md)
+
+---
+
+<div align="center">
+
+[← 이전: Cloud Master 2일차](../Day2/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: 오토 스케일링 가이드 →](./auto-scaling-guide)
+
+</div>

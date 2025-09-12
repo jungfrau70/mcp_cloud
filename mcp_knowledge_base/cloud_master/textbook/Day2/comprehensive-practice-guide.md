@@ -809,3 +809,11 @@ echo "=== 부하 테스트 및 스케일링 확인 완료 ==="
 - [컨테이너 오케스트레이션 모범 사례](https://kubernetes.io/docs/concepts/)
 
 다음 단계: [트러블슈팅 가이드](./troubleshooting-guide.md)
+
+---
+
+<div align="center">
+
+[← 이전: 모니터링 가이드](./monitoring-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Master 3일차 →](../Day3/README)
+
+</div>

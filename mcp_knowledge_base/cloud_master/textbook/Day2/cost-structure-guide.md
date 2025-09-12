@@ -626,3 +626,11 @@ gcloud alpha billing budgets create \
 - [Google Cloud Pricing Calculator](https://cloud.google.com/products/calculator)
 
 다음 단계: [2교시: 클라우드 과금 예측 및 리소스 비용 최적화](./cost-optimization-guide.md)
+
+---
+
+<div align="center">
+
+[← 이전: Cloud Master 1일차](../Day1/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: 비용 최적화 가이드 →](./cost-optimization-guide)
+
+</div>

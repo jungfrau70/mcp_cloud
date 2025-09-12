@@ -571,3 +571,11 @@ gcloud compute instance-templates update web-server-template \
 - [자가 치유 시스템 설계](https://cloud.google.com/architecture/self-healing-applications)
 
 다음 단계: [4교시: 장애 시뮬레이션 및 복구](./disaster-recovery-guide.md)
+
+---
+
+<div align="center">
+
+[← 이전: 오토 스케일링 가이드](./auto-scaling-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: 장애 복구 가이드 →](./disaster-recovery-guide)
+
+</div>

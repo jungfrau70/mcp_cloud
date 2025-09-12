@@ -754,3 +754,11 @@ EOF
 - [자가 치유 시스템 설계](https://cloud.google.com/architecture/self-healing-applications)
 
 다음 단계: [트러블슈팅 가이드](./troubleshooting-guide.md)
+
+---
+
+<div align="center">
+
+[← 이전: 통합 가이드](./integration-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Container 과정 →](../../../cloud_container/textbook/Day1/README)
+
+</div>

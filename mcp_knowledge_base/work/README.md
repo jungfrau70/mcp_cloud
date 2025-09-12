@@ -39,3 +39,40 @@
 요청1) 스크립트 수정 요청: 스크립트가 중단되어도 다시 시작할 때 기존 리소스를 재사용하도록 수정. (각 스크립트에 리소스 존재 확인 및 재사용 로직을 추가)
 
 google cloud 에 프로젝트, 네트워크 및 VM 생성 및 설정 스크립트로, 스크립트가 중단되어도 다시 시작할 때 기존 리소스를 재사용하도록 수정. (각 스크립트에 리소스 존재 확인 및 재사용 로직을 추가)
+
+
+# 2025-09-12
+
+1) 아래 파일을 보고, 관련 내용간 링크를 추가해 줘. README.md 는 container 과정 처럼 작성하면 좋겠어
+
+mcp_knowledge_base\cloud_master\README.md
+mcp_knowledge_base\cloud_master\과정명.md
+mcp_knowledge_base\cloud_master\과정상세.md
+
+
+요청2) 이제, 전체 관점에서 아래 파일을 보고, 관련 내용간 링크를 추가해 줘. mcp_knowledge_base\README.md 는 필요 시 작성하면 좋겠어
+
+mcp_knowledge_base\curriculum.md
+mcp_knowledge_base\index.md
+mcp_knowledge_base\README.md
+mcp_knowledge_base\cloud_basic\README.md
+mcp_knowledge_base\cloud_basic\과정명.md
+mcp_knowledge_base\cloud_basic\과정상세.md
+mcp_knowledge_base\cloud_master\README.md
+mcp_knowledge_base\cloud_master\과정명.md
+mcp_knowledge_base\cloud_master\과정상세.md
+mcp_knowledge_base\cloud_container\README.md
+mcp_knowledge_base\cloud_container\과정명.md
+mcp_knowledge_base\cloud_container\과정상세.m
+
+
+요청3) 아래 파일들은 Master 과정 디렉토리 내 파일인데, 내용이 이에 부합하게 작성되었는지 확인해 줘
+
+mcp_knowledge_base\cloud_master\README.md
+mcp_knowledge_base\cloud_master\과정명.md
+mcp_knowledge_base\cloud_master\과정상세.md
+
+
+요청4) 위 세개의 파일들이 Master 과정 교구들 (mcp_knowledge_base\cloud_master 디렉토리 내 파일들)과  맥락적으로 연계 되었는지, 특히 mcp_knowledge_base\cloud_master\textbook 내 교재들은 전수 조사해 줘.
+
+요청5) 교재간 전/후 이동 링크 확인 및 부재 시 추가

@@ -633,3 +633,11 @@ aws ec2 describe-instances --instance-ids i-xxxxxxxx
 ---
 
 **🎯 이제 GitHub Actions를 활용한 자동 배포의 기본기를 갖추었습니다! 실제 프로젝트에 적용해보세요.**
+
+---
+
+<div align="center">
+
+[← 이전: GitHub Actions 가이드](./github-actions-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: AWS & GCP 배포 가이드 →](./aws-gcp-deployment-guide)
+
+</div>

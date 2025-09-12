@@ -799,3 +799,11 @@ docker-compose port service-name port
 ---
 
 **🎯 이제 Docker 고급 기술의 기본기를 갖추었습니다! GitHub Actions 고급 실습으로 진행하세요.**
+
+---
+
+<div align="center">
+
+[← 이전: Cloud Basic 2일차](../../../cloud_basic/textbook/Day2/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: GitHub Actions 가이드 →](./github-actions-guide)
+
+</div>

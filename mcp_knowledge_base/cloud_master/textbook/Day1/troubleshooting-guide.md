@@ -731,3 +731,11 @@ kubectl top pods
 - [ ] 모니터링이 정상 작동하나요?
 
 이 가이드를 통해 대부분의 문제를 해결할 수 있습니다. 추가 도움이 필요하면 언제든 문의하세요! 🚀
+
+---
+
+<div align="center">
+
+[← 이전: CI/CD 파이프라인 가이드](./cicd-pipeline-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Master 2일차 →](../Day2/README)
+
+</div>

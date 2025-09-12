@@ -865,3 +865,11 @@ echo "=== GCP 커스텀 메트릭 전송 완료 ==="
 - [알림 및 대시보드 가이드](https://cloud.google.com/monitoring/alerts)
 
 다음 단계: [4교시: 종합 실습 - 컨테이너 자동 배포 + 로드밸런싱 + 오토스케일링](./comprehensive-practice-guide.md)
+
+---
+
+<div align="center">
+
+[← 이전: Cloud Master 1일차](../Day1/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: 종합 실습 가이드 →](./comprehensive-practice-guide)
+
+</div>

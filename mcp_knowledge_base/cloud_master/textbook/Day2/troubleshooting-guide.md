@@ -595,3 +595,11 @@ kubectl logs POD_NAME --previous
 - [ ] 비용이 예상 범위 내인가요?
 
 이 가이드를 통해 대부분의 문제를 해결할 수 있습니다. 추가 도움이 필요하면 언제든 문의하세요! 🚀
+
+---
+
+<div align="center">
+
+[← 이전: 종합 실습 가이드](./comprehensive-practice-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Master 3일차 →](../Day3/README)
+
+</div>

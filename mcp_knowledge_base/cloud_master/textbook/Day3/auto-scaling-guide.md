@@ -628,3 +628,11 @@ gcloud compute instance-groups managed set-autoscaling web-servers-mig \
 - [스케일링 전략 가이드](https://cloud.google.com/architecture/scaling-web-applications)
 
 다음 단계: [3교시: 로드 밸런서 + 오토스케일링 연동](./integration-guide.md)
+
+---
+
+<div align="center">
+
+[← 이전: 로드 밸런싱 가이드](./load-balancing-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: 통합 가이드 →](./integration-guide)
+
+</div>

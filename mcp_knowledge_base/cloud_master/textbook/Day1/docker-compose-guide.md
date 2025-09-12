@@ -548,3 +548,11 @@ app.listen(port, () => {
 - [Dockerfile 모범 사례](https://docs.docker.com/develop/dev-best-practices/)
 
 다음 단계: [2교시: GitHub Actions로 CI/CD 구성](./github-actions-guide)
+
+---
+
+<div align="center">
+
+[← 이전: Docker 고급 가이드](./docker-advanced-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: GitHub Actions 가이드 →](./github-actions-guide)
+
+</div>

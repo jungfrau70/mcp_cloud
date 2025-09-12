@@ -653,3 +653,11 @@ gcloud compute operations list --filter="operationType:insert"
 - [ ] 알림이 정상 발송되나요?
 
 이 가이드를 통해 대부분의 문제를 해결할 수 있습니다. 추가 도움이 필요하면 언제든 문의하세요! 🚀
+
+---
+
+<div align="center">
+
+[← 이전: 장애 복구 가이드](./disaster-recovery-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Container 과정 →](../../../cloud_container/textbook/Day1/README)
+
+</div>

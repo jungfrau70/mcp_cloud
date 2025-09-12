@@ -485,3 +485,11 @@ gcloud logging read "resource.type=cloud_run_revision AND resource.labels.servic
 - [GCP Cloud Run 공식 문서](https://cloud.google.com/run/docs)
 - [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
 - [Docker Hub 공식 문서](https://docs.docker.com/docker-hub/)
+
+---
+
+<div align="center">
+
+[← 이전: GitHub Actions 가이드](./github-actions-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: CI/CD 파이프라인 가이드 →](./cicd-pipeline-guide)
+
+</div>

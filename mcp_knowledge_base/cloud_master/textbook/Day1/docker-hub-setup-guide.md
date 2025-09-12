@@ -272,3 +272,11 @@ Error: secret not found
 ---
 
 **🎉 축하합니다! Docker Hub 설정이 완료되었습니다. 이제 GitHub Actions를 통해 자동으로 Docker 이미지를 빌드하고 배포할 수 있습니다!**
+
+---
+
+<div align="center">
+
+[← 이전: Cloud Basic 2일차](../../../cloud_basic/textbook/Day2/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Docker 고급 가이드 →](./docker-advanced-guide)
+
+</div>
