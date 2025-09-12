@@ -73,7 +73,7 @@ export function cleanApiPath(path: string): string {
 // More aggressive path cleaning function for problematic cases
 export function deepCleanApiPath(path: string): string {
   if (!path) return ''
-  
+
   // Remove any base path prefixes
   let cleaned = stripBasePath(path)
   
@@ -101,14 +101,15 @@ export function deepCleanApiPath(path: string): string {
   const repeatedPattern = /(cloud_(?:basic|master|container)\/textbook\/Day\d+\/)(\1)+/g
   result = result.replace(repeatedPattern, '$1')
   
-  // Final cleanup
-  return result.replace(/\/+/g, '/').replace(/^\/|\/$/g, '')
+  // Final cleanup - remove multiple slashes and leading/trailing slashes
+  return result.replace(/\/+/g, '/').replace(/^\/+|\/+$/g, '')
 }
 
 export function sanitizeGeneratedFilename(title: string): string {
   let rel = title.toLowerCase().trim()
-  rel = rel.replace(/[^a-z0-9\-\s]/g,'').replace(/\s+/g,'-')
+  rel = rel.replace(/[^a-z0-9\-\s가-힣]/g,'').replace(/\s+/g,'-')
   if(!rel) rel = 'generated-' + Date.now()
+  // Check if it already ends with .md before adding
   if(!rel.endsWith('.md')) rel += '.md'
   return rel
 }

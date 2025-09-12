@@ -639,7 +639,7 @@ const handleFileClick = async (path) => {
     }
     // 텍스트 계열은 중앙 패널에 표시
     if(ext === 'md' || ['txt','log','json','yaml','yml','csv'].includes(ext) || ext === ''){
-      const s = await fetch(`${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent(cleanApiPath(path))}`, { headers: { 'X-API-Key': apiKey } })
+      const s = await fetch(`${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent(cleanPath)}`, { headers: { 'X-API-Key': apiKey } })
       if (s.ok){
         tbContent.value = await s.text()
         tbSlide.value = null

@@ -12,7 +12,9 @@ export default defineConfig({
     include: [
       './tests/components/**/*.spec.ts',
       './tests/composables/**/*.spec.ts',
-      './tests/layouts/**/*.spec.ts'
+      './tests/layouts/**/*.spec.ts',
+      './tests/utils/**/*.spec.ts',
+      './tests/integration/**/*.spec.ts'
     ],
   },
   resolve: {

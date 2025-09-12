@@ -26,7 +26,13 @@ export default defineNuxtConfig({
   },
   router: {
     options: {
-      scrollBehaviorType: 'smooth'
+      scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+          return savedPosition
+        } else {
+          return { top: 0 }
+        }
+      }
     }
   },
   runtimeConfig: {

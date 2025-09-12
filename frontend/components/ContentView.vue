@@ -293,6 +293,7 @@ const setupLinkIntercepts = async () => {
     }
 
     // Clean up the path using deep cleaning
+        // Clean up the path using deep cleaning
     targetPath = deepCleanApiPath(targetPath);
 
     // Dispatch navigation event
