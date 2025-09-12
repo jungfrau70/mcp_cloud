@@ -74,35 +74,45 @@ export function cleanApiPath(path: string): string {
 export function deepCleanApiPath(path: string): string {
   if (!path) return ''
 
-  // Remove any base path prefixes
-  let cleaned = stripBasePath(path)
-  
-  // Remove any leading/trailing slashes
-  cleaned = cleaned.replace(/^\/+|\/+$/g, '')
-  
-  // Split into segments and remove empty ones
-  const segments = cleaned.split('/').filter(segment => segment && segment.trim() !== '')
-  
-  // Remove consecutive duplicates
-  const uniqueSegments: string[] = []
-  let lastSegment = ''
-  
-  for (const segment of segments) {
-    if (segment !== lastSegment) {
-      uniqueSegments.push(segment)
-      lastSegment = segment
+  const normalized = path.replace(/\\/g, '/')
+  const parts = normalized.split('/')
+
+  const rootMarkers = ['cloud_basic', 'cloud_master', 'cloud_container'];
+  let lastRootIndex = -1;
+
+  for (let i = parts.length - 1; i >= 0; i--) {
+    if (rootMarkers.includes(parts[i])) {
+      lastRootIndex = i;
+      break;
     }
   }
-  
-  // Check for repeated patterns and remove them
-  let result = uniqueSegments.join('/')
-  
-  // Remove patterns like "cloud_master/textbook/Day3/cloud_master/textbook/Day3/"
-  const repeatedPattern = /(cloud_(?:basic|master|container)\/textbook\/Day\d+\/)(\1)+/g
-  result = result.replace(repeatedPattern, '$1')
-  
-  // Final cleanup - remove multiple slashes and leading/trailing slashes
-  return result.replace(/\/+/g, '/').replace(/^\/+|\/+$/g, '')
+
+  if (lastRootIndex !== -1) {
+    return parts.slice(lastRootIndex).join('/');
+  }
+
+  return path;
+}
+
+export function resolveRelativePath(basePath: string, relativePath: string): string {
+  const baseParts = basePath.split('/').slice(0, -1);
+  const relativeParts = relativePath.split('/');
+  const stack = [...baseParts];
+
+  for (const part of relativeParts) {
+    if (part === '.' || part === '') {
+      continue;
+    }
+    if (part === '..') {
+      if (stack.length > 0) {
+        stack.pop();
+      }
+    } else {
+      stack.push(part);
+    }
+  }
+
+  return stack.join('/');
 }
 
 export function sanitizeGeneratedFilename(title: string): string {

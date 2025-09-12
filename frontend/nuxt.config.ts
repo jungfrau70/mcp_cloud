@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: false },
-  ssr: true,
+  ssr: false, // SPA 모드로 변경하여 hydration 문제 해결
   modules: [
     '@nuxtjs/tailwindcss',
     ['nuxt-tiptap-editor', { prefix: 'Tiptap' }]

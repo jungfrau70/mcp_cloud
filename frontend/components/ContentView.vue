@@ -287,14 +287,8 @@ const setupLinkIntercepts = async () => {
 
     // Resolve relative paths
     if (!targetPath.startsWith('/')) {
-      const currentPath = props.path || '';
-      const currentDir = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
-      targetPath = new URL(targetPath, `file:///${currentDir}`).pathname.substring(1);
+      targetPath = resolveRelativePath(props.path || '', targetPath);
     }
-
-    // Clean up the path using deep cleaning
-        // Clean up the path using deep cleaning
-    targetPath = deepCleanApiPath(targetPath);
 
     // Dispatch navigation event
     window.dispatchEvent(new CustomEvent('kb:open', {
@@ -683,6 +677,23 @@ watch(() => props.content, (c) => {
   color: #6b7280;
   font-style: italic;
 }
+
+/* 코드 블록 내부 키워드 스타일 */
+.prose pre .keyword {
+  color: #f472b6;
+  font-weight: bold;
+}
+
+/* 코드 블록 내부 문자열 스타일 */
+.prose pre .string {
+  color: #34d399;
+}
+
+/* 코드 블록 내부 숫자 스타일 */
+.prose pre .number {
+  color: #fbbf24;
+}
+</style>
 
 /* 코드 블록 내부 키워드 스타일 */
 .prose pre .keyword {

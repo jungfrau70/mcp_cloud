@@ -192,13 +192,13 @@ import { cleanApiPath, deepCleanApiPath } from '~/utils/path'
 const toast = useToastStore()
 
 // User authentication state
-const user = useState('user', () => null)
+const user = ref(null)
 const auth = useAuthStore()
 const userMenuOpen = ref(false)
 // 중복 토큰 로드 방지: auth.loadFromStorage() 제거
 
 // Hydration 불일치 방지를 위한 클라이언트 사이드 체크
-const isClient = process.client
+const isClient = process.client && typeof window !== 'undefined'
 
 async function fetchCurrentUser(){
   // 클라이언트 사이드에서만 실행
@@ -445,16 +445,30 @@ async function saveProfile(){
 const route = useRoute();
 const router = useRouter();
 const isKnowledgeBase = computed(() => route.path.startsWith('/knowledge-base'))
-const isLoggedIn = computed(() => !!auth.token)
-const isCurriculumRoute = computed(() => route.path.startsWith('/curriculum') || route.path.startsWith('/textbook'))
+const isLoggedIn = computed(() => {
+  if (!isClient) return false;
+  return !!auth.token;
+})
+const isCurriculumRoute = computed(() => {
+  if (!isClient) return false;
+  return route.path.startsWith('/curriculum') || route.path.startsWith('/textbook');
+})
 const isHomeRedirect = computed(() => {
+  if (!isClient) return false;
   try{ return String((route.query||{}).force||'') === '1' }catch{ return false }
 })
 const homePathParam = computed(() => {
+  if (!isClient) return '';
   try{ return String((route.query||{}).path||'') }catch{ return '' }
 })
-const isHome = computed(() => route.path === '/')
-const isAuthRoute = computed(() => route.path.startsWith('/login') || route.path.startsWith('/register') || route.path.startsWith('/verify-email'))
+const isHome = computed(() => {
+  if (!isClient) return false;
+  return route.path === '/';
+})
+const isAuthRoute = computed(() => {
+  if (!isClient) return false;
+  return route.path.startsWith('/login') || route.path.startsWith('/register') || route.path.startsWith('/verify-email');
+})
 onMounted(async () => {
   // 클라이언트 사이드에서만 실행
   if (!isClient) return;
@@ -539,6 +553,9 @@ onMounted(async () => {
 
 // 라우트 변경 시 커리큘럼 페이지로 전환되면 마지막 경로 복원
 watch(() => route.path, async (p) => {
+  // 클라이언트 사이드에서만 실행
+  if (!isClient) return;
+  
   // Scroll to top when route changes
   if (typeof window !== 'undefined') {
     window.scrollTo({ top: 0, behavior: 'smooth' });

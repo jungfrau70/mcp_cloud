@@ -17,6 +17,9 @@ const content = ref('')
 const path = ref('index.md')
 
 onMounted(async () => {
+  // 클라이언트 사이드에서만 실행
+  if (typeof window === 'undefined') return;
+  
   const apiBase = resolveApiBase()
   try{
     const r = await fetch(`${apiBase}/v1/curriculum/item?path=${encodeURIComponent(deepCleanApiPath(path.value))}`, {
