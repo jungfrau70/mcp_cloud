@@ -76,3 +76,16 @@ mcp_knowledge_base\cloud_master\과정상세.md
 요청4) 위 세개의 파일들이 Master 과정 교구들 (mcp_knowledge_base\cloud_master 디렉토리 내 파일들)과  맥락적으로 연계 되었는지, 특히 mcp_knowledge_base\cloud_master\textbook 내 교재들은 전수 조사해 줘.
 
 요청5) 교재간 전/후 이동 링크 확인 및 부재 시 추가
+
+요청6) 아래 날짜간 README 파일과 실습파일 간 전/후 이동 링크 추가
+
+README 파일
+   mcp_knowledge_base\cloud_master\textbook\Day3\README.md
+   mcp_knowledge_base\cloud_master\textbook\Day2\README.md
+   mcp_knowledge_base\cloud_master\textbook\Day1\README.md
+
+실습파일
+   mcp_knowledge_base\cloud_master\textbook\Day1\practice\docker-basics.md
+   mcp_knowledge_base\cloud_master\textbook\Day1\practice\git-github-basics.md
+   mcp_knowledge_base\cloud_master\textbook\Day1\practice\github-actions-basics.md
+   mcp_knowledge_base\cloud_master\textbook\Day1\practice\vm-deployment.md

@@ -74,26 +74,24 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [로드 밸런싱 실습](practice/load-balancing-setup)
-- 🔗 [Auto Scaling 실습](practice/auto-scaling-setup)
-- 🔗 [모니터링 설정](practice/monitoring-setup)
-- 🔗 [장애 복구 실습](practice/disaster-recovery)
+- 🔗 [로드 밸런싱 가이드](./load-balancing-guide) - ELB, Cloud Load Balancing 구성
+- 🔗 [Auto Scaling 가이드](./auto-scaling-guide) - ASG, MIG 자동 확장 설정
+- 🔗 [통합 가이드](./integration-guide) - 로드 밸런서 + 오토스케일링 연동
+- 🔗 [장애 복구 가이드](./disaster-recovery-guide) - 장애 시뮬레이션 및 복구
 
-### 📚 개념 학습 가이드
-- 🔗 [로드 밸런싱 가이드](./load-balancing-guide)
-- 🔗 [Auto Scaling 가이드](./auto-scaling-guide)
-- 🔗 [모니터링 가이드](./monitoring-guide)
-- 🔗 [비용 최적화 가이드](./cost-optimization-guide)
+### 📚 데모 프로젝트
+- 🔗 [Actions Demo 프로젝트](./actions-demo/README) - GitHub Actions CI/CD 데모
+- 🔗 [My App 프로젝트](./my-app/README) - Docker 기반 웹 애플리케이션
+- 🔗 [스크립트 모음](./scripts/README) - AWS/GCP 자동화 스크립트
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [로드 밸런싱 트러블슈팅](./troubleshooting-load-balancing)
-- 🔗 [Auto Scaling 트러블슈팅](./troubleshooting-auto-scaling)
-- 🔗 [모니터링 트러블슈팅](./troubleshooting-monitoring)
+- 🔗 [트러블슈팅 가이드](./troubleshooting-guide) - 로드 밸런싱, 오토스케일링, 모니터링 문제 해결
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Master 1일차](../Day1/README)
-- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README)
-- 🔗 [전체 커리큘럼](../../../curriculum)
+- 🔗 [Cloud Master 1일차](../Day1/README) - Docker, Git/GitHub, GitHub Actions 기초
+- 🔗 [Cloud Master 2일차](../Day2/README) - 고급 CI/CD 및 VM 기반 컨테이너 배포
+- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README) - 컨테이너 심화 과정
+- 🔗 [전체 커리큘럼](../../../curriculum) - 전체 과정 구조 및 학습 경로
 
 </details>
 
