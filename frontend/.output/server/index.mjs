@@ -4,9 +4,11 @@ import { t as toNodeListener, d as destr, u as useRuntimeConfig, a as trapUnhand
 import 'node:events';
 import 'node:buffer';
 import 'node:fs';
-import 'node:path';
-import 'node:crypto';
 import 'node:url';
+import '@iconify/utils';
+import 'node:crypto';
+import 'consola';
+import 'node:path';
 
 const cert = process.env.NITRO_SSL_CERT;
 const key = process.env.NITRO_SSL_KEY;

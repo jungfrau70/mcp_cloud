@@ -42,6 +42,7 @@ import mermaid from 'mermaid';
 import embedVega from 'vega-embed';
 import DOMPurify from 'dompurify'
 import { cleanApiPath, deepCleanApiPath, isDirectoryPath, normalizeDirectoryPath } from '~/utils/path'
+import { useNavigation } from '~/composables/useNavigation'
 
 const props = defineProps({
   content: String,
@@ -238,8 +239,11 @@ const setupCodeBlockHandlers = () => {
   });
 };
 
+// 네비게이션 composable 사용
+const { safeGoBack } = useNavigation()
+
 const goBack = () => {
-  window.history.back();
+  safeGoBack()
 };
 
 const setupLinkIntercepts = async () => {

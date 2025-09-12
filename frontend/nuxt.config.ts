@@ -3,9 +3,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   ssr: false, // SPA 모드로 변경하여 hydration 문제 해결
   modules: [
-    '@nuxtjs/tailwindcss',
-    ['nuxt-tiptap-editor', { prefix: 'Tiptap' }],
-    '@nuxt/ui'
+    ['nuxt-tiptap-editor', { prefix: 'Tiptap' }]
   ],
   components: [
     {
@@ -28,13 +26,7 @@ export default defineNuxtConfig({
   },
   router: {
     options: {
-      scrollBehavior(to, from, savedPosition) {
-        if (savedPosition) {
-          return savedPosition
-        } else {
-          return { top: 0 }
-        }
-      }
+      scrollBehaviorType: 'smooth'
     }
   },
   runtimeConfig: {
@@ -73,6 +65,14 @@ export default defineNuxtConfig({
     },
     build: {
       chunkSizeWarningLimit: 2400
+    },
+    css: {
+      postcss: {
+        plugins: [
+          require('tailwindcss'),
+          require('autoprefixer')
+        ]
+      }
     }
   }
 })

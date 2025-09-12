@@ -22,7 +22,9 @@ onMounted(async () => {
   try {
     const me = await $fetch<{ role?: string }>('/api/v1/users/me')
     isAdmin.value = me?.role === 'admin'
-  } catch {
+  } catch (error) {
+    console.warn('사용자 정보를 가져올 수 없습니다:', error)
+    // API 호출 실패 시에도 페이지를 표시하되, 관리자 권한이 없다고 표시
     isAdmin.value = false
   }
   loading.value = false
