@@ -1,6 +1,8 @@
 # 클라우드 실무력 강화! AWS & GCP 활용법 - 통합 커리큘럼
 
-본 커리큘럼은 **4단계 체계적 학습 과정**으로 구성되어 있으며, 클라우드 기초부터 고급 오케스트레이션까지 실무 중심의 교육을 제공합니다.
+> 📋 **전체 개요**: [README.md](./README.md) | [통합 인덱스](./index.md)에서 전체 과정 구조를 확인하세요.
+
+본 커리큘럼은 **3단계 체계적 학습 과정**으로 구성되어 있으며, 클라우드 기초부터 고급 오케스트레이션까지 실무 중심의 교육을 제공합니다.
 
 > 표기 안내: 🔗 아이콘이 붙은 항목은 클릭 가능한 링크입니다.
 
@@ -69,9 +71,10 @@
   - 실습: 리소스 정리 및 비용 모니터링
 
 **📚 실습 자료**
-- 🔗 [AWS 기초 실습 가이드](mcp_knowledge_base/cloud_basic/textbook/Day1/practice/aws_basic_practice.md)
-- 🔗 [GCP 기초 실습 가이드](mcp_knowledge_base/cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
-- 🔗 [통합 실습 가이드](mcp_knowledge_base/cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md)
+- 🔗 [Cloud Basic 과정 개요](./cloud_basic/과정명.md) | [과정 상세](./cloud_basic/과정상세.md)
+- 🔗 [1일차 실습 가이드](./cloud_basic/textbook/Day1/README.md)
+- 🔗 [2일차 실습 가이드](./cloud_basic/textbook/Day2/README.md)
+- 🔗 [전체 실습 가이드](./cloud_basic/README.md)
 
 ---
 
@@ -146,10 +149,11 @@
   - 실습: 비용 최적화 전략 수립 및 발표
 
 **📚 실습 자료**
-- 🔗 [Docker 기초 실습](mcp_knowledge_base/cloud_master/textbook/Day1/)
-- 🔗 [GitHub Actions 실습](mcp_knowledge_base/cloud_master/textbook/Day1/)
-- 🔗 [VM 배포 자동화](mcp_knowledge_base/cloud_master/textbook/Day2/)
-- 🔗 [모니터링 및 비용 최적화](mcp_knowledge_base/cloud_master/textbook/Day3/)
+- 🔗 [Cloud Master 과정 개요](./cloud_master/과정명.md) | [과정 상세](./cloud_master/과정상세.md)
+- 🔗 [1일차 실습 가이드](./cloud_master/textbook/Day1/README.md)
+- 🔗 [2일차 실습 가이드](./cloud_master/textbook/Day2/README.md)
+- 🔗 [3일차 실습 가이드](./cloud_master/textbook/Day3/README.md)
+- 🔗 [전체 실습 가이드](./cloud_master/README.md)
 
 ---
 
@@ -200,9 +204,10 @@
   - 실습: 실제 서비스 시나리오 아키텍처 구현 및 발표
 
 **📚 실습 자료**
-- 🔗 [Kubernetes 기초 실습](mcp_knowledge_base/cloud_container/textbook/Day1/practice/kubernetes-basics.md)
-- 🔗 [ECS/Fargate 실습](mcp_knowledge_base/cloud_container/textbook/Day1/practice/container-basics.md)
-- 🔗 [고가용성 아키텍처 실습](mcp_knowledge_base/cloud_container/textbook/Day2/practice/)
+- 🔗 [Cloud Container 과정 개요](./cloud_container/과정명.md) | [과정 상세](./cloud_container/과정상세.md)
+- 🔗 [1일차 실습 가이드](./cloud_container/textbook/Day1/README.md)
+- 🔗 [2일차 실습 가이드](./cloud_container/textbook/Day2/README.md)
+- 🔗 [전체 실습 가이드](./cloud_container/README.md)
 
 ---
 
@@ -230,10 +235,10 @@ Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일)
 - **모니터링**: Prometheus, Grafana, CloudWatch, Cloud Monitoring
 
 ### 자동화 스크립트
-- 🔗 [AWS 자동화 스크립트](mcp_knowledge_base/cloud_basic/textbook/Day1/scripts/)
-- 🔗 [GCP 자동화 스크립트](mcp_knowledge_base/cloud_basic/textbook/Day1/scripts/)
-- 🔗 [Docker 자동화 스크립트](mcp_knowledge_base/cloud_master/textbook/Day1/scripts/)
-- 🔗 [Kubernetes 자동화 스크립트](mcp_knowledge_base/cloud_container/textbook/Day1/scripts/)
+- 🔗 [AWS 자동화 스크립트](./cloud_basic/textbook/Day1/scripts/)
+- 🔗 [GCP 자동화 스크립트](./cloud_basic/textbook/Day1/scripts/)
+- 🔗 [Docker 자동화 스크립트](./cloud_master/textbook/Day1/scripts/)
+- 🔗 [Kubernetes 자동화 스크립트](./cloud_container/textbook/Day1/scripts/)
 
 ---
 
@@ -241,12 +246,11 @@ Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일)
 
 ### 각 과정별 제출물
 - **Cloud Basic**: 아키텍처 다이어그램, 계정 설정 증빙, 실습 결과 스크린샷
-- **Cloud Intermediate**: Docker 이미지, GitHub 저장소, CI/CD 파이프라인
 - **Cloud Master**: 자동화된 배포 파이프라인, 모니터링 대시보드
 - **Cloud Container**: Kubernetes 클러스터, 고가용성 아키텍처, 성능 최적화 보고서
 
 ### 통합 프로젝트
-- **최종 아키텍처**: 4단계 과정을 통합한 완전한 클라우드 아키텍처
+- **최종 아키텍처**: 3단계 과정을 통합한 완전한 클라우드 아키텍처
 - **비용 분석**: 각 단계별 비용 최적화 전략
 - **보안 정책**: 종합적인 보안 및 컴플라이언스 정책
 - **운영 가이드**: 실무 적용을 위한 운영 매뉴얼
@@ -258,7 +262,6 @@ Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일)
 과정 완료 후 수강생은 다음을 수행할 수 있습니다:
 
 - **Cloud Basic**: 클라우드 기초 서비스 활용 및 기본 아키텍처 구성
-- **Cloud Intermediate**: Docker, Git/GitHub, CI/CD 기초 활용
 - **Cloud Master**: VM 기반 컨테이너 배포 및 자동화 운영
 - **Cloud Container**: 고급 오케스트레이션 및 엔터프라이즈급 아키텍처 설계
 

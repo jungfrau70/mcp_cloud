@@ -82,7 +82,7 @@ const renderedContent = computed(() => {
     headerPrefix: '' // Remove any prefix from generated IDs
   })
   
-  // Custom renderer for Korean header IDs
+  // Custom renderer for Korean header IDs and table styling
   const renderer = new marked.Renderer()
   renderer.heading = function(text, level) {
     // Create Korean-friendly ID by converting to lowercase and replacing spaces with hyphens
@@ -93,6 +93,22 @@ const renderedContent = computed(() => {
       .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
     
     return `<h${level} id="${id}">${text}</h${level}>`
+  }
+  
+  // Custom table renderer for better styling
+  renderer.table = function(header, body) {
+    return `<div class="table-scroll"><table class="table-auto w-full border-collapse border border-gray-300">${header}${body}</table></div>`
+  }
+  
+  renderer.tablerow = function(content) {
+    return `<tr class="border-b border-gray-200">${content}</tr>`
+  }
+  
+  renderer.tablecell = function(content, flags) {
+    const tag = flags.header ? 'th' : 'td'
+    const align = flags.align ? ` style="text-align: ${flags.align}"` : ''
+    const className = flags.header ? 'px-4 py-2 bg-gray-50 font-semibold text-left border border-gray-300' : 'px-4 py-2 border border-gray-300'
+    return `<${tag} class="${className}"${align}>${content}</${tag}>`
   }
   
   marked.use({ renderer })
@@ -357,16 +373,7 @@ const setupLinkIntercepts = async () => {
         if(textNode.parentNode){ textNode.parentNode.replaceChild(frag, textNode) }
       }
     }catch{}
-    // Responsive tables: wrap tables with a horizontal scroll container
-    try{
-      const tables = contentContainer.value.querySelectorAll('table')
-      tables.forEach((tbl) => {
-        if((tbl.parentElement && tbl.parentElement.classList.contains('table-scroll'))) return
-        const wrapper = document.createElement('div')
-        wrapper.className = 'table-scroll'
-        if(tbl.parentNode){ tbl.parentNode.insertBefore(wrapper, tbl); wrapper.appendChild(tbl) }
-      })
-    }catch{}
+    // Tables are now wrapped by the custom renderer, no need for additional wrapping
     // Intercept KB links (mdc:mcp_knowledge_base/.. or sanitized to mcp_knowledge_base/...)
     contentContainer.value.querySelectorAll('a[href^="mdc:mcp_knowledge_base/"], a[href^="mcp_knowledge_base/"], a[href^="/mcp_knowledge_base/"]').forEach(link => {
       try{ link.classList.add('kb-link') }catch{}
@@ -652,11 +659,40 @@ watch(() => props.content, (c) => {
 }
 
 /* 표(Table) 렌더링 및 가독성 개선 */
-.table-scroll { overflow-x: auto; }
-.prose table { width: 100%; border-collapse: collapse; table-layout: auto; }
-.prose thead th { background: #f9fafb; }
-.prose th, .prose td { border: 1px solid #e5e7eb; padding: 0.5rem 0.75rem; vertical-align: top; }
-.prose tbody tr:nth-child(odd) { background: #fafafa; }
+.table-scroll { 
+  overflow-x: auto; 
+  margin: 1rem 0;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.prose table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  table-layout: auto; 
+  background: white;
+}
+
+.prose thead th { 
+  background: #f9fafb; 
+  font-weight: 600;
+  color: #374151;
+}
+
+.prose th, .prose td { 
+  border: 1px solid #e5e7eb; 
+  padding: 0.75rem 1rem; 
+  vertical-align: top; 
+  text-align: left;
+}
+
+.prose tbody tr:nth-child(odd) { 
+  background: #fafafa; 
+}
+
+.prose tbody tr:hover {
+  background: #f3f4f6;
+}
 
 /* 마크다운 접기 기능 스타일링 */
 .prose details {

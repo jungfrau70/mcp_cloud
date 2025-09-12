@@ -1,0 +1,171 @@
+# AWS/GCP Master 과정
+
+> 📋 **전체 개요**: [README.md](../README.md) | [통합 커리큘럼](../curriculum.md) | [통합 인덱스](../index.md)에서 전체 과정 구조를 확인하세요.
+
+> 📋 **과정 개요**: [과정명.md](./과정명.md) | [과정상세.md](./과정상세.md)에서 상세한 교육 정보를 확인하세요.
+
+## 📋 개요
+
+이 Master 과정은 **클라우드 실무 전반을 아우르는 마스터 수준 과정**입니다.
+
+### 🎯 대상 학습자
+- Cloud Basic 과정을 수료한 학습자 (필수)
+- DevOps, 인프라 운영 및 최적화를 담당하는 IT 전문가
+- AWS/GCP 환경에서 실무 통합 역량을 강화하려는 아키텍트 및 엔지니어
+
+---
+
+## 📚 과정 구성
+
+### Day 1: Docker, Git/GitHub, GitHub Actions 기초
+- **1교시**: Docker 기초 및 컨테이너 기술
+  - Docker 개념 및 아키텍처 이해
+  - Dockerfile 작성 및 이미지 빌드
+  - Docker Compose를 활용한 다중 서비스 관리
+  - 실습: Node.js 웹 애플리케이션 컨테이너화
+
+- **2교시**: Git/GitHub 기초 및 협업
+  - Git 기본 명령어 및 워크플로우
+  - GitHub 저장소 생성 및 관리
+  - 브랜치 전략 및 Pull Request 활용
+  - 실습: 팀 프로젝트 기반 Git 협업
+
+- **3교시**: GitHub Actions CI/CD 파이프라인
+  - GitHub Actions 개념 및 워크플로우 구조
+  - 자동화된 테스트, 빌드, 배포 파이프라인
+  - Docker 이미지 자동 빌드 및 레지스트리 푸시
+  - 실습: GitHub Actions로 CI/CD 파이프라인 구축
+
+- **4교시**: VM 기반 웹 애플리케이션 배포
+  - AWS EC2 + Docker / GCP Compute Engine + Docker
+  - 웹 애플리케이션 배포 및 도메인 연결
+  - 기본 모니터링 및 로그 관리
+  - 실습: 완전 자동화된 VM 배포 파이프라인
+
+### Day 2: 고급 CI/CD 및 VM 기반 컨테이너 배포
+- **1교시**: Docker 고급 기법 및 최적화
+  - Dockerfile 멀티스테이지 빌드 및 최적화
+  - Docker Compose 고급 설정 및 오케스트레이션
+  - 실습: 프로덕션급 Docker 이미지 빌드 및 최적화
+
+- **2교시**: GitHub Actions 고급 워크플로우
+  - 매트릭스 빌드 및 환경별 배포 전략
+  - 시크릿 관리 및 보안 설정
+  - 실습: 고급 CI/CD 파이프라인 구축
+
+- **3교시**: VM 기반 컨테이너 배포 자동화
+  - AWS EC2 + Docker / GCP Compute Engine + Docker
+  - 컨테이너 오케스트레이션 및 관리
+  - 실습: 고가용성 컨테이너 배포 환경 구성
+
+- **4교시**: 완전 자동화된 배포 파이프라인
+  - GitHub Actions + VM 배포 자동화
+  - 실습: GitHub 푸시 → Docker 빌드 → VM 배포 자동화
+
+### Day 3: 로드 밸런싱, 모니터링, 비용 최적화
+- **1교시**: 로드 밸런싱 및 Auto Scaling
+  - AWS ELB + Auto Scaling Group / GCP Cloud LB + Managed Instance Group
+  - 실습: VM 기반 로드 밸런싱 환경 구성
+
+- **2교시**: 모니터링 및 로깅 시스템
+  - CloudWatch, Cloud Monitoring 설정
+  - Prometheus + Grafana 모니터링 구축
+  - 실습: 종합 모니터링 대시보드 구축
+
+- **3교시**: 장애 복구 및 운영 자동화
+  - Health Check 기반 자동 교체 및 복구
+  - 실습: 장애 시뮬레이션 및 자동 복구 테스트
+
+- **4교시**: 비용 최적화 및 운영 전략
+  - 클라우드 비용 구조 및 과금 체계 분석
+  - VM 기반 아키텍처 비용 분석 및 최적화
+  - 실습: 비용 최적화 전략 수립 및 발표
+
+---
+
+## 🔗 Container 과정과의 연계
+
+### Master 과정에서 학습한 내용
+- ✅ Docker 컨테이너화 및 최적화
+- ✅ CI/CD 파이프라인 구축
+- ✅ VM 기반 컨테이너 배포
+- ✅ 로드 밸런싱 및 모니터링
+
+### Container 과정에서 확장하는 내용
+- 🚀 **Kubernetes 오케스트레이션**: EKS/GKE 클러스터 관리
+- 🚀 **고가용성 아키텍처**: Multi-AZ 배포 및 장애 복구
+- 🚀 **서비스 메시**: Istio를 활용한 트래픽 관리
+- 🚀 **고급 모니터링**: Prometheus, Grafana, ELK Stack
+
+---
+
+## 📖 학습 자료
+
+### Day 1
+- [Docker 고급 가이드](./textbook/Day1/docker-advanced-guide.md)
+- [GitHub Actions 가이드](./textbook/Day1/github-actions-guide.md)
+- [Docker Compose 가이드](./textbook/Day1/docker-compose-guide.md)
+- [VM 배포 가이드](./textbook/Day1/vm-deployment-guide.md)
+
+### Day 2
+- [고급 CI/CD 가이드](./textbook/Day2/advanced-cicd-guide.md)
+- [컨테이너 배포 가이드](./textbook/Day2/container-deployment-guide.md)
+- [자동화 파이프라인 가이드](./textbook/Day2/automation-pipeline-guide.md)
+
+### Day 3
+- [로드 밸런싱 가이드](./textbook/Day3/load-balancing-guide.md)
+- [모니터링 설정 가이드](./textbook/Day3/monitoring-setup-guide.md)
+- [비용 최적화 가이드](./textbook/Day3/cost-optimization-guide.md)
+
+> 📚 **전체 실습 가이드**: [Day1 README](./textbook/Day1/README.md) | [Day2 README](./textbook/Day2/README.md) | [Day3 README](./textbook/Day3/README.md)
+
+---
+
+## 🎯 학습 목표
+
+이 Master 과정을 통해 다음을 달성합니다:
+
+1. **Docker 마스터**: 컨테이너화 및 최적화 기법
+2. **CI/CD 파이프라인**: GitHub Actions 자동화
+3. **VM 기반 배포**: AWS/GCP 환경에서 컨테이너 배포
+4. **운영 자동화**: 모니터링, 로깅, 장애 복구
+5. **비용 최적화**: 클라우드 비용 분석 및 최적화 전략
+
+---
+
+## 🚀 시작하기
+
+Master 과정을 시작하기 전에 다음을 확인하세요:
+
+### 필수 선수 과정
+- [ ] [Cloud Basic 과정](../cloud_basic/textbook/Day1/README.md) 수료
+- [ ] Linux 기본 명령어 사용법 숙지
+- [ ] 웹 애플리케이션 개발 경험 권장
+- [ ] 프로그래밍 기초 지식 (JavaScript, Python 등)
+
+> 🔗 **다음 과정**: [Cloud Container 과정](../cloud_container/textbook/Day1/README.md) | [전체 커리큘럼](../curriculum.md)
+
+### 환경 준비
+- [ ] Docker Desktop 설치 및 설정
+- [ ] Git/GitHub 계정 및 CLI 설정
+- [ ] AWS/GCP 계정 및 CLI 설정
+- [ ] VS Code 또는 선호하는 IDE
+
+### 권장 사항
+- Docker 기초 경험
+- Git/GitHub 사용 경험
+- 클라우드 서비스 기본 이해
+- 실습용 프로젝트 준비
+
+---
+
+## 📞 지원
+
+Master 과정에서 문제가 발생하면:
+1. [각 교시별 문제 해결 섹션](./textbook/Day1/troubleshooting-guide.md) 확인
+2. Docker 및 Git 환경 설정 재확인
+3. 클라우드 계정 권한 및 설정 점검
+
+> 🆘 **지원 채널**: [과정명.md](./과정명.md)에서 문의 정보를 확인하세요.
+
+**🎯 목표**: 클라우드 실무의 핵심 기술을 마스터하고 다음 단계인 Container 과정으로 나아갈 수 있는 실무 역량을 기릅니다.

@@ -1,0 +1,149 @@
+# AWS/GCP Basic 과정
+
+> 📋 **전체 개요**: [README.md](../README.md) | [통합 커리큘럼](../curriculum.md) | [통합 인덱스](../index.md)에서 전체 과정 구조를 확인하세요.
+
+> 📋 **과정 개요**: [과정명.md](./과정명.md) | [과정상세.md](./과정상세.md)에서 상세한 교육 정보를 확인하세요.
+
+## 📋 개요
+
+이 Basic 과정은 **클라우드 입문자**를 대상으로 한 기초 클라우드 기술 교육입니다.
+
+### 🎯 대상 학습자
+- 클라우드 입문자
+- IT 기초 지식이 있는 개발자
+- 클라우드를 처음 접하는 시스템 관리자
+- 클라우드 기초 지식을 쌓고 싶은 일반 사용자
+
+---
+
+## 📚 과정 구성
+
+### Day 1: AWS & GCP 기초 서비스 실습
+- **1교시**: 클라우드 개념 및 계정 생성
+  - 클라우드 컴퓨팅 개요와 장점
+  - AWS와 GCP 서비스 개요 및 비교
+  - 실습: AWS Free Tier 계정 생성 및 콘솔 탐색
+  - 실습: GCP 계정 생성 및 $300 크레딧 활성화
+
+- **2교시**: IAM 기초 실습
+  - AWS IAM: 사용자, 그룹, 역할, 정책 개념
+  - GCP IAM: 서비스 계정, 역할, 권한 관리
+  - 실습: AWS IAM 사용자 생성 및 권한 부여
+  - 실습: GCP 서비스 계정 생성 및 키 관리
+
+- **3교시**: 가상머신 서비스 기초
+  - AWS EC2 vs GCP Compute Engine 비교
+  - 인스턴스 타입, 이미지, 리전 개념
+  - 실습: AWS EC2 인스턴스 생성 및 SSH 접속
+  - 실습: GCP Compute Engine 인스턴스 생성 및 접속
+
+- **4교시**: 스토리지 서비스 기초
+  - AWS S3 vs GCP Cloud Storage 비교
+  - 객체 스토리지 개념과 활용 사례
+  - 실습: AWS S3 버킷 생성 및 파일 업로드/다운로드
+  - 실습: GCP Cloud Storage 버킷 생성 및 파일 관리
+
+### Day 2: 네트워크, 보안 및 데이터베이스 실습
+- **1교시**: 네트워킹 기초 실습
+  - AWS VPC vs GCP VPC 개념 및 비교
+  - 서브넷, 라우팅, 게이트웨이, NAT 게이트웨이
+  - 실습: AWS VPC 및 서브넷 구성
+  - 실습: GCP VPC 네트워크 및 서브넷 생성
+
+- **2교시**: 보안 그룹 및 방화벽 실습
+  - AWS Security Groups vs GCP Firewall Rules
+  - 인바운드/아웃바운드 규칙 설정 및 모범 사례
+  - 실습: AWS Security Groups 생성 및 규칙 설정
+  - 실습: GCP Firewall Rules 생성 및 테스트
+
+- **3교시**: 데이터베이스 서비스 기초
+  - AWS RDS vs GCP Cloud SQL 비교
+  - 관계형 데이터베이스 관리 및 백업
+  - 실습: AWS RDS MySQL 인스턴스 생성 및 연결
+  - 실습: GCP Cloud SQL MySQL 인스턴스 생성 및 접속
+
+- **4교시**: 종합 실습 및 비교 분석
+  - 웹 서버 + 데이터베이스 구성 종합 실습
+  - AWS vs GCP 서비스별 비용 및 성능 비교
+  - 실습: 간단한 웹 애플리케이션을 AWS와 GCP에 각각 배포
+  - 실습: 리소스 정리 및 비용 모니터링
+
+---
+
+## 🔗 Master 과정과의 연계
+
+### Basic 과정에서 학습한 내용
+- ✅ 클라우드 기본 개념
+- ✅ AWS/GCP 계정 생성 및 설정
+- ✅ IAM 권한 관리 기초
+- ✅ 핵심 서비스 실습 경험
+
+### Master 과정에서 확장하는 내용
+- 🚀 **Docker 컨테이너화**: 애플리케이션 컨테이너화
+- 🚀 **CI/CD 파이프라인**: GitHub Actions 자동화
+- 🚀 **고급 배포**: 컨테이너 기반 배포
+- 🚀 **운영 자동화**: 모니터링, 알림, 자동 복구
+
+---
+
+## 📖 학습 자료
+
+### Day 1
+- [클라우드 계정 설정 가이드](./textbook/Day1/aws-gcp-account-setup.md)
+- [IAM 기초 가이드](./textbook/Day1/iam-basics-guide.md)
+- [가상머신 서비스 가이드](./textbook/Day1/vm-services-guide.md)
+- [스토리지 서비스 가이드](./textbook/Day1/storage-services-guide.md)
+
+### Day 2
+- [네트워킹 기초 가이드](./textbook/Day2/README.md)
+- [종합 실습 프로젝트](./textbook/Day2/practice/basic-to-master-bridge.md)
+
+> 📚 **전체 실습 가이드**: [Day1 README](./textbook/Day1/README.md) | [Day2 README](./textbook/Day2/README.md)
+
+---
+
+## 🎯 학습 목표
+
+이 Basic 과정을 통해 다음을 달성합니다:
+
+1. **클라우드 기본 개념**: 클라우드 컴퓨팅의 핵심 개념 이해
+2. **계정 및 권한 관리**: AWS/GCP 계정 생성 및 IAM 기초
+3. **핵심 서비스 실습**: VM, 스토리지, 네트워크, 데이터베이스 기본 활용
+4. **실무 기초**: 간단한 웹 애플리케이션을 클라우드에 배포
+
+---
+
+## 🚀 시작하기
+
+Basic 과정을 시작하기 전에 다음을 확인하세요:
+
+### 필수 선수 과정
+- [ ] IT 기초 지식 (OS, 네트워크 기본 이해)
+- [ ] Linux 기본 명령어 경험 권장
+- [ ] 인터넷 및 웹 서비스 개념 이해
+
+> 🔗 **다음 과정**: [Cloud Master 과정](../cloud_master/textbook/Day1/README.md) | [전체 커리큘럼](../curriculum.md)
+
+### 환경 준비
+- [ ] AWS Free Tier 계정 생성
+- [ ] GCP 계정 생성 ($300 크레딧)
+- [ ] AWS CLI, gcloud CLI 설치
+- [ ] SSH 클라이언트 설정
+
+### 권장 사항
+- 클라우드 서비스의 기본 개념 숙지
+- 실습용 프로젝트 준비
+- 비용 모니터링 설정
+
+---
+
+## 📞 지원
+
+Basic 과정에서 문제가 발생하면:
+1. [각 교시별 문제 해결 섹션](./textbook/Day1/troubleshooting-guide.md) 확인
+2. 실습 환경 및 권한 설정 재확인
+3. 클라우드 계정 설정 상태 점검
+
+> 🆘 **지원 채널**: [과정명.md](./과정명.md)에서 문의 정보를 확인하세요.
+
+**🎯 목표**: 클라우드의 기본기를 탄탄히 쌓고 다음 단계인 Master 과정으로 나아갈 수 있는 기초를 다집니다.

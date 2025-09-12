@@ -1,5 +1,9 @@
 # AWS/GCP Advanced 과정
 
+> 📋 **전체 개요**: [README.md](../README.md) | [통합 커리큘럼](../curriculum.md) | [통합 인덱스](../index.md)에서 전체 과정 구조를 확인하세요.
+
+> 📋 **과정 개요**: [과정명.md](./과정명.md) | [과정상세.md](./과정상세.md)에서 상세한 교육 정보를 확인하세요.
+
 ## 📋 개요
 
 이 Advanced 과정은 **Master 과정을 완료한 학습자**를 대상으로 한 고급 클라우드 기술 교육입니다.
@@ -54,12 +58,17 @@
 
 ### Day 1
 - [3교시: AWS ECS / GCP GKE로 배포 실습](./textbook/Day1/container-orchestration-guide.md)
+- [Kubernetes 고급 가이드](./textbook/Day1/kubernetes-advanced-guide.md)
+- [자동 복구 가이드](./textbook/Day1/auto-recovery-guide.md)
+- [보안 정책 가이드](./textbook/Day1/security-policies-guide.md)
+- [비용 최적화 가이드](./textbook/Day1/cost-optimization-guide.md)
 
-### 추가 예정
-- Kubernetes 심화 가이드
-- 서비스 메시 실습
-- 모니터링 및 로깅 고급
-- 보안 및 컴플라이언스
+### Day 2
+- [고가용성 아키텍처 가이드](./textbook/Day2/high-availability-architecture.md)
+- [모니터링 설정 가이드](./textbook/Day2/monitoring-setup.md)
+- [종합 프로젝트 실습](./textbook/Day2/practice/comprehensive-project.md)
+
+> 📚 **전체 실습 가이드**: [Day1 README](./textbook/Day1/README.md) | [Day2 README](./textbook/Day2/README.md)
 
 ---
 
@@ -79,10 +88,12 @@
 Advanced 과정을 시작하기 전에 다음을 확인하세요:
 
 ### 필수 선수 과정
-- [ ] Master 과정 완료
+- [ ] [Master 과정 완료](../cloud_master/textbook/Day1/README.md)
 - [ ] Docker 기초 이해
 - [ ] GitHub Actions 경험
 - [ ] 클라우드 배포 기초 이해
+
+> 🔗 **관련 과정**: [Cloud Master 과정](../cloud_master/textbook/Day1/README.md) | [전체 커리큘럼](../curriculum.md)
 
 ### 환경 준비
 - [ ] AWS 계정 (ECS, ECR 권한)
@@ -100,8 +111,10 @@ Advanced 과정을 시작하기 전에 다음을 확인하세요:
 ## 📞 지원
 
 Advanced 과정에서 문제가 발생하면:
-1. Master 과정의 트러블슈팅 가이드 참고
-2. 각 교시별 문제 해결 섹션 확인
+1. [Master 과정의 트러블슈팅 가이드](../cloud_master/textbook/Day1/README.md) 참고
+2. [각 교시별 문제 해결 섹션](./textbook/Day2/troubleshooting/multi-az-issues.md) 확인
 3. 실습 환경 및 권한 설정 재확인
+
+> 🆘 **지원 채널**: [과정명.md](./과정명.md)에서 문의 정보를 확인하세요.
 
 **🎯 목표**: Master 과정에서 학습한 기초를 바탕으로 실제 프로덕션 환경에서 사용할 수 있는 고급 클라우드 기술을 습득합니다.
