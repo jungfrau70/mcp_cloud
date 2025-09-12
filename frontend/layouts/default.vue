@@ -604,15 +604,18 @@ async function showCurriculumIndex(){
 }
 
 const handleFileClick = async (path) => {
+  // Clean the path to prevent duplication
+  const cleanPath = cleanApiPath(path)
+  
   // 홈('/') 등에서는 '/textbook'로 전환하여 가운데 패널이 WorkspaceView를 렌더하도록 함
   try {
     if (!route.path.startsWith('/curriculum') && !route.path.startsWith('/textbook')) {
-      await router.push({ path: '/curriculum', query: { path, force: '1' } })
+      await router.push({ path: '/curriculum', query: { path: cleanPath, force: '1' } })
       return
     }
   } catch { /* ignore navigation errors */ }
   try {
-    tbPath.value = path;
+    tbPath.value = cleanPath;
     // persist last opened textbook file
     try {
       if (typeof window !== 'undefined') {

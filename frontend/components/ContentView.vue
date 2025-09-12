@@ -396,11 +396,17 @@ const setupLinkIntercepts = async () => {
             // Handle relative paths starting with ../
             rel = noScheme.substring(3) // Remove ../
           } else if (noScheme.match(/^cloud_[a-z_]+/)) {
-            // Handle direct cloud_* paths
+            // Handle direct cloud_* paths - ensure no duplication
             rel = noScheme
           }
           
+          // Additional check to prevent path duplication
+          if (rel.includes('mcp_knowledge_base/')) {
+            rel = rel.replace(/^mcp_knowledge_base\//, '')
+          }
+          
           const decoded = decodeURIComponent(rel)
+          console.log('Link clicked:', raw, '-> processed:', decoded) // Debug log
           window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'curriculum' } }))
         }catch{}
       })

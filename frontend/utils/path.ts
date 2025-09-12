@@ -31,7 +31,22 @@ export function normalizePath(path: string): string {
 export function cleanApiPath(path: string): string {
   // First strip base path, then normalize
   const stripped = stripBasePath(path)
-  return normalizePath(stripped)
+  const normalized = normalizePath(stripped)
+  
+  // Additional check to prevent duplication
+  // If the path contains repeated segments, remove them
+  const segments = normalized.split('/')
+  const cleaned: string[] = []
+  let lastSegment = ''
+  
+  for (const segment of segments) {
+    if (segment && segment !== lastSegment) {
+      cleaned.push(segment)
+      lastSegment = segment
+    }
+  }
+  
+  return cleaned.join('/')
 }
 
 export function sanitizeGeneratedFilename(title: string): string {
