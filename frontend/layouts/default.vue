@@ -561,7 +561,25 @@ watch(() => route.path, async (p) => {
   }
 })
 async function showCurriculumIndex(){
-  // 1) Try curriculum index through curriculum endpoint (if admin selected dirs contain index.md)
+  // 1) Try curriculum.md first, then fallback to index.md
+  try {
+    const s = await fetch(`${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent(cleanApiPath('curriculum'))}`, { headers: { 'X-API-Key': apiKey } })
+    if (s.ok) {
+      const ct = (s.headers.get('content-type')||'').toLowerCase()
+      if (ct.includes('application/pdf')){
+        const blob = await s.blob();
+        tbContent.value = '# curriculum\n\nPDF 슬라이드가 로드되었습니다.'
+        tbSlide.value = { type: 'pdf', url: URL.createObjectURL(blob) }
+      } else {
+        tbContent.value = await s.text()
+        tbSlide.value = null
+      }
+      tbPath.value = 'curriculum.md'
+      return
+    }
+  } catch { /* ignore */ }
+  
+  // 2) Fallback to index.md
   try {
     const s = await fetch(`${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent(cleanApiPath('index'))}`, { headers: { 'X-API-Key': apiKey } })
     if (s.ok) {
@@ -578,7 +596,8 @@ async function showCurriculumIndex(){
       return
     }
   } catch { /* ignore */ }
-  // 2) Public-only: no fallback to KB; show guidance
+  
+  // 3) Public-only: no fallback to KB; show guidance
   tbContent.value = '# 공개 커리큘럼\n\n관리자가 공개한 자료가 없습니다.'
   tbSlide.value = null
   tbPath.value = ''
