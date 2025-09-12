@@ -188,7 +188,7 @@ import TaskStatusBar from '~/components/TaskStatusBar.vue'
 import ToastStack from '~/components/ToastStack.vue'
 import { useToastStore } from '~/stores/toast'
 import { useAuthStore } from '~/stores/auth'
-import { cleanApiPath } from '~/utils/path'
+import { cleanApiPath, deepCleanApiPath } from '~/utils/path'
 const toast = useToastStore()
 
 // User authentication state
@@ -530,6 +530,11 @@ onMounted(async () => {
 
 // 라우트 변경 시 커리큘럼 페이지로 전환되면 마지막 경로 복원
 watch(() => route.path, async (p) => {
+  // Scroll to top when route changes
+  if (typeof window !== 'undefined') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  
   // Global guest guard
   if (!isLoggedIn.value && !(isHome.value || isAuthRoute.value)) {
     try { await router.replace('/login') } catch {}
@@ -604,8 +609,8 @@ async function showCurriculumIndex(){
 }
 
 const handleFileClick = async (path) => {
-  // Clean the path to prevent duplication
-  const cleanPath = cleanApiPath(path)
+  // Clean the path to prevent duplication using deep cleaning
+  const cleanPath = deepCleanApiPath(path)
   
   // 홈('/') 등에서는 '/textbook'로 전환하여 가운데 패널이 WorkspaceView를 렌더하도록 함
   try {

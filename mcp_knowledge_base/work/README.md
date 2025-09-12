@@ -89,3 +89,12 @@ README 파일
    mcp_knowledge_base\cloud_master\textbook\Day1\practice\git-github-basics.md
    mcp_knowledge_base\cloud_master\textbook\Day1\practice\github-actions-basics.md
    mcp_knowledge_base\cloud_master\textbook\Day1\practice\vm-deployment.md
+
+
+요청7) 페이지 이동 시, 이동 후 해당 페이지 상단이 보여지게
+
+요청8) ContainerView 우상단에 위치한 PDF (다운로드) 버튼 왼쪽에 호출한 페이지로 복귀하는 링크 "이전" 화면으로 이동하는 링크를 추가할 수 있어?
+
+요청9) 내부파일 링크가 클릭 시, 프론트엔드에서 URL 에 경로가 재귀적으로 추가되어 실패하는 이슈가 발생하고 있어.
+
+요청10) 구현된 내용 단위 테스트 수행

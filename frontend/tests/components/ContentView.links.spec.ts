@@ -72,6 +72,24 @@ describe('ContentView link interception', () => {
     window.removeEventListener('kb:open', handler)
   })
 
+  it('dispatches kb:open for relative links', async () => {
+    const md = '링크: [Relative](./some/other.md)'
+    const wrapper = await mountWithContent(md)
+
+    let received: any = null
+    const handler = (e: any) => { received = e?.detail }
+    window.addEventListener('kb:open', handler)
+
+    const a = wrapper.find('a[href="./some/other.md"]')
+    expect(a.exists()).toBe(true)
+    await a.trigger('click')
+    await flushPromises()
+
+    expect(received).toBeTruthy()
+    expect(received.path).toBe('some/other.md')
+    window.removeEventListener('kb:open', handler)
+  })
+
   it('opens external links in a new tab', async () => {
     const md = '외부: [공홈](https://example.com)'
     const wrapper = await mountWithContent(md)

@@ -24,6 +24,11 @@ export default defineNuxtConfig({
       ]
     }
   },
+  router: {
+    options: {
+      scrollBehaviorType: 'smooth'
+    }
+  },
   runtimeConfig: {
     public: {
       // 브라우저에서 접근 가능한 호스트로 기본값 설정

@@ -3,6 +3,12 @@
     <!-- Action row (optional) -->
     <div class="flex items-center justify-end gap-2 px-4 pt-3" v-if="path">
       <button
+        @click="goBack"
+        class="px-3 py-1 text-sm rounded bg-gray-200 hover:bg-gray-300 transition-colors"
+      >
+        이전
+      </button>
+      <button
         v-if="path && !isSlideView"
         @click="downloadPdf"
         class="px-3 py-1 text-sm rounded bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
@@ -35,7 +41,7 @@ import { marked } from 'marked';
 import mermaid from 'mermaid';
 import embedVega from 'vega-embed';
 import DOMPurify from 'dompurify'
-import { cleanApiPath } from '~/utils/path'
+import { cleanApiPath, deepCleanApiPath } from '~/utils/path'
 
 const props = defineProps({
   content: String,
@@ -232,316 +238,68 @@ const setupCodeBlockHandlers = () => {
   });
 };
 
+const goBack = () => {
+  window.history.back();
+};
+
 const setupLinkIntercepts = async () => {
-  await nextTick()
-  if (contentContainer.value) {
-    // render mermaid
-    try{
-      const allCodeBlocks = contentContainer.value.querySelectorAll('pre code, code')
-      allCodeBlocks.forEach(async (node) => {
-        const cls = String(node.className||'')
-        const text = String(node.textContent||'').trim()
-        const isMermaid = cls.includes('language-mermaid') || /^(graph|flowchart|sequenceDiagram|classDiagram|stateDiagram|erDiagram|gantt)\b/.test(text)
-        if(!isMermaid) return
-        const parent = (node.parentElement && node.parentElement.tagName.toLowerCase() === 'pre') ? node.parentElement : node
-        if(parent.getAttribute('data-rendered-mermaid') === '1') return
-        const mount = document.createElement('div')
-        parent.replaceWith(mount)
-        mount.setAttribute('data-rendered-mermaid','1')
-        try{
-          if(!mermaidInitialized){ mermaid.initialize({ startOnLoad:false, theme:'default' }); mermaidInitialized = true }
-          const out = await mermaid.render('m'+Math.random().toString(36).slice(2), text)
-          mount.innerHTML = out.svg
-        }catch{}
-      })
-      // vega-lite
-      const vegaNodes = contentContainer.value.querySelectorAll('pre code.language-json, pre code.language-vega-lite, code.language-vega-lite')
-      vegaNodes.forEach(async (node) => {
-        const text = (node.textContent||'').trim()
-        if(!/vega-lite/i.test(text) && !((node.className||'').includes('vega-lite'))) return
-        const pre = node.closest('pre')
-        const mount = document.createElement('div')
-        if(pre) pre.replaceWith(mount); else (node).replaceWith(mount)
-        try{
-          const jsonText = text.replace(/^[\/\s]*vega-lite\s*/i,'')
-          const spec = JSON.parse(jsonText.replace(/^\/\/.*$/gm,''))
-          await embedVega(mount, spec, { actions:false })
-        }catch{}
-      })
-      // Easy Copy buttons on code blocks
-      const codeBlocks = contentContainer.value.querySelectorAll('pre > code')
-      codeBlocks.forEach((codeEl) => {
-        const pre = codeEl.closest('pre')
-        if(!pre || pre.dataset.kbCopyBound === '1') return
-        pre.style.position = pre.style.position || 'relative'
-        const btn = document.createElement('button')
-        btn.type = 'button'
-        btn.className = 'kb-copy-btn'
-        btn.textContent = 'Copy'
-        btn.title = 'Copy code to clipboard'
-        btn.addEventListener('click', async (e) => {
-          e.preventDefault(); e.stopPropagation()
-          try{
-            const text = (codeEl.textContent||'')
-            await navigator.clipboard.writeText(text)
-            const old = btn.textContent
-            btn.textContent = 'Copied'
-            setTimeout(()=>{ btn.textContent = old || 'Copy' }, 1200)
-          }catch{}
-        })
-        pre.appendChild(btn)
-        pre.dataset.kbCopyBound = '1'
-      })
-    }catch{}
-    // Open tool links (mcp://)
-    contentContainer.value.querySelectorAll('a[href^="mcp://"]').forEach(link => {
-      link.addEventListener('click', (event) => {
-        event.preventDefault();
-        const url = new URL(link.href);
-        const tool = url.hostname;
-        emit('navigate-tool', { tool });
-      });
-    });
-    // Auto-linkify plain URLs and .md references in text nodes
-    try{
-      const basePathFull = props && props.path ? String(props.path) : ''
-      const baseRel = basePathFull.replace(/^mdc:/,'').replace(/^\//,'').replace(/^mcp_knowledge_base\//,'')
-      const baseDirParts = baseRel.split('/').slice(0,-1)
-      const urlRegex = /(https?:\/\/[^\s)\]\}]+)(?=[\s)\]\}.]|$)/g
-      const mdRegex = /(?<![\w/.-])([\w\-./]+\.md)(?![\w/.-])/g
-      const walker = document.createTreeWalker(contentContainer.value, NodeFilter.SHOW_TEXT, {
-        acceptNode: (node) => {
-          const text = node && node.nodeValue ? String(node.nodeValue) : ''
-          if(!text) return NodeFilter.FILTER_REJECT
-          const parent = (node.parentElement || node.parentNode)
-          const tag = parent && parent.tagName ? String(parent.tagName).toLowerCase() : ''
-          if(['a','script','style','code','pre'].includes(tag)) return NodeFilter.FILTER_REJECT
-          if(!(urlRegex.test(text) || mdRegex.test(text))) return NodeFilter.FILTER_REJECT
-          return NodeFilter.FILTER_ACCEPT
-        }
-      })
-      const resolveRelative = (rel) => {
-        const parts = []
-        for(const p of baseDirParts){ if(p && p!=='.') parts.push(p) }
-        for(const seg of String(rel).split('/')){
-          if(!seg || seg==='.') continue
-          if(seg==='..'){ if(parts.length) parts.pop(); continue }
-          parts.push(seg)
-        }
-        return parts.join('/')
-      }
-      const nodesToProcess = []
-      while(walker.nextNode()) nodesToProcess.push(walker.currentNode)
-      for(const textNode of nodesToProcess){
-        const text = String(textNode.nodeValue||'')
-        if(!(urlRegex.test(text) || mdRegex.test(text))) continue
-        const frag = document.createDocumentFragment()
-        let idx = 0
-        const pushText = (s) => { if(s) frag.appendChild(document.createTextNode(s)) }
-        const matches = []
-        text.replace(urlRegex, (m, url, off) => { matches.push({ off, len: m.length, type:'url', val:url }); return m })
-        text.replace(mdRegex, (m, md, off) => { matches.push({ off, len: m.length, type:'md', val:md }); return m })
-        matches.sort((a,b)=> a.off - b.off)
-        const merged = []
-        for(const cur of matches){ if(!merged.length || cur.off >= merged[merged.length-1].off + merged[merged.length-1].len){ merged.push(cur) } }
-        for(const m of merged){
-          pushText(text.slice(idx, m.off))
-          if(m.type==='url'){
-            const a = document.createElement('a')
-            a.href = m.val; a.textContent = m.val
-            a.setAttribute('target','_blank'); a.setAttribute('rel','noopener noreferrer')
-            frag.appendChild(a)
-          }else{
-            const rawMd = String(m.val)
-            let resolved
-            if(rawMd.includes('/')){
-              const first = rawMd.split('/')[0]
-              if(['cloud_basic','curriculum','textbook','slides','mcp_knowledge_base'].includes(first)) resolved = rawMd.replace(/^mcp_knowledge_base\//,'')
-              else resolved = resolveRelative(rawMd)
-            }else{
-              resolved = resolveRelative(rawMd)
-            }
-            const a = document.createElement('a')
-            a.href = 'mcp_knowledge_base/' + resolved
-            a.textContent = m.val
-            try{ a.classList.add('kb-link') }catch{}
-            frag.appendChild(a)
-          }
-          idx = m.off + m.len
-        }
-        pushText(text.slice(idx))
-        if(textNode.parentNode){ textNode.parentNode.replaceChild(frag, textNode) }
-      }
-    }catch{}
-    // Tables are now wrapped by the custom renderer, no need for additional wrapping
-    // Intercept KB links (mdc:mcp_knowledge_base/.. or sanitized to mcp_knowledge_base/... or relative paths)
-    contentContainer.value.querySelectorAll('a[href^="mdc:mcp_knowledge_base/"], a[href^="mcp_knowledge_base/"], a[href^="/mcp_knowledge_base/"], a[href^="./"], a[href^="../"], a[href^="cloud_"]').forEach(link => {
-      try{ link.classList.add('kb-link') }catch{}
-      link.addEventListener('click', (event) => {
-        event.preventDefault()
-        try{
-          const raw = link.getAttribute('href') || ''
-          // normalize: remove mdc: scheme if present, and any leading '/'
-          const noScheme = raw.replace(/^mdc:/,'').replace(/^\//,'')
-          
-          let rel = noScheme
-          // Handle different path patterns
-          if (noScheme.startsWith('mcp_knowledge_base/')) {
-            // strip leading root 'mcp_knowledge_base/'
-            rel = noScheme.replace(/^mcp_knowledge_base\//,'')
-          } else if (noScheme.startsWith('./')) {
-            // Handle relative paths starting with ./
-            rel = noScheme.substring(2) // Remove ./
-          } else if (noScheme.startsWith('../')) {
-            // Handle relative paths starting with ../
-            rel = noScheme.substring(3) // Remove ../
-          } else if (noScheme.match(/^cloud_[a-z_]+/)) {
-            // Handle direct cloud_* paths - ensure no duplication
-            rel = noScheme
-          }
-          
-          // Additional check to prevent path duplication
-          if (rel.includes('mcp_knowledge_base/')) {
-            rel = rel.replace(/^mcp_knowledge_base\//, '')
-          }
-          
-          const decoded = decodeURIComponent(rel)
-          console.log('Link clicked:', raw, '-> processed:', decoded) // Debug log
-          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'curriculum' } }))
-        }catch{}
-      })
-    })
-    // External http(s) links → open in new tab (avoid internal KB absolute links)
-    contentContainer.value.querySelectorAll('a[href^="http://"], a[href^="https://"]').forEach(link => {
-      try{
-        const href = link.getAttribute('href') || ''
-        try{
-          const u = new URL(href, window.location.origin)
-          if(u.origin === window.location.origin && /^\/mcp_knowledge_base\//.test(u.pathname)){
-            // internal absolute KB link: let delegated handler process
-            return
-          }
-        }catch{}
-        link.setAttribute('target','_blank')
-        link.setAttribute('rel','noopener noreferrer')
-      }catch{}
-    })
-    // Delegate click: robust fallback to catch all anchors
-    const onClick = (ev) => {
-      try{
-        const a = ev.target && (ev.target.closest ? ev.target.closest('a') : null)
-        if(!a) return
-        const href = a.getAttribute('href') || ''
-        let isKb = /^mdc:/.test(href) || /^mcp_knowledge_base\//.test(href) || /^\/mcp_knowledge_base\//.test(href)
-        if(!isKb && /^https?:\/\//i.test(href)){
-          try{
-            const u = new URL(href, window.location.origin)
-            if(u.origin === window.location.origin && /^\/mcp_knowledge_base\//.test(u.pathname)) isKb = true
-          }catch{}
-        }
-        if(isKb){
-          ev.preventDefault()
-          const noScheme = href.replace(/^mdc:/,'').replace(/^\//,'')
-          const rel = noScheme.replace(/^mcp_knowledge_base\//,'')
-          const decoded = decodeURIComponent(rel)
-          const originPath = props && props.path ? String(props.path) : ''
-          const originRel = originPath.replace(/^mdc:/,'').replace(/^\//,'').replace(/^mcp_knowledge_base\//,'')
-          const originDir = originRel.split('/').slice(0,-1).join('/')
-          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'curriculum', originDir } }))
-          return
-        }
-        // Handle anchor links like '#학습-목표'
-        const isHash = /^#/.test(href)
-        if(isHash){
-          ev.preventDefault()
-          const targetId = href.substring(1) // Remove the # symbol
-          
-          // Try to find the element by exact ID first
-          let targetElement = document.getElementById(targetId)
-          
-          // If not found, try to find by Korean-friendly ID conversion
-          if(!targetElement){
-            const koreanId = targetId.toLowerCase()
-              .replace(/[^\w\s가-힣-]/g, '') // Remove special characters except word chars, spaces, Korean chars, and hyphens
-              .replace(/\s+/g, '-') // Replace spaces with hyphens
-              .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
-              .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
-            
-            targetElement = document.getElementById(koreanId)
-          }
-          
-          // If still not found, try removing leading dash (for links like #-학습-목표)
-          if(!targetElement && targetId.startsWith('-')){
-            const withoutDash = targetId.substring(1)
-            const koreanId = withoutDash.toLowerCase()
-              .replace(/[^\w\s가-힣-]/g, '')
-              .replace(/\s+/g, '-')
-              .replace(/-+/g, '-')
-              .replace(/^-|-$/g, '')
-            
-            targetElement = document.getElementById(koreanId)
-          }
-          
-          if(targetElement){
-            targetElement.scrollIntoView({ 
-              behavior: 'smooth', 
-              block: 'start',
-              inline: 'nearest'
-            })
-            // Add a temporary highlight effect
-            targetElement.style.backgroundColor = '#fef3c7'
-            setTimeout(() => {
-              targetElement.style.backgroundColor = ''
-            }, 2000)
-          } else {
-            console.warn(`Target element with id "${targetId}" not found`)
-            // Try to find by partial match in all headings
-            const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6')
-            for(const heading of headings){
-              const headingText = heading.textContent || ''
-              const headingId = heading.id || ''
-              if(headingText.includes(targetId) || headingId.includes(targetId)){
-                heading.scrollIntoView({ 
-                  behavior: 'smooth', 
-                  block: 'start',
-                  inline: 'nearest'
-                })
-                heading.style.backgroundColor = '#fef3c7'
-                setTimeout(() => {
-                  heading.style.backgroundColor = ''
-                }, 2000)
-                break
-              }
-            }
-          }
-          return
-        }
-        
-        // Handle relative links like './a.md', '../b.md', 'c.md'
-        const hasScheme = /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(href)
-        const isAbsolutePath = /^\//.test(href)
-        if(!hasScheme && !isAbsolutePath && href){
-          ev.preventDefault()
-          const basePath = props && props.path ? String(props.path) : ''
-          const baseParts = basePath.split('/').slice(0,-1)
-          const hrefParts = href.split('/')
-          const stack = []
-          for(const part of baseParts){ if(part && part!=='.') stack.push(part) }
-          for(const part of hrefParts){ if(!part || part==='.') continue; if(part==='..'){ if(stack.length) stack.pop(); continue } stack.push(part) }
-          const resolved = stack.join('/')
-          const decoded = decodeURIComponent(resolved)
-          const originRel = basePath.replace(/^mdc:/,'').replace(/^\//,'').replace(/^mcp_knowledge_base\//,'')
-          const originDir = originRel.split('/').slice(0,-1).join('/')
-          window.dispatchEvent(new CustomEvent('kb:open', { detail:{ path: decoded, container: 'curriculum', originDir } }))
-          return
-        }
-        if(/^https?:\/\//i.test(href)){
-          a.setAttribute('target','_blank'); a.setAttribute('rel','noopener noreferrer')
-        }
-      }catch{}
+  await nextTick();
+  if (!contentContainer.value) return;
+
+  // Delegated event listener for all clicks within the content area
+  contentContainer.value.addEventListener('click', (event) => {
+    const link = event.target.closest('a');
+    if (!link) return;
+
+    const href = link.getAttribute('href');
+    if (!href) return;
+
+    // Handle tool links
+    if (href.startsWith('mcp://')) {
+      event.preventDefault();
+      const url = new URL(href);
+      const tool = url.hostname;
+      emit('navigate-tool', { tool });
+      return;
     }
-    contentContainer.value.addEventListener('click', onClick)
-  }
+
+    // Handle anchor links
+    if (href.startsWith('#')) {
+      event.preventDefault();
+      const targetId = href.substring(1);
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      return;
+    }
+
+    // Handle external links
+    if (href.startsWith('http://') || href.startsWith('https://')) {
+      link.setAttribute('target', '_blank');
+      link.setAttribute('rel', 'noopener noreferrer');
+      return;
+    }
+
+    // Handle internal knowledge base links
+    event.preventDefault();
+    let targetPath = href;
+
+    // Resolve relative paths
+    if (!targetPath.startsWith('/')) {
+      const currentPath = props.path || '';
+      const currentDir = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+      targetPath = new URL(targetPath, `file:///${currentDir}`).pathname.substring(1);
+    }
+
+    // Clean up the path using deep cleaning
+    targetPath = deepCleanApiPath(targetPath);
+
+    // Dispatch navigation event
+    window.dispatchEvent(new CustomEvent('kb:open', {
+      detail: { path: targetPath, container: 'curriculum' }
+    }));
+  });
 };
 
 onMounted(() => {

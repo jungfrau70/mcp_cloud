@@ -9,7 +9,7 @@
 <script setup>
 import ContentView from '~/components/ContentView.vue'
 import { resolveApiBase } from '~/composables/useKbApi'
-import { cleanApiPath } from '~/utils/path'
+import { cleanApiPath, deepCleanApiPath } from '~/utils/path'
 
 definePageMeta({ layout: 'default', title: 'Home' })
 
@@ -19,7 +19,7 @@ const path = ref('index.md')
 onMounted(async () => {
   const apiBase = resolveApiBase()
   try{
-    const r = await fetch(`${apiBase}/v1/curriculum/item?path=${encodeURIComponent(cleanApiPath(path.value))}`, {
+    const r = await fetch(`${apiBase}/v1/curriculum/item?path=${encodeURIComponent(deepCleanApiPath(path.value))}`, {
       headers: { 'X-API-Key': 'my_mcp_eagle_tiger' }
     })
     if(!r.ok) throw new Error('failed')
