@@ -693,7 +693,6 @@ watch(() => props.content, (c) => {
 .prose pre .number {
   color: #fbbf24;
 }
-</style>
 
 /* 코드 블록 내부 키워드 스타일 */
 .prose pre .keyword {
