@@ -234,3 +234,33 @@ export function analyzeFilename(filename: string): {
   
   return result
 }
+
+// 경로가 디렉토리인지 파일인지 감지하는 함수
+export function isDirectoryPath(path: string): boolean {
+  if (!path) return false
+  
+  // 일반적인 파일 확장자가 없으면 디렉토리로 간주
+  const fileExtensions = ['.md', '.txt', '.json', '.yaml', '.yml', '.csv', '.sh', '.pdf', '.ppt', '.pptx', '.html', '.css', '.js', '.ts', '.vue']
+  const hasExtension = fileExtensions.some(ext => path.toLowerCase().endsWith(ext))
+  
+  return !hasExtension
+}
+
+// 경로가 파일인지 확인하는 함수
+export function isFilePath(path: string): boolean {
+  return !isDirectoryPath(path)
+}
+
+// 디렉토리 경로를 정리하는 함수 (README.md 추가)
+export function normalizeDirectoryPath(path: string): string {
+  if (!path) return ''
+  
+  const cleaned = cleanApiPath(path)
+  
+  // 디렉토리인 경우 README.md 추가
+  if (isDirectoryPath(cleaned)) {
+    return cleaned.endsWith('/') ? `${cleaned}README.md` : `${cleaned}/README.md`
+  }
+  
+  return cleaned
+}

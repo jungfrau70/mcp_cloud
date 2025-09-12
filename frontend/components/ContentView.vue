@@ -41,7 +41,7 @@ import { marked } from 'marked';
 import mermaid from 'mermaid';
 import embedVega from 'vega-embed';
 import DOMPurify from 'dompurify'
-import { cleanApiPath, deepCleanApiPath } from '~/utils/path'
+import { cleanApiPath, deepCleanApiPath, isDirectoryPath, normalizeDirectoryPath } from '~/utils/path'
 
 const props = defineProps({
   content: String,
@@ -290,10 +290,29 @@ const setupLinkIntercepts = async () => {
       targetPath = resolveRelativePath(props.path || '', targetPath);
     }
 
-    // Dispatch navigation event
-    window.dispatchEvent(new CustomEvent('kb:open', {
-      detail: { path: targetPath, container: 'curriculum' }
-    }));
+    // Clean the path
+    targetPath = deepCleanApiPath(targetPath);
+
+    // Check if the target is a directory
+    if (isDirectoryPath(targetPath)) {
+      // For directories, try to find README.md first
+      const normalizedPath = normalizeDirectoryPath(targetPath);
+      
+      // Dispatch navigation event with directory flag
+      window.dispatchEvent(new CustomEvent('kb:open', {
+        detail: { 
+          path: normalizedPath, 
+          container: 'curriculum',
+          isDirectory: true,
+          originalPath: targetPath
+        }
+      }));
+    } else {
+      // For files, proceed normally
+      window.dispatchEvent(new CustomEvent('kb:open', {
+        detail: { path: targetPath, container: 'curriculum' }
+      }));
+    }
   });
 };
 

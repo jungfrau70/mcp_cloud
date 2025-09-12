@@ -522,7 +522,26 @@ onMounted(async () => {
     window.addEventListener('kb:open', (e) => {
       const p = e?.detail?.path
       const container = e?.detail?.container
+      const isDirectory = e?.detail?.isDirectory
+      const originalPath = e?.detail?.originalPath
+      
       if(!p) return
+      
+      // Handle directory links
+      if (isDirectory) {
+        // For directories, try to load the directory content or show in FileTree
+        if (container === 'curriculum' || container === 'textbook') {
+          // Try to load README.md first, if that fails, show directory in FileTree
+          handleFileClick(p).catch(() => {
+            // If README.md doesn't exist, show directory structure
+            showDirectoryInFileTree(originalPath || p)
+          })
+        } else {
+          showDirectoryInFileTree(originalPath || p)
+        }
+        return
+      }
+      
       // If caller specifies container, respect it
       if(container === 'curriculum' || container === 'textbook'){
         if(route.path.startsWith('/curriculum') || route.path.startsWith('/textbook')) handleFileClick(p)
@@ -690,6 +709,20 @@ const handleFileClick = async (path) => {
     }
   }
 };
+
+// 디렉토리를 FileTree에서 보여주는 함수
+const showDirectoryInFileTree = (directoryPath) => {
+  console.log('Showing directory in FileTree:', directoryPath)
+  
+  // FileTree에서 해당 디렉토리로 이동
+  // 이 부분은 SyllabusExplorer 컴포넌트의 기능을 활용
+  window.dispatchEvent(new CustomEvent('filetree:navigate', {
+    detail: { path: directoryPath }
+  }))
+  
+  // 사용자에게 알림
+  toast.push('info', `디렉토리 "${directoryPath}"를 FileTree에서 확인하세요`)
+}
 
 const handleKbFileSelect = async (path) => {
   activeSlide.value = null
