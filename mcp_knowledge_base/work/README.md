@@ -98,3 +98,11 @@ README 파일
 요청9) 내부파일 링크가 클릭 시, 프론트엔드에서 URL 에 경로가 재귀적으로 추가되어 실패하는 이슈가 발생하고 있어.
 
 요청10) 구현된 내용 단위 테스트 수행
+
+-. 추가된 "이전" 버튼이 모두 로그인 화면으로 이동하고 있음. 사용자 인증 코드와 관련 된듯.
+-. 경로 중복은 여전히 발생하고 있음.
+https://api.goldencircle.us/api/v1/curriculum?curriculum_path=cloud_master%2Ftextbook%2FDay1%2Ftextbook%2FDay1%2Ftextbook%2FDay2%2FREADME 
+
+-. 페이지 이동 후, 새로운 페이지에서 스크롤을 페이지 상단이 보이게 해 달라는 거였는데, 변화가 없음.
+
+1) 

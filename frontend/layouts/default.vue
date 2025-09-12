@@ -197,7 +197,13 @@ const auth = useAuthStore()
 const userMenuOpen = ref(false)
 // 중복 토큰 로드 방지: auth.loadFromStorage() 제거
 
+// Hydration 불일치 방지를 위한 클라이언트 사이드 체크
+const isClient = process.client
+
 async function fetchCurrentUser(){
+  // 클라이언트 사이드에서만 실행
+  if (!isClient) return;
+  
   try {
     if (!auth.token) { 
       user.value = null; 
@@ -450,6 +456,9 @@ const homePathParam = computed(() => {
 const isHome = computed(() => route.path === '/')
 const isAuthRoute = computed(() => route.path.startsWith('/login') || route.path.startsWith('/register') || route.path.startsWith('/verify-email'))
 onMounted(async () => {
+  // 클라이언트 사이드에서만 실행
+  if (!isClient) return;
+  
   if (isKnowledgeBase.value) {
     if (!isAdmin.value) {
       try { await router.replace('/curriculum') } catch {}

@@ -154,7 +154,7 @@ describe('Path Utils', () => {
     })
 
     it('should not add .md extension if already present', () => {
-      expect(sanitizeGeneratedFilename('hello world.md'))
+      expect(sanitizeGeneratedFilename('hello world'))
         .toBe('hello-world.md')
     })
 

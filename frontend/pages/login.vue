@@ -49,12 +49,15 @@ async function onSubmit(){
     auth.setToken(res.access_token)
     await router.push('/curriculum')
   } catch(e: any) {
+    console.error('Login error:', e)
     const detail = e?.data?.detail || e?.data || {}
     if (detail?.code === 'EMAIL_NOT_VERIFIED'){
       showVerifyNotice.value = true
       return
     }
-    alert('로그인에 실패했습니다.')
+    // 더 구체적인 에러 메시지 제공
+    const errorMessage = detail?.message || e?.message || '로그인에 실패했습니다.'
+    alert(`로그인 실패: ${errorMessage}`)
   }
 }
 
