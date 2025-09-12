@@ -126,8 +126,15 @@ def get_slide(textbook_path: str = None, curriculum_path: str = None):
     raw = curriculum_path if curriculum_path is not None else textbook_path
     if not raw:
         raise HTTPException(status_code=400, detail='Missing curriculum_path')
-    # Accept paths with or without extension; default to .md
-    rel = raw.strip().lstrip('/\\')
+    
+    # URL 디코딩 처리 (한글 파일명 지원, 2중 인코딩 방지)
+    try:
+        rel = raw.strip().lstrip('/\\')
+        # 재귀적 디코딩: 2중 인코딩된 경우를 처리
+        while '%' in rel and rel != urllib.parse.unquote(rel):
+            rel = urllib.parse.unquote(rel)
+    except Exception:
+        rel = raw.strip().lstrip('/\\')
     # Consider common text and document extensions to avoid forcing .md
     if not any(rel.endswith(ext) for ext in ('.md', '.markdown', '.txt', '.log', '.json', '.yaml', '.yml', '.csv', '.sh', '.pdf', '.ppt', '.pptx')):
         rel = f"{rel}.md"
@@ -208,7 +215,15 @@ def curriculum_get_item(path: str):
 
     Returns JSON: { path, type: 'file'|'directory', content? }
     """
-    fp = _safe_path(path)
+    # URL 디코딩 처리 (한글 파일명 지원, 2중 인코딩 방지)
+    try:
+        decoded_path = path
+        # 재귀적 디코딩: 2중 인코딩된 경우를 처리
+        while '%' in decoded_path and decoded_path != urllib.parse.unquote(decoded_path):
+            decoded_path = urllib.parse.unquote(decoded_path)
+    except Exception:
+        decoded_path = path
+    fp = _safe_path(decoded_path)
     if not fp.exists():
         raise HTTPException(status_code=404, detail='Not found')
     if fp.is_dir():
@@ -228,7 +243,12 @@ def download_pdf(path: str):
     """
     if not path:
         raise HTTPException(status_code=400, detail='path is required')
-    rel = path.strip().lstrip('\\/')
+    
+    # URL 디코딩 처리 (한글 파일명 지원)
+    try:
+        rel = urllib.parse.unquote(path.strip().lstrip('\\/'))
+    except Exception:
+        rel = path.strip().lstrip('\\/')
     fp = (KB_ROOT / rel).resolve()
     if not str(fp).startswith(str(KB_ROOT)):
         raise HTTPException(status_code=400, detail='Invalid path')

@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { useKbApi } from './useKbApi'
-import { cleanApiPath } from '../utils/path'
+import { cleanApiPath, prepareApiPath, decodeKoreanPath } from '../utils/path'
 
 interface SaveOptions { message?: string; force?: boolean }
 
@@ -20,10 +20,10 @@ export function useKbFile(){
     error.value = undefined
     try {
       path.value = targetPath
-      // Ensure path is properly cleaned and normalized
-      const cleanPath = cleanApiPath(targetPath)
-      console.log('Loading path:', { original: targetPath, cleaned: cleanPath })
-      const res = await fetch(`${apiBase()}/v1/curriculum/item?path=${encodeURIComponent(cleanPath)}`, { headers: headers(), signal: currentAbort.signal })
+      // 한글 파일명을 포함한 경로 정리 및 인코딩
+      const preparedPath = prepareApiPath(targetPath)
+      console.log('Loading path:', { original: targetPath, prepared: preparedPath })
+      const res = await fetch(`${apiBase()}/v1/curriculum/item?path=${preparedPath}`, { headers: headers(), signal: currentAbort.signal })
       if(!res.ok) {
         const errorText = await res.text()
         console.error('API Error:', res.status, errorText)
@@ -63,12 +63,12 @@ export function useKbFile(){
 
   async function save(newContent: string, opts: SaveOptions = {}){
     const expected = opts.force ? undefined : lastVersion.value
-    const cleanPath = cleanApiPath(path.value)
-    console.log('Saving path:', { original: path.value, cleaned: cleanPath })
+    const preparedPath = prepareApiPath(path.value)
+    console.log('Saving path:', { original: path.value, prepared: preparedPath })
     const res = await fetch(`${apiBase()}/v1/knowledge-base/item`, {
       method: 'PATCH',
       headers: headers(),
-      body: JSON.stringify({ path: cleanPath, content: newContent, message: opts.message, expected_version_no: expected })
+      body: JSON.stringify({ path: preparedPath, content: newContent, message: opts.message, expected_version_no: expected })
     })
     if(res.status === 409){
       return { conflict: true }
