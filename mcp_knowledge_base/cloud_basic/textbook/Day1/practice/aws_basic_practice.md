@@ -621,8 +621,8 @@ aws configure get region
 <summary>🚀 다음 단계</summary>
 
 ### Cloud Basic 과정 계속
-1. **GCP 기초 실습**: [GCP 기초 실습 가이드](./gcp_basic_practice)
-2. **통합 실습**: [AWS & GCP 통합 실습](./실습1_aws_gcp)
+1. **GCP 기초 실습**: [GCP 기초 실습 가이드](./gcp_basic_practice.md)
+2. **통합 실습**: [AWS & GCP 통합 실습](./실습1_aws_gcp.md)
 3. **2일차 실습**: 네트워킹, 보안, 데이터베이스
 
 ### Cloud Intermediate 과정 준비
@@ -649,8 +649,8 @@ aws configure get region
 
 ### 🚀 다음 단계
 
-- **GCP 기초 실습**: [GCP 기초 실습 가이드](./gcp_basic_practice)
-- **통합 실습**: [AWS & GCP 통합 실습](./실습1_aws_gcp)
+- **GCP 기초 실습**: [GCP 기초 실습 가이드](./gcp_basic_practice.md)
+- **통합 실습**: [AWS & GCP 통합 실습](./실습1_aws_gcp.md)
 - **2일차 실습**: 네트워킹, 보안, 데이터베이스
 
 ### 💡 추가 학습 아이디어

@@ -75,7 +75,7 @@
 
 ### 📚 개념 학습 가이드
 - 🔗 [고가용성 아키텍처 가이드](high-availability-architecture.md)
-- 🔗 [모니터링 설정 가이드](./monitoring-setup.md)
+- 🔗 [모니터링 설정 가이드](monitoring-setup.md)
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Container 1일차](../Day1/README.md)
@@ -193,11 +193,11 @@ sudo apt install curl wget netcat
 <summary>🔗 상세 실습 가이드</summary>
 
 ### 📖 실습 파일
-- 🔗 [고가용성 아키텍처 실습](practice/high-availability-architecture)
+- 🔗 [고가용성 아키텍처 실습](practice/high-availability-architecture.md)
 
 ### 📚 개념 학습
-- 🔗 [고가용성 아키텍처 가이드](high-availability-architecture)
-- 🔗 [모니터링 설정 가이드](./monitoring-setup)
+- 🔗 [고가용성 아키텍처 가이드](high-availability-architecture.md)
+- 🔗 [모니터링 설정 가이드](monitoring-setup.md)
 
 </details>
 
@@ -232,10 +232,10 @@ sudo apt install curl wget netcat
 <summary>🔗 상세 실습 가이드</summary>
 
 ### 📖 실습 파일
-- 🔗 [고급 로드 밸런싱 실습](practice/advanced-load-balancing)
+- 🔗 [고급 로드 밸런싱 실습](practice/advanced-load-balancing.md)
 
 ### 📚 개념 학습
-- 🔗 [고급 로드 밸런싱 가이드](./practice/advanced-load-balancing)
+- 🔗 [고급 로드 밸런싱 가이드](practice/advanced-load-balancing.md)
 
 </details>
 
@@ -270,10 +270,10 @@ sudo apt install curl wget netcat
 <summary>🔗 상세 실습 가이드</summary>
 
 ### 📖 실습 파일
-- 🔗 [모니터링 시스템 구축](practice/monitoring-system-setup)
+- 🔗 [모니터링 시스템 구축](practice/monitoring-system-setup.md)
 
 ### 📚 개념 학습
-- 🔗 [모니터링 시스템 가이드](./monitoring-setup)
+- 🔗 [모니터링 시스템 가이드](monitoring-setup.md)
 
 </details>
 
@@ -309,10 +309,10 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 <summary>🔗 상세 실습 가이드</summary>
 
 ### 📖 실습 파일
-- 🔗 [종합 프로젝트 실습](practice/comprehensive-project)
+- 🔗 [종합 프로젝트 실습](practice/comprehensive-project.md)
 
 ### 📚 개념 학습
-- 🔗 [종합 프로젝트 가이드](./practice/comprehensive-project)
+- 🔗 [종합 프로젝트 가이드](practice/comprehensive-project.md)
 
 </details>
 
@@ -324,10 +324,10 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 <summary>🐛 자주 발생하는 문제</summary>
 
 ### 고가용성 관련 문제
-- 🔗 [종합 트러블슈팅 가이드](./troubleshooting/multi-az-issues)
+- 🔗 [종합 트러블슈팅 가이드](troubleshooting/multi-az-issues.md)
 
 ### 모니터링 관련 문제
-- 🔗 [모니터링 트러블슈팅](./troubleshooting/multi-az-issues)
+- 🔗 [모니터링 트러블슈팅](troubleshooting/multi-az-issues.md)
 
 </details>
 
@@ -370,7 +370,7 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 
 ## 🚀 시작하기
 
-1일차 실습이 완료되었다면 [고가용성 아키텍처 실습](./practice/high-availability-architecture)부터 시작하세요.
+1일차 실습이 완료되었다면 [고가용성 아키텍처 실습](practice/high-availability-architecture.md)부터 시작하세요.
 
 ### 문제가 있나요?
 실습 중 문제가 발생하면 [트러블슈팅 가이드](./troubleshooting/)를 참고하세요.

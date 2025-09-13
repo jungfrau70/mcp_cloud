@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: 컨테이너 기초 실습](./container-basics) | [📚 전체 커리큘럼](../../../../curriculum) | [다음: Cloud Container 2일차 →](../../Day2/README)
+[← 이전: 컨테이너 기초 실습](./container-basics.md) | [📚 전체 커리큘럼](../../../../curriculum.md) | [다음: Cloud Container 2일차 →](../../Day2/README.md)
 
 </div>
 

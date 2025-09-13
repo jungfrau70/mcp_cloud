@@ -113,11 +113,16 @@ const renderedContent = computed(() => {
   const renderer = new marked.Renderer()
   renderer.heading = function(text, level) {
     // Create Korean-friendly ID by converting to lowercase and replacing spaces with hyphens
-    const id = text.toLowerCase()
+    let id = text.toLowerCase()
       .replace(/[^\w\s가-힣-]/g, '') // Remove special characters except word chars, spaces, Korean chars, and hyphens
       .replace(/\s+/g, '-') // Replace spaces with hyphens
       .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
       .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+    
+    // Ensure ID is not empty and add fallback
+    if (!id) {
+      id = `heading-${level}-${Math.random().toString(36).substr(2, 9)}`;
+    }
     
     return `<h${level} id="${id}">${text}</h${level}>`
   }
@@ -317,7 +322,21 @@ const setupLinkIntercepts = async () => {
     if (href.startsWith('#')) {
       event.preventDefault();
       const targetId = href.substring(1);
-      const targetElement = document.getElementById(targetId);
+      
+      // Try to find the target element
+      let targetElement = document.getElementById(targetId);
+      
+      // If not found, try to find by partial match (for Korean headers)
+      if (!targetElement) {
+        const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        for (const el of allElements) {
+          if (el.id && el.id.includes(targetId)) {
+            targetElement = el;
+            break;
+          }
+        }
+      }
+      
       if (targetElement) {
         // Add highlight effect to the target element
         targetElement.style.backgroundColor = '#fef3c7';
@@ -325,9 +344,31 @@ const setupLinkIntercepts = async () => {
         targetElement.style.borderRadius = '4px';
         targetElement.style.padding = '8px';
         targetElement.style.margin = '4px 0';
+        targetElement.style.transition = 'all 0.3s ease';
         
-        // Scroll to the target element
-        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Use scrollIntoView with proper options
+        targetElement.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start',
+          inline: 'nearest'
+        });
+        
+        // Additional scroll adjustment for better positioning
+        setTimeout(() => {
+          const container = contentContainer.value;
+          if (container) {
+            const containerRect = container.getBoundingClientRect();
+            const elementRect = targetElement.getBoundingClientRect();
+            
+            // If element is too close to top, adjust scroll position
+            if (elementRect.top < containerRect.top + 80) {
+              container.scrollBy({
+                top: elementRect.top - containerRect.top - 80,
+                behavior: 'smooth'
+              });
+            }
+          }
+        }, 100);
         
         // Remove highlight after 3 seconds
         setTimeout(() => {

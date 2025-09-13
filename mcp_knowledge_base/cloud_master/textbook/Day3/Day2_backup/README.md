@@ -83,7 +83,7 @@
 - 🔗 [VM 배포 전략 가이드](./aws-gcp-deployment-guide)
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [종합 트러블슈팅 가이드](./troubleshooting-guide)
+- 🔗 [종합 트러블슈팅 가이드](troubleshooting-guide.md)
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md)

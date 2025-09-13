@@ -697,7 +697,7 @@ aws cloudwatch get-metric-statistics \
 
 - [AWS ELB 공식 문서](https://docs.aws.amazon.com/elasticloadbalancing/)
 - [GCP Cloud Load Balancing 공식 문서](https://cloud.google.com/load-balancing/docs)
-- [Cloud Container 과정](../../../cloud_container/textbook/Day1/README)
+- [Cloud Container 과정](../../../cloud_container/textbook/Day1/README.md)
 
 ---
 
@@ -706,6 +706,6 @@ aws cloudwatch get-metric-statistics \
 
 <div align="center">
 
-[← 이전: Cloud Master 2일차](../Day2/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음 과정: Cloud Container 1일차 →](../../../cloud_container/textbook/Day1/README)
+[← 이전: Cloud Master 2일차](../Day2/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [다음 과정: Cloud Container 1일차 →](../../../cloud_container/textbook/Day1/README.md)
 
 </div>

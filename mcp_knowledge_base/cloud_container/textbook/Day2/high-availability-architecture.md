@@ -632,8 +632,8 @@ gcloud compute forwarding-rules create container-demo-rule \
 - [GCP Global Load Balancing 공식 문서](https://cloud.google.com/load-balancing/docs/https)
 
 ### 추가 학습 자료
-- [모니터링 설정 가이드](./monitoring-setup)
-- [종합 프로젝트 실습](./practice/comprehensive-project)
+- [모니터링 설정 가이드](./monitoring-setup.md)
+- [종합 프로젝트 실습](./practice/comprehensive-project.md)
 
 ---
 

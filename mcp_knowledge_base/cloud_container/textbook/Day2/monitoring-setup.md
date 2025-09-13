@@ -985,8 +985,8 @@ EOF
 - [Grafana 공식 문서](https://grafana.com/docs/)
 
 ### 추가 학습 자료
-- [고가용성 아키텍처 가이드](./high-availability-architecture)
-- [종합 프로젝트 실습](./practice/comprehensive-project)
+- [고가용성 아키텍처 가이드](./high-availability-architecture.md)
+- [종합 프로젝트 실습](./practice/comprehensive-project.md)
 
 ---
 
