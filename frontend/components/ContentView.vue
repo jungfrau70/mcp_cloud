@@ -29,12 +29,20 @@
       </div>
     </div>
 
+    <!-- Loading indicator -->
+    <div v-if="isLoading" class="flex items-center justify-center p-8">
+      <div class="flex items-center space-x-2 text-gray-600">
+        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+        <span>문서를 불러오는 중...</span>
+      </div>
+    </div>
+
     <!-- Fade between content and slides in-place -->
     <transition name="fade" mode="out-in">
-      <div v-if="!isSlideView" key="content-view" class="prose max-w-none p-4">
+      <div v-if="!isSlideView && !isLoading" key="content-view" class="prose max-w-none p-4">
         <div v-html="renderedContent"></div>
       </div>
-      <div v-else key="slides-view">
+      <div v-else-if="isSlideView && !isLoading" key="slides-view">
         <div v-if="slidePdfUrl" class="w-full">
           <iframe :src="slidePdfUrl" class="w-full min-h-[60vh]"></iframe>
         </div>
@@ -64,6 +72,7 @@ const props = defineProps({
 
 const emit = defineEmits(['navigate-tool']);
 const contentContainer = ref(null);
+const isLoading = ref(false);
 
 // Title (first heading) extraction
 const titleText = computed(() => {
@@ -287,6 +296,14 @@ const setupLinkIntercepts = async () => {
     const href = link.getAttribute('href');
     if (!href) return;
 
+    // Add visual feedback for link clicks
+    link.style.opacity = '0.6';
+    link.style.transform = 'scale(0.98)';
+    setTimeout(() => {
+      link.style.opacity = '';
+      link.style.transform = '';
+    }, 150);
+
     // Handle tool links
     if (href.startsWith('mcp://')) {
       event.preventDefault();
@@ -302,7 +319,24 @@ const setupLinkIntercepts = async () => {
       const targetId = href.substring(1);
       const targetElement = document.getElementById(targetId);
       if (targetElement) {
+        // Add highlight effect to the target element
+        targetElement.style.backgroundColor = '#fef3c7';
+        targetElement.style.border = '2px solid #f59e0b';
+        targetElement.style.borderRadius = '4px';
+        targetElement.style.padding = '8px';
+        targetElement.style.margin = '4px 0';
+        
+        // Scroll to the target element
         targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Remove highlight after 3 seconds
+        setTimeout(() => {
+          targetElement.style.backgroundColor = '';
+          targetElement.style.border = '';
+          targetElement.style.borderRadius = '';
+          targetElement.style.padding = '';
+          targetElement.style.margin = '';
+        }, 3000);
       }
       return;
     }
@@ -325,6 +359,9 @@ const setupLinkIntercepts = async () => {
 
     // Clean the path to prevent duplication using the new comprehensive function
     targetPath = preventPathDuplication(targetPath);
+
+    // Set loading state
+    isLoading.value = true;
 
     // Check if the target is a directory
     if (isDirectoryPath(targetPath)) {
@@ -358,6 +395,13 @@ watch(() => props.content, () => {
   setupLinkIntercepts()
   setupDetailsHandlers()
   setupCodeBlockHandlers()
+  // Clear loading state when content changes
+  isLoading.value = false
+})
+
+watch(() => props.path, () => {
+  // Clear loading state when path changes
+  isLoading.value = false
 })
 
 // Slides overlay logic
