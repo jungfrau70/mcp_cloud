@@ -112,9 +112,9 @@ const renderedContent = computed(() => {
   // Custom renderer for Korean header IDs and table styling
   const renderer = new marked.Renderer()
   renderer.heading = function(text, level) {
-    // Create Korean-friendly ID by converting to lowercase and replacing spaces with hyphens
+    // Create Korean-friendly ID that matches the TOC link format
+    // Keep emojis and spaces, convert to lowercase, replace spaces with hyphens
     let id = text.toLowerCase()
-      .replace(/[^\w\s가-힣-]/g, '') // Remove special characters except word chars, spaces, Korean chars, and hyphens
       .replace(/\s+/g, '-') // Replace spaces with hyphens
       .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
       .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
@@ -326,7 +326,18 @@ const setupLinkIntercepts = async () => {
       // Try to find the target element
       let targetElement = document.getElementById(targetId);
       
-      // If not found, try to find by partial match (for Korean headers)
+      // If not found, try to find by exact match first, then partial match
+      if (!targetElement) {
+        const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        for (const el of allElements) {
+          if (el.id === targetId) {
+            targetElement = el;
+            break;
+          }
+        }
+      }
+      
+      // If still not found, try partial match (for Korean headers)
       if (!targetElement) {
         const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
         for (const el of allElements) {
