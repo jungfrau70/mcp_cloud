@@ -134,12 +134,21 @@ export function deepCleanApiPath(path: string): string {
 }
 
 export function resolveRelativePath(basePath: string, relativePath: string): string {
-  const baseParts = basePath.split('/').slice(0, -1);
-  const relativeParts = relativePath.split('/');
+  if (!basePath || !relativePath) {
+    return relativePath || basePath || '';
+  }
+
+  // basePath가 디렉토리인지 파일인지 확인
+  const isBaseDirectory = basePath.endsWith('/') || !basePath.includes('.');
+  const baseParts = isBaseDirectory 
+    ? basePath.split('/').filter(part => part !== '')
+    : basePath.split('/').slice(0, -1).filter(part => part !== '');
+  
+  const relativeParts = relativePath.split('/').filter(part => part !== '');
   const stack = [...baseParts];
 
   for (const part of relativeParts) {
-    if (part === '.' || part === '') {
+    if (part === '.') {
       continue;
     }
     if (part === '..') {
@@ -151,7 +160,94 @@ export function resolveRelativePath(basePath: string, relativePath: string): str
     }
   }
 
-  return stack.join('/');
+  const result = stack.join('/');
+  
+  // 결과가 비어있으면 현재 디렉토리를 의미
+  return result || '.';
+}
+
+// 경로 중복을 근본적으로 방지하는 함수
+export function preventPathDuplication(path: string): string {
+  if (!path || typeof path !== 'string') {
+    return '';
+  }
+
+  // 1. 기본 정리
+  let cleaned = path.replace(/\\/g, '/').replace(/^\/+/, '').replace(/\/+$/, '');
+  
+  if (!cleaned) return '';
+
+  // 2. 경로 세그먼트 분리
+  const parts = cleaned.split('/').filter(part => part !== '');
+  
+  if (parts.length === 0) return '';
+
+  // 3. 강력한 중복 패턴 제거
+  // 전체 경로에서 반복되는 패턴을 찾아서 제거
+  let result = parts.join('/');
+  
+  // 가장 일반적인 중복 패턴들을 순차적으로 제거
+  const patterns = [
+    // cloud_*/textbook/DayX/scripts/cloud_*/textbook/DayX/scripts/ 패턴
+    /(cloud_(?:basic|master|container)\/textbook\/Day\d+\/scripts\/)\1+/g,
+    // cloud_*/textbook/DayX/cloud_*/textbook/DayX/ 패턴  
+    /(cloud_(?:basic|master|container)\/textbook\/Day\d+\/)\1+/g,
+    // textbook/DayX/textbook/DayX/ 패턴
+    /(textbook\/Day\d+\/)\1+/g,
+    // 일반적인 4세그먼트 패턴 반복
+    /([^\/]+\/[^\/]+\/[^\/]+\/[^\/]+\/)\1+/g,
+    // 일반적인 3세그먼트 패턴 반복
+    /([^\/]+\/[^\/]+\/[^\/]+\/)\1+/g,
+    // 일반적인 2세그먼트 패턴 반복
+    /([^\/]+\/[^\/]+\/)\1+/g,
+    // 연속된 동일 세그먼트 제거
+    /([^\/]+)\/\1+/g
+  ];
+
+  // 각 패턴을 순차적으로 적용
+  for (const pattern of patterns) {
+    let prevResult = '';
+    // 더 이상 변화가 없을 때까지 반복 적용
+    while (prevResult !== result) {
+      prevResult = result;
+      result = result.replace(pattern, '$1');
+    }
+  }
+
+  // 4. 추가 검증: 세그먼트 레벨에서 중복 제거
+  const finalParts = result.split('/').filter(part => part !== '');
+  const cleanedParts = [];
+  
+  // 슬라이딩 윈도우로 중복 패턴 감지 및 제거
+  let i = 0;
+  while (i < finalParts.length) {
+    let foundDuplicate = false;
+    
+    // 최대 5개 세그먼트까지의 패턴을 확인
+    for (let windowSize = Math.min(5, Math.floor((finalParts.length - i) / 2)); windowSize >= 1; windowSize--) {
+      if (i + windowSize * 2 <= finalParts.length) {
+        const pattern1 = finalParts.slice(i, i + windowSize);
+        const pattern2 = finalParts.slice(i + windowSize, i + windowSize * 2);
+        
+        // 패턴이 동일한지 확인
+        if (pattern1.length === pattern2.length && 
+            pattern1.every((part, idx) => part === pattern2[idx])) {
+          // 중복 패턴 발견, 첫 번째 패턴만 추가
+          cleanedParts.push(...pattern1);
+          i += windowSize * 2; // 두 패턴 모두 건너뛰기
+          foundDuplicate = true;
+          break;
+        }
+      }
+    }
+    
+    if (!foundDuplicate) {
+      cleanedParts.push(finalParts[i]);
+      i++;
+    }
+  }
+
+  return cleanedParts.join('/');
 }
 
 export function sanitizeGeneratedFilename(title: string): string {

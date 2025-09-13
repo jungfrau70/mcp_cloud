@@ -884,17 +884,32 @@ function expandBySelected(newPath){
   if (base && newPath.indexOf(base) !== 0) return
   const remaining = base ? newPath.slice(base.length) : newPath
   const parts = remaining.split('/').filter(Boolean)
-  if (parts.length > 1) {
-    const first = parts[0]
-    if (directories.value[first]) {
-      openDirectories.value[first] = true
+  
+  // 중첩된 디렉토리들을 모두 열기
+  let currentPath = ''
+  for (let i = 0; i < parts.length - 1; i++) {
+    currentPath = currentPath ? `${currentPath}/${parts[i]}` : parts[i]
+    const relativePath = base ? currentPath.replace(base, '') : currentPath
+    const dirName = relativePath.split('/').pop()
+    if (dirName && directories.value[dirName]) {
+      openDirectories.value[dirName] = true
     }
   }
+  
   nextTick(() => {
     try{
       const el = document.querySelector(`.tree-item.is-file[data-path="${CSS.escape(newPath)}"]`)
       if(el && typeof el.scrollIntoView === 'function'){
-        el.scrollIntoView({ block: 'nearest' })
+        el.scrollIntoView({ 
+          block: 'center',
+          behavior: 'smooth'
+        })
+        
+        // 선택된 파일에 임시 하이라이트 효과 추가
+        el.classList.add('selected-highlight')
+        setTimeout(() => {
+          el.classList.remove('selected-highlight')
+        }, 2000)
       }
     }catch{}
   })
@@ -953,8 +968,36 @@ onUnmounted(() => {
 }
 
 .tree-item.is-file.is-selected {
-  background-color: #e0e7ff;
+  background-color: #dbeafe;
+  border: 2px solid #3b82f6;
+  border-radius: 4px;
   font-weight: 600;
+  color: #1e40af;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+.tree-item.is-file.selected-highlight {
+  background-color: #fef3c7;
+  border: 2px solid #f59e0b;
+  animation: highlight-pulse 2s ease-in-out;
+}
+
+@keyframes highlight-pulse {
+  0% {
+    background-color: #fef3c7;
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.3);
+  }
+  50% {
+    background-color: #fde68a;
+    border-color: #d97706;
+    box-shadow: 0 0 0 8px rgba(245, 158, 11, 0.2);
+  }
+  100% {
+    background-color: #dbeafe;
+    border-color: #3b82f6;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+  }
 }
 
 .tree-item.drag-over {

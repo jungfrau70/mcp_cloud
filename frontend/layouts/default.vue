@@ -57,7 +57,10 @@
         :style="{ width: isSidebarCollapsed ? '0px' : sidebarWidth + 'px' }"
       >
         <div v-show="!isSidebarCollapsed">
-          <SyllabusExplorer @file-click="handleFileClick" />
+          <SyllabusExplorer 
+            @file-click="handleFileClick" 
+            :selected-file="tbPath"
+          />
         </div>
       </aside>
       <!-- Resizer -->
@@ -188,7 +191,7 @@ import TaskStatusBar from '~/components/TaskStatusBar.vue'
 import ToastStack from '~/components/ToastStack.vue'
 import { useToastStore } from '~/stores/toast'
 import { useAuthStore } from '~/stores/auth'
-import { cleanApiPath, deepCleanApiPath } from '~/utils/path'
+import { cleanApiPath, deepCleanApiPath, preventPathDuplication } from '~/utils/path'
 const toast = useToastStore()
 
 // User authentication state
@@ -654,8 +657,8 @@ async function showCurriculumIndex(){
 }
 
 const handleFileClick = async (path) => {
-  // Clean the path to prevent duplication using deep cleaning
-  const cleanPath = deepCleanApiPath(path)
+  // Clean the path to prevent duplication using the new comprehensive function
+  const cleanPath = preventPathDuplication(path)
   
   // 홈('/') 등에서는 '/textbook'로 전환하여 가운데 패널이 WorkspaceView를 렌더하도록 함
   try {

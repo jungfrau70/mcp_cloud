@@ -53,7 +53,7 @@ import { marked } from 'marked';
 import mermaid from 'mermaid';
 import embedVega from 'vega-embed';
 import DOMPurify from 'dompurify'
-import { cleanApiPath, deepCleanApiPath, isDirectoryPath, normalizeDirectoryPath } from '~/utils/path'
+import { cleanApiPath, deepCleanApiPath, isDirectoryPath, normalizeDirectoryPath, preventPathDuplication } from '~/utils/path'
 
 const props = defineProps({
   content: String,
@@ -323,8 +323,8 @@ const setupLinkIntercepts = async () => {
       targetPath = resolveRelativePath(props.path || '', targetPath);
     }
 
-    // Clean the path
-    targetPath = deepCleanApiPath(targetPath);
+    // Clean the path to prevent duplication using the new comprehensive function
+    targetPath = preventPathDuplication(targetPath);
 
     // Check if the target is a directory
     if (isDirectoryPath(targetPath)) {

@@ -131,8 +131,32 @@ def _clean_duplicate_path(path: str) -> str:
     
     # Find root markers
     root_markers = ['cloud_basic', 'cloud_master', 'cloud_container']
-    first_root_index = -1
     
+    # More aggressive duplicate removal
+    import re
+    
+    # First, remove any obvious infinite loops
+    # Pattern: same segment repeated multiple times
+    for marker in root_markers:
+        # Remove patterns like: cloud_basic/textbook/Day1/scripts/cloud_basic/textbook/Day1/scripts/...
+        pattern = f'({re.escape(marker)}/[^/]+/[^/]+/[^/]+/)\\1+'
+        normalized = re.sub(pattern, r'\1', normalized)
+        
+        # Remove simpler patterns like: cloud_basic/cloud_basic/...
+        pattern = f'({re.escape(marker)}/)\\1+'
+        normalized = re.sub(pattern, r'\1', normalized)
+    
+    # Remove any repeated textbook/DayX patterns
+    normalized = re.sub(r'(textbook/Day\d+/)(\1)+', r'\1', normalized)
+    
+    # Remove any repeated scripts/ patterns
+    normalized = re.sub(r'(scripts/)(\1)+', r'\1', normalized)
+    
+    # Split again after regex cleanup
+    parts = normalized.split('/')
+    
+    # Find the first occurrence of a root marker
+    first_root_index = -1
     for i, part in enumerate(parts):
         if part in root_markers:
             first_root_index = i
@@ -141,35 +165,48 @@ def _clean_duplicate_path(path: str) -> str:
     if first_root_index == -1:
         return normalized
     
-    # Start from first root marker and remove duplicates
-    cleaned_parts = []
-    i = first_root_index
+    # Keep only from the first root marker onwards
+    cleaned_parts = parts[first_root_index:]
     
-    while i < len(parts):
-        current_part = parts[i]
+    # Additional cleanup: remove any remaining duplicates
+    final_parts = []
+    i = 0
+    while i < len(cleaned_parts):
+        current_part = cleaned_parts[i]
         
-        # Check for duplicate patterns
-        if current_part in root_markers and len(cleaned_parts) > 0:
-            # Check if this is a duplicate pattern (root/textbook/DayX)
-            if i + 2 < len(parts):
-                current_pattern = '/'.join(parts[i:i+3])
-                if len(cleaned_parts) >= 3:
-                    existing_pattern = '/'.join(cleaned_parts[-3:])
-                    if current_pattern == existing_pattern:
-                        i += 3  # Skip duplicate pattern
-                        continue
+        # Check if we're starting a duplicate sequence
+        if current_part in root_markers and i > 0:
+            # Look ahead to see if this is a duplicate pattern
+            if i + 3 < len(cleaned_parts):
+                # Check if the next 3 parts match a previous pattern
+                potential_duplicate = '/'.join(cleaned_parts[i:i+4])
+                existing_pattern = '/'.join(final_parts[-4:]) if len(final_parts) >= 4 else ''
+                
+                if potential_duplicate in existing_pattern:
+                    # Skip this duplicate
+                    i += 4
+                    continue
         
-        cleaned_parts.append(current_part)
+        final_parts.append(current_part)
         i += 1
     
-    result = '/'.join(cleaned_parts)
+    result = '/'.join(final_parts)
     
-    # Additional regex cleanup for any remaining duplicates
-    import re
-    # Remove repeated textbook/DayX patterns
-    result = re.sub(r'(textbook/Day\d+/)(\1)+', r'\1', result)
-    # Remove repeated course patterns
-    result = re.sub(r'(cloud_(?:basic|master|container)/textbook/Day\d+/)(\1)+', r'\1', result)
+    # Final safety check: if result is still too long or has obvious duplicates, truncate
+    if len(result) > 200 or result.count('/') > 10:
+        # Find the first complete path and use only that
+        for marker in root_markers:
+            if marker in result:
+                # Take only up to the first README.md or similar file
+                if 'README.md' in result:
+                    end_index = result.find('README.md') + len('README.md')
+                    result = result[:end_index]
+                    break
+                # Or take only the first reasonable path
+                parts = result.split('/')
+                if len(parts) > 6:  # course/textbook/Day/file should be max 4-5 parts
+                    result = '/'.join(parts[:6])
+                break
     
     return result
 

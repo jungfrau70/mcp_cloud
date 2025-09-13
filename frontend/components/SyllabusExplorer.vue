@@ -13,7 +13,7 @@
     <div v-if="displayTree">
       <FileTreePanel
         :tree="displayTree"
-        :selected-file="null"
+        :selected-file="props.selectedFile"
         :show-hidden-files="showHiddenFiles"
         @file-select="onFileClick"
         @file-open="onFileClick"
@@ -175,6 +175,13 @@ function startNewChat() {
     window.dispatchEvent(new Event('mcp:terminal:topics-updated'))
   }
 }
+
+const props = defineProps({
+  selectedFile: {
+    type: String,
+    default: null
+  }
+});
 
 const emit = defineEmits(['file-click']);
 
