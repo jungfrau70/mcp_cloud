@@ -5,8 +5,8 @@
 
 1. [🎯 학습 목표](#-학습-목표)
 2. [🔐 AWS IAM 기초](#-aws-iam-기초)
-3. [☁️ GCP IAM 기초](#️-gcp-iam-기초)
-4. [⚖️ 비교 분석](#️-비교-분석)
+3. [🚀 GCP IAM 기초](#-gcp-iam-기초)
+4. [🚀 비교 분석](#-비교-분석)
 5. [🧪 실습 과제](#-실습-과제)
 6. [📚 문제 해결 및 참고 자료](#-문제-해결-및-참고-자료)
 
@@ -163,7 +163,7 @@ aws iam create-policy \
 
 ---
 
-## ☁️ GCP IAM 기초
+## 🚀 GCP IAM 기초
 
 <details>
 <summary>📖 GCP IAM 개요</summary>
@@ -276,7 +276,7 @@ gcloud auth activate-service-account \
 
 ---
 
-## ⚖️ 비교 분석
+## 🚀 비교 분석
 
 <details>
 <summary>📊 AWS IAM vs GCP IAM 비교</summary>

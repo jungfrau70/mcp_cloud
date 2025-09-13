@@ -5,8 +5,8 @@
 
 1. [🎯 학습 목표](#-학습-목표)
 2. [🖥️ AWS EC2 실습](#️-aws-ec2-실습)
-3. [☁️ GCP Compute Engine 실습](#️-gcp-compute-engine-실습)
-4. [⚖️ 비교 분석](#️-비교-분석)
+3. [🚀 GCP Compute Engine 실습](#-gcp-compute-engine-실습)
+4. [🚀 비교 분석](#-비교-분석)
 5. [🧪 실습 과제](#-실습-과제)
 6. [📚 문제 해결 및 참고 자료](#-문제-해결-및-참고-자료)
 
@@ -186,7 +186,7 @@ ssh -i cloud-student-key.pem ec2-user@$INSTANCE_IP
 
 ---
 
-## ☁️ GCP Compute Engine 실습
+## 🚀 GCP Compute Engine 실습
 
 <details>
 <summary>📖 GCP Compute Engine 개요</summary>
@@ -315,7 +315,7 @@ gcloud compute instances describe cloud-student-server \
 
 ---
 
-## ⚖️ 비교 분석
+## 🚀 비교 분석
 
 <details>
 <summary>📊 AWS EC2 vs GCP Compute Engine 비교</summary>

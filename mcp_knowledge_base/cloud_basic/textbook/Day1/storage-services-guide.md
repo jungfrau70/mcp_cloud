@@ -5,8 +5,8 @@
 
 1. [🎯 학습 목표](#-학습-목표)
 2. [🗂️ AWS S3 실습](#️-aws-s3-실습)
-3. [☁️ GCP Cloud Storage 실습](#️-gcp-cloud-storage-실습)
-4. [⚖️ 비교 분석](#️-비교-분석)
+3. [🚀 GCP Cloud Storage 실습](#-gcp-cloud-storage-실습)
+4. [🚀 비교 분석](#-비교-분석)
 5. [🧪 실습 과제](#-실습-과제)
 6. [📚 문제 해결 및 참고 자료](#-문제-해결-및-참고-자료)
 
@@ -187,7 +187,7 @@ echo "Website URL: http://cloud-student-bucket-[버킷명].s3-website.ap-northea
 
 ---
 
-## ☁️ GCP Cloud Storage 실습
+## 🚀 GCP Cloud Storage 실습
 
 <details>
 <summary>📖 GCP Cloud Storage 개요</summary>
@@ -336,7 +336,7 @@ echo "Website URL: https://storage.googleapis.com/cloud-student-bucket-[버킷�
 
 ---
 
-## ⚖️ 비교 분석
+## 🚀 비교 분석
 
 <details>
 <summary>📊 AWS S3 vs GCP Cloud Storage 비교</summary>
