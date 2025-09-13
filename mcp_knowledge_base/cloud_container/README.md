@@ -64,9 +64,9 @@
 - [비용 최적화 가이드](./textbook/Day1/cost-optimization-guide.md)
 
 ### Day 2
-- [고가용성 아키텍처 가이드](./textbook/Day2/high-availability-architecture.md)
-- [모니터링 설정 가이드](./textbook/Day2/monitoring-setup.md)
-- [종합 프로젝트 실습](./textbook/Day2/practice/comprehensive-project.md)
+- [고가용성 아키텍처 가이드](./textbook/Day2/README.md#-고가용성-아키텍처-설계)
+- [모니터링 설정 가이드](./textbook/Day2/README.md#-모니터링-및-로깅-시스템)
+- [종합 프로젝트 실습](./textbook/Day2/README.md#-종합-프로젝트-및-최적화)
 
 > 📚 **전체 실습 가이드**: [Day1 README](./textbook/Day1/README.md) | [Day2 README](./textbook/Day2/README.md)
 

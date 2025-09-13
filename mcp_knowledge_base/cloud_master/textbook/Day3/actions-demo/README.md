@@ -97,7 +97,7 @@ services:
       - NODE_ENV=production
 ```
 
-## ☁️ 클라우드 배포
+## 🚀 클라우드 배포
 
 ### AWS EC2 배포
 - EC2 인스턴스 생성

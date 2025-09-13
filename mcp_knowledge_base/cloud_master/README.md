@@ -105,12 +105,13 @@
 - [Docker 고급 가이드](./textbook/Day1/docker-advanced-guide.md)
 - [GitHub Actions 가이드](./textbook/Day1/github-actions-guide.md)
 - [Docker Compose 가이드](./textbook/Day1/docker-compose-guide.md)
-- [VM 배포 가이드](./textbook/Day1/vm-deployment-guide.md)
+- [VM 배포 가이드](./textbook/Day1/cloud-deployment-guide.md)
 
 ### Day 2
-- [고급 CI/CD 가이드](./textbook/Day2/advanced-cicd-guide.md)
-- [컨테이너 배포 가이드](./textbook/Day2/container-deployment-guide.md)
-- [자동화 파이프라인 가이드](./textbook/Day2/automation-pipeline-guide.md)
+- [비용 구조 가이드](./textbook/Day2/cost-structure-guide.md)
+- [비용 최적화 가이드](./textbook/Day2/cost-optimization-guide.md)
+- [모니터링 가이드](./textbook/Day2/monitoring-guide.md)
+- [종합 실습 가이드](./textbook/Day2/comprehensive-practice-guide.md)
 
 ### Day 3
 - [로드 밸런싱 가이드](./textbook/Day3/load-balancing-guide.md)

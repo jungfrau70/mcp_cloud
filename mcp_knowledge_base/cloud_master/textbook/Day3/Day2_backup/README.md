@@ -9,7 +9,7 @@
 4. [🐳 Docker 기초 및 컨테이너 기술](#-docker-기초-및-컨테이너-기술)
 5. [📝 Git/GitHub 기초 및 협업](#-gitgithub-기초-및-협업)
 6. [🚀 GitHub Actions CI/CD 파이프라인](#-github-actions-cicd-파이프라인)
-7. [☁️ VM 기반 웹 애플리케이션 배포](#-vm-기반-웹-애플리케이션-배포)
+7. [🚀 VM 기반 웹 애플리케이션 배포](#-vm-기반-웹-애플리케이션-배포)
 8. [📚 문제 해결 및 참고 자료](#-문제-해결-및-참고-자료)
 
 </details>
@@ -502,7 +502,7 @@ jobs:
 
 ---
 
-## ☁️ VM 기반 컨테이너 배포
+## 🚀 VM 기반 컨테이너 배포
 
 <details>
 <summary>📖 VM 배포 전략</summary>

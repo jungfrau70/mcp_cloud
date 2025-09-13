@@ -89,7 +89,7 @@
 ## 📖 학습 자료
 
 ### Day 1
-- [클라우드 계정 설정 가이드](./textbook/Day1/aws-gcp-account-setup.md)
+- [클라우드 계정 설정 가이드](./textbook/Day2/aws-gcp-account-setup.md)
 - [IAM 기초 가이드](./textbook/Day1/iam-basics-guide.md)
 - [가상머신 서비스 가이드](./textbook/Day1/vm-services-guide.md)
 - [스토리지 서비스 가이드](./textbook/Day1/storage-services-guide.md)
