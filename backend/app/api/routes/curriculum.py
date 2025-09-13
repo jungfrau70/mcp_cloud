@@ -117,6 +117,62 @@ def set_selection(payload: Dict[str, List[str]]):
 #             data[rel.split('/')[-1]] = build(p)
 #     return data
 
+def _clean_duplicate_path(path: str) -> str:
+    """Remove duplicate path segments from curriculum path."""
+    if not path:
+        return path
+    
+    # Normalize path separators
+    normalized = path.replace('\\', '/').strip('/')
+    parts = normalized.split('/')
+    
+    if not parts:
+        return path
+    
+    # Find root markers
+    root_markers = ['cloud_basic', 'cloud_master', 'cloud_container']
+    first_root_index = -1
+    
+    for i, part in enumerate(parts):
+        if part in root_markers:
+            first_root_index = i
+            break
+    
+    if first_root_index == -1:
+        return normalized
+    
+    # Start from first root marker and remove duplicates
+    cleaned_parts = []
+    i = first_root_index
+    
+    while i < len(parts):
+        current_part = parts[i]
+        
+        # Check for duplicate patterns
+        if current_part in root_markers and len(cleaned_parts) > 0:
+            # Check if this is a duplicate pattern (root/textbook/DayX)
+            if i + 2 < len(parts):
+                current_pattern = '/'.join(parts[i:i+3])
+                if len(cleaned_parts) >= 3:
+                    existing_pattern = '/'.join(cleaned_parts[-3:])
+                    if current_pattern == existing_pattern:
+                        i += 3  # Skip duplicate pattern
+                        continue
+        
+        cleaned_parts.append(current_part)
+        i += 1
+    
+    result = '/'.join(cleaned_parts)
+    
+    # Additional regex cleanup for any remaining duplicates
+    import re
+    # Remove repeated textbook/DayX patterns
+    result = re.sub(r'(textbook/Day\d+/)(\1)+', r'\1', result)
+    # Remove repeated course patterns
+    result = re.sub(r'(cloud_(?:basic|master|container)/textbook/Day\d+/)(\1)+', r'\1', result)
+    
+    return result
+
 @router.get('')
 def get_slide(textbook_path: str = None, curriculum_path: str = None):
     """Return slide content (text) for curriculum items.
@@ -135,6 +191,9 @@ def get_slide(textbook_path: str = None, curriculum_path: str = None):
             rel = urllib.parse.unquote(rel)
     except Exception:
         rel = raw.strip().lstrip('/\\')
+    
+    # Clean duplicate path segments
+    rel = _clean_duplicate_path(rel)
     # Consider common text and document extensions to avoid forcing .md
     if not any(rel.endswith(ext) for ext in ('.md', '.markdown', '.txt', '.log', '.json', '.yaml', '.yml', '.csv', '.sh', '.pdf', '.ppt', '.pptx')):
         rel = f"{rel}.md"

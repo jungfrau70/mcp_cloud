@@ -1,204 +1,167 @@
-# GitHub Actions Demo Project
+# GitHub Actions CI/CD 데모 프로젝트
 
-## 🎯 프로젝트 개요
+이 프로젝트는 GitHub Actions를 사용한 CI/CD 파이프라인을 시연하는 데모 프로젝트입니다.
 
-이 프로젝트는 **GitHub Actions를 사용한 CI/CD 파이프라인**을 학습하기 위한 데모 프로젝트입니다.
+## 📋 프로젝트 개요
 
-## 📋 현재 활성화된 워크플로우
+### 목적
+- GitHub Actions 워크플로우 이해
+- 자동화된 빌드 및 배포 파이프라인 구축
+- Docker 컨테이너 기반 애플리케이션 배포
 
-### ✅ **기본 워크플로우 (현재 활성화됨)**
+### 기술 스택
+- **Frontend**: Node.js, Express
+- **Container**: Docker
+- **CI/CD**: GitHub Actions
+- **Cloud**: AWS EC2, GCP Compute Engine
 
-#### 1. **CI Pipeline** (`ci.yml`)
-- **트리거**: `push` (main, develop), `pull_request` (main)
-- **기능**: 코드 품질 검사, 테스트, 빌드
-- **소요 시간**: 약 2-3분
+## 🚀 시작하기
 
-#### 2. **Docker Hub 배포** (`deploy.yml`)
-- **트리거**: `push` (main), `tags` (v*)
-- **기능**: Docker 이미지 빌드 및 Docker Hub 푸시
-- **소요 시간**: 약 3-5분
-
-## 🚀 빠른 시작
-
-### 1단계: 저장소 포크 또는 클론
+### 1. 프로젝트 클론
 ```bash
-git clone https://github.com/YOUR_USERNAME/actions-demo.git
+git clone <repository-url>
 cd actions-demo
 ```
 
-
-### 2단계: Docker Hub 토큰 설정 (권장)
-**📖 상세 가이드**: [Docker Hub 가입 및 토큰 설정 가이드](../docker-hub-setup-guide)
-
-**간단 설정**:
-1. [Docker Hub](https://hub.docker.com)에서 Personal Access Token 생성
-2. GitHub 저장소 → Settings → Secrets and variables → Actions
-3. `DOCKERHUB_TOKEN` 시크릿 추가
-
-**💡 토큰 없이도 워크플로우는 실행되지만, 실제 Docker 이미지 푸시는 되지 않습니다.**
-
-### 3단계: 코드 푸시하여 워크플로우 실행
+### 2. 의존성 설치
 ```bash
-git add .
-git commit -m "Initial commit"
-git push origin main
+npm install
 ```
 
-### 4단계: 결과 확인
-1. GitHub 저장소 → Actions 탭
-2. 워크플로우 실행 결과 확인
-3. Docker Hub에서 이미지 확인
-
-## 🔧 고급 워크플로우 (비활성화됨)
-
-현재 고급 워크플로우들은 **비활성화**되어 있습니다. 사용하려면 파일명에서 `.disabled`를 제거하세요.
-
-### 📁 고급 워크플로우 목록
-
-| 워크플로우 | 설명 | 활성화 방법 |
-|-----------|------|-------------|
-| `advanced-ci.yml.disabled` | 고급 CI/CD 기능 | `advanced-ci.yml`로 이름 변경 |
-| `aws-deploy.yml.disabled` | AWS ECS 배포 | `aws-deploy.yml`로 이름 변경 |
-| `gcp-deploy.yml.disabled` | GCP Cloud Run 배포 | `gcp-deploy.yml`로 이름 변경 |
-| `multi-cloud-deploy.yml.disabled` | 멀티클라우드 배포 | `multi-cloud-deploy.yml`로 이름 변경 |
-| `vm-docker-deploy.yml.disabled` | VM Docker 배포 | `vm-docker-deploy.yml`로 이름 변경 |
-
-### 🎯 고급 워크플로우 활성화 방법
-
-#### 방법 1: 개별 활성화
+### 3. 로컬 실행
 ```bash
-# AWS 배포만 활성화
-ren aws-deploy.yml.disabled aws-deploy.yml
-
-# GCP 배포만 활성화  
-ren gcp-deploy.yml.disabled gcp-deploy.yml
+npm start
 ```
 
-#### 방법 2: 모든 고급 워크플로우 활성화
+### 4. Docker 실행
 ```bash
-# 모든 .disabled 파일을 활성화
-for %f in (*.disabled) do ren "%f" "%~nf"
+docker build -t actions-demo .
+docker run -p 3000:3000 actions-demo
 ```
 
-## 📚 학습 가이드
+## 📁 프로젝트 구조
 
-### 🎓 **초급자 (추천)**
-1. **기본 워크플로우만 사용**
-   - `ci.yml`: CI/CD 기본 개념 학습
-   - `deploy.yml`: Docker Hub 배포 학습
-
-2. **학습 순서**
-   - GitHub Actions 기본 개념 이해
-   - 워크플로우 파일 구조 파악
-   - Docker 이미지 빌드 및 푸시 과정 이해
-
-### 🚀 **중급자**
-1. **고급 CI/CD 기능**
-   ```bash
-   ren advanced-ci.yml.disabled advanced-ci.yml
-   ```
-   - 매트릭스 빌드
-   - 코드 커버리지
-   - 보안 스캔
-
-2. **클라우드 배포**
-   ```bash
-   ren aws-deploy.yml.disabled aws-deploy.yml
-   # 또는
-   ren gcp-deploy.yml.disabled gcp-deploy.yml
-   ```
-
-### 🏆 **고급자**
-1. **멀티클라우드 배포**
-   ```bash
-   ren multi-cloud-deploy.yml.disabled multi-cloud-deploy.yml
-   ```
-   - AWS ECS + GCP Cloud Run 동시 배포
-   - 권한 설정 및 실제 배포
-
-## 🔐 필요한 권한 및 설정
-
-### Docker Hub 배포 (기본)
-- `DOCKERHUB_TOKEN`: Docker Hub Personal Access Token
-
-### AWS ECS 배포 (고급)
-- `AWS_ACCESS_KEY_ID`: AWS 액세스 키
-- `AWS_SECRET_ACCESS_KEY`: AWS 시크릿 키
-- `AWS_REGION`: AWS 리전
-- `AWS_ECS_CLUSTER`: ECS 클러스터 이름
-- `AWS_ECS_SERVICE`: ECS 서비스 이름
-
-### GCP Cloud Run 배포 (고급)
-- `GCP_PROJECT_ID`: GCP 프로젝트 ID
-- `GCP_SA_KEY`: GCP 서비스 계정 키 (JSON)
-- `GCP_REGION`: GCP 리전
-- `GCP_SERVICE_NAME`: Cloud Run 서비스 이름
-
-## 🐛 문제 해결
-
-### 자주 발생하는 문제
-
-#### 1. Docker Hub 푸시 실패
 ```
-Error: failed to push to registry
-```
-**해결방법**: `DOCKERHUB_TOKEN` 시크릿이 올바르게 설정되었는지 확인
-
-#### 2. 워크플로우가 실행되지 않음
-**해결방법**: 
-- 파일명에 `.disabled`가 있는지 확인
-- `.github/workflows/` 디렉토리에 있는지 확인
-- YAML 문법 오류가 없는지 확인
-
-
-#### 3. 테스트 실패
-```
-Jest did not exit one second after the test run has completed
-```
-**해결방법**: 이미 해결됨 (app.js에서 테스트 환경 분리)
-
-#### 4. npm 의존성 충돌 오류
-```
-npm error Invalid: lock file's @types/node@24.3.1 does not satisfy @types/node@20.19.13
-npm error Missing: jest-junit@16.0.0 from lock file
+actions-demo/
+├── .github/
+│   └── workflows/
+│       ├── ci.yml          # CI 파이프라인
+│       ├── deploy.yml      # 배포 파이프라인
+│       └── vm-docker-deploy.yml  # VM 배포
+├── src/
+│   └── app.js              # 메인 애플리케이션
+├── tests/
+│   └── app.test.js         # 테스트 파일
+├── Dockerfile              # Docker 설정
+├── package.json            # Node.js 의존성
+└── README.md               # 프로젝트 문서
 ```
 
-**원인**:
-- `package-lock.json`과 `package.json`의 버전 불일치
-- 의존성 버전 충돌
+## 🔧 GitHub Actions 워크플로우
 
-**해결방법**:
-1. `package-lock.json` 파일 삭제
-2. `npm install` 실행하여 새로 생성
-3. 또는 `npm ci` 대신 `npm install` 사용
+### CI 파이프라인 (ci.yml)
+- 코드 체크아웃
+- Node.js 환경 설정
+- 의존성 설치
+- 테스트 실행
+- 린팅 검사
 
-## 📖 추가 자료
+### 배포 파이프라인 (deploy.yml)
+- 애플리케이션 빌드
+- Docker 이미지 생성
+- 클라우드 VM 배포
+- 헬스 체크
+
+## 🐳 Docker 설정
+
+### Dockerfile
+```dockerfile
+FROM node:18
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+### Docker Compose
+```yaml
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+```
+
+## ☁️ 클라우드 배포
+
+### AWS EC2 배포
+- EC2 인스턴스 생성
+- Docker 설치
+- 애플리케이션 배포
+- 로드 밸런서 설정
+
+### GCP Compute Engine 배포
+- Compute Engine 인스턴스 생성
+- Docker 설치
+- 애플리케이션 배포
+- 방화벽 규칙 설정
+
+## 📊 모니터링
+
+### 헬스 체크
+- `/health` 엔드포인트
+- 애플리케이션 상태 확인
+- 데이터베이스 연결 상태
+
+### 로깅
+- 애플리케이션 로그
+- 에러 로그
+- 성능 메트릭
+
+## 🧪 테스트
+
+### 단위 테스트
+```bash
+npm test
+```
+
+### 통합 테스트
+```bash
+npm run test:integration
+```
+
+### E2E 테스트
+```bash
+npm run test:e2e
+```
+
+## 📚 추가 자료
 
 - [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [Docker Hub 공식 문서](https://docs.docker.com/docker-hub/)
-- [AWS ECS 공식 문서](https://docs.aws.amazon.com/ecs/)
-- [GCP Cloud Run 공식 문서](https://cloud.google.com/run/docs)
+- [Docker 공식 문서](https://docs.docker.com/)
+- [Node.js 공식 문서](https://nodejs.org/docs/)
 
 ## 🤝 기여하기
 
-1. 이 저장소를 포크하세요
-2. 새로운 브랜치를 생성하세요 (`git checkout -b feature/amazing-feature`)
-3. 변경사항을 커밋하세요 (`git commit -m 'Add amazing feature'`)
-4. 브랜치에 푸시하세요 (`git push origin feature/amazing-feature`)
-5. Pull Request를 생성하세요
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## 📄 라이선스
 
 이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
 
+## 📞 문의
+
+프로젝트에 대한 문의사항이 있으시면 이슈를 생성해 주세요.
+
 ---
 
-**💡 팁**: 처음 사용하시는 분은 기본 워크플로우부터 시작하세요. 고급 기능은 필요에 따라 단계적으로 활성화하시면 됩니다!
-
----
-
-<div align="center">
-
-[← 이전: Cloud Master 2일차](../Day2/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: 로드 밸런싱 가이드 →](../load-balancing-guide)
-
-</div>
+**🎯 이 데모 프로젝트를 통해 GitHub Actions와 Docker를 활용한 CI/CD 파이프라인을 학습할 수 있습니다.**

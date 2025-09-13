@@ -74,24 +74,63 @@ export function cleanApiPath(path: string): string {
 export function deepCleanApiPath(path: string): string {
   if (!path) return ''
 
-  const normalized = path.replace(/\\/g, '/')
-  const parts = normalized.split('/')
+  const normalized = path.replace(/\\/g, '/').replace(/^\/+/, '').replace(/\/+$/, '')
+  const parts = normalized.split('/').filter(part => part !== '')
+
+  if (parts.length === 0) return ''
 
   const rootMarkers = ['cloud_basic', 'cloud_master', 'cloud_container'];
-  let lastRootIndex = -1;
-
-  for (let i = parts.length - 1; i >= 0; i--) {
+  
+  // Find the first occurrence of a root marker
+  let firstRootIndex = -1;
+  for (let i = 0; i < parts.length; i++) {
     if (rootMarkers.includes(parts[i])) {
-      lastRootIndex = i;
+      firstRootIndex = i;
       break;
     }
   }
 
-  if (lastRootIndex !== -1) {
-    return parts.slice(lastRootIndex).join('/');
+  if (firstRootIndex === -1) {
+    // No root marker found, return the path as is
+    return normalized;
   }
 
-  return path;
+  // Start from the first root marker and build the path
+  const cleanedParts: string[] = [];
+  let i = firstRootIndex;
+  
+  while (i < parts.length) {
+    const currentPart = parts[i];
+    
+    // If we encounter a root marker again, it means we have duplication
+    if (rootMarkers.includes(currentPart) && cleanedParts.length > 0) {
+      // Check if this is a duplicate pattern
+      const currentPattern = parts.slice(i, i + 3).join('/'); // Check next 3 parts for pattern
+      const existingPattern = cleanedParts.slice(-3).join('/');
+      
+      if (currentPattern === existingPattern) {
+        // Skip this duplicate pattern
+        i += 3; // Skip the duplicate pattern (root/textbook/DayX)
+        continue;
+      }
+    }
+    
+    cleanedParts.push(currentPart);
+    i++;
+  }
+
+  // Additional check for repeated patterns in the cleaned path
+  let result = cleanedParts.join('/');
+  
+  // Remove any remaining repeated patterns like "textbook/Day1/textbook/Day1"
+  const repeatedPattern = /(textbook\/Day\d+\/)(\1)+/g;
+  result = result.replace(repeatedPattern, '$1');
+  
+  // Remove any remaining repeated course patterns
+  const coursePattern = /(cloud_(?:basic|master|container)\/textbook\/Day\d+\/)(\1)+/g;
+  result = result.replace(coursePattern, '$1');
+
+  return result;
 }
 
 export function resolveRelativePath(basePath: string, relativePath: string): string {

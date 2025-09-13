@@ -1,11 +1,5 @@
 # Cloud Master - 3일차: 로드 밸런싱, 모니터링, 비용 최적화
 
-<div align="center">
-
-[← 이전: Cloud Master 2일차](../Day2/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음 과정: Cloud Container 1일차 →](../../../cloud_container/textbook/Day1/README)
-
-</div>
-
 <details>
 <summary>📋 목차</summary>
 
@@ -74,24 +68,24 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [로드 밸런싱 가이드](./load-balancing-guide) - ELB, Cloud Load Balancing 구성
-- 🔗 [Auto Scaling 가이드](./auto-scaling-guide) - ASG, MIG 자동 확장 설정
-- 🔗 [통합 가이드](./integration-guide) - 로드 밸런서 + 오토스케일링 연동
-- 🔗 [장애 복구 가이드](./disaster-recovery-guide) - 장애 시뮬레이션 및 복구
+- 🔗 [로드 밸런싱 가이드](./load-balancing-guide.md) - ELB, Cloud Load Balancing 구성
+- 🔗 [Auto Scaling 가이드](./auto-scaling-guide.md) - ASG, MIG 자동 확장 설정
+- 🔗 [통합 가이드](./integration-guide.md) - 로드 밸런서 + 오토스케일링 연동
+- 🔗 [장애 복구 가이드](./disaster-recovery-guide.md) - 장애 시뮬레이션 및 복구
 
 ### 📚 데모 프로젝트
-- 🔗 [Actions Demo 프로젝트](./actions-demo/README) - GitHub Actions CI/CD 데모
-- 🔗 [My App 프로젝트](./my-app/README) - Docker 기반 웹 애플리케이션
-- 🔗 [스크립트 모음](./scripts/README) - AWS/GCP 자동화 스크립트
+- 🔗 [Actions Demo 프로젝트](./actions-demo/README.md) - GitHub Actions CI/CD 데모
+- 🔗 [My App 프로젝트](./my-app/README.md) - Docker 기반 웹 애플리케이션
+- 🔗 [스크립트 모음](./scripts/README.md) - AWS/GCP 자동화 스크립트
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [트러블슈팅 가이드](./troubleshooting-guide) - 로드 밸런싱, 오토스케일링, 모니터링 문제 해결
+- 🔗 [트러블슈팅 가이드](./troubleshooting-guide.md) - 로드 밸런싱, 오토스케일링, 모니터링 문제 해결
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Master 1일차](../Day1/README) - Docker, Git/GitHub, GitHub Actions 기초
-- 🔗 [Cloud Master 2일차](../Day2/README) - 고급 CI/CD 및 VM 기반 컨테이너 배포
-- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README) - 컨테이너 심화 과정
-- 🔗 [전체 커리큘럼](../../../curriculum) - 전체 과정 구조 및 학습 경로
+- 🔗 [Cloud Master 1일차](../Day1/README.md) - Docker, Git/GitHub, GitHub Actions 기초
+- 🔗 [Cloud Master 2일차](../Day2/README.md) - 고급 CI/CD 및 VM 기반 컨테이너 배포
+- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README.md) - 컨테이너 심화 과정
+- 🔗 [전체 커리큘럼](../../../curriculum.md) - 전체 과정 구조 및 학습 경로
 
 </details>
 
@@ -708,3 +702,10 @@ aws cloudwatch get-metric-statistics \
 ---
 
 **🎯 이제 고급 클라우드 운영 기술을 갖추었습니다! Cloud Container 과정으로 진행하세요.**
+
+
+<div align="center">
+
+[← 이전: Cloud Master 2일차](../Day2/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음 과정: Cloud Container 1일차 →](../../../cloud_container/textbook/Day1/README)
+
+</div>

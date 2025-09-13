@@ -1,146 +1,260 @@
-# My App - Docker 기반 웹 애플리케이션
+# Docker 기반 웹 애플리케이션
 
-<div align="center">
+이 프로젝트는 Docker를 사용한 웹 애플리케이션 데모 프로젝트입니다.
 
-[← 이전: Cloud Master 2일차](../Day2/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Actions Demo 프로젝트 →](../actions-demo/README)
+## 📋 프로젝트 개요
 
-</div>
+### 목적
+- Docker 컨테이너화 학습
+- 웹 애플리케이션 배포 실습
+- 멀티스테이지 빌드 최적화
 
-## 🎯 프로젝트 개요
+### 기술 스택
+- **Backend**: Node.js, Express
+- **Frontend**: HTML, CSS, JavaScript
+- **Container**: Docker, Docker Compose
+- **Database**: MongoDB (선택사항)
 
-이 프로젝트는 **Docker를 활용한 웹 애플리케이션**의 기본 구조를 보여주는 데모 프로젝트입니다.
+## 🚀 시작하기
+
+### 1. 프로젝트 클론
+```bash
+git clone <repository-url>
+cd my-app
+```
+
+### 2. Docker로 실행
+```bash
+# 단일 컨테이너 실행
+docker build -t my-app .
+docker run -p 3000:3000 my-app
+
+# Docker Compose로 실행
+docker-compose up -d
+```
+
+### 3. 로컬 개발 환경
+```bash
+# 의존성 설치
+npm install
+
+# 개발 서버 실행
+npm run dev
+
+# 프로덕션 빌드
+npm run build
+```
 
 ## 📁 프로젝트 구조
 
 ```
 my-app/
-├── README.md           # 이 파일
-├── app.js             # 메인 애플리케이션 (MongoDB + Redis 연동)
-├── app_v1.js          # 기본 버전 (단순 Express 서버)
-├── package.json       # Node.js 의존성 관리
-├── Dockerfile         # Docker 이미지 빌드 설정
-└── docker-compose.yml # 다중 서비스 관리
+├── src/
+│   ├── app.js              # 메인 애플리케이션
+│   ├── app_v1.js           # 버전 1 애플리케이션
+│   └── routes/             # 라우트 파일들
+├── public/
+│   ├── css/                # CSS 파일들
+│   ├── js/                 # JavaScript 파일들
+│   └── images/             # 이미지 파일들
+├── tests/
+│   └── app.test.js         # 테스트 파일
+├── Dockerfile              # Docker 설정
+├── docker-compose.yml      # Docker Compose 설정
+├── .dockerignore           # Docker 무시 파일
+├── package.json            # Node.js 의존성
+└── README.md               # 프로젝트 문서
 ```
-
-## 🚀 빠른 시작
-
-### 1. 기본 버전 실행 (app_v1.js)
-```bash
-# 의존성 설치
-npm install
-
-# 기본 서버 실행
-node app_v1.js
-
-# 브라우저에서 http://localhost:3000 접속
-```
-
-### 2. 고급 버전 실행 (app.js + Docker Compose)
-```bash
-# Docker Compose로 전체 스택 실행
-docker-compose up -d
-
-# 브라우저에서 http://localhost:3000 접속
-# MongoDB: localhost:27017
-# Redis: localhost:6379
-```
-
-### 3. Docker 이미지 빌드
-```bash
-# 이미지 빌드
-docker build -t my-app .
-
-# 컨테이너 실행
-docker run -p 3000:3000 my-app
-```
-
-## 📋 주요 기능
-
-### app_v1.js (기본 버전)
-- **Express 서버**: 간단한 HTTP 서버
-- **시간 표시**: 현재 시간을 ISO 형식으로 표시
-- **기본 라우팅**: 루트 경로(/)에서 환영 메시지
-
-### app.js (고급 버전)
-- **Express 서버**: HTTP 서버
-- **MongoDB 연동**: 사용자 수 조회
-- **Redis 연동**: 방문자 수 카운터
-- **에러 처리**: 데이터베이스 연결 실패 시 처리
 
 ## 🐳 Docker 설정
 
-### Dockerfile
+### Dockerfile (멀티스테이지 빌드)
 ```dockerfile
-FROM node:18
+# Build stage
+FROM node:18-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm ci --only=production
+
+# Production stage
+FROM node:18-alpine AS production
+WORKDIR /app
+COPY --from=builder /app/node_modules ./node_modules
 COPY . .
 EXPOSE 3000
+USER node
 CMD ["npm", "start"]
 ```
 
-### docker-compose.yml
-- **web**: Node.js 애플리케이션
-- **db**: MongoDB 데이터베이스
-- **redis**: Redis 캐시 서버
+### Docker Compose
+```yaml
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
 
-## 🔧 개발 환경
+  mongodb:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+    volumes:
+      - mongodb_data:/data/db
+    restart: unless-stopped
 
-### 필수 도구
-- **Node.js**: 18.x 이상
-- **Docker**: 20.x 이상
-- **Docker Compose**: 2.x 이상
+volumes:
+  mongodb_data:
+```
+
+## 🔧 애플리케이션 기능
+
+### API 엔드포인트
+- `GET /` - 홈페이지
+- `GET /health` - 헬스 체크
+- `GET /api/status` - 애플리케이션 상태
+- `POST /api/data` - 데이터 생성
+- `GET /api/data` - 데이터 조회
 
 ### 환경 변수
 ```bash
-# MongoDB 연결 정보
-MONGO_URL=mongodb://admin:secret@db:27017
-
-# Redis 연결 정보
-REDIS_URL=redis://redis:6379
+NODE_ENV=production
+PORT=3000
+MONGODB_URI=mongodb://admin:secret@mongodb:27017/myapp
+LOG_LEVEL=info
 ```
 
-## 📚 학습 목표
+## 📊 모니터링 및 로깅
 
-이 프로젝트를 통해 다음을 학습할 수 있습니다:
+### 헬스 체크
+```javascript
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+```
 
-1. **Docker 기본 사용법**
-   - Dockerfile 작성
-   - 이미지 빌드 및 실행
-   - 컨테이너 관리
+### 로깅 설정
+```javascript
+const winston = require('winston');
 
-2. **Docker Compose 활용**
-   - 다중 서비스 관리
-   - 서비스 간 네트워킹
-   - 볼륨 마운트
+const logger = winston.createLogger({
+  level: process.env.LOG_LEVEL || 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+  ),
+  transports: [
+    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'logs/combined.log' })
+  ]
+});
+```
 
-3. **웹 애플리케이션 개발**
-   - Express.js 기본 사용법
-   - 데이터베이스 연동
-   - 캐시 시스템 활용
+## 🧪 테스트
 
-## 🚀 다음 단계
+### 단위 테스트
+```bash
+npm test
+```
 
-이 프로젝트를 완료한 후 다음을 진행하세요:
+### 통합 테스트
+```bash
+npm run test:integration
+```
 
-1. **GitHub Actions 연동**: [Actions Demo 프로젝트](../actions-demo/README) 참고
-2. **클라우드 배포**: [로드 밸런싱 가이드](../load-balancing-guide) 참고
-3. **모니터링 설정**: [모니터링 가이드](../monitoring-guide) 참고
+### Docker 테스트
+```bash
+# 컨테이너 내부에서 테스트 실행
+docker exec -it my-app npm test
 
-## 📞 지원
+# 테스트 전용 컨테이너 실행
+docker run --rm my-app npm test
+```
 
-문제가 발생하면 다음을 확인하세요:
+## 🚀 배포
 
-1. **Docker 실행 상태**: `docker info`
-2. **포트 충돌**: 3000, 27017, 6379 포트 사용 확인
-3. **의존성 설치**: `npm install` 실행
-4. **로그 확인**: `docker-compose logs`
+### AWS EC2 배포
+```bash
+# EC2 인스턴스에 배포
+docker build -t my-app .
+docker save my-app | gzip > my-app.tar.gz
+scp my-app.tar.gz ec2-user@your-ec2-ip:~/
+ssh ec2-user@your-ec2-ip
+docker load < my-app.tar.gz
+docker run -d -p 3000:3000 --name my-app my-app
+```
+
+### GCP Compute Engine 배포
+```bash
+# GCP 인스턴스에 배포
+gcloud compute instances create-with-container my-app-instance \
+  --container-image=my-app:latest \
+  --machine-type=e2-micro \
+  --zone=asia-northeast3-a
+```
+
+## 🔒 보안 설정
+
+### Docker 보안
+- 비루트 사용자로 실행
+- 최소 권한 원칙
+- 보안 스캔 실행
+
+### 애플리케이션 보안
+- 입력 검증
+- SQL 인젝션 방지
+- XSS 방지
+- CORS 설정
+
+## 📈 성능 최적화
+
+### Docker 최적화
+- 멀티스테이지 빌드
+- .dockerignore 사용
+- 캐시 레이어 최적화
+- 이미지 크기 최소화
+
+### 애플리케이션 최적화
+- 메모리 사용량 모니터링
+- CPU 사용량 최적화
+- 데이터베이스 쿼리 최적화
+- 캐싱 전략
+
+## 📚 추가 자료
+
+- [Docker 공식 문서](https://docs.docker.com/)
+- [Node.js 공식 문서](https://nodejs.org/docs/)
+- [Express.js 공식 문서](https://expressjs.com/)
+- [MongoDB 공식 문서](https://docs.mongodb.com/)
+
+## 🤝 기여하기
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 라이선스
+
+이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
+
+## 📞 문의
+
+프로젝트에 대한 문의사항이 있으시면 이슈를 생성해 주세요.
 
 ---
 
-<div align="center">
-
-[← 이전: Cloud Master 2일차](../Day2/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Actions Demo 프로젝트 →](../actions-demo/README)
-
-</div>
+**🎯 이 프로젝트를 통해 Docker를 활용한 웹 애플리케이션 개발과 배포를 학습할 수 있습니다.**

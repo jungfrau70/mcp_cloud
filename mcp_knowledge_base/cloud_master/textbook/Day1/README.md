@@ -1,10 +1,6 @@
 # Cloud Master - 1일차: Docker, Git/GitHub, GitHub Actions 기초
 
-<div align="center">
 
-[← 이전 과정: Cloud Basic 2일차](../../../cloud_basic/textbook/Day2/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Master 2일차 →](../Day2/README)
-
-</div>
 
 <details>
 <summary>📋 목차</summary>
@@ -69,28 +65,28 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [Docker 기초 실습](practice/docker-basics) - Docker 기본 개념 및 실습
-- 🔗 [Git/GitHub 기초 실습](practice/git-github-basics) - 버전 관리 및 협업
-- 🔗 [GitHub Actions 기초 실습](practice/github-actions-basics) - CI/CD 파이프라인 구축
-- 🔗 [VM 배포 실습](practice/vm-deployment) - AWS EC2, GCP Compute Engine 배포
+- 🔗 [Docker 기초 실습](practice/docker-basics.md) - Docker 기본 개념 및 실습
+- 🔗 [Git/GitHub 기초 실습](practice/git-github-basics.md) - 버전 관리 및 협업
+- 🔗 [GitHub Actions 기초 실습](practice/github-actions-basics.md) - CI/CD 파이프라인 구축
+- 🔗 [VM 배포 실습](practice/vm-deployment.md) - AWS EC2, GCP Compute Engine 배포
 
 ### 📚 개념 학습 가이드
-- 🔗 [Docker 고급 가이드](./docker-advanced-guide) - 멀티스테이지 빌드, 이미지 최적화
-- 🔗 [Docker Compose 가이드](./docker-compose-guide) - 다중 서비스 관리
-- 🔗 [GitHub Actions 가이드](./github-actions-guide) - CI/CD 파이프라인 구축
-- 🔗 [AWS & GCP 배포 가이드](./aws-gcp-deployment-guide) - 멀티클라우드 배포
+- 🔗 [Docker 고급 가이드](./docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
+- 🔗 [Docker Compose 가이드](./docker-compose-guide.md) - 다중 서비스 관리
+- 🔗 [GitHub Actions 가이드](./github-actions-guide.md) - CI/CD 파이프라인 구축
+- 🔗 [AWS & GCP 배포 가이드](./aws-gcp-deployment-guide.md) - 멀티클라우드 배포
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [종합 트러블슈팅 가이드](./troubleshooting-guide) - Docker, GitHub Actions, AWS/GCP 문제 해결
-- 🔗 [AWS & GCP 권한 설정](./aws-gcp-permissions-setup) - IAM, 서비스 계정 설정
-- 🔗 [CI/CD 파이프라인 가이드](./cicd-pipeline-guide) - 전체 자동 배포 파이프라인
-- 🔗 [클라우드 배포 가이드](./cloud-deployment-guide) - VM 기반 웹 애플리케이션 배포
+- 🔗 [종합 트러블슈팅 가이드](./troubleshooting-guide.md) - Docker, GitHub Actions, AWS/GCP 문제 해결
+- 🔗 [AWS & GCP 권한 설정](./aws-gcp-permissions-setup.md) - IAM, 서비스 계정 설정
+- 🔗 [CI/CD 파이프라인 가이드](./cicd-pipeline-guide.md) - 전체 자동 배포 파이프라인
+- 🔗 [클라우드 배포 가이드](./cloud-deployment-guide.md) - VM 기반 웹 애플리케이션 배포
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Basic 과정](../../../cloud_basic/textbook/Day1/README) - AWS/GCP 기초 과정
-- 🔗 [Cloud Master 2일차](../Day2/README) - 고급 CI/CD 및 VM 기반 컨테이너 배포
-- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README) - 컨테이너 심화 과정
-- 🔗 [전체 커리큘럼](../../../curriculum) - 전체 과정 구조 및 학습 경로
+- 🔗 [Cloud Basic 과정](../../../cloud_basic/textbook/Day1/README.md) - AWS/GCP 기초 과정
+- 🔗 [Cloud Master 2일차](../Day2/README.md) - 고급 CI/CD 및 VM 기반 컨테이너 배포
+- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README.md) - 컨테이너 심화 과정
+- 🔗 [전체 커리큘럼](../../../curriculum.md) - 전체 과정 구조 및 학습 경로
 
 </details>
 
@@ -899,3 +895,9 @@ ssh -T git@github.com
 ---
 
 **🎯 이제 Docker, Git/GitHub, GitHub Actions의 기본기를 갖추었습니다! Cloud Master 2일차로 진행하세요.**
+
+<div align="center">
+
+[← 이전 과정: Cloud Basic 2일차](../../../cloud_basic/textbook/Day2/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Master 2일차 →](../Day2/README)
+
+</div>

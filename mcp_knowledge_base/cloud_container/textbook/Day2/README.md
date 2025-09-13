@@ -1,11 +1,5 @@
 # Cloud Container - 2일차: 고가용성 및 확장성 아키텍처
 
-<div align="center">
-
-[← 이전: Cloud Container 1일차](../Day1/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [다음 과정 없음]
-
-</div>
-
 <details>
 <summary>📋 목차</summary>
 
@@ -74,14 +68,14 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [고가용성 아키텍처 실습](practice/high-availability-architecture)
-- 🔗 [고급 로드 밸런싱 실습](practice/advanced-load-balancing)
-- 🔗 [모니터링 시스템 구축](practice/monitoring-system-setup)
-- 🔗 [종합 프로젝트 실습](practice/comprehensive-project)
+- 🔗 [고가용성 아키텍처 실습](practice/high-availability-architecture.md)
+- 🔗 [고급 로드 밸런싱 실습](practice/advanced-load-balancing.md)
+- 🔗 [모니터링 시스템 구축](practice/monitoring-system-setup.md)
+- 🔗 [종합 프로젝트 실습](practice/comprehensive-project.md)
 
 ### 📚 개념 학습 가이드
-- 🔗 [고가용성 아키텍처 가이드](high-availability-architecture)
-- 🔗 [모니터링 설정 가이드](./monitoring-setup)
+- 🔗 [고가용성 아키텍처 가이드](high-availability-architecture.md)
+- 🔗 [모니터링 설정 가이드](./monitoring-setup.md)
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Container 1일차](../Day1/README.md)
@@ -384,3 +378,9 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 ---
 
 **🎯 이제 클라우드 컨테이너 기술의 모든 기본기를 갖추었습니다! 실제 프로젝트에 적용해보세요.**
+
+<div align="center">
+
+[← 이전: Cloud Container 1일차](../Day1/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [다음 과정 없음]
+
+</div>

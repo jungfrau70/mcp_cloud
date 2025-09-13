@@ -1,11 +1,5 @@
 # Cloud Basic - 2일차: 네트워킹, 보안, 데이터베이스 실습
 
-<div align="center">
-
-[← 이전: Cloud Basic 1일차](../Day1/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [다음 과정: Cloud Master 1일차 →](../../../cloud_master/textbook/Day1/README.md)
-
-</div>
-
 <details>
 <summary>📋 목차</summary>
 
@@ -73,12 +67,12 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [종합 실습 프로젝트](practice/basic-to-master-bridge)
+- 🔗 [종합 실습 프로젝트](practice/basic-to-master-bridge.md)
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Basic 1일차](../Day1/README)
-- 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README)
-- 🔗 [전체 커리큘럼](../../../curriculum)
+- 🔗 [Cloud Basic 1일차](../Day1/README.md)
+- 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md)
+- 🔗 [전체 커리큘럼](../../../curriculum.md)
 
 </details>
 
@@ -514,3 +508,10 @@ telnet RDS_ENDPOINT 3306
 ---
 
 **🎯 이제 클라우드 기초 서비스의 모든 기본기를 갖추었습니다! Cloud Intermediate 과정으로 진행하세요.**
+
+
+<div align="center">
+
+[← 이전: Cloud Basic 1일차](../Day1/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [다음 과정: Cloud Master 1일차 →](../../../cloud_master/textbook/Day1/README.md)
+
+</div>

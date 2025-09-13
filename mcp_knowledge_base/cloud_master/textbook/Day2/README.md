@@ -1,10 +1,5 @@
 # Cloud Master - 2일차: 고급 CI/CD 및 VM 기반 컨테이너 배포
 
-<div align="center">
-
-[← 이전: Cloud Master 1일차](../Day1/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Master 3일차 →](../Day3/README)
-
-</div>
 
 <details>
 <summary>📋 목차</summary>
@@ -130,19 +125,19 @@ kubectl version --client
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [클라우드 비용 구조 가이드](./cost-structure-guide) - AWS/GCP 과금 모델 이해
-- 🔗 [비용 최적화 가이드](./cost-optimization-guide) - 비용 예측 및 최적화
-- 🔗 [모니터링 가이드](./monitoring-guide) - CloudWatch/Cloud Monitoring 설정
-- 🔗 [종합 실습 가이드](./comprehensive-practice-guide) - EKS/GKE 컨테이너 오케스트레이션
+- 🔗 [클라우드 비용 구조 가이드](./cost-structure-guide.md) - AWS/GCP 과금 모델 이해
+- 🔗 [비용 최적화 가이드](./cost-optimization-guide.md) - 비용 예측 및 최적화
+- 🔗 [모니터링 가이드](./monitoring-guide.md) - CloudWatch/Cloud Monitoring 설정
+- 🔗 [종합 실습 가이드](./comprehensive-practice-guide.md) - EKS/GKE 컨테이너 오케스트레이션
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [트러블슈팅 가이드](./troubleshooting-guide) - 비용 관리, 모니터링, Kubernetes 문제 해결
+- 🔗 [트러블슈팅 가이드](./troubleshooting-guide.md) - 비용 관리, 모니터링, Kubernetes 문제 해결
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Master 1일차](../Day1/README) - Docker, Git/GitHub, GitHub Actions 기초
-- 🔗 [Cloud Master 3일차](../Day3/README) - 로드 밸런싱, 모니터링, 비용 최적화
-- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README) - 컨테이너 심화 과정
-- 🔗 [전체 커리큘럼](../../../curriculum) - 전체 과정 구조 및 학습 경로
+- 🔗 [Cloud Master 1일차](../Day1/README.md) - Docker, Git/GitHub, GitHub Actions 기초
+- 🔗 [Cloud Master 3일차](../Day3/README.md) - 로드 밸런싱, 모니터링, 비용 최적화
+- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README.md) - 컨테이너 심화 과정
+- 🔗 [전체 커리큘럼](../../../curriculum.md) - 전체 과정 구조 및 학습 경로
 
 </details>
 
@@ -190,3 +185,9 @@ kubectl version --client
 - **컨테이너 오케스트레이션**: Kubernetes 기반 서비스 관리
 - **로드 밸런싱**: 트래픽 분산 및 고가용성
 - **자동 복구**: 장애 발생 시 자동 복구 시스템
+
+<div align="center">
+
+[← 이전: Cloud Master 1일차](../Day1/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Master 3일차 →](../Day3/README)
+
+</div>

@@ -125,6 +125,36 @@ describe('Path Utils', () => {
       expect(deepCleanApiPath('cloud_basic///README.md'))
         .toBe('cloud_basic/README.md')
     })
+
+    it('should handle textbook-only duplication', () => {
+      const path = 'cloud_master/textbook/Day1/textbook/Day1/README.md'
+      expect(deepCleanApiPath(path))
+        .toBe('cloud_master/textbook/Day1/README.md')
+    })
+
+    it('should handle extreme duplication', () => {
+      const path = 'cloud_master/textbook/Day1/' + 'cloud_master/textbook/Day1/'.repeat(50) + 'README.md'
+      expect(deepCleanApiPath(path))
+        .toBe('cloud_master/textbook/Day1/README.md')
+    })
+
+    it('should handle mixed course patterns without removing different courses', () => {
+      const path = 'cloud_basic/textbook/Day1/cloud_master/textbook/Day2/README.md'
+      expect(deepCleanApiPath(path))
+        .toBe('cloud_basic/textbook/Day1/cloud_master/textbook/Day2/README.md')
+    })
+
+    it('should handle Windows path separators', () => {
+      const path = 'cloud_master\\textbook\\Day1\\cloud_master\\textbook\\Day1\\README.md'
+      expect(deepCleanApiPath(path))
+        .toBe('cloud_master/textbook/Day1/README.md')
+    })
+
+    it('should handle no root marker', () => {
+      const path = 'some/other/path/README.md'
+      expect(deepCleanApiPath(path))
+        .toBe('some/other/path/README.md')
+    })
   })
 
   describe('sanitizeGeneratedFilename', () => {

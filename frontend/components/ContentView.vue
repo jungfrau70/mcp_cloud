@@ -1,20 +1,32 @@
 <template>
   <div v-if="content || slide" class="h-full overflow-y-auto bg-white" ref="contentContainer">
-    <!-- Action row (optional) -->
-    <div class="flex items-center justify-end gap-2 px-4 pt-3" v-if="path">
-      <button
-        @click="goBack"
-        class="px-3 py-1 text-sm rounded bg-gray-200 hover:bg-gray-300 transition-colors"
-      >
-        이전
-      </button>
-      <button
-        v-if="path && !isSlideView"
-        @click="downloadPdf"
-        class="px-3 py-1 text-sm rounded bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
-      >
-        PDF
-      </button>
+    <!-- Header with path navigation and actions -->
+    <div class="flex items-center justify-between px-4 pt-3 pb-2 border-b border-gray-200" v-if="path">
+      <!-- Path breadcrumb -->
+      <div class="flex items-center space-x-2 text-sm text-gray-600">
+        <button
+          @click="navigateToFileTree"
+          class="flex items-center space-x-1 hover:text-blue-600 transition-colors"
+          :title="`FileTree에서 '${path}' 위치로 이동`"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+          </svg>
+          <span class="font-medium">{{ path }}</span>
+        </button>
+      </div>
+      
+      <!-- Action buttons -->
+      <div class="flex items-center gap-2">
+        <button
+          v-if="path && !isSlideView"
+          @click="downloadPdf"
+          class="px-3 py-1 text-sm rounded bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
+        >
+          PDF
+        </button>
+      </div>
     </div>
 
     <!-- Fade between content and slides in-place -->
@@ -42,7 +54,6 @@ import mermaid from 'mermaid';
 import embedVega from 'vega-embed';
 import DOMPurify from 'dompurify'
 import { cleanApiPath, deepCleanApiPath, isDirectoryPath, normalizeDirectoryPath } from '~/utils/path'
-import { useNavigation } from '~/composables/useNavigation'
 
 const props = defineProps({
   content: String,
@@ -239,11 +250,29 @@ const setupCodeBlockHandlers = () => {
   });
 };
 
-// 네비게이션 composable 사용
-const { safeGoBack } = useNavigation()
-
-const goBack = () => {
-  safeGoBack()
+// FileTree로 네비게이션하는 함수
+const navigateToFileTree = () => {
+  if (!props.path) return;
+  
+  // FileTree에서 해당 파일 위치로 이동하는 이벤트 발생
+  window.dispatchEvent(new CustomEvent('filetree:navigate', {
+    detail: { path: props.path }
+  }));
+  
+  // 사용자에게 피드백 제공
+  if (typeof window !== 'undefined') {
+    // 간단한 토스트 메시지 (toast가 없는 경우를 대비)
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded shadow-lg z-50';
+    toast.textContent = `FileTree에서 "${props.path}" 위치로 이동합니다`;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 3000);
+  }
 };
 
 const setupLinkIntercepts = async () => {

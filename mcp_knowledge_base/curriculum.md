@@ -71,7 +71,7 @@
   - 실습: 리소스 정리 및 비용 모니터링
 
 **📚 실습 자료**
-- [Cloud Basic 과정 개요](./cloud_basic/과정명.md) | [과정 상세](./cloud_basic/과정상세.md)
+- [Cloud Basic 과정 상세](./cloud_basic/과정상세.md)
 - [1일차 실습 가이드](./cloud_basic/textbook/Day1/README.md)
 - [2일차 실습 가이드](./cloud_basic/textbook/Day2/README.md)
 - [전체 실습 가이드](./cloud_basic/README.md)
@@ -149,7 +149,7 @@
   - 실습: 비용 최적화 전략 수립 및 발표
 
 **📚 실습 자료**
-- [Cloud Master 과정 개요](./cloud_master/과정명.md) | [과정 상세](./cloud_master/과정상세.md)
+- [Cloud Master 과정 상세](./cloud_master/과정상세.md)
 - [1일차 실습 가이드](./cloud_master/textbook/Day1/README.md)
 - [2일차 실습 가이드](./cloud_master/textbook/Day2/README.md)
 - [3일차 실습 가이드](./cloud_master/textbook/Day3/README.md)
@@ -204,7 +204,7 @@
   - 실습: 실제 서비스 시나리오 아키텍처 구현 및 발표
 
 **📚 실습 자료**
-- [Cloud Container 과정 개요](./cloud_container/과정명.md) | [과정 상세](./cloud_container/과정상세.md)
+- [Cloud Container 과정 상세](./cloud_container/과정상세.md)
 - [1일차 실습 가이드](./cloud_container/textbook/Day1/README.md)
 - [2일차 실습 가이드](./cloud_container/textbook/Day2/README.md)
 - [전체 실습 가이드](./cloud_container/README.md)

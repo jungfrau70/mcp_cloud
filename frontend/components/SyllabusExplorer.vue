@@ -262,6 +262,71 @@ try{
   })
 }catch{ /* ignore */ }
 
+// FileTree 네비게이션 이벤트 처리
+const handleFileTreeNavigate = (event) => {
+  const targetPath = event?.detail?.path;
+  if (!targetPath) return;
+  
+  // FileTree에서 해당 경로로 스크롤 및 하이라이트
+  nextTick(() => {
+    try {
+      // curriculum tree에서 해당 파일 찾기
+      const findFileInTree = (tree, path) => {
+        if (!tree || typeof tree !== 'object') return null;
+        
+        // files 배열에서 찾기
+        if (tree.files && Array.isArray(tree.files)) {
+          const file = tree.files.find(f => f.path === path);
+          if (file) return file;
+        }
+        
+        // 하위 디렉토리에서 재귀적으로 찾기
+        for (const [key, value] of Object.entries(tree)) {
+          if (key !== 'files' && typeof value === 'object') {
+            const found = findFileInTree(value, path);
+            if (found) return found;
+          }
+        }
+        
+        return null;
+      };
+      
+      const file = findFileInTree(displayTree.value, targetPath);
+      if (file) {
+        // 해당 파일 요소 찾기 및 스크롤
+        const fileElement = document.querySelector(`.tree-item.is-file[data-path="${CSS.escape(targetPath)}"]`);
+        if (fileElement) {
+          fileElement.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+          
+          // 하이라이트 효과
+          fileElement.classList.add('bg-blue-100', 'border-blue-300');
+          setTimeout(() => {
+            fileElement.classList.remove('bg-blue-100', 'border-blue-300');
+          }, 2000);
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to navigate to file in FileTree:', error);
+    }
+  });
+};
+
+// FileTree 네비게이션 이벤트 리스너 등록
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    window.addEventListener('filetree:navigate', handleFileTreeNavigate);
+  }
+});
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('filetree:navigate', handleFileTreeNavigate);
+  }
+});
+
 // Open root Curriculum when clicking the title
 const openCurriculum = () => {
   // 표시 트리의 첫 파일 열기
