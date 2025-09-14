@@ -10,7 +10,7 @@
           <button @click="toggleHiddenFiles" class="mb-2 px-2 py-1 text-xs border rounded" :class="showHiddenFiles ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'" title="숨김 파일 표시/숨김">
             {{ showHiddenFiles ? '숨김 파일 숨기기' : '숨김 파일 보기' }}
           </button>
-          <button @click="showAdmin=true; loadAdminPanel()" class="mb-2 px-2 py-1 text-xs border rounded" title="슬라이드 디렉토리 설정">설정</button>
+          <button @click="showAdmin=true; loadAdminPanel()" class="mb-2 px-2 py-1 text-xs border rounded" title="커리큘럼 디렉토리 설정">커리큘럼 설정</button>
           <button @click="showTrending=true" class="mb-2 px-2 py-1 text-xs border rounded">관심 카테고리</button>
         </div>
       </div>
@@ -40,7 +40,7 @@
             <button @click="toggleHiddenFiles" class="px-2 py-1 text-xs border rounded" :class="showHiddenFiles ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'" title="숨김 파일 표시/숨김">
               {{ showHiddenFiles ? '숨김 파일 숨기기' : '숨김 파일 보기' }}
             </button>
-            <button @click="showAdmin=true; loadAdminPanel()" class="px-2 py-1 text-xs border rounded" title="슬라이드 디렉토리 설정">설정</button>
+            <button @click="showAdmin=true; loadAdminPanel()" class="px-2 py-1 text-xs border rounded" title="커리큘럼 디렉토리 설정">커리큘럼 설정</button>
             <button @click="showTrending=true" class="px-2 py-1 text-xs border rounded">관심 카테고리</button>
           </div>
         </div>
@@ -80,10 +80,10 @@
   <div v-if="showAdmin" class="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
     <div class="bg-white rounded shadow-lg w-[520px] max-w-[92vw] p-4">
       <div class="flex items-center justify-between mb-2">
-        <h4 class="text-sm font-semibold">슬라이드 디렉토리 선택</h4>
+        <h4 class="text-sm font-semibold">커리큘럼 디렉토리 선택</h4>
         <button class="text-gray-500 hover:text-black" @click="showAdmin=false">✕</button>
       </div>
-      <div class="text-xs text-gray-600 mb-3">mcp_knowledge_base 하위의 디렉토리 중 슬라이드로 사용할 루트를 선택하세요.</div>
+      <div class="text-xs text-gray-600 mb-3">mcp_knowledge_base 하위의 디렉토리 중 커리큘럼으로 사용할 루트를 선택하세요.</div>
       <div v-if="allDirsLoading" class="text-sm text-gray-500">불러오는 중…</div>
       <div v-else class="max-h-60 overflow-auto border rounded p-2 space-y-1">
         <label v-for="dir in allKbDirs" :key="dir" class="flex items-center gap-2 text-sm">
@@ -418,14 +418,19 @@ async function loadAllKbDirs(){
   try{
     const r = await fetch(`${apiBase}/v1/knowledge-base/tree`, { headers: { 'X-API-Key': apiKey }})
     const data = await r.json()
-    // 재귀적으로 모든 하위 디렉토리 경로 수집 (files 키 제외)
+    // 재귀적으로 모든 하위 디렉토리 경로 수집 (files 키 제외, 디렉토리만)
     const collected = []
     function walk(node, prefix = ''){
       if(!node || typeof node !== 'object') return
       for(const key of Object.keys(node)){
         if(key === 'files') continue
         const next = prefix ? `${prefix}/${key}` : key
-        collected.push(next)
+        // 디렉토리인지 확인 (하위에 files가 있거나 다른 디렉토리가 있는 경우)
+        const hasFiles = node[key].files && Array.isArray(node[key].files) && node[key].files.length > 0
+        const hasSubdirs = Object.keys(node[key]).some(k => k !== 'files' && typeof node[key][k] === 'object')
+        if (hasFiles || hasSubdirs) {
+          collected.push(next)
+        }
         walk(node[key], next)
       }
     }

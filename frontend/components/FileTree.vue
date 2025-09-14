@@ -41,7 +41,7 @@
         >
           <span v-if="isDirectory(item)" class="icon">{{ isOpen(name) ? '▼' : '▶' }}</span>
           <span v-else class="icon">📄</span>
-          <span class="name" :class="{ 'hidden-item': name.startsWith('.') }">{{ name }}</span>
+          <span class="name" :class="{ 'hidden-item': name.startsWith('.') && name !== '.slides_selection.json' }">{{ name }}</span>
           <div v-if="isDirectory(item)" class="directory-actions">
             <button @click.stop="showCreateContextMenu($event, name)" class="action-btn" title="새 항목 생성">+</button>
           </div>
@@ -390,6 +390,8 @@ const files = computed(() => {
   const fileList = props.tree.files || [];
   return fileList.filter(file => {
     const fileName = file.name || file;
+    // .slides_selection.json 파일은 항상 숨김
+    if (fileName === '.slides_selection.json') return false;
     return props.showHiddenFiles || !fileName.startsWith('.');
   });
 });
@@ -404,7 +406,11 @@ const sortedTree = computed(() => {
     const dirs = { ...props.tree };
     delete dirs.files;
     return Object.keys(dirs)
-      .filter(key => props.showHiddenFiles || !key.startsWith('.'))
+      .filter(key => {
+        // .slides_selection.json 파일은 항상 숨김
+        if (key === '.slides_selection.json') return false;
+        return props.showHiddenFiles || !key.startsWith('.');
+      })
       .sort()
       .reduce((acc, key) => {
         acc[key] = dirs[key];

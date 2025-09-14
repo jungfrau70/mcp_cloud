@@ -112,14 +112,16 @@ const renderedContent = computed(() => {
   // Custom renderer for Korean header IDs and table styling
   const renderer = new marked.Renderer()
   renderer.heading = function(text, level) {
-    // Create Korean-friendly ID that matches the TOC link format
-    // Keep emojis and spaces, convert to lowercase, replace spaces with hyphens
-    let id = text.toLowerCase()
-      .replace(/\s+/g, '-') // Replace spaces with hyphens
-      .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
-      .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+    // VS Code 마크다운 미리보기와 동일한 슬러그 생성 방식
+    // 이모지를 유지하고 공백을 하이픈으로 변환
+    let id = text
+      .trim() // 앞뒤 공백 제거
+      .replace(/\s+/g, '-') // 공백을 하이픈으로 변환
+      .replace(/-+/g, '-') // 연속된 하이픈을 하나로 변환
+      .replace(/^-+|-+$/g, '') // 앞뒤 하이픈 제거
+      .toLowerCase() // 소문자로 변환
     
-    // Ensure ID is not empty and add fallback
+    // 빈 ID인 경우 fallback 생성
     if (!id) {
       id = `heading-${level}-${Math.random().toString(36).substr(2, 9)}`;
     }
@@ -326,11 +328,31 @@ const setupLinkIntercepts = async () => {
       // Try to find the target element
       let targetElement = document.getElementById(targetId);
       
-      // If not found, try to find by exact match first, then partial match
+      // If not found, try to find by exact match first
       if (!targetElement) {
         const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
         for (const el of allElements) {
           if (el.id === targetId) {
+            targetElement = el;
+            break;
+          }
+        }
+      }
+      
+      // If still not found, try to find by text content match (for emoji headers)
+      if (!targetElement) {
+        const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        for (const el of allElements) {
+          const textContent = el.textContent || '';
+          // VS Code 스타일 슬러그 생성으로 매칭 시도
+          const expectedId = textContent
+            .trim()
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-+|-+$/g, '')
+            .toLowerCase();
+          
+          if (expectedId === targetId) {
             targetElement = el;
             break;
           }
