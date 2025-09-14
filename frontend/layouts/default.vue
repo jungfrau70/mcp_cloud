@@ -191,12 +191,14 @@ import TaskStatusBar from '~/components/TaskStatusBar.vue'
 import ToastStack from '~/components/ToastStack.vue'
 import { useToastStore } from '~/stores/toast'
 import { useAuthStore } from '~/stores/auth'
-import { cleanApiPath, deepCleanApiPath, preventPathDuplication, prepareApiPath } from '~/utils/path'
+import { useProgressStore } from '~/stores/progress'
+import { cleanApiPath, deepCleanApiPath, preventPathDuplication, prepareApiPath, prepareSafeApiPath, makeUriDisplayFriendly } from '~/utils/path'
 const toast = useToastStore()
 
 // User authentication state
 const user = ref(null)
 const auth = useAuthStore()
+const progressStore = useProgressStore()
 const userMenuOpen = ref(false)
 // 중복 토큰 로드 방지: auth.loadFromStorage() 제거
 
@@ -269,6 +271,8 @@ async function onLogout(){
 onMounted(async () => {
   try {
     // 사용자 상태는 watcher(immediate)에서 처리
+    // 진도 스토어 초기화
+    progressStore.loadProgress()
   } catch (e) {
     user.value = null;
   }
@@ -659,7 +663,10 @@ async function showCurriculumIndex(){
 const handleFileClick = async (path) => {
   // Clean the path to prevent duplication and handle Korean filenames
   const cleanPath = preventPathDuplication(path)
-  const preparedPath = prepareApiPath(cleanPath)
+  const preparedPath = prepareSafeApiPath(cleanPath) // 개선된 한글 URI 처리 사용
+  
+  // 진도 업데이트: 과정별 진도 관리
+  updateProgressForFile(preparedPath)
   
   // 홈('/') 등에서는 '/textbook'로 전환하여 가운데 패널이 WorkspaceView를 렌더하도록 함
   try {
@@ -713,6 +720,60 @@ const handleFileClick = async (path) => {
     }
   }
 };
+
+// 진도 업데이트 함수
+function updateProgressForFile(filePath) {
+  try {
+    // 파일 경로에서 과정 정보 추출
+    const pathParts = filePath.split('/').filter(Boolean)
+    
+    // 과정별 진도 관리 로직
+    if (pathParts.length >= 2) {
+      const courseId = pathParts[0] // 예: 'cloud_basic', 'cloud_master' 등
+      const courseName = getCourseDisplayName(courseId)
+      
+      // 과정이 아직 초기화되지 않았다면 초기화
+      if (!progressStore.userProgress[courseId]) {
+        // 기본 총 단계 수 (실제로는 동적으로 계산해야 함)
+        const totalSteps = getTotalStepsForCourse(courseId)
+        progressStore.initializeCourseProgress(courseId, courseName, totalSteps)
+      }
+      
+      // 현재 단계 설정
+      const stepId = `${courseId}_${pathParts.join('_')}`
+      progressStore.setCurrentStep(stepId)
+      
+      // 과정 전환
+      progressStore.switchCourse(courseId)
+    }
+  } catch (error) {
+    console.warn('Failed to update progress:', error)
+  }
+}
+
+// 과정 표시 이름 매핑
+function getCourseDisplayName(courseId) {
+  const courseNames = {
+    'cloud_basic': '클라우드 기초',
+    'cloud_master': '클라우드 마스터',
+    'cloud_container': '클라우드 컨테이너',
+    'curriculum': '커리큘럼',
+    'textbook': '교재'
+  }
+  return courseNames[courseId] || courseId
+}
+
+// 과정별 총 단계 수 (실제로는 동적으로 계산해야 함)
+function getTotalStepsForCourse(courseId) {
+  const stepCounts = {
+    'cloud_basic': 30,
+    'cloud_master': 40,
+    'cloud_container': 35,
+    'curriculum': 20,
+    'textbook': 15
+  }
+  return stepCounts[courseId] || 10
+}
 
 // 디렉토리를 FileTree에서 보여주는 함수
 const showDirectoryInFileTree = (directoryPath) => {

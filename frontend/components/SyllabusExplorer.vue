@@ -10,6 +10,51 @@
     </div>
     <div v-if="loading">Loading...</div>
     <div v-if="error">{{ error }}</div>
+    <!-- 최근 오픈파일 섹션 -->
+    <div class="mb-6" v-if="recentFiles.length > 0">
+      <div class="flex items-center justify-between mb-2">
+        <h4 class="text-sm font-semibold text-gray-800">최근 오픈파일</h4>
+        <button class="text-xs px-2 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200" @click="clearRecentFiles" title="최근 파일 목록 지우기">
+          지우기
+        </button>
+      </div>
+      <ul class="space-y-1">
+        <li v-for="file in recentFiles.slice(0, 3)" :key="file.path" class="flex items-center justify-between group">
+          <button 
+            class="text-left text-sm w-full truncate px-2 py-1 rounded hover:bg-gray-100 flex items-center" 
+            @click="onFileClick(file.path)" 
+            :title="file.path"
+          >
+            <span class="mr-2">📄</span>
+            <span class="truncate">{{ getFileName(file.path) }}</span>
+          </button>
+          <button 
+            class="opacity-0 group-hover:opacity-100 text-gray-500 hover:text-red-600 px-2" 
+            title="최근 목록에서 제거" 
+            @click="removeFromRecentFiles(file.path)"
+          >
+            ×
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 커리큘럼 설정 상태 표시 -->
+    <div v-if="selectedDirs.length === 0" class="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <div class="w-2 h-2 bg-yellow-400 rounded-full"></div>
+          <span class="text-sm text-yellow-800">커리큘럼 디렉토리가 설정되지 않았습니다.</span>
+        </div>
+        <button 
+          @click="openCurriculumSettings" 
+          class="text-xs px-2 py-1 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200"
+        >
+          설정하기
+        </button>
+      </div>
+    </div>
+
     <div v-if="displayTree">
       <FileTreePanel
         :tree="displayTree"
@@ -54,6 +99,7 @@ import { useRoute } from 'vue-router'
 import { useAuthStore } from '~/stores/auth'
 import FileTreePanel from './FileTreePanel.vue';
 import { useRuntimeConfig } from '#app'
+import { makeUriDisplayFriendly } from '~/utils/path'
 
 const kbTree = ref(null);
 const curriculumTree = ref(null);
@@ -72,6 +118,14 @@ const userKey = 'guest'
 const storageKey = `mcp_terminal_topics_${userKey}`
 const topics = ref([])
 const search = ref('')
+
+// 최근 오픈파일 관리
+const recentFilesKey = `recent_files_${userKey}`
+const recentFiles = ref([])
+
+// 커리큘럼 선택된 디렉토리 관리
+const selectedCurriculumDirs = ref([])
+const curriculumDirsLoading = ref(false)
 
 const filteredTopics = computed(() => {
   const q = (search.value || '').toLowerCase()
@@ -115,6 +169,93 @@ function persistTopics() {
 function shortTitle(name) {
   if (!name) return '제목 없음'
   return name.length > 18 ? name.slice(0, 18) + '…' : name
+}
+
+// 최근 오픈파일 관련 함수들
+function loadRecentFiles() {
+  try {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      const saved = localStorage.getItem(recentFilesKey)
+      recentFiles.value = saved ? JSON.parse(saved) : []
+    } else {
+      recentFiles.value = []
+    }
+  } catch {
+    recentFiles.value = []
+  }
+}
+
+function saveRecentFiles() {
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    localStorage.setItem(recentFilesKey, JSON.stringify(recentFiles.value))
+  }
+}
+
+function addToRecentFiles(filePath) {
+  if (!filePath) return
+  
+  // 기존 항목 제거 (중복 방지)
+  recentFiles.value = recentFiles.value.filter(file => file.path !== filePath)
+  
+  // 새 항목을 맨 앞에 추가
+  const fileName = getFileName(filePath)
+  recentFiles.value.unshift({
+    path: filePath,
+    name: fileName,
+    timestamp: Date.now()
+  })
+  
+  // 최대 10개까지만 유지
+  if (recentFiles.value.length > 10) {
+    recentFiles.value = recentFiles.value.slice(0, 10)
+  }
+  
+  saveRecentFiles()
+}
+
+function removeFromRecentFiles(filePath) {
+  recentFiles.value = recentFiles.value.filter(file => file.path !== filePath)
+  saveRecentFiles()
+}
+
+function clearRecentFiles() {
+  recentFiles.value = []
+  saveRecentFiles()
+}
+
+// 커리큘럼 설정 열기
+function openCurriculumSettings() {
+  // 지식베이스 탐색기로 이동하여 커리큘럼 설정 모달 열기
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('open-curriculum-settings'))
+  }
+}
+
+// 커리큘럼 선택된 디렉토리 로딩
+async function loadSelectedCurriculumDirs() {
+  curriculumDirsLoading.value = true
+  try {
+    const response = await fetch(`${apiBase}/v1/curriculum/selection`, {
+      headers: { 'X-API-Key': apiKey }
+    })
+    if (response.ok) {
+      const data = await response.json()
+      selectedCurriculumDirs.value = Array.isArray(data?.selected_dirs) ? data.selected_dirs : []
+    } else {
+      selectedCurriculumDirs.value = []
+    }
+  } catch (error) {
+    console.error('커리큘럼 디렉토리 로딩 실패:', error)
+    selectedCurriculumDirs.value = []
+  } finally {
+    curriculumDirsLoading.value = false
+  }
+}
+
+function getFileName(filePath) {
+  if (!filePath) return 'Unknown'
+  const parts = filePath.split('/')
+  return parts[parts.length - 1] || filePath
 }
 
 function deleteTopic(id) {
@@ -186,6 +327,9 @@ const props = defineProps({
 const emit = defineEmits(['file-click']);
 
 const onFileClick = (path) => {
+  // 최근 파일 목록에 추가 (읽기 쉬운 형태로 저장)
+  const displayPath = makeUriDisplayFriendly(path);
+  addToRecentFiles(displayPath);
   emit('file-click', path);
 };
 
@@ -253,9 +397,15 @@ onMounted(async () => {
   }
 
   loadTopics()
+  loadRecentFiles()
   // 우측 패널에서 변경 시 동기화
   if (typeof window !== 'undefined') {
     window.addEventListener('mcp:terminal:topics-updated', loadTopics)
+    // 커리큘럼 설정 변경 시 트리 새로고침
+    window.addEventListener('curriculum-settings-changed', () => {
+      curriculumTree.value = null // 캐시 초기화
+      loadcurriculumTreeIfCurriculum()
+    })
   }
 });
 

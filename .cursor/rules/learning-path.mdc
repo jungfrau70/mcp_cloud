@@ -1,100 +1,97 @@
 ---
-description: 학습 경로 네비게이션 및 앵커 링크 관리 규칙
-globs: "**/*.md"
+description: 교육 교구 시스템의 학습 경로 및 링크 관리 규칙
+globs: "**/*.md", "**/learning-path.md", "**/curriculum.md"
 alwaysApply: true
 ---
 
-# 학습 경로 및 링크 관리 규칙
+# 교육 교구 시스템 학습 경로 관리 규칙
 
-## 📚 학습 경로 네비게이션 구조
+## 📚 교육 과정 네비게이션 구조
 
-### 필수 원칙
-- **누락 없이**: 모든 문서를 빠짐없이 포함 (필수)
-- **중복 없이**: 중복 제거는 선택사항 (권장)
+### **교육 과정 필수 원칙**
+- **완전성**: 모든 교육 자료를 빠짐없이 포함 (필수)
+- **일관성**: 교육 과정 전반의 일관된 구조 유지 (필수)
+- **접근성**: 모든 학습자가 쉽게 접근할 수 있는 구조 (필수)
 
-### 필수 네비게이션 링크
-모든 주요 학습 문서에는 다음 네비게이션 링크가 **반드시** 포함되어야 합니다:
+### **교육 과정 네비게이션 링크**
+모든 주요 교육 문서에는 다음 네비게이션 링크가 **반드시** 포함되어야 합니다:
 
 ```markdown
 <div align="center">
 
-[← 이전: [과정명] [일차] 메인](../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md)
+[← 이전: [과정명] [일차] 메인](../README.md) | 
+[📚 전체 커리큘럼](../../../curriculum.md) | 
+[🏠 학습 경로로 돌아가기](../../../index.md) | 
+[다음: [과정명] [일차] →](../README.md)
 
 </div>
 ```
 
-### 링크 구조 규칙
+### **교육 과정 링크 구조 규칙**
 - **이전 과정**: `[← 이전: [과정명] [일차] 메인](../README.md)`
 - **전체 커리큘럼**: `[📚 전체 커리큘럼](../../../curriculum.md)`
 - **학습 경로**: `[🏠 학습 경로로 돌아가기](../../../index.md)`
 - **다음 과정**: `[다음: [과정명] [일차] →](../README.md)` (해당하는 경우)
 
-### 적용 대상 문서
-- ✅ 각 과정의 README.md 파일
-- ✅ 각 일차의 README.md 파일
-- ✅ 실습 가이드 문서 (practice/*.md)
-- ✅ 상세 가이드 문서 (*-guide.md)
-- ✅ 비교 분석 문서 (*-comparison.md)
-- ✅ 트러블슈팅 가이드 (troubleshooting-guide.md)
+## 🔗 교육 자료 앵커 링크 규칙
 
-## 🔗 앵커 링크 규칙
-
-### GitHub 마크다운 앵커 링크 표준
-마크다운 헤딩을 앵커 링크로 변환할 때 다음 규칙을 **반드시** 준수해야 합니다:
+### **교육 과정 앵커 링크 표준**
+교육 과정 헤딩을 앵커 링크로 변환할 때 다음 규칙을 **반드시** 준수해야 합니다:
 
 ```markdown
 ## 🎯 학습 목표
 ```
 ↓ 앵커 링크
 ```markdown
-[🎯 학습 목표](#학습-목표)
+[🎯 학습 목표](#🎯-학습-목표)
 ```
 
-### 앵커 변환 규칙
-1. **이모지 제거**: `🎯 학습 목표` → `학습-목표`
-2. **특수문자 제거**: `AWS S3 실습` → `aws-s3-실습`
+### **교육 과정 앵커 변환 규칙**
+1. **이모지 유지**: `🎯 학습 목표` → `🎯-학습-목표`
+2. **특수문자 처리**: `AWS S3 실습` → `aws-s3-실습`
 3. **공백을 하이픈으로 변환**: `GitHub Actions` → `github-actions`
 4. **소문자 변환**: `README` → `readme`
 5. **연속 하이픈 정리**: `Prometheus + Grafana` → `prometheus-grafana`
 
-### 목차 앵커 링크 검증
-모든 목차의 앵커 링크는 실제 헤딩과 **정확히 일치**해야 합니다:
+### **교육 과정 목차 앵커 링크 검증**
+모든 교육 과정 목차의 앵커 링크는 실제 헤딩과 **정확히 일치**해야 합니다:
 
 ```markdown
 <!-- ✅ 올바른 예시 -->
-1. [🎯 학습 목표](#학습-목표)
-2. [📚 실습 가이드](#실습-가이드)
-3. [🔧 실습 환경 준비](#실습-환경-준비)
+1. [🎯 학습 목표](#🎯-학습-목표)
+2. [📚 실습 가이드](#📚-실습-가이드)
+3. [🔧 실습 환경 준비](#🔧-실습-환경-준비)
 
 <!-- ❌ 잘못된 예시 -->
-1. [🎯 학습 목표](#-학습-목표)  <!-- 이모지가 앵커에 포함됨 -->
+1. [🎯 학습 목표](#-학습-목표)  <!-- 이모지가 앵커에서 누락 -->
 2. [📚 실습 가이드](#📚-실습-가이드)  <!-- 이모지가 앵커에 포함됨 -->
 ```
 
-## 🛠️ 자동 검사 및 수정
+## 🛠️ 교육 자료 자동 검사 및 수정
 
-### 앵커 링크 검사 도구
-새로운 문서 작성 시 다음 Python 스크립트로 앵커 링크를 검증하세요:
+### **교육 자료 앵커 링크 검사 도구**
+새로운 교육 자료 작성 시 다음 Python 스크립트로 앵커 링크를 검증하세요:
 
 ```python
 #!/usr/bin/env python3
 import re
 
-def normalize_anchor(text):
-    """마크다운 헤딩을 앵커 링크 형식으로 변환"""
-    text = re.sub(r'[^\w\s가-힣-]', '', text)  # 이모지/특수문자 제거
-    text = re.sub(r'\s+', '-', text.strip())   # 공백을 하이픈으로
-    return text.lower()                        # 소문자 변환
+def normalize_education_anchor(text):
+    # 교육 과정 헤딩을 앵커 링크 형식으로 변환
+    # 이모지 유지하면서 정규화
+    text = re.sub(r'[^\w\s가-힣🎯📚🔧🚀💰📊🔄🛠️]', '', text)
+    text = re.sub(r'\s+', '-', text.strip())
+    return text.lower()
 
-def check_anchor_links(content):
-    """앵커 링크 오류 검사"""
+def check_education_anchor_links(content):
+    # 교육 자료 앵커 링크 오류 검사
     # 헤딩 추출
     headings = set()
     for line in content.split('\n'):
         match = re.match(r'^(#{2,6})\s+(.+)$', line.strip())
         if match:
             title = match.group(2).strip()
-            anchor = normalize_anchor(title)
+            anchor = normalize_education_anchor(title)
             headings.add(anchor)
     
     # 앵커 링크 검사
@@ -107,98 +104,66 @@ def check_anchor_links(content):
                 errors.append(f"라인 {line_num}: '{anchor}' 앵커를 찾을 수 없음")
     
     return errors
-
-def check_file_links(content, base_path):
-    """파일 링크 유효성 검사"""
-    import os
-    errors = []
-    
-    for line_num, line in enumerate(content.split('\n'), 1):
-        # 상대 경로 링크 검사
-        matches = re.finditer(r'\[([^\]]+)\]\(([^#)]+)(?:#[^)]+)?\)', line)
-        for match in matches:
-            link_text = match.group(1)
-            file_path = match.group(2)
-            
-            # 상대 경로인 경우
-            if file_path.startswith('./') or file_path.startswith('../'):
-                full_path = os.path.join(os.path.dirname(base_path), file_path)
-                if not os.path.exists(full_path):
-                    errors.append(f"라인 {line_num}: '{file_path}' 파일을 찾을 수 없음")
-    
-    return errors
 ```
 
-### 수정 프로세스
-1. **검사 실행**: 앵커 링크 오류 확인
-2. **자동 수정**: 규칙에 따라 앵커 링크 수정
-3. **검증**: 수정 결과 재검사
-4. **백업 관리**: 수정 전 원본 파일 백업
+## 📋 교육 자료 작성 체크리스트
 
-## 📋 문서 작성 체크리스트
-
-### 새 문서 작성 시
-- [ ] **필수**: 모든 관련 문서를 누락 없이 포함
-- [ ] **권장**: 중복 제거 (선택사항)
+### **새 교육 자료 작성 시**
+- [ ] **필수**: 모든 관련 교육 자료를 누락 없이 포함
+- [ ] **필수**: 교육 과정 일관성 유지
 - [ ] 네비게이션 링크 4개 요소 모두 포함
 - [ ] 목차의 앵커 링크가 실제 헤딩과 일치
 - [ ] 이모지가 포함된 헤딩의 앵커 링크 정확성 확인
 - [ ] 상대 경로 링크가 올바른 위치를 가리키는지 확인
-- [ ] 파일명이 실제 디렉토리 구조와 일치하는지 확인
+- [ ] 교육 과정명이 실제 디렉토리 구조와 일치하는지 확인
 
-### 기존 문서 수정 시
+### **기존 교육 자료 수정 시**
 - [ ] 수정된 헤딩의 앵커 링크 업데이트
 - [ ] 목차의 해당 항목 앵커 링크 수정
 - [ ] 네비게이션 링크 경로 유효성 확인
+- [ ] 관련 교육 자료와의 연결성 확인
 
-### 정기 점검 (월 1회)
-- [ ] 전체 마크다운 파일 앵커 링크 검사
+### **정기 점검 (주 1회)**
+- [ ] 전체 교육 자료 앵커 링크 검사
 - [ ] 깨진 링크 수정
-- [ ] 네비게이션 구조 일관성 확인
+- [ ] 교육 과정 네비게이션 구조 일관성 확인
+- [ ] 학습자 피드백 반영
 
-## 🚨 주의사항
+## 🚨 교육 자료 주의사항
 
-### 절대 금지사항
-- ❌ 이모지가 앵커 링크에 포함된 경우: `#-학습-목표`
+### **절대 금지사항**
+- ❌ 이모지가 앵커 링크에서 누락된 경우: `#-학습-목표`
 - ❌ 특수문자가 앵커 링크에 포함된 경우: `#📚-실습-가이드`
 - ❌ 대소문자가 혼재된 앵커: `#GitHub-Actions`
 - ❌ 연속 하이픈이 포함된 앵커: `#prometheus--grafana`
 
-### 권장사항
-- ✅ 헤딩 작성 시 일관된 형식 사용
+### **권장사항**
+- ✅ 교육 과정 헤딩 작성 시 일관된 형식 사용
 - ✅ 목차 생성 시 자동화 도구 활용
-- ✅ 문서 수정 시 앵커 링크 동기화 확인
+- ✅ 교육 자료 수정 시 앵커 링크 동기화 확인
 - ✅ 정기적인 링크 검사 및 수정
 
-## 📊 품질 지표
+## 📊 교육 자료 품질 지표
 
-### 목표 수준
+### **목표 수준**
 - **앵커 링크 정확도**: 100%
-- **네비게이션 링크 완성도**: 100%
+- **교육 과정 네비게이션 링크 완성도**: 100%
 - **깨진 링크 수**: 0개
-- **사용자 네비게이션 만족도**: 최고 수준
+- **학습자 네비게이션 만족도**: 최고 수준
 
-### 모니터링 방법
+### **모니터링 방법**
 - 자동화된 앵커 링크 검사 도구 실행
-- 사용자 피드백 수집 및 분석
-- 정기적인 문서 구조 검토
+- 학습자 피드백 수집 및 분석
+- 정기적인 교육 자료 구조 검토
 
-이 규칙을 준수하여 학습자들이 원활하고 일관된 경험을 할 수 있도록 합니다.
+## 🎓 교육 과정 완전성 검증
 
----
-
-## 🔍 완전한 학습 경로 구성 및 검증 규칙
-
-### 필수 원칙
-- **누락 없이**: 모든 문서를 빠짐없이 포함 (필수)
-- **중복 없이**: 중복 제거는 선택사항 (권장)
-
-### Top-down 검증 (학습 경로 → 실제 문서)
-모든 학습 경로에서 참조하는 문서가 실제로 존재하는지 확인:
+### **Top-down 검증 (교육 경로 → 실제 자료)**
+모든 교육 경로에서 참조하는 자료가 실제로 존재하는지 확인:
 
 ```python
-def validate_top_down_links(learning_path_file):
-    """학습 경로에서 참조하는 모든 문서의 존재 여부 검증"""
+def validate_education_top_down_links(learning_path_file):
+    # 교육 경로에서 참조하는 모든 자료의 존재 여부 검증
     import os
     import re
     
@@ -212,22 +177,22 @@ def validate_top_down_links(learning_path_file):
     for link_text, file_path in links:
         full_path = os.path.join(os.path.dirname(learning_path_file), file_path)
         if not os.path.exists(full_path):
-            errors.append(f"누락된 파일: {file_path}")
+            errors.append(f"누락된 교육 자료: {file_path}")
     
     return errors
 ```
 
-### Bottom-up 검증 (실제 문서 → 학습 경로)
-실제 존재하는 모든 문서가 학습 경로에 포함되어 있는지 확인:
+### **Bottom-up 검증 (실제 자료 → 교육 경로)**
+실제 존재하는 모든 교육 자료가 교육 경로에 포함되어 있는지 확인:
 
 ```python
-def validate_bottom_up_coverage(learning_path_file, course_directory):
-    """실제 문서들이 학습 경로에 모두 포함되어 있는지 검증"""
+def validate_education_bottom_up_coverage(learning_path_file, course_directory):
+    # 실제 교육 자료들이 교육 경로에 모두 포함되어 있는지 검증
     import os
     import re
     import glob
     
-    # 학습 경로에서 참조하는 파일 목록 추출
+    # 교육 경로에서 참조하는 파일 목록 추출
     with open(learning_path_file, 'r', encoding='utf-8') as f:
         content = f.read()
     
@@ -236,13 +201,13 @@ def validate_bottom_up_coverage(learning_path_file, course_directory):
     for link_text, file_path in links:
         referenced_files.add(file_path)
     
-    # 실제 존재하는 마크다운 파일 목록
+    # 실제 존재하는 교육 자료 목록
     actual_files = set()
     for md_file in glob.glob(os.path.join(course_directory, '**/*.md'), recursive=True):
         rel_path = os.path.relpath(md_file, course_directory)
         actual_files.add(rel_path.replace('\\', '/'))
     
-    # 누락된 파일 찾기
+    # 누락된 교육 자료 찾기
     missing_files = actual_files - referenced_files
     
     # 백업 파일과 README 파일 제외
@@ -254,250 +219,4 @@ def validate_bottom_up_coverage(learning_path_file, course_directory):
     return list(missing_files)
 ```
 
-### 완전한 학습 경로 구성 체크리스트
-
-#### 새 학습 경로 작성 시
-- [ ] **필수**: 모든 관련 문서를 누락 없이 포함
-- [ ] **권장**: 중복 제거 (선택사항)
-- [ ] Top-down 검증: 참조하는 모든 문서가 존재하는지 확인
-- [ ] Bottom-up 검증: 실제 문서들이 모두 포함되어 있는지 확인
-- [ ] 과정 정보 문서 포함: `과정명.md`, `과정상세.md`
-- [ ] 실습 가이드 문서 포함: `practice/*.md` 파일들
-- [ ] 고급 가이드 문서 포함: `*-guide.md` 파일들
-- [ ] 자동화 관련 문서 포함: `automation/`, `automation_tests/` README
-- [ ] 설치 가이드 문서 포함: `install/` 디렉토리 모든 파일
-- [ ] 프레젠테이션 자료 포함: `presentation/` 디렉토리 모든 파일
-
-#### 기존 학습 경로 수정 시
-- [ ] 수정된 헤딩의 앵커 링크 업데이트
-- [ ] 목차의 해당 항목 앵커 링크 수정
-- [ ] 네비게이션 링크 경로 유효성 확인
-- [ ] Top-down/Bottom-up 검증 재실행
-- [ ] 새로 추가된 문서가 학습 경로에 포함되었는지 확인
-
-### 정기 검증 프로세스 (월 1회)
-
-#### 1단계: Top-down 검증
-```bash
-# 각 과정별 학습 경로 검증
-python validate_learning_path.py --mode top-down --course cloud_basic
-python validate_learning_path.py --mode top-down --course cloud_master  
-python validate_learning_path.py --mode top-down --course cloud_container
-```
-
-#### 2단계: Bottom-up 검증
-```bash
-# 각 과정별 누락 문서 검증
-python validate_learning_path.py --mode bottom-up --course cloud_basic
-python validate_learning_path.py --mode bottom-up --course cloud_master
-python validate_learning_path.py --mode bottom-up --course cloud_container
-```
-
-#### 3단계: 누락 문서 자동 추가
-```bash
-# 누락된 문서를 학습 경로에 자동 추가
-python update_learning_path.py --course cloud_basic --add-missing
-python update_learning_path.py --course cloud_master --add-missing
-python update_learning_path.py --course cloud_container --add-missing
-```
-
-### 학습 경로 품질 지표
-
-#### 목표 수준
-- **문서 포함률**: 100% (누락 없이)
-- **링크 유효성**: 100% (깨진 링크 없음)
-- **앵커 링크 정확도**: 100%
-- **네비게이션 링크 완성도**: 100%
-- **사용자 만족도**: 최고 수준
-
-#### 모니터링 방법
-- 자동화된 검증 스크립트 실행
-- 정기적인 Top-down/Bottom-up 검증
-- 사용자 피드백 수집 및 분석
-- 학습 경로 사용 통계 분석
-
-### 자동화 도구
-
-#### 검증 스크립트 (`validate_learning_path.py`)
-```python
-#!/usr/bin/env python3
-import argparse
-import os
-import re
-import glob
-
-def main():
-    parser = argparse.ArgumentParser(description='학습 경로 검증 도구')
-    parser.add_argument('--mode', choices=['top-down', 'bottom-up'], required=True)
-    parser.add_argument('--course', choices=['cloud_basic', 'cloud_master', 'cloud_container'], required=True)
-    
-    args = parser.parse_args()
-    
-    course_path = f"mcp_knowledge_base/{args.course}"
-    learning_path_file = f"{course_path}/learning-path.md"
-    
-    if args.mode == 'top-down':
-        errors = validate_top_down_links(learning_path_file)
-        if errors:
-            print("❌ Top-down 검증 실패:")
-            for error in errors:
-                print(f"  - {error}")
-        else:
-            print("✅ Top-down 검증 성공: 모든 참조 문서가 존재합니다.")
-    
-    elif args.mode == 'bottom-up':
-        missing_files = validate_bottom_up_coverage(learning_path_file, course_path)
-        if missing_files:
-            print("❌ Bottom-up 검증 실패 - 누락된 문서:")
-            for file in missing_files:
-                print(f"  - {file}")
-        else:
-            print("✅ Bottom-up 검증 성공: 모든 문서가 학습 경로에 포함되어 있습니다.")
-
-if __name__ == "__main__":
-    main()
-```
-
-#### 업데이트 스크립트 (`update_learning_path.py`)
-```python
-#!/usr/bin/env python3
-import argparse
-import os
-import re
-import glob
-
-def main():
-    parser = argparse.ArgumentParser(description='학습 경로 업데이트 도구')
-    parser.add_argument('--course', choices=['cloud_basic', 'cloud_master', 'cloud_container'], required=True)
-    parser.add_argument('--add-missing', action='store_true', help='누락된 문서를 학습 경로에 추가')
-    
-    args = parser.parse_args()
-    
-    if args.add_missing:
-        # 누락된 문서를 학습 경로에 자동 추가하는 로직
-        print(f"📝 {args.course} 과정의 누락된 문서를 학습 경로에 추가합니다...")
-        # 구현 로직...
-
-if __name__ == "__main__":
-    main()
-```
-
-### 🚨 주의사항
-
-#### 절대 금지사항
-- ❌ 문서 누락: 실제 존재하는 문서가 학습 경로에 포함되지 않음
-- ❌ 깨진 링크: 존재하지 않는 파일을 참조하는 링크
-- ❌ 중복 참조: 같은 문서를 여러 번 참조 (권장사항 위반)
-
-#### 권장사항
-- ✅ 정기적인 검증: 월 1회 Top-down/Bottom-up 검증 실행
-- ✅ 자동화 도구 활용: 검증 및 업데이트 스크립트 사용
-- ✅ 사용자 피드백: 학습자 피드백을 통한 지속적 개선
-- ✅ 문서 동기화: 새 문서 추가 시 학습 경로 자동 업데이트
-
-### 📊 성과 측정
-
-#### 정량적 지표
-- **문서 포함률**: (포함된 문서 수 / 전체 문서 수) × 100%
-- **링크 유효성**: (유효한 링크 수 / 전체 링크 수) × 100%
-- **검증 주기**: 정기 검증 실행 빈도
-
-#### 정성적 지표
-- **사용자 만족도**: 학습자 피드백 점수
-- **학습 효율성**: 학습 경로를 통한 학습 완료율
-- **문서 활용도**: 각 문서의 접근 빈도 및 사용률
-
-이 규칙을 통해 완전하고 일관된 학습 경로를 유지할 수 있습니다.
-
----
-
-## 🎉 완성된 학습 경로 시스템
-
-### ✅ 구현된 도구들
-
-#### 검증 도구 (`validate_learning_path.py`)
-```bash
-# 통계 확인
-python validate_learning_path.py --mode stats --course cloud_basic
-python validate_learning_path.py --mode stats --course cloud_master
-python validate_learning_path.py --mode stats --course cloud_container
-
-# Top-down 검증 (학습 경로 → 실제 문서)
-python validate_learning_path.py --mode top-down --course [과정명]
-
-# Bottom-up 검증 (실제 문서 → 학습 경로)
-python validate_learning_path.py --mode bottom-up --course [과정명]
-```
-
-#### 업데이트 도구 (`update_learning_path.py`)
-```bash
-# 누락 문서 자동 추가
-python update_learning_path.py --course [과정명] --add-missing
-
-# Dry-run 모드 (미리보기)
-python update_learning_path.py --course [과정명] --add-missing --dry-run
-```
-
-### 📊 현재 품질 지표
-
-#### Cloud Basic
-- **문서 포함률**: 96.7% (거의 완벽)
-- **전체 문서 수**: 30개
-- **참조된 문서 수**: 62개
-- **누락된 문서 수**: 1개
-
-#### Cloud Master
-- **문서 포함률**: 100.0% (완벽) 🎉
-- **전체 문서 수**: 41개
-- **참조된 문서 수**: 86개
-- **누락된 문서 수**: 0개
-
-#### Cloud Container
-- **문서 포함률**: 100.0% (완벽) 🎉
-- **전체 문서 수**: 33개
-- **참조된 문서 수**: 65개
-- **누락된 문서 수**: 0개
-
-### 🔄 정기 관리 프로세스
-
-#### 월 1회 검증
-```bash
-# 1단계: 전체 과정 통계 확인
-python validate_learning_path.py --mode stats --course cloud_basic
-python validate_learning_path.py --mode stats --course cloud_master
-python validate_learning_path.py --mode stats --course cloud_container
-
-# 2단계: 누락 문서 확인
-python validate_learning_path.py --mode bottom-up --course cloud_basic
-python validate_learning_path.py --mode bottom-up --course cloud_master
-python validate_learning_path.py --mode bottom-up --course cloud_container
-
-# 3단계: 누락 문서 자동 추가
-python update_learning_path.py --course cloud_basic --add-missing
-python update_learning_path.py --course cloud_master --add-missing
-python update_learning_path.py --course cloud_container --add-missing
-```
-
-#### 새 문서 추가 시
-```bash
-# 1. 새 문서 추가 후 검증
-python validate_learning_path.py --mode bottom-up --course [과정명]
-
-# 2. 누락된 문서가 있으면 자동 추가
-python update_learning_path.py --course [과정명] --add-missing
-```
-
-### 🎯 달성된 목표
-
-- ✅ **완전한 학습 경로**: 모든 과정에서 100% 또는 96.7% 문서 포함률 달성
-- ✅ **자동화 시스템**: 수동 검증 없이 자동으로 누락 문서 감지 및 추가
-- ✅ **지속 가능성**: 정기 검증 프로세스로 학습 경로 품질 유지
-- ✅ **확장성**: 새로운 과정 추가 시에도 동일한 도구 사용 가능
-
-### 📈 품질 지표 달성
-
-- ✅ **문서 포함률**: 100% (Cloud Master, Cloud Container)
-- ✅ **링크 유효성**: 100% (깨진 링크 없음)
-- ✅ **자동화 도구**: 완전 구현
-- ✅ **정기 검증**: 월 1회 프로세스 수립
-- ✅ **백업 관리**: 자동 백업 시스템 구축
+이 규칙을 통해 교육자와 학습자들이 원활하고 일관된 교육 경험을 할 수 있도록 합니다.

@@ -407,6 +407,14 @@ onMounted(()=>{
   // 검색 모드에서도 트리 로드 필요
   if (props.mode === 'tree' || props.mode === 'full' || props.mode === 'search') loadKnowledgeBaseStructure(); else isInitialLoading.value = false
   taskStore.subscribe()
+  
+  // 커리큘럼 설정 이벤트 리스너
+  if (typeof window !== 'undefined') {
+    window.addEventListener('open-curriculum-settings', () => {
+      showAdmin.value = true
+      loadAdminPanel()
+    })
+  }
 })
 
 // Admin helpers
@@ -450,6 +458,13 @@ async function saveSelection(){
   try{
     await fetch(`${apiBase}/v1/curriculum/selection`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey }, body: JSON.stringify({ selected_dirs: selectedDirs.value }) })
     showAdmin.value = false
+    
+    // 커리큘럼 설정 변경 이벤트 발행
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('curriculum-settings-changed', {
+        detail: { selectedDirs: selectedDirs.value }
+      }))
+    }
   } finally { saving.value = false }
 }
 </script>

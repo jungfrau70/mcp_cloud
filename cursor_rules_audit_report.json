@@ -1,0 +1,227 @@
+{
+  "audit_date": "2025-09-15T06:47:01.596143",
+  "total_rules": 12,
+  "rules_analysis": {
+    "anchor-link-audit.mdc": {
+      "size": 7973,
+      "has_education_focus": true,
+      "has_outdated_patterns": false,
+      "metadata_completeness": 3,
+      "last_modified": "2025-09-15T06:24:04.985888"
+    },
+    "content_creation_rules.mdc": {
+      "size": 1793,
+      "has_education_focus": false,
+      "has_outdated_patterns": true,
+      "metadata_completeness": 0,
+      "last_modified": "2025-09-12T18:43:36.455245"
+    },
+    "cursor_rules.mdc": {
+      "size": 1551,
+      "has_education_focus": false,
+      "has_outdated_patterns": false,
+      "metadata_completeness": 3,
+      "last_modified": "2025-09-12T18:43:36.455245"
+    },
+    "development-environment.mdc": {
+      "size": 2501,
+      "has_education_focus": false,
+      "has_outdated_patterns": true,
+      "metadata_completeness": 0,
+      "last_modified": "2025-09-12T18:48:13.304648"
+    },
+    "document-handling.mdc": {
+      "size": 5529,
+      "has_education_focus": true,
+      "has_outdated_patterns": false,
+      "metadata_completeness": 3,
+      "last_modified": "2025-09-15T05:46:59.874266"
+    },
+    "document-title-management.mdc": {
+      "size": 7346,
+      "has_education_focus": true,
+      "has_outdated_patterns": true,
+      "metadata_completeness": 3,
+      "last_modified": "2025-09-15T05:46:59.874266"
+    },
+    "global-rules.mdc": {
+      "size": 1545,
+      "has_education_focus": false,
+      "has_outdated_patterns": false,
+      "metadata_completeness": 1,
+      "last_modified": "2025-09-12T18:43:36.457246"
+    },
+    "learning-path.mdc": {
+      "size": 12664,
+      "has_education_focus": true,
+      "has_outdated_patterns": true,
+      "metadata_completeness": 3,
+      "last_modified": "2025-09-15T06:00:55.990049"
+    },
+    "project-guidelines.mdc": {
+      "size": 941,
+      "has_education_focus": false,
+      "has_outdated_patterns": false,
+      "metadata_completeness": 3,
+      "last_modified": "2025-09-12T18:43:36.457246"
+    },
+    "regular-maintenance.mdc": {
+      "size": 10005,
+      "has_education_focus": true,
+      "has_outdated_patterns": false,
+      "metadata_completeness": 3,
+      "last_modified": "2025-09-15T06:34:44.021418"
+    },
+    "self_improve.mdc": {
+      "size": 2426,
+      "has_education_focus": false,
+      "has_outdated_patterns": false,
+      "metadata_completeness": 3,
+      "last_modified": "2025-09-12T18:43:36.458243"
+    },
+    "target_system.mdc": {
+      "size": 5929,
+      "has_education_focus": true,
+      "has_outdated_patterns": true,
+      "metadata_completeness": 3,
+      "last_modified": "2025-09-12T18:43:36.459242"
+    }
+  },
+  "issues_summary": {
+    "total_issues": 11,
+    "high_severity": 2,
+    "medium_severity": 3,
+    "low_severity": 6
+  },
+  "recommendations": [
+    {
+      "category": "교육 교구 시스템 특화",
+      "priority": "high",
+      "recommendations": [
+        "모든 규칙에 교육/학습 관련 키워드 포함",
+        "수강자/교육자 관점에서의 사용성 강조",
+        "실습 무결성 유지를 위한 검증 규칙 강화",
+        "직관적이고 친절한 설명 가이드라인 추가"
+      ]
+    },
+    {
+      "category": "문서 연결 및 앵커 관리",
+      "priority": "high",
+      "recommendations": [
+        "앵커 링크 자동 검증 규칙 강화",
+        "문서 간 연결 무결성 보장 규칙 추가",
+        "제목 앵커 일관성 관리 규칙 개선",
+        "한글/이모지 처리 규칙 표준화"
+      ]
+    },
+    {
+      "category": "현행화 및 정리",
+      "priority": "medium",
+      "recommendations": [
+        "구식 클라우드 관리 관련 규칙 제거 또는 교육 도구로 전환",
+        "중복 규칙 통합 및 정리",
+        "최신 교육 도구 트렌드 반영",
+        "AI 활용 교육 도구 특화 규칙 추가"
+      ]
+    },
+    {
+      "category": "코드 품질 및 예시",
+      "priority": "medium",
+      "recommendations": [
+        "교육 도구 사용 예시 코드 추가",
+        "실습 가이드 코드 템플릿 제공",
+        "오류 처리 및 사용자 안내 개선",
+        "접근성 및 사용성 고려사항 추가"
+      ]
+    }
+  ],
+  "detailed_issues": [
+    {
+      "rule": "content_creation_rules.mdc",
+      "issues": [
+        "필수 메타데이터 누락: description",
+        "필수 메타데이터 누락: globs",
+        "구식 패턴 포함 (클라우드 관리 관련)",
+        "한글 비율이 낮음 (교육 교구 시스템 특성상 한글 중심 권장)"
+      ],
+      "severity": "high"
+    },
+    {
+      "rule": "cursor_rules.mdc",
+      "issues": [
+        "교육 교구 시스템 관련성 부족"
+      ],
+      "severity": "low"
+    },
+    {
+      "rule": "development-environment.mdc",
+      "issues": [
+        "필수 메타데이터 누락: description",
+        "필수 메타데이터 누락: globs",
+        "교육 교구 시스템 관련성 부족",
+        "구식 패턴 포함 (클라우드 관리 관련)"
+      ],
+      "severity": "high"
+    },
+    {
+      "rule": "document-handling.mdc",
+      "issues": [
+        "한글 비율이 낮음 (교육 교구 시스템 특성상 한글 중심 권장)"
+      ],
+      "severity": "low"
+    },
+    {
+      "rule": "document-title-management.mdc",
+      "issues": [
+        "구식 패턴 포함 (클라우드 관리 관련)",
+        "문서 연결 관련 규칙이지만 앵커/링크 내용 부족",
+        "한글 비율이 낮음 (교육 교구 시스템 특성상 한글 중심 권장)"
+      ],
+      "severity": "medium"
+    },
+    {
+      "rule": "global-rules.mdc",
+      "issues": [
+        "필수 메타데이터 누락: description",
+        "필수 메타데이터 누락: globs"
+      ],
+      "severity": "medium"
+    },
+    {
+      "rule": "learning-path.mdc",
+      "issues": [
+        "구식 패턴 포함 (클라우드 관리 관련)"
+      ],
+      "severity": "low"
+    },
+    {
+      "rule": "project-guidelines.mdc",
+      "issues": [
+        "교육 교구 시스템 관련성 부족"
+      ],
+      "severity": "low"
+    },
+    {
+      "rule": "regular-maintenance.mdc",
+      "issues": [
+        "한글 비율이 낮음 (교육 교구 시스템 특성상 한글 중심 권장)"
+      ],
+      "severity": "low"
+    },
+    {
+      "rule": "self_improve.mdc",
+      "issues": [
+        "교육 교구 시스템 관련성 부족"
+      ],
+      "severity": "low"
+    },
+    {
+      "rule": "target_system.mdc",
+      "issues": [
+        "구식 패턴 포함 (클라우드 관리 관련)",
+        "한글 비율이 낮음 (교육 교구 시스템 특성상 한글 중심 권장)"
+      ],
+      "severity": "medium"
+    }
+  ]
+}

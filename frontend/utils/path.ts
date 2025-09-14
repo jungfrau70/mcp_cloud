@@ -399,3 +399,167 @@ export function normalizeDirectoryPath(path: string): string {
   
   return cleaned
 }
+
+// 한글 URI 처리를 위한 고급 함수들
+
+// URI 내 한글을 안전하게 처리하는 함수
+export function safeKoreanUri(uri: string): string {
+  if (!uri) return ''
+  
+  try {
+    // 이미 인코딩된 URI인지 확인
+    if (isEncodedFilename(uri)) {
+      // 디코딩 후 다시 인코딩하여 정규화
+      const decoded = decodeURIComponent(uri)
+      return encodeURIComponent(decoded)
+    }
+    
+    // 한글이 포함된 경우에만 인코딩
+    if (/[가-힣]/.test(uri)) {
+      return encodeURIComponent(uri)
+    }
+    
+    return uri
+  } catch (error) {
+    console.warn('Failed to process Korean URI:', uri, error)
+    return uri
+  }
+}
+
+// URI에서 한글을 읽을 수 있게 디코딩하는 함수
+export function makeKoreanUriReadable(uri: string): string {
+  if (!uri) return ''
+  
+  try {
+    // 인코딩된 문자가 있는지 확인
+    if (isEncodedFilename(uri)) {
+      return decodeURIComponent(uri)
+    }
+    
+    return uri
+  } catch (error) {
+    console.warn('Failed to decode Korean URI:', uri, error)
+    return uri
+  }
+}
+
+// 경로 세그먼트별로 한글 처리하는 함수
+export function processKoreanPathSegments(path: string): string {
+  if (!path) return ''
+  
+  const segments = path.split('/')
+  const processedSegments = segments.map(segment => {
+    if (!segment) return segment
+    
+    // 한글이 포함된 세그먼트만 처리
+    if (/[가-힣]/.test(segment)) {
+      // 이미 인코딩되어 있는지 확인
+      if (isEncodedFilename(segment)) {
+        return segment // 이미 인코딩됨
+      } else {
+        return encodeURIComponent(segment) // 인코딩 필요
+      }
+    }
+    
+    return segment
+  })
+  
+  return processedSegments.join('/')
+}
+
+// API 요청용 경로를 안전하게 준비하는 함수 (개선된 버전)
+export function prepareSafeApiPath(path: string): string {
+  if (!path) return ''
+  
+  // 1. 기본 경로 정리
+  const cleaned = cleanApiPath(path)
+  
+  // 2. 한글 파일명 처리
+  const koreanProcessed = processKoreanPathSegments(cleaned)
+  
+  // 3. 최종 검증
+  return koreanProcessed
+}
+
+// URI를 사용자에게 표시할 때 읽기 쉽게 만드는 함수
+export function makeUriDisplayFriendly(uri: string): string {
+  if (!uri) return ''
+  
+  try {
+    // 인코딩된 URI를 디코딩하여 표시
+    if (isEncodedFilename(uri)) {
+      return decodeURIComponent(uri)
+    }
+    
+    return uri
+  } catch (error) {
+    console.warn('Failed to make URI display friendly:', uri, error)
+    return uri
+  }
+}
+
+// URI 처리 상태를 확인하는 함수
+export function getUriProcessingStatus(uri: string): {
+  original: string
+  needsProcessing: boolean
+  isEncoded: boolean
+  processed: string
+  displayFriendly: string
+  error?: string
+} {
+  const result = {
+    original: uri,
+    needsProcessing: false,
+    isEncoded: false,
+    processed: uri,
+    displayFriendly: uri
+  }
+  
+  try {
+    result.isEncoded = isEncodedFilename(uri)
+    result.needsProcessing = /[가-힣]/.test(uri) || result.isEncoded
+    
+    if (result.needsProcessing) {
+      if (result.isEncoded) {
+        // 이미 인코딩된 경우
+        result.processed = uri
+        result.displayFriendly = decodeURIComponent(uri)
+      } else {
+        // 인코딩이 필요한 경우
+        result.processed = encodeURIComponent(uri)
+        result.displayFriendly = uri
+      }
+    }
+  } catch (error) {
+    result.error = error instanceof Error ? error.message : 'Unknown error'
+  }
+  
+  return result
+}
+
+// 한글 파일명 처리를 위한 통합 함수
+export function handleKoreanFilename(filename: string, mode: 'encode' | 'decode' | 'auto' = 'auto'): string {
+  if (!filename) return ''
+  
+  try {
+    switch (mode) {
+      case 'encode':
+        return /[가-힣]/.test(filename) ? encodeURIComponent(filename) : filename
+        
+      case 'decode':
+        return isEncodedFilename(filename) ? decodeURIComponent(filename) : filename
+        
+      case 'auto':
+      default:
+        if (isEncodedFilename(filename)) {
+          return decodeURIComponent(filename)
+        } else if (/[가-힣]/.test(filename)) {
+          return encodeURIComponent(filename)
+        }
+        return filename
+    }
+  } catch (error) {
+    console.warn('Failed to handle Korean filename:', filename, error)
+    return filename
+  }
+}

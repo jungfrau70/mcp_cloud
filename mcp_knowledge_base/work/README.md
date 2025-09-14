@@ -122,9 +122,13 @@ https://api.goldencircle.us/api/v1/curriculum?curriculum_path=cloud_master%2Ftex
 이슈3) 오류를 일으키는 링크: "상대 경로" 스타일에 대한 해결책은?
 
 
-아래 파일이름에서 3-1 과 같은 넘버링 제거하고, 이를 참조하는 링크도 모두 수정
+2025-09-15
 
-mcp_knowledge_base\cloud_basic\textbook\Day2\compute_comparison.md
-mcp_knowledge_base\cloud_basic\textbook\Day2\storage_comparison.md
-mcp_knowledge_base\cloud_basic\textbook\Day2\network_comparison.md
-mcp_knowledge_base\cloud_basic\textbook\Day2\database_comparison.md
+1. 프로파일 모달 팝업 설정 기본 상태는 False, 사용자 클릭 시에만 True
+2. 왼쪽 메뉴 FileTree 에 최근 오픈파일 리스트 3개 보여주게
+3. 사용자 과정별 진도 관리: 학습진도 (%) 표기 체계 및 현재 위치 보여주기
+4. 내부 파일 URI 한글 인코딩. URI내 한글을 읽을 수 있게 처리
+5. 지식베이스 FileTree 커리큘럼 설정 버튼으로 설정된 디렉토리만 커리큘럼 FileTree 에서 보여지게 
+6. 
+
+7. docs 디렉토리내 모든 문서를 점검하여, 현재 시스템 목적과 현재에 부합하게 내용 현행화 (수정)
