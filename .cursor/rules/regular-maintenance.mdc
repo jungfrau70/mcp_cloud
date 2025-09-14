@@ -1,0 +1,413 @@
+---
+description: 정기적 교구 체계 유지 개선을 위한 자동화 규칙
+globs: "**/*.md", "**/*.py", "**/*.vue", "**/*.ts"
+alwaysApply: true
+---
+
+# 정기적 교구 체계 유지 개선 규칙
+
+## 🔄 정기 유지보수 체계
+
+### **자동화된 품질 관리**
+- **주간 감사**: 매주 금요일 자동 앵커 링크 감사 실행
+- **월간 검토**: 매월 첫째 주 전체 문서 구조 검토
+- **분기별 개선**: 분기별로 도구 및 프로세스 개선
+
+### **실시간 품질 모니터링**
+```bash
+# ✅ DO: 새 문서 추가 시 즉시 검증
+python anchor_link_audit.py --file new_document.md
+
+# ✅ DO: 문서 수정 시 자동 검증
+python anchor_link_audit.py --mode bottom-up --file modified_document.md
+
+# ✅ DO: 학습 경로 변경 시 전체 검증
+python anchor_link_audit.py --mode top-down --course [과정명]
+```
+
+## 🛠️ 자동화 도구 체계
+
+### **1단계: 실시간 검증**
+```python
+# 새 문서 작성 시 자동 실행
+def validate_new_document(file_path: str):
+    """새 문서의 앵커 링크 즉시 검증"""
+    auditor = AnchorLinkAuditor()
+    issues = auditor.validate_single_document(file_path)
+    
+    if issues:
+        print(f"⚠️ {len(issues)}개 문제 발견")
+        # 자동 수정 시도
+        fixer = AdvancedAnchorLinkFixer()
+        fixer.fix_document_anchors_advanced(file_path, issues)
+    else:
+        print("✅ 앵커 링크 정상")
+```
+
+### **2단계: 정기 감사**
+```bash
+# 주간 자동 감사 스크립트
+#!/bin/bash
+# weekly_audit.sh
+
+echo "🔍 주간 앵커 링크 감사 시작"
+python anchor_link_audit.py
+
+# 문제가 있으면 자동 수정 시도
+if [ $? -ne 0 ]; then
+    echo "🔧 자동 수정 시도"
+    python fix_anchor_links_advanced.py
+    python fix_remaining_issues_manual.py
+fi
+
+echo "📊 감사 완료 보고서 생성"
+python generate_weekly_report.py
+```
+
+### **3단계: 품질 보고서**
+```python
+# 품질 지표 추적
+def generate_quality_metrics():
+    """품질 지표 생성 및 추적"""
+    metrics = {
+        "total_documents": 0,
+        "valid_anchor_links": 0,
+        "invalid_anchor_links": 0,
+        "coverage_rate": 0.0,
+        "trend": "improving"  # improving, stable, declining
+    }
+    
+    # 메트릭 계산 로직
+    return metrics
+```
+
+## 📋 정기 작업 체크리스트
+
+### **매일 (자동화)**
+- [ ] 새 문서 추가 시 자동 검증
+- [ ] 문서 수정 시 자동 검증
+- [ ] 깨진 링크 실시간 감지
+
+### **매주 (자동화 + 수동 검토)**
+- [ ] 전체 앵커 링크 감사 실행
+- [ ] 자동 수정 도구 실행
+- [ ] 품질 지표 확인
+- [ ] 주간 보고서 생성
+
+### **매월 (수동 검토)**
+- [ ] 학습 경로 완전성 검증
+- [ ] 문서 구조 일관성 검토
+- [ ] 사용자 피드백 분석
+- [ ] 도구 개선 계획 수립
+
+### **분기별 (전략적 검토)**
+- [ ] 전체 시스템 아키텍처 검토
+- [ ] 새로운 자동화 도구 도입
+- [ ] 품질 기준 업데이트
+- [ ] 사용자 교육 자료 업데이트
+
+## 🔧 자동화 스크립트
+
+### **주간 감사 스크립트**
+```python
+#!/usr/bin/env python3
+"""
+주간 자동 감사 스크립트
+매주 금요일 오후 6시에 실행
+"""
+
+import os
+import json
+from datetime import datetime
+from anchor_link_audit import AnchorLinkAuditor
+from fix_anchor_links_advanced import AdvancedAnchorLinkFixer
+
+def weekly_audit():
+    """주간 자동 감사 실행"""
+    print(f"🔍 주간 감사 시작: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    
+    # 1. 전체 감사 실행
+    auditor = AnchorLinkAuditor()
+    auditor.load_all_documents()
+    
+    # 2. 문제 수집
+    bottom_up_issues = auditor.bottom_up_validation()
+    top_down_issues = auditor.top_down_validation()
+    
+    total_issues = bottom_up_issues + top_down_issues
+    
+    # 3. 자동 수정 시도
+    if total_issues > 0:
+        print(f"🔧 {total_issues}개 문제 발견, 자동 수정 시도")
+        
+        fixer = AdvancedAnchorLinkFixer()
+        fixer.fix_all_remaining_issues()
+        
+        # 4. 수정 후 재검증
+        auditor.load_all_documents()
+        remaining_issues = auditor.bottom_up_validation()
+        
+        print(f"✅ 자동 수정 완료, 남은 문제: {remaining_issues}개")
+    else:
+        print("✅ 모든 앵커 링크가 정상입니다!")
+    
+    # 5. 주간 보고서 생성
+    generate_weekly_report(total_issues, remaining_issues if 'remaining_issues' in locals() else 0)
+
+def generate_weekly_report(initial_issues, remaining_issues):
+    """주간 보고서 생성"""
+    report = {
+        "date": datetime.now().isoformat(),
+        "initial_issues": initial_issues,
+        "remaining_issues": remaining_issues,
+        "fixed_issues": initial_issues - remaining_issues,
+        "fix_rate": (initial_issues - remaining_issues) / initial_issues * 100 if initial_issues > 0 else 100
+    }
+    
+    with open(f"weekly_audit_report_{datetime.now().strftime('%Y%m%d')}.json", 'w', encoding='utf-8') as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
+    
+    print(f"📊 주간 보고서 생성: weekly_audit_report_{datetime.now().strftime('%Y%m%d')}.json")
+
+if __name__ == "__main__":
+    weekly_audit()
+```
+
+### **월간 검토 스크립트**
+```python
+#!/usr/bin/env python3
+"""
+월간 검토 스크립트
+매월 첫째 주 월요일에 실행
+"""
+
+import os
+import json
+from datetime import datetime, timedelta
+from pathlib import Path
+
+def monthly_review():
+    """월간 검토 실행"""
+    print(f"📊 월간 검토 시작: {datetime.now().strftime('%Y-%m-%d')}")
+    
+    # 1. 지난 4주간의 주간 보고서 분석
+    weekly_reports = []
+    for i in range(4):
+        date = datetime.now() - timedelta(weeks=i)
+        report_file = f"weekly_audit_report_{date.strftime('%Y%m%d')}.json"
+        
+        if os.path.exists(report_file):
+            with open(report_file, 'r', encoding='utf-8') as f:
+                weekly_reports.append(json.load(f))
+    
+    # 2. 트렌드 분석
+    if weekly_reports:
+        avg_issues = sum(r['remaining_issues'] for r in weekly_reports) / len(weekly_reports)
+        avg_fix_rate = sum(r['fix_rate'] for r in weekly_reports) / len(weekly_reports)
+        
+        print(f"📈 지난 4주 평균 문제 수: {avg_issues:.1f}개")
+        print(f"📈 지난 4주 평균 수정률: {avg_fix_rate:.1f}%")
+        
+        # 3. 품질 지표 생성
+        quality_metrics = {
+            "month": datetime.now().strftime('%Y-%m'),
+            "average_issues": avg_issues,
+            "average_fix_rate": avg_fix_rate,
+            "trend": "improving" if avg_issues < 5 else "stable" if avg_issues < 10 else "needs_attention",
+            "recommendations": generate_recommendations(avg_issues, avg_fix_rate)
+        }
+        
+        # 4. 월간 보고서 저장
+        with open(f"monthly_review_{datetime.now().strftime('%Y%m')}.json", 'w', encoding='utf-8') as f:
+            json.dump(quality_metrics, f, ensure_ascii=False, indent=2)
+        
+        print(f"📊 월간 보고서 생성: monthly_review_{datetime.now().strftime('%Y%m')}.json")
+
+def generate_recommendations(avg_issues, avg_fix_rate):
+    """개선 권장사항 생성"""
+    recommendations = []
+    
+    if avg_issues > 10:
+        recommendations.append("앵커 링크 품질 개선이 필요합니다. 추가 자동화 도구 도입을 검토하세요.")
+    
+    if avg_fix_rate < 80:
+        recommendations.append("자동 수정률이 낮습니다. 매칭 로직 개선이 필요합니다.")
+    
+    if avg_issues < 5 and avg_fix_rate > 90:
+        recommendations.append("훌륭한 품질을 유지하고 있습니다! 현재 프로세스를 계속 유지하세요.")
+    
+    return recommendations
+
+if __name__ == "__main__":
+    monthly_review()
+```
+
+## 📊 품질 지표 대시보드
+
+### **실시간 모니터링**
+```python
+# 품질 지표 실시간 추적
+class QualityDashboard:
+    def __init__(self):
+        self.metrics = {
+            "total_documents": 0,
+            "valid_links": 0,
+            "invalid_links": 0,
+            "coverage_rate": 0.0,
+            "last_audit": None,
+            "trend": "stable"
+        }
+    
+    def update_metrics(self):
+        """메트릭 업데이트"""
+        # 실시간 메트릭 계산
+        pass
+    
+    def get_health_score(self):
+        """건강도 점수 계산 (0-100)"""
+        if self.metrics["total_documents"] == 0:
+            return 0
+        
+        coverage_score = self.metrics["coverage_rate"] * 50
+        quality_score = (self.metrics["valid_links"] / 
+                        (self.metrics["valid_links"] + self.metrics["invalid_links"])) * 50
+        
+        return coverage_score + quality_score
+```
+
+## 🚨 알림 시스템
+
+### **자동 알림 설정**
+```python
+# 품질 임계값 기반 알림
+def setup_quality_alerts():
+    """품질 알림 설정"""
+    alerts = {
+        "critical": {
+            "threshold": 20,  # 20개 이상 문제
+            "message": "🚨 앵커 링크 문제가 심각합니다. 즉시 조치가 필요합니다."
+        },
+        "warning": {
+            "threshold": 10,  # 10개 이상 문제
+            "message": "⚠️ 앵커 링크 품질이 저하되었습니다. 검토가 필요합니다."
+        },
+        "info": {
+            "threshold": 5,   # 5개 이상 문제
+            "message": "ℹ️ 앵커 링크 품질을 모니터링하세요."
+        }
+    }
+    
+    return alerts
+```
+
+## 🔄 지속적 개선 프로세스
+
+### **피드백 루프**
+1. **데이터 수집**: 매일 품질 지표 수집
+2. **분석**: 주간/월간 트렌드 분석
+3. **개선**: 문제점 식별 및 해결책 도출
+4. **적용**: 개선사항 자동 적용
+5. **검증**: 개선 효과 측정
+
+### **학습 및 적응**
+```python
+# 머신러닝 기반 패턴 학습
+class PatternLearner:
+    def __init__(self):
+        self.patterns = {}
+        self.success_rate = {}
+    
+    def learn_from_fixes(self, issue_type, fix_method, success):
+        """수정 패턴 학습"""
+        if issue_type not in self.patterns:
+            self.patterns[issue_type] = []
+        
+        self.patterns[issue_type].append({
+            "method": fix_method,
+            "success": success,
+            "timestamp": datetime.now()
+        })
+    
+    def get_best_fix_method(self, issue_type):
+        """최적의 수정 방법 추천"""
+        if issue_type not in self.patterns:
+            return "default"
+        
+        # 성공률이 가장 높은 방법 반환
+        best_method = max(self.patterns[issue_type], 
+                         key=lambda x: x["success"])
+        return best_method["method"]
+```
+
+## 📚 교육 및 문서화
+
+### **자동 문서 생성**
+```python
+# 품질 관리 가이드 자동 생성
+def generate_quality_guide():
+    """품질 관리 가이드 자동 생성"""
+    guide = {
+        "title": "앵커 링크 품질 관리 가이드",
+        "last_updated": datetime.now().isoformat(),
+        "sections": [
+            "기본 원칙",
+            "자동화 도구 사용법",
+            "문제 해결 방법",
+            "모범 사례",
+            "FAQ"
+        ]
+    }
+    
+    return guide
+```
+
+## 🎯 성공 지표
+
+### **정량적 지표**
+- **앵커 링크 정확도**: 95% 이상 유지
+- **자동 수정률**: 80% 이상 달성
+- **평균 문제 수**: 주당 5개 이하
+- **감사 주기**: 주 1회 자동 실행
+
+### **정성적 지표**
+- **사용자 만족도**: 앵커 링크 클릭 성공률
+- **개발자 효율성**: 수동 수정 시간 단축
+- **시스템 안정성**: 자동화 도구 오류율
+
+## 🔧 도구 통합
+
+### **CI/CD 파이프라인 통합**
+```yaml
+# .github/workflows/quality-check.yml
+name: Quality Check
+on:
+  schedule:
+    - cron: '0 18 * * 5'  # 매주 금요일 오후 6시
+  push:
+    paths:
+      - '**/*.md'
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      
+      - name: Run anchor link audit
+        run: python anchor_link_audit.py
+      
+      - name: Auto-fix issues
+        run: python fix_anchor_links_advanced.py
+      
+      - name: Generate report
+        run: python generate_weekly_report.py
+```
+
+이 규칙을 통해 지속적이고 체계적인 품질 관리를 자동화할 수 있습니다.

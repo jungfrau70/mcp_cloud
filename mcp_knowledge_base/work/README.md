@@ -120,3 +120,11 @@ https://api.goldencircle.us/api/v1/curriculum?curriculum_path=cloud_master%2Ftex
   따라서 이 현상은 무작위로 발생하는 것이 아니라, 링크의 작성 방식에 따라
   결정론적으로 발생하는 문제입니다.
 이슈3) 오류를 일으키는 링크: "상대 경로" 스타일에 대한 해결책은?
+
+
+아래 파일이름에서 3-1 과 같은 넘버링 제거하고, 이를 참조하는 링크도 모두 수정
+
+mcp_knowledge_base\cloud_basic\textbook\Day2\compute_comparison.md
+mcp_knowledge_base\cloud_basic\textbook\Day2\storage_comparison.md
+mcp_knowledge_base\cloud_basic\textbook\Day2\network_comparison.md
+mcp_knowledge_base\cloud_basic\textbook\Day2\database_comparison.md

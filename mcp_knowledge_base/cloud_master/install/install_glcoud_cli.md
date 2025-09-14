@@ -1,5 +1,11 @@
 # Google Cloud CLI 설치 가이드
 
+<div align="center">
+
+[← 이전: Cloud Master 메인](../../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 Google Cloud CLI(gcloud)는 Google Cloud Platform 서비스와 상호작용하기 위한 명령줄 도구입니다. 이 가이드는 다양한 운영체제에서 Google Cloud CLI를 설치하는 방법을 설명합니다.
 
 ## 목차

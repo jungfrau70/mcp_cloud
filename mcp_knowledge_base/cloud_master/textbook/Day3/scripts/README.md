@@ -1,5 +1,11 @@
 # AWS/GCP 자동화 스크립트 모음
 
+<div align="center">
+
+[← 이전: Cloud Master 2일차](../Day2/README.md) | [다음: Cloud Master 3일차 →](../Day3/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 이 디렉토리는 AWS와 GCP 클라우드 서비스를 자동화하는 스크립트들을 포함합니다.
 
 ## 📋 스크립트 개요

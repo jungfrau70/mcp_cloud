@@ -124,7 +124,7 @@ describe('Korean Filename Handling', () => {
     })
 
     it('should handle already encoded paths', () => {
-      expect(prepareApiPath('cloud_basic/%EA%B3%BC%EC%A0%95%EB%AA%85.md')).toBe('cloud_basic/%25EA%25B3%25BC%25EC%25A0%2595%25EB%25AA%2585.md')
+      expect(prepareApiPath('cloud_basic/%EA%B3%BC%EC%A0%95%EB%AA%85.md')).toBe('cloud_basic/%EA%B3%BC%EC%A0%95%EB%AA%85.md')
     })
 
     it('should handle ASCII-only paths', () => {

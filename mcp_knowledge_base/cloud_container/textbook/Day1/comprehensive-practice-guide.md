@@ -1,5 +1,11 @@
 # Container 과정 종합 실습 가이드
 
+<div align="center">
+
+[← 이전: Cloud Container 메인](../../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 ## 🎯 실습 개요
 
 이 가이드는 Container 과정의 모든 학습 내용을 통합하여 **실제 운영 환경과 유사한 시나리오**를 구현하는 종합 실습입니다.

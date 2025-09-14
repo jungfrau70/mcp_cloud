@@ -1,5 +1,11 @@
 # AWS & GCP 계정 설정 가이드
 
+<div align="center">
+
+[← 이전: Cloud Basic 메인](../../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 ## 개요
 Cloud Basic 2일차의 클라우드 계정 설정 및 기본 서비스 실습을 위한 가이드입니다.
 

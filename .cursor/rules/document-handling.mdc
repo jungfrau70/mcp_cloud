@@ -1,0 +1,228 @@
+---
+description: 문서 호출 및 제목 처리 관련 규칙과 가이드라인
+globs:
+  - "**/*.vue"
+  - "**/*.ts"
+  - "**/*.py"
+  - "**/*.md"
+  - "backend/app/api/routes/*.py"
+  - "frontend/components/*.vue"
+  - "frontend/utils/*.ts"
+alwaysApply: true
+---
+
+# Document Handling Rules
+
+## 📄 문서 호출 API 규칙
+
+### **백엔드 API 엔드포인트**
+- **Curriculum API**: `/api/v1/curriculum` - 커리큘럼 문서 호출
+- **Knowledge Base API**: `/api/v1/knowledge-base` - 지식베이스 문서 호출
+- **파일 다운로드**: `/api/v1/curriculum/pdf` - PDF 파일 다운로드
+
+### **API 호출 패턴**
+```typescript
+// ✅ DO: 올바른 API 호출 패턴
+const response = await fetch(`/api/v1/curriculum?curriculum_path=${encodeURIComponent(path)}`)
+const data = await response.json()
+
+// ✅ DO: 한글 파일명 처리
+const preparedPath = prepareApiPath(path)
+const response = await fetch(`/api/v1/curriculum?curriculum_path=${preparedPath}`)
+
+// ❌ DON'T: 직접 경로 사용
+const response = await fetch(`/api/v1/curriculum?curriculum_path=${path}`)
+```
+
+### **경로 처리 규칙**
+- **경로 정리**: `preventPathDuplication()` 함수로 중복 경로 제거
+- **한글 인코딩**: `prepareApiPath()` 함수로 한글 파일명 URL 인코딩
+- **상대 경로**: `resolveRelativePath()` 함수로 상대 경로 해결
+
+## 🏷️ 문서 제목 처리 규칙
+
+### **제목 추출 로직**
+```typescript
+// ✅ DO: 마크다운 첫 번째 헤딩에서 제목 추출
+const titleText = computed(() => {
+  if (!props.content) return '';
+  const match = props.content.match(/^\s*#{1,6}\s+(.+)$/m);
+  if (match) return match[1].trim();
+  return props.path ? props.path.split('/').pop().replace(/_/g, ' ').replace(/\.md$/i, '') : '';
+});
+
+// ❌ DON'T: 복잡한 제목 추출 로직
+const titleText = computed(() => {
+  // 복잡한 정규식이나 여러 단계 처리
+  return props.content.split('\n').find(line => line.startsWith('#'))?.replace('#', '').trim()
+});
+```
+
+### **헤딩 ID 생성 규칙**
+```typescript
+// ✅ DO: VS Code 마크다운 미리보기와 동일한 슬러그 생성
+renderer.heading = function(text, level) {
+  let id = text
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .toLowerCase()
+  
+  if (!id) {
+    id = `heading-${level}-${Math.random().toString(36).substr(2, 9)}`;
+  }
+  
+  return `<h${level} id="${id}">${text}</h${level}>`
+}
+```
+
+### **제목 표시 규칙**
+- **문서 제목**: 첫 번째 헤딩(`#`)에서 추출
+- **Fallback**: 파일명에서 확장자 제거 후 언더스코어를 공백으로 변환
+- **이모지 처리**: 이모지가 포함된 제목도 올바르게 처리
+
+## 🔗 내부 링크 처리 규칙
+
+### **링크 인터셉트 처리**
+```typescript
+// ✅ DO: 내부 링크 처리 시 경로 정리 및 인코딩
+const setupLinkIntercepts = async () => {
+  // ... 이벤트 리스너 설정 ...
+  
+  // Handle internal knowledge base links
+  event.preventDefault();
+  let targetPath = href;
+
+  // Resolve relative paths
+  if (!targetPath.startsWith('/')) {
+    targetPath = resolveRelativePath(props.path || '', targetPath);
+  }
+
+  // Clean the path to prevent duplication and handle Korean filenames
+  targetPath = preventPathDuplication(targetPath);
+  targetPath = prepareApiPath(targetPath);
+  
+  // ... 나머지 처리 ...
+};
+```
+
+### **링크 타입별 처리**
+- **외부 링크**: `http://`, `https://` - 새 탭에서 열기
+- **앵커 링크**: `#` - 페이지 내 스크롤
+- **내부 링크**: 상대 경로 - 문서 로드
+- **도구 링크**: `mcp://` - 도구 네비게이션
+
+## 📁 파일 경로 처리 규칙
+
+### **안전한 경로 처리**
+```python
+# ✅ DO: 백엔드에서 안전한 경로 처리
+def _safe_path(rel: str) -> Path:
+    rel = (rel or '').strip().lstrip('/\\')
+    p = (KB_ROOT / rel).resolve()
+    if not str(p).startswith(str(KB_ROOT)):
+        raise HTTPException(status_code=400, detail='Invalid path')
+    return p
+```
+
+### **한글 파일명 처리**
+```python
+# ✅ DO: 한글 파일명 URL 디코딩
+try:
+    rel = raw.strip().lstrip('/\\')
+    # 재귀적 디코딩: 2중 인코딩된 경우를 처리
+    while '%' in rel and rel != urllib.parse.unquote(rel):
+        rel = urllib.parse.unquote(rel)
+except Exception:
+    rel = raw.strip().lstrip('/\\')
+```
+
+## 🎨 UI 표시 규칙
+
+### **로딩 상태 표시**
+```vue
+<!-- ✅ DO: 로딩 인디케이터 표시 -->
+<div v-if="isLoading" class="flex items-center justify-center p-8">
+  <div class="flex items-center space-x-2 text-gray-600">
+    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+    <span>문서를 불러오는 중...</span>
+  </div>
+</div>
+```
+
+### **제목 표시**
+```vue
+<!-- ✅ DO: 문서 제목 표시 -->
+<div class="flex items-center space-x-2 text-sm text-gray-600">
+  <button
+    @click="navigateToFileTree"
+    class="flex items-center space-x-1 hover:text-blue-600 transition-colors"
+    :title="`FileTree에서 '${path}' 위치로 이동`"
+  >
+    <span class="font-medium">{{ path }}</span>
+  </button>
+</div>
+```
+
+## 🧪 테스트 규칙
+
+### **문서 호출 테스트**
+```typescript
+// ✅ DO: 한글 파일명 처리 테스트
+describe('Korean Filename Handling', () => {
+  it('should handle Korean filenames correctly', () => {
+    expect(prepareApiPath('cloud_basic/과정명.md')).toBe('cloud_basic/%EA%B3%BC%EC%A0%95%EB%AA%85.md')
+  })
+})
+```
+
+### **제목 추출 테스트**
+```typescript
+// ✅ DO: 제목 추출 로직 테스트
+describe('Title Extraction', () => {
+  it('should extract title from first heading', () => {
+    const content = '# 문서 제목\n\n내용...'
+    const title = extractTitle(content)
+    expect(title).toBe('문서 제목')
+  })
+})
+```
+
+## 🚨 주의사항
+
+### **보안 고려사항**
+- **경로 검증**: 모든 파일 경로는 `KB_ROOT` 내부로 제한
+- **인코딩 검증**: URL 인코딩된 경로는 안전하게 디코딩
+- **XSS 방지**: `DOMPurify.sanitize()`로 HTML 콘텐츠 정화
+
+### **성능 고려사항**
+- **캐싱**: 자주 사용되는 문서는 캐시 처리
+- **지연 로딩**: 큰 문서는 필요시에만 로드
+- **메모리 관리**: 사용하지 않는 콘텐츠는 정리
+
+### **접근성 고려사항**
+- **키보드 네비게이션**: 모든 링크는 키보드로 접근 가능
+- **스크린 리더**: 적절한 ARIA 레이블 제공
+- **색상 대비**: 충분한 색상 대비 확보
+
+## 📚 관련 파일
+
+- [ContentView.vue](mdc:frontend/components/ContentView.vue) - 문서 표시 컴포넌트
+- [curriculum.py](mdc:backend/app/api/routes/curriculum.py) - 커리큘럼 API
+- [path.ts](mdc:frontend/utils/path.ts) - 경로 처리 유틸리티
+- [default.vue](mdc:frontend/layouts/default.vue) - 메인 레이아웃
+
+## 🔄 업데이트 가이드
+
+### **새로운 문서 타입 추가 시**
+1. API 엔드포인트에 새 확장자 추가
+2. 프론트엔드에서 새 타입 처리 로직 추가
+3. 테스트 케이스 추가
+4. 문서화 업데이트
+
+### **제목 추출 로직 변경 시**
+1. 기존 로직과의 호환성 확인
+2. 다양한 제목 형식에 대한 테스트
+3. 성능 영향도 측정
+4. 사용자 피드백 수집

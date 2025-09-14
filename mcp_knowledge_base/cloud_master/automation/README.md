@@ -37,6 +37,12 @@ cd C:\Users\JIH\githubs\mcp_cloud\mcp_knowledge_base\cloud_master\automation_tes
 
 ## Master 과정 실습 코드 테스트 결과
 
+<div align="center">
+
+[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 ### ✅ 테스트 결과
 - **총 22개 테스트 모두 통과** ✅
 - **단위 테스트**: 20개 통과

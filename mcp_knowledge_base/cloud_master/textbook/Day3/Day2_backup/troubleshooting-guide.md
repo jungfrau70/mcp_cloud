@@ -1,10 +1,16 @@
 # 트러블슈팅 가이드
 
+<div align="center">
+
+[← 이전: Cloud Master 메인](../../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 ## 📋 목차
 1. [Docker 관련 문제](#docker-관련-문제)
 2. [GitHub Actions 관련 문제](#github-actions-관련-문제)
 3. [AWS ECS 관련 문제](#aws-ecs-관련-문제)
-4. [GCP Cloud Run 관련 문제](#gcp-cloud-run-관련-문제)
+4. [GCP Cloud Run 관련 문제](#트러블슈팅-가이드)
 5. [멀티클라우드 배포 문제](#멀티클라우드-배포-문제)
 6. [권한 및 인증 문제](#권한-및-인증-문제)
 7. [네트워크 및 연결 문제](#네트워크-및-연결-문제)

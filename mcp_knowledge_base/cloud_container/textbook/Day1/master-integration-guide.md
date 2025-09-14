@@ -1,5 +1,11 @@
 # Master 과정 연계 가이드
 
+<div align="center">
+
+[← 이전: Cloud Container 메인](../../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 ## 🔗 Master 과정과의 연계
 
 ### Master 과정에서 학습한 내용

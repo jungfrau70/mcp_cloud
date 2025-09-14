@@ -1,5 +1,11 @@
 # GCP 계정 유형 비교 가이드
 
+<div align="center">
+
+[← 이전: Cloud Container 메인](../../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 ## 📋 개요
 
 이 문서는 GCP의 개인 계정과 조직 계정의 차이점을 상세히 비교하고, 각 상황에 맞는 최적의 선택을 도와주는 가이드입니다.

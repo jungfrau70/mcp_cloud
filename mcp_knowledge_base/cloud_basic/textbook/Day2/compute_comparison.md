@@ -1,4 +1,10 @@
-# 3-1. 컴퓨팅 서비스 비교 (EC2 vs Compute Engine, Lambda vs Cloud Functions)
+# 컴퓨팅 서비스 비교 (EC2 vs Compute Engine, Lambda vs Cloud Functions)
+
+<div align="center">
+
+[← 이전: Cloud Basic 메인](../../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
 
 <div align="center">
 

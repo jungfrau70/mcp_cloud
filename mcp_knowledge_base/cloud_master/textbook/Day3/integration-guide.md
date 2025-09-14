@@ -2,6 +2,12 @@
 
 <div align="center">
 
+[← 이전: Cloud Master 메인](../../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
+<div align="center">
+
 [← 이전: Cloud Master 3일차 메인](../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md)
 
 </div>
@@ -9,7 +15,7 @@
 ## 📋 목차
 1. [연동 아키텍처 이해](#연동-아키텍처-이해)
 2. [헬스체크 메커니즘](#헬스체크-메커니즘)
-3. [자가 치유(Self-Healing) 시스템](#자가-치유self-healing-시스템)
+3. [자가 치유(Self-Healing) 시스템](#🔄-자가-치유(self-healing)-시스템)
 4. [실습 목표](#실습-목표)
 5. [실습 절차](#실습-절차)
 6. [실습 코드 예시](#실습-코드-예시)

@@ -1,5 +1,11 @@
 # 마스터 과정 자동화 시스템
 
+<div align="center">
+
+[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 ## 개요
 클라우드 마스터 과정의 3일간 실습을 자동화하는 시스템입니다. Docker, Git/GitHub, CI/CD, 로드 밸런싱, 모니터링, 비용 최적화 등의 실습 스크립트를 자동으로 생성합니다.
 

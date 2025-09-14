@@ -1,5 +1,11 @@
 # GitHub Actions CI/CD 데모 프로젝트
 
+<div align="center">
+
+[← 이전: Cloud Master 2일차](../Day2/README.md) | [다음: Cloud Master 3일차 →](../Day3/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 이 프로젝트는 GitHub Actions를 사용한 CI/CD 파이프라인을 시연하는 데모 프로젝트입니다.
 
 ## 📋 프로젝트 개요

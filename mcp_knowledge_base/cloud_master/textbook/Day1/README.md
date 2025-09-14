@@ -1,5 +1,11 @@
 # Cloud Master - 1일차: Docker, Git/GitHub, GitHub Actions 기초
 
+<div align="center">
+
+[← 이전: Cloud Master 1일차 메인](../README.md) | [다음: Cloud Master 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 
 
 <details>
@@ -9,8 +15,8 @@
 2. [📚 실습 가이드](#실습-가이드)
 3. [🔧 실습 환경 준비](#실습-환경-준비)
 4. [🐳 Docker 기초 및 컨테이너 기술](#docker-기초-및-컨테이너-기술)
-5. [📝 Git/GitHub 기초 및 협업](#gitgithub-기초-및-협업)
-6. [🚀 GitHub Actions CI/CD 파이프라인](#github-actions-cicd-파이프라인)
+5. [📝 Git/GitHub 기초 및 협업](#📝-git/github-기초-및-협업)
+6. [🚀 GitHub Actions CI/CD 파이프라인](#🚀-github-actions-ci/cd-파이프라인)
 7. [🚀 VM 기반 웹 애플리케이션 배포](#vm-기반-웹-애플리케이션-배포)
 8. [📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
 
@@ -84,11 +90,10 @@
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Basic 과정](../../../cloud_basic/textbook/Day1/README.md) - AWS/GCP 기초 과정
-- 🔗 [Cloud Master 2일차](../Day2/README.md) - 고급 CI/CD 및 VM 기반 컨테이너 배포
-- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README.md) - 컨테이너 심화 과정
+- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README.md) - Kubernetes 고급 과정
 - 🔗 [전체 커리큘럼](../../../curriculum.md) - 전체 과정 구조 및 학습 경로
-
-</details>
+- 🔗 [통합 인덱스](../../../index.md) - 전체 과정 인덱스
+- 🔗 [학습 경로로 돌아가기](../../../learning-path.md) - Cloud Master 학습 경로
 
 ---
 

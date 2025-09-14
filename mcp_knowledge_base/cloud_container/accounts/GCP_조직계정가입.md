@@ -1,5 +1,11 @@
 # GCP 조직 계정 가입 및 관리 가이드
 
+<div align="center">
+
+[← 이전: Cloud Container 메인](../../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 ## 📋 개요
 
 이 문서는 Google Workspace 또는 Cloud Identity를 사용하여 GCP 조직 계정을 설정하고, 사용자 및 그룹 관리를 포함한 전체적인 조직 관리 과정을 단계별로 안내합니다.

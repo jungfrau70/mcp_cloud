@@ -1,5 +1,11 @@
 # Container 과정 자동화 시스템
 
+<div align="center">
+
+[← 이전: Cloud Container 메인](../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 Kubernetes, ECS, Fargate, 고가용성 아키텍처 실습을 위한 자동화 스크립트 생성 시스템입니다.
 
 ## 📋 개요

@@ -1,5 +1,11 @@
 # Cloud 실습 가이드
 
+<div align="center">
+
+[← 이전: Cloud Basic 메인](../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 이 디렉토리에는 클라우드 플랫폼별 실습 가이드와 자동화 스크립트가 포함되어 있습니다.
 
 ## 📁 파일 구조

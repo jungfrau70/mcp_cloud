@@ -1,5 +1,11 @@
 # GCP 개인 계정 가입 및 관리 가이드
 
+<div align="center">
+
+[← 이전: Cloud Container 메인](../../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 ## 📋 개요
 
 이 문서는 개인 Google 계정을 사용하여 GCP(Google Cloud Platform)에 가입하고 기본적인 프로젝트 관리를 하는 과정을 단계별로 안내합니다.

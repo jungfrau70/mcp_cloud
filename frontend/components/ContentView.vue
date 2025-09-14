@@ -61,7 +61,7 @@ import { marked } from 'marked';
 import mermaid from 'mermaid';
 import embedVega from 'vega-embed';
 import DOMPurify from 'dompurify'
-import { cleanApiPath, deepCleanApiPath, isDirectoryPath, normalizeDirectoryPath, preventPathDuplication } from '~/utils/path'
+import { cleanApiPath, deepCleanApiPath, isDirectoryPath, normalizeDirectoryPath, preventPathDuplication, prepareApiPath } from '~/utils/path'
 
 const props = defineProps({
   content: String,
@@ -358,17 +358,48 @@ const setupLinkIntercepts = async () => {
         const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
         for (const el of allElements) {
           const textContent = el.textContent || '';
-          // VS Code 스타일 슬러그 생성으로 매칭 시도
-          const expectedId = textContent
+          
+          // 1. 정확한 텍스트 매칭 (이모지 포함)
+          const exactId = textContent
             .trim()
             .replace(/\s+/g, '-')
             .replace(/-+/g, '-')
             .replace(/^-+|-+$/g, '')
             .toLowerCase();
           
-          if (expectedId === targetId) {
+          if (exactId === targetId) {
             targetElement = el;
-            console.log('Found by text content match:', textContent, '→', expectedId);
+            console.log('Found by exact text match:', textContent, '→', exactId);
+            break;
+          }
+          
+          // 2. 이모지 제거 후 매칭
+          const withoutEmoji = textContent.replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]/gu, '');
+          const emojiRemovedId = withoutEmoji
+            .trim()
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-+|-+$/g, '')
+            .toLowerCase();
+          
+          if (emojiRemovedId === targetId) {
+            targetElement = el;
+            console.log('Found by emoji-removed match:', textContent, '→', emojiRemovedId);
+            break;
+          }
+          
+          // 3. 특수문자 제거 후 매칭
+          const withoutSpecialChars = textContent.replace(/[^\w\s가-힣]/g, '');
+          const specialCharsRemovedId = withoutSpecialChars
+            .trim()
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-+|-+$/g, '')
+            .toLowerCase();
+          
+          if (specialCharsRemovedId === targetId) {
+            targetElement = el;
+            console.log('Found by special-chars-removed match:', textContent, '→', specialCharsRemovedId);
             break;
           }
         }
@@ -489,8 +520,9 @@ const setupLinkIntercepts = async () => {
       targetPath = resolveRelativePath(props.path || '', targetPath);
     }
 
-    // Clean the path to prevent duplication using the new comprehensive function
+    // Clean the path to prevent duplication and handle Korean filenames
     targetPath = preventPathDuplication(targetPath);
+    targetPath = prepareApiPath(targetPath);
 
     // Set loading state
     isLoading.value = true;

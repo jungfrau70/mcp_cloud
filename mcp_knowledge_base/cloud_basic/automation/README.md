@@ -15,6 +15,12 @@ cd C:\Users\JIH\githubs\mcp_cloud\mcp_knowledge_base\cloud_basic\automation_test
 
 ## Basic 과정 실습 코드 수행 및 테스트 결과
 
+<div align="center">
+
+[← 이전: Cloud Basic 메인](../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 ### ✅ 테스트 결과
 - **총 12개 테스트 모두 통과** ✅
 - **단위 테스트**: 10개 통과

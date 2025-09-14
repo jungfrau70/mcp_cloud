@@ -1,10 +1,16 @@
 # 2교시: GitHub Actions로 CI/CD 구성
 
+<div align="center">
+
+[← 이전: Cloud Master 메인](../../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+
+</div>
+
 ## 📋 목차
-1. [CI/CD 개념 이해](#cicd-개념-이해)
+1. [CI/CD 개념 이해](#🔄-ci/cd-개념-이해)
 2. [GitHub Actions 소개](#github-actions-소개)
 3. [GitHub Actions 구성요소](#github-actions-구성요소)
-4. [CI/CD 파이프라인 플로우](#cicd-파이프라인-플로우)
+4. [CI/CD 파이프라인 플로우](#🔄-ci/cd-파이프라인-플로우)
 5. [실습 목표](#실습-목표)
 6. [실습 절차](#실습-절차)
 7. [실습 코드 예시](#실습-코드-예시)
