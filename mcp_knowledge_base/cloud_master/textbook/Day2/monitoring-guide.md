@@ -1,5 +1,11 @@
 # 3교시: CloudWatch / Cloud Monitoring을 활용한 서비스 모니터링 실습
 
+<div align="center">
+
+[← 이전: Cloud Master 2일차 메인](../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md)
+
+</div>
+
 ## 📋 목차
 1. [모니터링 개념 이해](#모니터링-개념-이해)
 2. [AWS CloudWatch vs GCP Cloud Monitoring 비교](#aws-cloudwatch-vs-gcp-cloud-monitoring-비교)

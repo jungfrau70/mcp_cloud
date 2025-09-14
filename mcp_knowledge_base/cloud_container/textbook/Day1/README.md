@@ -975,6 +975,6 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 <div align="center">
 
-[← 이전 과정: Cloud Master 3일차](../../../cloud_master/textbook/Day3/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [다음: Cloud Container 2일차 →](../Day2/README.md)
+[← 이전 과정: Cloud Master 3일차](../../../cloud_master/textbook/Day3/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [다음: Cloud Container 2일차 →](../Day2/README.md)
 
 </div>

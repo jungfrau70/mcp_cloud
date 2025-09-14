@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Master 1일차 메인](../README) | [📚 전체 커리큘럼](../../../../curriculum) | [다음: Git/GitHub 기초 실습 →](./git-github-basics)
+[← 이전: Cloud Master 1일차 메인](../README) | [📚 전체 커리큘럼](../../../../curriculum) | [🏠 학습 경로로 돌아가기](../../../../index.md) | [다음: Git/GitHub 기초 실습 →](./git-github-basics)
 
 </div>
 

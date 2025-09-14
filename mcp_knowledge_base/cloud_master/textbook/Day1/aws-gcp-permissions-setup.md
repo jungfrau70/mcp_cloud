@@ -1,5 +1,11 @@
 # AWS & GCP 권한 설정 가이드
 
+<div align="center">
+
+[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md)
+
+</div>
+
 ## 📋 목차
 1. [AWS 권한 설정](#aws-권한-설정)
 2. [GCP 권한 설정](#gcp-권한-설정)

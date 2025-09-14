@@ -1,5 +1,11 @@
 # 트러블슈팅 가이드
 
+<div align="center">
+
+[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md)
+
+</div>
+
 ## 📋 목차
 1. [Docker 관련 문제](#docker-관련-문제)
 2. [GitHub Actions 관련 문제](#github-actions-관련-문제)

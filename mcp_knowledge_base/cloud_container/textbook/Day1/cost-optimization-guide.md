@@ -1,5 +1,11 @@
 # 비용 최적화 전략 가이드
 
+<div align="center">
+
+[← 이전: Cloud Container 1일차 메인](../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md)
+
+</div>
+
 ## 🎯 학습 목표
 
 이 가이드를 통해 다음을 학습합니다:

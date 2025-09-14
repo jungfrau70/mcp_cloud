@@ -918,6 +918,6 @@ ssh -T git@github.com
 
 <div align="center">
 
-[← 이전 과정: Cloud Basic 2일차](../../../cloud_basic/textbook/Day2/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [다음: Cloud Master 2일차 →](../Day2/README.md)
+[← 이전 과정: Cloud Basic 2일차](../../../cloud_basic/textbook/Day2/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [다음: Cloud Master 2일차 →](../Day2/README.md)
 
 </div>

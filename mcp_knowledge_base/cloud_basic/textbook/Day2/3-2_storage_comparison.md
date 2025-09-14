@@ -1,5 +1,11 @@
 # 3-2. 스토리지 서비스 비교 (S3 vs Cloud Storage)
 
+<div align="center">
+
+[← 이전: Cloud Basic 2일차 메인](../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md)
+
+</div>
+
 ## 학습 목표
 - AWS S3와 GCP Cloud Storage의 핵심 차이점 이해
 - 각 서비스의 스토리지 클래스와 가격 구조 분석

@@ -1,5 +1,11 @@
 # 2교시: GitHub Actions로 CI/CD 구성
 
+<div align="center">
+
+[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md)
+
+</div>
+
 ## 📋 목차
 1. [CI/CD 개념 이해](#cicd-개념-이해)
 2. [GitHub Actions 소개](#github-actions-소개)

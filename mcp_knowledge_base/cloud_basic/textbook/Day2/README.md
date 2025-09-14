@@ -532,6 +532,6 @@ telnet RDS_ENDPOINT 3306
 
 <div align="center">
 
-[← 이전: Cloud Basic 1일차](../Day1/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [다음 과정: Cloud Master 1일차 →](../../../cloud_master/textbook/Day1/README.md)
+[← 이전: Cloud Basic 1일차](../Day1/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [다음 과정: Cloud Master 1일차 →](../../../cloud_master/textbook/Day1/README.md)
 
 </div>
