@@ -9,12 +9,12 @@
 <details>
 <summary>📋 목차</summary>
 
-1. [🎯 학습 목표](#-학습-목표)
-2. [📚 Docker 고급 개념](#-docker-고급-개념)
-3. [🔧 Dockerfile 최적화](#-dockerfile-최적화)
-4. [🐳 Docker Compose 고급 설정](#-docker-compose-고급-설정)
-5. [⚡ Docker 이미지 빌드 최적화](#-docker-이미지-빌드-최적화)
-6. [📚 문제 해결 및 참고 자료](#-문제-해결-및-참고-자료)
+1. [🎯 학습 목표](#학습-목표)
+2. [📚 Docker 고급 개념](#docker-고급-개념)
+3. [🔧 Dockerfile 최적화](#dockerfile-최적화)
+4. [🐳 Docker Compose 고급 설정](#docker-compose-고급-설정)
+5. [⚡ Docker 이미지 빌드 최적화](#docker-이미지-빌드-최적화)
+6. [📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
 
 </details>
 

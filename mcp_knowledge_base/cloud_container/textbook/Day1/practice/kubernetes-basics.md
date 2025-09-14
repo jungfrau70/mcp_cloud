@@ -9,14 +9,14 @@
 <details>
 <summary>📋 목차</summary>
 
-1. [🎯 학습 목표](#-학습-목표)
-2. [📚 실습 개요](#-실습-개요)
-3. [🔧 실습 환경 준비](#-실습-환경-준비)
-4. [🚀 Kubernetes 기본 개념](#-kubernetes-기본-개념)
+1. [🎯 학습 목표](#학습-목표)
+2. [📚 실습 개요](#실습-개요)
+3. [🔧 실습 환경 준비](#실습-환경-준비)
+4. [🚀 Kubernetes 기본 개념](#kubernetes-기본-개념)
 5. [🚀 GKE 클러스터 생성 및 관리](#-gke-클러스터-생성-및-관리)
 6. [📦 Pod, Service, Deployment 실습](#-pod-service-deployment-실습)
 7. [🔐 ConfigMap, Secret, PersistentVolume 관리](#-configmap-secret-persistentvolume-관리)
-8. [📚 문제 해결 및 참고 자료](#-문제-해결-및-참고-자료)
+8. [📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
 
 </details>
 
