@@ -126,6 +126,9 @@ const renderedContent = computed(() => {
       id = `heading-${level}-${Math.random().toString(36).substr(2, 9)}`;
     }
     
+    // 디버깅을 위한 콘솔 로그
+    console.log(`Generated header ID: "${text}" → "${id}"`);
+    
     return `<h${level} id="${id}">${text}</h${level}>`
   }
   
@@ -323,7 +326,17 @@ const setupLinkIntercepts = async () => {
     // Handle anchor links
     if (href.startsWith('#')) {
       event.preventDefault();
-      const targetId = href.substring(1);
+      let targetId = href.substring(1);
+      
+      // URL 디코딩 처리 (이모지 포함 링크의 경우)
+      try {
+        targetId = decodeURIComponent(targetId);
+      } catch (e) {
+        // 디코딩 실패 시 원본 사용
+        console.warn('Failed to decode anchor ID:', targetId);
+      }
+      
+      console.log('Looking for anchor ID:', targetId);
       
       // Try to find the target element
       let targetElement = document.getElementById(targetId);
@@ -334,6 +347,7 @@ const setupLinkIntercepts = async () => {
         for (const el of allElements) {
           if (el.id === targetId) {
             targetElement = el;
+            console.log('Found by exact ID match:', el.id);
             break;
           }
         }
@@ -354,6 +368,7 @@ const setupLinkIntercepts = async () => {
           
           if (expectedId === targetId) {
             targetElement = el;
+            console.log('Found by text content match:', textContent, '→', expectedId);
             break;
           }
         }
@@ -365,6 +380,49 @@ const setupLinkIntercepts = async () => {
         for (const el of allElements) {
           if (el.id && el.id.includes(targetId)) {
             targetElement = el;
+            console.log('Found by partial match:', el.id, 'includes', targetId);
+            break;
+          }
+        }
+      }
+      
+      // If still not found, try to find by encoded ID match
+      if (!targetElement) {
+        const encodedId = encodeURIComponent(targetId);
+        const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        for (const el of allElements) {
+          if (el.id === encodedId) {
+            targetElement = el;
+            console.log('Found by encoded ID match:', el.id);
+            break;
+          }
+        }
+      }
+      
+      // If still not found, try to find by link text content match
+      if (!targetElement) {
+        const linkText = link.textContent || '';
+        const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        for (const el of allElements) {
+          const headerText = el.textContent || '';
+          if (headerText === linkText) {
+            targetElement = el;
+            console.log('Found by link text match:', linkText, '→', headerText);
+            break;
+          }
+        }
+      }
+      
+      // If still not found, try to find by partial text match
+      if (!targetElement) {
+        const linkText = link.textContent || '';
+        const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        for (const el of allElements) {
+          const headerText = el.textContent || '';
+          // 이모지와 텍스트가 포함된 경우 부분 매칭 시도
+          if (headerText.includes(linkText) || linkText.includes(headerText)) {
+            targetElement = el;
+            console.log('Found by partial text match:', linkText, '↔', headerText);
             break;
           }
         }

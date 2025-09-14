@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>앵커 링크 디버깅 테스트</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        .test-link { display: block; margin: 10px 0; color: blue; text-decoration: underline; cursor: pointer; }
+        .test-link:hover { background-color: #f0f0f0; }
+        .highlight { background-color: #fef3c7; border: 2px solid #f59e0b; padding: 8px; margin: 4px 0; }
+    </style>
+</head>
+<body>
+    <h1>앵커 링크 디버깅 테스트</h1>
+    
+    <div class="test-section">
+        <h2>테스트 링크들</h2>
+        <a href="#🎯-전체-과정-개요" class="test-link">🎯 전체 과정 개요</a>
+        <a href="#📚-과정별-상세-정보" class="test-link">📚 과정별 상세 정보</a>
+        <a href="#🔗-과정-간-연계성" class="test-link">🔗 과정 간 연계성</a>
+        <a href="#🛠️-실습-환경-및-도구" class="test-link">🛠️ 실습 환경 및 도구</a>
+    </div>
+    
+    <div class="test-section">
+        <h2>테스트 헤더들</h2>
+        <h2 id="🎯-전체-과정-개요">🎯 전체 과정 개요</h2>
+        <p>이 섹션은 전체 과정에 대한 개요를 설명합니다.</p>
+        
+        <h2 id="📚-과정별-상세-정보">📚 과정별 상세 정보</h2>
+        <p>이 섹션은 각 과정의 상세 정보를 설명합니다.</p>
+        
+        <h2 id="🔗-과정-간-연계성">🔗 과정 간 연계성</h2>
+        <p>이 섹션은 과정 간의 연계성을 설명합니다.</p>
+        
+        <h2 id="🛠️-실습-환경-및-도구">🛠️ 실습 환경 및 도구</h2>
+        <p>이 섹션은 실습 환경과 도구에 대해 설명합니다.</p>
+    </div>
+    
+    <div class="test-section">
+        <h2>URL 인코딩 테스트</h2>
+        <p>원본: #🎯-전체-과정-개요</p>
+        <p>인코딩: <span id="encoded"></span></p>
+        <p>디코딩: <span id="decoded"></span></p>
+    </div>
+
+    <script>
+        // URL 인코딩/디코딩 테스트
+        const original = '#🎯-전체-과정-개요';
+        const encoded = encodeURIComponent(original.substring(1));
+        const decoded = decodeURIComponent(encoded);
+        
+        document.getElementById('encoded').textContent = encoded;
+        document.getElementById('decoded').textContent = decoded;
+        
+        // 앵커 링크 클릭 이벤트 처리
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('test-link')) {
+                event.preventDefault();
+                const href = event.target.getAttribute('href');
+                const targetId = href.substring(1);
+                
+                console.log('Clicked link:', event.target.textContent);
+                console.log('Target ID:', targetId);
+                
+                // URL 디코딩 시도
+                let decodedId = targetId;
+                try {
+                    decodedId = decodeURIComponent(targetId);
+                    console.log('Decoded ID:', decodedId);
+                } catch (e) {
+                    console.warn('Failed to decode:', e);
+                }
+                
+                // 타겟 요소 찾기
+                let targetElement = document.getElementById(targetId);
+                if (!targetElement) {
+                    targetElement = document.getElementById(decodedId);
+                }
+                
+                if (targetElement) {
+                    console.log('Found target element:', targetElement);
+                    
+                    // 하이라이트 효과
+                    targetElement.classList.add('highlight');
+                    setTimeout(() => {
+                        targetElement.classList.remove('highlight');
+                    }, 3000);
+                    
+                    // 스크롤
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    console.log('Target element not found');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
