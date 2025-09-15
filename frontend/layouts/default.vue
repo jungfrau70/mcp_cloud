@@ -200,6 +200,11 @@ const user = ref(null)
 const auth = useAuthStore()
 const progressStore = useProgressStore()
 const userMenuOpen = ref(false)
+
+// 디버깅: userMenuOpen 상태 모니터링
+watch(userMenuOpen, (newVal) => {
+  console.log('userMenuOpen changed:', newVal)
+}, { immediate: true })
 // 중복 토큰 로드 방지: auth.loadFromStorage() 제거
 
 // Hydration 불일치 방지를 위한 클라이언트 사이드 체크
@@ -273,6 +278,10 @@ onMounted(async () => {
     // 사용자 상태는 watcher(immediate)에서 처리
     // 진도 스토어 초기화
     progressStore.loadProgress()
+    
+    // 드롭다운 메뉴가 자동으로 열리지 않도록 보장
+    userMenuOpen.value = false
+    console.log('onMounted: userMenuOpen set to false')
   } catch (e) {
     user.value = null;
   }
@@ -492,6 +501,10 @@ const isAuthRoute = computed(() => {
 onMounted(async () => {
   // 클라이언트 사이드에서만 실행
   if (!isClient) return;
+  
+  // 드롭다운 메뉴가 자동으로 열리지 않도록 보장
+  userMenuOpen.value = false
+  console.log('second onMounted: userMenuOpen set to false')
   
   if (isKnowledgeBase.value) {
     if (!isAdmin.value) {
