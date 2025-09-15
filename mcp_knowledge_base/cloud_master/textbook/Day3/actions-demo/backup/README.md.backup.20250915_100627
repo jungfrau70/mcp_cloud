@@ -1,0 +1,173 @@
+# GitHub Actions CI/CD 데모 프로젝트
+
+<div align="center">
+
+[← 이전: Cloud Master 2일차](../Day2/README.md) | [다음: Cloud Master 3일차 →](../Day3/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../learning-path.md)
+
+</div>
+
+이 프로젝트는 GitHub Actions를 사용한 CI/CD 파이프라인을 시연하는 데모 프로젝트입니다.
+
+## 📋 프로젝트 개요
+
+### 목적
+- GitHub Actions 워크플로우 이해
+- 자동화된 빌드 및 배포 파이프라인 구축
+- Docker 컨테이너 기반 애플리케이션 배포
+
+### 기술 스택
+- **Frontend**: Node.js, Express
+- **Container**: Docker
+- **CI/CD**: GitHub Actions
+- **Cloud**: AWS EC2, GCP Compute Engine
+
+## 🚀 시작하기
+
+### 1. 프로젝트 클론
+```bash
+git clone <repository-url>
+cd actions-demo
+```
+
+### 2. 의존성 설치
+```bash
+npm install
+```
+
+### 3. 로컬 실행
+```bash
+npm start
+```
+
+### 4. Docker 실행
+```bash
+docker build -t actions-demo .
+docker run -p 3000:3000 actions-demo
+```
+
+## 📁 프로젝트 구조
+
+```
+actions-demo/
+├── .github/
+│   └── workflows/
+│       ├── ci.yml          # CI 파이프라인
+│       ├── deploy.yml      # 배포 파이프라인
+│       └── vm-docker-deploy.yml  # VM 배포
+├── src/
+│   └── app.js              # 메인 애플리케이션
+├── tests/
+│   └── app.test.js         # 테스트 파일
+├── Dockerfile              # Docker 설정
+├── package.json            # Node.js 의존성
+└── README.md               # 프로젝트 문서
+```
+
+## 🔧 GitHub Actions 워크플로우
+
+### CI 파이프라인 (ci.yml)
+- 코드 체크아웃
+- Node.js 환경 설정
+- 의존성 설치
+- 테스트 실행
+- 린팅 검사
+
+### 배포 파이프라인 (deploy.yml)
+- 애플리케이션 빌드
+- Docker 이미지 생성
+- 클라우드 VM 배포
+- 헬스 체크
+
+## 🐳 Docker 설정
+
+### Dockerfile
+```dockerfile
+FROM node:18
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+### Docker Compose
+```yaml
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+```
+
+## 🚀 클라우드 배포
+
+### AWS EC2 배포
+- EC2 인스턴스 생성
+- Docker 설치
+- 애플리케이션 배포
+- 로드 밸런서 설정
+
+### GCP Compute Engine 배포
+- Compute Engine 인스턴스 생성
+- Docker 설치
+- 애플리케이션 배포
+- 방화벽 규칙 설정
+
+## 📊 모니터링
+
+### 헬스 체크
+- `/health` 엔드포인트
+- 애플리케이션 상태 확인
+- 데이터베이스 연결 상태
+
+### 로깅
+- 애플리케이션 로그
+- 에러 로그
+- 성능 메트릭
+
+## 🧪 테스트
+
+### 단위 테스트
+```bash
+npm test
+```
+
+### 통합 테스트
+```bash
+npm run test:integration
+```
+
+### E2E 테스트
+```bash
+npm run test:e2e
+```
+
+## 📚 추가 자료
+
+- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
+- [Docker 공식 문서](https://docs.docker.com/)
+- [Node.js 공식 문서](https://nodejs.org/docs/)
+
+## 🤝 기여하기
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 라이선스
+
+이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
+
+## 📞 문의
+
+프로젝트에 대한 문의사항이 있으시면 이슈를 생성해 주세요.
+
+---
+
+**🎯 이 데모 프로젝트를 통해 GitHub Actions와 Docker를 활용한 CI/CD 파이프라인을 학습할 수 있습니다.**

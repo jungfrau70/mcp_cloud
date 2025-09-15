@@ -2,11 +2,11 @@
 
 <div align="center">
 
-[← 이전: Cloud Basic 메인](../README.md) | [📚 전체 커리큘럼](../curriculum.md) | [🏠 학습 경로로 돌아가기](../index.md) | [📋 학습 경로](../learning-path.md)
+[← 이전: Cloud Basic 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../../learning-path.md)
 
 </div>
 
-> 📋 **전체 개요**: [README.md](../README.md) | [통합 커리큘럼](../curriculum.md) | [통합 인덱스](../index.md)에서 전체 과정 구조를 확인하세요.
+> 📋 **전체 개요**: [README.md](../README.md) | [통합 커리큘럼](/curriculum.md) | [통합 인덱스](/index.md)에서 전체 과정 구조를 확인하세요.
 
 > 📋 **과정 개요**: [과정상세.md](./과정상세.md)에서 상세한 교육 정보를 확인하세요.
 
@@ -128,7 +128,7 @@ Basic 과정을 시작하기 전에 다음을 확인하세요:
 - [ ] Linux 기본 명령어 경험 권장
 - [ ] 인터넷 및 웹 서비스 개념 이해
 
-> **다음 과정**: [Cloud Master 과정](../cloud_master/textbook/Day1/README.md) | [전체 커리큘럼](../curriculum.md) | [🏠 학습 경로로 돌아가기](../index.md)
+> **다음 과정**: [Cloud Master 과정](../cloud_master/textbook/Day1/README.md) | [전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
 
 ### 환경 준비
 - [ ] AWS Free Tier 계정 생성

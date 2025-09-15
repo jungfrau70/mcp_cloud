@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](../../README.md) | [📚 전체 커리큘럼](../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../index.md) | [📋 학습 경로](../../learning-path.md)
+[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
 
 </div>
 
 <div align="center">
 
-[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../index.md)
+[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
 
 </div>
 
@@ -16,7 +16,7 @@
 <summary>📋 목차 </summary>
 
 1. [🎯 학습 목표](#학습-목표)
-2. [📦 actions-demo 프로젝트 소개](#actions-demo-프로젝트-소개)
+2. [📦 actions-demo 프로젝트 소개](#actionsdemo-프로젝트-소개)
 3. [🚀 실습 환경 준비](#실습-환경-준비)
 4. [⚖️ 가상머신 배포 실습](#가상머신-배포-실습)
 5. [🔧 GitHub Actions 워크플로우 설정](#github-actions-워크플로우-설정)

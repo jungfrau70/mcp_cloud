@@ -1,10 +1,10 @@
 # Cloud Container - 컨테이너 심화 학습 경로
 
-> 📋 **전체 개요**: [README.md](../README.md) | [통합 커리큘럼](../curriculum.md) | [통합 인덱스](../index.md)에서 전체 과정 구조를 확인하세요.
+> 📋 **전체 개요**: [README.md](../README.md) | [통합 커리큘럼](/curriculum.md) | [통합 인덱스](/index.md)에서 전체 과정 구조를 확인하세요.
 
 <div align="center">
 
-[← 이전: [과정명] [일차] 메인](../README.md) | [📚 전체 커리큘럼](../curriculum.md) | [🏠 학습 경로로 돌아가기](../index.md)
+[← 이전: [과정명] [일차] 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
 
 </div>
 
@@ -267,8 +267,8 @@
 
 ### 실무 적용
 - [통합 자동화 시스템](../integrated_automation/README.md)
-- [전체 커리큘럼](../curriculum.md)
-- [통합 인덱스](../index.md)
+- [전체 커리큘럼](/curriculum.md)
+- [통합 인덱스](/index.md)
 
 ### 고급 학습
 - [Kubernetes 공식 문서](https://kubernetes.io/docs/)
@@ -317,7 +317,7 @@
 
 <div align="center">
 
-[← 이전: [과정명] [일차] 메인](../README.md) | [📚 전체 커리큘럼](../curriculum.md) | [🏠 학습 경로로 돌아가기](../index.md)
+[← 이전: [과정명] [일차] 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
 
 </div>
 

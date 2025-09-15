@@ -41,7 +41,7 @@
         >
           <span v-if="isDirectory(item)" class="icon">{{ isOpen(name) ? '▼' : '▶' }}</span>
           <span v-else class="icon">📄</span>
-          <span class="name" :class="{ 'hidden-item': name.startsWith('.') && name !== '.slides_selection.json' }">{{ name }}</span>
+          <span class="name" :class="{ 'hidden-item': name.startsWith('.') && name !== '.slides_selection.json' }">{{ handleKoreanFilename(name, 'decode') }}</span>
           <div v-if="isDirectory(item)" class="directory-actions">
             <button @click.stop="showCreateContextMenu($event, name)" class="action-btn" title="새 항목 생성">+</button>
           </div>
@@ -73,7 +73,7 @@
           draggable="true"
         >
           <span class="icon">📄</span>
-          <span class="name" :class="{ 'hidden-item': (file.name || file).startsWith('.') }">{{ file.name || file }}</span>
+          <span class="name" :class="{ 'hidden-item': (file.name || file).startsWith('.') }">{{ handleKoreanFilename(file.name || file, 'decode') }}</span>
         </div>
       </li>
     </ul>
@@ -274,6 +274,7 @@
 
 <script setup>
 import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
+import { handleKoreanFilename } from '~/utils/path';
 
 const props = defineProps({
   tree: {

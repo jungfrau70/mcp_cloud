@@ -1,5 +1,19 @@
 # 통합 클라우드 과정 자동화 시스템
 
+## 📋 목차
+- [🎯 개요](#개요)
+- [🏗️ 시스템 아키텍처](#시스템-아키텍처)
+- [🚀 주요 기능](#주요-기능)
+- [📋 사용 방법](#사용-방법)
+- [⚙️ 설정](#설정)
+- [🔧 과정별 연계 흐름](#과정별-연계-흐름)
+- [📊 모니터링 및 보고서](#모니터링-및-보고서)
+- [🛠️ 문제 해결](#문제-해결)
+- [🔄 업데이트 및 유지보수](#업데이트-및-유지보수)
+- [📈 성능 최적화](#성능-최적화)
+- [🤝 기여하기](#기여하기)
+- [📞 지원](#지원)
+
 ## 🎯 개요
 
 이 시스템은 Cloud Basic → Cloud Master → Cloud Container 과정을 연계하여 자동화하는 통합 시스템입니다. 각 과정이 독립적으로 실행되는 기존 방식에서 벗어나, 과정 간 리소스 공유와 진행 상황 추적을 통해 효율적인 학습 경험을 제공합니다.
@@ -12,13 +26,24 @@ mcp_knowledge_base/integrated_automation/
 ├── shared_resource_manager.py         # 공유 리소스 관리
 ├── test_integrated_automation.py      # 통합 테스트
 ├── run_integrated_automation.py       # 실행 스크립트
+├── validate_integration.py            # 통합 시스템 검증 도구
+├── validate_course_connections.py     # 과정 간 연결 검증 도구
 ├── integrated_config.json             # 통합 설정
+├── requirements.txt                   # Python 의존성
+├── USAGE_GUIDE.md                     # 사용 가이드
 ├── results/                           # 결과 저장소
-│   ├── integrated_automation_results.json
+│   ├── validation_report_*.md
+│   ├── connection_validation_report_*.md
 │   └── integration_report.md
-└── shared_resources/                  # 공유 리소스
-    ├── shared_state.json
-    └── shared_resources.json
+├── shared_resources/                  # 공유 리소스
+│   ├── shared_state.json
+│   ├── shared_resources.json
+│   ├── aws_resources.env
+│   ├── gcp_resources.env
+│   └── docker_images.json
+└── bridge_scripts/                    # 과정 간 연계 스크립트
+    ├── basic_to_master_bridge.sh
+    └── master_to_container_bridge.sh
 ```
 
 ## 🚀 주요 기능
@@ -43,6 +68,16 @@ mcp_knowledge_base/integrated_automation/
 - 전체 과정 연계 테스트
 - 개별 과정 테스트
 - 공유 리소스 테스트
+
+### 5. **검증 도구**
+- 통합 시스템 검증 (`validate_integration.py`)
+- 과정 간 연결성 검증 (`validate_course_connections.py`)
+- 자동화된 문제 진단 및 해결 제안
+
+### 6. **모니터링 및 보고서**
+- 실시간 진행 상황 모니터링
+- 상세한 검증 보고서 생성
+- 성능 지표 추적 및 분석
 
 ## 📋 사용 방법
 
@@ -69,6 +104,24 @@ python run_integrated_automation.py --config custom_config.json
 ### 4. **테스트 실행**
 ```bash
 python test_integrated_automation.py
+```
+
+### 5. **검증 도구 실행**
+```bash
+# 통합 시스템 검증
+python validate_integration.py
+
+# 과정 간 연결성 검증
+python validate_course_connections.py
+
+# 검증 후 자동화 실행
+python run_integrated_automation.py --validate-connections
+```
+
+### 6. **사용 가이드 참조**
+```bash
+# 상세한 사용법은 USAGE_GUIDE.md 참조
+cat USAGE_GUIDE.md
 ```
 
 ## ⚙️ 설정

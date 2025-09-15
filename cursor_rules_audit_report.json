@@ -1,5 +1,5 @@
 {
-  "audit_date": "2025-09-15T09:09:46.423421",
+  "audit_date": "2025-09-15T09:35:31.266574",
   "total_rules": 12,
   "rules_analysis": {
     "anchor-link-audit.mdc": {
@@ -17,11 +17,11 @@
       "last_modified": "2025-09-15T09:08:43.972343"
     },
     "cursor_rules.mdc": {
-      "size": 1551,
-      "has_education_focus": false,
+      "size": 1987,
+      "has_education_focus": true,
       "has_outdated_patterns": false,
       "metadata_completeness": 3,
-      "last_modified": "2025-09-12T18:43:36.455245"
+      "last_modified": "2025-09-15T09:35:24.345495"
     },
     "development-environment.mdc": {
       "size": 7865,
@@ -38,11 +38,11 @@
       "last_modified": "2025-09-15T08:34:40.567169"
     },
     "document-title-management.mdc": {
-      "size": 7346,
+      "size": 10361,
       "has_education_focus": true,
       "has_outdated_patterns": true,
       "metadata_completeness": 3,
-      "last_modified": "2025-09-15T05:46:59.874266"
+      "last_modified": "2025-09-15T09:35:24.351182"
     },
     "global-rules.mdc": {
       "size": 1967,
@@ -52,11 +52,11 @@
       "last_modified": "2025-09-15T08:34:40.567169"
     },
     "learning-path.mdc": {
-      "size": 5451,
+      "size": 6790,
       "has_education_focus": true,
       "has_outdated_patterns": true,
       "metadata_completeness": 3,
-      "last_modified": "2025-09-15T08:34:40.567169"
+      "last_modified": "2025-09-15T09:35:24.349987"
     },
     "project-guidelines.mdc": {
       "size": 11422,
@@ -73,25 +73,25 @@
       "last_modified": "2025-09-15T06:34:44.021418"
     },
     "self_improve.mdc": {
-      "size": 2426,
-      "has_education_focus": false,
+      "size": 2128,
+      "has_education_focus": true,
       "has_outdated_patterns": false,
       "metadata_completeness": 3,
-      "last_modified": "2025-09-12T18:43:36.458243"
+      "last_modified": "2025-09-15T09:35:24.346749"
     },
     "target_system.mdc": {
-      "size": 5929,
+      "size": 3050,
       "has_education_focus": true,
-      "has_outdated_patterns": true,
+      "has_outdated_patterns": false,
       "metadata_completeness": 3,
-      "last_modified": "2025-09-12T18:43:36.459242"
+      "last_modified": "2025-09-15T09:35:24.349345"
     }
   },
   "issues_summary": {
-    "total_issues": 10,
+    "total_issues": 8,
     "high_severity": 0,
-    "medium_severity": 5,
-    "low_severity": 5
+    "medium_severity": 4,
+    "low_severity": 4
   },
   "recommendations": [
     {
@@ -145,13 +145,6 @@
       "severity": "medium"
     },
     {
-      "rule": "cursor_rules.mdc",
-      "issues": [
-        "교육 교구 시스템 관련성 부족"
-      ],
-      "severity": "low"
-    },
-    {
       "rule": "development-environment.mdc",
       "issues": [
         "한글 비율이 낮음 (교육 교구 시스템 특성상 한글 중심 권장)"
@@ -170,7 +163,6 @@
       "rule": "document-title-management.mdc",
       "issues": [
         "구식 패턴 포함 (클라우드 관리 관련)",
-        "문서 연결 관련 규칙이지만 앵커/링크 내용 부족",
         "한글 비율이 낮음 (교육 교구 시스템 특성상 한글 중심 권장)"
       ],
       "severity": "medium"
@@ -200,17 +192,9 @@
     {
       "rule": "self_improve.mdc",
       "issues": [
-        "교육 교구 시스템 관련성 부족"
+        "코드 예시 부족 (최소 2개 권장)"
       ],
       "severity": "low"
-    },
-    {
-      "rule": "target_system.mdc",
-      "issues": [
-        "구식 패턴 포함 (클라우드 관리 관련)",
-        "한글 비율이 낮음 (교육 교구 시스템 특성상 한글 중심 권장)"
-      ],
-      "severity": "medium"
     }
   ]
 }

@@ -1,59 +1,57 @@
 ```mermaid
 graph TD
     subgraph "User Interface"
-        A[학생/튜터<br>(Web Browser)]
+        A[교육 커리큘럼 작성자/교육자/수강자<br>(Web Browser)]
     end
 
     subgraph "Frontend (Nuxt 3)"
-        B[MentorAi Web App]
-        B_CLI[통합 터미널<br>(xterm.js)]
+        B[AI 활용 교육 교구 시스템<br>Web App]
+        B_EDITOR[코드 에디터<br>(실습 환경)]
     end
 
     subgraph "Backend (FastAPI)"
         C[API Server]
-        D[WebSocket Gateway]
+        D[교육 자료 관리]
     end
 
-    subgraph "Cloud Connectors (Multi-Cloud)"
-        X1[AWS CLI / SDK]
-        X2[GCP gcloud / SDK]
-        X3[Azure CLI (az) / SDK]
-    end
-
-    subgraph "AI Mentor Layer"
-        E[LLM<br>(Google Gemini)]
-        F[RAG Service]
+    subgraph "AI 에이전트 레이어"
+        E[LLM<br>(OpenAI/Anthropic)]
+        F[교육 자료 생성 AI]
+        G[실습 가이드 생성 AI]
+        H[평가 문항 생성 AI]
     end
 
     subgraph "Data Stores"
-        G[PostgreSQL<br>(학습 콘텐츠, 사용자 데이터)]
-        H[Vector DB (FAISS)<br>(RAG 인덱스)]
+        I[PostgreSQL<br>(교육 자료, 사용자 데이터)]
+        J[Redis<br>(캐시)]
+        K[로컬 파일 시스템<br>(마크다운 교육 자료)]
     end
 
-    subgraph "Hands-on Lab"
-        I[격리된 실행 환경<br>(Docker Container)]
+    subgraph "실습 환경"
+        L[격리된 실행 환경<br>(Docker Container)]
     end
 
     A --> B
     
-    B -- HTTP API<br>(학습자료 요청, AI 질문) --> C
-    B -- WebSocket<br>(터미널 입출력) --> D
+    B -- HTTP API<br>(교육자료 요청, AI 질문) --> C
+    B -- 실습 요청 --> B_EDITOR
     
-    C -- 로직 처리 --> G
-    C -- AI 멘토링 요청 --> F
+    C -- 로직 처리 --> I
+    C -- 교육 자료 관리 --> D
+    C -- AI 요청 --> F
+    C -- AI 요청 --> G
+    C -- AI 요청 --> H
 
-    %% Backend to Cloud Connectors (read-only CLI, provisioning)
-    C -- Read-only CLI --> X1
-    C -- Read-only CLI --> X2
-    C -- Read-only CLI --> X3
+    D -- 교육 자료 저장/조회 --> K
+    D -- 캐시 관리 --> J
 
-    F -- 컨텍스트 검색 --> H
-    F -- 프롬프트 전달 --> E
-    E -- 답변 생성 --> F
-    F -- 답변 반환 --> C
+    F -- 교육 자료 생성 --> E
+    G -- 실습 가이드 생성 --> E
+    H -- 평가 문항 생성 --> E
+    E -- AI 응답 --> C
 
-    D -- 명령어 전달 --> I
-    I -- 실행 결과 반환 --> D
+    B_EDITOR -- 코드 실행 요청 --> L
+    L -- 실행 결과 반환 --> B_EDITOR
 
     linkStyle 0 stroke-width:2px,fill:none,stroke:gray;
     linkStyle 1 stroke-width:2px,fill:none,stroke:blue;

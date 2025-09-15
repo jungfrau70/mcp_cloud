@@ -13,7 +13,7 @@
     <!-- 최근 오픈파일 섹션 -->
     <div class="mb-6" v-if="recentFiles.length > 0">
       <div class="flex items-center justify-between mb-2">
-        <h4 class="text-sm font-semibold text-gray-800">최근 오픈파일</h4>
+        <h4 class="text-sm font-semibold text-gray-800">최근 파일</h4>
         <button class="text-xs px-2 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200" @click="clearRecentFiles" title="최근 파일 목록 지우기">
           지우기
         </button>
@@ -52,6 +52,23 @@
         >
           설정하기
         </button>
+      </div>
+    </div>
+
+    <!-- 학습 진척률 표시 -->
+    <div v-if="displayTree && selectedDirs.length > 0" class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+      <div class="flex items-center justify-between mb-2">
+        <h4 class="text-sm font-semibold text-blue-800">학습 진척률</h4>
+        <span class="text-xs text-blue-600">{{ overallProgress }}% 완료</span>
+      </div>
+      <div class="w-full bg-blue-200 rounded-full h-2">
+        <div 
+          class="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-in-out" 
+          :style="{ width: `${overallProgress}%` }"
+        ></div>
+      </div>
+      <div class="mt-2 text-xs text-blue-700">
+        <span>{{ completedFiles }}개 파일 완료 / {{ totalFiles }}개 파일</span>
       </div>
     </div>
 
@@ -99,7 +116,7 @@ import { useRoute } from 'vue-router'
 import { useAuthStore } from '~/stores/auth'
 import FileTreePanel from './FileTreePanel.vue';
 import { useRuntimeConfig } from '#app'
-import { makeUriDisplayFriendly } from '~/utils/path'
+import { makeUriDisplayFriendly, handleKoreanFilename } from '~/utils/path'
 
 const kbTree = ref(null);
 const curriculumTree = ref(null);
@@ -127,11 +144,21 @@ const recentFiles = ref([])
 const selectedCurriculumDirs = ref([])
 const curriculumDirsLoading = ref(false)
 
+// 학습 진척률 관리
+const completedFiles = ref(new Set())
+const totalFiles = ref(0)
+
 const filteredTopics = computed(() => {
   const q = (search.value || '').toLowerCase()
   const base = (topics.value || []).filter(t => Array.isArray(t?.messages) && t.messages.length > 0)
   if (!q) return base
   return base.filter(t => (t.name || '').toLowerCase().includes(q))
+})
+
+// 학습 진척률 계산
+const overallProgress = computed(() => {
+  if (totalFiles.value === 0) return 0
+  return Math.round((completedFiles.value.size / totalFiles.value) * 100)
 })
 
 // Visibility guard for chat section
@@ -252,10 +279,73 @@ async function loadSelectedCurriculumDirs() {
   }
 }
 
+// 파일 트리에서 파일 개수 계산
+function countFilesInTree(tree) {
+  let count = 0
+  if (!tree || typeof tree !== 'object') return count
+  
+  for (const key in tree) {
+    if (key === 'files' && Array.isArray(tree[key])) {
+      count += tree[key].length
+    } else if (typeof tree[key] === 'object') {
+      count += countFilesInTree(tree[key])
+    }
+  }
+  return count
+}
+
+// 학습 진척률 업데이트
+function updateProgress() {
+  if (curriculumTree.value) {
+    totalFiles.value = countFilesInTree(curriculumTree.value)
+    // localStorage에서 완료된 파일 목록 로드
+    loadCompletedFiles()
+  }
+}
+
+// 완료된 파일 목록 로드
+function loadCompletedFiles() {
+  try {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      const saved = localStorage.getItem(`completed_files_${userKey}`)
+      if (saved) {
+        const completed = JSON.parse(saved)
+        completedFiles.value = new Set(completed)
+      }
+    }
+  } catch (error) {
+    console.error('완료된 파일 목록 로드 실패:', error)
+    completedFiles.value = new Set()
+  }
+}
+
+// 완료된 파일 목록 저장
+function saveCompletedFiles() {
+  try {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      localStorage.setItem(`completed_files_${userKey}`, JSON.stringify([...completedFiles.value]))
+    }
+  } catch (error) {
+    console.error('완료된 파일 목록 저장 실패:', error)
+  }
+}
+
+// 파일 완료 상태 토글
+function toggleFileCompletion(filePath) {
+  if (completedFiles.value.has(filePath)) {
+    completedFiles.value.delete(filePath)
+  } else {
+    completedFiles.value.add(filePath)
+  }
+  saveCompletedFiles()
+}
+
 function getFileName(filePath) {
   if (!filePath) return 'Unknown'
   const parts = filePath.split('/')
-  return parts[parts.length - 1] || filePath
+  const filename = parts[parts.length - 1] || filePath
+  // 한글 파일명을 읽기 쉽게 디코딩
+  return handleKoreanFilename(filename, 'decode')
 }
 
 function deleteTopic(id) {
@@ -330,6 +420,14 @@ const onFileClick = (path) => {
   // 최근 파일 목록에 추가 (읽기 쉬운 형태로 저장)
   const displayPath = makeUriDisplayFriendly(path);
   addToRecentFiles(displayPath);
+  
+  // 파일 완료 상태 토글 (Ctrl+클릭으로 완료 표시)
+  if (event && event.ctrlKey) {
+    event.preventDefault();
+    toggleFileCompletion(path);
+    return;
+  }
+  
   emit('file-click', path);
 };
 
@@ -368,6 +466,8 @@ async function loadcurriculumTreeIfCurriculum(){
     const r3 = await fetch(`${apiBase}/v1/curriculum/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
     if (r3.ok) {
       curriculumTree.value = await r3.json();
+      // 진척률 업데이트
+      updateProgress();
     }
   } finally { curriculumLoading.value = false }
 }

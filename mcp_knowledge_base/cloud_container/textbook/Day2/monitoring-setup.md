@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[← 이전: Cloud Container 메인](../../README.md) | [📚 전체 커리큘럼](../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../index.md) | [📋 학습 경로](../../learning-path.md)
+[← 이전: Cloud Container 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../../../learning-path.md)
 
 </div>
 
 <div align="center">
 
-[← 이전: Cloud Container 2일차 메인](../README.md) | [📚 전체 커리큘럼](../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../index.md)
+[← 이전: Cloud Container 2일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
 
 </div>
 
@@ -28,7 +28,7 @@
 1. [모니터링 아키텍처 설계](#모니터링-아키텍처-설계)
 2. [AWS CloudWatch 설정](#aws-cloudwatch-설정)
 3. [GCP Cloud Monitoring 설정](#gcp-cloud-monitoring-설정)
-4. [Prometheus + Grafana 스택](#📈-prometheus-+-grafana-스택)
+4. [Prometheus + Grafana 스택](#prometheus-grafana-스택)
 5. [로그 수집 및 분석](#로그-수집-및-분석)
 6. [알림 시스템 구성](#알림-시스템-구성)
 7. [실습 시나리오](#실습-시나리오)

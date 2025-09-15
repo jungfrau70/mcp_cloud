@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Container 메인](../../README.md) | [📚 전체 커리큘럼](../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../index.md) | [📋 학습 경로](../../learning-path.md)
+[← 이전: Cloud Container 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../../../learning-path.md)
 
 </div>
 
@@ -408,7 +408,7 @@ Multi-AZ 구성 실패 트러블슈팅 가이드를 완료했습니다.
 ### 💡 추가 학습 자료
 
 - [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)
-- [전체 커리큘럼](../../../curriculum.md)
+- [전체 커리큘럼](/curriculum.md)
 
 ---
 

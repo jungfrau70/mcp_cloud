@@ -1,6 +1,6 @@
-# MentorAi 빠른 시작 가이드 (Quickstart)
+# AI 활용 교육 교구 시스템 빠른 시작 가이드 (Quickstart)
 
-이 문서는 로컬 개발 환경에서 MentorAi 플랫폼을 실행하는 방법을 안내합니다.
+이 문서는 로컬 개발 환경에서 AI 활용 교육 교구 시스템을 실행하는 방법을 안내합니다.
 
 ## ✅ 사전 요구사항 (Prerequisites)
 
@@ -20,27 +20,21 @@ cd mcp_cloud
 
 ### 2. 백엔드 설정
 
-- **Google Gemini API 키 발급**: [Google AI Studio](https://aistudio.google.com/app/apikey)에서 API 키를 발급받으세요.
+- **AI API 키 발급**: OpenAI API 또는 Anthropic Claude API 키를 발급받으세요.
 - **환경 변수 파일 생성**: `backend/env/.env` 파일을 생성하고 아래 내용을 추가하세요.
 
   ```
   # backend/env/.env
-  # Gemini / API
-  GEMINI_API_KEY="여기에_발급받은_API_키를_입력하세요"
+  # AI API 설정
+  OPENAI_API_KEY="여기에_발급받은_OpenAI_API_키를_입력하세요"
+  ANTHROPIC_API_KEY="여기에_발급받은_Anthropic_API_키를_입력하세요"
 
-  # (선택) AWS - 읽기 전용 테스트용 자격증명
-  AWS_ACCESS_KEY_ID=
-  AWS_SECRET_ACCESS_KEY=
-  AWS_DEFAULT_REGION=ap-northeast-2
+  # 데이터베이스 설정
+  DATABASE_URL="postgresql://user:password@localhost:5432/education_db"
+  REDIS_URL="redis://localhost:6379"
 
-  # (선택) GCP - 서비스 계정 키는 docker-compose 볼륨으로 마운트됨
-  # GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-sa-key.json (compose에 설정됨)
-
-  # (선택) Azure - 서비스 프린시펄 자격증명
-  AZURE_TENANT_ID=
-  AZURE_CLIENT_ID=
-  AZURE_CLIENT_SECRET=
-  AZURE_SUBSCRIPTION_ID=
+  # 교육 자료 경로
+  KNOWLEDGE_BASE_PATH="./mcp_knowledge_base"
   ```
 
 - **Python 의존성 설치**:
@@ -72,14 +66,12 @@ docker compose up --build
 ### 5. 플랫폼 접속
 
 - 웹 브라우저를 열고 `http://localhost:3000` 주소로 접속합니다.
-- MentorAi 학습 플랫폼의 로그인 화면이 나타나면 성공입니다!
+- AI 활용 교육 교구 시스템의 로그인 화면이 나타나면 성공입니다!
 
 ## 🐛 문제 해결 (Troubleshooting)
 
 - **Docker 실행 오류**: Docker 데몬이 실행 중인지 확인하세요.
 - **포트 충돌**: `docker-compose.yml` 파일에 정의된 포트(예: 8000, 3000)가 다른 프로세스에서 사용 중인지 확인하세요.
 - **API 키 오류**: 백엔드 로그에 API 키 관련 인증 오류가 표시되면 `.env` 파일의 키가 올바른지 다시 확인하세요.
-- **클라우드 인증**:
-  - AWS: `docker compose exec mcp_backend aws sts get-caller-identity`
-  - GCP: `docker compose exec mcp_backend gcloud auth list`
-  - Azure: `docker compose exec mcp_backend az account show`
+- **데이터베이스 연결 오류**: PostgreSQL과 Redis가 정상적으로 실행되고 있는지 확인하세요.
+- **교육 자료 경로 오류**: `mcp_knowledge_base` 디렉토리가 존재하고 올바른 경로에 있는지 확인하세요.

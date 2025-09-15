@@ -1,10 +1,10 @@
 # Cloud Basic - 클라우드 기초 학습 경로
 
-> 📋 **전체 개요**: [README.md](../README.md) | [통합 커리큘럼](../curriculum.md) | [통합 인덱스](../index.md)에서 전체 과정 구조를 확인하세요.
+> 📋 **전체 개요**: [README.md](../README.md) | [통합 커리큘럼](/curriculum.md) | [통합 인덱스](/index.md)에서 전체 과정 구조를 확인하세요.
 
 <div align="center">
 
-[← 이전: [과정명] [일차] 메인](../README.md) | [📚 전체 커리큘럼](../curriculum.md) | [🏠 학습 경로로 돌아가기](../index.md)
+[← 이전: [과정명] [일차] 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
 
 </div>
 
@@ -221,12 +221,12 @@
 - [프레젠테이션 README](./presentation/README.md)
 
 ### PDF 교재
-- [클라우드실무력강화_활용법(기초)_교재.pdf)_교재](./presentation/클라우드실무력강화_활용법(기초)_교재.pdf)_교재.pdf)
-- [클라우드실무력강화_활용법(기초)_교재.pdf)_실습](./presentation/클라우드실무력강화_활용법(기초)_교재.pdf)_실습.pdf)
-- [클라우드실무력강화_활용법(기초)_교재.pdf)_이론](./presentation/클라우드실무력강화_활용법(기초)_교재.pdf)_이론.pdf)
+- [클라우드실무력강화_활용법(기초)_교재.pdf)_교재](./presentation/README.md)_교재.pdf)_교재.pdf)
+- [클라우드실무력강화_활용법(기초)_교재.pdf)_실습](./presentation/README.md)_교재.pdf)_실습.pdf)
+- [클라우드실무력강화_활용법(기초)_교재.pdf)_이론](./presentation/README.md)_교재.pdf)_이론.pdf)
 
 ### PowerPoint 자료
-- [클라우드실무력강화_활용법(기초)_교재.pdf).pptx](./presentation/클라우드실무력강화_활용법(기초)_교재.pdf).pptx)
+- [클라우드실무력강화_활용법(기초)_교재.pdf).pptx](./presentation/README.md)_교재.pdf).pptx)
 
 ---
 
@@ -266,8 +266,8 @@
 - [Basic to Master 연계 가이드](./textbook/Day2/practice/basic-to-master-bridge.md)
 
 ### 통합 학습 경로
-- [전체 커리큘럼](../curriculum.md)
-- [통합 인덱스](../index.md)
+- [전체 커리큘럼](/curriculum.md)
+- [통합 인덱스](/index.md)
 - [통합 자동화 시스템](../integrated_automation/README.md)
 
 ---
@@ -305,6 +305,6 @@
 
 <div align="center">
 
-[← 이전: [과정명] [일차] 메인](../README.md) | [📚 전체 커리큘럼](../curriculum.md) | [🏠 학습 경로로 돌아가기](../index.md)
+[← 이전: [과정명] [일차] 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
 
 </div>

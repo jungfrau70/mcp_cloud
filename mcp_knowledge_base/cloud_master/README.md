@@ -2,11 +2,11 @@
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](../curriculum.md) | [🏠 학습 경로로 돌아가기](../index.md) | [📋 학습 경로](../learning-path.md)
+[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../../learning-path.md)
 
 </div>
 
-> 📋 **전체 개요**: [README.md](../README.md) | [통합 커리큘럼](../curriculum.md) | [통합 인덱스](../index.md)에서 전체 과정 구조를 확인하세요.
+> 📋 **전체 개요**: [README.md](../README.md) | [통합 커리큘럼](/curriculum.md) | [통합 인덱스](/index.md)에서 전체 과정 구조를 확인하세요.
 
 > 📋 **과정 개요**: [과정상세.md](./과정상세.md)에서 상세한 교육 정보를 확인하세요.
 
@@ -150,7 +150,7 @@ Master 과정을 시작하기 전에 다음을 확인하세요:
 - [ ] 웹 애플리케이션 개발 경험 권장
 - [ ] 프로그래밍 기초 지식 (JavaScript, Python 등)
 
-> **다음 과정**: [Cloud Container 과정](../cloud_container/textbook/Day1/README.md) | [전체 커리큘럼](../curriculum.md) | [🏠 학습 경로로 돌아가기](../index.md)
+> **다음 과정**: [Cloud Container 과정](../cloud_container/textbook/Day1/README.md) | [전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
 
 ### 환경 준비
 - [ ] Docker Desktop 설치 및 설정
