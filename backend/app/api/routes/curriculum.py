@@ -36,6 +36,34 @@ def _encode_filename(filename: str) -> str:
         encoded = urllib.parse.quote(filename, safe='')
         return f"filename*=UTF-8''{encoded}"
 
+def _clean_anchor_links_for_pdf(markdown_content: str) -> str:
+    """PDF 변환을 위해 마크다운 콘텐츠의 앵커 링크 ID를 정리"""
+    import re
+    
+    # 앵커 링크 패턴 찾기: [text](#anchor-id)
+    def clean_anchor_id(match):
+        text = match.group(1)
+        anchor_id = match.group(2)
+        
+        # URL 디코딩
+        try:
+            decoded_id = urllib.parse.unquote(anchor_id)
+        except:
+            decoded_id = anchor_id
+        
+        # 앵커 ID 정리: 특수문자 제거, 공백을 하이픈으로 변환
+        cleaned_id = re.sub(r'[^\w\s가-힣-]', '', decoded_id)
+        cleaned_id = re.sub(r'\s+', '-', cleaned_id)
+        cleaned_id = cleaned_id.strip('-').lower()
+        
+        return f'[{text}](#{cleaned_id})'
+    
+    # 앵커 링크 패턴 매칭 및 정리
+    anchor_pattern = r'\[([^\]]+)\]\(#([^)]+)\)'
+    cleaned_content = re.sub(anchor_pattern, clean_anchor_id, markdown_content)
+    
+    return cleaned_content
+
 
 def _build_tree(show_hidden: bool = False) -> Dict[str, Any]:
     # Simple merge of selected dirs under KB_ROOT
@@ -389,10 +417,14 @@ def download_pdf(path: str):
             markdown_content = fp.read_text(encoding='utf-8', errors='ignore')
             print(f"DEBUG: Read markdown content, length: {len(markdown_content)}")
             
+            # Clean anchor links for PDF conversion
+            cleaned_content = _clean_anchor_links_for_pdf(markdown_content)
+            print(f"DEBUG: Cleaned markdown content for PDF conversion")
+            
             # Convert markdown to PDF
             print(f"DEBUG: Starting PDF conversion for {fp}")
             pdf = MarkdownPdf()
-            pdf.add_section(Section(markdown_content, toc=False))
+            pdf.add_section(Section(cleaned_content, toc=False))
             
             # Save PDF to a BytesIO object
             buffer = BytesIO()
