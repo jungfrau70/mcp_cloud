@@ -1,9 +1,0 @@
-{
-  "categories": [
-    {
-      "name": "aws",
-      "query": "오늘 트렌드",
-      "enabled": true
-    }
-  ]
-}

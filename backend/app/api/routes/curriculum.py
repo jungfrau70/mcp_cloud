@@ -77,7 +77,9 @@ def curriculum_tree(show_hidden: bool = True):
 @router.get('/selection')
 def get_selection():
     print(f"DEBUG: SELECTION_FILE path: {SELECTION_FILE}")
+    print(f"DEBUG: SELECTION_FILE absolute path: {SELECTION_FILE.absolute()}")
     print(f"DEBUG: SELECTION_FILE exists: {SELECTION_FILE.exists()}")
+    print(f"DEBUG: Current working directory: {Path.cwd()}")
     if not SELECTION_FILE.exists():
         print("DEBUG: SELECTION_FILE does not exist, returning empty list")
         return {"selected_dirs": []}
