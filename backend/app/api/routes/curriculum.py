@@ -65,6 +65,7 @@ def _clean_anchor_links_for_pdf(markdown_content: str) -> str:
     # 헤딩 패턴 매칭 및 ID 추가
     heading_pattern = r'^(#{1,6})\s+(.+)$'
     cleaned_content = re.sub(heading_pattern, add_heading_id, markdown_content, flags=re.MULTILINE)
+    print(f"DEBUG: Found {len(re.findall(heading_pattern, markdown_content, flags=re.MULTILINE))} headings")
     
     # 2단계: 앵커 링크 ID 정리
     def clean_anchor_id(match):
@@ -86,6 +87,8 @@ def _clean_anchor_links_for_pdf(markdown_content: str) -> str:
     
     # 앵커 링크 패턴 매칭 및 정리
     anchor_pattern = r'\[([^\]]+)\]\(#([^)]+)\)'
+    anchor_matches = re.findall(anchor_pattern, cleaned_content)
+    print(f"DEBUG: Found {len(anchor_matches)} anchor links")
     cleaned_content = re.sub(anchor_pattern, clean_anchor_id, cleaned_content)
     
     return cleaned_content
@@ -427,36 +430,94 @@ def download_pdf(path: str):
     # Check if it's a markdown file and try to convert to PDF
     if fp.suffix.lower() in ('.md', '.markdown'):
         try:
-            # Import markdown_pdf if available
+            # Try weasyprint first, then fallback to markdown_pdf
             try:
-                from markdown_pdf import MarkdownPdf, Section
+                import markdown
+                from weasyprint import HTML, CSS
+                from weasyprint.text.fonts import FontConfiguration
                 from io import BytesIO
+                
+                # Read markdown content
+                markdown_content = fp.read_text(encoding='utf-8', errors='ignore')
+                print(f"DEBUG: Read markdown content, length: {len(markdown_content)}")
+                
+                # Clean anchor links for PDF conversion
+                cleaned_content = _clean_anchor_links_for_pdf(markdown_content)
+                print(f"DEBUG: Cleaned markdown content for PDF conversion")
+                
+                # Convert markdown to HTML
+                md = markdown.Markdown(extensions=['toc', 'tables', 'fenced_code'])
+                html_content = md.convert(cleaned_content)
+                
+                # Add basic CSS for better PDF formatting
+                css_content = """
+                body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px; }
+                h1, h2, h3, h4, h5, h6 { color: #333; margin-top: 30px; }
+                code { background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; }
+                pre { background-color: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
+                table { border-collapse: collapse; width: 100%; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+                """
+                
+                # Create full HTML document
+                full_html = f"""
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="utf-8">
+                    <title>{stem.name}</title>
+                </head>
+                <body>
+                    {html_content}
+                </body>
+                </html>
+                """
+                
+                # Convert HTML to PDF
+                print(f"DEBUG: Starting HTML to PDF conversion for {fp}")
+                font_config = FontConfiguration()
+                html_doc = HTML(string=full_html)
+                css_doc = CSS(string=css_content, font_config=font_config)
+                
+                buffer = BytesIO()
+                html_doc.write_pdf(buffer, stylesheets=[css_doc], font_config=font_config)
+                buffer.seek(0)
+                print(f"DEBUG: HTML to PDF conversion completed, buffer size: {buffer.getbuffer().nbytes}")
+                
             except ImportError as e:
-                # Fallback to plain text if markdown_pdf not available
-                print(f"DEBUG: markdown_pdf import failed: {e}")
-                text = fp.read_text(encoding='utf-8', errors='ignore')
-                filename = f"{stem.name}.md"
-                encoded_filename = _encode_filename(filename)
-                return PlainTextResponse(text, headers={'Content-Disposition': f'attachment; {encoded_filename}'})
-            
-            # Read markdown content
-            markdown_content = fp.read_text(encoding='utf-8', errors='ignore')
-            print(f"DEBUG: Read markdown content, length: {len(markdown_content)}")
-            
-            # Clean anchor links for PDF conversion
-            cleaned_content = _clean_anchor_links_for_pdf(markdown_content)
-            print(f"DEBUG: Cleaned markdown content for PDF conversion")
-            
-            # Convert markdown to PDF
-            print(f"DEBUG: Starting PDF conversion for {fp}")
-            pdf = MarkdownPdf()
-            pdf.add_section(Section(cleaned_content, toc=False))
-            
-            # Save PDF to a BytesIO object
-            buffer = BytesIO()
-            pdf.save(buffer)
-            buffer.seek(0)
-            print(f"DEBUG: PDF conversion completed, buffer size: {buffer.getbuffer().nbytes}")
+                print(f"DEBUG: weasyprint not available, trying markdown_pdf: {e}")
+                
+                # Fallback to markdown_pdf
+                try:
+                    from markdown_pdf import MarkdownPdf, Section
+                    from io import BytesIO
+                except ImportError as e:
+                    # Final fallback to plain text
+                    print(f"DEBUG: markdown_pdf import failed: {e}")
+                    text = fp.read_text(encoding='utf-8', errors='ignore')
+                    filename = f"{stem.name}.md"
+                    encoded_filename = _encode_filename(filename)
+                    return PlainTextResponse(text, headers={'Content-Disposition': f'attachment; {encoded_filename}'})
+                
+                # Read markdown content
+                markdown_content = fp.read_text(encoding='utf-8', errors='ignore')
+                print(f"DEBUG: Read markdown content, length: {len(markdown_content)}")
+                
+                # Clean anchor links for PDF conversion
+                cleaned_content = _clean_anchor_links_for_pdf(markdown_content)
+                print(f"DEBUG: Cleaned markdown content for PDF conversion")
+                
+                # Convert markdown to PDF
+                print(f"DEBUG: Starting PDF conversion for {fp}")
+                pdf = MarkdownPdf()
+                pdf.add_section(Section(cleaned_content, toc=False))
+                
+                # Save PDF to a BytesIO object
+                buffer = BytesIO()
+                pdf.save(buffer)
+                buffer.seek(0)
+                print(f"DEBUG: PDF conversion completed, buffer size: {buffer.getbuffer().nbytes}")
             
             # Return PDF with proper filename encoding
             pdf_filename = f"{stem.name}.pdf"
