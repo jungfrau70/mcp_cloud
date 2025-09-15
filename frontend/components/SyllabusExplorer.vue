@@ -344,8 +344,27 @@ function getFileName(filePath) {
   if (!filePath) return 'Unknown'
   const parts = filePath.split('/')
   const filename = parts[parts.length - 1] || filePath
+  
   // 한글 파일명을 읽기 쉽게 디코딩
-  return handleKoreanFilename(filename, 'decode')
+  try {
+    // 먼저 handleKoreanFilename으로 처리
+    let decoded = handleKoreanFilename(filename, 'decode')
+    
+    // 추가로 URL 디코딩이 필요한 경우 처리
+    if (decoded !== filename && /%[0-9A-Fa-f]{2}/.test(decoded)) {
+      decoded = decodeURIComponent(decoded)
+    }
+    
+    // 최종적으로 한글이 제대로 표시되는지 확인
+    if (/[가-힣]/.test(decoded)) {
+      return decoded
+    }
+    
+    return decoded
+  } catch (error) {
+    console.warn('Failed to decode filename:', filename, error)
+    return filename
+  }
 }
 
 function deleteTopic(id) {
