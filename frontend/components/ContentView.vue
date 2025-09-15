@@ -74,6 +74,59 @@ const emit = defineEmits(['navigate-tool']);
 const contentContainer = ref(null);
 const isLoading = ref(false);
 
+// 최근 파일 관리
+const userKey = 'guest';
+const recentFilesKey = `recent_files_${userKey}`;
+const recentFiles = ref([]);
+
+// 최근 파일 관련 함수들
+function loadRecentFiles() {
+  try {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      const saved = localStorage.getItem(recentFilesKey);
+      recentFiles.value = saved ? JSON.parse(saved) : [];
+    } else {
+      recentFiles.value = [];
+    }
+  } catch {
+    recentFiles.value = [];
+  }
+}
+
+function saveRecentFiles() {
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    localStorage.setItem(recentFilesKey, JSON.stringify(recentFiles.value));
+  }
+}
+
+function addToRecentFiles(filePath) {
+  if (!filePath) return;
+  
+  // 기존 항목 제거 (중복 방지)
+  recentFiles.value = recentFiles.value.filter(file => file.path !== filePath);
+  
+  // 새 항목을 맨 앞에 추가
+  const fileName = getFileName(filePath);
+  recentFiles.value.unshift({
+    path: filePath,
+    name: fileName,
+    timestamp: Date.now()
+  });
+  
+  // 최대 10개까지만 유지
+  if (recentFiles.value.length > 10) {
+    recentFiles.value = recentFiles.value.slice(0, 10);
+  }
+  
+  saveRecentFiles();
+}
+
+function getFileName(filePath) {
+  if (!filePath) return 'Unknown';
+  const parts = filePath.split('/');
+  return parts[parts.length - 1] || 'Unknown';
+}
+
 // Title (first heading) extraction
 const titleText = computed(() => {
   if (!props.content) return '';
@@ -545,6 +598,9 @@ const setupLinkIntercepts = async () => {
     targetPath = preventPathDuplication(targetPath);
     targetPath = prepareApiPath(targetPath);
 
+    // Add to recent files list when navigating to internal documents
+    addToRecentFiles(targetPath);
+
     // Set loading state
     isLoading.value = true;
 
@@ -572,6 +628,7 @@ const setupLinkIntercepts = async () => {
 };
 
 onMounted(() => {
+  loadRecentFiles();
   setupLinkIntercepts()
   setupDetailsHandlers()
   setupCodeBlockHandlers()
