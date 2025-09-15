@@ -40,7 +40,33 @@ def _clean_anchor_links_for_pdf(markdown_content: str) -> str:
     """PDF 변환을 위해 마크다운 콘텐츠의 앵커 링크 ID를 정리"""
     import re
     
-    # 앵커 링크 패턴 찾기: [text](#anchor-id)
+    def generate_heading_id(text: str) -> str:
+        """헤딩 텍스트에서 ID 생성"""
+        # 이모지 제거
+        text = re.sub(r'[^\w\s가-힣]', '', text)
+        # 공백을 하이픈으로 변환
+        text = re.sub(r'\s+', '-', text)
+        # 앞뒤 하이픈 제거 및 소문자 변환
+        return text.strip('-').lower()
+    
+    # 1단계: 헤딩에 명시적 ID 추가
+    def add_heading_id(match):
+        level = match.group(1)
+        text = match.group(2).strip()
+        
+        # 이미 ID가 있는지 확인
+        if '{#' in text and '}' in text:
+            return match.group(0)
+        
+        # ID 생성
+        heading_id = generate_heading_id(text)
+        return f"{level} {text} {{#{heading_id}}}"
+    
+    # 헤딩 패턴 매칭 및 ID 추가
+    heading_pattern = r'^(#{1,6})\s+(.+)$'
+    cleaned_content = re.sub(heading_pattern, add_heading_id, markdown_content, flags=re.MULTILINE)
+    
+    # 2단계: 앵커 링크 ID 정리
     def clean_anchor_id(match):
         text = match.group(1)
         anchor_id = match.group(2)
@@ -60,7 +86,7 @@ def _clean_anchor_links_for_pdf(markdown_content: str) -> str:
     
     # 앵커 링크 패턴 매칭 및 정리
     anchor_pattern = r'\[([^\]]+)\]\(#([^)]+)\)'
-    cleaned_content = re.sub(anchor_pattern, clean_anchor_id, markdown_content)
+    cleaned_content = re.sub(anchor_pattern, clean_anchor_id, cleaned_content)
     
     return cleaned_content
 
