@@ -1,0 +1,44 @@
+{
+  "course_name": "Cloud Container",
+  "duration_days": 2,
+  "prerequisites": ["cloud_master"],
+  "learning_objectives": [
+    "Kubernetes 클러스터 구축 및 관리",
+    "GKE, EKS, AKS 클러스터 운영",
+    "컨테이너 오케스트레이션 실습",
+    "고가용성 아키텍처 설계",
+    "모니터링 및 로깅 설정"
+  ],
+  "practical_exercises": [
+    "Kubernetes 기본 실습",
+    "GKE 클러스터 생성",
+    "ECS/Fargate 배포",
+    "Helm 차트 관리",
+    "모니터링 설정"
+  ],
+  "environment_setup": {
+    "kubernetes_version": "1.28",
+    "gke_cluster_type": "standard",
+    "helm_version": "3.12",
+    "monitoring_stack": "prometheus-grafana"
+  },
+  "shared_resources": {
+    "kubernetes_resources": [
+      "Cluster",
+      "Namespaces",
+      "ConfigMaps",
+      "Secrets"
+    ],
+    "helm_resources": [
+      "Charts",
+      "Releases",
+      "Repositories"
+    ],
+    "monitoring_resources": [
+      "Prometheus",
+      "Grafana",
+      "AlertManager"
+    ]
+  },
+  "previous_course": "cloud_master"
+}

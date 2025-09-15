@@ -1,0 +1,40 @@
+{
+  "course_name": "Cloud Basic",
+  "duration_days": 2,
+  "prerequisites": [],
+  "learning_objectives": [
+    "AWS 계정 생성 및 기본 설정",
+    "EC2 인스턴스 생성 및 관리",
+    "S3 스토리지 서비스 활용",
+    "VPC 네트워킹 기초",
+    "IAM 보안 정책 이해"
+  ],
+  "practical_exercises": [
+    "AWS 계정 설정",
+    "EC2 인스턴스 생성",
+    "S3 버킷 생성 및 파일 업로드",
+    "VPC 네트워크 구성",
+    "IAM 사용자 및 권한 관리"
+  ],
+  "environment_setup": {
+    "aws_region": "us-west-2",
+    "instance_type": "t2.micro",
+    "storage_type": "gp2",
+    "vpc_cidr": "10.0.0.0/16"
+  },
+  "shared_resources": {
+    "aws_resources": [
+      "VPC",
+      "Subnet",
+      "Security Group",
+      "S3 Bucket",
+      "IAM Role"
+    ],
+    "gcp_resources": [
+      "Project",
+      "Network",
+      "Subnet"
+    ]
+  },
+  "next_course": "cloud_master"
+}

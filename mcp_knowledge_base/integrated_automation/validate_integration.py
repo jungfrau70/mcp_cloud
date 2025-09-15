@@ -112,9 +112,9 @@ class IntegrationValidator:
             results["course_automation_scripts"][course_name] = exists
             
             if exists:
-                logger.info(f"✅ {course_name} 자동화 스크립트 존재")
+                logger.info(f"✅ {course_name} 자동화 스크립트 존재: {automation_script}")
             else:
-                logger.warning(f"❌ {course_name} 자동화 스크립트 누락")
+                logger.warning(f"❌ {course_name} 자동화 스크립트 누락: {automation_script}")
                 results["overall_status"] = "failed"
         
         # 브리지 스크립트 검증
@@ -232,12 +232,13 @@ class IntegrationValidator:
         
         for tool in required_tools:
             try:
-                # 도구 버전 확인
+                # 도구 버전 확인 (현재 환경의 PATH 사용)
                 result = subprocess.run(
                     [tool, "--version"], 
                     capture_output=True, 
                     text=True, 
-                    timeout=10
+                    timeout=10,
+                    env=os.environ.copy()
                 )
                 
                 if result.returncode == 0:

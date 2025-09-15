@@ -27,25 +27,31 @@ class CourseConnectionValidator:
     
     def __init__(self, base_path: Path):
         self.base_path = base_path
-        self.integrated_path = base_path / "integrated_automation"
+        if base_path.name == "integrated_automation":
+            self.integrated_path = base_path
+            parent_path = base_path.parent
+        else:
+            self.integrated_path = base_path / "integrated_automation"
+            parent_path = base_path
+            
         self.results_path = self.integrated_path / "results"
         
         # 과정별 경로
         self.courses = {
             "cloud_basic": {
-                "path": base_path / "cloud_basic",
-                "automation_script": "basic_course_automation.py",
+                "path": parent_path / "cloud_basic",
+                "automation_script": "cloud_basic_course_automation.py",
                 "next_course": "cloud_master"
             },
             "cloud_master": {
-                "path": base_path / "cloud_master",
-                "automation_script": "master_course_automation.py",
+                "path": parent_path / "cloud_master",
+                "automation_script": "cloud_master_course_automation.py",
                 "next_course": "cloud_container",
                 "prev_course": "cloud_basic"
             },
             "cloud_container": {
-                "path": base_path / "cloud_container",
-                "automation_script": "container_course_automation.py",
+                "path": parent_path / "cloud_container",
+                "automation_script": "cloud_container_course_automation.py",
                 "prev_course": "cloud_master"
             }
         }
