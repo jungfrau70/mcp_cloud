@@ -4,9 +4,9 @@
       <h3 class="text-lg font-semibold whitespace-nowrap text-gray-800">
         카테고리
       </h3>
-      <button @click="toggleHiddenFiles" class="px-2 py-1 text-xs border rounded" :class="showHiddenFiles ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'" title="숨김 파일 표시/숨김">
+      <!-- <button @click="toggleHiddenFiles" class="px-2 py-1 text-xs border rounded" :class="showHiddenFiles ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'" title="숨김 파일 표시/숨김">
         {{ showHiddenFiles ? '숨김 파일 숨기기' : '숨김 파일 보기' }}
-      </button>
+      </button> -->
     </div>
     <div v-if="loading">Loading...</div>
     <div v-if="error">{{ error }}</div>
@@ -122,7 +122,7 @@ const kbTree = ref(null);
 const curriculumTree = ref(null);
 const loading = ref(false);
 const error = ref(null);
-const showHiddenFiles = ref(true); // 기본값을 true로 설정하여 숨김파일이 기본적으로 보이도록 함
+const showHiddenFiles = ref(false); // 기본값을 false로 설정하여 숨김파일이 기본적으로 숨겨지도록 함
 // 관리자 설정 UI는 지식베이스로 이동
 
 const config = useRuntimeConfig()
@@ -431,25 +431,25 @@ const onFileClick = (path) => {
   emit('file-click', path);
 };
 
-// Toggle hidden files visibility
-const toggleHiddenFiles = async () => {
-  showHiddenFiles.value = !showHiddenFiles.value;
-  loading.value = true;
-  try {
-    // KB 전체 트리 다시 로드
-    const r1 = await fetch(`${apiBase}/v1/knowledge-base/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
-    if (r1.ok) {
-      kbTree.value = await r1.json();
-    }
-    
-    // 커리큘럼 트리도 다시 로드
-    await loadcurriculumTreeIfCurriculum();
-  } catch (e) {
-    error.value = e.message;
-  } finally {
-    loading.value = false;
-  }
-};
+// Toggle hidden files visibility - 제거됨 (버튼이 제거되어 더 이상 사용되지 않음)
+// const toggleHiddenFiles = async () => {
+//   showHiddenFiles.value = !showHiddenFiles.value;
+//   loading.value = true;
+//   try {
+//     // KB 전체 트리 다시 로드
+//     const r1 = await fetch(`${apiBase}/v1/knowledge-base/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
+//     if (r1.ok) {
+//       kbTree.value = await r1.json();
+//     }
+//     
+//     // 커리큘럼 트리도 다시 로드
+//     await loadcurriculumTreeIfCurriculum();
+//   } catch (e) {
+//     error.value = e.message;
+//   } finally {
+//     loading.value = false;
+//   }
+// };
 
 async function loadcurriculumTreeIfCurriculum(){
   if (curriculumLoading.value) return

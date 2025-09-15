@@ -411,8 +411,8 @@ class CloudContainerAutomation(AutomationBase):
 
 def main():
     """메인 함수"""
-    # 설정 로드
-    config_path = Path(__file__).parent.parent.parent / "shared_configs" / "unified_config.json"
+    # 자동화 스크립트 전용 설정 로드
+    config_path = Path(__file__).parent.parent.parent / "shared_configs" / "automation_config.json"
     with open(config_path, 'r', encoding='utf-8') as f:
         config = json.load(f)
     

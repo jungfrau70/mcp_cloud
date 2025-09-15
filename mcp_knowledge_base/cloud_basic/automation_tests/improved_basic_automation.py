@@ -447,24 +447,28 @@ def main():
     
     # 설정 로드
     try:
-        config_path = Path(__file__).parent.parent.parent / "shared_configs" / "unified_config.json"
+        config_path = Path(__file__).parent.parent.parent / "shared_configs" / "automation_config.json"
         with open(config_path, 'r', encoding='utf-8') as f:
             config = json.load(f)
     except FileNotFoundError:
-        print("❌ 오류: 설정 파일을 찾을 수 없습니다.")
-        print("경로: shared_configs/unified_config.json")
+        print("❌ 오류: 자동화 설정 파일을 찾을 수 없습니다.")
+        print("경로: mcp_knowledge_base/shared_configs/automation_config.json")
         return 1
     except json.JSONDecodeError:
-        print("❌ 오류: 설정 파일 형식이 올바르지 않습니다.")
+        print("❌ 오류: 자동화 설정 파일 형식이 올바르지 않습니다.")
         return 1
     
-    # Cloud Basic 설정
+    # Cloud Basic 설정 (자동화 전용 설정에서 로드)
     basic_config = {
         'course_name': 'basic',
         'day': day,
         'project_prefix': config['automation']['project_prefix'],
         'aws_region': config['cloud_providers']['aws']['region'],
-        'gcp_region': config['cloud_providers']['gcp']['region']
+        'gcp_region': config['cloud_providers']['gcp']['region'],
+        'base_directory': config['automation']['base_directory'],
+        'results_directory': config['automation']['results_directory'],
+        'logs_directory': config['automation']['logs_directory'],
+        'course_config': config['courses']['cloud_basic']
     }
     
     print(f"🚀 Cloud Basic Day{day} 자동화 시작...")

@@ -1,0 +1,106 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2024-12-01T10:00:00Z",
+  "description": "자동화 스크립트 전용 설정 파일",
+  "automation": {
+    "base_directory": "mcp_knowledge_base",
+    "results_directory": "automation_results",
+    "logs_directory": "logs",
+    "project_prefix": "cloud-training",
+    "default_encoding": "utf-8"
+  },
+  "cloud_providers": {
+    "aws": {
+      "region": "us-west-2",
+      "default_instance_type": "t2.micro",
+      "default_storage_type": "gp2",
+      "free_tier_enabled": true
+    },
+    "gcp": {
+      "region": "us-central1",
+      "zone": "us-central1-a",
+      "default_machine_type": "e2-micro",
+      "free_tier_enabled": true,
+      "credits": 300
+    }
+  },
+  "courses": {
+    "cloud_basic": {
+      "enabled": true,
+      "path": "mcp_knowledge_base/cloud_basic/",
+      "automation_script": "mcp_knowledge_base/cloud_basic/automation_tests/improved_basic_automation.py",
+      "config_file": "mcp_knowledge_base/cloud_basic/automation_tests/cloud_basic_config.json",
+      "days": 2,
+      "learning_objectives": [
+        "클라우드 컴퓨팅 기본 개념 이해",
+        "AWS와 GCP 서비스 개요 및 비교",
+        "IAM을 통한 사용자 및 권한 관리",
+        "가상머신, 스토리지, 네트워크 서비스 기본 활용"
+      ],
+      "resources": {
+        "aws": ["VPC", "Subnet", "SecurityGroup", "EC2", "S3", "RDS", "IAM"],
+        "gcp": ["VPC", "Subnet", "FirewallRule", "ComputeEngine", "CloudStorage", "CloudSQL", "IAM"]
+      }
+    },
+    "cloud_master": {
+      "enabled": true,
+      "path": "mcp_knowledge_base/cloud_master/",
+      "automation_script": "mcp_knowledge_base/cloud_master/automation_tests/improved_master_automation.py",
+      "config_file": "mcp_knowledge_base/cloud_master/automation_tests/cloud_master_config.json",
+      "days": 3,
+      "learning_objectives": [
+        "Docker를 활용한 웹 애플리케이션 컨테이너화",
+        "Git/GitHub을 통한 버전 관리 및 협업",
+        "GitHub Actions로 기본 CI/CD 파이프라인 구축",
+        "VM 기반 웹 애플리케이션 배포 및 기본 운영"
+      ],
+      "resources": {
+        "docker": ["Images", "Containers", "Dockerfile", "DockerCompose"],
+        "github": ["Repository", "Actions", "Secrets", "Environments"],
+        "aws": ["EC2", "ECS", "Fargate", "ELB", "AutoScaling"]
+      }
+    },
+    "cloud_container": {
+      "enabled": true,
+      "path": "mcp_knowledge_base/cloud_container/",
+      "automation_script": "mcp_knowledge_base/cloud_container/automation_tests/improved_container_automation.py",
+      "config_file": "mcp_knowledge_base/cloud_container/automation_tests/cloud_container_config.json",
+      "days": 2,
+      "learning_objectives": [
+        "Kubernetes 클러스터 아키텍처 이해",
+        "GKE 클러스터 생성 및 고급 설정",
+        "마이크로서비스 아키텍처 구성",
+        "ECS Fargate 서비스 배포"
+      ],
+      "resources": {
+        "k8s": ["Cluster", "Deployment", "Service", "Ingress", "ConfigMap", "Secret"],
+        "gke": ["Cluster", "NodePool", "Workload", "Service"],
+        "aws": ["ECS", "Fargate", "ALB", "AutoScaling"]
+      }
+    }
+  },
+  "automation_settings": {
+    "timeout": 300,
+    "retry_count": 3,
+    "parallel_execution": false,
+    "cleanup_after_completion": true,
+    "cost_monitoring": true,
+    "resource_tagging": true
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file_rotation": true,
+    "max_file_size": "10MB",
+    "backup_count": 5
+  },
+  "monitoring": {
+    "enabled": true,
+    "metrics_collection": true,
+    "alert_thresholds": {
+      "cpu_usage": 80,
+      "memory_usage": 80,
+      "cost_limit": 50
+    }
+  }
+}
