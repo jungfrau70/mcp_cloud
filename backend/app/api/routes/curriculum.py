@@ -377,8 +377,9 @@ def download_pdf(path: str):
             try:
                 from markdown_pdf import MarkdownPdf, Section
                 from io import BytesIO
-            except ImportError:
+            except ImportError as e:
                 # Fallback to plain text if markdown_pdf not available
+                print(f"DEBUG: markdown_pdf import failed: {e}")
                 text = fp.read_text(encoding='utf-8', errors='ignore')
                 filename = f"{stem.name}.md"
                 encoded_filename = _encode_filename(filename)
@@ -386,8 +387,10 @@ def download_pdf(path: str):
             
             # Read markdown content
             markdown_content = fp.read_text(encoding='utf-8', errors='ignore')
+            print(f"DEBUG: Read markdown content, length: {len(markdown_content)}")
             
             # Convert markdown to PDF
+            print(f"DEBUG: Starting PDF conversion for {fp}")
             pdf = MarkdownPdf()
             pdf.add_section(Section(markdown_content, toc=False))
             
@@ -395,6 +398,7 @@ def download_pdf(path: str):
             buffer = BytesIO()
             pdf.save(buffer)
             buffer.seek(0)
+            print(f"DEBUG: PDF conversion completed, buffer size: {buffer.getbuffer().nbytes}")
             
             # Return PDF with proper filename encoding
             pdf_filename = f"{stem.name}.pdf"
@@ -408,6 +412,7 @@ def download_pdf(path: str):
             
         except Exception as e:
             # If PDF conversion fails, fallback to markdown text
+            print(f"DEBUG: PDF conversion failed for {fp}: {e}")
             text = fp.read_text(encoding='utf-8', errors='ignore')
             filename = f"{stem.name}.md"
             encoded_filename = _encode_filename(filename)
