@@ -40,7 +40,7 @@
     </div>
 
     <!-- 커리큘럼 설정 상태 표시 -->
-    <div v-if="selectedDirs.length === 0" class="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+    <!-- <div v-if="selectedDirs.length === 0" class="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2">
           <div class="w-2 h-2 bg-yellow-400 rounded-full"></div>
@@ -53,7 +53,7 @@
           설정하기
         </button>
       </div>
-    </div>
+    </div> -->
 
     <!-- 학습 진척률 표시 -->
     <div v-if="displayTree && selectedDirs.length > 0" class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
