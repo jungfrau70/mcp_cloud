@@ -96,6 +96,7 @@ services:
       - terraform_modules_data:/app/terraform_modules
       - ./backend/env/alpha-ktixap-43e9bf90eb00.json:/app/gcp-sa-key.json
       - ./mcp_knowledge_base:/mcp_knowledge_base
+      - ./.slides_selection.json:/.slides_selection.json  # 선택 설정 파일만 마운트
       - hf_cache:/cache/hf
       - azure_config:/root/.azure
       - aws_config:/root/.aws
