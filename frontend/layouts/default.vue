@@ -35,7 +35,7 @@
                 <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.188l3.71-3.957a.75.75 0 111.08 1.04l-4.25 4.53a.75.75 0 01-1.08 0l-4.25-4.53a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
               </button>
               <div v-if="userMenuOpen" class="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-30" role="menu">
-                <button @click="openProfileModal" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">프로파일</button>
+                <button @click="() => { window.profileModalClicked = true; openProfileModal(); }" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">프로파일</button>
                 <button @click="onLogout" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">로그아웃</button>
               </div>
             </div>
@@ -408,6 +408,19 @@ const savingProfile = ref(false)
 
 async function openProfileModal(){
   console.log('openProfileModal called', new Error().stack)
+  console.log('openProfileModal called from:', new Error().stack?.split('\n')[2])
+  
+  // 임시로 자동 호출 방지 - 사용자가 직접 클릭한 경우만 허용
+  if (typeof window !== 'undefined' && !window.profileModalClicked) {
+    console.log('Profile modal auto-called, preventing...')
+    return
+  }
+  
+  // 플래그 리셋
+  if (typeof window !== 'undefined') {
+    window.profileModalClicked = false
+  }
+  
   try{
     const base = (config.public?.apiBaseUrl) || '/api'
     const data = await $fetch(`${base}/v1/profile/me`, {

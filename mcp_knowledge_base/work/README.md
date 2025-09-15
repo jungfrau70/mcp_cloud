@@ -136,3 +136,12 @@ https://api.goldencircle.us/api/v1/curriculum?curriculum_path=cloud_master%2Ftex
 
 
 mcp_knowledge_base 디렉토리 하위에 구성된, cloud_basic, cloud_master, cloud_container 과정과 integrated_automation 자동화 코드 확인 후, 각 과정이 맥락에 맞게 구성되었는지 실습 코드 포함하여 점검 및 개선 방안 제시  (단, 현재 과정 유지 조건, 질문 필수)
+
+
+파일에 읽고 쓰는 api 와 해당 파일 위치를 찾아 줘
+
+frontend 프로젝트에서 프로젝트 루트 디렉토리에 있는 .slides_selection.json 파일을 읽고 쓰는 API를 호출하는 코드는 어디에 있는지 찾아 줘. 
+
+강의 계획 관련하여 backend 와 frontend 가 적절하게 동작되도록 되어 있는지 점검해 줘. 
+
+.slides_selection.json 파일에 있는 디렉토리 아래 있는 파일을 보여 지게 되어 있는거라는 거지?
