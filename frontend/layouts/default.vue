@@ -214,6 +214,11 @@ async function fetchCurrentUser(){
   // 클라이언트 사이드에서만 실행
   if (!isClient) return;
   
+  // 프로필 모달 자동 열림 방지
+  if (typeof window !== 'undefined') {
+    window.profileModalClicked = false
+  }
+  
   try {
     if (!auth.token) { 
       user.value = null; 
@@ -282,6 +287,11 @@ onMounted(async () => {
     // 드롭다운 메뉴가 자동으로 열리지 않도록 보장
     userMenuOpen.value = false
     console.log('onMounted: userMenuOpen set to false')
+    
+    // 프로필 모달 자동 열림 방지
+    if (typeof window !== 'undefined') {
+      window.profileModalClicked = false
+    }
   } catch (e) {
     user.value = null;
   }
@@ -419,7 +429,7 @@ async function openProfileModal(){
   console.log('openProfileModal called', new Error().stack)
   console.log('openProfileModal called from:', new Error().stack?.split('\n')[2])
   
-  // 임시로 자동 호출 방지 - 사용자가 직접 클릭한 경우만 허용
+  // 자동 호출 방지 - 사용자가 직접 클릭한 경우만 허용
   if (typeof window !== 'undefined' && !window.profileModalClicked) {
     console.log('Profile modal auto-called, preventing...')
     return
@@ -505,6 +515,11 @@ onMounted(async () => {
   // 드롭다운 메뉴가 자동으로 열리지 않도록 보장
   userMenuOpen.value = false
   console.log('second onMounted: userMenuOpen set to false')
+  
+  // 프로필 모달 자동 열림 방지
+  if (typeof window !== 'undefined') {
+    window.profileModalClicked = false
+  }
   
   if (isKnowledgeBase.value) {
     if (!isAdmin.value) {
