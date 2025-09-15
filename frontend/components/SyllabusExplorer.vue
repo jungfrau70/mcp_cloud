@@ -23,7 +23,7 @@
           <button 
             class="text-left text-sm w-full truncate px-2 py-1 rounded hover:bg-gray-100 flex items-center" 
             @click="onFileClick(file.path)" 
-            :title="file.path"
+            :title="getDisplayPath(file.path)"
           >
             <span class="mr-2">📄</span>
             <span class="truncate">{{ getFileName(file.path) }}</span>
@@ -364,6 +364,34 @@ function getFileName(filePath) {
   } catch (error) {
     console.warn('Failed to decode filename:', filename, error)
     return filename
+  }
+}
+
+function getDisplayPath(filePath) {
+  if (!filePath) return 'Unknown'
+  
+  // 전체 경로를 한글로 디코딩하여 표시용으로 사용
+  try {
+    // 경로를 세그먼트별로 분리하여 각각 디코딩
+    const parts = filePath.split('/')
+    const decodedParts = parts.map(part => {
+      if (!part) return part
+      
+      // 한글이 포함된 세그먼트만 디코딩
+      if (/[가-힣]/.test(part) || /%[0-9A-Fa-f]{2}/.test(part)) {
+        try {
+          return decodeURIComponent(part)
+        } catch {
+          return part
+        }
+      }
+      return part
+    })
+    
+    return decodedParts.join('/')
+  } catch (error) {
+    console.warn('Failed to decode display path:', filePath, error)
+    return filePath
   }
 }
 

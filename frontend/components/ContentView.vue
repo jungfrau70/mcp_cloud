@@ -7,13 +7,13 @@
         <button
           @click="navigateToFileTree"
           class="flex items-center space-x-1 hover:text-blue-600 transition-colors"
-          :title="`FileTree에서 '${path}' 위치로 이동`"
+          :title="`FileTree에서 '${getDisplayPath(path)}' 위치로 이동`"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
           </svg>
-          <span class="font-medium">{{ path }}</span>
+          <span class="font-medium">{{ getDisplayPath(path) }}</span>
         </button>
       </div>
       
@@ -61,7 +61,7 @@ import { marked } from 'marked';
 import mermaid from 'mermaid';
 import embedVega from 'vega-embed';
 import DOMPurify from 'dompurify'
-import { cleanApiPath, deepCleanApiPath, isDirectoryPath, normalizeDirectoryPath, preventPathDuplication, prepareApiPath } from '~/utils/path'
+import { cleanApiPath, deepCleanApiPath, isDirectoryPath, normalizeDirectoryPath, preventPathDuplication, prepareApiPath, handleKoreanFilename } from '~/utils/path'
 
 const props = defineProps({
   content: String,
@@ -270,6 +270,27 @@ const setupCodeBlockHandlers = () => {
 };
 
 // FileTree로 네비게이션하는 함수
+const getDisplayPath = (filePath) => {
+  if (!filePath) return 'Unknown'
+  
+  // 전체 경로를 한글로 디코딩하여 표시용으로 사용
+  try {
+    // 경로를 세그먼트별로 분리하여 각각 디코딩
+    const parts = filePath.split('/')
+    const decodedParts = parts.map(part => {
+      if (!part) return part
+      
+      // handleKoreanFilename을 사용하여 디코딩
+      return handleKoreanFilename(part, 'decode')
+    })
+    
+    return decodedParts.join('/')
+  } catch (error) {
+    console.warn('Failed to decode display path:', filePath, error)
+    return filePath
+  }
+}
+
 const navigateToFileTree = () => {
   if (!props.path) return;
   
@@ -283,7 +304,7 @@ const navigateToFileTree = () => {
     // 간단한 토스트 메시지 (toast가 없는 경우를 대비)
     const toast = document.createElement('div');
     toast.className = 'fixed top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded shadow-lg z-50';
-    toast.textContent = `FileTree에서 "${props.path}" 위치로 이동합니다`;
+    toast.textContent = `FileTree에서 "${getDisplayPath(props.path)}" 위치로 이동합니다`;
     document.body.appendChild(toast);
     
     setTimeout(() => {
