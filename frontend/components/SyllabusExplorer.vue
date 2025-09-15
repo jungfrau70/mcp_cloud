@@ -122,7 +122,7 @@ const kbTree = ref(null);
 const curriculumTree = ref(null);
 const loading = ref(false);
 const error = ref(null);
-const showHiddenFiles = ref(false); // 기본값을 false로 설정하여 숨김파일이 기본적으로 숨겨지도록 함
+const showHiddenFiles = ref(true); // 기본값을 true로 설정하여 숨김파일이 기본적으로 보이도록 함
 // 관리자 설정 UI는 지식베이스로 이동
 
 const config = useRuntimeConfig()
