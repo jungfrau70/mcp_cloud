@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../../learning-path.md)
+[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md)
 
 </div>
 
@@ -22,6 +22,107 @@
 ---
 
 ## 📚 과정 구성
+
+### Day 0: Install
+
+#### 🛠️ 필수 도구 설치
+
+Cloud Master 과정을 시작하기 전에 다음 도구들을 설치해야 합니다:
+
+##### 1. Git 설치 및 설정
+- **목적**: 버전 관리 및 GitHub 연동
+- **가이드**: [Git 설치 가이드](install/install_git.md)
+- **설치 확인**:
+  ```bash
+  git --version
+  git config --global user.name "Your Name"
+  git config --global user.email "your.email@example.com"
+  ```
+
+##### 2. Docker 설치 및 설정
+- **목적**: 컨테이너 기반 애플리케이션 배포
+- **가이드**: [Docker 설치 가이드](install/install_docker.md)
+- **설치 확인**:
+  ```bash
+  docker --version
+  docker run hello-world
+  ```
+
+##### 3. AWS CLI 설치 및 설정
+- **목적**: AWS 서비스와의 상호작용
+- **가이드**: [AWS CLI 설치 가이드](install/install_aws_cli.md)
+- **설치 확인**:
+  ```bash
+  aws --version
+  aws configure
+  ```
+
+##### 4. Azure CLI 설치 및 설정
+- **목적**: Azure 서비스와의 상호작용
+- **가이드**: [Azure CLI 설치 가이드](install/install_azure_cli.md)
+- **설치 확인**:
+  ```bash
+  az --version
+  az login
+  ```
+
+##### 5. Google Cloud CLI 설치 및 설정
+- **목적**: GCP 서비스와의 상호작용
+- **가이드**: [Google Cloud CLI 설치 가이드](install/install_glcoud_cli.md)
+- **설치 확인**:
+  ```bash
+  gcloud --version
+  gcloud auth login
+  ```
+
+##### 6. GitHub Actions 설정
+- **목적**: CI/CD 파이프라인 구축
+- **가이드**: [GitHub Actions 완전 가이드](install/github-actions-complete-guide.md)
+- **설치 확인**:
+  ```bash
+  # GitHub 저장소 생성 및 Actions 활성화
+  # .github/workflows/ 디렉토리 생성
+  ```
+
+#### 🔧 설치 스크립트 (자동화)
+
+각 클라우드 플랫폼별 자동 설치 스크립트를 제공합니다:
+
+- **AWS 환경**: [install_git_aws.sh](install/install_git_aws.sh)
+- **Azure 환경**: [install_git_azure.sh](install/install_git_azure.sh)
+- **GCP 환경**: [install_git_gcp.sh](install/install_git_gcp.sh)
+
+#### 📋 설치 체크리스트
+
+- [ ] Git 설치 및 사용자 정보 설정
+- [ ] Docker 설치 및 실행 확인
+- [ ] AWS CLI 설치 및 자격 증명 설정
+- [ ] Azure CLI 설치 및 로그인
+- [ ] Google Cloud CLI 설치 및 인증
+- [ ] GitHub 계정 생성 및 SSH 키 설정
+- [ ] GitHub Actions 워크플로우 이해
+- [ ] 모든 도구 버전 확인
+
+#### ⚠️ 주의사항
+
+1. **시스템 요구사항**: 각 도구별 최소 시스템 요구사항 확인
+2. **권한 설정**: Docker 사용자 그룹 추가 및 권한 설정
+3. **네트워크 설정**: 프록시 환경에서의 추가 설정 필요
+4. **보안**: 클라우드 계정 자격 증명 안전한 관리
+
+#### 🆘 문제 해결
+
+설치 과정에서 문제가 발생하면 각 설치 가이드의 "문제 해결" 섹션을 참조하세요:
+
+- [Git 문제 해결](install/install_git.md#문제-해결)
+- [Docker 문제 해결](install/install_docker.md#문제-해결)
+- [AWS CLI 문제 해결](install/install_aws_cli.md#문제-해결)
+- [Azure CLI 문제 해결](install/install_azure_cli.md#문제-해결)
+- [Google Cloud CLI 문제 해결](install/install_glcoud_cli.md#문제-해결)
+
+#### 🎯 다음 단계
+
+모든 도구 설치가 완료되면 [Day 1: AWS & GCP 고급 아키텍처](textbook/Day1/README.md)로 진행하세요.
 
 ### Day 1: Docker, Git/GitHub, GitHub Actions 기초
 - **1교시**: Docker 기초 및 컨테이너 기술

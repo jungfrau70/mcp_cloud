@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Basic 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../../../learning-path.md)
+[← 이전: Cloud Basic 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md)
 
 </div>
 
@@ -143,7 +143,6 @@ Azure는 Role-Based Access Control (RBAC) 방식으로 권한을 부여합니다
 
 **조건부 액세스(Conditions)**를 통해 특정 서비스나 리소스 범위 제한 가능.
 
-
 ---
 
 ## ✅ 최종 권한 구조
@@ -159,8 +158,6 @@ Azure는 Role-Based Access Control (RBAC) 방식으로 권한을 부여합니다
 - **Billing Administrator**: 결제 정보, 청구서, 비용 분석, 예산 관리
 
 > 💡 **결과**: `hong.gildong@<domain-name>.com`은 초기 가입 계정(백업 관리자)으로 두고, 실제 운영은 `itadmin`이 **Entra ID + Azure 리소스 + 비용 관리 풀 관리자** 권한으로 운영할 수 있습니다.
-
-
 
 ---
 
@@ -223,7 +220,6 @@ New-AzRoleAssignment -SignInName "itadmin@<tenant>.onmicrosoft.com" -RoleDefinit
    - `Global Administrator` 선택 → **할당 추가(Add assignments)**
    - **그룹(Group)** 탭 선택 → `Global-Admins` 그룹 선택
 3. **Microsoft Entra ID → 그룹(Groups)** → `Global-Admins` → **멤버 추가** → `itadmin` 선택
-
 
 ### Q2: "할당 추가(Add assignments)" 버튼이 안 보여요
 
@@ -292,7 +288,6 @@ New-AzRoleAssignment -SignInName "itadmin@<tenant>.onmicrosoft.com" -RoleDefinit
 
 > 💡 **권장**: 완전한 비용 관리를 위해서는 **두 역할을 모두** 부여하는 것이 좋습니다.
 
-
 ---
 
 ## 🔐 보안 권장사항
@@ -332,5 +327,4 @@ New-AzRoleAssignment -SignInName "itadmin@<tenant>.onmicrosoft.com" -RoleDefinit
 ### 지원 채널
 - [Azure 지원 센터](https://azure.microsoft.com/ko-kr/support/)
 - [Microsoft 커뮤니티 포럼](https://docs.microsoft.com/ko-kr/answers/topics/azure-active-directory.html)
-
 

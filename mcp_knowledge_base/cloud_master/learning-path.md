@@ -3,9 +3,6 @@
 > 📋 **전체 개요**: [README.md](../README.md) | [통합 커리큘럼](/curriculum.md) | [통합 인덱스](/index.md)에서 전체 과정 구조를 확인하세요.
 
 <div align="center">
-
-[← 이전: [과정명] [일차] 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
-
 </div>
 
 ---
@@ -358,8 +355,6 @@
 - **오피스 아워**: 매주 화요일, 목요일 14:00-16:00
 
 ---
-
-<div align="center">
 
 [← 이전: [과정명] [일차] 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
 

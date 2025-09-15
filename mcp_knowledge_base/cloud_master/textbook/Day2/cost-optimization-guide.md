@@ -1,16 +1,12 @@
+<div align="center">
+
+[← 이전: Cloud Master 2일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [← 이전: Cloud Master 메인](../README.md) | [📋 학습 경로](../learning-path.md) | [← 이전: Cloud Master 1일차](../Day1/README) | [다음: 모니터링 가이드 →](./monitoring-guide)
+
+</div>
+
 # 2교시: 클라우드 과금 예측 및 리소스 비용 최적화 실습
 
-<div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
-
-</div>
-
-<div align="center">
-
-[← 이전: Cloud Master 2일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
-
-</div>
 
 ## 📋 목차
 1. [비용 예측 개념 이해](#비용-예측-개념-이해)
@@ -686,8 +682,3 @@ echo "=== GCP 예산 관리 완료 ==="
 
 ---
 
-<div align="center">
-
-[← 이전: Cloud Master 1일차](../Day1/README) | [📚 전체 커리큘럼](/curriculum.md) | [다음: 모니터링 가이드 →](./monitoring-guide)
-
-</div>

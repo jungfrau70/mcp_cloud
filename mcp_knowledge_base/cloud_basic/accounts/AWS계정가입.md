@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Basic 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../../../learning-path.md)
+[← 이전: Cloud Basic 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md)
 
 </div>
 
@@ -41,7 +41,6 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
    - 콘솔 암호: **사용자 지정 암호** 선택 → 안전한 암호 설정
 
 ---
-
 
 ## 3️⃣ IAM 관리자 권한 부여
 

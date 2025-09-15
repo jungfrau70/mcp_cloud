@@ -1,10 +1,12 @@
-# Cloud Basic - 2일차: 네트워킹, 보안, 데이터베이스 실습
-
 <div align="center">
 
-[← 이전: Cloud Basic 1일차](../Day1/README.md) | [다음: Cloud Basic 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../../learning-path.md)
+[← 이전: Cloud Basic 1일차](../Day1/README.md) | [다음: Cloud Basic 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md) | [다음 과정: Cloud Master 1일차 →](../../../cloud_master/textbook/Day1/README.md)
 
 </div>
+
+# Cloud Basic - 2일차: 네트워킹, 보안, 데이터베이스 실습
+
+
 
 <details>
 <summary>📋 목차</summary>
@@ -535,8 +537,3 @@ telnet RDS_ENDPOINT 3306
 
 **🎯 이제 클라우드 기초 서비스의 모든 기본기를 갖추었습니다! Cloud Intermediate 과정으로 진행하세요.**
 
-<div align="center">
-
-[← 이전: Cloud Basic 1일차](../Day1/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [다음 과정: Cloud Master 1일차 →](../../../cloud_master/textbook/Day1/README.md)
-
-</div>

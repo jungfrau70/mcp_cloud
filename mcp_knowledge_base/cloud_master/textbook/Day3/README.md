@@ -1,10 +1,12 @@
-# Cloud Master - 3일차: 로드 밸런싱, 모니터링, 비용 최적화
-
 <div align="center">
 
-[← 이전: Cloud Master 2일차](../Day2/README.md) | [다음: Cloud Master 3일차 →](../Day3/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md)
+[← 이전: Cloud Master 2일차](../Day2/README.md) | [다음: Cloud Master 3일차 →](../Day3/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md) | [다음 과정: Cloud Container 1일차 →](../../../cloud_container/textbook/Day1/README.md)
 
 </div>
+
+# Cloud Master - 3일차: 로드 밸런싱, 모니터링, 비용 최적화
+
+
 
 <details>
 <summary>📋 목차</summary>
@@ -708,8 +710,4 @@ aws cloudwatch get-metric-statistics \
 
 **🎯 이제 고급 클라우드 운영 기술을 갖추었습니다! Cloud Container 과정으로 진행하세요.**
 
-<div align="center">
 
-[← 이전: Cloud Master 2일차](../Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [다음 과정: Cloud Container 1일차 →](../../../cloud_container/textbook/Day1/README.md)
-
-</div>

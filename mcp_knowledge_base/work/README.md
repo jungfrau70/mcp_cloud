@@ -29,9 +29,7 @@
 * 맥락: 과정간: mcp_knowledge_base\curriculum.md -> 과정별: 과정명, 과정상세 -> 과정내: textbook간, 코드간
 * 참고) 섹션사용 textbook : mcp_knowledge_base\cloud_master\textbook\Day1\cloud-deployment-guide.md
 
-
 ## 요청4) 각 과정의 모든 markdown 문서들이 섹션과 링크 기능을 활용하여 맥락을 쉽게 파악하고 사용자 친화적으로 UI 가 구성될 수 있도록 고도화 되어 있는지 점검해 줘
-
 
 ---
 # 실습 코드 작성
@@ -40,7 +38,6 @@
 
 google cloud 에 프로젝트, 네트워크 및 VM 생성 및 설정 스크립트로, 스크립트가 중단되어도 다시 시작할 때 기존 리소스를 재사용하도록 수정. (각 스크립트에 리소스 존재 확인 및 재사용 로직을 추가)
 
-
 # 2025-09-12
 
 1) 아래 파일을 보고, 관련 내용간 링크를 추가해 줘. README.md 는 container 과정 처럼 작성하면 좋겠어
@@ -48,7 +45,6 @@ google cloud 에 프로젝트, 네트워크 및 VM 생성 및 설정 스크립�
 mcp_knowledge_base\cloud_master\README.md
 mcp_knowledge_base\cloud_master\과정명.md
 mcp_knowledge_base\cloud_master\과정상세.md
-
 
 요청2) 이제, 전체 관점에서 아래 파일을 보고, 관련 내용간 링크를 추가해 줘. mcp_knowledge_base\README.md 는 필요 시 작성하면 좋겠어
 
@@ -65,13 +61,11 @@ mcp_knowledge_base\cloud_container\README.md
 mcp_knowledge_base\cloud_container\과정명.md
 mcp_knowledge_base\cloud_container\과정상세.m
 
-
 요청3) 아래 파일들은 Master 과정 디렉토리 내 파일인데, 내용이 이에 부합하게 작성되었는지 확인해 줘
 
 mcp_knowledge_base\cloud_master\README.md
 mcp_knowledge_base\cloud_master\과정명.md
 mcp_knowledge_base\cloud_master\과정상세.md
-
 
 요청4) 위 세개의 파일들이 Master 과정 교구들 (mcp_knowledge_base\cloud_master 디렉토리 내 파일들)과  맥락적으로 연계 되었는지, 특히 mcp_knowledge_base\cloud_master\textbook 내 교재들은 전수 조사해 줘.
 
@@ -89,7 +83,6 @@ README 파일
    mcp_knowledge_base\cloud_master\textbook\Day1\practice\git-github-basics.md
    mcp_knowledge_base\cloud_master\textbook\Day1\practice\github-actions-basics.md
    mcp_knowledge_base\cloud_master\textbook\Day1\practice\vm-deployment.md
-
 
 요청7) 페이지 이동 시, 이동 후 해당 페이지 상단이 보여지게
 
@@ -115,12 +108,10 @@ https://api.goldencircle.us/api/v1/curriculum?curriculum_path=cloud_master%2Ftex
   형식(절대/상대)으로 작성되었는지에 따라 애플리케이션이 다르게 반응하기
   때문입니다.
 
-
    * 슬래시(/)로 시작하는 절대 경로 스타일 링크는 정상적으로 동작합니다.
   따라서 이 현상은 무작위로 발생하는 것이 아니라, 링크의 작성 방식에 따라
   결정론적으로 발생하는 문제입니다.
 이슈3) 오류를 일으키는 링크: "상대 경로" 스타일에 대한 해결책은?
-
 
 2025-09-15
 
@@ -133,10 +124,7 @@ https://api.goldencircle.us/api/v1/curriculum?curriculum_path=cloud_master%2Ftex
 
 7. docs 디렉토리내 모든 문서를 점검하여, 현재 시스템 목적과 현재에 부합하게 내용 현행화 (수정)
 
-
-
 mcp_knowledge_base 디렉토리 하위에 구성된, cloud_basic, cloud_master, cloud_container 과정과 integrated_automation 자동화 코드 확인 후, 각 과정이 맥락에 맞게 구성되었는지 실습 코드 포함하여 점검 및 개선 방안 제시  (단, 현재 과정 유지 조건, 질문 필수)
-
 
 파일에 읽고 쓰는 api 와 해당 파일 위치를 찾아 줘
 

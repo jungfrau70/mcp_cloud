@@ -1,10 +1,12 @@
-# AWS & GCP 멀티클라우드 배포 가이드
-
 <div align="center">
 
-[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
+[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md) | [← 이전: GitHub Actions 가이드](./github-actions-guide) | [다음: CI/CD 파이프라인 가이드 →](./cicd-pipeline-guide)
 
 </div>
+
+# AWS & GCP 멀티클라우드 배포 가이드
+
+
 
 ## 📋 목차
 1. [개요](#개요)
@@ -494,8 +496,3 @@ gcloud logging read "resource.type=cloud_run_revision AND resource.labels.servic
 
 ---
 
-<div align="center">
-
-[← 이전: GitHub Actions 가이드](./github-actions-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: CI/CD 파이프라인 가이드 →](./cicd-pipeline-guide)
-
-</div>

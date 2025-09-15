@@ -100,24 +100,32 @@ function saveRecentFiles() {
 }
 
 function addToRecentFiles(filePath) {
-  if (!filePath) return;
+  if (!filePath) {
+    console.log('addToRecentFiles: filePath is empty');
+    return;
+  }
+  
+  console.log('addToRecentFiles called with:', filePath);
   
   // 기존 항목 제거 (중복 방지)
   recentFiles.value = recentFiles.value.filter(file => file.path !== filePath);
   
   // 새 항목을 맨 앞에 추가
   const fileName = getFileName(filePath);
-  recentFiles.value.unshift({
+  const newFile = {
     path: filePath,
     name: fileName,
     timestamp: Date.now()
-  });
+  };
+  
+  recentFiles.value.unshift(newFile);
   
   // 최대 10개까지만 유지
   if (recentFiles.value.length > 10) {
     recentFiles.value = recentFiles.value.slice(0, 10);
   }
   
+  console.log('Recent files updated:', recentFiles.value);
   saveRecentFiles();
 }
 
@@ -125,6 +133,40 @@ function getFileName(filePath) {
   if (!filePath) return 'Unknown';
   const parts = filePath.split('/');
   return parts[parts.length - 1] || 'Unknown';
+}
+
+function resolveRelativePath(currentPath, relativePath) {
+  if (!currentPath || !relativePath) return relativePath;
+  
+  // 절대 경로인 경우 그대로 반환
+  if (relativePath.startsWith('/')) {
+    return relativePath;
+  }
+  
+  // 현재 경로에서 디렉토리 부분 추출
+  const currentDir = currentPath.substring(0, currentPath.lastIndexOf('/'));
+  
+  // 상대 경로 해석
+  const parts = relativePath.split('/');
+  let result = currentDir;
+  
+  for (const part of parts) {
+    if (part === '..') {
+      // 상위 디렉토리로 이동
+      const lastSlash = result.lastIndexOf('/');
+      if (lastSlash > 0) {
+        result = result.substring(0, lastSlash);
+      }
+    } else if (part === '.') {
+      // 현재 디렉토리 (변화 없음)
+      continue;
+    } else if (part) {
+      // 하위 디렉토리 또는 파일
+      result = result ? `${result}/${part}` : part;
+    }
+  }
+  
+  return result;
 }
 
 // Title (first heading) extraction
@@ -599,6 +641,7 @@ const setupLinkIntercepts = async () => {
     targetPath = prepareApiPath(targetPath);
 
     // Add to recent files list when navigating to internal documents
+    console.log('Adding to recent files:', targetPath);
     addToRecentFiles(targetPath);
 
     // Set loading state

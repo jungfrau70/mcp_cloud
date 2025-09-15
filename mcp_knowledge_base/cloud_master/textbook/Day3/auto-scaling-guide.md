@@ -1,16 +1,12 @@
+<div align="center">
+
+[← 이전: Cloud Master 3일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [← 이전: Cloud Master 메인](../README.md) | [📋 학습 경로](../learning-path.md) | [← 이전: 로드 밸런싱 가이드](./load-balancing-guide) | [다음: 통합 가이드 →](./integration-guide)
+
+</div>
+
 # 2교시: 오토 스케일링 기본 개념 및 실습
 
-<div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
-
-</div>
-
-<div align="center">
-
-[← 이전: Cloud Master 3일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
-
-</div>
 
 ## 📋 목차
 1. [오토 스케일링 개념 이해](#오토-스케일링-개념-이해)
@@ -643,8 +639,3 @@ gcloud compute instance-groups managed set-autoscaling web-servers-mig \
 
 ---
 
-<div align="center">
-
-[← 이전: 로드 밸런싱 가이드](./load-balancing-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: 통합 가이드 →](./integration-guide)
-
-</div>

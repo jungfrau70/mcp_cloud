@@ -1,16 +1,12 @@
+<div align="center">
+
+[← 이전: Cloud Master 3일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [← 이전: Cloud Master 메인](../README.md) | [📋 학습 경로](../learning-path.md) | [← 이전: 오토 스케일링 가이드](./auto-scaling-guide) | [다음: 장애 복구 가이드 →](./disaster-recovery-guide)
+
+</div>
+
 # 3교시: 로드 밸런서 + 오토스케일링 연동 및 상태 점검
 
-<div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
-
-</div>
-
-<div align="center">
-
-[← 이전: Cloud Master 3일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
-
-</div>
 
 ## 📋 목차
 1. [연동 아키텍처 이해](#연동-아키텍처-이해)
@@ -586,11 +582,7 @@ gcloud compute instance-templates update web-server-template \
 
 ---
 
-<div align="center">
 
-[← 이전: 오토 스케일링 가이드](./auto-scaling-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: 장애 복구 가이드 →](./disaster-recovery-guide)
-
-</div>
 
 ## 🔄 자가 치유(Self-healing) 시스템
 

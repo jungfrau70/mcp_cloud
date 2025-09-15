@@ -1,16 +1,12 @@
+<div align="center">
+
+[← 이전: Cloud Master 2일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [← 이전: Cloud Master 메인](../README.md) | [📋 학습 경로](../learning-path.md) | [← 이전: 모니터링 가이드](./monitoring-guide) | [다음: Cloud Master 3일차 →](../Day3/README)
+
+</div>
+
 # 4교시: 종합 실습 - 컨테이너 자동 배포 + 로드밸런싱 + 오토스케일링
 
-<div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
-
-</div>
-
-<div align="center">
-
-[← 이전: Cloud Master 2일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
-
-</div>
 
 ## 📋 목차
 1. [종합 실습 개요](#종합-실습-개요)
@@ -824,8 +820,3 @@ echo "=== 부하 테스트 및 스케일링 확인 완료 ==="
 
 ---
 
-<div align="center">
-
-[← 이전: 모니터링 가이드](./monitoring-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: Cloud Master 3일차 →](../Day3/README)
-
-</div>

@@ -1,10 +1,12 @@
-# Cloud Master - 1일차: Docker, Git/GitHub, GitHub Actions 기초
-
 <div align="center">
 
-[← 이전: Cloud Master 1일차 메인](../README.md) | [다음: Cloud Master 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md)
+[← 이전: Cloud Master 1일차 메인](../README.md) | [다음: Cloud Master 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md) | [← 이전 과정: Cloud Basic 2일차](../../../cloud_basic/textbook/Day2/README.md)
 
 </div>
+
+# Cloud Master - 1일차: Docker, Git/GitHub, GitHub Actions 기초
+
+
 
 <details>
 <summary>📋 목차</summary>
@@ -919,8 +921,3 @@ ssh -T git@github.com
 
 **🎯 이제 Docker, Git/GitHub, GitHub Actions의 기본기를 갖추었습니다! Cloud Master 2일차로 진행하세요.**
 
-<div align="center">
-
-[← 이전 과정: Cloud Basic 2일차](../../../cloud_basic/textbook/Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [다음: Cloud Master 2일차 →](../Day2/README.md)
-
-</div>

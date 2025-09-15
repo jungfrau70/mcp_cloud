@@ -101,8 +101,6 @@ Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일)
 
 <div align="center">
 
-**🎯 클라우드 실무력 강화 과정을 시작하세요!**
 
-*체계적인 3단계 과정을 통해 클라우드 전문가로 성장하세요.*
 
 </div>

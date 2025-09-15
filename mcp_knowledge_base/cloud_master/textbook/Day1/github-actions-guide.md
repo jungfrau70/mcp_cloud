@@ -1,10 +1,12 @@
-# 2교시: GitHub Actions로 CI/CD 구성
-
 <div align="center">
 
-[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
+[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md) | [← 이전: Docker 고급 가이드](./docker-advanced-guide) | [다음: 클라우드 배포 가이드 →](./cloud-deployment-guide)
 
 </div>
+
+# 2교시: GitHub Actions로 CI/CD 구성
+
+
 
 ## 📋 목차
 1. [CI/CD 개념 이해](#cicd-개념-이해)
@@ -1117,8 +1119,4 @@ docker rm actions-demo-prod
 
 ---
 
-<div align="center">
 
-[← 이전: Docker 고급 가이드](./docker-advanced-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: 클라우드 배포 가이드 →](./cloud-deployment-guide)
-
-</div>

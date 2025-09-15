@@ -1,16 +1,12 @@
+<div align="center">
+
+[← 이전: Cloud Master 2일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [← 이전: Cloud Master 메인](../README.md) | [📋 학습 경로](../learning-path.md) | [← 이전: 종합 실습 가이드](./comprehensive-practice-guide) | [다음: Cloud Master 3일차 →](../Day3/README)
+
+</div>
+
 # 트러블슈팅 가이드
 
-<div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
-
-</div>
-
-<div align="center">
-
-[← 이전: Cloud Master 2일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
-
-</div>
 
 ## 📋 목차
 1. [비용 관리 관련 문제](#비용-관리-관련-문제)
@@ -610,8 +606,3 @@ kubectl logs POD_NAME --previous
 
 ---
 
-<div align="center">
-
-[← 이전: 종합 실습 가이드](./comprehensive-practice-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: Cloud Master 3일차 →](../Day3/README)
-
-</div>

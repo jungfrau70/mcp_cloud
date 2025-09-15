@@ -1,16 +1,12 @@
+<div align="center">
+
+[← 이전: Cloud Master 3일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [← 이전: Cloud Master 메인](../README.md) | [📋 학습 경로](../learning-path.md) | [← 이전: Cloud Master 2일차](../Day2/README) | [다음: 오토 스케일링 가이드 →](./auto-scaling-guide)
+
+</div>
+
 # 1교시: 고가용성 및 로드 밸런싱
 
-<div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
-
-</div>
-
-<div align="center">
-
-[← 이전: Cloud Master 3일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
-
-</div>
 
 ## 📋 목차
 1. [고가용성 개념 이해](#고가용성-개념-이해)
@@ -561,8 +557,3 @@ gcloud compute forwarding-rules create web-https-forwarding-rule \
 
 ---
 
-<div align="center">
-
-[← 이전: Cloud Master 2일차](../Day2/README) | [📚 전체 커리큘럼](/curriculum.md) | [다음: 오토 스케일링 가이드 →](./auto-scaling-guide)
-
-</div>

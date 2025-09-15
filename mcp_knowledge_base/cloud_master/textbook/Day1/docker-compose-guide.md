@@ -1,10 +1,12 @@
-# 1교시: Docker 개념과 Compose 실습
-
 <div align="center">
 
-[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
+[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md) | [← 이전: Docker 고급 가이드](./docker-advanced-guide) | [다음: GitHub Actions 가이드 →](./github-actions-guide)
 
 </div>
+
+# 1교시: Docker 개념과 Compose 실습
+
+
 
 ## 📋 목차
 1. [Docker 개념 이해](#docker-개념-이해)
@@ -557,8 +559,4 @@ app.listen(port, () => {
 
 ---
 
-<div align="center">
 
-[← 이전: Docker 고급 가이드](./docker-advanced-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: GitHub Actions 가이드 →](./github-actions-guide)
-
-</div>

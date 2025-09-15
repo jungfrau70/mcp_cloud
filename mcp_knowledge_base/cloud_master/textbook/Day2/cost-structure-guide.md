@@ -1,16 +1,12 @@
+<div align="center">
+
+[← 이전: Cloud Master 2일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [← 이전: Cloud Master 메인](../README.md) | [📋 학습 경로](../learning-path.md) | [← 이전: Cloud Master 1일차](../Day1/README) | [다음: 비용 최적화 가이드 →](./cost-optimization-guide)
+
+</div>
+
 # 1교시: 클라우드 비용 구조와 서비스 과금 체계 이해
 
-<div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
-
-</div>
-
-<div align="center">
-
-[← 이전: Cloud Master 2일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
-
-</div>
 
 ## 📋 목차
 1. [클라우드 비용 구조 이해](#클라우드-비용-구조-이해)
@@ -641,8 +637,3 @@ gcloud alpha billing budgets create \
 
 ---
 
-<div align="center">
-
-[← 이전: Cloud Master 1일차](../Day1/README) | [📚 전체 커리큘럼](/curriculum.md) | [다음: 비용 최적화 가이드 →](./cost-optimization-guide)
-
-</div>

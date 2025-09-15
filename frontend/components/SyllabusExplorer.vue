@@ -560,6 +560,24 @@ onMounted(async () => {
       curriculumTree.value = null // 캐시 초기화
       loadcurriculumTreeIfCurriculum()
     })
+    
+    // localStorage 변경 감지하여 최근 파일 목록 업데이트
+    const handleStorageChange = (e) => {
+      if (e.key === recentFilesKey) {
+        loadRecentFiles()
+      }
+    }
+    
+    window.addEventListener('storage', handleStorageChange)
+    
+    // 같은 탭 내에서의 localStorage 변경도 감지
+    const originalSetItem = localStorage.setItem
+    localStorage.setItem = function(key, value) {
+      originalSetItem.apply(this, arguments)
+      if (key === recentFilesKey) {
+        loadRecentFiles()
+      }
+    }
   }
 });
 

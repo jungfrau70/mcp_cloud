@@ -1,10 +1,12 @@
-# Cloud Master - 2일차: 고급 CI/CD 및 VM 기반 컨테이너 배포
-
 <div align="center">
 
-[← 이전: Cloud Master 1일차](../Day1/README.md) | [다음: Cloud Master 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md)
+[← 이전: Cloud Master 1일차](../Day1/README.md) | [다음: Cloud Master 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md) | [다음: Cloud Master 3일차 →](../Day3/README.md)
 
 </div>
+
+# Cloud Master - 2일차: 고급 CI/CD 및 VM 기반 컨테이너 배포
+
+
 
 <details>
 <summary>📋 목차</summary>
@@ -701,8 +703,3 @@ jobs:
 - **로드 밸런싱**: 트래픽 분산 및 고가용성
 - **자동 복구**: 장애 발생 시 자동 복구 시스템
 
-<div align="center">
-
-[← 이전: Cloud Master 1일차](../Day1/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [다음: Cloud Master 3일차 →](../Day3/README.md)
-
-</div>

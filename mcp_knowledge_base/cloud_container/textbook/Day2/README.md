@@ -1,10 +1,12 @@
-# Cloud Container - 2일차: 고가용성 및 확장성 아키텍처
-
 <div align="center">
 
-[← 이전: Cloud Container 1일차](../Day1/README.md) | [다음: Cloud Container 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../../learning-path.md)
+[← 이전: Cloud Container 1일차](../Day1/README.md) | [다음: Cloud Container 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md)
 
 </div>
+
+# Cloud Container - 2일차: 고가용성 및 확장성 아키텍처
+
+
 
 <details>
 <summary>📋 목차</summary>
@@ -385,8 +387,3 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 
 **🎯 이제 클라우드 컨테이너 기술의 모든 기본기를 갖추었습니다! 실제 프로젝트에 적용해보세요.**
 
-<div align="center">
-
-[← 이전: Cloud Container 1일차](../Day1/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
-
-</div>

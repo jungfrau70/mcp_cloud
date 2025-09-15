@@ -1,16 +1,12 @@
+<div align="center">
+
+[← 이전: Cloud Master 2일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [← 이전: Cloud Master 메인](../README.md) | [📋 학습 경로](../learning-path.md) | [← 이전: Cloud Master 1일차](../Day1/README) | [다음: 종합 실습 가이드 →](./comprehensive-practice-guide)
+
+</div>
+
 # 3교시: CloudWatch / Cloud Monitoring을 활용한 서비스 모니터링 실습
 
-<div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
-
-</div>
-
-<div align="center">
-
-[← 이전: Cloud Master 2일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
-
-</div>
 
 ## 📋 목차
 1. [모니터링 개념 이해](#모니터링-개념-이해)
@@ -880,8 +876,3 @@ echo "=== GCP 커스텀 메트릭 전송 완료 ==="
 
 ---
 
-<div align="center">
-
-[← 이전: Cloud Master 1일차](../Day1/README) | [📚 전체 커리큘럼](/curriculum.md) | [다음: 종합 실습 가이드 →](./comprehensive-practice-guide)
-
-</div>

@@ -1,10 +1,12 @@
-# Cloud Container - 1일차: Kubernetes 및 GKE 고급 오케스트레이션
-
 <div align="center">
 
-[← 이전: Cloud Container 1일차 메인](../README.md) | [다음: Cloud Container 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../../learning-path.md)
+[← 이전: Cloud Container 1일차 메인](../README.md) | [다음: Cloud Container 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md) | [← 이전 과정: Cloud Master 3일차](../../../cloud_master/textbook/Day3/README.md)
 
 </div>
+
+# Cloud Container - 1일차: Kubernetes 및 GKE 고급 오케스트레이션
+
+
 
 <details>
 <summary>📋 목차</summary>
@@ -979,8 +981,3 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 **🎯 이제 Kubernetes와 컨테이너 오케스트레이션의 기본기를 갖추었습니다! 2일차 실습으로 진행하세요.**
 
-<div align="center">
-
-[← 이전 과정: Cloud Master 3일차](../../../cloud_master/textbook/Day3/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [다음: Cloud Container 2일차 →](../Day2/README.md)
-
-</div>

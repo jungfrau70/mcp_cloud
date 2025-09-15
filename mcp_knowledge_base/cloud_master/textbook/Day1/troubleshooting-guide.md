@@ -1,10 +1,12 @@
-# 트러블슈팅 가이드
-
 <div align="center">
 
-[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
+[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md) | [← 이전: CI/CD 파이프라인 가이드](./cicd-pipeline-guide) | [다음: Cloud Master 2일차 →](../Day2/README)
 
 </div>
+
+# 트러블슈팅 가이드
+
+
 
 ## 📋 목차
 1. [Docker 관련 문제](#docker-관련-문제)
@@ -740,10 +742,6 @@ kubectl top pods
 
 ---
 
-<div align="center">
 
-[← 이전: CI/CD 파이프라인 가이드](./cicd-pipeline-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: Cloud Master 2일차 →](../Day2/README)
-
-</div>
 
 ## GCP Cloud Run 관련 문제
