@@ -31,23 +31,22 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      // 브라우저에서 접근 가능한 호스트로 기본값 설정
-      // 로컬 개발 서버를 기본으로 하고, 환경변수가 있으면 원래 URL 사용
-      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || '/api',
-      wsBaseUrl: process.env.NUXT_PUBLIC_WS_BASE_URL || 'ws://localhost:8000/api',
+      // 프로덕션 환경에서는 https://api.goldencircle.us 사용
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'https://api.goldencircle.us',
+      wsBaseUrl: process.env.NUXT_PUBLIC_WS_BASE_URL || 'wss://api.goldencircle.us/api',
       // Public API Key for X-API-Key header (fallback to MCP_API_KEY if present)
       apiKey: process.env.NUXT_PUBLIC_API_KEY || process.env.MCP_API_KEY || 'my_mcp_eagle_tiger'
     }
   },
   nitro: {
     routeRules: {
-      '/api/**': { proxy: process.env.NUXT_PUBLIC_API_BASE_URL ? `${process.env.NUXT_PUBLIC_API_BASE_URL}/api/**` : 'http://localhost:8000/api/**' },
+      '/api/**': { proxy: process.env.NUXT_PUBLIC_API_BASE_URL ? `${process.env.NUXT_PUBLIC_API_BASE_URL}/api/**` : 'https://api.goldencircle.us/api/**' },
     },
     devProxy: {
       '/api': { 
-        target: process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:8000', 
+        target: process.env.NUXT_PUBLIC_API_BASE_URL || 'https://api.goldencircle.us', 
         changeOrigin: true, 
-        secure: process.env.NUXT_PUBLIC_API_BASE_URL?.startsWith('https') || false 
+        secure: true
       },
     },
   },

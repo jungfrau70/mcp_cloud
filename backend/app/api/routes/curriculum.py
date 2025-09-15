@@ -66,7 +66,7 @@ def _build_tree(show_hidden: bool = False) -> Dict[str, Any]:
     return data
 
 @router.get('/tree')
-def curriculum_tree(show_hidden: bool = False):
+def curriculum_tree(show_hidden: bool = True):
     """
     커리큘럼의 디렉토리 구조를 JSON 형태로 반환합니다.
     show_hidden: 숨김 파일과 디렉토리(점으로 시작하는)를 포함할지 여부
@@ -76,12 +76,20 @@ def curriculum_tree(show_hidden: bool = False):
 
 @router.get('/selection')
 def get_selection():
+    print(f"DEBUG: SELECTION_FILE path: {SELECTION_FILE}")
+    print(f"DEBUG: SELECTION_FILE exists: {SELECTION_FILE.exists()}")
     if not SELECTION_FILE.exists():
+        print("DEBUG: SELECTION_FILE does not exist, returning empty list")
         return {"selected_dirs": []}
     try:
         import json
-        return {"selected_dirs": json.loads(SELECTION_FILE.read_text())}
-    except Exception:
+        content = SELECTION_FILE.read_text()
+        print(f"DEBUG: SELECTION_FILE content: {content}")
+        result = json.loads(content)
+        print(f"DEBUG: Parsed result: {result}")
+        return {"selected_dirs": result}
+    except Exception as e:
+        print(f"DEBUG: Exception reading SELECTION_FILE: {e}")
         return {"selected_dirs": []}
 
 @router.post('/selection', dependencies=[Depends(get_api_key)])
