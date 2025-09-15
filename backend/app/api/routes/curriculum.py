@@ -61,7 +61,8 @@ def _build_tree(show_hidden: bool = False) -> Dict[str, Any]:
     for rel in selected:
         p = (KB_ROOT / rel).resolve()
         if p.exists() and str(p).startswith(str(KB_ROOT)):
-            data[rel.split('/')[-1]] = build(p)
+            # 전체 경로를 키로 사용하여 중복 방지
+            data[rel] = build(p)
     return data
 
 @router.get('/tree')

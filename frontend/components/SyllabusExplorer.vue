@@ -458,16 +458,23 @@ async function loadcurriculumTreeIfCurriculum(){
     const p = String(route?.path || '')
     if (!(p.startsWith('/curriculum') || p.startsWith('/textbook'))) return
     curriculumLoading.value = true
+    console.log('🔍 커리큘럼 트리 로드 시작...')
+    
     // 선택 디렉토리
     const r2 = await fetch(`${apiBase}/v1/curriculum/selection`, { headers: { 'X-API-Key': apiKey } });
     const sel = await r2.json();
     selectedDirs.value = Array.isArray(sel?.selected_dirs) ? sel.selected_dirs : []
+    console.log('📁 선택된 디렉토리:', selectedDirs.value)
+    
     // 선택 디렉토리를 기준으로 서버가 머지한 트리 가져오기 (중첩 경로 지원)
     const r3 = await fetch(`${apiBase}/v1/curriculum/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
     if (r3.ok) {
       curriculumTree.value = await r3.json();
+      console.log('🌳 커리큘럼 트리 로드 완료:', curriculumTree.value)
       // 진척률 업데이트
       updateProgress();
+    } else {
+      console.error('❌ 커리큘럼 트리 로드 실패:', r3.status, r3.statusText)
     }
   } finally { curriculumLoading.value = false }
 }
@@ -596,14 +603,29 @@ const openCurriculum = () => {
 // 선택된 디렉토리만 필터링해 표시
 const selectedDirs = ref([])
 const displayTree = computed(() => {
+  console.log('🔄 displayTree 계산 중...')
+  console.log('📊 curriculumTree:', curriculumTree.value)
+  console.log('📊 kbTree:', kbTree.value)
+  console.log('📊 selectedDirs:', selectedDirs.value)
+  
   // curriculumTree가 있으면 우선 사용 (서버에서 중첩 경로 포함 머지된 결과)
-  if (curriculumTree.value) return curriculumTree.value
+  if (curriculumTree.value) {
+    console.log('✅ curriculumTree 사용')
+    return curriculumTree.value
+  }
+  
   // fallback: 기존 KB 트리 + 1레벨 필터
   const t = kbTree.value || {}
   const picked = selectedDirs.value || []
-  if(!picked.length) return t
+  if(!picked.length) {
+    console.log('⚠️ 선택된 디렉토리 없음, 전체 KB 트리 사용')
+    return t
+  }
+  
+  console.log('🔧 KB 트리에서 필터링 적용')
   const filtered = {}
   for(const key of picked){ if(t[key]) filtered[key] = t[key] }
+  console.log('📋 필터링된 트리:', filtered)
   return filtered
 })
 </script>
