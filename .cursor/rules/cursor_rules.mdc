@@ -1,53 +1,79 @@
 ---
-description: Guidelines for creating and maintaining Cursor rules to ensure consistency and effectiveness.
-globs: .cursor/rules/*.mdc
+description: AI 활용 교육 교구 시스템의 전반적인 규칙과 가이드라인
+globs: "**/*.py", "**/*.ts", "**/*.vue", "**/*.json", "**/*.md"
 alwaysApply: true
 ---
 
-- **Required Rule Structure:**
-  ```markdown
-  ---
-  description: Clear, one-line description of what the rule enforces
-  globs: path/to/files/*.ext, other/path/**/*
-  alwaysApply: boolean
-  ---
+# AI 활용 교육 교구 시스템 규칙
 
-  - **Main Points in Bold**
-    - Sub-points with details
-    - Examples and explanations
-  ```
+## 🎯 시스템 목표
+- **교육 커리큘럼 작성자**: 직관적이고 효율적인 교육 자료 작성 지원
+- **교육자**: 수강자에게 최고의 교육 경험 제공  
+- **수강자**: 체계적이고 일관된 학습 경험
+- **AI 에이전트**: 교육 과정 자동화 및 개인화 지원
 
-- **File References:**
-  - Use `[filename](mdc:path/to/file)` ([filename](mdc:filename)) to reference files
-  - Example: [prisma.mdc](mdc:.cursor/rules/prisma.mdc) for rule references
-  - Example: [schema.prisma](mdc:prisma/schema.prisma) for code references
+## 📚 교육 교구 시스템 구조
+- **Frontend**: Nuxt.js 기반의 Vue.js 교육 플랫폼
+- **Backend**: FastAPI 기반의 Python 서버
+- **Database**: PostgreSQL (교육 자료 및 진도 관리)
+- **Cache**: Redis (성능 최적화)
+- **AI Integration**: 교육 도구 AI 에이전트
 
-- **Code Examples:**
-  - Use language-specific code blocks
-  ```typescript
-  // ✅ DO: Show good examples
-  const goodExample = true;
-  
-  // ❌ DON'T: Show anti-patterns
-  const badExample = false;
-  ```
+## 🎨 코드 스타일 (교육 도구 특화)
+- **Python**: PEP 8 스타일 가이드 준수, 교육용 주석 필수
+- **TypeScript**: ESLint와 Prettier 설정 준수, 타입 안정성 강화
+- **Vue.js**: Vue 3 Composition API 사용, 접근성 고려
 
-- **Rule Content Guidelines:**
-  - Start with high-level overview
-  - Include specific, actionable requirements
-  - Show examples of correct implementation
-  - Reference existing code when possible
-  - Keep rules DRY by referencing other rules
+## 🌐 언어 규칙 (교육 특화)
+- **코드**: 주석포함 모두 영어 (국제 표준)
+- **대화**: 한글 (한국 교육자/수강자 대상)
+- **문서**: 한글 중심, 영어 기술 용어 병기
+- **사용자 인터페이스**: 한글 우선, 직관적 용어 사용
 
-- **Rule Maintenance:**
-  - Update rules when new patterns emerge
-  - Add examples from actual codebase
-  - Remove outdated patterns
-  - Cross-reference related rules
+## 📖 교육 자료 관리 규칙
+- **문서 연결 무결성**: 모든 앵커 링크 100% 정상 작동
+- **제목 일관성**: 교육 과정별 일관된 제목 체계
+- **실습 가이드**: 단계별 명확한 실습 지침
+- **진도 관리**: 학습자 진도 추적 및 관리
 
-- **Best Practices:**
-  - Use bullet points for clarity
-  - Keep descriptions concise
-  - Include both DO and DON'T examples
-  - Reference actual code over theoretical examples
-  - Use consistent formatting across rules 
+## 🔗 문서 연결 및 앵커 관리
+- **앵커 링크**: VS Code 마크다운 미리보기 표준 준수
+- **한글 처리**: 한글 파일명 및 헤딩 완벽 지원
+- **이모지 처리**: 이모지 포함 헤딩 정상 작동
+- **자동 검증**: 주간 자동 앵커 링크 감사
+
+## 🧪 테스트 및 품질 관리
+- **교육 자료 테스트**: 모든 실습 가이드 검증
+- **사용자 경험 테스트**: 수강자 관점에서의 사용성 검증
+- **접근성 테스트**: 다양한 학습자 접근성 보장
+- **성능 테스트**: 교육 플랫폼 응답성 최적화
+
+## 🤖 AI 에이전트 협업 규칙
+- **교육 도구 AI**: 학습자 질문 답변 및 가이드 제공
+- **자동화 도구**: 반복 작업 자동화 (문서 검증, 링크 체크)
+- **품질 관리 AI**: 교육 자료 품질 자동 모니터링
+- **개인화 AI**: 학습자별 맞춤 학습 경로 제안
+
+## 📊 교육 데이터 관리
+- **학습 진도**: 개별 학습자 진도 추적
+- **성과 분석**: 학습 효과 측정 및 개선
+- **피드백 수집**: 교육자/수강자 피드백 체계적 수집
+- **지속적 개선**: 데이터 기반 교육 과정 개선
+
+## 🔄 Sequential Thinking 규칙 (교육 특화)
+- **교육 과정 설계**: 체계적이고 논리적인 학습 경로 설계
+- **실습 가이드 작성**: 단계별 명확한 실습 지침
+- **문제 해결**: 학습자 문제 상황 체계적 해결
+- **피드백 처리**: 학습자 피드백 분석 및 개선 방안 도출
+
+## 🎓 교육 품질 보장
+- **내용 정확성**: 모든 교육 자료의 기술적 정확성 검증
+- **일관성 유지**: 교육 과정 전반의 일관된 품질 유지
+- **접근성 보장**: 다양한 학습자 접근성 고려
+- **지속적 업데이트**: 최신 기술 트렌드 반영
+
+## 🚀 성능 및 확장성
+- **교육 플랫폼 성능**: 빠른 로딩 및 반응성
+- **확장 가능성**: 교육 과정 추가 및 확장 용이성
+- **안정성**: 24/7 안정적인 교육 서비스 제공
+- **보안**: 학습자 데이터 보호 및 프라이버시 보장

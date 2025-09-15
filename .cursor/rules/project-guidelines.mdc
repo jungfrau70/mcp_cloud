@@ -1,66 +1,402 @@
 ---
-description: 프로젝트의 상세 개발 가이드라인
-globs:
-  - "backend/**/*.py"
-  - "frontend/**/*.ts"
-  - "frontend/**/*.vue"
-  - "**/Dockerfile*"
-  - "**/docker-compose*.yml"
+description: 교육 교구 시스템 프로젝트 가이드라인 및 개발 표준
+globs: "**/*.py", "**/*.ts", "**/*.vue", "**/*.json", "**/*.md"
 alwaysApply: true
 ---
 
-# Project Guidelines
+# 교육 교구 시스템 프로젝트 가이드라인
 
-## Backend 가이드라인
+## 🎯 프로젝트 개요
 
-### 디렉토리 구조
-- app/: 메인 애플리케이션 코드
-- routers/: API 라우터 정의
-- alembic/: 데이터베이스 마이그레이션
-- tests/: 테스트 코드
+### **교육 교구 시스템 목표**
+- **교육 커리큘럼 작성자**: 직관적이고 효율적인 교육 자료 작성 지원
+- **교육자**: 수강자에게 최고의 교육 경험 제공  
+- **수강자**: 체계적이고 일관된 학습 경험
+- **AI 에이전트**: 교육 과정 자동화 및 개인화 지원
 
-### API 개발
-- FastAPI 의존성 주입 패턴 사용
-- Pydantic 모델로 요청/응답 검증
-- 비동기 작업은 Celery로 처리
+### **핵심 기능**
+- **교육 자료 관리**: 마크다운 기반 교육 자료 체계적 관리
+- **학습 경로 관리**: 단계별 학습 경로 및 진도 추적
+- **실습 가이드**: 단계별 실습 지침 및 검증
+- **AI 지원**: 교육 자료 생성 및 학습자 지원
+- **품질 관리**: 자동화된 교육 자료 품질 검증
 
-### 데이터베이스
-- SQLAlchemy ORM 사용
-- Alembic으로 마이그레이션 관리
-- 트랜잭션 관리 필수
+## 🏗️ 아키텍처 가이드라인
 
-## Frontend 가이드라인
+### **시스템 아키텍처**
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │   Backend       │    │   AI Agent      │
+│   (Nuxt.js)     │◄──►│   (FastAPI)     │◄──►│   (OpenAI)      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Education     │    │   Database      │    │   Knowledge     │
+│   Materials     │    │   (PostgreSQL)  │    │   Base          │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
 
-### 디렉토리 구조
-- components/: 재사용 가능한 컴포넌트
-- pages/: 라우트 페이지
-- stores/: 상태 관리
-- composables/: 재사용 가능한 로직
-- assets/: 정적 파일
+### **모듈 구조**
+- **Frontend**: Vue.js 3 + TypeScript + Nuxt.js 3
+- **Backend**: FastAPI + Python 3.9+ + SQLAlchemy
+- **Database**: PostgreSQL 14+ (교육 자료 및 진도 관리)
+- **Cache**: Redis 6+ (성능 최적화)
+- **AI Integration**: OpenAI API / Anthropic Claude API
+- **File Storage**: 로컬 파일 시스템 (교육 자료)
 
-### 컴포넌트 개발
-- Composition API 사용
-- TypeScript 타입 정의 필수
-- 컴포넌트 props 검증
+## 📁 디렉토리 구조 가이드라인
 
-### 상태 관리
-- Pinia 스토어 사용
-- 상태 변경은 mutation으로만
-- 비동기 작업은 action으로 처리
+### **프로젝트 루트 구조**
+```
+mcp_cloud/
+├── frontend/                 # 프론트엔드 애플리케이션
+│   ├── components/          # Vue 컴포넌트
+│   ├── pages/              # 페이지 라우팅
+│   ├── composables/        # 재사용 가능한 로직
+│   ├── utils/              # 유틸리티 함수
+│   └── assets/             # 정적 자산
+├── backend/                # 백엔드 애플리케이션
+│   ├── app/                # FastAPI 애플리케이션
+│   ├── api/                # API 라우터
+│   ├── models/             # 데이터 모델
+│   ├── services/           # 비즈니스 로직
+│   └── utils/              # 유틸리티 함수
+├── mcp_knowledge_base/     # 교육 자료 저장소
+│   ├── cloud_basic/        # Cloud Basic 과정
+│   ├── cloud_container/    # Cloud Container 과정
+│   └── cloud_master/       # Cloud Master 과정
+├── tools/                  # 개발 도구
+├── tests/                  # 테스트 코드
+└── docs/                   # 프로젝트 문서
+```
 
-## 배포 가이드라인
+### **교육 자료 디렉토리 구조**
+```
+mcp_knowledge_base/
+├── [과정명]/
+│   ├── learning-path.md    # 학습 경로 메인
+│   ├── curriculum.md       # 커리큘럼 개요
+│   └── textbook/           # 교재
+│       ├── Day1/           # 1일차
+│       │   ├── README.md   # 메인 페이지
+│       │   ├── practice/   # 실습 가이드
+│       │   └── theory/     # 이론 자료
+│       └── Day2/           # 2일차
+└── index.md                # 전체 인덱스
+```
 
-### Docker
-- 멀티 스테이지 빌드 사용
-- .dockerignore 설정 필수
-- 환경 변수 주입
+## 💻 코드 작성 가이드라인
 
-### CI/CD
-- GitHub Actions 사용
-- 테스트 자동화
-- 코드 품질 검사
+### **Python 백엔드 가이드라인**
+```python
+# ✅ DO: 교육 교구 시스템 Python 코드
+from typing import List, Optional, Dict, Any
+from pydantic import BaseModel, Field
+from fastapi import APIRouter, HTTPException, Depends
+from sqlalchemy.orm import Session
 
-## 문서화
-- API 문서: Swagger/OpenAPI
-- 코드 주석: Google 스타일
-- 변경 로그 관리
+class CourseContent(BaseModel):
+    # 교육 과정 콘텐츠 모델
+    title: str = Field(..., description="교육 과정 제목")
+    description: str = Field(..., description="교육 과정 설명")
+    learning_objectives: List[str] = Field(..., description="학습 목표")
+    duration: int = Field(..., description="예상 소요 시간(분)")
+    difficulty: str = Field(..., description="난이도 (초급/중급/고급)")
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "title": "Cloud Basic - AWS 기초 실습",
+                "description": "AWS 클라우드 서비스 기초 학습",
+                "learning_objectives": [
+                    "AWS 계정 생성 및 설정",
+                    "EC2 인스턴스 생성 및 관리",
+                    "S3 스토리지 서비스 활용"
+                ],
+                "duration": 120,
+                "difficulty": "초급"
+            }
+        }
+
+class EducationService:
+    # 교육 서비스 클래스
+    
+    def __init__(self, db: Session):
+        self.db = db
+    
+    async def get_course_content(self, course_id: str) -> Optional[CourseContent]:
+        # 교육 과정 콘텐츠 조회
+        try:
+            # 교육 자료 로드
+            content = await self._load_course_materials(course_id)
+            
+            # 앵커 링크 검증
+            validation_result = await self._validate_anchor_links(content)
+            if not validation_result.is_valid:
+                raise HTTPException(
+                    status_code=422, 
+                    detail=f"교육 자료 검증 실패: {validation_result.errors}"
+                )
+            
+            return CourseContent(**content)
+            
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"교육 과정 로드 실패: {str(e)}"
+            )
+```
+
+### **TypeScript 프론트엔드 가이드라인**
+```typescript
+// ✅ DO: 교육 교구 시스템 TypeScript 코드
+interface CourseContent {
+  title: string
+  description: string
+  learningObjectives: string[]
+  duration: number
+  difficulty: '초급' | '중급' | '고급'
+  progress?: number
+}
+
+interface EducationState {
+  currentCourse: CourseContent | null
+  learningProgress: Record<string, number>
+  completedLessons: string[]
+}
+
+export const useEducationStore = defineStore('education', () => {
+  // 상태
+  const state = reactive<EducationState>({
+    currentCourse: null,
+    learningProgress: {},
+    completedLessons: []
+  })
+  
+  // 액션
+  const loadCourse = async (courseId: string): Promise<void> => {
+    try {
+      const response = await $fetch<CourseContent>(`/api/v1/courses/${courseId}`)
+      state.currentCourse = response
+      
+      // 학습 진도 로드
+      await loadLearningProgress(courseId)
+      
+    } catch (error) {
+      console.error('교육 과정 로드 실패:', error)
+      throw new Error('교육 과정을 불러올 수 없습니다.')
+    }
+  }
+  
+  const updateProgress = async (lessonId: string, progress: number): Promise<void> => {
+    state.learningProgress[lessonId] = progress
+    
+    // 백엔드에 진도 저장
+    await $fetch(`/api/v1/progress/${lessonId}`, {
+      method: 'PUT',
+      body: { progress }
+    })
+  }
+  
+  return {
+    state: readonly(state),
+    loadCourse,
+    updateProgress
+  }
+})
+```
+
+## 🧪 테스트 가이드라인
+
+### **교육 자료 테스트**
+```python
+# ✅ DO: 교육 자료 테스트
+import pytest
+from backend.app.services.education_service import EducationService
+from backend.app.utils.content_validator import ContentValidator
+
+class TestEducationContent:
+    @pytest.fixture
+    def education_service(self, db_session):
+        return EducationService(db_session)
+    
+    @pytest.fixture
+    def content_validator(self):
+        return ContentValidator()
+    
+    async def test_course_content_loading(self, education_service):
+        # 교육 과정 콘텐츠 로딩 테스트
+        content = await education_service.get_course_content("cloud_basic")
+        
+        assert content is not None
+        assert content.title == "Cloud Basic - AWS 기초 실습"
+        assert len(content.learning_objectives) >= 2
+    
+    async def test_anchor_links_validation(self, content_validator):
+        # 앵커 링크 검증 테스트
+        result = await content_validator.validate_anchor_links("test_course.md")
+        
+        assert result.is_valid == True
+        assert len(result.errors) == 0
+        assert result.coverage_rate >= 0.95
+```
+
+### **프론트엔드 컴포넌트 테스트**
+```typescript
+// ✅ DO: 교육 컴포넌트 테스트
+import { describe, it, expect, vi } from 'vitest'
+import { mount } from '@vue/test-utils'
+import CourseCard from '@/components/CourseCard.vue'
+
+describe('CourseCard', () => {
+  it('should display course information correctly', () => {
+    const course = {
+      title: 'Cloud Basic - AWS 기초 실습',
+      description: 'AWS 클라우드 서비스 기초 학습',
+      difficulty: '초급',
+      duration: 120
+    }
+    
+    const wrapper = mount(CourseCard, {
+      props: { course }
+    })
+    
+    expect(wrapper.text()).toContain(course.title)
+    expect(wrapper.text()).toContain(course.description)
+    expect(wrapper.text()).toContain(course.difficulty)
+  })
+  
+  it('should handle course click events', async () => {
+    const course = { id: 'cloud_basic', title: 'Test Course' }
+    const wrapper = mount(CourseCard, {
+      props: { course }
+    })
+    
+    await wrapper.find('.course-card').trigger('click')
+    
+    expect(wrapper.emitted('course-selected')).toBeTruthy()
+    expect(wrapper.emitted('course-selected')[0]).toEqual([course.id])
+  })
+})
+```
+
+## 📊 성능 가이드라인
+
+### **교육 자료 로딩 최적화**
+```python
+# ✅ DO: 교육 자료 로딩 최적화
+from functools import lru_cache
+from typing import Dict, Any
+import asyncio
+
+class OptimizedEducationService:
+    def __init__(self):
+        self._cache = {}
+        self._loading_tasks = {}
+    
+    @lru_cache(maxsize=100)
+    async def get_course_metadata(self, course_id: str) -> Dict[str, Any]:
+        # 교육 과정 메타데이터 캐싱
+        # 메타데이터만 먼저 로드
+        return await self._load_course_metadata(course_id)
+    
+    async def get_course_content_async(self, course_id: str) -> Dict[str, Any]:
+        # 비동기 교육 과정 콘텐츠 로드
+        if course_id in self._loading_tasks:
+            return await self._loading_tasks[course_id]
+        
+        task = asyncio.create_task(self._load_full_course_content(course_id))
+        self._loading_tasks[course_id] = task
+        
+        try:
+            result = await task
+            return result
+        finally:
+            self._loading_tasks.pop(course_id, None)
+```
+
+### **프론트엔드 성능 최적화**
+```typescript
+// ✅ DO: 프론트엔드 성능 최적화
+import { defineAsyncComponent } from 'vue'
+
+// 교육 컴포넌트 지연 로딩
+export const CourseContent = defineAsyncComponent({
+  loader: () => import('@/components/CourseContent.vue'),
+  loadingComponent: LoadingSpinner,
+  errorComponent: ErrorComponent,
+  delay: 200,
+  timeout: 3000
+})
+
+// 교육 자료 가상 스크롤링
+export const useVirtualScroll = (items: Ref<any[]>) => {
+  const visibleItems = ref<any[]>([])
+  const scrollTop = ref(0)
+  const itemHeight = 100
+  
+  const updateVisibleItems = () => {
+    const start = Math.floor(scrollTop.value / itemHeight)
+    const end = Math.min(start + 10, items.value.length)
+    visibleItems.value = items.value.slice(start, end)
+  }
+  
+  return {
+    visibleItems,
+    scrollTop,
+    updateVisibleItems
+  }
+}
+```
+
+## 🔒 보안 가이드라인
+
+### **교육 자료 접근 제어**
+```python
+# ✅ DO: 교육 자료 접근 제어
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPBearer
+from jose import JWTError, jwt
+
+security = HTTPBearer()
+
+class EducationAccessControl:
+    def __init__(self):
+        self.role_permissions = {
+            'student': ['read'],
+            'instructor': ['read', 'write'],
+            'admin': ['read', 'write', 'delete']
+        }
+    
+    async def check_course_access(self, course_id: str, user_role: str) -> bool:
+        # 교육 과정 접근 권한 확인
+        if user_role not in self.role_permissions:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="접근 권한이 없습니다."
+            )
+        
+        # 교육 과정별 접근 제어 로직
+        return await self._validate_course_access(course_id, user_role)
+    
+    async def check_content_modification(self, content_id: str, user_role: str) -> bool:
+        # 교육 자료 수정 권한 확인
+        if 'write' not in self.role_permissions.get(user_role, []):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="교육 자료 수정 권한이 없습니다."
+            )
+        
+        return True
+```
+
+## 📚 관련 파일
+
+- [README.md](mdc:README.md) - 프로젝트 개요
+- [CONTRIBUTING.md](mdc:CONTRIBUTING.md) - 기여 가이드라인
+- [CHANGELOG.md](mdc:CHANGELOG.md) - 변경 이력
+- [LICENSE](mdc:LICENSE) - 라이선스 정보
+
+이 가이드라인을 통해 교육 교구 시스템의 일관성 있고 고품질의 개발을 보장할 수 있습니다.

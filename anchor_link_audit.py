@@ -1,457 +1,331 @@
 #!/usr/bin/env python3
 """
-커리큘럼 및 지식베이스 앵커 링크 전수 조사 도구
-Top-down 및 Bottom-up 방식을 병행하여 모든 문서의 앵커 링크 동작을 검증합니다.
+앵커 링크 전수 조사 도구
+Top-down과 Bottom-up 양방향으로 모든 내부 링크와 앵커의 동작을 검증합니다.
 """
 
 import os
 import re
-import json
 import glob
+import argparse
 from pathlib import Path
-from typing import Dict, List, Set, Tuple, Optional
-from dataclasses import dataclass
 from urllib.parse import unquote
 
-@dataclass
-class AnchorLink:
-    """앵커 링크 정보"""
-    text: str
-    href: str
-    file_path: str
-    line_number: int
-    is_valid: bool = True
-    error_message: str = ""
+def extract_headings(content):
+    """마크다운 문서에서 헤딩 추출"""
+    headings = []
+    lines = content.split('\n')
+    
+    for line_num, line in enumerate(lines, 1):
+        # ATX 스타일 헤딩 (# ## ### 등)
+        match = re.match(r'^(#{1,6})\s+(.+)$', line.strip())
+        if match:
+            level = len(match.group(1))
+            text = match.group(2).strip()
+            
+            # 앵커 ID 생성 (VS Code 마크다운 미리보기 표준)
+            anchor_id = generate_anchor_id(text)
+            
+            headings.append({
+                'level': level,
+                'text': text,
+                'anchor_id': anchor_id,
+                'line': line_num
+            })
+    
+    return headings
 
-@dataclass
-class Heading:
-    """헤딩 정보"""
-    text: str
-    level: int
-    generated_id: str
-    file_path: str
-    line_number: int
+def generate_anchor_id(text):
+    """VS Code 마크다운 미리보기 표준에 따른 앵커 ID 생성"""
+    # 공백을 하이픈으로 변환
+    anchor_id = re.sub(r'\s+', '-', text.strip())
+    # 연속된 하이픈을 하나로 변환
+    anchor_id = re.sub(r'-+', '-', anchor_id)
+    # 앞뒤 하이픈 제거
+    anchor_id = anchor_id.strip('-')
+    # 소문자로 변환
+    anchor_id = anchor_id.lower()
+    
+    return anchor_id
 
-@dataclass
-class DocumentInfo:
-    """문서 정보"""
-    path: str
-    content: str
-    headings: List[Heading]
-    anchor_links: List[AnchorLink]
-    file_size: int
-    has_toc: bool = False
+def extract_anchor_links(content):
+    """마크다운 문서에서 앵커 링크 추출"""
+    anchor_links = []
+    lines = content.split('\n')
+    
+    for line_num, line in enumerate(lines, 1):
+        # [text](#anchor) 패턴 찾기
+        matches = re.finditer(r'\[([^\]]+)\]\(#([^)]+)\)', line)
+        for match in matches:
+            link_text = match.group(1)
+            anchor = match.group(2)
+            
+            anchor_links.append({
+                'text': link_text,
+                'anchor': anchor,
+                'line': line_num,
+                'full_line': line.strip()
+            })
+    
+    return anchor_links
 
-class AnchorLinkAuditor:
-    """앵커 링크 감사 도구"""
+def extract_file_links(content):
+    """마크다운 문서에서 파일 링크 추출"""
+    file_links = []
+    lines = content.split('\n')
     
-    def __init__(self, knowledge_base_path: str = "mcp_knowledge_base"):
-        self.kb_path = Path(knowledge_base_path)
-        self.documents: Dict[str, DocumentInfo] = {}
-        self.learning_paths = []
-        self.issues: List[Dict] = []
-        
-    def normalize_anchor_id(self, text: str) -> str:
-        """VS Code 마크다운 미리보기와 동일한 슬러그 생성"""
-        import re
-        return re.sub(r'^-+|-+$', '', 
-               re.sub(r'-+', '-', 
-               re.sub(r'\s+', '-', text.strip()))).lower()
+    for line_num, line in enumerate(lines, 1):
+        # [text](./file.md) 또는 [text](../file.md) 패턴 찾기
+        matches = re.finditer(r'\[([^\]]+)\]\(([^#)]+)(?:#[^)]+)?\)', line)
+        for match in matches:
+            link_text = match.group(1)
+            file_path = match.group(2)
+            
+            file_links.append({
+                'text': link_text,
+                'file_path': file_path,
+                'line': line_num,
+                'full_line': line.strip()
+            })
     
-    def extract_headings(self, content: str, file_path: str) -> List[Heading]:
-        """문서에서 헤딩 추출"""
-        headings = []
-        lines = content.split('\n')
-        
-        for i, line in enumerate(lines):
-            # ATX 스타일 헤딩 감지
-            match = re.match(r'^\s{0,3}(#{1,6})\s+(.*?)\s*#*\s*$', line)
-            if match and match.group(2):
-                level = len(match.group(1))
-                text = match.group(2).strip()
-                
-                # 인라인 마크다운 정리
-                clean_text = re.sub(r'\[([^\]]+)\]\([^\)]+\)', r'\1', text)  # [text](url)
-                clean_text = re.sub(r'[*_]{1,3}([^*_]+)[*_]{1,3}', r'\1', clean_text)  # *em* _em_ **strong**
-                clean_text = re.sub(r'`([^`]+)`', r'\1', clean_text)  # `code`
-                clean_text = re.sub(r'<[^>]+>', '', clean_text)  # inline html
-                clean_text = clean_text.strip()
-                
-                if clean_text:
-                    generated_id = self.normalize_anchor_id(clean_text)
-                    headings.append(Heading(
-                        text=clean_text,
-                        level=level,
-                        generated_id=generated_id,
-                        file_path=file_path,
-                        line_number=i + 1
-                    ))
-        
-        return headings
+    return file_links
+
+def validate_anchor_links_in_document(file_path):
+    """단일 문서의 앵커 링크 검증"""
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+    except Exception as e:
+        return [{'type': 'error', 'message': f'파일 읽기 오류: {e}', 'line': 0}]
     
-    def extract_anchor_links(self, content: str, file_path: str) -> List[AnchorLink]:
-        """문서에서 앵커 링크 추출"""
-        anchor_links = []
-        lines = content.split('\n')
-        
-        for i, line in enumerate(lines):
-            # 앵커 링크 패턴 찾기
-            matches = re.finditer(r'\[([^\]]+)\]\(#([^)]+)\)', line)
-            for match in matches:
-                link_text = match.group(1)
-                href = match.group(2)
-                
-                anchor_links.append(AnchorLink(
-                    text=link_text,
-                    href=href,
-                    file_path=file_path,
-                    line_number=i + 1
-                ))
-        
-        return anchor_links
+    issues = []
     
-    def load_document(self, file_path: Path) -> Optional[DocumentInfo]:
-        """문서 로드 및 정보 추출"""
+    # 헤딩 추출
+    headings = extract_headings(content)
+    heading_ids = {h['anchor_id'] for h in headings}
+    
+    # 앵커 링크 추출
+    anchor_links = extract_anchor_links(content)
+    
+    # 앵커 링크 검증
+    for link in anchor_links:
+        anchor = link['anchor']
+        
+        # URL 디코딩
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                content = f.read()
+            decoded_anchor = unquote(anchor)
+        except:
+            decoded_anchor = anchor
+        
+        if decoded_anchor not in heading_ids:
+            # 부분 매칭 시도
+            found = False
+            for heading_id in heading_ids:
+                if heading_id in decoded_anchor or decoded_anchor in heading_id:
+                    found = True
+                    break
             
-            relative_path = str(file_path.relative_to(self.kb_path))
-            headings = self.extract_headings(content, relative_path)
-            anchor_links = self.extract_anchor_links(content, relative_path)
-            
-            # 목차 존재 여부 확인
-            has_toc = bool(re.search(r'<details>\s*<summary>.*목차.*</summary>', content, re.IGNORECASE))
-            
-            return DocumentInfo(
-                path=relative_path,
-                content=content,
-                headings=headings,
-                anchor_links=anchor_links,
-                file_size=len(content),
-                has_toc=has_toc
-            )
-        except Exception as e:
-            print(f"문서 로드 실패: {file_path} - {e}")
-            return None
+            if not found:
+                issues.append({
+                    'type': 'invalid_anchor',
+                    'message': f"앵커 '{anchor}'에 해당하는 헤딩을 찾을 수 없음",
+                    'line': link['line'],
+                    'anchor': anchor,
+                    'available_headings': list(heading_ids)
+                })
     
-    def load_all_documents(self):
-        """모든 마크다운 문서 로드"""
-        print("📚 모든 문서 로드 중...")
-        
-        md_files = list(self.kb_path.rglob("*.md"))
-        print(f"발견된 마크다운 파일: {len(md_files)}개")
-        
-        for file_path in md_files:
-            doc_info = self.load_document(file_path)
-            if doc_info:
-                self.documents[doc_info.path] = doc_info
-        
-        print(f"로드된 문서: {len(self.documents)}개")
+    return issues
+
+def validate_file_links_in_document(file_path):
+    """단일 문서의 파일 링크 검증"""
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+    except Exception as e:
+        return [{'type': 'error', 'message': f'파일 읽기 오류: {e}', 'line': 0}]
     
-    def find_learning_paths(self):
-        """학습 경로 문서 찾기"""
-        learning_path_patterns = [
-            "**/learning-path.md",
-            "**/curriculum.md",
-            "**/index.md"
-        ]
-        
-        for pattern in learning_path_patterns:
-            files = list(self.kb_path.glob(pattern))
-            for file_path in files:
-                relative_path = str(file_path.relative_to(self.kb_path))
-                if relative_path in self.documents:
-                    self.learning_paths.append(relative_path)
-        
-        print(f"발견된 학습 경로 문서: {len(self.learning_paths)}개")
-        for path in self.learning_paths:
-            print(f"  - {path}")
+    issues = []
+    file_links = extract_file_links(content)
     
-    def validate_anchor_links_in_document(self, doc_path: str) -> List[Dict]:
-        """단일 문서의 앵커 링크 검증"""
-        if doc_path not in self.documents:
-            return []
+    for link in file_links:
+        file_path_str = link['file_path']
         
-        doc = self.documents[doc_path]
-        issues = []
-        
-        # 헤딩 ID 맵 생성
-        heading_ids = {h.generated_id: h for h in doc.headings}
-        
-        for link in doc.anchor_links:
-            # URL 디코딩 시도
-            try:
-                decoded_href = unquote(link.href)
-            except:
-                decoded_href = link.href
+        # 상대 경로인 경우
+        if file_path_str.startswith('./') or file_path_str.startswith('../'):
+            # 실제 파일 경로 계산
+            base_dir = os.path.dirname(file_path)
+            target_path = os.path.join(base_dir, file_path_str)
+            target_path = os.path.normpath(target_path)
             
-            # 정확한 매칭 확인
-            if decoded_href in heading_ids:
-                link.is_valid = True
+            if not os.path.exists(target_path):
+                issues.append({
+                    'type': 'missing_file',
+                    'message': f"파일 '{file_path_str}'을 찾을 수 없음",
+                    'line': link['line'],
+                    'file_path': file_path_str,
+                    'resolved_path': target_path
+                })
+    
+    return issues
+
+def top_down_validation(course_path):
+    """Top-down 검증: 학습 경로 → 실제 문서"""
+    print(f"🔍 Top-down 검증 시작: {course_path}")
+    
+    learning_path_file = os.path.join(course_path, 'learning-path.md')
+    if not os.path.exists(learning_path_file):
+        print(f"❌ 학습 경로 파일을 찾을 수 없습니다: {learning_path_file}")
+        return []
+    
+    try:
+        with open(learning_path_file, 'r', encoding='utf-8') as f:
+            content = f.read()
+    except Exception as e:
+        print(f"❌ 학습 경로 파일 읽기 오류: {e}")
+        return []
+    
+    issues = []
+    file_links = extract_file_links(content)
+    
+    print(f"📊 학습 경로에서 {len(file_links)}개의 파일 링크 발견")
+    
+    for link in file_links:
+        file_path_str = link['file_path']
+        
+        if file_path_str.startswith('./') or file_path_str.startswith('../'):
+            base_dir = os.path.dirname(learning_path_file)
+            target_path = os.path.join(base_dir, file_path_str)
+            target_path = os.path.normpath(target_path)
+            
+            if not os.path.exists(target_path):
+                issues.append({
+                    'type': 'missing_file',
+                    'message': f"학습 경로에서 참조하는 파일 '{file_path_str}'을 찾을 수 없음",
+                    'line': link['line'],
+                    'file_path': file_path_str,
+                    'resolved_path': target_path
+                })
             else:
-                # 부분 매칭 시도 (한글 헤더용)
-                found = False
-                for heading_id, heading in heading_ids.items():
-                    if heading_id in decoded_href or decoded_href in heading_id:
-                        found = True
-                        break
-                
-                if not found:
-                    link.is_valid = False
-                    link.error_message = f"헤딩을 찾을 수 없음: {decoded_href}"
-                    
-                    issues.append({
-                        'type': 'invalid_anchor',
-                        'file': doc_path,
-                        'line': link.line_number,
-                        'link_text': link.text,
-                        'href': link.href,
-                        'decoded_href': decoded_href,
-                        'available_headings': list(heading_ids.keys())[:5],  # 처음 5개만 표시
-                        'message': link.error_message
-                    })
-        
-        return issues
+                # 파일이 존재하면 앵커 링크도 검증
+                anchor_issues = validate_anchor_links_in_document(target_path)
+                for issue in anchor_issues:
+                    issue['source_file'] = learning_path_file
+                    issue['referenced_file'] = target_path
+                issues.extend(anchor_issues)
     
-    def top_down_validation(self):
-        """Top-down 검증: 학습 경로에서 참조하는 모든 문서의 앵커 링크 검증"""
-        print("\n🔍 Top-down 검증 시작...")
-        
-        total_issues = 0
-        
-        for learning_path in self.learning_paths:
-            print(f"\n📋 {learning_path} 검증 중...")
-            
-            # 학습 경로 문서의 앵커 링크 검증
-            issues = self.validate_anchor_links_in_document(learning_path)
-            total_issues += len(issues)
-            
-            if issues:
-                print(f"  ❌ {len(issues)}개 문제 발견")
-                for issue in issues[:3]:  # 처음 3개만 표시
-                    print(f"    - 라인 {issue['line']}: {issue['link_text']} -> {issue['href']}")
-                    print(f"      오류: {issue['message']}")
-            else:
-                print(f"  ✅ 앵커 링크 정상")
-            
-            # 학습 경로에서 참조하는 다른 문서들 찾기
-            doc = self.documents[learning_path]
-            referenced_docs = set()
-            
-            # 상대 경로 링크 찾기
-            for line in doc.content.split('\n'):
-                matches = re.finditer(r'\[([^\]]+)\]\(([^#)]+)(?:#[^)]+)?\)', line)
-                for match in matches:
-                    file_path = match.group(2)
-                    if not file_path.startswith('http') and not file_path.startswith('#'):
-                        # 상대 경로를 절대 경로로 변환
-                        if file_path.startswith('./'):
-                            file_path = file_path[2:]
-                        elif file_path.startswith('../'):
-                            # 상대 경로 해결 로직 (간단화)
-                            continue
-                        
-                        if file_path.endswith('.md'):
-                            referenced_docs.add(file_path)
-            
-            # 참조된 문서들의 앵커 링크 검증
-            for ref_doc in referenced_docs:
-                if ref_doc in self.documents:
-                    print(f"  📄 {ref_doc} 검증 중...")
-                    ref_issues = self.validate_anchor_links_in_document(ref_doc)
-                    total_issues += len(ref_issues)
-                    
-                    if ref_issues:
-                        print(f"    ❌ {len(ref_issues)}개 문제 발견")
-                    else:
-                        print(f"    ✅ 앵커 링크 정상")
-        
-        print(f"\n📊 Top-down 검증 완료: 총 {total_issues}개 문제 발견")
-        return total_issues
+    return issues
+
+def bottom_up_validation(course_path):
+    """Bottom-up 검증: 실제 문서 → 학습 경로"""
+    print(f"🔍 Bottom-up 검증 시작: {course_path}")
     
-    def bottom_up_validation(self):
-        """Bottom-up 검증: 모든 문서의 앵커 링크 생성 및 매칭 검증"""
-        print("\n🔍 Bottom-up 검증 시작...")
-        
-        total_issues = 0
-        documents_with_issues = 0
-        
-        for doc_path, doc in self.documents.items():
-            issues = self.validate_anchor_links_in_document(doc_path)
-            
-            if issues:
-                documents_with_issues += 1
-                total_issues += len(issues)
-                
-                print(f"\n📄 {doc_path}")
-                print(f"  📊 통계: 헤딩 {len(doc.headings)}개, 앵커 링크 {len(doc.anchor_links)}개")
-                
-                if doc.has_toc:
-                    print(f"  📋 목차 포함")
-                
-                for issue in issues[:5]:  # 처음 5개만 표시
-                    print(f"    ❌ 라인 {issue['line']}: {issue['link_text']} -> {issue['href']}")
-                    print(f"       오류: {issue['message']}")
-                
-                if len(issues) > 5:
-                    print(f"    ... 및 {len(issues) - 5}개 추가 문제")
-        
-        print(f"\n📊 Bottom-up 검증 완료:")
-        print(f"  - 검증된 문서: {len(self.documents)}개")
-        print(f"  - 문제가 있는 문서: {documents_with_issues}개")
-        print(f"  - 총 문제 수: {total_issues}개")
-        
-        return total_issues
+    issues = []
+    md_files = glob.glob(os.path.join(course_path, '**/*.md'), recursive=True)
     
-    def analyze_korean_and_emoji_handling(self):
-        """한글 및 이모지 처리 분석"""
-        print("\n🔍 한글 및 이모지 처리 분석...")
-        
-        korean_docs = 0
-        emoji_docs = 0
-        korean_headings = 0
-        emoji_headings = 0
-        korean_links = 0
-        emoji_links = 0
-        
-        for doc_path, doc in self.documents.items():
-            has_korean = False
-            has_emoji = False
-            
-            # 한글 파일명 확인
-            if re.search(r'[가-힣]', doc_path):
-                korean_docs += 1
-                has_korean = True
-            
-            # 헤딩 분석
-            for heading in doc.headings:
-                if re.search(r'[가-힣]', heading.text):
-                    korean_headings += 1
-                    has_korean = True
-                
-                if re.search(r'[\U0001F600-\U0001F64F]|[\U0001F300-\U0001F5FF]|[\U0001F680-\U0001F6FF]|[\U0001F1E0-\U0001F1FF]', heading.text):
-                    emoji_headings += 1
-                    has_emoji = True
-            
-            # 앵커 링크 분석
-            for link in doc.anchor_links:
-                if re.search(r'[가-힣]', link.text):
-                    korean_links += 1
-                    has_korean = True
-                
-                if re.search(r'[\U0001F600-\U0001F64F]|[\U0001F300-\U0001F5FF]|[\U0001F680-\U0001F6FF]|[\U0001F1E0-\U0001F1FF]', link.text):
-                    emoji_links += 1
-                    has_emoji = True
-            
-            if has_emoji:
-                emoji_docs += 1
-        
-        print(f"📊 한글 처리 통계:")
-        print(f"  - 한글 파일명 문서: {korean_docs}개")
-        print(f"  - 한글 헤딩: {korean_headings}개")
-        print(f"  - 한글 앵커 링크: {korean_links}개")
-        
-        print(f"📊 이모지 처리 통계:")
-        print(f"  - 이모지 포함 문서: {emoji_docs}개")
-        print(f"  - 이모지 헤딩: {emoji_headings}개")
-        print(f"  - 이모지 앵커 링크: {emoji_links}개")
+    # 백업 파일 제외
+    md_files = [f for f in md_files if '.backup' not in f and 'learning-path.md' not in f]
     
-    def generate_report(self):
-        """상세 보고서 생성"""
-        print("\n📊 상세 분석 보고서 생성 중...")
-        
-        # 전체 통계
-        total_docs = len(self.documents)
-        total_headings = sum(len(doc.headings) for doc in self.documents.values())
-        total_links = sum(len(doc.anchor_links) for doc in self.documents.values())
-        docs_with_toc = sum(1 for doc in self.documents.values() if doc.has_toc)
-        
-        # 문제 통계
-        all_issues = []
-        for doc_path in self.documents:
-            issues = self.validate_anchor_links_in_document(doc_path)
-            all_issues.extend(issues)
-        
-        # 보고서 생성
-        report = {
-            "summary": {
-                "total_documents": total_docs,
-                "total_headings": total_headings,
-                "total_anchor_links": total_links,
-                "documents_with_toc": docs_with_toc,
-                "total_issues": len(all_issues),
-                "learning_paths": self.learning_paths
-            },
-            "issues_by_type": {},
-            "issues_by_file": {},
-            "recommendations": []
-        }
-        
-        # 문제 유형별 분류
-        for issue in all_issues:
-            issue_type = issue['type']
-            if issue_type not in report["issues_by_type"]:
-                report["issues_by_type"][issue_type] = 0
-            report["issues_by_type"][issue_type] += 1
-            
-            file_path = issue['file']
-            if file_path not in report["issues_by_file"]:
-                report["issues_by_file"][file_path] = []
-            report["issues_by_file"][file_path].append(issue)
-        
-        # 권장사항 생성
-        if len(all_issues) > 0:
-            report["recommendations"].append("앵커 링크 매칭 로직 개선 필요")
-        
-        if docs_with_toc < total_docs * 0.5:
-            report["recommendations"].append("목차 추가 권장")
-        
-        # 보고서 저장
-        with open("anchor_link_audit_report.json", "w", encoding="utf-8") as f:
-            json.dump(report, f, ensure_ascii=False, indent=2)
-        
-        print(f"📄 보고서 저장: anchor_link_audit_report.json")
-        return report
+    print(f"📊 {len(md_files)}개의 마크다운 파일 검사")
     
-    def run_full_audit(self):
-        """전체 감사 실행"""
-        print("🚀 앵커 링크 전수 조사 시작")
-        print("=" * 50)
+    for md_file in md_files:
+        rel_path = os.path.relpath(md_file, course_path)
         
-        # 1. 모든 문서 로드
-        self.load_all_documents()
+        # 앵커 링크 검증
+        anchor_issues = validate_anchor_links_in_document(md_file)
+        for issue in anchor_issues:
+            issue['file'] = rel_path
+        issues.extend(anchor_issues)
         
-        # 2. 학습 경로 찾기
-        self.find_learning_paths()
+        # 파일 링크 검증
+        file_issues = validate_file_links_in_document(md_file)
+        for issue in file_issues:
+            issue['file'] = rel_path
+        issues.extend(file_issues)
+    
+    return issues
+
+def generate_report(issues, course_name):
+    """검증 결과 보고서 생성"""
+    if not issues:
+        print(f"✅ {course_name}: 모든 링크가 정상입니다!")
+        return
+    
+    print(f"\n📊 {course_name} 검증 결과:")
+    print(f"총 {len(issues)}개의 문제 발견")
+    
+    # 문제 유형별 분류
+    issues_by_type = {}
+    for issue in issues:
+        issue_type = issue['type']
+        if issue_type not in issues_by_type:
+            issues_by_type[issue_type] = []
+        issues_by_type[issue_type].append(issue)
+    
+    # 각 유형별 상세 보고
+    for issue_type, type_issues in issues_by_type.items():
+        print(f"\n🔍 {issue_type} 문제 ({len(type_issues)}개):")
         
-        # 3. Top-down 검증
-        top_down_issues = self.top_down_validation()
+        for issue in type_issues[:10]:  # 최대 10개만 표시
+            file_info = f" ({issue.get('file', '')})" if 'file' in issue else ""
+            line_info = f" 라인 {issue['line']}" if issue['line'] > 0 else ""
+            print(f"  - {issue['message']}{file_info}{line_info}")
+            
+            if 'available_headings' in issue:
+                print(f"    사용 가능한 헤딩: {', '.join(issue['available_headings'][:5])}")
         
-        # 4. Bottom-up 검증
-        bottom_up_issues = self.bottom_up_validation()
-        
-        # 5. 한글 및 이모지 처리 분석
-        self.analyze_korean_and_emoji_handling()
-        
-        # 6. 보고서 생성
-        report = self.generate_report()
-        
-        print("\n" + "=" * 50)
-        print("🎯 감사 완료")
-        print(f"📊 Top-down 문제: {top_down_issues}개")
-        print(f"📊 Bottom-up 문제: {bottom_up_issues}개")
-        print(f"📊 총 문제: {top_down_issues + bottom_up_issues}개")
-        
-        return report
+        if len(type_issues) > 10:
+            print(f"  ... 및 {len(type_issues) - 10}개 더")
 
 def main():
-    """메인 실행 함수"""
-    auditor = AnchorLinkAuditor()
-    report = auditor.run_full_audit()
+    parser = argparse.ArgumentParser(description='앵커 링크 전수 조사 도구')
+    parser.add_argument('--course', choices=['cloud_basic', 'cloud_master', 'cloud_container', 'all'], 
+                       default='all', help='검증할 과정 선택')
+    parser.add_argument('--mode', choices=['top-down', 'bottom-up', 'both'], 
+                       default='both', help='검증 모드 선택')
+    parser.add_argument('--verbose', '-v', action='store_true', help='상세한 출력 표시')
     
-    print(f"\n📄 상세 보고서: anchor_link_audit_report.json")
-    print("🔧 문제 수정을 위해 개별 문서를 검토하세요.")
+    args = parser.parse_args()
+    
+    if args.course == 'all':
+        courses = ['cloud_basic', 'cloud_master', 'cloud_container']
+    else:
+        courses = [args.course]
+    
+    print("🚀 앵커 링크 전수 조사 시작")
+    print("=" * 60)
+    
+    total_issues = 0
+    
+    for course in courses:
+        course_path = f"mcp_knowledge_base/{course}"
+        
+        if not os.path.exists(course_path):
+            print(f"❌ 과정 디렉토리를 찾을 수 없습니다: {course_path}")
+            continue
+        
+        print(f"\n📚 {course.upper()} 과정 검증")
+        print("-" * 40)
+        
+        course_issues = []
+        
+        if args.mode in ['top-down', 'both']:
+            top_down_issues = top_down_validation(course_path)
+            course_issues.extend(top_down_issues)
+        
+        if args.mode in ['bottom-up', 'both']:
+            bottom_up_issues = bottom_up_validation(course_path)
+            course_issues.extend(bottom_up_issues)
+        
+        generate_report(course_issues, course)
+        total_issues += len(course_issues)
+    
+    print(f"\n🎉 전체 검증 완료!")
+    print(f"총 {total_issues}개의 문제 발견")
+    
+    if total_issues == 0:
+        print("🎊 모든 링크가 완벽합니다!")
+    else:
+        print("⚠️  발견된 문제들을 수정해주세요.")
 
 if __name__ == "__main__":
     main()

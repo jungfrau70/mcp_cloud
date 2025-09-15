@@ -344,3 +344,131 @@ describe('Title Generation', () => {
 2. UI 컴포넌트에서 새 타입 처리
 3. 테스트 케이스 추가
 4. 문서화 업데이트
+
+## 🔗 교육 자료 앵커 링크 관리
+
+### **앵커 링크 생성 규칙 (교육 특화)**
+```markdown
+<!-- ✅ DO: 교육 과정 앵커 링크 구조 -->
+## 🎯 학습 목표
+## 📚 실습 가이드  
+## 🔧 실습 환경 준비
+## 💻 단계별 실습
+## 📊 학습 정리
+
+<!-- ✅ DO: 앵커 링크 변환 -->
+[🎯 학습 목표](#🎯-학습-목표)
+[📚 실습 가이드](#📚-실습-가이드)
+[🔧 실습 환경 준비](#🔧-실습-환경-준비)
+[💻 단계별 실습](#💻-단계별-실습)
+[📊 학습 정리](#📊-학습-정리)
+```
+
+### **교육 자료 내부 링크 처리**
+```typescript
+// ✅ DO: 교육 과정 네비게이션 링크 처리
+const setupEducationLinks = async () => {
+  document.addEventListener('click', async (event) => {
+    const link = event.target.closest('a[href]');
+    if (!link) return;
+    
+    const href = link.getAttribute('href');
+    
+    // 교육 과정 내부 링크 처리
+    if (href.startsWith('#')) {
+      event.preventDefault();
+      await scrollToEducationSection(href);
+    }
+    
+    // 다른 교육 과정 링크 처리
+    if (href.startsWith('/course/')) {
+      event.preventDefault();
+      await loadEducationCourse(href);
+    }
+  });
+};
+```
+
+### **한글 교육 자료 파일명 처리**
+```python
+# ✅ DO: 한글 교육 자료 파일명 처리
+def encode_education_path(path: str) -> str:
+    segments = path.split('/')
+    encoded_segments = []
+    for segment in segments:
+        if re.search(r'[가-힣]', segment):
+            # 교육 과정명 한글 인코딩
+            encoded_segments.append(urllib.parse.quote(segment, safe=''))
+        else:
+            encoded_segments.append(segment)
+    return '/'.join(encoded_segments)
+```
+
+### **교육 자료 앵커 링크 검증**
+```python
+# ✅ DO: 교육 자료 앵커 링크 검증
+def validate_education_anchors(content: str) -> ValidationResult:
+    # 교육 과정 헤딩 추출
+    headings = extract_education_headings(content)
+    
+    # 앵커 링크 추출
+    anchor_links = extract_anchor_links(content)
+    
+    # 교육 과정 특화 매칭 검증
+    validation_result = validate_education_matching(anchor_links, headings)
+    
+    return validation_result
+```
+
+### **교육 자료 목차 자동 생성**
+```markdown
+<!-- ✅ DO: 교육 과정 목차 자동 생성 -->
+<details>
+<summary>📋 교육 과정 목차</summary>
+
+1. [🎯 학습 목표](#🎯-학습-목표)
+2. [📚 실습 가이드](#📚-실습-가이드)
+3. [🔧 실습 환경 준비](#🔧-실습-환경-준비)
+4. [💻 단계별 실습](#💻-단계별-실습)
+   - [1단계: 환경 설정](#1단계-환경-설정)
+   - [2단계: 기본 실습](#2단계-기본-실습)
+   - [3단계: 심화 실습](#3단계-심화-실습)
+5. [📊 학습 정리](#📊-학습-정리)
+
+</details>
+```
+
+### **교육 자료 네비게이션 링크**
+```markdown
+<!-- ✅ DO: 교육 과정 네비게이션 -->
+<div align="center">
+
+[← 이전: Cloud Basic 1일차](../README.md) | 
+[📚 전체 커리큘럼](../../../curriculum.md) | 
+[🏠 학습 경로로 돌아가기](../../../index.md) | 
+[다음: Cloud Basic 2일차 →](../README.md)
+
+</div>
+```
+
+### **교육 자료 앵커 링크 테스트**
+```typescript
+// ✅ DO: 교육 자료 앵커 링크 테스트
+describe('Education Material Anchors', () => {
+  it('should validate all anchor links in course materials', async () => {
+    const courseMaterials = await loadCourseMaterials('cloud_basic');
+    
+    for (const material of courseMaterials) {
+      const validation = await validateAnchorLinks(material);
+      expect(validation.isValid).toBe(true);
+      expect(validation.brokenLinks).toHaveLength(0);
+    }
+  });
+  
+  it('should handle Korean course names correctly', async () => {
+    const koreanCourse = 'cloud_basic/과정명.md';
+    const validation = await validateAnchorLinks(koreanCourse);
+    expect(validation.isValid).toBe(true);
+  });
+});
+```

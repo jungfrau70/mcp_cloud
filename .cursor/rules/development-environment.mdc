@@ -1,131 +1,309 @@
-# Development Environment Rules
-
-## 가상환경 관리
-
-### Python 가상환경 설정
-- **필수**: `venv/` 디렉토리에 Python 3.12 가상환경 사용
-- **활성화**: Windows에서 `venv\Scripts\activate` 사용
-- **패키지 관리**: `requirements.txt`와 `requirements-pytest.txt` 분리 관리
-
-### 가상환경 활성화 명령어
-```bash
-# Windows CMD
-venv\Scripts\activate
-
-# Windows PowerShell
-venv\Scripts\Activate.ps1
-
-# Linux/Mac
-source venv/bin/activate
-```
-
-## 백엔드 개발 환경
-
-### 로컬 개발 서버 실행
-- **FastAPI 서버**: `uvicorn main:app --reload --host 0.0.0.0 --port 8000`
-- **환경 변수**: `backend/env/.env` 파일 또는 환경 변수 직접 설정
-- **데이터베이스**: PostgreSQL 로컬 연결 또는 Docker 컨테이너 사용
-
-### 환경 변수 설정 (로컬 개발)
-```bash
-# 필수 환경 변수
-DATABASE_URL=postgresql://mcpuser:mcppassword@localhost:5434/mcp_db
-GEMINI_API_KEY=your_gemini_api_key
-MCP_API_KEY=my_mcp_eagle_tiger
-
-# 선택적 환경 변수
-AWS_DEFAULT_REGION=ap-northeast-2
-GOOGLE_APPLICATION_CREDENTIALS=path/to/gcp-sa-key.json
-```
-
-## 테스트 환경
-
-### pytest 설정
-- **테스트 실행**: `pytest tests/` 또는 `python -m pytest`
-- **커버리지**: `pytest --cov=backend tests/`
-- **병렬 실행**: `pytest -n auto tests/`
-- **특정 테스트**: `pytest tests/test_ai_agent.py::TestTerraformCodeGenerator::test_generate_code_success`
-
-### 테스트 데이터베이스
-- **테스트용 DB**: 별도 PostgreSQL 데이터베이스 또는 SQLite 인메모리
-- **Fixtures**: `conftest.py`에서 공통 테스트 설정 관리
-- **Mock**: 외부 API 호출은 unittest.mock 사용
-
-### 테스트 실행 명령어
-```bash
-# 기본 테스트 실행
-pytest
-
-# 커버리지 포함
-pytest --cov=backend --cov-report=html
-
-# 특정 테스트 파일
-pytest tests/test_ai_agent.py
-
-# 실패한 테스트만 재실행
-pytest --lf
-
-# 상세 출력
-pytest -v
-```
-
-## 개발 워크플로우
-
-### 1. 가상환경 활성화
-```bash
-venv\Scripts\activate
-```
-
-### 2. 의존성 설치
-```bash
-pip install -r backend/requirements.txt
-pip install -r backend/requirements-pytest.txt
-```
-
-### 3. 데이터베이스 설정
-```bash
-# PostgreSQL 컨테이너 시작 (선택사항)
-docker-compose up -d postgres
-
-# 또는 로컬 PostgreSQL 사용
-```
-
-### 4. 백엔드 서버 실행
-```bash
-cd backend
-uvicorn main:app --reload --host 0.0.0.0 --port 7000
-```
-
-### 5. 테스트 실행
-```bash
-# 새 터미널에서
-pytest tests/
-```
-
-## 문제 해결
-
-### 일반적인 문제들
-- **포트 충돌**: 7000번 포트가 사용 중인 경우 다른 포트 사용
-- **데이터베이스 연결 실패**: PostgreSQL 서비스 상태 확인
-- **가상환경 활성화 실패**: Python 경로 및 권한 확인
-- **패키지 설치 실패**: pip 업그레이드 및 캐시 클리어
-
-### 디버깅 도구
-- **FastAPI**: `/docs` 엔드포인트에서 Swagger UI 사용
-- **로깅**: `logging` 모듈 사용하여 디버그 정보 출력
-- **pytest**: `pytest -s`로 출력 캡처 비활성화
-
-## 성능 최적화
-
-### 개발 환경 최적화
-- **Hot Reload**: `uvicorn --reload` 사용으로 코드 변경 시 자동 재시작
-- **테스트 병렬화**: `pytest -n auto`로 테스트 병렬 실행
-- **캐싱**: pytest-cov 플러그인으로 커버리지 계산 캐싱
-
-### 메모리 관리
-- **가상환경**: 불필요한 패키지 제거로 가상환경 크기 최소화
-- **테스트**: `pytest --tb=short`로 트레이스백 간소화
-description:
-globs:
-alwaysApply: false
 ---
+description: 교육 교구 시스템 개발 환경 설정 및 관리 규칙
+globs: "**/*.py", "**/*.ts", "**/*.vue", "**/*.json", "**/*.md"
+alwaysApply: true
+---
+
+# 교육 교구 시스템 개발 환경 규칙
+
+## 🛠️ 개발 환경 구성
+
+### **교육 교구 시스템 개발 스택**
+- **Frontend**: Nuxt.js 3 + Vue.js 3 + TypeScript
+- **Backend**: FastAPI + Python 3.9+
+- **Database**: PostgreSQL 14+ (교육 자료 및 진도 관리)
+- **Cache**: Redis 6+ (성능 최적화)
+- **AI Integration**: OpenAI API / Anthropic Claude API
+- **Testing**: Vitest (Frontend) + Pytest (Backend)
+
+### **개발 환경 설정**
+```bash
+# ✅ DO: 개발 환경 초기 설정
+# 1. 프로젝트 클론
+git clone <repository-url>
+cd mcp_cloud
+
+# 2. 백엔드 환경 설정
+cd backend
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+# 3. 프론트엔드 환경 설정
+cd ../frontend
+npm install
+
+# 4. 데이터베이스 설정
+docker-compose up -d postgres redis
+
+# 5. 환경 변수 설정
+cp .env.example .env
+# .env 파일에 필요한 환경 변수 설정
+```
+
+## 🎯 교육 교구 시스템 특화 설정
+
+### **교육 자료 관리 설정**
+```python
+# ✅ DO: 교육 자료 관리 설정
+# backend/app/config/education.py
+class EducationConfig:
+    # 교육 자료 루트 디렉토리
+    KNOWLEDGE_BASE_ROOT = Path("mcp_knowledge_base")
+    
+    # 지원하는 교육 과정
+    SUPPORTED_COURSES = [
+        "cloud_basic",
+        "cloud_container", 
+        "cloud_master"
+    ]
+    
+    # 교육 자료 파일 확장자
+    SUPPORTED_EXTENSIONS = [".md", ".mdx"]
+    
+    # 앵커 링크 자동 검증 설정
+    AUTO_VALIDATE_ANCHORS = True
+    ANCHOR_VALIDATION_SCHEDULE = "weekly"  # weekly, daily, on_change
+```
+
+### **AI 에이전트 설정**
+```python
+# ✅ DO: AI 에이전트 설정
+# backend/app/config/ai_agent.py
+class AIAgentConfig:
+    # AI 모델 설정
+    DEFAULT_MODEL = "gpt-4"
+    FALLBACK_MODEL = "gpt-3.5-turbo"
+    
+    # 교육 도구 특화 프롬프트
+    EDUCATION_PROMPTS = {
+        "content_generation": "교육 자료 생성 프롬프트",
+        "practice_guide": "실습 가이드 생성 프롬프트",
+        "assessment": "평가 기준 생성 프롬프트"
+    }
+    
+    # 응답 품질 설정
+    MAX_TOKENS = 4000
+    TEMPERATURE = 0.7
+    TOP_P = 0.9
+```
+
+## 🧪 교육 교구 시스템 테스트 환경
+
+### **교육 자료 테스트**
+```python
+# ✅ DO: 교육 자료 테스트 설정
+# tests/education/test_content_validation.py
+import pytest
+from backend.app.utils.content_validator import ContentValidator
+
+class TestEducationContent:
+    def test_anchor_links_validation(self):
+        # 앵커 링크 검증 테스트
+        validator = ContentValidator()
+        result = validator.validate_anchor_links("test_course.md")
+        assert result.is_valid == True
+        assert len(result.errors) == 0
+    
+    def test_learning_objectives_completeness(self):
+        # 학습 목표 완성도 테스트
+        validator = ContentValidator()
+        result = validator.validate_learning_objectives("test_course.md")
+        assert len(result.objectives) >= 2
+        assert all(obj.is_measurable for obj in result.objectives)
+    
+    def test_practice_guide_structure(self):
+        # 실습 가이드 구조 테스트
+        validator = ContentValidator()
+        result = validator.validate_practice_guide("test_course.md")
+        assert len(result.steps) >= 3
+        assert all(step.has_expected_result for step in result.steps)
+```
+
+### **교육 과정 통합 테스트**
+```typescript
+// ✅ DO: 교육 과정 통합 테스트
+// frontend/tests/education/course-integration.test.ts
+import { describe, it, expect } from 'vitest'
+import { CourseManager } from '@/composables/useCourseManager'
+
+describe('Course Integration', () => {
+  it('should load course curriculum correctly', async () => {
+    const courseManager = new CourseManager()
+    const curriculum = await courseManager.loadCurriculum('cloud_basic')
+    
+    expect(curriculum).toBeDefined()
+    expect(curriculum.title).toContain('Cloud Basic')
+    expect(curriculum.days).toHaveLength(3)
+  })
+  
+  it('should validate all anchor links', async () => {
+    const courseManager = new CourseManager()
+    const validation = await courseManager.validateAnchorLinks('cloud_basic')
+    
+    expect(validation.isValid).toBe(true)
+    expect(validation.brokenLinks).toHaveLength(0)
+  })
+})
+```
+
+## 🚀 교육 교구 시스템 배포 환경
+
+### **Docker 컨테이너 설정**
+```dockerfile
+# ✅ DO: 교육 교구 시스템 Dockerfile
+# Dockerfile.education
+FROM node:18-alpine AS frontend-builder
+WORKDIR /app/frontend
+COPY frontend/package*.json ./
+RUN npm ci --only=production
+COPY frontend/ ./
+RUN npm run build
+
+FROM python:3.9-slim AS backend-builder
+WORKDIR /app/backend
+COPY backend/requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+COPY backend/ ./
+
+FROM nginx:alpine AS production
+# 교육 자료 정적 파일 서빙 설정
+COPY --from=frontend-builder /app/frontend/dist /usr/share/nginx/html
+COPY nginx/education.conf /etc/nginx/conf.d/default.conf
+```
+
+### **교육 환경별 설정**
+```yaml
+# ✅ DO: 교육 환경별 Docker Compose 설정
+# docker-compose.education.yml
+version: '3.8'
+services:
+  education-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.education
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=production
+      - EDUCATION_MODE=true
+    volumes:
+      - ./mcp_knowledge_base:/app/knowledge_base:ro
+    depends_on:
+      - postgres
+      - redis
+  
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: education_db
+      POSTGRES_USER: education_user
+      POSTGRES_PASSWORD: education_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  
+  redis:
+    image: redis:6-alpine
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
+```
+
+## 📊 교육 교구 시스템 모니터링
+
+### **교육 자료 품질 모니터링**
+```python
+# ✅ DO: 교육 자료 품질 모니터링
+# backend/app/monitoring/education_metrics.py
+class EducationMetricsCollector:
+    def __init__(self):
+        self.metrics = {}
+    
+    def collect_content_quality_metrics(self):
+        # 교육 자료 품질 지표 수집
+        return {
+            'total_courses': self.count_courses(),
+            'valid_anchor_links': self.count_valid_anchors(),
+            'broken_links': self.count_broken_links(),
+            'content_freshness': self.calculate_freshness(),
+            'learner_satisfaction': self.get_satisfaction_score()
+        }
+    
+    def collect_learning_effectiveness_metrics(self):
+        # 학습 효과 지표 수집
+        return {
+            'completion_rates': self.get_completion_rates(),
+            'learning_progress': self.get_progress_metrics(),
+            'practice_success_rates': self.get_practice_success(),
+            'assessment_scores': self.get_assessment_scores()
+        }
+```
+
+### **성능 모니터링 설정**
+```yaml
+# ✅ DO: 교육 교구 시스템 모니터링 설정
+# monitoring/prometheus.yml
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'education-backend'
+    static_configs:
+      - targets: ['backend:8000']
+    metrics_path: '/metrics'
+  
+  - job_name: 'education-frontend'
+    static_configs:
+      - targets: ['frontend:3000']
+    metrics_path: '/api/metrics'
+  
+  - job_name: 'education-database'
+    static_configs:
+      - targets: ['postgres:5432']
+```
+
+## 🔧 개발 도구 및 유틸리티
+
+### **교육 자료 관리 도구**
+```python
+# ✅ DO: 교육 자료 관리 도구
+# tools/education_manager.py
+class EducationManager:
+    def __init__(self):
+        self.knowledge_base = KnowledgeBase()
+        self.validator = ContentValidator()
+    
+    def create_new_course(self, course_name: str, structure: dict):
+        # 새 교육 과정 생성
+        # 1. 디렉토리 구조 생성
+        self.create_course_structure(course_name, structure)
+        
+        # 2. 기본 템플릿 파일 생성
+        self.create_template_files(course_name)
+        
+        # 3. 앵커 링크 검증
+        self.validate_course_links(course_name)
+        
+        # 4. 학습 경로 업데이트
+        self.update_learning_paths(course_name)
+    
+    def validate_all_courses(self):
+        # 모든 교육 과정 검증
+        results = {}
+        for course in self.knowledge_base.get_courses():
+            results[course] = self.validator.validate_course(course)
+        return results
+```
+
+## 📚 관련 파일
+
+- [package.json](mdc:frontend/package.json) - 프론트엔드 의존성
+- [requirements.txt](mdc:backend/requirements.txt) - 백엔드 의존성
+- [docker-compose.yml](mdc:docker-compose.yml) - 컨테이너 설정
+- [vitest.config.ts](mdc:frontend/vitest.config.ts) - 프론트엔드 테스트 설정
+- [pytest.ini](mdc:backend/pytest.ini) - 백엔드 테스트 설정
+
+이 규칙을 통해 교육 교구 시스템의 개발 환경을 효율적으로 관리할 수 있습니다.

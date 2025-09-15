@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Basic 1일차 메인](../README.md) | [다음: Cloud Basic 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+[← 이전: Cloud Basic 1일차 메인](../README.md) | [다음: Cloud Basic 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](../curriculum.md) | [🏠 학습 경로로 돌아가기](../index.md) | [📋 학습 경로](../learning-path.md)
 
 </div>
 
@@ -92,9 +92,9 @@
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md) - Docker, CI/CD 심화 과정
 - 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README.md) - Kubernetes 고급 과정
-- 🔗 [전체 커리큘럼](../../../curriculum.md) - 전체 과정 구조 및 학습 경로
-- 🔗 [통합 인덱스](../../../index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](../../../learning-path.md) - Cloud Basic 학습 경로
+- 🔗 [전체 커리큘럼](../curriculum.md) - 전체 과정 구조 및 학습 경로
+- 🔗 [통합 인덱스](../index.md) - 전체 과정 인덱스
+- 🔗 [학습 경로로 돌아가기](../learning-path.md) - Cloud Basic 학습 경로
 
 ---
 
@@ -669,6 +669,6 @@ gcloud auth activate-service-account --key-file=student-key.json
 
 <div align="center">
 
-[← 이전 과정 없음] | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [다음 과정: Cloud Master 1일차 →](../../../cloud_master/textbook/Day1/README.md)
+[← 이전 과정 없음] | [📚 전체 커리큘럼](../curriculum.md) | [🏠 학습 경로로 돌아가기](../index.md) | [다음 과정: Cloud Master 1일차 →](../../../cloud_master/textbook/Day1/README.md)
 
 </div>

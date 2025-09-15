@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Container 1일차](../Day1/README.md) | [다음: Cloud Container 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+[← 이전: Cloud Container 1일차](../Day1/README.md) | [다음: Cloud Container 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](../curriculum.md) | [🏠 학습 경로로 돌아가기](../index.md) | [📋 학습 경로](../learning-path.md)
 
 </div>
 
@@ -86,9 +86,9 @@
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Basic 과정](../../../cloud_basic/textbook/Day1/README.md) - AWS/GCP 기초 과정
 - 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md) - Docker, CI/CD 심화 과정
-- 🔗 [전체 커리큘럼](../../../curriculum.md) - 전체 과정 구조 및 학습 경로
-- 🔗 [통합 인덱스](../../../index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](../../../learning-path.md) - Cloud Container 학습 경로
+- 🔗 [전체 커리큘럼](../curriculum.md) - 전체 과정 구조 및 학습 경로
+- 🔗 [통합 인덱스](../index.md) - 전체 과정 인덱스
+- 🔗 [학습 경로로 돌아가기](../learning-path.md) - Cloud Container 학습 경로
 
 ---
 
@@ -387,6 +387,6 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 
 <div align="center">
 
-[← 이전: Cloud Container 1일차](../Day1/README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md)
+[← 이전: Cloud Container 1일차](../Day1/README.md) | [📚 전체 커리큘럼](../curriculum.md) | [🏠 학습 경로로 돌아가기](../index.md)
 
 </div>

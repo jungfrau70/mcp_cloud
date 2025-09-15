@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [📋 학습 경로](../../../learning-path.md)
+[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](../curriculum.md) | [🏠 학습 경로로 돌아가기](../index.md) | [📋 학습 경로](../learning-path.md)
 
 </div>
 
@@ -121,8 +121,8 @@
 
 ### Day 3
 - [로드 밸런싱 가이드](./textbook/Day3/load-balancing-guide.md)
-- [모니터링 설정 가이드](./textbook/Day3/monitoring-setup-guide.md)
-- [비용 최적화 가이드](./textbook/Day3/cost-optimization-guide.md)
+- [모니터링 설정 가이드](./textbook/Day3/monitoring-advanced/monitoring-setup.yaml)
+- [비용 최적화 가이드](./textbook/Day3/cost-optimization/cost-optimization-guide.md)
 
 > 📚 **전체 실습 가이드**: [Day1 README](./textbook/Day1/README.md) | [Day2 README](./textbook/Day2/README.md) | [Day3 README](./textbook/Day3/README.md)
 

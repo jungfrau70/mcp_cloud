@@ -1,5 +1,5 @@
 {
-  "audit_date": "2025-09-15T06:47:01.596143",
+  "audit_date": "2025-09-15T09:09:46.423421",
   "total_rules": 12,
   "rules_analysis": {
     "anchor-link-audit.mdc": {
@@ -10,11 +10,11 @@
       "last_modified": "2025-09-15T06:24:04.985888"
     },
     "content_creation_rules.mdc": {
-      "size": 1793,
-      "has_education_focus": false,
+      "size": 6425,
+      "has_education_focus": true,
       "has_outdated_patterns": true,
-      "metadata_completeness": 0,
-      "last_modified": "2025-09-12T18:43:36.455245"
+      "metadata_completeness": 3,
+      "last_modified": "2025-09-15T09:08:43.972343"
     },
     "cursor_rules.mdc": {
       "size": 1551,
@@ -24,18 +24,18 @@
       "last_modified": "2025-09-12T18:43:36.455245"
     },
     "development-environment.mdc": {
-      "size": 2501,
-      "has_education_focus": false,
-      "has_outdated_patterns": true,
-      "metadata_completeness": 0,
-      "last_modified": "2025-09-12T18:48:13.304648"
-    },
-    "document-handling.mdc": {
-      "size": 5529,
+      "size": 7865,
       "has_education_focus": true,
       "has_outdated_patterns": false,
       "metadata_completeness": 3,
-      "last_modified": "2025-09-15T05:46:59.874266"
+      "last_modified": "2025-09-15T09:08:43.972343"
+    },
+    "document-handling.mdc": {
+      "size": 5911,
+      "has_education_focus": true,
+      "has_outdated_patterns": true,
+      "metadata_completeness": 3,
+      "last_modified": "2025-09-15T08:34:40.567169"
     },
     "document-title-management.mdc": {
       "size": 7346,
@@ -45,25 +45,25 @@
       "last_modified": "2025-09-15T05:46:59.874266"
     },
     "global-rules.mdc": {
-      "size": 1545,
-      "has_education_focus": false,
+      "size": 1967,
+      "has_education_focus": true,
       "has_outdated_patterns": false,
-      "metadata_completeness": 1,
-      "last_modified": "2025-09-12T18:43:36.457246"
+      "metadata_completeness": 3,
+      "last_modified": "2025-09-15T08:34:40.567169"
     },
     "learning-path.mdc": {
-      "size": 12664,
+      "size": 5451,
       "has_education_focus": true,
       "has_outdated_patterns": true,
       "metadata_completeness": 3,
-      "last_modified": "2025-09-15T06:00:55.990049"
+      "last_modified": "2025-09-15T08:34:40.567169"
     },
     "project-guidelines.mdc": {
-      "size": 941,
-      "has_education_focus": false,
-      "has_outdated_patterns": false,
+      "size": 11422,
+      "has_education_focus": true,
+      "has_outdated_patterns": true,
       "metadata_completeness": 3,
-      "last_modified": "2025-09-12T18:43:36.457246"
+      "last_modified": "2025-09-15T09:08:43.972343"
     },
     "regular-maintenance.mdc": {
       "size": 10005,
@@ -88,10 +88,10 @@
     }
   },
   "issues_summary": {
-    "total_issues": 11,
-    "high_severity": 2,
-    "medium_severity": 3,
-    "low_severity": 6
+    "total_issues": 10,
+    "high_severity": 0,
+    "medium_severity": 5,
+    "low_severity": 5
   },
   "recommendations": [
     {
@@ -139,12 +139,10 @@
     {
       "rule": "content_creation_rules.mdc",
       "issues": [
-        "필수 메타데이터 누락: description",
-        "필수 메타데이터 누락: globs",
         "구식 패턴 포함 (클라우드 관리 관련)",
         "한글 비율이 낮음 (교육 교구 시스템 특성상 한글 중심 권장)"
       ],
-      "severity": "high"
+      "severity": "medium"
     },
     {
       "rule": "cursor_rules.mdc",
@@ -156,19 +154,17 @@
     {
       "rule": "development-environment.mdc",
       "issues": [
-        "필수 메타데이터 누락: description",
-        "필수 메타데이터 누락: globs",
-        "교육 교구 시스템 관련성 부족",
-        "구식 패턴 포함 (클라우드 관리 관련)"
+        "한글 비율이 낮음 (교육 교구 시스템 특성상 한글 중심 권장)"
       ],
-      "severity": "high"
+      "severity": "low"
     },
     {
       "rule": "document-handling.mdc",
       "issues": [
+        "구식 패턴 포함 (클라우드 관리 관련)",
         "한글 비율이 낮음 (교육 교구 시스템 특성상 한글 중심 권장)"
       ],
-      "severity": "low"
+      "severity": "medium"
     },
     {
       "rule": "document-title-management.mdc",
@@ -176,14 +172,6 @@
         "구식 패턴 포함 (클라우드 관리 관련)",
         "문서 연결 관련 규칙이지만 앵커/링크 내용 부족",
         "한글 비율이 낮음 (교육 교구 시스템 특성상 한글 중심 권장)"
-      ],
-      "severity": "medium"
-    },
-    {
-      "rule": "global-rules.mdc",
-      "issues": [
-        "필수 메타데이터 누락: description",
-        "필수 메타데이터 누락: globs"
       ],
       "severity": "medium"
     },
@@ -197,9 +185,10 @@
     {
       "rule": "project-guidelines.mdc",
       "issues": [
-        "교육 교구 시스템 관련성 부족"
+        "구식 패턴 포함 (클라우드 관리 관련)",
+        "한글 비율이 낮음 (교육 교구 시스템 특성상 한글 중심 권장)"
       ],
-      "severity": "low"
+      "severity": "medium"
     },
     {
       "rule": "regular-maintenance.mdc",
