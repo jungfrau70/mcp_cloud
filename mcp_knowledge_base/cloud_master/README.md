@@ -209,6 +209,7 @@ Cloud Master 과정을 시작하기 전에 다음 도구들을 설치해야 합�
 ## 📖 학습 자료
 
 ### Day 1
+- [Docker 기본 가이드](./textbook/Day1/docker-basic-guide.md)
 - [Docker 고급 가이드](./textbook/Day1/docker-advanced-guide.md)
 - [GitHub Actions 가이드](./textbook/Day1/github-actions-guide.md)
 - [Docker Compose 가이드](./textbook/Day1/docker-compose-guide.md)
