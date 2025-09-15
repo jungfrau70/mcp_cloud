@@ -563,6 +563,6 @@ gcloud compute forwarding-rules create web-https-forwarding-rule \
 
 <div align="center">
 
-[← 이전: Cloud Master 2일차](../Day2/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: 오토 스케일링 가이드 →](./auto-scaling-guide)
+[← 이전: Cloud Master 2일차](../Day2/README) | [📚 전체 커리큘럼](/curriculum.md) | [다음: 오토 스케일링 가이드 →](./auto-scaling-guide)
 
 </div>

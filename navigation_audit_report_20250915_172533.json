@@ -1,0 +1,2446 @@
+{
+  "timestamp": "2025-09-15T17:25:33.470335",
+  "summary": {
+    "total_files_processed": 135,
+    "files_with_issues": 54,
+    "files_fixed": 0,
+    "fix_rate": 0.0
+  },
+  "top_down_results": {
+    "cloud_basic": {
+      "total_files": 41,
+      "files_with_issues": 14,
+      "issues": [
+        {
+          "file": "mcp_knowledge_base\\cloud_basic\\learning-path.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_basic\\learning-path.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 0,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 0,
+              "next_course": 0
+            },
+            "content_length": 8024,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_basic\\README.md",
+          "issues": [
+            "학습 경로 링크가 2개 중복되어 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_basic\\README.md",
+            "div_count": 1,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 1,
+              "curriculum": 1,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 0
+            },
+            "content_length": 3481,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_basic\\과정상세.md",
+          "issues": [
+            "학습 경로 링크가 2개 중복되어 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_basic\\과정상세.md",
+            "div_count": 1,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 1,
+              "curriculum": 1,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 0
+            },
+            "content_length": 2907,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\aws-gcp-account-setup.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\aws-gcp-account-setup.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 2,
+              "next_course": 0
+            },
+            "content_length": 11683,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\README.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\README.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 1,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 12784,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\practice\\aws_basic_practice.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\practice\\aws_basic_practice.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 11665,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\practice\\gcp_basic_practice.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\practice\\gcp_basic_practice.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 8407,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\practice\\실습1_aws_gcp.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\practice\\실습1_aws_gcp.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 8495,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\compute_comparison.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\compute_comparison.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 0
+            },
+            "content_length": 7251,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\database_comparison.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\database_comparison.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 0
+            },
+            "content_length": 9902,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\network_comparison.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\network_comparison.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 0
+            },
+            "content_length": 10042,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\README.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\README.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 11385,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\storage_comparison.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\storage_comparison.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 0
+            },
+            "content_length": 8404,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\practice\\basic-to-master-bridge.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\practice\\basic-to-master-bridge.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 5596,
+            "issues": []
+          }
+        }
+      ]
+    },
+    "cloud_master": {
+      "total_files": 55,
+      "files_with_issues": 29,
+      "issues": [
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\learning-path.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\learning-path.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 0,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 0,
+              "next_course": 0
+            },
+            "content_length": 10389,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\README.md",
+          "issues": [
+            "학습 경로 링크가 2개 중복되어 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\README.md",
+            "div_count": 1,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 1,
+              "curriculum": 1,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 0
+            },
+            "content_length": 4441,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\과정상세.md",
+          "issues": [
+            "학습 경로 링크가 2개 중복되어 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\과정상세.md",
+            "div_count": 1,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 1,
+              "curriculum": 1,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 0
+            },
+            "content_length": 3775,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\aws-gcp-deployment-guide.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\aws-gcp-deployment-guide.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 1,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 11365,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\aws-gcp-permissions-setup.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\aws-gcp-permissions-setup.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 1,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 10974,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\cicd-pipeline-guide.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\cicd-pipeline-guide.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 1,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 19632,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\cloud-deployment-guide.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\cloud-deployment-guide.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 1,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 12456,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\docker-advanced-guide.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 3개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\docker-advanced-guide.md",
+            "div_count": 3,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 3,
+              "curriculum": 3,
+              "learning_path": 2,
+              "course_path": 2,
+              "next_course": 1
+            },
+            "content_length": 15017,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\docker-compose-guide.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\docker-compose-guide.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 1,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 10150,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\docker-hub-setup-guide.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\docker-hub-setup-guide.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 1,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 6019,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\github-actions-guide.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\github-actions-guide.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 1,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 24236,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\README.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\README.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 1,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 2
+            },
+            "content_length": 17506,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\troubleshooting-guide.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\troubleshooting-guide.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 1,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 11667,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\docker-basics.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\docker-basics.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 5168,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\git-github-basics.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\git-github-basics.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 5724,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\github-actions-basics.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\github-actions-basics.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 13407,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\vm-deployment.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\vm-deployment.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 11612,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\comprehensive-practice-guide.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 3개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\comprehensive-practice-guide.md",
+            "div_count": 3,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 3,
+              "curriculum": 3,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 18322,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\cost-optimization-guide.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 3개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\cost-optimization-guide.md",
+            "div_count": 3,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 3,
+              "curriculum": 3,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 15957,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\cost-structure-guide.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 3개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\cost-structure-guide.md",
+            "div_count": 3,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 3,
+              "curriculum": 3,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 13811,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\monitoring-guide.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 3개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\monitoring-guide.md",
+            "div_count": 3,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 3,
+              "curriculum": 3,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 21036,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\README.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\README.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 2
+            },
+            "content_length": 16428,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\troubleshooting-guide.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 3개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\troubleshooting-guide.md",
+            "div_count": 3,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 3,
+              "curriculum": 3,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 11461,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\auto-scaling-guide.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 3개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\auto-scaling-guide.md",
+            "div_count": 3,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 3,
+              "curriculum": 3,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 14541,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\disaster-recovery-guide.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 3개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\disaster-recovery-guide.md",
+            "div_count": 3,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 3,
+              "curriculum": 3,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 16360,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\integration-guide.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 3개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\integration-guide.md",
+            "div_count": 3,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 3,
+              "curriculum": 3,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 13389,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\load-balancing-guide.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 3개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\load-balancing-guide.md",
+            "div_count": 3,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 3,
+              "curriculum": 3,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 13658,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\README.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\README.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 16497,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\troubleshooting-guide.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 3개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\troubleshooting-guide.md",
+            "div_count": 3,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 3,
+              "curriculum": 3,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 13544,
+            "issues": []
+          }
+        }
+      ]
+    },
+    "cloud_container": {
+      "total_files": 39,
+      "files_with_issues": 11,
+      "issues": [
+        {
+          "file": "mcp_knowledge_base\\cloud_container\\learning-path.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_container\\learning-path.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 0,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 0,
+              "next_course": 0
+            },
+            "content_length": 9333,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\kubernetes-advanced-guide.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\kubernetes-advanced-guide.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 2,
+              "next_course": 0
+            },
+            "content_length": 15585,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\README.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\README.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 1,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 2
+            },
+            "content_length": 20283,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\practice\\container-basics.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\practice\\container-basics.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 4891,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\practice\\kubernetes-basics.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\practice\\kubernetes-basics.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 14551,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\monitoring-setup.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\monitoring-setup.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 0
+            },
+            "content_length": 22683,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\README.md",
+          "issues": [
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\README.md",
+            "div_count": 2,
+            "has_consecutive_divs": false,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 1
+            },
+            "content_length": 7955,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\advanced-load-balancing.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\advanced-load-balancing.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 0
+            },
+            "content_length": 11134,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\comprehensive-project.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\comprehensive-project.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 0
+            },
+            "content_length": 22272,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\high-availability-architecture.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\high-availability-architecture.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 0
+            },
+            "content_length": 7172,
+            "issues": []
+          }
+        },
+        {
+          "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\monitoring-system-setup.md",
+          "issues": [
+            "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+            "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+            "학습 경로 링크가 2개 중복되어 있습니다",
+            "div align='center' 블록이 2개 있습니다"
+          ],
+          "analysis": {
+            "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\monitoring-system-setup.md",
+            "div_count": 2,
+            "has_consecutive_divs": true,
+            "nav_links": {
+              "previous_course": 2,
+              "curriculum": 2,
+              "learning_path": 2,
+              "course_path": 1,
+              "next_course": 0
+            },
+            "content_length": 13711,
+            "issues": []
+          }
+        }
+      ]
+    }
+  },
+  "bottom_up_results": {
+    "total_files": 135,
+    "files_with_issues": 54,
+    "issues": [
+      {
+        "file": "mcp_knowledge_base\\cloud_basic\\learning-path.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_basic\\learning-path.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 0,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 0,
+            "next_course": 0
+          },
+          "content_length": 8024,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_basic\\README.md",
+        "issues": [
+          "학습 경로 링크가 2개 중복되어 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_basic\\README.md",
+          "div_count": 1,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 1,
+            "curriculum": 1,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 0
+          },
+          "content_length": 3481,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_basic\\과정상세.md",
+        "issues": [
+          "학습 경로 링크가 2개 중복되어 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_basic\\과정상세.md",
+          "div_count": 1,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 1,
+            "curriculum": 1,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 0
+          },
+          "content_length": 2907,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\aws-gcp-account-setup.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\aws-gcp-account-setup.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 2,
+            "next_course": 0
+          },
+          "content_length": 11683,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\README.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\README.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 1,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 12784,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\practice\\aws_basic_practice.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\practice\\aws_basic_practice.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 11665,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\practice\\gcp_basic_practice.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\practice\\gcp_basic_practice.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 8407,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\practice\\실습1_aws_gcp.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day1\\practice\\실습1_aws_gcp.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 8495,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\compute_comparison.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\compute_comparison.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 0
+          },
+          "content_length": 7251,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\database_comparison.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\database_comparison.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 0
+          },
+          "content_length": 9902,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\network_comparison.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\network_comparison.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 0
+          },
+          "content_length": 10042,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\README.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\README.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 11385,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\storage_comparison.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\storage_comparison.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 0
+          },
+          "content_length": 8404,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\practice\\basic-to-master-bridge.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_basic\\textbook\\Day2\\practice\\basic-to-master-bridge.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 5596,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\learning-path.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\learning-path.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 0,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 0,
+            "next_course": 0
+          },
+          "content_length": 10389,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\README.md",
+        "issues": [
+          "학습 경로 링크가 2개 중복되어 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\README.md",
+          "div_count": 1,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 1,
+            "curriculum": 1,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 0
+          },
+          "content_length": 4441,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\과정상세.md",
+        "issues": [
+          "학습 경로 링크가 2개 중복되어 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\과정상세.md",
+          "div_count": 1,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 1,
+            "curriculum": 1,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 0
+          },
+          "content_length": 3775,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\aws-gcp-deployment-guide.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\aws-gcp-deployment-guide.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 1,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 11365,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\aws-gcp-permissions-setup.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\aws-gcp-permissions-setup.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 1,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 10974,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\cicd-pipeline-guide.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\cicd-pipeline-guide.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 1,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 19632,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\cloud-deployment-guide.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\cloud-deployment-guide.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 1,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 12456,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\docker-advanced-guide.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 3개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\docker-advanced-guide.md",
+          "div_count": 3,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 3,
+            "curriculum": 3,
+            "learning_path": 2,
+            "course_path": 2,
+            "next_course": 1
+          },
+          "content_length": 15017,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\docker-compose-guide.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\docker-compose-guide.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 1,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 10150,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\docker-hub-setup-guide.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\docker-hub-setup-guide.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 1,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 6019,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\github-actions-guide.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\github-actions-guide.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 1,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 24236,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\README.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\README.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 1,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 2
+          },
+          "content_length": 17506,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\troubleshooting-guide.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\troubleshooting-guide.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 1,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 11667,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\docker-basics.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\docker-basics.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 5168,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\git-github-basics.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\git-github-basics.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 5724,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\github-actions-basics.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\github-actions-basics.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 13407,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\vm-deployment.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day1\\practice\\vm-deployment.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 11612,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\comprehensive-practice-guide.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 3개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\comprehensive-practice-guide.md",
+          "div_count": 3,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 3,
+            "curriculum": 3,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 18322,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\cost-optimization-guide.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 3개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\cost-optimization-guide.md",
+          "div_count": 3,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 3,
+            "curriculum": 3,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 15957,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\cost-structure-guide.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 3개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\cost-structure-guide.md",
+          "div_count": 3,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 3,
+            "curriculum": 3,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 13811,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\monitoring-guide.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 3개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\monitoring-guide.md",
+          "div_count": 3,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 3,
+            "curriculum": 3,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 21036,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\README.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\README.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 2
+          },
+          "content_length": 16428,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\troubleshooting-guide.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 3개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day2\\troubleshooting-guide.md",
+          "div_count": 3,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 3,
+            "curriculum": 3,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 11461,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\auto-scaling-guide.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 3개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\auto-scaling-guide.md",
+          "div_count": 3,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 3,
+            "curriculum": 3,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 14541,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\disaster-recovery-guide.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 3개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\disaster-recovery-guide.md",
+          "div_count": 3,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 3,
+            "curriculum": 3,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 16360,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\integration-guide.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 3개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\integration-guide.md",
+          "div_count": 3,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 3,
+            "curriculum": 3,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 13389,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\load-balancing-guide.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 3개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\load-balancing-guide.md",
+          "div_count": 3,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 3,
+            "curriculum": 3,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 13658,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\README.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\README.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 16497,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\troubleshooting-guide.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 3개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 3개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_master\\textbook\\Day3\\troubleshooting-guide.md",
+          "div_count": 3,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 3,
+            "curriculum": 3,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 13544,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_container\\learning-path.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_container\\learning-path.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 0,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 0,
+            "next_course": 0
+          },
+          "content_length": 9333,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\kubernetes-advanced-guide.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\kubernetes-advanced-guide.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 2,
+            "next_course": 0
+          },
+          "content_length": 15585,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\README.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\README.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 1,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 2
+          },
+          "content_length": 20283,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\practice\\container-basics.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\practice\\container-basics.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 4891,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\practice\\kubernetes-basics.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day1\\practice\\kubernetes-basics.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 14551,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\monitoring-setup.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\monitoring-setup.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 0
+          },
+          "content_length": 22683,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\README.md",
+        "issues": [
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\README.md",
+          "div_count": 2,
+          "has_consecutive_divs": false,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 1
+          },
+          "content_length": 7955,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\advanced-load-balancing.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\advanced-load-balancing.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 0
+          },
+          "content_length": 11134,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\comprehensive-project.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\comprehensive-project.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 0
+          },
+          "content_length": 22272,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\high-availability-architecture.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\high-availability-architecture.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 0
+          },
+          "content_length": 7172,
+          "issues": []
+        }
+      },
+      {
+        "file": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\monitoring-system-setup.md",
+        "issues": [
+          "연속된 div align='center' 블록이 있습니다 (두 줄 겹침 문제)",
+          "전체 커리큘럼 링크가 2개 중복되어 있습니다",
+          "학습 경로 링크가 2개 중복되어 있습니다",
+          "div align='center' 블록이 2개 있습니다"
+        ],
+        "analysis": {
+          "file_path": "mcp_knowledge_base\\cloud_container\\textbook\\Day2\\practice\\monitoring-system-setup.md",
+          "div_count": 2,
+          "has_consecutive_divs": true,
+          "nav_links": {
+            "previous_course": 2,
+            "curriculum": 2,
+            "learning_path": 2,
+            "course_path": 1,
+            "next_course": 0
+          },
+          "content_length": 13711,
+          "issues": []
+        }
+      }
+    ]
+  },
+  "recommendations": [
+    "일부 파일의 수정이 필요합니다. 수동 검토를 권장합니다."
+  ]
+}

@@ -840,15 +840,12 @@ kubectl exec -it <pod-name> -- ls /etc/config
 
 **🎯 이제 Kubernetes의 기본기를 갖추었습니다! 고급 컨테이너 오케스트레이션으로 진행하세요.**
 
-
 ## GKE 클러스터 생성 및 관리
 
 ## 🚀 기본 애플리케이션 배포
 
 ## 🔧 고급 설정 관리
 
-
 ## Pod, Service, Deployment 실습
-
 
 ## ConfigMap, Secret, PersistentVolume 관리

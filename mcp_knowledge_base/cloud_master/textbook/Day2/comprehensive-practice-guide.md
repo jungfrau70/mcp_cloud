@@ -826,6 +826,6 @@ echo "=== 부하 테스트 및 스케일링 확인 완료 ==="
 
 <div align="center">
 
-[← 이전: 모니터링 가이드](./monitoring-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Master 3일차 →](../Day3/README)
+[← 이전: 모니터링 가이드](./monitoring-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: Cloud Master 3일차 →](../Day3/README)
 
 </div>

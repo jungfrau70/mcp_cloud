@@ -2,13 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
-
-</div>
-
-<div align="center">
-
-[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
+[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
 
 </div>
 
@@ -748,7 +742,7 @@ kubectl top pods
 
 <div align="center">
 
-[← 이전: CI/CD 파이프라인 가이드](./cicd-pipeline-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Master 2일차 →](../Day2/README)
+[← 이전: CI/CD 파이프라인 가이드](./cicd-pipeline-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: Cloud Master 2일차 →](../Day2/README)
 
 </div>
 

@@ -645,6 +645,6 @@ gcloud compute instance-groups managed set-autoscaling web-servers-mig \
 
 <div align="center">
 
-[← 이전: 로드 밸런싱 가이드](./load-balancing-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: 통합 가이드 →](./integration-guide)
+[← 이전: 로드 밸런싱 가이드](./load-balancing-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: 통합 가이드 →](./integration-guide)
 
 </div>

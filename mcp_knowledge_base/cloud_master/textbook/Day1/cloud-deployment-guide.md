@@ -2,13 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
-
-</div>
-
-<div align="center">
-
-[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
+[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
 
 </div>
 
@@ -650,6 +644,6 @@ aws ec2 describe-instances --instance-ids i-xxxxxxxx
 
 <div align="center">
 
-[← 이전: GitHub Actions 가이드](./github-actions-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: AWS & GCP 배포 가이드 →](./aws-gcp-deployment-guide)
+[← 이전: GitHub Actions 가이드](./github-actions-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: AWS & GCP 배포 가이드 →](./aws-gcp-deployment-guide)
 
 </div>

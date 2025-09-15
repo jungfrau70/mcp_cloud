@@ -771,6 +771,6 @@ EOF
 
 <div align="center">
 
-[← 이전: 통합 가이드](./integration-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Container 과정 →](../../../cloud_container/textbook/Day1/README)
+[← 이전: 통합 가이드](./integration-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: Cloud Container 과정 →](../../../cloud_container/textbook/Day1/README)
 
 </div>

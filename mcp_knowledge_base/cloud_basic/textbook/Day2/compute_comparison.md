@@ -21,7 +21,6 @@
 
 ---
 
-
 ## 가상 머신 서비스 비교
 
 ### AWS EC2 vs GCP Compute Engine

@@ -643,6 +643,6 @@ gcloud alpha billing budgets create \
 
 <div align="center">
 
-[← 이전: Cloud Master 1일차](../Day1/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: 비용 최적화 가이드 →](./cost-optimization-guide)
+[← 이전: Cloud Master 1일차](../Day1/README) | [📚 전체 커리큘럼](/curriculum.md) | [다음: 비용 최적화 가이드 →](./cost-optimization-guide)
 
 </div>

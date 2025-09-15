@@ -744,6 +744,6 @@ jobs:
 
 <div align="center">
 
-[← 이전: AWS & GCP 배포 가이드](./aws-gcp-deployment-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Master 2일차 →](../Day2/README)
+[← 이전: AWS & GCP 배포 가이드](./aws-gcp-deployment-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: Cloud Master 2일차 →](../Day2/README)
 
 </div>

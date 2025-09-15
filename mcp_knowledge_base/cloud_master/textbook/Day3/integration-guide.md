@@ -588,11 +588,10 @@ gcloud compute instance-templates update web-server-template \
 
 <div align="center">
 
-[← 이전: 오토 스케일링 가이드](./auto-scaling-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: 장애 복구 가이드 →](./disaster-recovery-guide)
+[← 이전: 오토 스케일링 가이드](./auto-scaling-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: 장애 복구 가이드 →](./disaster-recovery-guide)
 
 </div>
 
 ## 🔄 자가 치유(Self-healing) 시스템
-
 
 ## 자가 치유(Self-healing) 시스템

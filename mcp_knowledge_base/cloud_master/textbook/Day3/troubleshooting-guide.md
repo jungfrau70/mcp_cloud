@@ -670,6 +670,6 @@ gcloud compute operations list --filter="operationType:insert"
 
 <div align="center">
 
-[← 이전: 장애 복구 가이드](./disaster-recovery-guide) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Cloud Container 과정 →](../../../cloud_container/textbook/Day1/README)
+[← 이전: 장애 복구 가이드](./disaster-recovery-guide) | [📚 전체 커리큘럼](/curriculum.md) | [다음: Cloud Container 과정 →](../../../cloud_container/textbook/Day1/README)
 
 </div>

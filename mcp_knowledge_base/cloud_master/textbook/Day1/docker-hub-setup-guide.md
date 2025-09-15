@@ -2,13 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
-
-</div>
-
-<div align="center">
-
-[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
+[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../../learning-path.md)
 
 </div>
 
@@ -289,6 +283,6 @@ Error: secret not found
 
 <div align="center">
 
-[← 이전: Cloud Basic 2일차](../../../cloud_basic/textbook/Day2/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: Docker 고급 가이드 →](./docker-advanced-guide)
+[← 이전: Cloud Basic 2일차](../../../cloud_basic/textbook/Day2/README) | [📚 전체 커리큘럼](/curriculum.md) | [다음: Docker 고급 가이드 →](./docker-advanced-guide)
 
 </div>

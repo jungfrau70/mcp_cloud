@@ -688,6 +688,6 @@ echo "=== GCP 예산 관리 완료 ==="
 
 <div align="center">
 
-[← 이전: Cloud Master 1일차](../Day1/README) | [📚 전체 커리큘럼](../../../curriculum) | [다음: 모니터링 가이드 →](./monitoring-guide)
+[← 이전: Cloud Master 1일차](../Day1/README) | [📚 전체 커리큘럼](/curriculum.md) | [다음: 모니터링 가이드 →](./monitoring-guide)
 
 </div>
