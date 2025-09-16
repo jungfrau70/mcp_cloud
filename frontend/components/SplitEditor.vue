@@ -550,11 +550,35 @@ function handlePreviewClick(event) {
 function navigateToLink(href) {
   console.log('navigateToLink called with href:', href, 'current path:', props.path)
   
+  // 앵커 링크 처리 (#로 시작) - 같은 문서 내에서만 작동
+  if (href.startsWith('#')) {
+    const targetId = href.substring(1);
+    console.log('SplitEditor: Processing anchor link:', targetId);
+    
+    // 현재 문서에서 앵커 찾기
+    let targetElement = document.getElementById(targetId);
+    
+    if (targetElement) {
+      // 앵커를 찾은 경우 스크롤
+      targetElement.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start',
+        inline: 'nearest'
+      });
+      console.log('SplitEditor: Found anchor and scrolled to:', targetId);
+    } else {
+      console.log('SplitEditor: Anchor not found:', targetId);
+      // 앵커를 찾지 못한 경우 사용자에게 알림
+      console.warn('SplitEditor: Anchor link not found. Make sure the target heading exists in the current document.');
+    }
+    return;
+  }
+  
   // 상대 경로 처리
   let targetPath = href
   
   // 절대 경로가 아닌 경우 (http로 시작하지 않고 /로 시작하지 않는 경우)
-  if (!href.startsWith('http') && !href.startsWith('/') && !href.startsWith('#')) {
+  if (!href.startsWith('http') && !href.startsWith('/')) {
     // 현재 파일의 디렉토리를 기준으로 절대 경로 생성
     const currentDir = props.path ? props.path.substring(0, props.path.lastIndexOf('/')) : ''
     console.log('currentDir:', currentDir)

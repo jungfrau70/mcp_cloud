@@ -316,14 +316,7 @@ const renderedContent = computed(() => {
   marked.use({ renderer })
   
   // Allow custom KB scheme 'mdc:' so hrefs are preserved for interception
-  const result = DOMPurify.sanitize(marked.parse(body), { ADD_URI_SAFE: ['mdc'] });
-  
-  // Mermaid 렌더링 스케줄링 (SplitEditor.vue와 동일한 방식)
-  nextTick(() => {
-    scheduleMermaidRender();
-  });
-  
-  return result;
+  return DOMPurify.sanitize(marked.parse(body), { ADD_URI_SAFE: ['mdc'] });
 });
 
 let mermaidInitialized = false
@@ -781,27 +774,43 @@ const setupLinkIntercepts = async () => {
 
 // Mermaid 다이어그램 렌더링 함수 (SplitEditor.vue의 scanPreviewHeadings와 완전히 동일)
 const renderMermaidDiagrams = () => {
-  if (!contentContainer.value) return;
+  if (!contentContainer.value) {
+    console.log('ContentView: renderMermaidDiagrams - contentContainer not found');
+    return;
+  }
+  
+  console.log('ContentView: renderMermaidDiagrams - starting');
   
   // render mermaid blocks (SplitEditor.vue의 scanPreviewHeadings와 동일)
   try {
     const blocks = contentContainer.value.querySelectorAll('pre code.language-mermaid, code.language-mermaid');
-    blocks.forEach((el) => {
+    console.log('ContentView: renderMermaidDiagrams - found', blocks.length, 'mermaid blocks');
+    
+    blocks.forEach((el, index) => {
+      console.log(`ContentView: renderMermaidDiagrams - processing block ${index}:`, el.textContent.substring(0, 100));
+      
       const parent = (el.parentElement && el.parentElement.tagName.toLowerCase() === 'pre') ? el.parentElement : el;
       const code = (el.textContent || '').trim();
       const container = document.createElement('div');
       parent.replaceWith(container);
+      
       try { 
         mermaid.initialize({ startOnLoad: false, theme: 'default' }); 
-        mermaid.render('m' + Math.random().toString(36).slice(2), code).then(({ svg }) => { 
+        const id = 'm' + Math.random().toString(36).slice(2);
+        console.log(`ContentView: renderMermaidDiagrams - rendering with id: ${id}`);
+        
+        mermaid.render(id, code).then(({ svg }) => { 
+          console.log(`ContentView: renderMermaidDiagrams - rendered successfully for id: ${id}`);
           container.innerHTML = svg;
+        }).catch((error) => {
+          console.error(`ContentView: renderMermaidDiagrams - render failed for id: ${id}:`, error);
         });
       } catch (e) {
-        console.error('Mermaid rendering error:', e);
+        console.error('ContentView: renderMermaidDiagrams - initialization error:', e);
       }
     });
   } catch (error) {
-    console.error('Mermaid rendering error:', error);
+    console.error('ContentView: renderMermaidDiagrams - general error:', error);
   }
 };
 
@@ -870,6 +879,11 @@ watch(() => props.content, () => {
   // Clear loading state when content changes
   isLoading.value = false
   // Mermaid 다이어그램 렌더링 (SplitEditor.vue와 동일한 방식)
+  scheduleMermaidRender();
+})
+
+// renderedContent가 변경될 때마다 Mermaid 렌더링
+watch(renderedContent, () => {
   scheduleMermaidRender();
 })
 
