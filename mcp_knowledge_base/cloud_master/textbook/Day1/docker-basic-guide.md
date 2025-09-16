@@ -2,11 +2,11 @@
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](../../README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: Docker 고급 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-advanced-guide.md)
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: Docker 고급 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-advanced-guide.md)
 
 </div>
 
-> 📋 **전체 개요**: [README.md](../../README.md) | [통합 커리큘럼](/mcp_knowledge_base/curriculum.md) | [통합 인덱스](/mcp_knowledge_base/index.md)에서 전체 과정 구조를 확인하세요.
+> 📋 **전체 개요**: [README.md](/mcp_knowledge_base/cloud_master/README.md) | [통합 커리큘럼](/mcp_knowledge_base/curriculum.md) | [통합 인덱스](/mcp_knowledge_base/index.md)에서 전체 과정 구조를 확인하세요.
 
 ## 🎯 학습 목표
 
@@ -544,6 +544,6 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
 3. **포트 충돌**: 사용하려는 포트가 이미 사용 중인지 확인
 4. **리소스 부족**: 메모리나 디스크 공간이 충분한지 확인
 
-> 🆘 **지원 채널**: [과정상세.md](../../과정상세.md)에서 문의 정보를 확인하세요.
+> 🆘 **지원 채널**: [과정상세.md](/mcp_knowledge_base/cloud_master/과정상세.md)에서 문의 정보를 확인하세요.
 
 **🎯 목표**: Docker의 기본 개념과 사용법을 익혀 컨테이너 기반 애플리케이션 개발의 기초를 다집니다.

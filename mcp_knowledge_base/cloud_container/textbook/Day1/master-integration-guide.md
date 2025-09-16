@@ -146,7 +146,7 @@ mv .github/workflows/multi-cloud-deploy.yml.disabled .github/workflows/multi-clo
 
 ## 📚 참고 자료
 
-- [Master 과정: Docker 기초](../cloud_master/textbook/Day1/docker-compose-guide)
-- [Master 과정: GitHub Actions](../cloud_master/textbook/Day1/github-actions-guide)
-- [Master 과정: 클라우드 배포](../cloud_master/textbook/Day1/cloud-deployment-guide)
+- [Master 과정: Docker 기초](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-compose-guide.md)
+- [Master 과정: GitHub Actions](/mcp_knowledge_base/cloud_master/textbook/Day1/github-actions-guide.md)
+- [Master 과정: 클라우드 배포](/mcp_knowledge_base/cloud_master/textbook/Day1/cloud-deployment-guide.md)
 - [Container 과정: 오케스트레이션 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/container-orchestration-guide.md)

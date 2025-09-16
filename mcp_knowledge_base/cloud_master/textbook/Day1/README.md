@@ -915,7 +915,7 @@ ssh -T git@github.com
 - [Docker 공식 문서](https://docs.docker.com/)
 - [Git 공식 문서](https://git-scm.com/doc)
 - [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [Cloud Master 2일차](../Day2/README)
+- [Cloud Master 2일차](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md)
 
 ---
 

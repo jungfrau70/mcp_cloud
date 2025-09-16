@@ -80,7 +80,7 @@
 - 🔗 [컨테이너 기초 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/practice/container-basics.md)
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [종합 트러블슈팅 가이드](../Day2/troubleshooting/multi-az-issues.md)
+- 🔗 [종합 트러블슈팅 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/troubleshooting/multi-az-issues.md)
 
 ### 🔗 관련 과정 링크
 - 🔗 [Cloud Basic 과정](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) - AWS/GCP 기초 과정

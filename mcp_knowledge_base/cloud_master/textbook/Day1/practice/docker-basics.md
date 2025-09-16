@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Master 1일차 메인](../README) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: Git/GitHub 기초 실습 →](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/git-github-basics.md) | [← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](../../learning-path.md)
+[← 이전: Cloud Master 1일차 메인](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: Git/GitHub 기초 실습 →](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/git-github-basics.md) | [← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
 </div>
 
