@@ -610,7 +610,7 @@ onMounted(async () => {
 
   // 토스트 링크로 전달된 KB 경로 열기
   if (typeof window !== 'undefined'){
-    window.addEventListener('kb:open', (e) => {
+    window.addEventListener('kb:open', async (e) => {
       const p = e?.detail?.path
       const container = e?.detail?.container
       const isDirectory = e?.detail?.isDirectory
@@ -638,12 +638,18 @@ onMounted(async () => {
       // If caller specifies container, respect it
       if(container === 'curriculum' || container === 'textbook'){
         console.log('Handling curriculum/textbook link:', p)
+        console.log('Current route:', route.path)
         if(route.path.startsWith('/curriculum') || route.path.startsWith('/textbook')) {
           console.log('Current route is curriculum, calling handleFileClick')
-          handleFileClick(p)
+          await handleFileClick(p)
         } else {
           console.log('Current route is not curriculum, navigating to curriculum')
-          try{ router.push({ path: '/curriculum', query: { path: p, force: '1' } }) }catch{ handleFileClick(p) }
+          try{ 
+            await router.push({ path: '/curriculum', query: { path: p, force: '1' } }) 
+          } catch(e) { 
+            console.log('Router push failed, calling handleFileClick directly:', e)
+            await handleFileClick(p) 
+          }
         }
         return
       }
@@ -865,6 +871,7 @@ const handleFileClick = async (path) => {
     } catch {}
 
     const ext = getExt(path)
+    console.log('File extension detected:', ext, 'for path:', path)
     // KB와 동일 정책: 미디어/문서는 새 탭(Blob URL)으로 열기
     if(['pdf','ppt','pptx','png','jpg','jpeg','gif','svg','webp','mp4','webm','mp3','wav'].includes(ext)){
       await openKbBinary(path)
@@ -874,11 +881,21 @@ const handleFileClick = async (path) => {
     }
     // 텍스트 계열은 중앙 패널에 표시
     if(ext === 'md' || ['txt','log','json','yaml','yml','csv'].includes(ext) || ext === ''){
-      const s = await fetch(`${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent(cleanPath)}`, { headers: { 'X-API-Key': apiKey } })
+      console.log('Making API call to curriculum endpoint with path:', cleanPath)
+      console.log('apiBase:', apiBase, 'apiKey:', apiKey)
+      const apiUrl = `${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent(cleanPath)}`
+      console.log('API URL:', apiUrl)
+      
+      const s = await fetch(apiUrl, { headers: { 'X-API-Key': apiKey } })
+      console.log('API response status:', s.status, s.statusText)
+      
       if (s.ok){
-        tbContent.value = await s.text()
+        const content = await s.text()
+        console.log('API response content length:', content.length)
+        tbContent.value = content
         tbSlide.value = null
       } else {
+        console.log('API call failed, showing error message')
         tbContent.value = '# 공개되지 않은 자료입니다.'
         tbSlide.value = null
       }
