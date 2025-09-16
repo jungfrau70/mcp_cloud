@@ -42,7 +42,7 @@
           <button @click="showExcalidraw=true" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Draw</button>
         </div>
         <template #right>
-          <button @click="togglePreview" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">{{ showPreview ? 'Editor Only' : 'Split' }}</button>
+          <button @click="toggleViewMode" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">{{ viewModeText }}</button>
         </template>
       </KbToolbar>
 
@@ -80,7 +80,7 @@
           </div>
           <div class="flex-1 h-full relative bg-white/70 backdrop-blur-sm"></div>
         </div>
-        <div class="flex-1 flex flex-col">
+        <div v-if="viewMode !== 'viewer-only'" class="flex-1 flex flex-col">
           <textarea
             ref="editorEl"
             v-model="draft"
@@ -90,8 +90,8 @@
             @keydown.stop
           ></textarea>
         </div>
-        <div v-if="showPreview && !showDiff" class="flex-1 flex min-h-0 overflow-hidden">
-          <div class="flex-1 min-h-0 border-l overflow-auto p-4 prose max-w-none bg-white">
+        <div v-if="viewMode !== 'editor-only' && !showDiff" class="flex-1 flex min-h-0 overflow-hidden" :class="{ 'border-l': viewMode === 'split' }">
+          <div class="flex-1 min-h-0 overflow-auto p-4 prose max-w-none bg-white">
             <div ref="previewEl" v-html="rendered" @click="handlePreviewClick"></div>
           </div>
         </div>
@@ -264,7 +264,8 @@ watch(() => docStore.path, async p => {
 })
 watch(draft, v => { if(!selfUpdating && docStore.path === props.path) docStore.update(v) })
 
-const showPreview = ref(true)
+// View modes: 'split', 'editor-only', 'viewer-only'
+const viewMode = ref('split')
 const showOutline = ref(true)
 const showVersions = ref(false)
 const showDiff = ref(false)
@@ -295,6 +296,16 @@ const diffRight = ref(null)
 const diffKey = computed(() => `${diffLeft.value||''}-${diffRight.value||''}`)
 
 const rendered = computed(() => DOMPurify.sanitize(marked.parse(draft.value || '')))
+
+// View mode text for toggle button
+const viewModeText = computed(() => {
+  switch (viewMode.value) {
+    case 'split': return 'Split'
+    case 'editor-only': return 'Editor Only'
+    case 'viewer-only': return 'Viewer Only'
+    default: return 'Split'
+  }
+})
 
 // 변경사항 감지
 const hasUnsavedChanges = computed(() => {
@@ -381,7 +392,21 @@ async function exportDrawing(){
   }catch(e){ alert('Export 실패') }
 }
 
-function togglePreview(){ showPreview.value = !showPreview.value }
+function toggleViewMode() {
+  switch (viewMode.value) {
+    case 'split':
+      viewMode.value = 'editor-only'
+      break
+    case 'editor-only':
+      viewMode.value = 'viewer-only'
+      break
+    case 'viewer-only':
+      viewMode.value = 'split'
+      break
+    default:
+      viewMode.value = 'split'
+  }
+}
 function toggleOutline(){ showOutline.value = !showOutline.value }
 function toggleVersions(){ if(!showVersions.value){ loadVersions() } showVersions.value = !showVersions.value }
 async function toggleDiff(){
