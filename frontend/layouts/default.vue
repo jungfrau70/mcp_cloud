@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen flex flex-col">
     <!-- Top Navigation Bar -->
-    <nav class="bg-white shadow-sm border-b z-10">
+    <nav class="bg-white shadow-sm border-b z-10" :class="{ 'opacity-50': !isLayoutStable }">
       <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
           <div class="flex items-center">
@@ -179,7 +179,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useRuntimeConfig } from '#app'
 import SyllabusExplorer from '~/components/SyllabusExplorer.vue'
@@ -483,7 +483,10 @@ async function saveProfile(){
 // Load default content: textbook/index.md when on knowledge-base route
 const route = useRoute();
 const router = useRouter();
-const isKnowledgeBase = computed(() => route.path.startsWith('/knowledge-base'))
+const isKnowledgeBase = computed(() => {
+  if (!isClient) return false;
+  return route.path.startsWith('/knowledge-base');
+})
 const isLoggedIn = computed(() => {
   if (!isClient) return false;
   return !!auth.token;
@@ -508,6 +511,9 @@ const isAuthRoute = computed(() => {
   if (!isClient) return false;
   return route.path.startsWith('/login') || route.path.startsWith('/register') || route.path.startsWith('/verify-email');
 })
+
+// 상단 메뉴 안정성을 위한 추가 상태
+const isLayoutStable = ref(true)
 onMounted(async () => {
   // 클라이언트 사이드에서만 실행
   if (!isClient) return;
@@ -623,6 +629,9 @@ watch(() => route.path, async (p) => {
   // 클라이언트 사이드에서만 실행
   if (!isClient) return;
   
+  // 레이아웃 안정성 보장
+  isLayoutStable.value = false
+  
   // Scroll to top when route changes
   if (typeof window !== 'undefined') {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -633,12 +642,19 @@ watch(() => route.path, async (p) => {
     try { await router.replace('/login') } catch {}
     return
   }
+  
+  // 라우트 변경 시 상단 메뉴 안정성 보장
   if (p.startsWith('/curriculum') || p.startsWith('/textbook')) {
     // curriculum/textbook require login
     if (!isLoggedIn.value) {
       try { await router.replace({ path: '/login', query: { rd: encodeURIComponent(route.fullPath) } }) } catch {}
       return
     }
+    
+    // 사이드바 상태 안정화
+    isSidebarCollapsed.value = false
+    
+    // 비동기 처리로 인한 레이아웃 불안정성 방지
     try {
       const q = route.query || {}
       const forced = String(q.force || '') === '1'
@@ -646,17 +662,27 @@ watch(() => route.path, async (p) => {
       const lastNew = typeof window !== 'undefined' ? localStorage.getItem('curriculum_last_path') : null
       const lastOld = typeof window !== 'undefined' ? localStorage.getItem('textbook_last_path') : null
       const last = lastNew || lastOld
+      
       // 우선순위: 강제 대상 -> 최근 문서 -> 기본 인덱스
       if (forced && target && tbPath.value !== target) {
+        // 다음 틱에서 실행하여 레이아웃 안정성 보장
+        await nextTick()
         await handleFileClick(target)
       } else if (!forced && last && tbPath.value !== last) {
+        await nextTick()
         await handleFileClick(last)
       } else if (!tbPath.value) {
+        await nextTick()
         await showCurriculumIndex()
       }
-    } catch {}
-    isSidebarCollapsed.value = false
+    } catch (error) {
+      console.warn('Route change handling error:', error)
+    }
   }
+  
+  // 레이아웃 안정성 복원
+  await nextTick()
+  isLayoutStable.value = true
 })
 async function showCurriculumIndex(){
   // 1) Try curriculum.md first, then fallback to index.md

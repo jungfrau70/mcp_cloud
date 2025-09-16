@@ -670,11 +670,74 @@ const setupLinkIntercepts = async () => {
   });
 };
 
+// Mermaid 다이어그램 렌더링 함수
+const renderMermaidDiagrams = async () => {
+  if (!contentContainer.value) return;
+  
+  const mermaidElements = contentContainer.value.querySelectorAll('pre code.language-mermaid, pre code[class*="mermaid"]');
+  
+  for (const element of mermaidElements) {
+    const pre = element.parentElement;
+    if (pre && pre.dataset.mermaidRendered) continue;
+    
+    try {
+      const graphDefinition = element.textContent;
+      if (!graphDefinition.trim()) continue;
+      
+      // Mermaid 초기화 (한 번만)
+      if (!mermaidInitialized) {
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: 'default',
+          securityLevel: 'loose',
+          fontFamily: 'Arial, sans-serif'
+        });
+        mermaidInitialized = true;
+      }
+      
+      // 고유 ID 생성
+      const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
+      
+      // SVG 컨테이너 생성
+      const svgContainer = document.createElement('div');
+      svgContainer.className = 'mermaid-diagram';
+      svgContainer.style.cssText = 'text-align: center; margin: 1rem 0; padding: 1rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;';
+      
+      // 원본 코드 블록 숨기기
+      pre.style.display = 'none';
+      pre.dataset.mermaidRendered = 'true';
+      
+      // SVG 컨테이너를 원본 위치에 삽입
+      pre.parentNode.insertBefore(svgContainer, pre);
+      
+      // Mermaid 렌더링
+      const { svg } = await mermaid.render(id, graphDefinition);
+      svgContainer.innerHTML = svg;
+      
+      // SVG 스타일링
+      const svgElement = svgContainer.querySelector('svg');
+      if (svgElement) {
+        svgElement.style.maxWidth = '100%';
+        svgElement.style.height = 'auto';
+      }
+      
+    } catch (error) {
+      console.error('Mermaid 렌더링 오류:', error);
+      // 오류 시 원본 코드 블록 표시
+      pre.style.display = 'block';
+    }
+  }
+};
+
 onMounted(() => {
   loadRecentFiles();
   setupLinkIntercepts()
   setupDetailsHandlers()
   setupCodeBlockHandlers()
+  // Mermaid 다이어그램 렌더링
+  nextTick(() => {
+    renderMermaidDiagrams();
+  });
 })
 watch(() => props.content, () => {
   setupLinkIntercepts()
@@ -682,6 +745,10 @@ watch(() => props.content, () => {
   setupCodeBlockHandlers()
   // Clear loading state when content changes
   isLoading.value = false
+  // Mermaid 다이어그램 렌더링
+  nextTick(() => {
+    renderMermaidDiagrams();
+  });
 })
 
 watch(() => props.path, () => {
@@ -1089,5 +1156,35 @@ watch(() => props.content, (c) => {
 /* 코드 블록 내부 숫자 스타일 */
 .prose pre .number {
   color: #fbbf24;
+}
+
+/* Mermaid 다이어그램 스타일 */
+.mermaid-diagram {
+  text-align: center;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  overflow-x: auto;
+}
+
+.mermaid-diagram svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Mermaid 다이어그램 반응형 처리 */
+@media (max-width: 768px) {
+  .mermaid-diagram {
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+  }
+  
+  .mermaid-diagram svg {
+    font-size: 12px;
+  }
 }
 </style>
