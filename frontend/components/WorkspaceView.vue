@@ -28,6 +28,8 @@ const props = defineProps({
   activeSlide: Object,
   activePath: String,
   readonly: { type: Boolean, default: false },
+  referrerPath: { type: String, default: '' },
+  referrerTitle: { type: String, default: '' },
 });
 
 const activeComponent = shallowRef(ContentView);
@@ -39,6 +41,8 @@ const viewProps = computed(() => {
       slide: props.activeSlide,
       path: props.activePath,
       readonly: props.readonly,
+      referrerPath: props.referrerPath,
+      referrerTitle: props.referrerTitle,
     };
   } else if (activeComponent.value === SplitEditor) {
     return { path: props.activePath, content: props.activeContent };

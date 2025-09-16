@@ -51,6 +51,53 @@
         </div>
       </div>
     </transition>
+
+    <!-- 파일이 존재하지 않는 경우 호출 페이지 정보 표시 -->
+    <div v-if="isFileNotFound && (referrerPath || referrerTitle)" class="p-6 bg-yellow-50 border-l-4 border-yellow-400">
+      <div class="flex items-start">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-yellow-800">
+            파일을 찾을 수 없습니다
+          </h3>
+          <div class="mt-2 text-sm text-yellow-700">
+            <p class="mb-2">
+              요청하신 파일 <code class="bg-yellow-100 px-1 py-0.5 rounded text-xs">{{ path }}</code>이(가) 존재하지 않거나 접근할 수 없습니다.
+            </p>
+            <div v-if="referrerPath || referrerTitle" class="bg-white p-3 rounded border border-yellow-200">
+              <p class="text-xs text-gray-600 mb-1">이 링크는 다음 페이지에서 호출되었습니다:</p>
+              <div class="flex items-center space-x-2">
+                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <div>
+                  <p v-if="referrerTitle" class="font-medium text-gray-900">{{ referrerTitle }}</p>
+                  <p v-if="referrerPath" class="text-xs text-gray-500">{{ referrerPath }}</p>
+                </div>
+              </div>
+              <div class="mt-2 flex space-x-2">
+                <button 
+                  @click="goBackToReferrer"
+                  class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200 transition-colors"
+                >
+                  이전 페이지로 돌아가기
+                </button>
+                <button 
+                  @click="navigateToFileTree"
+                  class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded hover:bg-gray-200 transition-colors"
+                >
+                  파일 탐색기에서 찾기
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -67,12 +114,22 @@ const props = defineProps({
   content: String,
   slide: Object,
   path: String,
-  readonly: { type: Boolean, default: false }
+  readonly: { type: Boolean, default: false },
+  referrerPath: { type: String, default: '' }, // 호출한 페이지 경로
+  referrerTitle: { type: String, default: '' } // 호출한 페이지 제목
 });
 
 const emit = defineEmits(['navigate-tool']);
 const contentContainer = ref(null);
 const isLoading = ref(false);
+
+// 파일이 존재하지 않는지 확인
+const isFileNotFound = computed(() => {
+  return props.content === '# 공개되지 않은 자료입니다.' || 
+         props.content === '# 읽기 권한이 필요한 문서입니다.' ||
+         (props.content && props.content.includes('Error loading content')) ||
+         (props.content && props.content.includes('공개되지 않은 자료'));
+});
 
 // 최근 파일 관리
 const userKey = 'guest';
@@ -408,6 +465,24 @@ const navigateToFileTree = () => {
       }
     }, 3000);
   }
+}
+
+// 이전 페이지로 돌아가는 함수
+const goBackToReferrer = () => {
+  if (props.referrerPath) {
+    // referrerPath가 있으면 해당 경로로 이동
+    window.dispatchEvent(new CustomEvent('kb:open', {
+      detail: { 
+        path: props.referrerPath,
+        container: 'curriculum'
+      }
+    }));
+  } else {
+    // 브라우저 히스토리로 돌아가기
+    if (typeof window !== 'undefined' && window.history.length > 1) {
+      window.history.back();
+    }
+  }
 };
 
 const setupLinkIntercepts = async () => {
@@ -690,7 +765,17 @@ const renderMermaidDiagrams = async () => {
           startOnLoad: false,
           theme: 'default',
           securityLevel: 'loose',
-          fontFamily: 'Arial, sans-serif'
+          fontFamily: 'Arial, sans-serif',
+          flowchart: {
+            useMaxWidth: true,
+            htmlLabels: true
+          },
+          sequence: {
+            useMaxWidth: true
+          },
+          gantt: {
+            useMaxWidth: true
+          }
         });
         mermaidInitialized = true;
       }
@@ -698,27 +783,66 @@ const renderMermaidDiagrams = async () => {
       // 고유 ID 생성
       const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
       
+      // 래퍼 컨테이너 생성
+      const wrapper = document.createElement('div');
+      wrapper.className = 'mermaid-wrapper';
+      
+      // 크기 조정 컨트롤 생성
+      const controlsContainer = document.createElement('div');
+      controlsContainer.className = 'mermaid-controls';
+      controlsContainer.innerHTML = `
+        <div class="mermaid-controls-inner">
+          <button class="mermaid-zoom-btn" data-action="zoom-in" title="확대">+</button>
+          <button class="mermaid-zoom-btn" data-action="zoom-out" title="축소">-</button>
+          <button class="mermaid-zoom-btn" data-action="reset" title="원래 크기">↺</button>
+          <span class="mermaid-zoom-level">100%</span>
+        </div>
+      `;
+      
       // SVG 컨테이너 생성
       const svgContainer = document.createElement('div');
       svgContainer.className = 'mermaid-diagram';
-      svgContainer.style.cssText = 'text-align: center; margin: 1rem 0; padding: 1rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;';
+      svgContainer.style.cssText = 'text-align: center; margin: 1rem 0; padding: 1rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb; overflow-x: auto;';
+      
+      // 래퍼에 컨트롤과 SVG 컨테이너 추가
+      wrapper.appendChild(controlsContainer);
+      wrapper.appendChild(svgContainer);
       
       // 원본 코드 블록 숨기기
       pre.style.display = 'none';
       pre.dataset.mermaidRendered = 'true';
       
-      // SVG 컨테이너를 원본 위치에 삽입
-      pre.parentNode.insertBefore(svgContainer, pre);
+      // 래퍼를 원본 위치에 삽입
+      pre.parentNode.insertBefore(wrapper, pre);
       
       // Mermaid 렌더링
       const { svg } = await mermaid.render(id, graphDefinition);
       svgContainer.innerHTML = svg;
       
-      // SVG 스타일링
+      // SVG 크기 조정 및 컨트롤 설정
       const svgElement = svgContainer.querySelector('svg');
       if (svgElement) {
+        // 기본 크기 설정 (화면에 맞게)
+        const containerWidth = svgContainer.offsetWidth || 800;
+        const svgWidth = svgElement.getAttribute('width') || svgElement.getBoundingClientRect().width;
+        const svgHeight = svgElement.getAttribute('height') || svgElement.getBoundingClientRect().height;
+        
+        // 화면 너비에 맞게 스케일 조정
+        const scale = Math.min(1, (containerWidth - 40) / svgWidth);
+        const newWidth = svgWidth * scale;
+        const newHeight = svgHeight * scale;
+        
+        svgElement.setAttribute('width', newWidth);
+        svgElement.setAttribute('height', newHeight);
         svgElement.style.maxWidth = '100%';
         svgElement.style.height = 'auto';
+        
+        // 원본 크기 저장
+        svgElement.setAttribute('data-original-width', svgWidth);
+        svgElement.setAttribute('data-original-height', svgHeight);
+        
+        // 크기 조정 컨트롤 설정
+        setupMermaidControls(svgContainer, svgElement, scale);
       }
       
     } catch (error) {
@@ -727,6 +851,50 @@ const renderMermaidDiagrams = async () => {
       pre.style.display = 'block';
     }
   }
+};
+
+// Mermaid 다이어그램 크기 조정 컨트롤 설정
+const setupMermaidControls = (container, svgElement, initialScale) => {
+  let currentScale = initialScale;
+  const controls = container.parentElement.querySelector('.mermaid-controls');
+  const zoomLevel = controls.querySelector('.mermaid-zoom-level');
+  
+  const updateScale = (newScale) => {
+    currentScale = Math.max(0.1, Math.min(3, newScale)); // 0.1x ~ 3x 범위 제한
+    const originalWidth = parseFloat(svgElement.getAttribute('data-original-width'));
+    const originalHeight = parseFloat(svgElement.getAttribute('data-original-height'));
+    
+    svgElement.setAttribute('width', originalWidth * currentScale);
+    svgElement.setAttribute('height', originalHeight * currentScale);
+    zoomLevel.textContent = `${Math.round(currentScale * 100)}%`;
+  };
+  
+  // 버튼 이벤트 리스너
+  controls.addEventListener('click', (e) => {
+    if (e.target.classList.contains('mermaid-zoom-btn')) {
+      const action = e.target.dataset.action;
+      switch (action) {
+        case 'zoom-in':
+          updateScale(currentScale * 1.2);
+          break;
+        case 'zoom-out':
+          updateScale(currentScale / 1.2);
+          break;
+        case 'reset':
+          updateScale(initialScale);
+          break;
+      }
+    }
+  });
+  
+  // 마우스 휠로 확대/축소 (Ctrl/Cmd + 휠)
+  container.addEventListener('wheel', (e) => {
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? 0.9 : 1.1;
+      updateScale(currentScale * delta);
+    }
+  });
 };
 
 onMounted(() => {
@@ -1159,14 +1327,70 @@ watch(() => props.content, (c) => {
 }
 
 /* Mermaid 다이어그램 스타일 */
-.mermaid-diagram {
-  text-align: center;
+.mermaid-wrapper {
   margin: 1rem 0;
-  padding: 1rem;
-  background: #f9fafb;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  overflow: hidden;
+}
+
+.mermaid-controls {
+  background: #f3f4f6;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mermaid-controls-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mermaid-zoom-btn {
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mermaid-zoom-btn:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  color: #111827;
+}
+
+.mermaid-zoom-btn:active {
+  background: #e5e7eb;
+  transform: translateY(1px);
+}
+
+.mermaid-zoom-level {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+  min-width: 40px;
+  text-align: center;
+}
+
+.mermaid-diagram {
+  text-align: center;
+  padding: 1rem;
   overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .mermaid-diagram svg {
@@ -1174,17 +1398,65 @@ watch(() => props.content, (c) => {
   height: auto;
   display: block;
   margin: 0 auto;
+  transition: transform 0.2s ease;
 }
 
 /* Mermaid 다이어그램 반응형 처리 */
 @media (max-width: 768px) {
+  .mermaid-wrapper {
+    margin: 0.5rem 0;
+  }
+  
+  .mermaid-controls {
+    padding: 0.25rem;
+  }
+  
+  .mermaid-controls-inner {
+    gap: 0.25rem;
+  }
+  
+  .mermaid-zoom-btn {
+    padding: 0.125rem 0.25rem;
+    font-size: 0.75rem;
+    min-width: 28px;
+    height: 28px;
+  }
+  
   .mermaid-diagram {
     padding: 0.5rem;
-    margin: 0.5rem 0;
   }
   
   .mermaid-diagram svg {
     font-size: 12px;
+  }
+}
+
+/* 다크 모드 지원 */
+@media (prefers-color-scheme: dark) {
+  .mermaid-wrapper {
+    background: #1f2937;
+    border-color: #374151;
+  }
+  
+  .mermaid-controls {
+    background: #111827;
+    border-color: #374151;
+  }
+  
+  .mermaid-zoom-btn {
+    background: #374151;
+    border-color: #4b5563;
+    color: #d1d5db;
+  }
+  
+  .mermaid-zoom-btn:hover {
+    background: #4b5563;
+    border-color: #6b7280;
+    color: #f9fafb;
+  }
+  
+  .mermaid-zoom-level {
+    color: #9ca3af;
   }
 }
 </style>

@@ -119,7 +119,15 @@
           </div>
           <template v-else>
             <transition name="fade" mode="out-in">
-              <WorkspaceView :active-content="tbContent" :active-slide="tbSlide" :active-path="tbPath" :readonly="true" ref="workspaceView" />
+              <WorkspaceView 
+                :active-content="tbContent" 
+                :active-slide="tbSlide" 
+                :active-path="tbPath" 
+                :readonly="true" 
+                :referrer-path="referrerInfo.path"
+                :referrer-title="referrerInfo.title"
+                ref="workspaceView" 
+              />
             </transition>
           </template>
         </div>
@@ -384,6 +392,12 @@ const splitEditor = ref(null)
 const tbContent = ref('')
 const tbSlide = ref(null)
 const tbPath = ref('')
+
+// Referrer 정보 관리 (호출한 페이지 정보)
+const referrerInfo = ref({
+  path: '',
+  title: ''
+})
 
 // API configuration (browser-safe host resolution)
 const config = useRuntimeConfig();
@@ -732,6 +746,14 @@ const handleFileClick = async (path) => {
   const cleanPath = preventPathDuplication(path)
   const preparedPath = prepareSafeApiPath(cleanPath) // 개선된 한글 URI 처리 사용
   
+  // 현재 페이지를 referrer로 저장
+  if (tbPath.value) {
+    referrerInfo.value = {
+      path: tbPath.value,
+      title: getDocumentTitle(tbContent.value) || tbPath.value.split('/').pop()?.replace(/\.md$/i, '') || '이전 페이지'
+    }
+  }
+  
   // 진도 업데이트: 과정별 진도 관리
   updateProgressForFile(preparedPath)
   
@@ -840,6 +862,25 @@ function getTotalStepsForCourse(courseId) {
     'textbook': 15
   }
   return stepCounts[courseId] || 10
+}
+
+// 문서 제목 추출 함수
+function getDocumentTitle(content) {
+  if (!content) return ''
+  
+  // 첫 번째 헤딩에서 제목 추출
+  const match = content.match(/^#\s+(.+)$/m)
+  if (match) {
+    return match[1].trim()
+  }
+  
+  // 첫 번째 H2 헤딩에서 제목 추출
+  const h2Match = content.match(/^##\s+(.+)$/m)
+  if (h2Match) {
+    return h2Match[1].trim()
+  }
+  
+  return ''
 }
 
 // 디렉토리를 FileTree에서 보여주는 함수
