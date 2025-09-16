@@ -232,6 +232,7 @@ import DiffViewer from '~/components/DiffViewer.vue'
 import { generateMarkdownTable, mermaidTemplate, vegaLiteBarTemplate, vegaLiteBarSpec } from '~/utils/mdTools'
 import KbToolbar from '~/components/KbToolbar.vue'
 import { handleAnchorLink, toggleAllDetails as toggleAllDetailsUtil } from '~/utils/anchor-utils'
+import { resolveKnowledgeBasePath } from '~/utils/path'
 import KbSidePanel from '~/components/KbSidePanel.vue'
 import UnsavedChangesModal from '~/components/UnsavedChangesModal.vue'
 
@@ -595,6 +596,7 @@ function handlePreviewClick(event) {
   navigateToLink(href)
 }
 
+
 // 링크 이동 처리 함수
 function navigateToLink(href) {
   console.log('navigateToLink called with href:', href, 'current path:', props.path)
@@ -610,28 +612,8 @@ function navigateToLink(href) {
     return;
   }
   
-  // 상대 경로 처리
-  let targetPath = href
-  
-  // 절대 경로가 아닌 경우 (http로 시작하지 않고 /로 시작하지 않는 경우)
-  if (!href.startsWith('http') && !href.startsWith('/')) {
-    // 현재 파일의 디렉토리를 기준으로 절대 경로 생성
-    const currentDir = props.path ? props.path.substring(0, props.path.lastIndexOf('/')) : ''
-    console.log('currentDir:', currentDir)
-    
-    if (href.startsWith('./')) {
-      targetPath = currentDir + '/' + href.substring(2)
-    } else if (href.startsWith('../')) {
-      const parts = currentDir.split('/')
-      const upLevels = (href.match(/\.\.\//g) || []).length
-      const newParts = parts.slice(0, -upLevels)
-      const remainingPath = href.replace(/\.\.\//g, '')
-      targetPath = newParts.join('/') + '/' + remainingPath
-    } else {
-      // 상대 경로 (예: Day2/README)
-      targetPath = currentDir + '/' + href
-    }
-  }
+  // mcp_knowledge_base 기준 경로 처리
+  let targetPath = resolveKnowledgeBasePath(props.path, href);
   
   console.log('targetPath before .md check:', targetPath)
   

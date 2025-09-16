@@ -1001,3 +1001,59 @@ export function processPathSafely(path: string, mode: 'encode' | 'decode' | 'aut
     }
   }
 }
+
+/**
+ * mcp_knowledge_base를 root로 하는 경로 처리 함수
+ * 모든 내부 문서 링크가 mcp_knowledge_base를 기준으로 동작하도록 함
+ */
+export function resolveKnowledgeBasePath(currentPath: string, relativePath: string): string {
+  if (!relativePath) return relativePath;
+  
+  // 절대 경로인 경우 mcp_knowledge_base 기준으로 처리
+  if (relativePath.startsWith('/')) {
+    // /로 시작하는 경우 mcp_knowledge_base를 prefix로 추가
+    return `/mcp_knowledge_base${relativePath}`;
+  }
+  
+  // 현재 경로에서 mcp_knowledge_base 기준 디렉토리 추출
+  let baseDir = '';
+  if (currentPath) {
+    // mcp_knowledge_base 이후의 경로 추출
+    const kbIndex = currentPath.indexOf('mcp_knowledge_base/');
+    if (kbIndex !== -1) {
+      baseDir = currentPath.substring(kbIndex + 'mcp_knowledge_base/'.length);
+      // 파일명 제거하여 디렉토리만 추출
+      const lastSlash = baseDir.lastIndexOf('/');
+      if (lastSlash > 0) {
+        baseDir = baseDir.substring(0, lastSlash);
+      } else {
+        baseDir = '';
+      }
+    }
+  }
+  
+  // 상대 경로 해석
+  const parts = relativePath.split('/');
+  let result = baseDir;
+  
+  for (const part of parts) {
+    if (part === '..') {
+      // 상위 디렉토리로 이동
+      const lastSlash = result.lastIndexOf('/');
+      if (lastSlash > 0) {
+        result = result.substring(0, lastSlash);
+      } else {
+        result = '';
+      }
+    } else if (part === '.') {
+      // 현재 디렉토리 (변화 없음)
+      continue;
+    } else if (part) {
+      // 하위 디렉토리 또는 파일
+      result = result ? `${result}/${part}` : part;
+    }
+  }
+  
+  // mcp_knowledge_base prefix 추가
+  return `/mcp_knowledge_base/${result}`;
+}

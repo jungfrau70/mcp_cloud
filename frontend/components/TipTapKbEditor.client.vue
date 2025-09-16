@@ -118,6 +118,7 @@ import { useDocStore } from '../stores/doc'
 import { resolveApiBase } from '../composables/useKbApi'
 import { useKbApi } from '../composables/useKbApi'
 import { useToastStore } from '../stores/toast'
+import { resolveKnowledgeBasePath } from '~/utils/path'
 import KbToolbar from './KbToolbar.vue'
 import KbSidePanel from './KbSidePanel.vue'
 
@@ -434,32 +435,13 @@ function handleInternalLinkClick(href: string) {
   navigateToLink(href)
 }
 
+
 // 링크 이동 처리 함수
 function navigateToLink(href: string) {
   console.log('navigateToLink called with href:', href, 'current path:', props.path)
   
-  // 상대 경로 처리
-  let targetPath = href
-  
-  // 절대 경로가 아닌 경우 (http로 시작하지 않고 /로 시작하지 않는 경우)
-  if (!href.startsWith('http') && !href.startsWith('/') && !href.startsWith('#')) {
-    // 현재 파일의 디렉토리를 기준으로 절대 경로 생성
-    const currentDir = props.path ? props.path.substring(0, props.path.lastIndexOf('/')) : ''
-    console.log('currentDir:', currentDir)
-    
-    if (href.startsWith('./')) {
-      targetPath = currentDir + '/' + href.substring(2)
-    } else if (href.startsWith('../')) {
-      const parts = currentDir.split('/')
-      const upLevels = (href.match(/\.\.\//g) || []).length
-      const newParts = parts.slice(0, -upLevels)
-      const remainingPath = href.replace(/\.\.\//g, '')
-      targetPath = newParts.join('/') + '/' + remainingPath
-    } else {
-      // 상대 경로 (예: Day2/README)
-      targetPath = currentDir + '/' + href
-    }
-  }
+  // mcp_knowledge_base 기준 경로 처리
+  let targetPath = resolveKnowledgeBasePath(props.path, href);
   
   console.log('targetPath before .md check:', targetPath)
   

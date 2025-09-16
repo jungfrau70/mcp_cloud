@@ -118,7 +118,8 @@ import DOMPurify from 'dompurify'
 import { 
   cleanApiPath, 
   deepCleanApiPath, 
-  isDirectoryPath, 
+  isDirectoryPath,
+  resolveKnowledgeBasePath, 
   normalizeDirectoryPath, 
   preventPathDuplication, 
   prepareApiPath, 
@@ -213,38 +214,9 @@ function getFileName(filePath) {
   return parts[parts.length - 1] || 'Unknown';
 }
 
+// 기존 함수는 호환성을 위해 유지
 function resolveRelativePath(currentPath, relativePath) {
-  if (!currentPath || !relativePath) return relativePath;
-  
-  // 절대 경로인 경우 그대로 반환
-  if (relativePath.startsWith('/')) {
-    return relativePath;
-  }
-  
-  // 현재 경로에서 디렉토리 부분 추출
-  const currentDir = currentPath.substring(0, currentPath.lastIndexOf('/'));
-  
-  // 상대 경로 해석
-  const parts = relativePath.split('/');
-  let result = currentDir;
-  
-  for (const part of parts) {
-    if (part === '..') {
-      // 상위 디렉토리로 이동
-      const lastSlash = result.lastIndexOf('/');
-      if (lastSlash > 0) {
-        result = result.substring(0, lastSlash);
-      }
-    } else if (part === '.') {
-      // 현재 디렉토리 (변화 없음)
-      continue;
-    } else if (part) {
-      // 하위 디렉토리 또는 파일
-      result = result ? `${result}/${part}` : part;
-    }
-  }
-  
-  return result;
+  return resolveKnowledgeBasePath(currentPath, relativePath);
 }
 
 // 목차 전체 펼치기/접기 함수 - 공통 유틸리티 사용
@@ -731,6 +703,20 @@ onMounted(() => {
   setupCodeBlockHandlers()
   // Mermaid 다이어그램 렌더링 (SplitEditor.vue와 동일한 방식)
   scheduleMermaidRender();
+  
+  // URL 앵커 처리 (페이지 로드 시)
+  nextTick(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      // 약간의 지연을 두어 DOM이 완전히 렌더링된 후 처리
+      setTimeout(() => {
+        const handled = handleAnchorLink(hash, contentContainer.value, 'ContentView');
+        if (handled) {
+          console.log('ContentView: URL anchor processed:', hash);
+        }
+      }, 100);
+    }
+  });
 })
 watch(() => props.content, () => {
   setupLinkIntercepts()
