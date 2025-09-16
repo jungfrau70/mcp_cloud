@@ -1,6 +1,6 @@
 <div align="center">
 
-[← 이전: Cloud Master 1일차](../Day1/README.md) | [다음: Cloud Master 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md) | [다음: Cloud Master 3일차 →](../Day3/README.md)
+[← 이전: Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [다음: Cloud Master 2일차 →](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [다음: Cloud Master 3일차 →](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
 
 </div>
 
@@ -144,20 +144,20 @@ kubectl version --client
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [클라우드 비용 구조 가이드](./cost-structure-guide.md) - AWS/GCP 과금 모델 이해
-- 🔗 [비용 최적화 가이드](./cost-optimization-guide.md) - 비용 예측 및 최적화
-- 🔗 [모니터링 가이드](./monitoring-guide.md) - CloudWatch/Cloud Monitoring 설정
-- 🔗 [종합 실습 가이드](./comprehensive-practice-guide.md) - EKS/GKE 컨테이너 오케스트레이션
+- 🔗 [클라우드 비용 구조 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-structure-guide.md) - AWS/GCP 과금 모델 이해
+- 🔗 [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-optimization-guide.md) - 비용 예측 및 최적화
+- 🔗 [모니터링 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/monitoring-guide.md) - CloudWatch/Cloud Monitoring 설정
+- 🔗 [종합 실습 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/comprehensive-practice-guide.md) - EKS/GKE 컨테이너 오케스트레이션
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [트러블슈팅 가이드](./troubleshooting-guide.md) - 비용 관리, 모니터링, Kubernetes 문제 해결
+- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/troubleshooting-guide.md) - 비용 관리, 모니터링, Kubernetes 문제 해결
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Basic 과정](../../../cloud_basic/textbook/Day1/README.md) - AWS/GCP 기초 과정
-- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README.md) - Kubernetes 고급 과정
-- 🔗 [전체 커리큘럼](/curriculum.md) - 전체 과정 구조 및 학습 경로
-- 🔗 [통합 인덱스](/index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](../learning-path.md) - Cloud Master 학습 경로
+- 🔗 [Cloud Basic 과정](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) - AWS/GCP 기초 과정
+- 🔗 [Cloud Container 과정](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md) - Kubernetes 고급 과정
+- 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
+- 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
+- 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/cloud_master/learning-path.md) - Cloud Master 학습 경로
 
 ### 참고 문서
 - [AWS 비용 관리 공식 문서](https://docs.aws.amazon.com/cost-management/)
@@ -175,10 +175,10 @@ kubectl version --client
 
 ## 🚀 시작하기
 
-실습을 시작하기 전에 위의 체크리스트를 모두 확인하세요. 모든 준비가 완료되면 [1교시: 클라우드 비용 구조와 서비스 과금 체계](./cost-structure-guide.md)부터 시작하세요.
+실습을 시작하기 전에 위의 체크리스트를 모두 확인하세요. 모든 준비가 완료되면 [1교시: 클라우드 비용 구조와 서비스 과금 체계](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-structure-guide.md)부터 시작하세요.
 
 ### 문제가 있나요?
-실습 중 문제가 발생하면 [트러블슈팅 가이드](troubleshooting-guide.md)를 참고하세요.
+실습 중 문제가 발생하면 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/troubleshooting-guide.md)를 참고하세요.
 
 ---
 

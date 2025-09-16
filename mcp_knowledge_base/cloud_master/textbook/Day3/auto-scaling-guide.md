@@ -1,6 +1,6 @@
 <div align="center">
 
-[← 이전: Cloud Master 3일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [← 이전: Cloud Master 메인](../README.md) | [📋 학습 경로](../learning-path.md) | [← 이전: 로드 밸런싱 가이드](./load-balancing-guide) | [다음: 통합 가이드 →](./integration-guide)
+[← 이전: Cloud Master 3일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [← 이전: 로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/load-balancing-guide.md) | [다음: 통합 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day3/integration-guide.md)
 
 </div>
 
@@ -635,7 +635,7 @@ gcloud compute instance-groups managed set-autoscaling web-servers-mig \
 - [오토 스케일링 모범 사례](https://aws.amazon.com/architecture/well-architected/)
 - [스케일링 전략 가이드](https://cloud.google.com/architecture/scaling-web-applications)
 
-다음 단계: [3교시: 로드 밸런서 + 오토스케일링 연동](./integration-guide.md)
+다음 단계: [3교시: 로드 밸런서 + 오토스케일링 연동](/mcp_knowledge_base/cloud_master/textbook/Day3/integration-guide.md)
 
 ---
 

@@ -2,11 +2,11 @@
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](../../README.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🏠 학습 경로로 돌아가기](../../../index.md) | [다음: Docker 고급 가이드 →](./docker-advanced-guide.md)
+[← 이전: Cloud Master 메인](../../README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: Docker 고급 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-advanced-guide.md)
 
 </div>
 
-> 📋 **전체 개요**: [README.md](../../README.md) | [통합 커리큘럼](../../../curriculum.md) | [통합 인덱스](../../../index.md)에서 전체 과정 구조를 확인하세요.
+> 📋 **전체 개요**: [README.md](../../README.md) | [통합 커리큘럼](/mcp_knowledge_base/curriculum.md) | [통합 인덱스](/mcp_knowledge_base/index.md)에서 전체 과정 구조를 확인하세요.
 
 ## 🎯 학습 목표
 
@@ -520,9 +520,9 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
 
 이 기본 가이드를 완료했다면 다음을 학습하세요:
 
-1. **[Docker 고급 가이드](./docker-advanced-guide.md)**: 멀티스테이지 빌드, 최적화 기법
-2. **[Docker Compose 가이드](./docker-compose-guide.md)**: 복잡한 애플리케이션 오케스트레이션
-3. **[GitHub Actions 가이드](./github-actions-guide.md)**: CI/CD 파이프라인 구축
+1. **[Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-advanced-guide.md)**: 멀티스테이지 빌드, 최적화 기법
+2. **[Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-compose-guide.md)**: 복잡한 애플리케이션 오케스트레이션
+3. **[GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/github-actions-guide.md)**: CI/CD 파이프라인 구축
 
 ---
 

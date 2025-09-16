@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Basic 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md)
+[← 이전: Cloud Basic 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
 </div>
 
@@ -669,7 +669,7 @@ gcloud auth activate-service-account --key-file=key.json
 
 ### 🚀 다음 단계
 
-- **2교시 실습**: [IAM 사용자 및 권한 관리](./iam-basics-guide.md)
+- **2교시 실습**: [IAM 사용자 및 권한 관리](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md)
 - **실제 프로젝트 적용**: 자신의 프로젝트에 클라우드 서비스 적용
 - **고급 기능 학습**: 조직 관리, 외부 연동, 자동화
 
@@ -677,7 +677,7 @@ gcloud auth activate-service-account --key-file=key.json
 
 - [AWS 공식 문서](https://docs.aws.amazon.com/)
 - [GCP 공식 문서](https://cloud.google.com/docs)
-- [IAM 사용자 및 권한 관리](./iam-basics-guide.md)
+- [IAM 사용자 및 권한 관리](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md)
 
 ---
 

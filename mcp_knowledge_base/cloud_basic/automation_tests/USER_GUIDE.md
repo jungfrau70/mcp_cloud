@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Basic 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md)
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
 </div>
 
@@ -99,6 +99,6 @@ ls -la mcp_knowledge_base/cloud_basic/automation/day2/
 
 ## 🆘 도움이 필요하신가요?
 
-- **상세 문서**: [README.md](./README.md)
+- **상세 문서**: [README.md](/mcp_knowledge_base/cloud_basic/automation_tests/README.md)
 - **문제 해결**: 로그 파일 확인
 - **지원 요청**: GitHub Issues

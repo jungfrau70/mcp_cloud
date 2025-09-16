@@ -1,6 +1,6 @@
 <div align="center">
 
-[← 이전: Cloud Master 3일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [← 이전: Cloud Master 메인](../README.md) | [📋 학습 경로](../learning-path.md) | [← 이전: 통합 가이드](./integration-guide) | [다음: Cloud Container 과정 →](../../../cloud_container/textbook/Day1/README)
+[← 이전: Cloud Master 3일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [← 이전: 통합 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/integration-guide.md) | [다음: Cloud Container 과정 →](/mcp_knowledge_base/cloud_container/textbook/Day1/README)
 
 </div>
 
@@ -761,7 +761,7 @@ EOF
 - [장애 시뮬레이션 모범 사례](https://www.gremlin.com/chaos-engineering/)
 - [자가 치유 시스템 설계](https://cloud.google.com/architecture/self-healing-applications)
 
-다음 단계: [트러블슈팅 가이드](./troubleshooting-guide.md)
+다음 단계: [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/troubleshooting-guide.md)
 
 ---
 

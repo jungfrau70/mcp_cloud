@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Container 2일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [← 이전: Cloud Container 메인](../README.md) | [📋 학습 경로](../learning-path.md)
+[← 이전: Cloud Container 2일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
 </div>
 
@@ -991,8 +991,8 @@ EOF
 - [Grafana 공식 문서](https://grafana.com/docs/)
 
 ### 추가 학습 자료
-- [고가용성 아키텍처 가이드](./high-availability-architecture.md)
-- [종합 프로젝트 실습](./practice/comprehensive-project.md)
+- [고가용성 아키텍처 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/high-availability-architecture.md)
+- [종합 프로젝트 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/comprehensive-project.md)
 
 ---
 

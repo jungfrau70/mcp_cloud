@@ -1,6 +1,6 @@
 <div align="center">
 
-[← 이전: Cloud Basic 1일차](../Day1/README.md) | [다음: Cloud Basic 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md) | [다음 과정: Cloud Master 1일차 →](../../../cloud_master/textbook/Day1/README.md)
+[← 이전: Cloud Basic 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [다음: Cloud Basic 2일차 →](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [다음 과정: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
 
 </div>
 
@@ -75,14 +75,14 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [종합 실습 프로젝트](practice/basic-to-master-bridge.md)
+- 🔗 [종합 실습 프로젝트](/mcp_knowledge_base/cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md) - Docker, CI/CD 심화 과정
-- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README.md) - Kubernetes 고급 과정
-- 🔗 [전체 커리큘럼](/curriculum.md) - 전체 과정 구조 및 학습 경로
-- 🔗 [통합 인덱스](/index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](../../../learning-path.md) - Cloud Basic 학습 경로
+- 🔗 [Cloud Master 과정](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) - Docker, CI/CD 심화 과정
+- 🔗 [Cloud Container 과정](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md) - Kubernetes 고급 과정
+- 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
+- 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
+- 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/learning-path.md) - Cloud Basic 학습 경로
 
 ---
 
@@ -531,7 +531,7 @@ telnet RDS_ENDPOINT 3306
 
 - [AWS VPC 공식 문서](https://docs.aws.amazon.com/vpc/)
 - [GCP VPC 공식 문서](https://cloud.google.com/vpc/docs)
-- [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md)
+- [Cloud Master 과정](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
 
 ---
 

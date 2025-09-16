@@ -1,6 +1,6 @@
 <div align="center">
 
-[← 이전: Cloud Master 2일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [← 이전: Cloud Master 메인](../README.md) | [📋 학습 경로](../learning-path.md) | [← 이전: Cloud Master 1일차](../Day1/README) | [다음: 비용 최적화 가이드 →](./cost-optimization-guide)
+[← 이전: Cloud Master 2일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [← 이전: Cloud Master 1일차](../Day1/README) | [다음: 비용 최적화 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-optimization-guide.md)
 
 </div>
 
@@ -633,7 +633,7 @@ gcloud alpha billing budgets create \
 - [AWS Pricing Calculator](https://calculator.aws/)
 - [Google Cloud Pricing Calculator](https://cloud.google.com/products/calculator)
 
-다음 단계: [2교시: 클라우드 과금 예측 및 리소스 비용 최적화](./cost-optimization-guide.md)
+다음 단계: [2교시: 클라우드 과금 예측 및 리소스 비용 최적화](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-optimization-guide.md)
 
 ---
 

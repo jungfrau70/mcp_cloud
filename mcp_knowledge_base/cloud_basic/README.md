@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[← 이전: Cloud Basic 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md)
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
 </div>
 
-> 📋 **전체 개요**: [README.md](../README.md) | [통합 커리큘럼](/curriculum.md) | [통합 인덱스](/index.md)에서 전체 과정 구조를 확인하세요.
+> 📋 **전체 개요**: [README.md](/mcp_knowledge_base/cloud_master/README.md) | [통합 커리큘럼](/mcp_knowledge_base/curriculum.md) | [통합 인덱스](/mcp_knowledge_base/index.md)에서 전체 과정 구조를 확인하세요.
 
-> 📋 **과정 개요**: [과정상세.md](./과정상세.md)에서 상세한 교육 정보를 확인하세요.
+> 📋 **과정 개요**: [과정상세.md](/mcp_knowledge_base/cloud_basic/과정상세.md)에서 상세한 교육 정보를 확인하세요.
 
 ## 📋 개요
 
@@ -95,16 +95,16 @@
 ## 📖 학습 자료
 
 ### Day 1
-- [클라우드 계정 설정 가이드](./textbook/Day2/aws-gcp-account-setup.md)
-- [IAM 기초 가이드](./textbook/Day1/iam-basics-guide.md)
-- [가상머신 서비스 가이드](./textbook/Day1/vm-services-guide.md)
-- [스토리지 서비스 가이드](./textbook/Day1/storage-services-guide.md)
+- [클라우드 계정 설정 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/aws-gcp-account-setup.md)
+- [IAM 기초 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md)
+- [가상머신 서비스 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md)
+- [스토리지 서비스 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
 
 ### Day 2
-- [네트워킹 기초 가이드](./textbook/Day2/README.md)
-- [종합 실습 프로젝트](./textbook/Day2/practice/basic-to-master-bridge.md)
+- [네트워킹 기초 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
+- [종합 실습 프로젝트](/mcp_knowledge_base/cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
 
-> 📚 **전체 실습 가이드**: [Day1 README](./textbook/Day1/README.md) | [Day2 README](./textbook/Day2/README.md)
+> 📚 **전체 실습 가이드**: [Day1 README](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Day2 README](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
 
 ---
 
@@ -128,7 +128,7 @@ Basic 과정을 시작하기 전에 다음을 확인하세요:
 - [ ] Linux 기본 명령어 경험 권장
 - [ ] 인터넷 및 웹 서비스 개념 이해
 
-> **다음 과정**: [Cloud Master 과정](../cloud_master/textbook/Day1/README.md) | [전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
+> **다음 과정**: [Cloud Master 과정](../cloud_master/textbook/Day1/README.md) | [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
 
 ### 환경 준비
 - [ ] AWS Free Tier 계정 생성
@@ -146,10 +146,10 @@ Basic 과정을 시작하기 전에 다음을 확인하세요:
 ## 📞 지원
 
 Basic 과정에서 문제가 발생하면:
-1. [각 교시별 문제 해결 섹션](./textbook/Day1/troubleshooting-guide.md) 확인
+1. [각 교시별 문제 해결 섹션](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md) 확인
 2. 실습 환경 및 권한 설정 재확인
 3. 클라우드 계정 설정 상태 점검
 
-> 🆘 **지원 채널**: [과정상세.md](./과정상세.md)에서 문의 정보를 확인하세요.
+> 🆘 **지원 채널**: [과정상세.md](/mcp_knowledge_base/cloud_basic/과정상세.md)에서 문의 정보를 확인하세요.
 
 **🎯 목표**: 클라우드의 기본기를 탄탄히 쌓고 다음 단계인 Master 과정으로 나아갈 수 있는 기초를 다집니다.

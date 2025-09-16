@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Basic 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md)
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
 </div>
 
@@ -156,7 +156,7 @@ tail -f basic_course_automation.log
 
 ## 📞 지원
 
-- **문서**: [USER_GUIDE.md](./USER_GUIDE.md)
+- **문서**: [USER_GUIDE.md](/mcp_knowledge_base/cloud_basic/automation_tests/USER_GUIDE.md)
 - **이슈**: GitHub Issues
 - **문의**: 프로젝트 관리자
 

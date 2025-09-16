@@ -1,6 +1,6 @@
 # Cloud Basic - 클라우드 기초 학습 경로
 
-> 📋 **전체 개요**: [README.md](../README.md) | [통합 커리큘럼](/curriculum.md) | [통합 인덱스](/index.md)에서 전체 과정 구조를 확인하세요.
+> 📋 **전체 개요**: [README.md](/mcp_knowledge_base/cloud_master/README.md) | [통합 커리큘럼](/mcp_knowledge_base/curriculum.md) | [통합 인덱스](/mcp_knowledge_base/index.md)에서 전체 과정 구조를 확인하세요.
 
 <div align="center">
 </div>
@@ -21,8 +21,8 @@
 - **실습 환경**: AWS Free Tier + GCP Free Tier ($300 크레딧)
 
 ### 과정 상세 정보
-- [과정명 상세](./과정명.md)
-- [과정 상세 정보](./과정상세.md)
+- [과정명 상세](/mcp_knowledge_base/cloud_basic/과정명.md)
+- [과정 상세 정보](/mcp_knowledge_base/cloud_basic/과정상세.md)
 
 ### 학습 목표
 - 클라우드 컴퓨팅의 기본 개념 이해
@@ -39,12 +39,12 @@
 ### 1. 클라우드 개념 및 계정 생성 (30분)
 
 #### 핵심 문서
-- [클라우드 개념 및 계정 생성 가이드](./textbook/Day1/aws-gcp-account-setup.md)
-- [AWS 계정 가입 가이드](./accounts/AWS계정가입.md)
-- [GCP 개인계정 가입 가이드](./accounts/GCP_개인계정가입.md)
-- [GCP 조직계정 가입 가이드](./accounts/GCP_조직계정가입.md)
-- [GCP 계정유형비교](./accounts/GCP_계정유형비교.md)
-- [클라우드계정관리비교](./accounts/클라우드계정관리비교.md)
+- [클라우드 개념 및 계정 생성 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md)
+- [AWS 계정 가입 가이드](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md)
+- [GCP 개인계정 가입 가이드](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md)
+- [GCP 조직계정 가입 가이드](/mcp_knowledge_base/cloud_basic/accounts/GCP_조직계정가입.md)
+- [GCP 계정유형비교](/mcp_knowledge_base/cloud_basic/accounts/GCP_계정유형비교.md)
+- [클라우드계정관리비교](/mcp_knowledge_base/cloud_basic/accounts/클라우드계정관리비교.md)
 
 #### 학습 내용
 - 클라우드 컴퓨팅 개요와 장점
@@ -55,7 +55,7 @@
 ### 2. IAM 기초 실습 (45분)
 
 #### 핵심 문서
-- [IAM 기초 가이드](./textbook/Day1/iam-basics-guide.md)
+- [IAM 기초 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md)
 - [1일차 실습 가이드](./textbook/Day1/README.md#iam-기초-실습)
 
 #### 학습 내용
@@ -67,8 +67,8 @@
 ### 3. 가상머신 서비스 기초 (60분)
 
 #### 핵심 문서
-- [VM 서비스 가이드](./textbook/Day1/vm-services-guide.md)
-- [AWS EC2 vs GCP Compute Engine 비교](./textbook/Day2/compute_comparison.md)
+- [VM 서비스 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md)
+- [AWS EC2 vs GCP Compute Engine 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md)
 - [1일차 실습 가이드](./textbook/Day1/README.md#가상머신-서비스-기초)
 
 #### 학습 내용
@@ -80,8 +80,8 @@
 ### 4. 스토리지 서비스 기초 (45분)
 
 #### 핵심 문서
-- [스토리지 서비스 가이드](./textbook/Day1/storage-services-guide.md)
-- [AWS S3 vs GCP Cloud Storage 비교](./textbook/Day2/storage_comparison.md)
+- [스토리지 서비스 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
+- [AWS S3 vs GCP Cloud Storage 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md)
 - [1일차 실습 가이드](./textbook/Day1/README.md#스토리지-서비스-기초)
 
 #### 학습 내용
@@ -93,10 +93,10 @@
 ### 📚 1일차 실습 자료
 
 #### 실습 가이드
-- [1일차 실습 가이드](./textbook/Day1/README.md)
-- [AWS 기본 실습](./textbook/Day1/practice/aws_basic_practice.md)
-- [GCP 기본 실습](./textbook/Day1/practice/gcp_basic_practice.md)
-- [실습1 AWS GCP](./textbook/Day1/practice/실습1_aws_gcp.md)
+- [1일차 실습 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+- [AWS 기본 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/aws_basic_practice.md)
+- [GCP 기본 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
+- [실습1 AWS GCP](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md)
 
 #### 자동화 스크립트
 - [AWS GCP 설정 스크립트](./textbook/Day1/scripts/aws-gcp-setup.sh)
@@ -104,7 +104,7 @@
 - [GCP 설정 도우미](./textbook/Day1/scripts/gcp-setup-helper.sh)
 
 #### 문제 해결
-- [문제 해결 가이드](./textbook/Day1/troubleshooting-guide.md)
+- [문제 해결 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md)
 
 ---
 
@@ -114,9 +114,9 @@
 
 #### 핵심 문서
 - [네트워킹 기본 개념](./textbook/Day2/README.md#네트워킹-기본-개념)
-- [AWS VPC vs GCP VPC 비교](./textbook/Day2/network_comparison.md)
+- [AWS VPC vs GCP VPC 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/network_comparison.md)
 - [2일차 실습 가이드](./textbook/Day2/README.md#네트워킹-기초-실습)
-- [2일차 계정 설정 가이드](./textbook/Day2/aws-gcp-account-setup.md)
+- [2일차 계정 설정 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/aws-gcp-account-setup.md)
 
 #### 학습 내용
 - AWS VPC vs GCP VPC 개념 및 비교
@@ -139,7 +139,7 @@
 ### 3. 데이터베이스 서비스 기초 (60분)
 
 #### 핵심 문서
-- [AWS RDS vs GCP Cloud SQL 비교](./textbook/Day2/database_comparison.md)
+- [AWS RDS vs GCP Cloud SQL 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md)
 - [2일차 실습 가이드](./textbook/Day2/README.md#데이터베이스-서비스-기초)
 
 #### 학습 내용
@@ -152,7 +152,7 @@
 
 #### 핵심 문서
 - [웹 서버 + 데이터베이스 구성 종합 실습](./textbook/Day2/README.md#종합-실습-및-비교-분석)
-- [Basic to Master 연계 가이드](./textbook/Day2/practice/basic-to-master-bridge.md)
+- [Basic to Master 연계 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
 
 #### 학습 내용
 - 웹 서버 + 데이터베이스 구성 종합 실습
@@ -163,7 +163,7 @@
 ### 📚 2일차 실습 자료
 
 #### 실습 가이드
-- [2일차 실습 가이드](./textbook/Day2/README.md)
+- [2일차 실습 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
 
 #### 자동화 스크립트
 - [AWS 설정 도우미](./textbook/Day2/scripts/aws-setup-helper.sh)
@@ -174,13 +174,13 @@
 ## 🛠️ 설치 및 도구 가이드
 
 ### 필수 도구 설치
-- [AWS CLI 설치](./install/install_aws_cli.md)
-- [Azure CLI 설치](./install/install_azure_cli.md)
-- [GCP CLI 설치](./install/install_glcoud_cli.md)
-- [Docker 설치](./install/install_docker.md)
-- [Docker Compose 설치](./install/install_docker_compose.md)
-- [Git 설치](./install/install_git.md)
-- [GitHub Actions 완전 가이드](./install/github-actions-complete-guide.md)
+- [AWS CLI 설치](/mcp_knowledge_base/cloud_basic/install/install_aws_cli.md)
+- [Azure CLI 설치](/mcp_knowledge_base/cloud_basic/install/install_azure_cli.md)
+- [GCP CLI 설치](/mcp_knowledge_base/cloud_basic/install/install_glcoud_cli.md)
+- [Docker 설치](/mcp_knowledge_base/cloud_basic/install/install_docker.md)
+- [Docker Compose 설치](/mcp_knowledge_base/cloud_basic/install/install_docker_compose.md)
+- [Git 설치](/mcp_knowledge_base/cloud_basic/install/install_git.md)
+- [GitHub Actions 완전 가이드](/mcp_knowledge_base/cloud_basic/install/github-actions-complete-guide.md)
 
 ### 클라우드별 설치 스크립트
 - [AWS Docker Compose 설치](./install/install_docker_compose_aws.sh)
@@ -195,8 +195,8 @@
 ## 🤖 자동화 및 테스트
 
 ### 자동화 가이드
-- [자동화 README](./automation/README.md)
-- [자동화 테스트 README](./automation_tests/README.md)
+- [자동화 README](/mcp_knowledge_base/cloud_basic/automation/README.md)
+- [자동화 테스트 README](/mcp_knowledge_base/cloud_basic/automation_tests/README.md)
 
 ### 자동화 스크립트
 - [1일차 자동화 스크립트](./automation/day1/)
@@ -208,22 +208,22 @@
 - [2일차 스크립트 자동화](./automation_tests/basic_course_day2_scripts.py)
 - [자동화 테스트 실행](./automation_tests/run_basic_course_tests.py)
 - [자동화 테스트 검증](./automation_tests/test_basic_course_automation.py)
-- [사용자 가이드](./automation_tests/USER_GUIDE.md)
+- [사용자 가이드](/mcp_knowledge_base/cloud_basic/automation_tests/USER_GUIDE.md)
 
 ---
 
 ## 📊 프레젠테이션 자료
 
 ### 프레젠테이션 가이드
-- [프레젠테이션 README](./presentation/README.md)
+- [프레젠테이션 README](/mcp_knowledge_base/cloud_basic/presentation/README.md)
 
 ### PDF 교재
-- [클라우드실무력강화_활용법(기초)_교재.pdf)_교재](./presentation/README.md)_교재.pdf)_교재.pdf)
-- [클라우드실무력강화_활용법(기초)_교재.pdf)_실습](./presentation/README.md)_교재.pdf)_실습.pdf)
-- [클라우드실무력강화_활용법(기초)_교재.pdf)_이론](./presentation/README.md)_교재.pdf)_이론.pdf)
+- [클라우드실무력강화_활용법(기초)_교재.pdf)_교재](/mcp_knowledge_base/cloud_basic/presentation/README.md)_교재.pdf)_교재.pdf)
+- [클라우드실무력강화_활용법(기초)_교재.pdf)_실습](/mcp_knowledge_base/cloud_basic/presentation/README.md)_교재.pdf)_실습.pdf)
+- [클라우드실무력강화_활용법(기초)_교재.pdf)_이론](/mcp_knowledge_base/cloud_basic/presentation/README.md)_교재.pdf)_이론.pdf)
 
 ### PowerPoint 자료
-- [클라우드실무력강화_활용법(기초)_교재.pdf).pptx](./presentation/README.md)_교재.pdf).pptx)
+- [클라우드실무력강화_활용법(기초)_교재.pdf).pptx](/mcp_knowledge_base/cloud_basic/presentation/README.md)_교재.pdf).pptx)
 
 ---
 
@@ -260,11 +260,11 @@
 ### Cloud Master 과정 준비
 - [Cloud Master 과정 상세](../cloud_master/과정상세.md)
 - [Cloud Master 1일차 실습 가이드](../cloud_master/textbook/Day1/README.md)
-- [Basic to Master 연계 가이드](./textbook/Day2/practice/basic-to-master-bridge.md)
+- [Basic to Master 연계 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
 
 ### 통합 학습 경로
-- [전체 커리큘럼](/curriculum.md)
-- [통합 인덱스](/index.md)
+- [전체 커리큘럼](/mcp_knowledge_base/curriculum.md)
+- [통합 인덱스](/mcp_knowledge_base/index.md)
 - [통합 자동화 시스템](../integrated_automation/README.md)
 
 ---
@@ -300,6 +300,6 @@
 
 ---
 
-[← 이전: [과정명] [일차] 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
+[← 이전: [과정명] [일차] 메인](../README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
 
 </div>

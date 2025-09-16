@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Basic 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md)
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
 </div>
 
@@ -363,12 +363,12 @@ graph TD
 ## 🚀 다음 단계
 
 ### 개인 계정 사용자
-- [GCP 개인 계정 가입 가이드](./GCP_개인계정가입.md) 참조
+- [GCP 개인 계정 가입 가이드](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md) 참조
 - **Always Free** 서비스 활용
 - **개인 프로젝트** 포트폴리오 구축
 
 ### 조직 계정 사용자
-- [GCP 조직 계정 가입 가이드](./GCP_조직계정가입.md) 참조
+- [GCP 조직 계정 가입 가이드](/mcp_knowledge_base/cloud_basic/accounts/GCP_조직계정가입.md) 참조
 - **조직 정책** 설정
 - **팀 협업** 워크플로 구축
 

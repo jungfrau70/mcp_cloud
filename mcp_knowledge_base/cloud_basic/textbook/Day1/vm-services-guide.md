@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Basic 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md)
+[← 이전: Cloud Basic 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
 </div>
 
@@ -566,7 +566,7 @@ gcloud compute instances describe INSTANCE_NAME --zone=ZONE
 
 ### 🚀 다음 단계
 
-- **4교시 실습**: [스토리지 서비스 실습](./storage-services-guide.md)
+- **4교시 실습**: [스토리지 서비스 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
 - **실제 프로젝트 적용**: 자신의 프로젝트에 가상머신 적용
 - **고급 기능 학습**: 오토 스케일링, 로드 밸런싱, 모니터링
 
@@ -574,7 +574,7 @@ gcloud compute instances describe INSTANCE_NAME --zone=ZONE
 
 - [AWS EC2 공식 문서](https://docs.aws.amazon.com/ec2/)
 - [GCP Compute Engine 공식 문서](https://cloud.google.com/compute/docs)
-- [스토리지 서비스 실습](./storage-services-guide.md)
+- [스토리지 서비스 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
 
 ---
 

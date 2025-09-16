@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md)
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
 </div>
 
-> 📋 **전체 개요**: [README.md](../README.md) | [통합 커리큘럼](/curriculum.md) | [통합 인덱스](/index.md)에서 전체 과정 구조를 확인하세요.
+> 📋 **전체 개요**: [README.md](/mcp_knowledge_base/cloud_master/README.md) | [통합 커리큘럼](/mcp_knowledge_base/curriculum.md) | [통합 인덱스](/mcp_knowledge_base/index.md)에서 전체 과정 구조를 확인하세요.
 
-> 📋 **과정 개요**: [과정상세.md](./과정상세.md)에서 상세한 교육 정보를 확인하세요.
+> 📋 **과정 개요**: [과정상세.md](/mcp_knowledge_base/cloud_master/과정상세.md)에서 상세한 교육 정보를 확인하세요.
 
 ## 📋 개요
 
@@ -31,7 +31,7 @@ Cloud Master 과정을 시작하기 전에 다음 도구들을 설치해야 합�
 
 ##### 1. Git 설치 및 설정
 - **목적**: 버전 관리 및 GitHub 연동
-- **가이드**: [Git 설치 가이드](install/install_git.md)
+- **가이드**: [Git 설치 가이드](/mcp_knowledge_base/cloud_master/install/install_git.md)
 - **설치 확인**:
   ```bash
   git --version
@@ -41,7 +41,7 @@ Cloud Master 과정을 시작하기 전에 다음 도구들을 설치해야 합�
 
 ##### 2. Docker 설치 및 설정
 - **목적**: 컨테이너 기반 애플리케이션 배포
-- **가이드**: [Docker 설치 가이드](install/install_docker.md)
+- **가이드**: [Docker 설치 가이드](/mcp_knowledge_base/cloud_master/install/install_docker.md)
 - **설치 확인**:
   ```bash
   docker --version
@@ -50,7 +50,7 @@ Cloud Master 과정을 시작하기 전에 다음 도구들을 설치해야 합�
 
 ##### 3. AWS CLI 설치 및 설정
 - **목적**: AWS 서비스와의 상호작용
-- **가이드**: [AWS CLI 설치 가이드](install/install_aws_cli.md)
+- **가이드**: [AWS CLI 설치 가이드](/mcp_knowledge_base/cloud_master/install/install_aws_cli.md)
 - **설치 확인**:
   ```bash
   aws --version
@@ -59,7 +59,7 @@ Cloud Master 과정을 시작하기 전에 다음 도구들을 설치해야 합�
 
 ##### 4. Azure CLI 설치 및 설정
 - **목적**: Azure 서비스와의 상호작용
-- **가이드**: [Azure CLI 설치 가이드](install/install_azure_cli.md)
+- **가이드**: [Azure CLI 설치 가이드](/mcp_knowledge_base/cloud_master/install/install_azure_cli.md)
 - **설치 확인**:
   ```bash
   az --version
@@ -68,7 +68,7 @@ Cloud Master 과정을 시작하기 전에 다음 도구들을 설치해야 합�
 
 ##### 5. Google Cloud CLI 설치 및 설정
 - **목적**: GCP 서비스와의 상호작용
-- **가이드**: [Google Cloud CLI 설치 가이드](install/install_glcoud_cli.md)
+- **가이드**: [Google Cloud CLI 설치 가이드](/mcp_knowledge_base/cloud_master/install/install_glcoud_cli.md)
 - **설치 확인**:
   ```bash
   gcloud --version
@@ -77,7 +77,7 @@ Cloud Master 과정을 시작하기 전에 다음 도구들을 설치해야 합�
 
 ##### 6. GitHub Actions 설정
 - **목적**: CI/CD 파이프라인 구축
-- **가이드**: [GitHub Actions 완전 가이드](install/github-actions-complete-guide.md)
+- **가이드**: [GitHub Actions 완전 가이드](/mcp_knowledge_base/cloud_master/install/github-actions-complete-guide.md)
 - **설치 확인**:
   ```bash
   # GitHub 저장소 생성 및 Actions 활성화
@@ -122,7 +122,7 @@ Cloud Master 과정을 시작하기 전에 다음 도구들을 설치해야 합�
 
 #### 🎯 다음 단계
 
-모든 도구 설치가 완료되면 [Day 1: AWS & GCP 고급 아키텍처](textbook/Day1/README.md)로 진행하세요.
+모든 도구 설치가 완료되면 [Day 1: AWS & GCP 고급 아키텍처](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)로 진행하세요.
 
 ### Day 1: Docker, Git/GitHub, GitHub Actions 기초
 - **1교시**: Docker 기초 및 컨테이너 기술
@@ -209,24 +209,24 @@ Cloud Master 과정을 시작하기 전에 다음 도구들을 설치해야 합�
 ## 📖 학습 자료
 
 ### Day 1
-- [Docker 기본 가이드](./textbook/Day1/docker-basic-guide.md)
-- [Docker 고급 가이드](./textbook/Day1/docker-advanced-guide.md)
-- [GitHub Actions 가이드](./textbook/Day1/github-actions-guide.md)
-- [Docker Compose 가이드](./textbook/Day1/docker-compose-guide.md)
-- [VM 배포 가이드](./textbook/Day1/cloud-deployment-guide.md)
+- [Docker 기본 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-basic-guide.md)
+- [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-advanced-guide.md)
+- [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/github-actions-guide.md)
+- [Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-compose-guide.md)
+- [VM 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/cloud-deployment-guide.md)
 
 ### Day 2
-- [비용 구조 가이드](./textbook/Day2/cost-structure-guide.md)
-- [비용 최적화 가이드](./textbook/Day2/cost-optimization-guide.md)
-- [모니터링 가이드](./textbook/Day2/monitoring-guide.md)
-- [종합 실습 가이드](./textbook/Day2/comprehensive-practice-guide.md)
+- [비용 구조 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-structure-guide.md)
+- [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-optimization-guide.md)
+- [모니터링 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/monitoring-guide.md)
+- [종합 실습 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/comprehensive-practice-guide.md)
 
 ### Day 3
-- [로드 밸런싱 가이드](./textbook/Day3/load-balancing-guide.md)
+- [로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/load-balancing-guide.md)
 - [모니터링 설정 가이드](./textbook/Day3/monitoring-advanced/monitoring-setup.yaml)
-- [비용 최적화 가이드](./textbook/Day3/cost-optimization/cost-optimization-guide.md)
+- [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/cost-optimization/cost-optimization-guide.md)
 
-> 📚 **전체 실습 가이드**: [Day1 README](./textbook/Day1/README.md) | [Day2 README](./textbook/Day2/README.md) | [Day3 README](./textbook/Day3/README.md)
+> 📚 **전체 실습 가이드**: [Day1 README](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Day2 README](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md) | [Day3 README](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
 
 ---
 
@@ -252,7 +252,7 @@ Master 과정을 시작하기 전에 다음을 확인하세요:
 - [ ] 웹 애플리케이션 개발 경험 권장
 - [ ] 프로그래밍 기초 지식 (JavaScript, Python 등)
 
-> **다음 과정**: [Cloud Container 과정](../cloud_container/textbook/Day1/README.md) | [전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md)
+> **다음 과정**: [Cloud Container 과정](../cloud_container/textbook/Day1/README.md) | [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
 
 ### 환경 준비
 - [ ] Docker Desktop 설치 및 설정
@@ -271,10 +271,10 @@ Master 과정을 시작하기 전에 다음을 확인하세요:
 ## 📞 지원
 
 Master 과정에서 문제가 발생하면:
-1. [각 교시별 문제 해결 섹션](./textbook/Day1/troubleshooting-guide.md) 확인
+1. [각 교시별 문제 해결 섹션](/mcp_knowledge_base/cloud_master/textbook/Day1/troubleshooting-guide.md) 확인
 2. Docker 및 Git 환경 설정 재확인
 3. 클라우드 계정 권한 및 설정 점검
 
-> 🆘 **지원 채널**: [과정상세.md](./과정상세.md)에서 문의 정보를 확인하세요.
+> 🆘 **지원 채널**: [과정상세.md](/mcp_knowledge_base/cloud_master/과정상세.md)에서 문의 정보를 확인하세요.
 
 **🎯 목표**: 클라우드 실무의 핵심 기술을 마스터하고 다음 단계인 Container 과정으로 나아갈 수 있는 실무 역량을 기릅니다.

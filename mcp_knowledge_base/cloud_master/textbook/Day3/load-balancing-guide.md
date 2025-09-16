@@ -1,6 +1,6 @@
 <div align="center">
 
-[← 이전: Cloud Master 3일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [← 이전: Cloud Master 메인](../README.md) | [📋 학습 경로](../learning-path.md) | [← 이전: Cloud Master 2일차](../Day2/README) | [다음: 오토 스케일링 가이드 →](./auto-scaling-guide)
+[← 이전: Cloud Master 3일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [← 이전: Cloud Master 2일차](../Day2/README) | [다음: 오토 스케일링 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day3/auto-scaling-guide.md)
 
 </div>
 
@@ -553,7 +553,7 @@ gcloud compute forwarding-rules create web-https-forwarding-rule \
 - [로드 밸런싱 알고리즘 가이드](https://www.nginx.com/resources/glossary/load-balancing/)
 - [고가용성 설계 패턴](https://aws.amazon.com/architecture/well-architected/)
 
-다음 단계: [2교시: 오토 스케일링](./auto-scaling-guide.md)
+다음 단계: [2교시: 오토 스케일링](/mcp_knowledge_base/cloud_master/textbook/Day3/auto-scaling-guide.md)
 
 ---
 

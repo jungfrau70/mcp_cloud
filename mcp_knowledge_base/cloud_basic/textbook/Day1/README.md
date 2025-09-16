@@ -1,6 +1,6 @@
 <div align="center">
 
-[← 이전: Cloud Basic 1일차 메인](../README.md) | [다음: Cloud Basic 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md) | [← 이전 과정 없음] | [📚 전체 커리큘럼](/curriculum.md) | [다음 과정: Cloud Master 1일차 →](../../../cloud_master/textbook/Day1/README.md)
+[← 이전: Cloud Basic 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Basic 2일차 →](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [← 이전 과정 없음] | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [다음 과정: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
 
 </div>
 
@@ -78,25 +78,25 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [AWS 기초 실습 가이드](practice/aws_basic_practice.md)
-- 🔗 [GCP 기초 실습 가이드](practice/gcp_basic_practice.md)
-- 🔗 [통합 실습 가이드](practice/실습1_aws_gcp.md)
+- 🔗 [AWS 기초 실습 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/aws_basic_practice.md)
+- 🔗 [GCP 기초 실습 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
+- 🔗 [통합 실습 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md)
 
 ### 📚 개념 학습 가이드
-- 🔗 [클라우드 계정 설정 가이드](./aws-gcp-account-setup.md)
-- 🔗 [IAM 기초 가이드](./iam-basics-guide.md)
-- 🔗 [가상머신 서비스 가이드](./vm-services-guide.md)
-- 🔗 [스토리지 서비스 가이드](./storage-services-guide.md)
+- 🔗 [클라우드 계정 설정 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md)
+- 🔗 [IAM 기초 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md)
+- 🔗 [가상머신 서비스 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md)
+- 🔗 [스토리지 서비스 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [트러블슈팅 가이드](./troubleshooting-guide.md)
+- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md)
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md) - Docker, CI/CD 심화 과정
-- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README.md) - Kubernetes 고급 과정
-- 🔗 [전체 커리큘럼](/curriculum.md) - 전체 과정 구조 및 학습 경로
-- 🔗 [통합 인덱스](/index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](../../../learning-path.md) - Cloud Basic 학습 경로
+- 🔗 [Cloud Master 과정](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) - Docker, CI/CD 심화 과정
+- 🔗 [Cloud Container 과정](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md) - Kubernetes 고급 과정
+- 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
+- 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
+- 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/learning-path.md) - Cloud Basic 학습 경로
 
 ---
 
@@ -663,7 +663,7 @@ gcloud auth activate-service-account --key-file=student-key.json
 
 - [AWS 공식 문서](https://docs.aws.amazon.com/)
 - [GCP 공식 문서](https://cloud.google.com/docs)
-- [Cloud Basic 2일차 실습](../Day2/README.md)
+- [Cloud Basic 2일차 실습](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md)
 
 ---
 

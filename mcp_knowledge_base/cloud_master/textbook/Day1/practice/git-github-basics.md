@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Docker 기초 실습](./docker-basics) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [다음: GitHub Actions 기초 실습 →](./github-actions-basics) | [← 이전: Cloud Master 메인](../README.md) | [📋 학습 경로](../../learning-path.md)
+[← 이전: Docker 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/docker-basics.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: GitHub Actions 기초 실습 →](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/github-actions-basics.md) | [← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](../../learning-path.md)
 
 </div>
 

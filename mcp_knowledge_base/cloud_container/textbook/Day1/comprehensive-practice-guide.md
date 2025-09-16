@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[← 이전: Cloud Container 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md)
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
 </div>
 
@@ -608,9 +608,9 @@ curl http://localhost:8080/metrics
 - [Grafana 공식 문서](https://grafana.com/docs/)
 
 ### 추가 학습 자료
-- [Kubernetes 고급 가이드](./kubernetes-advanced-guide)
-- [Master 과정 연계 가이드](./master-integration-guide)
-- [Container 오케스트레이션 가이드](./container-orchestration-guide)
+- [Kubernetes 고급 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/kubernetes-advanced-guide.md)
+- [Master 과정 연계 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/master-integration-guide.md)
+- [Container 오케스트레이션 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/container-orchestration-guide.md)
 
 ---
 

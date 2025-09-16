@@ -1,6 +1,6 @@
 <div align="center">
 
-[← 이전: Cloud Master 3일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [← 이전: Cloud Master 메인](../README.md) | [📋 학습 경로](../learning-path.md) | [← 이전: 오토 스케일링 가이드](./auto-scaling-guide) | [다음: 장애 복구 가이드 →](./disaster-recovery-guide)
+[← 이전: Cloud Master 3일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [← 이전: 오토 스케일링 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/auto-scaling-guide.md) | [다음: 장애 복구 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day3/disaster-recovery-guide.md)
 
 </div>
 
@@ -578,7 +578,7 @@ gcloud compute instance-templates update web-server-template \
 - [로드 밸런싱 모범 사례](https://aws.amazon.com/architecture/well-architected/)
 - [자가 치유 시스템 설계](https://cloud.google.com/architecture/self-healing-applications)
 
-다음 단계: [4교시: 장애 시뮬레이션 및 복구](./disaster-recovery-guide.md)
+다음 단계: [4교시: 장애 시뮬레이션 및 복구](/mcp_knowledge_base/cloud_master/textbook/Day3/disaster-recovery-guide.md)
 
 ---
 

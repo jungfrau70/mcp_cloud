@@ -23,10 +23,10 @@
 
 ## 🔗 관련 링크
 
-- [Cloud Basic 학습 경로](./cloud_basic/learning-path.md)
-- [Cloud Master 학습 경로](./cloud_master/learning-path.md)
-- [Cloud Container 학습 경로](./cloud_container/learning-path.md)
-- [통합 인덱스](./index.md)
+- [Cloud Basic 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+- [Cloud Master 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+- [Cloud Container 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+- [통합 인덱스](/mcp_knowledge_base/index.md)
 
 ## 📞 문의
 

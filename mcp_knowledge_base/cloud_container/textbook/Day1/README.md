@@ -1,6 +1,6 @@
 <div align="center">
 
-[← 이전: Cloud Container 1일차 메인](../README.md) | [다음: Cloud Container 2일차 →](../Day2/README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [📋 학습 경로](../learning-path.md) | [← 이전 과정: Cloud Master 3일차](../../../cloud_master/textbook/Day3/README.md)
+[← 이전: Cloud Container 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Container 2일차 →](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [← 이전 과정: Cloud Master 3일차](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
 
 </div>
 
@@ -76,18 +76,18 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [Kubernetes 기초 실습](practice/kubernetes-basics.md)
-- 🔗 [컨테이너 기초 실습](practice/container-basics.md)
+- 🔗 [Kubernetes 기초 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/practice/kubernetes-basics.md)
+- 🔗 [컨테이너 기초 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/practice/container-basics.md)
 
 ### 🛠️ 문제 해결 가이드
 - 🔗 [종합 트러블슈팅 가이드](../Day2/troubleshooting/multi-az-issues.md)
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Basic 과정](../../../cloud_basic/textbook/Day1/README.md) - AWS/GCP 기초 과정
-- 🔗 [Cloud Master 과정](../../../cloud_master/textbook/Day1/README.md) - Docker, CI/CD 심화 과정
-- 🔗 [전체 커리큘럼](/curriculum.md) - 전체 과정 구조 및 학습 경로
-- 🔗 [통합 인덱스](/index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](../../../learning-path.md) - Cloud Container 학습 경로
+- 🔗 [Cloud Basic 과정](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) - AWS/GCP 기초 과정
+- 🔗 [Cloud Master 과정](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) - Docker, CI/CD 심화 과정
+- 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
+- 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
+- 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/learning-path.md) - Cloud Container 학습 경로
 
 ---
 
@@ -975,7 +975,7 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 - [Kubernetes 공식 문서](https://kubernetes.io/docs/)
 - [GKE 공식 문서](https://cloud.google.com/kubernetes-engine/docs)
-- [Cloud Container 2일차 실습](../Day2/README.md)
+- [Cloud Container 2일차 실습](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md)
 
 ---
 
