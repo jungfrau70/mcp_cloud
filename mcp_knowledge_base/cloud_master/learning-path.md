@@ -314,14 +314,14 @@
 ## 🚀 다음 단계
 
 ### Cloud Container 과정 준비
-- [Cloud Container 과정 상세](../cloud_container/과정상세.md)
-- [Cloud Container 1일차 실습 가이드](../cloud_container/textbook/Day1/README.md)
-- [Master to Container 연계 가이드](../integrated_automation/bridge_scripts/master_to_container_bridge.sh)
+- [Cloud Container 과정 상세](/mcp_knowledge_base/cloud_container/과정상세.md)
+- [Cloud Container 1일차 실습 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+- [Master to Container 연계 가이드](/mcp_knowledge_base/integrated_automation/bridge_scripts/master_to_container_bridge.sh)
 
 ### 통합 학습 경로
 - [전체 커리큘럼](/mcp_knowledge_base/curriculum.md)
 - [통합 인덱스](/mcp_knowledge_base/index.md)
-- [통합 자동화 시스템](../integrated_automation/README.md)
+- [통합 자동화 시스템](/mcp_knowledge_base/integrated_automation/README.md)
 
 ---
 
@@ -356,7 +356,7 @@
 
 ---
 
-[← 이전: [과정명] [일차] 메인](../README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
+[← 이전: [과정명] [일차] 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
 
 </div>
 

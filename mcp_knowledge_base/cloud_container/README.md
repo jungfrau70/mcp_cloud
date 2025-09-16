@@ -94,12 +94,12 @@
 Advanced 과정을 시작하기 전에 다음을 확인하세요:
 
 ### 필수 선수 과정
-- [ ] [Master 과정 완료](../cloud_master/textbook/Day1/README.md)
+- [ ] [Master 과정 완료](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
 - [ ] Docker 기초 이해
 - [ ] GitHub Actions 경험
 - [ ] 클라우드 배포 기초 이해
 
-> **관련 과정**: [Cloud Master 과정](../cloud_master/textbook/Day1/README.md) | [전체 커리큘럼](/mcp_knowledge_base/curriculum.md)
+> **관련 과정**: [Cloud Master 과정](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [전체 커리큘럼](/mcp_knowledge_base/curriculum.md)
 
 ### 환경 준비
 - [ ] AWS 계정 (ECS, ECR 권한)
@@ -117,7 +117,7 @@ Advanced 과정을 시작하기 전에 다음을 확인하세요:
 ## 📞 지원
 
 Advanced 과정에서 문제가 발생하면:
-1. [Master 과정의 트러블슈팅 가이드](../cloud_master/textbook/Day1/README.md) 참고
+1. [Master 과정의 트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) 참고
 2. [각 교시별 문제 해결 섹션](/mcp_knowledge_base/cloud_container/textbook/Day2/troubleshooting/multi-az-issues.md) 확인
 3. 실습 환경 및 권한 설정 재확인
 

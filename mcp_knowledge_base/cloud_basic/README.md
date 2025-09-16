@@ -128,7 +128,7 @@ Basic 과정을 시작하기 전에 다음을 확인하세요:
 - [ ] Linux 기본 명령어 경험 권장
 - [ ] 인터넷 및 웹 서비스 개념 이해
 
-> **다음 과정**: [Cloud Master 과정](../cloud_master/textbook/Day1/README.md) | [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
+> **다음 과정**: [Cloud Master 과정](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
 
 ### 환경 준비
 - [ ] AWS Free Tier 계정 생성

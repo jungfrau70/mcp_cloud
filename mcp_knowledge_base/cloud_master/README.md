@@ -247,12 +247,12 @@ Cloud Master 과정을 시작하기 전에 다음 도구들을 설치해야 합�
 Master 과정을 시작하기 전에 다음을 확인하세요:
 
 ### 필수 선수 과정
-- [ ] [Cloud Basic 과정](../cloud_basic/textbook/Day1/README.md) 수료
+- [ ] [Cloud Basic 과정](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) 수료
 - [ ] Linux 기본 명령어 사용법 숙지
 - [ ] 웹 애플리케이션 개발 경험 권장
 - [ ] 프로그래밍 기초 지식 (JavaScript, Python 등)
 
-> **다음 과정**: [Cloud Container 과정](../cloud_container/textbook/Day1/README.md) | [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
+> **다음 과정**: [Cloud Container 과정](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md) | [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
 
 ### 환경 준비
 - [ ] Docker Desktop 설치 및 설정

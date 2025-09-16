@@ -263,7 +263,7 @@
 ## 🚀 다음 단계
 
 ### 실무 적용
-- [통합 자동화 시스템](../integrated_automation/README.md)
+- [통합 자동화 시스템](/mcp_knowledge_base/integrated_automation/README.md)
 - [전체 커리큘럼](/mcp_knowledge_base/curriculum.md)
 - [통합 인덱스](/mcp_knowledge_base/index.md)
 
@@ -312,7 +312,7 @@
 
 ---
 
-[← 이전: [과정명] [일차] 메인](../README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
+[← 이전: [과정명] [일차] 메인](/mcp_knowledge_base/cloud_container/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
 
 </div>
 

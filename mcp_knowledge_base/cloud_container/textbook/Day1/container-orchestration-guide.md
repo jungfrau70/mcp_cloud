@@ -730,4 +730,4 @@ spec:
 - [Kubernetes 공식 문서](https://kubernetes.io/docs/)
 - [컨테이너 오케스트레이션 가이드](https://www.redhat.com/en/topics/containers/what-is-container-orchestration)
 
-다음 단계: [4교시: 전체 자동 배포 파이프라인 구성](../Day1/cicd-pipeline-guide)
+다음 단계: [4교시: 전체 자동 배포 파이프라인 구성](/mcp_knowledge_base/cloud_master/textbook/Day1/cicd-pipeline-guide.md)
