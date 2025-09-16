@@ -20,6 +20,13 @@
       <!-- Action buttons -->
       <div class="flex items-center gap-2">
         <button
+          @click="toggleAllDetails"
+          class="px-3 py-1 text-sm rounded bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+          :title="allDetailsExpanded ? '모든 목차 접기' : '모든 목차 펼치기'"
+        >
+          {{ allDetailsExpanded ? '📁 접기' : '📂 펼치기' }}
+        </button>
+        <button
           v-if="path && !isSlideView"
           @click="downloadPdf"
           class="px-3 py-1 text-sm rounded bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
@@ -133,6 +140,9 @@ const props = defineProps({
 const emit = defineEmits(['navigate-tool']);
 const contentContainer = ref(null);
 const isLoading = ref(false);
+
+// 목차 전체 펼치기/접기 상태
+const allDetailsExpanded = ref(false);
 
 // 파일이 존재하지 않는지 확인
 const isFileNotFound = computed(() => {
@@ -279,6 +289,18 @@ function scrollToTarget(targetElement) {
     targetElement.style.padding = '';
     targetElement.style.margin = '';
   }, 3000);
+}
+
+// 목차 전체 펼치기/접기 함수
+function toggleAllDetails() {
+  const detailsElements = document.querySelectorAll('details');
+  allDetailsExpanded.value = !allDetailsExpanded.value;
+  
+  detailsElements.forEach(details => {
+    details.open = allDetailsExpanded.value;
+  });
+  
+  console.log('ContentView: Toggled all details to:', allDetailsExpanded.value ? 'expanded' : 'collapsed');
 }
 
 // Title (first heading) extraction

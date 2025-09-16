@@ -30,6 +30,9 @@
         <button @click="toggleVersions" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300">Versions</button>
         <button @click="toggleDiff" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300" :disabled="!versions.length">Diff</button>
         <button @click="requestOutline" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300" :disabled="outlineLoading">Refresh Outline</button>
+        <button @click="toggleAllDetails" class="px-2 py-1 rounded bg-blue-200 hover:bg-blue-300 text-blue-700" :title="allDetailsExpanded ? '모든 목차 접기' : '모든 목차 펼치기'">
+          {{ allDetailsExpanded ? '📁 접기' : '📂 펼치기' }}
+        </button>
         <span v-if="saving" class="text-gray-500 text-xs">Saving...</span>
         <span v-if="lastSaved" class="text-gray-400 text-xs">v{{ lastVersion }} @ {{ lastSaved }}</span>
         <div class="flex-1"></div>
@@ -349,6 +352,21 @@ const hasUnsavedChanges = computed(() => {
 // 모달 상태 관리
 const showUnsavedModal = ref(false)
 const pendingNavigation = ref(null)
+
+// 목차 전체 펼치기/접기 상태
+const allDetailsExpanded = ref(false)
+
+// 목차 전체 펼치기/접기 함수
+function toggleAllDetails() {
+  const detailsElements = document.querySelectorAll('details');
+  allDetailsExpanded.value = !allDetailsExpanded.value;
+  
+  detailsElements.forEach(details => {
+    details.open = allDetailsExpanded.value;
+  });
+  
+  console.log('SplitEditor: Toggled all details to:', allDetailsExpanded.value ? 'expanded' : 'collapsed');
+}
 
 // --- Insert helpers ---
 function insertAtCursor(text){
