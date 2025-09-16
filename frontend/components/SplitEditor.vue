@@ -295,6 +295,40 @@ const diffLeft = ref(null)
 const diffRight = ref(null)
 const diffKey = computed(() => `${diffLeft.value||''}-${diffRight.value||''}`)
 
+// Custom renderer for Korean header IDs (ContentView와 동일한 로직)
+const renderer = new marked.Renderer()
+renderer.heading = function(text, level) {
+  // VS Code 마크다운 미리보기와 동일한 슬러그 생성 방식
+  // 이모지를 유지하고 공백을 하이픈으로 변환
+  let id = text
+    .trim() // 앞뒤 공백 제거
+    .replace(/\s+/g, '-') // 공백을 하이픈으로 변환
+    .replace(/-+/g, '-') // 연속된 하이픈을 하나로 변환
+    .replace(/^-+|-+$/g, '') // 앞뒤 하이픈 제거
+    .toLowerCase() // 소문자로 변환
+  
+  // 빈 ID인 경우 fallback 생성
+  if (!id) {
+    id = `heading-${level}-${Math.random().toString(36).substr(2, 9)}`;
+  }
+  
+  // 디버깅을 위한 콘솔 로그
+  console.log(`SplitEditor Generated header ID: "${text}" → "${id}"`);
+  
+  return `<h${level} id="${id}">${text}</h${level}>`
+}
+
+// marked 옵션 설정
+marked.setOptions({
+  renderer: renderer,
+  gfm: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: false,
+  smartLists: true,
+  smartypants: false
+})
+
 const rendered = computed(() => DOMPurify.sanitize(marked.parse(draft.value || '')))
 
 // View mode text for toggle button
@@ -566,9 +600,16 @@ function navigateToLink(href) {
     // 현재 문서에서 앵커 찾기
     let targetElement = document.getElementById(targetId);
     
+    // 디버깅: 모든 헤딩 ID 출력
+    const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    console.log('SplitEditor: All heading IDs in document:');
+    allElements.forEach((el, index) => {
+      console.log(`  ${index + 1}. "${el.id}" (text: "${el.textContent?.trim()}")`);
+    });
+    console.log('SplitEditor: Looking for target ID:', `"${targetId}"`);
+    
     // If not found, try to find by exact match first
     if (!targetElement) {
-      const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
       for (const el of allElements) {
         if (el.id === targetId) {
           targetElement = el;
@@ -587,6 +628,30 @@ function navigateToLink(href) {
           targetElement = el;
           console.log('SplitEditor: Found by text content match:', textContent);
           break;
+        }
+      }
+    }
+    
+    // If still not found, try to find by emoji-removed ID match
+    if (!targetElement) {
+      const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      for (const el of allElements) {
+        const textContent = el.textContent?.trim();
+        if (textContent) {
+          // 이모지 제거 후 ID 생성 (앵커 링크와 동일한 방식)
+          const emojiRemovedId = textContent
+            .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]/gu, '')
+            .trim()
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-+|-+$/g, '')
+            .toLowerCase();
+          
+          if (emojiRemovedId === targetId) {
+            targetElement = el;
+            console.log('SplitEditor: Found by emoji-removed match:', textContent, '→', emojiRemovedId);
+            break;
+          }
         }
       }
     }
