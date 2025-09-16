@@ -316,7 +316,14 @@ const renderedContent = computed(() => {
   marked.use({ renderer })
   
   // Allow custom KB scheme 'mdc:' so hrefs are preserved for interception
-  return DOMPurify.sanitize(marked.parse(body), { ADD_URI_SAFE: ['mdc'] });
+  const result = DOMPurify.sanitize(marked.parse(body), { ADD_URI_SAFE: ['mdc'] });
+  
+  // Mermaid 렌더링 스케줄링 (SplitEditor.vue와 동일한 방식)
+  nextTick(() => {
+    scheduleMermaidRender();
+  });
+  
+  return result;
 });
 
 let mermaidInitialized = false
@@ -772,24 +779,20 @@ const setupLinkIntercepts = async () => {
   });
 };
 
-// Mermaid 다이어그램 렌더링 함수 (SplitEditor.vue와 완전히 동일)
-const renderMermaidDiagrams = async () => {
+// Mermaid 다이어그램 렌더링 함수 (SplitEditor.vue의 scanPreviewHeadings와 완전히 동일)
+const renderMermaidDiagrams = () => {
   if (!contentContainer.value) return;
   
+  // render mermaid blocks (SplitEditor.vue의 scanPreviewHeadings와 동일)
   try {
     const blocks = contentContainer.value.querySelectorAll('pre code.language-mermaid, code.language-mermaid');
-    
-    // Mermaid 초기화 (한 번만)
-    if (blocks.length > 0) {
-      mermaid.initialize({ startOnLoad: false, theme: 'default' });
-    }
-    
     blocks.forEach((el) => {
       const parent = (el.parentElement && el.parentElement.tagName.toLowerCase() === 'pre') ? el.parentElement : el;
       const code = (el.textContent || '').trim();
       const container = document.createElement('div');
       parent.replaceWith(container);
       try { 
+        mermaid.initialize({ startOnLoad: false, theme: 'default' }); 
         mermaid.render('m' + Math.random().toString(36).slice(2), code).then(({ svg }) => { 
           container.innerHTML = svg;
         });
@@ -800,6 +803,12 @@ const renderMermaidDiagrams = async () => {
   } catch (error) {
     console.error('Mermaid rendering error:', error);
   }
+};
+
+// SplitEditor.vue와 동일한 스케줄링 방식
+const scheduleMermaidRender = () => {
+  if (typeof window === 'undefined' || typeof window.requestAnimationFrame === 'undefined') return;
+  window.requestAnimationFrame(() => renderMermaidDiagrams());
 };
 
 // Mermaid 다이어그램 크기 조정 컨트롤 설정
@@ -851,10 +860,8 @@ onMounted(() => {
   setupLinkIntercepts()
   setupDetailsHandlers()
   setupCodeBlockHandlers()
-  // Mermaid 다이어그램 렌더링
-  nextTick(() => {
-    renderMermaidDiagrams();
-  });
+  // Mermaid 다이어그램 렌더링 (SplitEditor.vue와 동일한 방식)
+  scheduleMermaidRender();
 })
 watch(() => props.content, () => {
   setupLinkIntercepts()
@@ -862,10 +869,8 @@ watch(() => props.content, () => {
   setupCodeBlockHandlers()
   // Clear loading state when content changes
   isLoading.value = false
-  // Mermaid 다이어그램 렌더링
-  nextTick(() => {
-    renderMermaidDiagrams();
-  });
+  // Mermaid 다이어그램 렌더링 (SplitEditor.vue와 동일한 방식)
+  scheduleMermaidRender();
 })
 
 watch(() => props.path, () => {
