@@ -13,6 +13,11 @@
             <a href="/" class="text-xl font-bold text-gray-900">
               GoldenCicle
             </a>
+            <!-- 현재 열린 파일 정보 -->
+            <div v-if="currentFileInfo.title && (route.path.startsWith('/curriculum') || route.path.startsWith('/knowledge-base'))" 
+                 class="ml-4 px-3 py-1 bg-blue-50 text-blue-700 rounded-md text-sm font-medium">
+              📄 {{ currentFileInfo.title }}
+            </div>
           </div>
           <div class="flex items-center space-x-4 relative">
             <NuxtLink
@@ -299,6 +304,16 @@ onMounted(async () => {
     // 프로필 모달 자동 열림 방지
     if (typeof window !== 'undefined') {
       window.profileModalClicked = false
+      
+      // 현재 파일 정보 복원
+      const savedFileInfo = localStorage.getItem('currentFileInfo')
+      if (savedFileInfo) {
+        try {
+          currentFileInfo.value = JSON.parse(savedFileInfo)
+        } catch (e) {
+          console.warn('Failed to parse saved file info:', e)
+        }
+      }
     }
   } catch (e) {
     user.value = null;
@@ -397,6 +412,14 @@ const tbPath = ref('')
 const referrerInfo = ref({
   path: '',
   title: ''
+})
+
+// 현재 열린 파일 정보 (커리큘럼 ↔ 지식베이스 공유)
+const currentFileInfo = ref({
+  path: '',
+  content: '',
+  title: '',
+  source: '' // 'curriculum' 또는 'knowledge-base'
 })
 
 // API configuration (browser-safe host resolution)
@@ -677,11 +700,15 @@ watch(() => route.path, async (p) => {
       const lastOld = typeof window !== 'undefined' ? localStorage.getItem('textbook_last_path') : null
       const last = lastNew || lastOld
       
-      // 우선순위: 강제 대상 -> 최근 문서 -> 기본 인덱스
+      // 우선순위: 강제 대상 -> 지식베이스에서 이동한 파일 -> 최근 문서 -> 기본 인덱스
       if (forced && target && tbPath.value !== target) {
         // 다음 틱에서 실행하여 레이아웃 안정성 보장
         await nextTick()
         await handleFileClick(target)
+      } else if (!forced && currentFileInfo.value.path && currentFileInfo.value.source === 'knowledge-base') {
+        // 지식베이스에서 커리큘럼으로 이동 시 현재 파일 열기
+        await nextTick()
+        await handleFileClick(currentFileInfo.value.path)
       } else if (!forced && last && tbPath.value !== last) {
         await nextTick()
         await handleFileClick(last)
@@ -691,6 +718,32 @@ watch(() => route.path, async (p) => {
       }
     } catch (error) {
       console.warn('Route change handling error:', error)
+    }
+  } else if (p.startsWith('/knowledge-base')) {
+    // knowledge-base require login
+    if (!isLoggedIn.value) {
+      try { await router.replace({ path: '/login', query: { rd: encodeURIComponent(route.fullPath) } }) } catch {}
+      return
+    }
+    
+    // 사이드바 상태 안정화
+    isSidebarCollapsed.value = false
+    
+    // 비동기 처리로 인한 레이아웃 불안정성 방지
+    try {
+      // 레이아웃 안정성 보장을 위해 nextTick 사용
+      await nextTick()
+      
+      // 커리큘럼에서 지식베이스로 이동 시 현재 파일이 있으면 열기
+      if (currentFileInfo.value.path && currentFileInfo.value.source === 'curriculum') {
+        await handleKbFileSelect(currentFileInfo.value.path)
+      } else if (docStore && !docStore.path) {
+        // 기본 지식베이스 로드
+        await handleKbFileSelect('index.md')
+      }
+      
+    } catch (error) {
+      console.warn('Knowledge base route change handling error:', error)
     }
   }
   
@@ -752,6 +805,19 @@ const handleFileClick = async (path) => {
       path: tbPath.value,
       title: getDocumentTitle(tbContent.value) || tbPath.value.split('/').pop()?.replace(/\.md$/i, '') || '이전 페이지'
     }
+  }
+  
+  // 현재 파일 정보 저장 (커리큘럼 ↔ 지식베이스 공유용)
+  currentFileInfo.value = {
+    path: preparedPath,
+    content: tbContent.value,
+    title: getDocumentTitle(tbContent.value) || preparedPath.split('/').pop()?.replace(/\.md$/i, '') || '',
+    source: 'curriculum'
+  }
+  
+  // localStorage에 저장
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('currentFileInfo', JSON.stringify(currentFileInfo.value))
   }
   
   // 진도 업데이트: 과정별 진도 관리
@@ -901,6 +967,22 @@ const handleKbFileSelect = async (path) => {
   activeSlide.value = null
   if(activePath.value && activePath.value !== path){ kbHistory.value.push(activePath.value) }
   await docStore.open(path)
+  
+  // 현재 파일 정보 저장 (커리큘럼 ↔ 지식베이스 공유용)
+  if (!docStore.error && docStore.content) {
+    currentFileInfo.value = {
+      path: path,
+      content: docStore.content,
+      title: getDocumentTitle(docStore.content) || path.split('/').pop()?.replace(/\.md$/i, '') || '',
+      source: 'knowledge-base'
+    }
+    
+    // localStorage에 저장
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('currentFileInfo', JSON.stringify(currentFileInfo.value))
+    }
+  }
+  
   if(docStore.error) toast.push('error','로드 실패: ' + docStore.error)
 }
 
