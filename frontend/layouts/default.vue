@@ -616,6 +616,8 @@ onMounted(async () => {
       const isDirectory = e?.detail?.isDirectory
       const originalPath = e?.detail?.originalPath
       
+      console.log('kb:open event received:', { p, container, isDirectory, originalPath })
+      
       if(!p) return
       
       // Handle directory links
@@ -635,17 +637,27 @@ onMounted(async () => {
       
       // If caller specifies container, respect it
       if(container === 'curriculum' || container === 'textbook'){
-        if(route.path.startsWith('/curriculum') || route.path.startsWith('/textbook')) handleFileClick(p)
-        else try{ router.push({ path: '/curriculum', query: { path: p, force: '1' } }) }catch{ handleFileClick(p) }
+        console.log('Handling curriculum/textbook link:', p)
+        if(route.path.startsWith('/curriculum') || route.path.startsWith('/textbook')) {
+          console.log('Current route is curriculum, calling handleFileClick')
+          handleFileClick(p)
+        } else {
+          console.log('Current route is not curriculum, navigating to curriculum')
+          try{ router.push({ path: '/curriculum', query: { path: p, force: '1' } }) }catch{ handleFileClick(p) }
+        }
         return
       }
       // Default: open based on current route
       if(isKnowledgeBase.value){ 
+        console.log('Handling knowledge-base link:', p)
         handleKbFileSelect(p)
         // 지식베이스에서 파일 열기 시 마크다운 탭으로 전환
         kbTab.value = 'markdown'
       }
-      else if(route.path.startsWith('/curriculum') || route.path.startsWith('/textbook')){ handleFileClick(p) }
+      else if(route.path.startsWith('/curriculum') || route.path.startsWith('/textbook')){ 
+        console.log('Handling curriculum link (default):', p)
+        handleFileClick(p) 
+      }
       else { try{ router.push({ path: '/curriculum', query: { path: p, force: '1' } }) }catch{ handleFileClick(p) } }
     })
     window.addEventListener('kb:mode', (e) => {
@@ -803,9 +815,13 @@ async function showCurriculumIndex(){
 }
 
 const handleFileClick = async (path) => {
+  console.log('handleFileClick called with path:', path)
+  
   // Clean the path to prevent duplication and handle Korean filenames
   const cleanPath = preventPathDuplication(path)
   const preparedPath = prepareSafeApiPath(cleanPath) // 개선된 한글 URI 처리 사용
+  
+  console.log('handleFileClick - cleanPath:', cleanPath, 'preparedPath:', preparedPath)
   
   // 현재 페이지를 referrer로 저장
   if (tbPath.value) {

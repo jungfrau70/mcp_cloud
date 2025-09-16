@@ -473,10 +473,16 @@ function navigateToLink(href: string) {
   
   // kb:open 이벤트 발생
   try {
+    // 현재 경로에 따라 container 결정
+    const currentRoute = window.location.pathname
+    const container = currentRoute.startsWith('/knowledge-base') ? 'knowledge-base' : 'curriculum'
+    
+    console.log('Dispatching kb:open event with container:', container, 'targetPath:', targetPath)
+    
     window.dispatchEvent(new CustomEvent('kb:open', { 
       detail: { 
         path: targetPath,
-        container: 'knowledge-base',
+        container: container,
         isDirectory: false
       } 
     }))
