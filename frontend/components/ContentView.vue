@@ -282,40 +282,14 @@ const titleText = computed(() => {
   return props.path ? props.path.split('/').pop().replace(/_/g, ' ').replace(/\.md$/i, '') : '';
 });
 
-// Render content (preserve first heading so titles are visible)
+// Render content (SplitEditor와 동일한 방식 사용)
 const renderedContent = computed(() => {
   if (!props.content) return '';
-  let body = props.content;
-  // Preprocess: auto-tag mermaid code fences without language
-  try{
-    body = body.replace(/```(?!\w)[ \t]*\n([\s\S]*?)```/g, (m, code) => {
-      const first = (code.split(/\r?\n/).find(l => l.trim().length>0) || '').trim()
-      const isMermaid = /^\s*(graph|flowchart|sequenceDiagram|classDiagram|stateDiagram|erDiagram|gantt)\b/.test(first)
-      console.log('ContentView: checking code block:', first.substring(0, 50), 'isMermaid:', isMermaid)
-      return isMermaid
-        ? '```mermaid\n' + code + '```'
-        : m
-    })
-    // Strip Marp/slide front-matter or metadata lines at top
-    body = body.replace(/^---\s*[\r\n]+[\s\S]*?[\r\n]---\s*[\r\n]*/m, '')
-               .replace(/^(?:\s*(?:marp|theme|size|header|footer)\s*:[^\n]*\n)+/i, '')
-    // Normalize KB links: convert mdc:mcp_knowledge_base/... → /mcp_knowledge_base/...
-    body = body.replace(/\]\(mdc:mcp_knowledge_base\//g, '](\/mcp_knowledge_base/')
-  }catch{ /* ignore */ }
   
-  // marked 옵션 설정 (SplitEditor와 동일)
-  marked.setOptions({
-    renderer: renderer,
-    gfm: true,
-    breaks: false,
-    pedantic: false,
-    sanitize: false,
-    smartLists: true,
-    smartypants: false
-  });
+  // SplitEditor와 완전히 동일한 렌더링 방식 사용
+  const html = DOMPurify.sanitize(marked.parse(props.content), { ADD_URI_SAFE: ['mdc'] });
   
-  // Allow custom KB scheme 'mdc:' so hrefs are preserved for interception
-  return DOMPurify.sanitize(marked.parse(body), { ADD_URI_SAFE: ['mdc'] });
+  return html;
 });
 
 let mermaidInitialized = false
@@ -862,6 +836,7 @@ watch(() => props.content, (c) => {
     isSlideView.value = false;
   }
 })
+
 </script>
 
 <style>
@@ -911,6 +886,33 @@ watch(() => props.content, (c) => {
 
 .prose tbody tr:hover {
   background: #f3f4f6;
+}
+
+/* 헤딩 요소 가시성 보장 */
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: #1f2937 !important;
+  font-weight: 600 !important;
+  margin: 1.5rem 0 1rem 0 !important;
+  line-height: 1.25 !important;
+}
+
+.prose h1 {
+  font-size: 2rem !important;
+  border-bottom: 2px solid #e5e7eb !important;
+  padding-bottom: 0.5rem !important;
+}
+
+.prose h2 {
+  font-size: 1.5rem !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  padding-bottom: 0.25rem !important;
+}
+
+.prose h3 {
+  font-size: 1.25rem !important;
 }
 
 /* 마크다운 접기 기능 스타일링 */

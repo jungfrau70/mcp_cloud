@@ -1,17 +1,25 @@
 <div align="center">
 
-[← 이전: Cloud Master 3일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [← 이전: 통합 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/integration-guide.md) | [다음: Cloud Container 과정 →](/mcp_knowledge_base/cloud_container/textbook/Day1/README)
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Master** > **3일차** > **4교시: 장애 시뮬레이션 및 복구 실습**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 3일차 →](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
 
 </div>
+
 
 # 4교시: 장애 시뮬레이션 및 복구 실습
 
 
 
 ## 📋 목차
-1. [장애 시뮬레이션 개념](#장애-시뮬레이션-개념)
-2. [장애 유형별 시나리오](#장애-유형별-시나리오)
-3. [복구 과정 시각화](#복구-과정-시각화)
+1. [장애 시뮬레이션 개념](#장애-시뮬레이션-개념.md
+2. [장애 유형별 시나리오](#장애-유형별-시나리오.md
+3. [복구 과정 시각화](#복구-과정-시각화.md
 4. [실습 목표](#실습-목표)
 5. [실습 절차](#실습-절차)
 6. [실습 코드 예시](#실습-코드-예시)
@@ -765,3 +773,22 @@ EOF
 
 ---
 
+
+
+---
+
+<div align="center">
+
+## 🔗 관련 과정 및 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Master** > **3일차** > **4교시: 장애 시뮬레이션 및 복구 실습**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 3일차 →](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
+
+## 🔗 관련 과정
+[Cloud Basic 2일차](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>

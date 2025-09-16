@@ -1,3 +1,16 @@
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Master** > **1일차** > **가상머신 생성 스크립트**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
+
+</div>
+
 # 가상머신 생성 스크립트
 
 <div align="center">
@@ -379,3 +392,22 @@ cloud-deployment-key.pem   # 개인키 백업 (호환성)
 ## 📝 라이선스
 
 이 스크립트들은 MCP Cloud 프로젝트의 일부로 MIT 라이선스 하에 제공됩니다.
+
+
+---
+
+<div align="center">
+
+## 🔗 관련 과정 및 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Master** > **1일차** > **가상머신 생성 스크립트**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
+
+## 🔗 관련 과정
+[Cloud Basic 2일차](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>

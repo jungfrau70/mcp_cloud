@@ -1,3 +1,16 @@
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Container** > **1일차** > **Container 과정 종합 실습 가이드**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_container/README.md) | [다음: Cloud Container 1일차 →](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>
+
 # Container 과정 종합 실습 가이드
 
 <div align="center">
@@ -615,3 +628,22 @@ curl http://localhost:8080/metrics
 ---
 
 **💡 팁**: 이 종합 실습을 통해 실제 운영 환경에서 필요한 모든 기술을 통합적으로 학습할 수 있습니다. 각 단계를 차근차근 따라하면서 클라우드 네이티브 애플리케이션 운영의 전 과정을 경험해보세요!
+
+
+---
+
+<div align="center">
+
+## 🔗 관련 과정 및 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Container** > **1일차** > **Container 과정 종합 실습 가이드**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_container/README.md) | [다음: Cloud Container 1일차 →](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+## 🔗 관련 과정
+[Cloud Master 3일차](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md) | [Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+
+</div>

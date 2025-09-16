@@ -1,3 +1,16 @@
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Master** > **1일차** > **Git/GitHub 기초 실습 가이드**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
+
+</div>
+
 # Git/GitHub 기초 실습 가이드
 
 <div align="center">
@@ -335,3 +348,22 @@ git push origin bugfix/login-error
 - **GitHub Actions**: CI/CD 파이프라인 구축
 - **VM 배포**: 클라우드 환경에 애플리케이션 배포
 - **고급 협업**: 이슈 관리, 프로젝트 관리
+
+
+---
+
+<div align="center">
+
+## 🔗 관련 과정 및 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Master** > **1일차** > **Git/GitHub 기초 실습 가이드**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
+
+## 🔗 관련 과정
+[Cloud Basic 2일차](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>

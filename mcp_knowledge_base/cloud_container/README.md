@@ -1,3 +1,16 @@
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Container** > **1일차** > **AWS/GCP Advanced 과정**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_container/README.md) | [다음: Cloud Container 1일차 →](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>
+
 # AWS/GCP Advanced 과정
 
 <div align="center">
@@ -124,3 +137,22 @@ Advanced 과정에서 문제가 발생하면:
 > 🆘 **지원 채널**: [과정상세.md](/mcp_knowledge_base/cloud_container/과정상세.md)에서 문의 정보를 확인하세요.
 
 **🎯 목표**: Master 과정에서 학습한 기초를 바탕으로 실제 프로덕션 환경에서 사용할 수 있는 고급 클라우드 기술을 습득합니다.
+
+
+---
+
+<div align="center">
+
+## 🔗 관련 과정 및 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Container** > **1일차** > **AWS/GCP Advanced 과정**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_container/README.md) | [다음: Cloud Container 1일차 →](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+## 🔗 관련 과정
+[Cloud Master 3일차](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md) | [Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+
+</div>

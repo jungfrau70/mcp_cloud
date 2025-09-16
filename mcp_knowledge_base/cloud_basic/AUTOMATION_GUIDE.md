@@ -1,3 +1,16 @@
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Basic** > **1일차** > **📚 Cloud Basic 과정 자동화 가이드**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_basic/README.md) | [다음: Cloud Basic 1일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+
+</div>
+
 # 📚 Cloud Basic 과정 자동화 가이드
 
 > **대상**: 클라우드 입문자, 대학생  
@@ -321,3 +334,22 @@ python3 improved_master_automation.py
 ---
 
 **🎓 Cloud Basic 과정을 성공적으로 완료하셨습니다! 다음 단계인 Cloud Master 과정으로 진행해보세요!**
+
+
+---
+
+<div align="center">
+
+## 🔗 관련 과정 및 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Basic** > **1일차** > **📚 Cloud Basic 과정 자동화 가이드**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_basic/README.md) | [다음: Cloud Basic 1일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+
+## 🔗 관련 과정
+[Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>

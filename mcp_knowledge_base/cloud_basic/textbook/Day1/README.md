@@ -1,8 +1,21 @@
 <div align="center">
 
-[← 이전: Cloud Basic 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Basic 2일차 →](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [← 이전 과정 없음] | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [다음 과정: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Basic** > **1일차** > **AWS & GCP 기초 서비스 실습**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_basic/README.md) | [다음: Cloud Basic 2일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
 
 </div>
+
+
+
+
+
+
 
 # Cloud Basic - 1일차: AWS & GCP 기초 서비스 실습
 
@@ -667,5 +680,49 @@ gcloud auth activate-service-account --key-file=student-key.json
 
 ---
 
+
+
+---
+
+<div align="center">
+
+## 🔗 관련 과정 및 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Basic** > **1일차** > **AWS & GCP 기초 서비스 실습**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_basic/README.md) | [다음: Cloud Basic 2일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
+
+## 🔗 관련 과정
+[Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>
+
 **🎯 이제 클라우드 기초 서비스의 기본기를 갖추었습니다! 2일차 실습으로 진행하세요.**
 
+
+
+---
+
+
+
+---
+
+
+
+---
+
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Basic** > **1일차** > **AWS & GCP 기초 서비스 실습**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_basic/README.md) | [다음: Cloud Basic 2일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
+
+</div>

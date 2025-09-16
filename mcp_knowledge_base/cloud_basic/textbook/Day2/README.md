@@ -1,8 +1,21 @@
 <div align="center">
 
-[← 이전: Cloud Basic 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [다음: Cloud Basic 2일차 →](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [다음 과정: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Basic** > **2일차** > **네트워킹, 보안, 데이터베이스 실습**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
 
 </div>
+
+
+
+
+
+
 
 # Cloud Basic - 2일차: 네트워킹, 보안, 데이터베이스 실습
 
@@ -537,3 +550,27 @@ telnet RDS_ENDPOINT 3306
 
 **🎯 이제 클라우드 기초 서비스의 모든 기본기를 갖추었습니다! Cloud Intermediate 과정으로 진행하세요.**
 
+
+
+---
+
+
+
+---
+
+
+
+---
+
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Basic** > **2일차** > **네트워킹, 보안, 데이터베이스 실습**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
+
+</div>

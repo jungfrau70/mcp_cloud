@@ -1,3 +1,16 @@
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Basic** > **2일차** > **컴퓨팅 서비스 비교 (EC2 vs Compute Engine, Lambda vs Cloud Functions)**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_basic/README.md) | [다음: Cloud Basic 2일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
+
+</div>
+
 # 컴퓨팅 서비스 비교 (EC2 vs Compute Engine, Lambda vs Cloud Functions)
 
 <div align="center">
@@ -337,3 +350,21 @@ graph TD
 - [GCP Cloud Functions 문서](https://cloud.google.com/functions/docs)
 - [AWS vs GCP 비용 비교](https://calculator.aws/)
 - [GCP 가격 계산기](https://cloud.google.com/products/calculator)
+
+---
+
+<div align="center">
+
+## 🔗 관련 과정 및 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Basic** > **2일차** > **컴퓨팅 서비스 비교 (EC2 vs Compute Engine, Lambda vs Cloud Functions)**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_basic/README.md) | [다음: Cloud Basic 2일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
+
+## 🔗 관련 과정
+[Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>

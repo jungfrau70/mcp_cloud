@@ -1,3 +1,16 @@
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Container** > **2일차** > **모니터링 및 로깅 시스템 구축 가이드**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_container/README.md) | [다음: Cloud Container 2일차 →](/mcp_knowledge_base/cloud_container/textbook/Day2/README.md)
+
+</div>
+
 # 모니터링 및 로깅 시스템 구축 가이드
 
 <div align="center">
@@ -997,3 +1010,22 @@ EOF
 ---
 
 **💡 팁**: 모니터링은 운영 환경에서 가장 중요한 요소입니다. 메트릭, 로그, 알림을 체계적으로 구성하여 문제를 빠르게 감지하고 대응할 수 있는 시스템을 구축하세요!
+
+
+---
+
+<div align="center">
+
+## 🔗 관련 과정 및 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Container** > **2일차** > **모니터링 및 로깅 시스템 구축 가이드**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_container/README.md) | [다음: Cloud Container 2일차 →](/mcp_knowledge_base/cloud_container/textbook/Day2/README.md)
+
+## 🔗 관련 과정
+[Cloud Master 3일차](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md) | [Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+
+</div>

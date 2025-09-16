@@ -1,3 +1,16 @@
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Basic** > **1일차** > **1교시: AWS & GCP 계정 생성 및 설정**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_basic/README.md) | [다음: Cloud Basic 1일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+
+</div>
+
 # 1교시: AWS & GCP 계정 생성 및 설정
 
 <div align="center">
@@ -682,3 +695,22 @@ gcloud auth activate-service-account --key-file=key.json
 ---
 
 **🎯 이제 클라우드 계정 설정의 기본기를 갖추었습니다! 2교시로 진행하세요.**
+
+
+---
+
+<div align="center">
+
+## 🔗 관련 과정 및 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Basic** > **1일차** > **1교시: AWS & GCP 계정 생성 및 설정**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_basic/README.md) | [다음: Cloud Basic 1일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+
+## 🔗 관련 과정
+[Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>

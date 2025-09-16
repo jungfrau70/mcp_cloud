@@ -1,3 +1,16 @@
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Basic** > **1일차** > **GitHub Actions 완전 가이드**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_basic/README.md) | [다음: Cloud Basic 1일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+
+</div>
+
 # GitHub Actions 완전 가이드
 
 <div align="center">
@@ -766,3 +779,22 @@ jobs:
 GitHub Actions는 현대적인 소프트웨어 개발에서 필수적인 도구입니다. 이 가이드를 통해 기본 개념부터 고급 기능까지 체계적으로 학습할 수 있습니다. 
 
 실제 프로젝트에 적용하면서 점진적으로 복잡한 워크플로우를 구축해보세요. 지속적인 학습과 실습을 통해 CI/CD 파이프라인을 마스터할 수 있습니다! 🚀
+
+
+---
+
+<div align="center">
+
+## 🔗 관련 과정 및 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Basic** > **1일차** > **GitHub Actions 완전 가이드**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_basic/README.md) | [다음: Cloud Basic 1일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+
+## 🔗 관련 과정
+[Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>

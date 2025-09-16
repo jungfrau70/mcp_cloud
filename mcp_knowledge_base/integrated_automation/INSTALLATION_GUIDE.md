@@ -1,3 +1,22 @@
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/index.md)
+
+## 📖 현재 위치
+**통합 자동화**
+
+## 🔗 관련 과정
+[Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>
+
+
+
+
+
+
+
 # 통합 자동화 시스템 설치 가이드
 
 ## 🛠️ 필수 도구 설치
@@ -372,3 +391,31 @@ pip install package_name
 ---
 
 **🎉 모든 도구가 설치되면 통합 자동화 시스템을 사용할 수 있습니다!**
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/index.md)
+
+## 📖 현재 위치
+**통합 자동화**
+
+## 🔗 관련 과정
+[Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>

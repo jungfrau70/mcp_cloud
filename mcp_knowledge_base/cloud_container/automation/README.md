@@ -1,3 +1,16 @@
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Container** > **1일차** > **Day 1 실습 스크립트 실행**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_container/README.md) | [다음: Cloud Container 1일차 →](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>
+
 Container 과정의 실습 코드
 
 ```bash
@@ -99,3 +112,21 @@ chmod +x *.sh
 ```
 
 **Container 과정 실습 코드 수행 및 테스트가 성공적으로 완료되었습니다!** 🚀
+
+---
+
+<div align="center">
+
+## 🔗 관련 과정 및 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Container** > **1일차** > **Day 1 실습 스크립트 실행**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_container/README.md) | [다음: Cloud Container 1일차 →](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+## 🔗 관련 과정
+[Cloud Master 3일차](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md) | [Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+
+</div>

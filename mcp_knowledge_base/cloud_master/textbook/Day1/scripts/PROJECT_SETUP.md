@@ -1,3 +1,16 @@
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Master** > **1일차** > **Cloud Deployment 프로젝트 설정 가이드**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
+
+</div>
+
 # Cloud Deployment 프로젝트 설정 가이드
 
 <div align="center">
@@ -126,3 +139,22 @@ gcloud compute networks delete cloud-deployment-vpc --quiet
   - **OS Login**: Google 계정으로 자동 인증
 - 기존 리소스가 있으면 재사용하여 중복 생성을 방지합니다
 - 스크립트 중단 시에도 안전하게 재시작할 수 있습니다
+
+
+---
+
+<div align="center">
+
+## 🔗 관련 과정 및 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Master** > **1일차** > **Cloud Deployment 프로젝트 설정 가이드**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
+
+## 🔗 관련 과정
+[Cloud Basic 2일차](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>

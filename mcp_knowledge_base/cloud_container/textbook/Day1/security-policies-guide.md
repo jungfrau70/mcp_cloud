@@ -1,3 +1,16 @@
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Container** > **1일차** > **보안 정책 및 네트워크 정책 가이드**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_container/README.md) | [다음: Cloud Container 1일차 →](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>
+
 # 보안 정책 및 네트워크 정책 가이드
 
 <div align="center">
@@ -903,3 +916,22 @@ kubectl auth can-i delete pods --as=system:serviceaccount:container-demo:contain
 ---
 
 **💡 팁**: 보안은 운영 환경에서 가장 중요한 요소입니다. 각 보안 정책을 단계별로 적용하면서 실제 보안 위협에 대한 방어 체계를 구축해보세요!
+
+
+---
+
+<div align="center">
+
+## 🔗 관련 과정 및 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Container** > **1일차** > **보안 정책 및 네트워크 정책 가이드**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_container/README.md) | [다음: Cloud Container 1일차 →](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+## 🔗 관련 과정
+[Cloud Master 3일차](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md) | [Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+
+</div>

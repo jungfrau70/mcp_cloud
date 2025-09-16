@@ -1,3 +1,16 @@
+<div align="center">
+
+## 🏠 최상위 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Master** > **1일차** > **Cloud Master - 마스터 과정 학습 경로**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
+
+</div>
+
 # Cloud Master - 마스터 과정 학습 경로
 
 > 📋 **전체 개요**: [README.md](/mcp_knowledge_base/cloud_master/README.md) | [통합 커리큘럼](/mcp_knowledge_base/curriculum.md) | [통합 인덱스](/mcp_knowledge_base/index.md)에서 전체 과정 구조를 확인하세요.
@@ -367,3 +380,22 @@
 - [GCP_계정유형비교](/mcp_knowledge_base/cloud_master/accounts/GCP_계정유형비교.md)
 - [GCP_조직계정가입](/mcp_knowledge_base/cloud_master/accounts/GCP_조직계정가입.md)
 - [클라우드계정관리비교](/mcp_knowledge_base/cloud_master/accounts/클라우드계정관리비교.md)
+
+
+---
+
+<div align="center">
+
+## 🔗 관련 과정 및 네비게이션
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+
+## 📖 현재 위치
+**Cloud Master** > **1일차** > **Cloud Master - 마스터 과정 학습 경로**
+
+## ⬅️ 이전/다음 네비게이션
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
+
+## 🔗 관련 과정
+[Cloud Basic 2일차](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+
+</div>
