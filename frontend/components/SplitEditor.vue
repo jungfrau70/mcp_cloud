@@ -550,7 +550,7 @@ function handlePreviewClick(event) {
 function navigateToLink(href) {
   console.log('navigateToLink called with href:', href, 'current path:', props.path)
   
-  // 앵커 링크 처리 (#로 시작) - 같은 문서 내에서만 작동
+  // 앵커 링크 처리 (#로 시작)
   if (href.startsWith('#')) {
     const targetId = href.substring(1);
     console.log('SplitEditor: Processing anchor link:', targetId);
@@ -567,9 +567,8 @@ function navigateToLink(href) {
       });
       console.log('SplitEditor: Found anchor and scrolled to:', targetId);
     } else {
+      // 앵커를 찾지 못한 경우, 로그만 출력하고 API 호출하지 않음
       console.log('SplitEditor: Anchor not found:', targetId);
-      // 앵커를 찾지 못한 경우 사용자에게 알림
-      console.warn('SplitEditor: Anchor link not found. Make sure the target heading exists in the current document.');
     }
     return;
   }
