@@ -702,7 +702,7 @@ const setupLinkIntercepts = async () => {
       return;
     }
 
-    // Handle internal knowledge base links
+    // Handle internal links (both curriculum and knowledge base)
     event.preventDefault();
     let targetPath = href;
 
@@ -722,6 +722,10 @@ const setupLinkIntercepts = async () => {
     // Set loading state
     isLoading.value = true;
 
+    // Determine container based on current route
+    const currentRoute = window.location.pathname;
+    const container = currentRoute.startsWith('/knowledge-base') ? 'knowledge-base' : 'curriculum';
+
     // Check if the target is a directory
     if (isDirectoryPath(targetPath)) {
       // For directories, try to find README.md first
@@ -731,7 +735,7 @@ const setupLinkIntercepts = async () => {
       window.dispatchEvent(new CustomEvent('kb:open', {
         detail: { 
           path: normalizedPath, 
-          container: 'curriculum',
+          container: container,
           isDirectory: true,
           originalPath: targetPath
         }
@@ -739,7 +743,7 @@ const setupLinkIntercepts = async () => {
     } else {
       // For files, proceed normally
       window.dispatchEvent(new CustomEvent('kb:open', {
-        detail: { path: targetPath, container: 'curriculum' }
+        detail: { path: targetPath, container: container }
       }));
     }
   });

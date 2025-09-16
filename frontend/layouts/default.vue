@@ -640,7 +640,11 @@ onMounted(async () => {
         return
       }
       // Default: open based on current route
-      if(isKnowledgeBase.value){ handleKbFileSelect(p) }
+      if(isKnowledgeBase.value){ 
+        handleKbFileSelect(p)
+        // 지식베이스에서 파일 열기 시 마크다운 탭으로 전환
+        kbTab.value = 'markdown'
+      }
       else if(route.path.startsWith('/curriculum') || route.path.startsWith('/textbook')){ handleFileClick(p) }
       else { try{ router.push({ path: '/curriculum', query: { path: p, force: '1' } }) }catch{ handleFileClick(p) } }
     })
@@ -737,9 +741,13 @@ watch(() => route.path, async (p) => {
       // 커리큘럼에서 지식베이스로 이동 시 현재 파일이 있으면 열기
       if (currentFileInfo.value.path && currentFileInfo.value.source === 'curriculum') {
         await handleKbFileSelect(currentFileInfo.value.path)
+        // 커리큘럼에서 전환 시 마크다운 탭으로 전환
+        kbTab.value = 'markdown'
       } else if (docStore && !docStore.path) {
         // 기본 지식베이스 로드
         await handleKbFileSelect('index.md')
+        // 기본 로드 시에도 마크다운 탭으로 전환
+        kbTab.value = 'markdown'
       }
       
     } catch (error) {
@@ -981,6 +989,9 @@ const handleKbFileSelect = async (path) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('currentFileInfo', JSON.stringify(currentFileInfo.value))
     }
+    
+    // 파일 선택 시 마크다운 탭으로 전환
+    kbTab.value = 'markdown'
   }
   
   if(docStore.error) toast.push('error','로드 실패: ' + docStore.error)
@@ -990,6 +1001,8 @@ function goKbBack(){
   const prev = kbHistory.value.pop()
   if(!prev) return
   handleKbFileSelect(prev)
+  // 뒤로가기 시에도 마크다운 탭으로 전환
+  kbTab.value = 'markdown'
 }
 
 const handleKbSave = async ({ path, content, message, force }) => {
@@ -1097,6 +1110,8 @@ async function ensureKbIndex(){
   try{
     await handleKbFileSelect('index.md')
     if(docStore.error){ throw new Error(docStore.error) }
+    // 인덱스 로드 시 마크다운 탭으로 전환
+    kbTab.value = 'markdown'
   }catch{
     try{
       await fetch(`${apiBase}/v1/knowledge-base/item`, {
@@ -1105,7 +1120,8 @@ async function ensureKbIndex(){
         body: JSON.stringify({ path: 'index.md', type: 'file', content: '# Knowledge Base\n\n시작 문서입니다.' })
       })
       await handleKbFileSelect('index.md')
-      kbTab.value = 'tiptap'
+      // 새로 생성된 인덱스도 마크다운 탭으로 전환
+      kbTab.value = 'markdown'
     }catch{
       // 최후 수단: 안내 메시지
       activeSlide.value = null

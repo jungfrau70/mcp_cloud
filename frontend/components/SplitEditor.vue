@@ -92,7 +92,7 @@
         </div>
         <div v-if="showPreview && !showDiff" class="flex-1 flex min-h-0 overflow-hidden">
           <div class="flex-1 min-h-0 border-l overflow-auto p-4 prose max-w-none bg-white">
-            <div ref="previewEl" v-html="rendered"></div>
+            <div ref="previewEl" v-html="rendered" @click="handlePreviewClick"></div>
           </div>
         </div>
         <div v-if="showDiff" class="flex-1 border-l bg-white">
@@ -279,6 +279,11 @@ const diffKey = computed(() => `${diffLeft.value||''}-${diffRight.value||''}`)
 
 const rendered = computed(() => DOMPurify.sanitize(marked.parse(draft.value || '')))
 
+// 변경사항 감지
+const hasUnsavedChanges = computed(() => {
+  return baseContent.value !== '' && draft.value !== baseContent.value
+})
+
 // --- Insert helpers ---
 function insertAtCursor(text){
   const el = editorEl.value
@@ -463,6 +468,91 @@ function scrollToLine(line){
   scrollPreviewToLine(target)
 }
 
+// 프리뷰에서 링크 클릭 처리
+function handlePreviewClick(event) {
+  const target = event.target
+  if (!target) return
+  
+  // 링크 요소인지 확인
+  const link = target.closest('a')
+  if (!link) return
+  
+  const href = link.getAttribute('href')
+  if (!href) return
+  
+  // 외부 링크는 기본 동작 유지
+  if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:') || href.startsWith('tel:')) {
+    return
+  }
+  
+  // 내부 링크 처리
+  event.preventDefault()
+  
+  // 저장되지 않은 변경사항이 있는지 확인
+  if (hasUnsavedChanges.value) {
+    const choice = confirm('저장되지 않은 변경사항이 있습니다.\n\n저장하고 이동하시겠습니까?\n\n확인: 저장 후 이동\n취소: 저장하지 않고 이동\n취소 후 ESC: 이동 취소')
+    
+    if (choice === true) {
+      // 저장 후 이동
+      emitSave()
+      // 저장 완료 후 이동 (저장 완료 이벤트를 기다림)
+      const handleSaveComplete = () => {
+        navigateToLink(href)
+        window.removeEventListener('kb:saved', handleSaveComplete)
+      }
+      window.addEventListener('kb:saved', handleSaveComplete)
+      return
+    } else if (choice === false) {
+      // 저장하지 않고 이동
+      navigateToLink(href)
+      return
+    } else {
+      // ESC 키로 취소
+      return
+    }
+  }
+  
+  // 변경사항이 없으면 바로 이동
+  navigateToLink(href)
+}
+
+// 링크 이동 처리 함수
+function navigateToLink(href) {
+  // 상대 경로 처리
+  let targetPath = href
+  if (href.startsWith('./') || href.startsWith('../')) {
+    // 현재 파일의 디렉토리를 기준으로 절대 경로 생성
+    const currentDir = props.path ? props.path.substring(0, props.path.lastIndexOf('/')) : ''
+    if (href.startsWith('./')) {
+      targetPath = currentDir + '/' + href.substring(2)
+    } else if (href.startsWith('../')) {
+      const parts = currentDir.split('/')
+      const upLevels = (href.match(/\.\.\//g) || []).length
+      const newParts = parts.slice(0, -upLevels)
+      const remainingPath = href.replace(/\.\.\//g, '')
+      targetPath = newParts.join('/') + '/' + remainingPath
+    }
+  }
+  
+  // .md 확장자가 없으면 추가
+  if (!targetPath.endsWith('.md') && !targetPath.includes('.')) {
+    targetPath += '.md'
+  }
+  
+  // kb:open 이벤트 발생
+  try {
+    window.dispatchEvent(new CustomEvent('kb:open', { 
+      detail: { 
+        path: targetPath,
+        container: 'knowledge-base',
+        isDirectory: false
+      } 
+    }))
+  } catch (e) {
+    console.warn('Failed to dispatch kb:open event:', e)
+  }
+}
+
 // external update hook
 function setSaved(meta){
   saving.value = false
@@ -472,6 +562,15 @@ function setSaved(meta){
   baseVersion.value = lastVersion.value
   saveMessage.value = ''
   if(showVersions.value) loadVersions()
+  
+  // 저장 완료 이벤트 발생
+  try {
+    window.dispatchEvent(new CustomEvent('kb:saved', { 
+      detail: { path: props.path, content: draft.value } 
+    }))
+  } catch (e) {
+    console.warn('Failed to dispatch kb:saved event:', e)
+  }
 }
 
 async function loadVersions(){
@@ -497,7 +596,7 @@ watch(rendered, () => { schedulePreviewScan() })
 // Initialize base when first mounted / content provided
 if(props.content){
   baseContent.value = props.content
-  baseVersion.value = lastVersion.value
+  baseVersion.value = 0
 }
 
 // -----------------------------

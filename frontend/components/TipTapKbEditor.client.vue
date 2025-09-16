@@ -126,10 +126,16 @@ const imagePicker = ref<HTMLInputElement|null>(null)
 const currentMarkdown = ref('')
 const saveMessage = ref('')
 const initError = ref('')
+const baseContent = ref('') // 마지막 저장된 내용
 const showColorPalette = ref(false)
 const showHighlightPalette = ref(false)
 const colorPreset = ['#000000','#e11d48','#ef4444','#f59e0b','#10b981','#06b6d4','#3b82f6','#8b5cf6','#ec4899']
 const highlightPreset = ['#fff59d','#fde68a','#fca5a5','#bbf7d0','#bae6fd','#ddd6fe']
+
+// 변경사항 감지
+const hasUnsavedChanges = computed(() => {
+  return baseContent.value !== '' && currentMarkdown.value !== baseContent.value
+})
 
 // simple debounce utility
 function debounce(fn: (...args:any[])=>void, delay:number){
@@ -153,7 +159,22 @@ async function save(){
     const res = await docStore.save(saveMessage.value || 'Edit via TipTap')
     if(res?.conflict){ toast.push('warn','버전 충돌 발생: 병합 필요 (Markdown 탭에서 처리)') }
     try{ docStore.update(markdown) }catch{}
+    
+    // 저장 성공 시 baseContent 업데이트
+    baseContent.value = markdown
+    currentMarkdown.value = markdown
+    
     toast.push('success','저장 완료')
+    
+    // 저장 완료 이벤트 발생
+    try {
+      window.dispatchEvent(new CustomEvent('kb:saved', { 
+        detail: { path: props.path, content: markdown } 
+      }))
+    } catch (e) {
+      console.warn('Failed to dispatch kb:saved event:', e)
+    }
+    
     // go back to content view
     try{ window.dispatchEvent(new CustomEvent('kb:mode', { detail:{ to:'view' } })) }catch{}
   } catch(e){ toast.push('error','저장 실패') } finally{ saving.value = false }
@@ -181,6 +202,8 @@ function onKey(e: KeyboardEvent){
 
 onMounted(async ()=>{
   html.value = marked.parse(props.content || '')
+  // baseContent 초기화
+  baseContent.value = props.content || ''
   // register lowlight languages (best-effort)
   const lowlight = createLowlight()
   try{ (lowlight as any).register('javascript', javascript as any) }catch{}
@@ -244,7 +267,36 @@ onMounted(async ()=>{
       StarterKit.configure({ codeBlock: false }),
       Underline,
       TextAlign.configure({ types: ['heading','paragraph','taskItem'] }),
-      Link.configure({ openOnClick: true, autolink: true, HTMLAttributes: { rel: 'noopener nofollow', target: '_blank' } }),
+      Link.extend({
+        addAttributes() {
+          return {
+            ...this.parent?.(),
+            href: {
+              default: null,
+            },
+            target: {
+              default: null,
+            },
+          }
+        },
+        addEventListeners() {
+          this.editor.on('click', (view, pos, event) => {
+            const target = event.target as HTMLElement
+            const link = target.closest('a')
+            if (link) {
+              const href = link.getAttribute('href')
+              if (href && !href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('mailto:') && !href.startsWith('tel:')) {
+                event.preventDefault()
+                handleInternalLinkClick(href)
+              }
+            }
+          })
+        }
+      }).configure({ 
+        openOnClick: false, // 기본 클릭 동작 비활성화
+        autolink: true, 
+        HTMLAttributes: { rel: 'noopener nofollow', target: '_blank' } 
+      }),
       Image.configure({ inline: false, allowBase64: false }),
       TextStyle,
       Color,
@@ -279,6 +331,49 @@ onMounted(async ()=>{
       setTimeout(()=>{ try{ (editor.value as any)?.chain().focus().run() }catch{} }, 0)
     })
   }catch{}
+  
+  // 링크 클릭 이벤트 처리
+  try{
+    window.addEventListener('kb:link-click', (e:any)=>{
+      const href = e?.detail?.href
+      if(!href) return
+      
+      // 상대 경로 링크인 경우 파일로 이동
+      if(href.startsWith('./') || href.startsWith('../') || (!href.startsWith('http') && !href.startsWith('#'))) {
+        e.preventDefault()
+        // kb:open 이벤트로 파일 열기
+        window.dispatchEvent(new CustomEvent('kb:open', { 
+          detail: { 
+            path: href,
+            container: 'knowledge-base'
+          } 
+        }))
+      }
+    })
+  }catch{}
+  
+  // 편집기 내부 링크 클릭 감지
+  try{
+    const editorElement = editor.value?.view?.dom
+    if(editorElement) {
+      editorElement.addEventListener('click', (e:any) => {
+        const linkElement = e.target.closest('a')
+        if(linkElement) {
+          const href = linkElement.getAttribute('href')
+          if(href && (href.startsWith('./') || href.startsWith('../') || (!href.startsWith('http') && !href.startsWith('#')))) {
+            e.preventDefault()
+            // kb:open 이벤트로 파일 열기
+            window.dispatchEvent(new CustomEvent('kb:open', { 
+              detail: { 
+                path: href,
+                container: 'knowledge-base'
+              } 
+            }))
+          }
+        }
+      })
+    }
+  }catch{}
   // 콘텐츠가 비동기로 도착할 때 에디터에 반영
   // 콘텐츠 또는 경로 변경 시 에디터에 반영 (탭 역방향 전환 포함)
   watch(() => [props.path, props.content], async ([p, c]) => {
@@ -309,6 +404,73 @@ onMounted(async ()=>{
   try{ window.addEventListener('keydown', onKey) }catch{}
 })
 onBeforeUnmount(()=>{ try{ window.removeEventListener('keydown', onKey) }catch{} editor.value?.destroy?.() })
+
+// 내부 링크 클릭 처리
+function handleInternalLinkClick(href: string) {
+  // 저장되지 않은 변경사항이 있는지 확인
+  if (hasUnsavedChanges.value) {
+    const choice = confirm('저장되지 않은 변경사항이 있습니다.\n\n저장하고 이동하시겠습니까?\n\n확인: 저장 후 이동\n취소: 저장하지 않고 이동\n취소 후 ESC: 이동 취소')
+    
+    if (choice === true) {
+      // 저장 후 이동
+      save()
+      // 저장 완료 후 이동 (저장 완료 이벤트를 기다림)
+      const handleSaveComplete = () => {
+        navigateToLink(href)
+        window.removeEventListener('kb:saved', handleSaveComplete)
+      }
+      window.addEventListener('kb:saved', handleSaveComplete)
+      return
+    } else if (choice === false) {
+      // 저장하지 않고 이동
+      navigateToLink(href)
+      return
+    } else {
+      // ESC 키로 취소
+      return
+    }
+  }
+  
+  // 변경사항이 없으면 바로 이동
+  navigateToLink(href)
+}
+
+// 링크 이동 처리 함수
+function navigateToLink(href: string) {
+  // 상대 경로 처리
+  let targetPath = href
+  if (href.startsWith('./') || href.startsWith('../')) {
+    // 현재 파일의 디렉토리를 기준으로 절대 경로 생성
+    const currentDir = props.path ? props.path.substring(0, props.path.lastIndexOf('/')) : ''
+    if (href.startsWith('./')) {
+      targetPath = currentDir + '/' + href.substring(2)
+    } else if (href.startsWith('../')) {
+      const parts = currentDir.split('/')
+      const upLevels = (href.match(/\.\.\//g) || []).length
+      const newParts = parts.slice(0, -upLevels)
+      const remainingPath = href.replace(/\.\.\//g, '')
+      targetPath = newParts.join('/') + '/' + remainingPath
+    }
+  }
+  
+  // .md 확장자가 없으면 추가
+  if (!targetPath.endsWith('.md') && !targetPath.includes('.')) {
+    targetPath += '.md'
+  }
+  
+  // kb:open 이벤트 발생
+  try {
+    window.dispatchEvent(new CustomEvent('kb:open', { 
+      detail: { 
+        path: targetPath,
+        container: 'knowledge-base',
+        isDirectory: false
+      } 
+    }))
+  } catch (e) {
+    console.warn('Failed to dispatch kb:open event:', e)
+  }
+}
 
 function cmd(name: string, args: any = {}){
   try{ (editor.value as any)?.chain().focus()?.[name](args).run() }catch{}
