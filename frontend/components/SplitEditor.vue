@@ -231,6 +231,7 @@ import embedVega from 'vega-embed'
 import DiffViewer from '~/components/DiffViewer.vue'
 import { generateMarkdownTable, mermaidTemplate, vegaLiteBarTemplate, vegaLiteBarSpec } from '~/utils/mdTools'
 import KbToolbar from '~/components/KbToolbar.vue'
+import { handleAnchorLink, toggleAllDetails as toggleAllDetailsUtil } from '~/utils/anchor-utils'
 import KbSidePanel from '~/components/KbSidePanel.vue'
 import UnsavedChangesModal from '~/components/UnsavedChangesModal.vue'
 
@@ -356,17 +357,13 @@ const pendingNavigation = ref(null)
 // 목차 전체 펼치기/접기 상태
 const allDetailsExpanded = ref(false)
 
-// 목차 전체 펼치기/접기 함수
+// 목차 전체 펼치기/접기 함수 - 공통 유틸리티 사용
 function toggleAllDetails() {
-  const detailsElements = document.querySelectorAll('details');
-  allDetailsExpanded.value = !allDetailsExpanded.value;
-  
-  detailsElements.forEach(details => {
-    details.open = allDetailsExpanded.value;
-  });
-  
-  console.log('SplitEditor: Toggled all details to:', allDetailsExpanded.value ? 'expanded' : 'collapsed');
+  toggleAllDetailsUtil(allDetailsExpanded, 'SplitEditor');
 }
+
+// scrollToTarget 함수는 공통 유틸리티(anchor-utils.ts)에서 import하여 사용
+
 
 // --- Insert helpers ---
 function insertAtCursor(text){
@@ -602,107 +599,14 @@ function handlePreviewClick(event) {
 function navigateToLink(href) {
   console.log('navigateToLink called with href:', href, 'current path:', props.path)
   
-  // 앵커 링크 처리 (#로 시작)
+  // 앵커 링크 처리 (#로 시작) - 공통 유틸리티 사용
   if (href.startsWith('#')) {
-    let targetId = href.substring(1);
-    console.log('SplitEditor: Processing anchor link (raw):', targetId);
-    
-    // 앵커 ID 디코딩 (ContentView와 동일한 로직)
-    try {
-      targetId = decodeURIComponent(targetId);
-      console.log('SplitEditor: Decoded anchor ID:', targetId);
-    } catch (e) {
-      console.log('SplitEditor: Failed to decode anchor ID, using raw:', targetId);
+    const handled = handleAnchorLink(href, previewEl.value, 'SplitEditor');
+    if (handled) {
+      return; // 앵커 링크 처리 완료
     }
-    
-    // 현재 문서에서 앵커 찾기
-    let targetElement = document.getElementById(targetId);
-    
-    // 디버깅: 모든 헤딩 ID 출력
-    const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    console.log('SplitEditor: All heading IDs in document:');
-    allElements.forEach((el, index) => {
-      console.log(`  ${index + 1}. "${el.id}" (text: "${el.textContent?.trim()}")`);
-    });
-    console.log('SplitEditor: Looking for target ID:', `"${targetId}"`);
-    
-    // If not found, try to find by exact match first
-    if (!targetElement) {
-      for (const el of allElements) {
-        if (el.id === targetId) {
-          targetElement = el;
-          console.log('SplitEditor: Found by exact ID match:', el.id);
-          break;
-        }
-      }
-    }
-    
-    // If still not found, try to find by text content match (for emoji headers)
-    if (!targetElement) {
-      const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-      for (const el of allElements) {
-        const textContent = el.textContent?.trim();
-        if (textContent && textContent === targetId) {
-          targetElement = el;
-          console.log('SplitEditor: Found by text content match:', textContent);
-          break;
-        }
-      }
-    }
-    
-    // If still not found, try to find by emoji-removed ID match
-    if (!targetElement) {
-      const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-      for (const el of allElements) {
-        const textContent = el.textContent?.trim();
-        if (textContent) {
-          // 이모지 제거 후 ID 생성 (앵커 링크와 동일한 방식)
-          const emojiRemovedId = textContent
-            .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]/gu, '')
-            .trim()
-            .replace(/\s+/g, '-')
-            .replace(/-+/g, '-')
-            .replace(/^-+|-+$/g, '')
-            .toLowerCase();
-          
-          if (emojiRemovedId === targetId) {
-            targetElement = el;
-            console.log('SplitEditor: Found by emoji-removed match:', textContent, '→', emojiRemovedId);
-            break;
-          }
-        }
-      }
-    }
-    
-    if (targetElement) {
-      // 접혀진 섹션(details) 내부에 있는 경우 해당 섹션을 열기
-      const detailsElement = targetElement.closest('details');
-      if (detailsElement && !detailsElement.open) {
-        console.log('SplitEditor: Opening collapsed section for anchor:', targetId);
-        detailsElement.open = true;
-        
-        // 섹션이 열린 후 스크롤하도록 약간의 지연
-        setTimeout(() => {
-          targetElement.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start',
-            inline: 'nearest'
-          });
-          console.log('SplitEditor: Found anchor and scrolled to:', targetId);
-        }, 100);
-      } else {
-        // 앵커를 찾은 경우 스크롤
-        targetElement.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start',
-          inline: 'nearest'
-        });
-        console.log('SplitEditor: Found anchor and scrolled to:', targetId);
-      }
-    } else {
-      // 앵커를 찾지 못한 경우, 로그만 출력하고 API 호출하지 않음
-      console.log('SplitEditor: Anchor not found:', targetId);
-    }
+    // 앵커를 찾지 못한 경우, 로그만 출력하고 API 호출하지 않음
+    console.log('SplitEditor: Anchor not found');
     return;
   }
   

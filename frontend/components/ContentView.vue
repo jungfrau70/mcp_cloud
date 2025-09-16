@@ -127,6 +127,7 @@ import {
   prepareDisplayPath,
   processPathSafely
 } from '~/utils/path'
+import { handleAnchorLink, toggleAllDetails as toggleAllDetailsUtil, scrollToTarget as scrollToTargetUtil } from '~/utils/anchor-utils'
 
 const props = defineProps({
   content: String,
@@ -247,61 +248,62 @@ function resolveRelativePath(currentPath, relativePath) {
   return result;
 }
 
-// 앵커로 스크롤하는 함수 (접혀진 섹션 처리 포함)
-function scrollToTarget(targetElement) {
-  // Add highlight effect to the target element
-  targetElement.style.backgroundColor = '#fef3c7';
-  targetElement.style.border = '2px solid #f59e0b';
-  targetElement.style.borderRadius = '4px';
-  targetElement.style.padding = '8px';
-  targetElement.style.margin = '4px 0';
-  targetElement.style.transition = 'all 0.3s ease';
-  
-  // Use scrollIntoView with proper options
-  targetElement.scrollIntoView({ 
-    behavior: 'smooth', 
-    block: 'start',
-    inline: 'nearest'
-  });
-  
-  // Additional scroll adjustment for better positioning
-  setTimeout(() => {
-    const container = contentContainer.value;
-    if (container) {
-      const containerRect = container.getBoundingClientRect();
-      const elementRect = targetElement.getBoundingClientRect();
-      
-      // If element is too close to top, adjust scroll position
-      if (elementRect.top < containerRect.top + 80) {
-        container.scrollBy({
-          top: elementRect.top - containerRect.top - 80,
-          behavior: 'smooth'
-        });
-      }
-    }
-  }, 100);
-  
-  // Remove highlight after 3 seconds
-  setTimeout(() => {
-    targetElement.style.backgroundColor = '';
-    targetElement.style.border = '';
-    targetElement.style.borderRadius = '';
-    targetElement.style.padding = '';
-    targetElement.style.margin = '';
-  }, 3000);
+// scrollToTarget 함수는 공통 유틸리티(anchor-utils.ts)에서 import하여 사용
+
+// 목차 전체 펼치기/접기 함수 - 공통 유틸리티 사용
+function toggleAllDetails() {
+  toggleAllDetailsUtil(allDetailsExpanded, 'ContentView');
 }
 
-// 목차 전체 펼치기/접기 함수
-function toggleAllDetails() {
-  const detailsElements = document.querySelectorAll('details');
-  allDetailsExpanded.value = !allDetailsExpanded.value;
+// Custom renderer for Korean header IDs (SplitEditor와 동일한 로직)
+const renderer = new marked.Renderer()
+renderer.heading = function(text, level) {
+  // VS Code 마크다운 미리보기와 동일한 슬러그 생성 방식
+  // 이모지를 유지하고 공백을 하이픈으로 변환
+  let id = text
+    .trim() // 앞뒤 공백 제거
+    .replace(/\s+/g, '-') // 공백을 하이픈으로 변환
+    .replace(/-+/g, '-') // 연속된 하이픈을 하나로 변환
+    .replace(/^-+|-+$/g, '') // 앞뒤 하이픈 제거
+    .toLowerCase() // 소문자로 변환
   
-  detailsElements.forEach(details => {
-    details.open = allDetailsExpanded.value;
-  });
+  // 빈 ID인 경우 fallback 생성
+  if (!id) {
+    id = `heading-${level}-${Math.random().toString(36).substr(2, 9)}`;
+  }
   
-  console.log('ContentView: Toggled all details to:', allDetailsExpanded.value ? 'expanded' : 'collapsed');
+  // 디버깅을 위한 콘솔 로그
+  console.log(`ContentView Generated header ID: "${text}" → "${id}"`);
+  
+  return `<h${level} id="${id}">${text}</h${level}>`
 }
+
+// Table styling
+renderer.table = function(header, body) {
+  return `<div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200 border border-gray-300">${header}${body}</table></div>`
+}
+
+renderer.tablerow = function(content) {
+  return `<tr class="bg-gray-50">${content}</tr>`
+}
+
+renderer.tablecell = function(content, flags) {
+  const tag = flags.header ? 'th' : 'td'
+  const align = flags.align ? ` style="text-align: ${flags.align}"` : ''
+  const className = flags.header ? 'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200' : 'px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-b border-gray-200'
+  return `<${tag} class="${className}"${align}>${content}</${tag}>`
+}
+
+// marked 옵션 설정 (SplitEditor와 동일)
+marked.setOptions({
+  renderer: renderer,
+  gfm: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: false,
+  smartLists: true,
+  smartypants: false
+})
 
 // Title (first heading) extraction
 const titleText = computed(() => {
@@ -331,55 +333,6 @@ const renderedContent = computed(() => {
     // Normalize KB links: convert mdc:mcp_knowledge_base/... → /mcp_knowledge_base/...
     body = body.replace(/\]\(mdc:mcp_knowledge_base\//g, '](\/mcp_knowledge_base/')
   }catch{ /* ignore */ }
-  // KB Markdown 탭과 동일한 marked 옵션
-  marked.setOptions({ 
-    breaks: true, 
-    gfm: true, 
-    headerIds: true, 
-    mangle: false,
-    headerPrefix: '' // Remove any prefix from generated IDs
-  })
-  
-  // Custom renderer for Korean header IDs and table styling
-  const renderer = new marked.Renderer()
-  renderer.heading = function(text, level) {
-    // VS Code 마크다운 미리보기와 동일한 슬러그 생성 방식
-    // 이모지를 유지하고 공백을 하이픈으로 변환
-    let id = text
-      .trim() // 앞뒤 공백 제거
-      .replace(/\s+/g, '-') // 공백을 하이픈으로 변환
-      .replace(/-+/g, '-') // 연속된 하이픈을 하나로 변환
-      .replace(/^-+|-+$/g, '') // 앞뒤 하이픈 제거
-      .toLowerCase() // 소문자로 변환
-    
-    // 빈 ID인 경우 fallback 생성
-    if (!id) {
-      id = `heading-${level}-${Math.random().toString(36).substr(2, 9)}`;
-    }
-    
-    // 디버깅을 위한 콘솔 로그
-    console.log(`Generated header ID: "${text}" → "${id}"`);
-    
-    return `<h${level} id="${id}">${text}</h${level}>`
-  }
-  
-  // Custom table renderer for better styling
-  renderer.table = function(header, body) {
-    return `<div class="table-scroll"><table class="table-auto w-full border-collapse border border-gray-300">${header}${body}</table></div>`
-  }
-  
-  renderer.tablerow = function(content) {
-    return `<tr class="border-b border-gray-200">${content}</tr>`
-  }
-  
-  renderer.tablecell = function(content, flags) {
-    const tag = flags.header ? 'th' : 'td'
-    const align = flags.align ? ` style="text-align: ${flags.align}"` : ''
-    const className = flags.header ? 'px-4 py-2 bg-gray-50 font-semibold text-left border border-gray-300' : 'px-4 py-2 border border-gray-300'
-    return `<${tag} class="${className}"${align}>${content}</${tag}>`
-  }
-  
-  marked.use({ renderer })
   
   // Allow custom KB scheme 'mdc:' so hrefs are preserved for interception
   return DOMPurify.sanitize(marked.parse(body), { ADD_URI_SAFE: ['mdc'] });
@@ -748,10 +701,10 @@ const setupLinkIntercepts = async () => {
           
           // 섹션이 열린 후 스크롤하도록 약간의 지연
           setTimeout(() => {
-            scrollToTarget(targetElement);
+            scrollToTargetUtil(targetElement, contentContainer.value, 'ContentView');
           }, 100);
         } else {
-          scrollToTarget(targetElement);
+          scrollToTargetUtil(targetElement, contentContainer.value, 'ContentView');
         }
       }
       return;
