@@ -1,6 +1,7 @@
 // Nuxt runtime import (type may be unresolved in isolated TS tooling outside Nuxt context)
 // @ts-ignore - Nuxt provides this at runtime / via nuxt.d.ts generation
 import { useRuntimeConfig } from '#app'
+import { processPathSafely } from '~/utils/path'
 
 // Types for KB API responses (aligned with backend models)
 export interface KbSaveResponse { success?: boolean; version_id?: number; version_no: number; updated_at?: string }
@@ -35,9 +36,15 @@ export function useKbApi(){
     return r.json() as Promise<T>
   }
 
-  async function getItem(path: string): Promise<any>{
-    return request<any>(`${apiBase}/v1/knowledge-base/item?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey }}, 'getItem failed')
+async function getItem(path: string): Promise<any>{
+  // 개선된 안전한 경로 처리
+  const result = processPathSafely(path, 'encode')
+  if (!result.success) {
+    console.warn('Path processing failed for getItem:', path, result.errors)
   }
+  
+  return request<any>(`${apiBase}/v1/knowledge-base/item?path=${result.result}`, { headers: { 'X-API-Key': apiKey }}, 'getItem failed')
+}
 
   async function saveItem(path: string, content: string, message?: string, expectedVersion?: number): Promise<KbSaveResponse>{
     // Use content-saving endpoint

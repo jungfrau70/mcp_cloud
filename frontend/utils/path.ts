@@ -345,7 +345,13 @@ export function analyzeFilename(filename: string): {
   decoded?: string
   encodingLevel: number
 } {
-  const result = {
+  const result: {
+    isReadable: boolean
+    isEncoded: boolean
+    needsDecoding: boolean
+    decoded?: string
+    encodingLevel: number
+  } = {
     isReadable: isReadableFilename(filename),
     isEncoded: isEncodedFilename(filename),
     needsDecoding: needsDecoding(filename),
@@ -507,7 +513,14 @@ export function getUriProcessingStatus(uri: string): {
   displayFriendly: string
   error?: string
 } {
-  const result = {
+  const result: {
+    original: string
+    needsProcessing: boolean
+    isEncoded: boolean
+    processed: string
+    displayFriendly: string
+    error?: string
+  } = {
     original: uri,
     needsProcessing: false,
     isEncoded: false,
@@ -561,5 +574,430 @@ export function handleKoreanFilename(filename: string, mode: 'encode' | 'decode'
   } catch (error) {
     console.warn('Failed to handle Korean filename:', filename, error)
     return filename
+  }
+}
+
+// ===== 개선된 통합 함수들 =====
+
+// 1. 안전한 URL 인코딩 (이중 인코딩 방지)
+export function safeEncodeURIComponent(str: string): string {
+  if (!str) return ''
+  
+  try {
+    // 이미 인코딩된 경우 디코딩 후 재인코딩
+    if (str.includes('%') && str !== decodeURIComponent(str)) {
+      const decoded = decodeURIComponent(str)
+      return encodeURIComponent(decoded)
+    }
+    return encodeURIComponent(str)
+  } catch (error) {
+    console.warn('Failed to safely encode URI component:', str, error)
+    return str
+  }
+}
+
+// 2. 안전한 URL 디코딩 (재귀적 디코딩)
+export function safeDecodeURIComponent(str: string): string {
+  if (!str) return ''
+  
+  try {
+    let decoded = str
+    // 재귀적 디코딩: 2중 인코딩된 경우를 처리
+    while (decoded.includes('%') && decoded !== decodeURIComponent(decoded)) {
+      decoded = decodeURIComponent(decoded)
+    }
+    return decoded
+  } catch (error) {
+    console.warn('Failed to safely decode URI component:', str, error)
+    return str
+  }
+}
+
+// 3. 경로 세그먼트별 안전한 처리
+export function safeProcessPathSegments(path: string, mode: 'encode' | 'decode' | 'auto' = 'auto'): string {
+  if (!path) return ''
+  
+  const segments = path.split('/')
+  const processedSegments = segments.map(segment => {
+    if (!segment) return segment
+    
+    switch (mode) {
+      case 'encode':
+        return /[가-힣]/.test(segment) ? safeEncodeURIComponent(segment) : segment
+        
+      case 'decode':
+        return isEncodedFilename(segment) ? safeDecodeURIComponent(segment) : segment
+        
+      case 'auto':
+      default:
+        if (isEncodedFilename(segment)) {
+          return safeDecodeURIComponent(segment)
+        } else if (/[가-힣]/.test(segment)) {
+          return safeEncodeURIComponent(segment)
+        }
+        return segment
+    }
+  })
+  
+  return processedSegments.join('/')
+}
+
+// 4. API 요청용 경로 준비 (개선된 버전)
+export function prepareApiPathSafe(path: string): string {
+  if (!path) return ''
+  
+  // 1. 기본 경로 정리
+  const cleaned = cleanApiPath(path)
+  
+  // 2. 안전한 한글 파일명 처리
+  return safeProcessPathSegments(cleaned, 'encode')
+}
+
+// 5. UI 표시용 경로 준비 (개선된 버전)
+export function prepareDisplayPath(path: string): string {
+  if (!path) return ''
+  
+  // 1. 안전한 디코딩
+  const decoded = safeProcessPathSegments(path, 'decode')
+  
+  // 2. 경로 정리
+  return cleanApiPath(decoded)
+}
+
+// 6. 앵커 ID 안전한 처리
+export function safeProcessAnchorId(anchorId: string, mode: 'encode' | 'decode' = 'decode'): string {
+  if (!anchorId) return ''
+  
+  try {
+    if (mode === 'encode') {
+      return safeEncodeURIComponent(anchorId)
+    } else {
+      return safeDecodeURIComponent(anchorId)
+    }
+  } catch (error) {
+    console.warn('Failed to process anchor ID:', anchorId, error)
+    return anchorId
+  }
+}
+
+// ===== 성능 최적화를 위한 캐싱 시스템 =====
+
+// 캐시 인터페이스
+interface PathCache {
+  encode: Map<string, string>
+  decode: Map<string, string>
+  lastCleanup: number
+}
+
+// 전역 캐시 인스턴스
+const pathCache: PathCache = {
+  encode: new Map(),
+  decode: new Map(),
+  lastCleanup: Date.now()
+}
+
+// 캐시 정리 (메모리 누수 방지)
+function cleanupCache(): void {
+  const now = Date.now()
+  const CACHE_TTL = 5 * 60 * 1000 // 5분
+  
+  if (now - pathCache.lastCleanup > CACHE_TTL) {
+    // 캐시 크기가 너무 크면 정리
+    if (pathCache.encode.size > 1000) {
+      pathCache.encode.clear()
+    }
+    if (pathCache.decode.size > 1000) {
+      pathCache.decode.clear()
+    }
+    pathCache.lastCleanup = now
+  }
+}
+
+// 7. 캐시된 안전한 URL 인코딩
+export function cachedSafeEncodeURIComponent(str: string): string {
+  if (!str) return ''
+  
+  // 캐시 확인
+  if (pathCache.encode.has(str)) {
+    return pathCache.encode.get(str)!
+  }
+  
+  // 캐시 정리
+  cleanupCache()
+  
+  // 인코딩 수행
+  const result = safeEncodeURIComponent(str)
+  
+  // 캐시 저장
+  pathCache.encode.set(str, result)
+  
+  return result
+}
+
+// 8. 캐시된 안전한 URL 디코딩
+export function cachedSafeDecodeURIComponent(str: string): string {
+  if (!str) return ''
+  
+  // 캐시 확인
+  if (pathCache.decode.has(str)) {
+    return pathCache.decode.get(str)!
+  }
+  
+  // 캐시 정리
+  cleanupCache()
+  
+  // 디코딩 수행
+  const result = safeDecodeURIComponent(str)
+  
+  // 캐시 저장
+  pathCache.decode.set(str, result)
+  
+  return result
+}
+
+// 9. 캐시된 경로 처리
+export function cachedSafeProcessPathSegments(path: string, mode: 'encode' | 'decode' | 'auto' = 'auto'): string {
+  if (!path) return ''
+  
+  const cacheKey = `${mode}:${path}`
+  const cache = mode === 'encode' ? pathCache.encode : pathCache.decode
+  
+  // 캐시 확인
+  if (cache.has(cacheKey)) {
+    return cache.get(cacheKey)!
+  }
+  
+  // 캐시 정리
+  cleanupCache()
+  
+  // 처리 수행
+  const result = safeProcessPathSegments(path, mode)
+  
+  // 캐시 저장
+  cache.set(cacheKey, result)
+  
+  return result
+}
+
+// 10. 캐시 초기화 (필요시)
+export function clearPathCache(): void {
+  pathCache.encode.clear()
+  pathCache.decode.clear()
+  pathCache.lastCleanup = Date.now()
+}
+
+// ===== 에러 처리 및 검증 강화 =====
+
+// 에러 타입 정의
+export interface PathProcessingError {
+  type: 'encoding' | 'decoding' | 'validation' | 'unknown'
+  message: string
+  originalValue: string
+  timestamp: number
+}
+
+// 에러 로그 저장소
+const errorLog: PathProcessingError[] = []
+const MAX_ERROR_LOG_SIZE = 100
+
+// 에러 로깅 함수
+function logPathError(error: Omit<PathProcessingError, 'timestamp'>): void {
+  const fullError: PathProcessingError = {
+    ...error,
+    timestamp: Date.now()
+  }
+  
+  errorLog.push(fullError)
+  
+  // 로그 크기 제한
+  if (errorLog.length > MAX_ERROR_LOG_SIZE) {
+    errorLog.shift()
+  }
+  
+  console.warn(`Path processing error [${error.type}]:`, error.message, error.originalValue)
+}
+
+// 11. 강화된 안전한 URL 인코딩 (에러 처리 포함)
+export function robustSafeEncodeURIComponent(str: string): string {
+  if (!str) return ''
+  
+  try {
+    // 입력 검증
+    if (typeof str !== 'string') {
+      logPathError({
+        type: 'validation',
+        message: 'Input is not a string',
+        originalValue: String(str)
+      })
+      return String(str)
+    }
+    
+    // 길이 제한
+    if (str.length > 10000) {
+      logPathError({
+        type: 'validation',
+        message: 'Input string too long',
+        originalValue: str.substring(0, 100) + '...'
+      })
+      return str
+    }
+    
+    // 이미 인코딩된 경우 디코딩 후 재인코딩
+    if (str.includes('%') && str !== decodeURIComponent(str)) {
+      const decoded = decodeURIComponent(str)
+      return encodeURIComponent(decoded)
+    }
+    
+    return encodeURIComponent(str)
+  } catch (error) {
+    logPathError({
+      type: 'encoding',
+      message: `Encoding failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      originalValue: str
+    })
+    return str
+  }
+}
+
+// 12. 강화된 안전한 URL 디코딩 (에러 처리 포함)
+export function robustSafeDecodeURIComponent(str: string): string {
+  if (!str) return ''
+  
+  try {
+    // 입력 검증
+    if (typeof str !== 'string') {
+      logPathError({
+        type: 'validation',
+        message: 'Input is not a string',
+        originalValue: String(str)
+      })
+      return String(str)
+    }
+    
+    let decoded = str
+    let iterations = 0
+    const MAX_ITERATIONS = 10 // 무한 루프 방지
+    
+    // 재귀적 디코딩: 2중 인코딩된 경우를 처리
+    while (decoded.includes('%') && decoded !== decodeURIComponent(decoded) && iterations < MAX_ITERATIONS) {
+      decoded = decodeURIComponent(decoded)
+      iterations++
+    }
+    
+    if (iterations >= MAX_ITERATIONS) {
+      logPathError({
+        type: 'decoding',
+        message: 'Maximum decoding iterations reached',
+        originalValue: str
+      })
+    }
+    
+    return decoded
+  } catch (error) {
+    logPathError({
+      type: 'decoding',
+      message: `Decoding failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      originalValue: str
+    })
+    return str
+  }
+}
+
+// 13. 경로 유효성 검증
+export function validatePath(path: string): { isValid: boolean; errors: string[] } {
+  const errors: string[] = []
+  
+  if (!path) {
+    errors.push('Path is empty')
+    return { isValid: false, errors }
+  }
+  
+  if (typeof path !== 'string') {
+    errors.push('Path is not a string')
+    return { isValid: false, errors }
+  }
+  
+  if (path.length > 1000) {
+    errors.push('Path is too long')
+  }
+  
+  // 위험한 문자 검사
+  if (/[<>:"|?*]/.test(path)) {
+    errors.push('Path contains invalid characters')
+  }
+  
+  // 상대 경로 보안 검사
+  if (path.includes('..') && path.split('..').length > 2) {
+    errors.push('Path contains potentially dangerous relative path')
+  }
+  
+  return { isValid: errors.length === 0, errors }
+}
+
+// 14. 에러 로그 조회
+export function getPathErrorLog(): PathProcessingError[] {
+  return [...errorLog]
+}
+
+// 15. 에러 로그 초기화
+export function clearPathErrorLog(): void {
+  errorLog.length = 0
+}
+
+// 16. 통합된 안전한 경로 처리 (최종 버전)
+export function processPathSafely(path: string, mode: 'encode' | 'decode' | 'auto' = 'auto'): {
+  result: string
+  success: boolean
+  errors: string[]
+} {
+  // 1. 입력 검증
+  const validation = validatePath(path)
+  if (!validation.isValid) {
+    return {
+      result: path,
+      success: false,
+      errors: validation.errors
+    }
+  }
+  
+  // 2. 경로 처리
+  try {
+    let result: string
+    
+    switch (mode) {
+      case 'encode':
+        result = robustSafeEncodeURIComponent(path)
+        break
+      case 'decode':
+        result = robustSafeDecodeURIComponent(path)
+        break
+      case 'auto':
+      default:
+        if (isEncodedFilename(path)) {
+          result = robustSafeDecodeURIComponent(path)
+        } else if (/[가-힣]/.test(path)) {
+          result = robustSafeEncodeURIComponent(path)
+        } else {
+          result = path
+        }
+    }
+    
+    return {
+      result,
+      success: true,
+      errors: []
+    }
+  } catch (error) {
+    logPathError({
+      type: 'unknown',
+      message: `Path processing failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      originalValue: path
+    })
+    
+    return {
+      result: path,
+      success: false,
+      errors: ['Path processing failed']
+    }
   }
 }

@@ -108,7 +108,18 @@ import { marked } from 'marked';
 import mermaid from 'mermaid';
 import embedVega from 'vega-embed';
 import DOMPurify from 'dompurify'
-import { cleanApiPath, deepCleanApiPath, isDirectoryPath, normalizeDirectoryPath, preventPathDuplication, prepareApiPath, handleKoreanFilename } from '~/utils/path'
+import { 
+  cleanApiPath, 
+  deepCleanApiPath, 
+  isDirectoryPath, 
+  normalizeDirectoryPath, 
+  preventPathDuplication, 
+  prepareApiPath, 
+  handleKoreanFilename,
+  safeProcessAnchorId,
+  prepareDisplayPath,
+  processPathSafely
+} from '~/utils/path'
 
 const props = defineProps({
   content: String,
@@ -432,8 +443,8 @@ const getDisplayPath = (filePath) => {
     const decodedParts = parts.map(part => {
       if (!part) return part
       
-      // handleKoreanFilename을 사용하여 디코딩
-      return handleKoreanFilename(part, 'decode')
+      // 개선된 안전한 디코딩 사용
+      return processPathSafely(part, 'decode').result
     })
     
     return decodedParts.join('/')
@@ -519,12 +530,10 @@ const setupLinkIntercepts = async () => {
       event.preventDefault();
       let targetId = href.substring(1);
       
-      // URL 디코딩 처리 (이모지 포함 링크의 경우)
-      try {
-        targetId = decodeURIComponent(targetId);
-      } catch (e) {
-        // 디코딩 실패 시 원본 사용
-        console.warn('Failed to decode anchor ID:', targetId);
+      // 개선된 안전한 앵커 ID 디코딩
+      const decodeResult = safeProcessAnchorId(targetId, 'decode')
+      if (decodeResult) {
+        targetId = decodeResult
       }
       
       console.log('Looking for anchor ID:', targetId);
@@ -610,7 +619,7 @@ const setupLinkIntercepts = async () => {
       
       // If still not found, try to find by encoded ID match
       if (!targetElement) {
-        const encodedId = encodeURIComponent(targetId);
+        const encodedId = safeProcessAnchorId(targetId, 'encode')
         const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
         for (const el of allElements) {
           if (el.id === encodedId) {

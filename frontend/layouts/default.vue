@@ -653,13 +653,23 @@ onMounted(async () => {
         }
         return
       }
-      // Default: open based on current route
-      if(isKnowledgeBase.value){ 
-        console.log('Handling knowledge-base link:', p)
-        handleKbFileSelect(p)
-        // 지식베이스에서 파일 열기 시 마크다운 탭으로 전환
-        kbTab.value = 'markdown'
-      }
+         // Default: open based on current route
+         if(isKnowledgeBase.value){ 
+           console.log('Handling knowledge-base link:', p)
+           // 한글 파일명 처리: 이미 인코딩된 경로인 경우 디코딩
+           let decodedPath = p
+           try {
+             if (p.includes('%')) {
+               decodedPath = decodeURIComponent(p)
+             }
+           } catch (e) {
+             console.warn('Failed to decode path in kb:open:', p, e)
+             decodedPath = p
+           }
+           handleKbFileSelect(decodedPath)
+           // 지식베이스에서 파일 열기 시 마크다운 탭으로 전환
+           kbTab.value = 'markdown'
+         }
       else if(route.path.startsWith('/curriculum') || route.path.startsWith('/textbook')){ 
         console.log('Handling curriculum link (default):', p)
         handleFileClick(p) 
@@ -1007,14 +1017,30 @@ const showDirectoryInFileTree = (directoryPath) => {
 const handleKbFileSelect = async (path) => {
   activeSlide.value = null
   if(activePath.value && activePath.value !== path){ kbHistory.value.push(activePath.value) }
-  await docStore.open(path)
+  
+  // 한글 파일명 처리: 이미 인코딩된 경로인 경우 디코딩
+  let decodedPath = path
+  try {
+    // URL 인코딩된 경로인지 확인하고 디코딩
+    if (path.includes('%')) {
+      decodedPath = decodeURIComponent(path)
+    }
+  } catch (e) {
+    console.warn('Failed to decode path:', path, e)
+    // 디코딩 실패 시 원본 경로 사용
+    decodedPath = path
+  }
+  
+  console.log('handleKbFileSelect - original path:', path, 'decoded path:', decodedPath)
+  
+  await docStore.open(decodedPath)
   
   // 현재 파일 정보 저장 (커리큘럼 ↔ 지식베이스 공유용)
   if (!docStore.error && docStore.content) {
     currentFileInfo.value = {
-      path: path,
+      path: decodedPath, // 디코딩된 경로 사용
       content: docStore.content,
-      title: getDocumentTitle(docStore.content) || path.split('/').pop()?.replace(/\.md$/i, '') || '',
+      title: getDocumentTitle(docStore.content) || decodedPath.split('/').pop()?.replace(/\.md$/i, '') || '',
       source: 'knowledge-base'
     }
     
@@ -1118,25 +1144,36 @@ async function downloadKbFile(path){
 }
 
 async function onTreeSelect(p){
-  const ext = getExt(p)
+  // 한글 파일명 처리: 이미 인코딩된 경로인 경우 디코딩
+  let decodedPath = p
+  try {
+    if (p.includes('%')) {
+      decodedPath = decodeURIComponent(p)
+    }
+  } catch (e) {
+    console.warn('Failed to decode path in onTreeSelect:', p, e)
+    decodedPath = p
+  }
+  
+  const ext = getExt(decodedPath)
   // md: 편집기로 열기, 텍스트 계열: 읽기 뷰(마크다운 탭)로 열기
   if(ext === 'md'){
-    await handleKbFileSelect(p)
+    await handleKbFileSelect(decodedPath)
     kbTab.value = 'tiptap'
     return
   }
   if(['txt','log','json','yaml','yml','csv'].includes(ext)){
-    await handleKbFileSelect(p)
+    await handleKbFileSelect(decodedPath)
     kbTab.value = 'markdown'
     return
   }
   // 미디어/문서: 바이너리로 열기 또는 다운로드
   if(['pdf','ppt','pptx','png','jpg','jpeg','gif','svg','webp','mp4','webm','mp3','wav'].includes(ext)){
-    await openKbBinary(p)
+    await openKbBinary(decodedPath)
     return
   }
   // 나머지는 다운로드만
-  await downloadKbFile(p)
+  await downloadKbFile(decodedPath)
 }
 // KB 인덱스 문서 보장: index.md 우선 시도, 없으면 생성
 async function ensureKbIndex(){

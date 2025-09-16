@@ -116,7 +116,12 @@ import { useRoute } from 'vue-router'
 import { useAuthStore } from '~/stores/auth'
 import FileTreePanel from './FileTreePanel.vue';
 import { useRuntimeConfig } from '#app'
-import { makeUriDisplayFriendly, handleKoreanFilename } from '~/utils/path'
+import { 
+  makeUriDisplayFriendly, 
+  handleKoreanFilename,
+  processPathSafely,
+  prepareDisplayPath
+} from '~/utils/path'
 
 const kbTree = ref(null);
 const curriculumTree = ref(null);
@@ -345,24 +350,12 @@ function getFileName(filePath) {
   const parts = filePath.split('/')
   const filename = parts[parts.length - 1] || filePath
   
-  // 한글 파일명을 읽기 쉽게 디코딩
-  try {
-    // 먼저 handleKoreanFilename으로 처리
-    let decoded = handleKoreanFilename(filename, 'decode')
-    
-    // 추가로 URL 디코딩이 필요한 경우 처리
-    if (decoded !== filename && /%[0-9A-Fa-f]{2}/.test(decoded)) {
-      decoded = decodeURIComponent(decoded)
-    }
-    
-    // 최종적으로 한글이 제대로 표시되는지 확인
-    if (/[가-힣]/.test(decoded)) {
-      return decoded
-    }
-    
-    return decoded
-  } catch (error) {
-    console.warn('Failed to decode filename:', filename, error)
+  // 개선된 안전한 파일명 디코딩
+  const result = processPathSafely(filename, 'decode')
+  if (result.success) {
+    return result.result
+  } else {
+    console.warn('Failed to decode filename:', filename, result.errors)
     return filename
   }
 }
