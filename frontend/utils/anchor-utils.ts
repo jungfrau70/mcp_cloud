@@ -5,7 +5,7 @@
 
 export interface AnchorSearchResult {
   element: HTMLElement | null;
-  method: 'getElementById' | 'exactIdMatch' | 'textContentMatch' | 'emojiRemovedMatch' | 'specialCharsRemovedMatch' | 'notFound';
+  method: 'getElementById' | 'exactIdMatch' | 'textContentMatch' | 'emojiRemovedMatch' | 'specialCharsRemovedMatch' | 'partialIdMatch' | 'encodedIdMatch' | 'linkTextMatch' | 'partialTextMatch' | 'notFound';
   debugInfo?: string;
 }
 
@@ -119,6 +119,74 @@ export function findAnchorElement(targetId: string): AnchorSearchResult {
           method: 'specialCharsRemovedMatch',
           debugInfo: `Found by special chars removed match: ${textContent} → ${specialCharsRemovedId}`
         };
+      }
+    }
+  }
+  
+  // 6. 부분 ID 매칭 (한글 헤더용)
+  for (const el of allElements) {
+    if (el.id && el.id.includes(targetId)) {
+      return {
+        element: el as HTMLElement,
+        method: 'partialIdMatch',
+        debugInfo: `Found by partial ID match: ${el.id} includes ${targetId}`
+      };
+    }
+  }
+  
+  // 7. 인코딩된 ID 매칭
+  try {
+    const encodedId = encodeURIComponent(targetId);
+    for (const el of allElements) {
+      if (el.id === encodedId) {
+        return {
+          element: el as HTMLElement,
+          method: 'encodedIdMatch',
+          debugInfo: `Found by encoded ID match: ${el.id}`
+        };
+      }
+    }
+  } catch (e) {
+    // 인코딩 실패 시 무시
+  }
+  
+  // 8. 링크 텍스트 정확 매칭
+  const linkElements = document.querySelectorAll('a[href*="#"]');
+  for (const linkEl of linkElements) {
+    const linkHref = linkEl.getAttribute('href');
+    if (linkHref && linkHref.includes(targetId)) {
+      const linkText = linkEl.textContent?.trim();
+      if (linkText) {
+        for (const el of allElements) {
+          const headerText = el.textContent?.trim();
+          if (headerText === linkText) {
+            return {
+              element: el as HTMLElement,
+              method: 'linkTextMatch',
+              debugInfo: `Found by link text match: ${linkText} → ${headerText}`
+            };
+          }
+        }
+      }
+    }
+  }
+  
+  // 9. 부분 텍스트 매칭
+  for (const linkEl of linkElements) {
+    const linkHref = linkEl.getAttribute('href');
+    if (linkHref && linkHref.includes(targetId)) {
+      const linkText = linkEl.textContent?.trim();
+      if (linkText) {
+        for (const el of allElements) {
+          const headerText = el.textContent?.trim();
+          if (headerText && (headerText.includes(linkText) || linkText.includes(headerText))) {
+            return {
+              element: el as HTMLElement,
+              method: 'partialTextMatch',
+              debugInfo: `Found by partial text match: ${linkText} ↔ ${headerText}`
+            };
+          }
+        }
       }
     }
   }

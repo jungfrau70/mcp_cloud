@@ -123,11 +123,10 @@ import {
   preventPathDuplication, 
   prepareApiPath, 
   handleKoreanFilename,
-  safeProcessAnchorId,
   prepareDisplayPath,
   processPathSafely
 } from '~/utils/path'
-import { handleAnchorLink, toggleAllDetails as toggleAllDetailsUtil, scrollToTarget as scrollToTargetUtil } from '~/utils/anchor-utils'
+import { handleAnchorLink, toggleAllDetails as toggleAllDetailsUtil } from '~/utils/anchor-utils'
 
 const props = defineProps({
   content: String,
@@ -247,8 +246,6 @@ function resolveRelativePath(currentPath, relativePath) {
   
   return result;
 }
-
-// scrollToTarget 함수는 공통 유틸리티(anchor-utils.ts)에서 import하여 사용
 
 // 목차 전체 펼치기/접기 함수 - 공통 유틸리티 사용
 function toggleAllDetails() {
@@ -558,155 +555,15 @@ const setupLinkIntercepts = async () => {
       return;
     }
 
-    // Handle anchor links
+    // Handle anchor links - 공통 유틸리티 사용
     if (href.startsWith('#')) {
       event.preventDefault();
-      let targetId = href.substring(1);
-      
-      // 개선된 안전한 앵커 ID 디코딩
-      const decodeResult = safeProcessAnchorId(targetId, 'decode')
-      if (decodeResult) {
-        targetId = decodeResult
+      const handled = handleAnchorLink(href, contentContainer.value, 'ContentView');
+      if (handled) {
+        return; // 앵커 링크 처리 완료
       }
-      
-      console.log('Looking for anchor ID:', targetId);
-      
-      // Try to find the target element
-      let targetElement = document.getElementById(targetId);
-      
-      // If not found, try to find by exact match first
-      if (!targetElement) {
-        const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-        for (const el of allElements) {
-          if (el.id === targetId) {
-            targetElement = el;
-            console.log('Found by exact ID match:', el.id);
-            break;
-          }
-        }
-      }
-      
-      // If still not found, try to find by text content match (for emoji headers)
-      if (!targetElement) {
-        const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-        for (const el of allElements) {
-          const textContent = el.textContent || '';
-          
-          // 1. 정확한 텍스트 매칭 (이모지 포함)
-          const exactId = textContent
-            .trim()
-            .replace(/\s+/g, '-')
-            .replace(/-+/g, '-')
-            .replace(/^-+|-+$/g, '')
-            .toLowerCase();
-          
-          if (exactId === targetId) {
-            targetElement = el;
-            console.log('Found by exact text match:', textContent, '→', exactId);
-            break;
-          }
-          
-          // 2. 이모지 제거 후 매칭
-          const withoutEmoji = textContent.replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]/gu, '');
-          const emojiRemovedId = withoutEmoji
-            .trim()
-            .replace(/\s+/g, '-')
-            .replace(/-+/g, '-')
-            .replace(/^-+|-+$/g, '')
-            .toLowerCase();
-          
-          if (emojiRemovedId === targetId) {
-            targetElement = el;
-            console.log('Found by emoji-removed match:', textContent, '→', emojiRemovedId);
-            break;
-          }
-          
-          // 3. 특수문자 제거 후 매칭
-          const withoutSpecialChars = textContent.replace(/[^\w\s가-힣]/g, '');
-          const specialCharsRemovedId = withoutSpecialChars
-            .trim()
-            .replace(/\s+/g, '-')
-            .replace(/-+/g, '-')
-            .replace(/^-+|-+$/g, '')
-            .toLowerCase();
-          
-          if (specialCharsRemovedId === targetId) {
-            targetElement = el;
-            console.log('Found by special-chars-removed match:', textContent, '→', specialCharsRemovedId);
-            break;
-          }
-        }
-      }
-      
-      // If still not found, try partial match (for Korean headers)
-      if (!targetElement) {
-        const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-        for (const el of allElements) {
-          if (el.id && el.id.includes(targetId)) {
-            targetElement = el;
-            console.log('Found by partial match:', el.id, 'includes', targetId);
-            break;
-          }
-        }
-      }
-      
-      // If still not found, try to find by encoded ID match
-      if (!targetElement) {
-        const encodedId = safeProcessAnchorId(targetId, 'encode')
-        const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-        for (const el of allElements) {
-          if (el.id === encodedId) {
-            targetElement = el;
-            console.log('Found by encoded ID match:', el.id);
-            break;
-          }
-        }
-      }
-      
-      // If still not found, try to find by link text content match
-      if (!targetElement) {
-        const linkText = link.textContent || '';
-        const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-        for (const el of allElements) {
-          const headerText = el.textContent || '';
-          if (headerText === linkText) {
-            targetElement = el;
-            console.log('Found by link text match:', linkText, '→', headerText);
-            break;
-          }
-        }
-      }
-      
-      // If still not found, try to find by partial text match
-      if (!targetElement) {
-        const linkText = link.textContent || '';
-        const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-        for (const el of allElements) {
-          const headerText = el.textContent || '';
-          // 이모지와 텍스트가 포함된 경우 부분 매칭 시도
-          if (headerText.includes(linkText) || linkText.includes(headerText)) {
-            targetElement = el;
-            console.log('Found by partial text match:', linkText, '↔', headerText);
-            break;
-          }
-        }
-      }
-      
-      if (targetElement) {
-        // 접혀진 섹션(details) 내부에 있는 경우 해당 섹션을 열기
-        const detailsElement = targetElement.closest('details');
-        if (detailsElement && !detailsElement.open) {
-          console.log('ContentView: Opening collapsed section for anchor:', targetId);
-          detailsElement.open = true;
-          
-          // 섹션이 열린 후 스크롤하도록 약간의 지연
-          setTimeout(() => {
-            scrollToTargetUtil(targetElement, contentContainer.value, 'ContentView');
-          }, 100);
-        } else {
-          scrollToTargetUtil(targetElement, contentContainer.value, 'ContentView');
-        }
-      }
+      // 앵커를 찾지 못한 경우, 로그만 출력
+      console.log('ContentView: Anchor not found');
       return;
     }
 
