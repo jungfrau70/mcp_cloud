@@ -40,7 +40,7 @@
                 <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.188l3.71-3.957a.75.75 0 111.08 1.04l-4.25 4.53a.75.75 0 01-1.08 0l-4.25-4.53a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
               </button>
               <div v-if="userMenuOpen" class="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-30" role="menu">
-                <button @click="() => { window.profileModalClicked = true; openProfileModal(); }" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">프로파일</button>
+                <button @click="() => { window.profileModalClicked = true; profileModalAllowed.value = true; openProfileModal(); }" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">프로파일</button>
                 <button @click="onLogout" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">로그아웃</button>
               </div>
             </div>
@@ -304,8 +304,11 @@ onMounted(async () => {
     // 프로필 모달 자동 열림 방지
     if (typeof window !== 'undefined') {
       window.profileModalClicked = false
-      
-      // 현재 파일 정보 복원
+    }
+    profileModalAllowed.value = false
+    
+    // 현재 파일 정보 복원
+    if (typeof window !== 'undefined') {
       const savedFileInfo = localStorage.getItem('currentFileInfo')
       if (savedFileInfo) {
         try {
@@ -462,13 +465,22 @@ const showProfile = ref(false)
 const profile = ref({ email: '', full_name: '', role: '' })
 const savingProfile = ref(false)
 
+// 프로필 모달 자동 열림 방지를 위한 추가 플래그
+const profileModalAllowed = ref(false)
+
 async function openProfileModal(){
   console.log('openProfileModal called', new Error().stack)
   console.log('openProfileModal called from:', new Error().stack?.split('\n')[2])
   
-  // 자동 호출 방지 - 사용자가 직접 클릭한 경우만 허용
+  // 이중 자동 호출 방지 - 사용자가 직접 클릭한 경우만 허용
   if (typeof window !== 'undefined' && !window.profileModalClicked) {
     console.log('Profile modal auto-called, preventing...')
+    return
+  }
+  
+  // 추가 방지 로직: profileModalAllowed 플래그 확인
+  if (!profileModalAllowed.value) {
+    console.log('Profile modal not allowed, preventing...')
     return
   }
   
@@ -476,6 +488,7 @@ async function openProfileModal(){
   if (typeof window !== 'undefined') {
     window.profileModalClicked = false
   }
+  profileModalAllowed.value = false
   
   try{
     const base = (config.public?.apiBaseUrl) || '/api'
@@ -490,7 +503,8 @@ async function openProfileModal(){
   }catch{
     // fallback to auth store first, then user state
     profile.value = { email: auth.email || user.value?.email || '', full_name: user.value?.full_name || '', role: auth.role || user.value?.role || '' }
-    showProfile.value = true
+    // 자동 호출 방지: catch 블록에서도 모달을 열지 않음
+    // showProfile.value = true
   }
 }
 

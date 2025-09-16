@@ -253,7 +253,9 @@ const renderedContent = computed(() => {
   try{
     body = body.replace(/```(?!\w)[ \t]*\n([\s\S]*?)```/g, (m, code) => {
       const first = (code.split(/\r?\n/).find(l => l.trim().length>0) || '').trim()
-      return /^\s*(graph|flowchart|sequenceDiagram|classDiagram|stateDiagram|erDiagram|gantt)\b/.test(first)
+      const isMermaid = /^\s*(graph|flowchart|sequenceDiagram|classDiagram|stateDiagram|erDiagram|gantt)\b/.test(first)
+      console.log('ContentView: checking code block:', first.substring(0, 50), 'isMermaid:', isMermaid)
+      return isMermaid
         ? '```mermaid\n' + code + '```'
         : m
     })
@@ -318,6 +320,18 @@ const renderedContent = computed(() => {
 });
 
 let mermaidInitialized = false
+
+// Mermaid 초기화 상태 확인
+const checkMermaidAvailability = () => {
+  if (typeof window !== 'undefined' && window.mermaid) {
+    console.log('ContentView: Mermaid is available');
+    return true;
+  } else {
+    console.log('ContentView: Mermaid is not available, checking import...');
+    console.log('ContentView: mermaid import:', typeof mermaid);
+    return false;
+  }
+};
 
 // Setup details/summary interaction handlers
 const setupDetailsHandlers = () => {
@@ -758,111 +772,33 @@ const setupLinkIntercepts = async () => {
   });
 };
 
-// Mermaid 다이어그램 렌더링 함수
+// Mermaid 다이어그램 렌더링 함수 (SplitEditor.vue와 완전히 동일)
 const renderMermaidDiagrams = async () => {
   if (!contentContainer.value) return;
   
-  const mermaidElements = contentContainer.value.querySelectorAll('pre code.language-mermaid, pre code[class*="mermaid"]');
-  
-  for (const element of mermaidElements) {
-    const pre = element.parentElement;
-    if (pre && pre.dataset.mermaidRendered) continue;
+  try {
+    const blocks = contentContainer.value.querySelectorAll('pre code.language-mermaid, code.language-mermaid');
     
-    try {
-      const graphDefinition = element.textContent;
-      if (!graphDefinition.trim()) continue;
-      
-      // Mermaid 초기화 (한 번만)
-      if (!mermaidInitialized) {
-        mermaid.initialize({
-          startOnLoad: false,
-          theme: 'default',
-          securityLevel: 'loose',
-          fontFamily: 'Arial, sans-serif',
-          flowchart: {
-            useMaxWidth: true,
-            htmlLabels: true
-          },
-          sequence: {
-            useMaxWidth: true
-          },
-          gantt: {
-            useMaxWidth: true
-          }
-        });
-        mermaidInitialized = true;
-      }
-      
-      // 고유 ID 생성
-      const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
-      
-      // 래퍼 컨테이너 생성
-      const wrapper = document.createElement('div');
-      wrapper.className = 'mermaid-wrapper';
-      
-      // 크기 조정 컨트롤 생성
-      const controlsContainer = document.createElement('div');
-      controlsContainer.className = 'mermaid-controls';
-      controlsContainer.innerHTML = `
-        <div class="mermaid-controls-inner">
-          <button class="mermaid-zoom-btn" data-action="zoom-in" title="확대">+</button>
-          <button class="mermaid-zoom-btn" data-action="zoom-out" title="축소">-</button>
-          <button class="mermaid-zoom-btn" data-action="reset" title="원래 크기">↺</button>
-          <span class="mermaid-zoom-level">100%</span>
-        </div>
-      `;
-      
-      // SVG 컨테이너 생성
-      const svgContainer = document.createElement('div');
-      svgContainer.className = 'mermaid-diagram';
-      svgContainer.style.cssText = 'text-align: center; margin: 1rem 0; padding: 1rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb; overflow-x: auto;';
-      
-      // 래퍼에 컨트롤과 SVG 컨테이너 추가
-      wrapper.appendChild(controlsContainer);
-      wrapper.appendChild(svgContainer);
-      
-      // 원본 코드 블록 숨기기
-      pre.style.display = 'none';
-      pre.dataset.mermaidRendered = 'true';
-      
-      // 래퍼를 원본 위치에 삽입
-      pre.parentNode.insertBefore(wrapper, pre);
-      
-      // Mermaid 렌더링
-      const { svg } = await mermaid.render(id, graphDefinition);
-      svgContainer.innerHTML = svg;
-      
-      // SVG 크기 조정 및 컨트롤 설정
-      const svgElement = svgContainer.querySelector('svg');
-      if (svgElement) {
-        // 기본 크기 설정 (화면에 맞게)
-        const containerWidth = svgContainer.offsetWidth || 800;
-        const svgWidth = svgElement.getAttribute('width') || svgElement.getBoundingClientRect().width;
-        const svgHeight = svgElement.getAttribute('height') || svgElement.getBoundingClientRect().height;
-        
-        // 화면 너비에 맞게 스케일 조정
-        const scale = Math.min(1, (containerWidth - 40) / svgWidth);
-        const newWidth = svgWidth * scale;
-        const newHeight = svgHeight * scale;
-        
-        svgElement.setAttribute('width', newWidth);
-        svgElement.setAttribute('height', newHeight);
-        svgElement.style.maxWidth = '100%';
-        svgElement.style.height = 'auto';
-        
-        // 원본 크기 저장
-        svgElement.setAttribute('data-original-width', svgWidth);
-        svgElement.setAttribute('data-original-height', svgHeight);
-        
-        // 크기 조정 컨트롤 설정
-        setupMermaidControls(svgContainer, svgElement, scale);
-      }
-      
-    } catch (error) {
-      console.error('Mermaid 렌더링 오류:', error);
-      // 오류 시 원본 코드 블록 표시
-      pre.style.display = 'block';
+    // Mermaid 초기화 (한 번만)
+    if (blocks.length > 0) {
+      mermaid.initialize({ startOnLoad: false, theme: 'default' });
     }
+    
+    blocks.forEach((el) => {
+      const parent = (el.parentElement && el.parentElement.tagName.toLowerCase() === 'pre') ? el.parentElement : el;
+      const code = (el.textContent || '').trim();
+      const container = document.createElement('div');
+      parent.replaceWith(container);
+      try { 
+        mermaid.render('m' + Math.random().toString(36).slice(2), code).then(({ svg }) => { 
+          container.innerHTML = svg;
+        });
+      } catch (e) {
+        console.error('Mermaid rendering error:', e);
+      }
+    });
+  } catch (error) {
+    console.error('Mermaid rendering error:', error);
   }
 };
 
