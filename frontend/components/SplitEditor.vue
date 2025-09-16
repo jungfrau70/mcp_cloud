@@ -518,11 +518,17 @@ function handlePreviewClick(event) {
 
 // 링크 이동 처리 함수
 function navigateToLink(href) {
+  console.log('navigateToLink called with href:', href, 'current path:', props.path)
+  
   // 상대 경로 처리
   let targetPath = href
-  if (href.startsWith('./') || href.startsWith('../')) {
+  
+  // 절대 경로가 아닌 경우 (http로 시작하지 않고 /로 시작하지 않는 경우)
+  if (!href.startsWith('http') && !href.startsWith('/') && !href.startsWith('#')) {
     // 현재 파일의 디렉토리를 기준으로 절대 경로 생성
     const currentDir = props.path ? props.path.substring(0, props.path.lastIndexOf('/')) : ''
+    console.log('currentDir:', currentDir)
+    
     if (href.startsWith('./')) {
       targetPath = currentDir + '/' + href.substring(2)
     } else if (href.startsWith('../')) {
@@ -531,13 +537,20 @@ function navigateToLink(href) {
       const newParts = parts.slice(0, -upLevels)
       const remainingPath = href.replace(/\.\.\//g, '')
       targetPath = newParts.join('/') + '/' + remainingPath
+    } else {
+      // 상대 경로 (예: Day2/README)
+      targetPath = currentDir + '/' + href
     }
   }
+  
+  console.log('targetPath before .md check:', targetPath)
   
   // .md 확장자가 없으면 추가
   if (!targetPath.endsWith('.md') && !targetPath.includes('.')) {
     targetPath += '.md'
   }
+  
+  console.log('final targetPath:', targetPath)
   
   // kb:open 이벤트 발생
   try {
