@@ -331,6 +331,17 @@ const renderedContent = computed(() => {
     body = body.replace(/\]\(mdc:mcp_knowledge_base\//g, '](\/mcp_knowledge_base/')
   }catch{ /* ignore */ }
   
+  // marked 옵션 설정 (SplitEditor와 동일)
+  marked.setOptions({
+    renderer: renderer,
+    gfm: true,
+    breaks: false,
+    pedantic: false,
+    sanitize: false,
+    smartLists: true,
+    smartypants: false
+  });
+  
   // Allow custom KB scheme 'mdc:' so hrefs are preserved for interception
   return DOMPurify.sanitize(marked.parse(body), { ADD_URI_SAFE: ['mdc'] });
 });
