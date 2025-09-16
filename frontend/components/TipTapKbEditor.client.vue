@@ -73,12 +73,21 @@
       </div>
     </div>
   </div>
+  
+  <!-- 저장되지 않은 변경사항 모달 -->
+  <UnsavedChangesModal
+    :show="showUnsavedModal"
+    @save-and-navigate="handleSaveAndNavigate"
+    @navigate-without-save="handleNavigateWithoutSave"
+    @cancel="handleCancelNavigation"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { marked } from 'marked'
 import Turndown from 'turndown'
+import UnsavedChangesModal from '~/components/UnsavedChangesModal.vue'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
@@ -136,6 +145,10 @@ const highlightPreset = ['#fff59d','#fde68a','#fca5a5','#bbf7d0','#bae6fd','#ddd
 const hasUnsavedChanges = computed(() => {
   return baseContent.value !== '' && currentMarkdown.value !== baseContent.value
 })
+
+// 모달 상태 관리
+const showUnsavedModal = ref(false)
+const pendingNavigation = ref<string | null>(null)
 
 // simple debounce utility
 function debounce(fn: (...args:any[])=>void, delay:number){
@@ -385,6 +398,8 @@ onMounted(async ()=>{
     const next = marked.parse(nextMd)
     html.value = next
     currentMarkdown.value = nextMd
+    // baseContent도 함께 업데이트하여 변경사항 감지 오류 방지
+    baseContent.value = nextMd
     // TipTap은 내부 상태가 있을 수 있으므로 약간 지연 또는 idle 후 주입 (대용량 최적화)
     const setter = () => {
       try{
@@ -409,26 +424,10 @@ onBeforeUnmount(()=>{ try{ window.removeEventListener('keydown', onKey) }catch{}
 function handleInternalLinkClick(href: string) {
   // 저장되지 않은 변경사항이 있는지 확인
   if (hasUnsavedChanges.value) {
-    const choice = confirm('저장되지 않은 변경사항이 있습니다.\n\n저장하고 이동하시겠습니까?\n\n확인: 저장 후 이동\n취소: 저장하지 않고 이동\n취소 후 ESC: 이동 취소')
-    
-    if (choice === true) {
-      // 저장 후 이동
-      save()
-      // 저장 완료 후 이동 (저장 완료 이벤트를 기다림)
-      const handleSaveComplete = () => {
-        navigateToLink(href)
-        window.removeEventListener('kb:saved', handleSaveComplete)
-      }
-      window.addEventListener('kb:saved', handleSaveComplete)
-      return
-    } else if (choice === false) {
-      // 저장하지 않고 이동
-      navigateToLink(href)
-      return
-    } else {
-      // ESC 키로 취소
-      return
-    }
+    // 모달 표시
+    pendingNavigation.value = href
+    showUnsavedModal.value = true
+    return
   }
   
   // 변경사항이 없으면 바로 이동
@@ -607,6 +606,40 @@ async function openAiMenu(){
     const injected = marked.parse('\n'+(out?.result || '')+'\n')
     ;(editor.value as any)?.chain().focus().insertContent(injected).run()
   }catch{ toast.push('error','AI 변환 실패') }
+}
+
+// 모달 이벤트 핸들러들
+function handleSaveAndNavigate() {
+  showUnsavedModal.value = false
+  const href = pendingNavigation.value
+  pendingNavigation.value = null
+  
+  if (!href) return
+  
+  // 저장 후 이동
+  save()
+  // 저장 완료 후 이동 (저장 완료 이벤트를 기다림)
+  const handleSaveComplete = () => {
+    navigateToLink(href)
+    window.removeEventListener('kb:saved', handleSaveComplete)
+  }
+  window.addEventListener('kb:saved', handleSaveComplete)
+}
+
+function handleNavigateWithoutSave() {
+  showUnsavedModal.value = false
+  const href = pendingNavigation.value
+  pendingNavigation.value = null
+  
+  if (!href) return
+  
+  // 저장하지 않고 이동
+  navigateToLink(href)
+}
+
+function handleCancelNavigation() {
+  showUnsavedModal.value = false
+  pendingNavigation.value = null
 }
 </script>
 

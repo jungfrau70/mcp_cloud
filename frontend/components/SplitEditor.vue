@@ -207,6 +207,14 @@
       </div>
     </div>
   </div>
+  
+  <!-- 저장되지 않은 변경사항 모달 -->
+  <UnsavedChangesModal
+    :show="showUnsavedModal"
+    @save-and-navigate="handleSaveAndNavigate"
+    @navigate-without-save="handleNavigateWithoutSave"
+    @cancel="handleCancelNavigation"
+  />
 </template>
 
 <script setup>
@@ -221,6 +229,7 @@ import DiffViewer from '~/components/DiffViewer.vue'
 import { generateMarkdownTable, mermaidTemplate, vegaLiteBarTemplate, vegaLiteBarSpec } from '~/utils/mdTools'
 import KbToolbar from '~/components/KbToolbar.vue'
 import KbSidePanel from '~/components/KbSidePanel.vue'
+import UnsavedChangesModal from '~/components/UnsavedChangesModal.vue'
 
 const props = defineProps({
   path: { type: String, required: false },
@@ -238,12 +247,20 @@ watch(() => props.content, async c => {
   try { await docStore.whenLoaded(props.path || docStore.path) } catch {}
   selfUpdating = true
   draft.value = c
+  // baseContent도 함께 업데이트하여 변경사항 감지 오류 방지
+  baseContent.value = c
   selfUpdating = false
 })
 watch(() => docStore.path, async p => {
   if(p !== props.path) return
   try { await docStore.whenLoaded(p) } catch {}
-  if(docStore.content !== draft.value){ selfUpdating = true; draft.value = docStore.content; selfUpdating = false }
+  if(docStore.content !== draft.value){ 
+    selfUpdating = true
+    draft.value = docStore.content
+    // baseContent도 함께 업데이트하여 변경사항 감지 오류 방지
+    baseContent.value = docStore.content
+    selfUpdating = false 
+  }
 })
 watch(draft, v => { if(!selfUpdating && docStore.path === props.path) docStore.update(v) })
 
@@ -283,6 +300,10 @@ const rendered = computed(() => DOMPurify.sanitize(marked.parse(draft.value || '
 const hasUnsavedChanges = computed(() => {
   return baseContent.value !== '' && draft.value !== baseContent.value
 })
+
+// 모달 상태 관리
+const showUnsavedModal = ref(false)
+const pendingNavigation = ref(null)
 
 // --- Insert helpers ---
 function insertAtCursor(text){
@@ -490,26 +511,10 @@ function handlePreviewClick(event) {
   
   // 저장되지 않은 변경사항이 있는지 확인
   if (hasUnsavedChanges.value) {
-    const choice = confirm('저장되지 않은 변경사항이 있습니다.\n\n저장하고 이동하시겠습니까?\n\n확인: 저장 후 이동\n취소: 저장하지 않고 이동\n취소 후 ESC: 이동 취소')
-    
-    if (choice === true) {
-      // 저장 후 이동
-      emitSave()
-      // 저장 완료 후 이동 (저장 완료 이벤트를 기다림)
-      const handleSaveComplete = () => {
-        navigateToLink(href)
-        window.removeEventListener('kb:saved', handleSaveComplete)
-      }
-      window.addEventListener('kb:saved', handleSaveComplete)
-      return
-    } else if (choice === false) {
-      // 저장하지 않고 이동
-      navigateToLink(href)
-      return
-    } else {
-      // ESC 키로 취소
-      return
-    }
+    // 모달 표시
+    pendingNavigation.value = href
+    showUnsavedModal.value = true
+    return
   }
   
   // 변경사항이 없으면 바로 이동
@@ -963,6 +968,36 @@ function applyImage(){
   imageAlt.value = ''
   imageTitle.value = ''
   imageWidth.value = null
+}
+
+// 모달 이벤트 핸들러들
+function handleSaveAndNavigate() {
+  showUnsavedModal.value = false
+  const href = pendingNavigation.value
+  pendingNavigation.value = null
+  
+  // 저장 후 이동
+  emitSave()
+  // 저장 완료 후 이동 (저장 완료 이벤트를 기다림)
+  const handleSaveComplete = () => {
+    navigateToLink(href)
+    window.removeEventListener('kb:saved', handleSaveComplete)
+  }
+  window.addEventListener('kb:saved', handleSaveComplete)
+}
+
+function handleNavigateWithoutSave() {
+  showUnsavedModal.value = false
+  const href = pendingNavigation.value
+  pendingNavigation.value = null
+  
+  // 저장하지 않고 이동
+  navigateToLink(href)
+}
+
+function handleCancelNavigation() {
+  showUnsavedModal.value = false
+  pendingNavigation.value = null
 }
 </script>
 
