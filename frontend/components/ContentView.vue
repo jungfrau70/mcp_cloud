@@ -237,6 +237,50 @@ function resolveRelativePath(currentPath, relativePath) {
   return result;
 }
 
+// 앵커로 스크롤하는 함수 (접혀진 섹션 처리 포함)
+function scrollToTarget(targetElement) {
+  // Add highlight effect to the target element
+  targetElement.style.backgroundColor = '#fef3c7';
+  targetElement.style.border = '2px solid #f59e0b';
+  targetElement.style.borderRadius = '4px';
+  targetElement.style.padding = '8px';
+  targetElement.style.margin = '4px 0';
+  targetElement.style.transition = 'all 0.3s ease';
+  
+  // Use scrollIntoView with proper options
+  targetElement.scrollIntoView({ 
+    behavior: 'smooth', 
+    block: 'start',
+    inline: 'nearest'
+  });
+  
+  // Additional scroll adjustment for better positioning
+  setTimeout(() => {
+    const container = contentContainer.value;
+    if (container) {
+      const containerRect = container.getBoundingClientRect();
+      const elementRect = targetElement.getBoundingClientRect();
+      
+      // If element is too close to top, adjust scroll position
+      if (elementRect.top < containerRect.top + 80) {
+        container.scrollBy({
+          top: elementRect.top - containerRect.top - 80,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, 100);
+  
+  // Remove highlight after 3 seconds
+  setTimeout(() => {
+    targetElement.style.backgroundColor = '';
+    targetElement.style.border = '';
+    targetElement.style.borderRadius = '';
+    targetElement.style.padding = '';
+    targetElement.style.margin = '';
+  }, 3000);
+}
+
 // Title (first heading) extraction
 const titleText = computed(() => {
   if (!props.content) return '';
@@ -674,46 +718,19 @@ const setupLinkIntercepts = async () => {
       }
       
       if (targetElement) {
-        // Add highlight effect to the target element
-        targetElement.style.backgroundColor = '#fef3c7';
-        targetElement.style.border = '2px solid #f59e0b';
-        targetElement.style.borderRadius = '4px';
-        targetElement.style.padding = '8px';
-        targetElement.style.margin = '4px 0';
-        targetElement.style.transition = 'all 0.3s ease';
-        
-        // Use scrollIntoView with proper options
-        targetElement.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start',
-          inline: 'nearest'
-        });
-        
-        // Additional scroll adjustment for better positioning
-        setTimeout(() => {
-          const container = contentContainer.value;
-          if (container) {
-            const containerRect = container.getBoundingClientRect();
-            const elementRect = targetElement.getBoundingClientRect();
-            
-            // If element is too close to top, adjust scroll position
-            if (elementRect.top < containerRect.top + 80) {
-              container.scrollBy({
-                top: elementRect.top - containerRect.top - 80,
-                behavior: 'smooth'
-              });
-            }
-          }
-        }, 100);
-        
-        // Remove highlight after 3 seconds
-        setTimeout(() => {
-          targetElement.style.backgroundColor = '';
-          targetElement.style.border = '';
-          targetElement.style.borderRadius = '';
-          targetElement.style.padding = '';
-          targetElement.style.margin = '';
-        }, 3000);
+        // 접혀진 섹션(details) 내부에 있는 경우 해당 섹션을 열기
+        const detailsElement = targetElement.closest('details');
+        if (detailsElement && !detailsElement.open) {
+          console.log('ContentView: Opening collapsed section for anchor:', targetId);
+          detailsElement.open = true;
+          
+          // 섹션이 열린 후 스크롤하도록 약간의 지연
+          setTimeout(() => {
+            scrollToTarget(targetElement);
+          }, 100);
+        } else {
+          scrollToTarget(targetElement);
+        }
       }
       return;
     }

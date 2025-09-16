@@ -552,20 +552,70 @@ function navigateToLink(href) {
   
   // 앵커 링크 처리 (#로 시작)
   if (href.startsWith('#')) {
-    const targetId = href.substring(1);
-    console.log('SplitEditor: Processing anchor link:', targetId);
+    let targetId = href.substring(1);
+    console.log('SplitEditor: Processing anchor link (raw):', targetId);
+    
+    // 앵커 ID 디코딩 (ContentView와 동일한 로직)
+    try {
+      targetId = decodeURIComponent(targetId);
+      console.log('SplitEditor: Decoded anchor ID:', targetId);
+    } catch (e) {
+      console.log('SplitEditor: Failed to decode anchor ID, using raw:', targetId);
+    }
     
     // 현재 문서에서 앵커 찾기
     let targetElement = document.getElementById(targetId);
     
+    // If not found, try to find by exact match first
+    if (!targetElement) {
+      const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      for (const el of allElements) {
+        if (el.id === targetId) {
+          targetElement = el;
+          console.log('SplitEditor: Found by exact ID match:', el.id);
+          break;
+        }
+      }
+    }
+    
+    // If still not found, try to find by text content match (for emoji headers)
+    if (!targetElement) {
+      const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      for (const el of allElements) {
+        const textContent = el.textContent?.trim();
+        if (textContent && textContent === targetId) {
+          targetElement = el;
+          console.log('SplitEditor: Found by text content match:', textContent);
+          break;
+        }
+      }
+    }
+    
     if (targetElement) {
-      // 앵커를 찾은 경우 스크롤
-      targetElement.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'start',
-        inline: 'nearest'
-      });
-      console.log('SplitEditor: Found anchor and scrolled to:', targetId);
+      // 접혀진 섹션(details) 내부에 있는 경우 해당 섹션을 열기
+      const detailsElement = targetElement.closest('details');
+      if (detailsElement && !detailsElement.open) {
+        console.log('SplitEditor: Opening collapsed section for anchor:', targetId);
+        detailsElement.open = true;
+        
+        // 섹션이 열린 후 스크롤하도록 약간의 지연
+        setTimeout(() => {
+          targetElement.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start',
+            inline: 'nearest'
+          });
+          console.log('SplitEditor: Found anchor and scrolled to:', targetId);
+        }, 100);
+      } else {
+        // 앵커를 찾은 경우 스크롤
+        targetElement.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start',
+          inline: 'nearest'
+        });
+        console.log('SplitEditor: Found anchor and scrolled to:', targetId);
+      }
     } else {
       // 앵커를 찾지 못한 경우, 로그만 출력하고 API 호출하지 않음
       console.log('SplitEditor: Anchor not found:', targetId);
