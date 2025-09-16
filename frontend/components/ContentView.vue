@@ -569,6 +569,9 @@ const setupLinkIntercepts = async () => {
     // Clean the path to prevent duplication and handle Korean filenames
     targetPath = preventPathDuplication(targetPath);
     targetPath = prepareApiPath(targetPath);
+    
+    // 레이아웃 안정성 보장을 위한 이벤트 발생
+    window.dispatchEvent(new CustomEvent('layout:stabilize'));
 
     // Add to recent files list when navigating to internal documents
     console.log('Adding to recent files:', targetPath);

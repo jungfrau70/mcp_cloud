@@ -601,6 +601,9 @@ function handlePreviewClick(event) {
 function navigateToLink(href) {
   console.log('navigateToLink called with href:', href, 'current path:', props.path)
   
+  // 레이아웃 안정성 보장을 위한 이벤트 발생
+  window.dispatchEvent(new CustomEvent('layout:stabilize'));
+  
   // 앵커 링크 처리 (#로 시작) - 공통 유틸리티 사용
   if (href.startsWith('#')) {
     const handled = handleAnchorLink(href, previewEl.value, 'SplitEditor');

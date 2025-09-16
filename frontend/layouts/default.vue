@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen flex flex-col">
     <!-- Top Navigation Bar -->
-    <nav class="bg-white shadow-sm border-b z-10" :class="{ 'opacity-50': !isLayoutStable }">
+    <nav class="bg-white shadow-sm border-b z-50 sticky top-0">
       <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
           <div class="flex items-center">
@@ -704,6 +704,11 @@ onMounted(async () => {
         toast.push('success','문서가 휴지통으로 이동되었습니다')
       }catch{}
     })
+    
+    // 레이아웃 안정화 이벤트 처리
+    window.addEventListener('layout:stabilize', () => {
+      isLayoutStable.value = true
+    })
   }
 });
 
@@ -712,8 +717,8 @@ watch(() => route.path, async (p) => {
   // 클라이언트 사이드에서만 실행
   if (!isClient) return;
   
-  // 레이아웃 안정성 보장
-  isLayoutStable.value = false
+  // 레이아웃 안정성 보장 - 상단 메뉴는 항상 표시
+  // isLayoutStable.value = false
   
   // Scroll to top when route changes
   if (typeof window !== 'undefined') {
@@ -736,6 +741,9 @@ watch(() => route.path, async (p) => {
     
     // 사이드바 상태 안정화
     isSidebarCollapsed.value = false
+    
+    // 레이아웃 안정성 즉시 복원
+    isLayoutStable.value = true
     
     // 비동기 처리로 인한 레이아웃 불안정성 방지
     try {
@@ -774,6 +782,9 @@ watch(() => route.path, async (p) => {
     
     // 사이드바 상태 안정화
     isSidebarCollapsed.value = false
+    
+    // 레이아웃 안정성 즉시 복원
+    isLayoutStable.value = true
     
     // 비동기 처리로 인한 레이아웃 불안정성 방지
     try {
@@ -846,6 +857,9 @@ async function showCurriculumIndex(){
 
 const handleFileClick = async (path) => {
   console.log('handleFileClick called with path:', path)
+  
+  // 레이아웃 안정성 즉시 보장
+  isLayoutStable.value = true
   
   // Clean the path to prevent duplication and handle Korean filenames
   const cleanPath = preventPathDuplication(path)
@@ -1029,6 +1043,9 @@ const showDirectoryInFileTree = (directoryPath) => {
 }
 
 const handleKbFileSelect = async (path) => {
+  // 레이아웃 안정성 즉시 보장
+  isLayoutStable.value = true
+  
   activeSlide.value = null
   if(activePath.value && activePath.value !== path){ kbHistory.value.push(activePath.value) }
   
