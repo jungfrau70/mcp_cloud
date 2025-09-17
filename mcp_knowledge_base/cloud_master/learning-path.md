@@ -111,7 +111,7 @@
 
 **🔧 실습 가이드**
 - [Docker 기본 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/docker-basics.md)
-- [1일차 실습 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day1\README.md#docker-기초-및-컨테이너-기술)
+- [1일차 실습 가이드](/mcp_knowledge_base/cloud_master/textbook\Day1\README.md#docker-기초-및-컨테이너-기술)
 
 **🎯 실습 내용**
 - Node.js 웹 애플리케이션 컨테이너화
@@ -122,7 +122,7 @@
 #### 2. Git/GitHub 기초 및 협업 실습 (90분)
 
 **🔧 실습 가이드**
-- [1일차 실습 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day1\README.md#git-github-버전-관리)
+- [1일차 실습 가이드](/mcp_knowledge_base/cloud_master/textbook\Day1\README.md#git-github-버전-관리)
 
 **🎯 실습 내용**
 - GitHub 저장소 생성 및 초기 설정
@@ -134,7 +134,7 @@
 
 **🔧 실습 가이드**
 - [GitHub Actions 기본 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/github-actions-basics.md)
-- [Actions 데모](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day1\actions-demo)
+- [Actions 데모](/mcp_knowledge_base/cloud_master/textbook\Day1\actions-demo)
 
 **🎯 실습 내용**
 - GitHub Actions 워크플로우 작성
@@ -165,7 +165,7 @@
 - [Git/GitHub 기본 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/git-github-basics.md)
 - [GitHub Actions 기본 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/github-actions-basics.md)
 - [VM 배포 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/vm-deployment.md)
-- [My App 샘플](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day1\my-app)
+- [My App 샘플](/mcp_knowledge_base/cloud_master/textbook\Day1\my-app)
 
 #### 핵심 가이드 문서
 - [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-advanced-guide.md)
@@ -179,12 +179,12 @@
 - [문제 해결 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/troubleshooting-guide.md)
 
 #### 자동화 스크립트
-- [AWS EC2 생성](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day1\scripts\aws-ec2-create.sh)
-- [AWS 리소스 정리](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day1\scripts\aws-resource-cleanup.sh)
-- [AWS 설정 도우미](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day1\scripts\aws-setup-helper.sh)
-- [GCP Compute 생성](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day1\scripts\gcp-compute-create.sh)
-- [GCP 프로젝트 정리](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day1\scripts\gcp-project-cleanup.sh)
-- [GCP 설정 도우미](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day1\scripts\gcp-setup-helper.sh)
+- [AWS EC2 생성](/mcp_knowledge_base/cloud_master/textbook\Day1\scripts\aws-ec2-create.sh)
+- [AWS 리소스 정리](/mcp_knowledge_base/cloud_master/textbook\Day1\scripts\aws-resource-cleanup.sh)
+- [AWS 설정 도우미](/mcp_knowledge_base/cloud_master/textbook\Day1\scripts\aws-setup-helper.sh)
+- [GCP Compute 생성](/mcp_knowledge_base/cloud_master/textbook\Day1\scripts\gcp-compute-create.sh)
+- [GCP 프로젝트 정리](/mcp_knowledge_base/cloud_master/textbook\Day1\scripts\gcp-project-cleanup.sh)
+- [GCP 설정 도우미](/mcp_knowledge_base/cloud_master/textbook\Day1\scripts\gcp-setup-helper.sh)
 - [프로젝트 설정](/mcp_knowledge_base/cloud_master/textbook/Day1/scripts/PROJECT_SETUP.md)
 
 #### 문제 해결
@@ -197,8 +197,8 @@
 ### 1. Docker 고급 기법 및 최적화 (90분)
 
 #### 핵심 문서
-- [Docker 고급 기술 및 최적화](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day2\README.md#docker-고급-기술-및-최적화)
-- [멀티스테이지 빌드 및 Docker Compose](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day2\README.md#멀티스테이지-빌드-및-docker-compose)
+- [Docker 고급 기술 및 최적화](/mcp_knowledge_base/cloud_master/textbook\Day2\README.md#docker-고급-기술-및-최적화)
+- [멀티스테이지 빌드 및 Docker Compose](/mcp_knowledge_base/cloud_master/textbook\Day2\README.md#멀티스테이지-빌드-및-docker-compose)
 
 #### 학습 내용
 - Dockerfile 멀티스테이지 빌드 및 최적화
@@ -208,8 +208,8 @@
 ### 2. GitHub Actions 고급 워크플로우 (90분)
 
 #### 핵심 문서
-- [GitHub Actions 고급 워크플로우](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day2\README.md#github-actions-고급-워크플로우)
-- [환경별 배포 전략](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day2\README.md#환경별-배포-전략)
+- [GitHub Actions 고급 워크플로우](/mcp_knowledge_base/cloud_master/textbook\Day2\README.md#github-actions-고급-워크플로우)
+- [환경별 배포 전략](/mcp_knowledge_base/cloud_master/textbook\Day2\README.md#환경별-배포-전략)
 
 #### 학습 내용
 - 매트릭스 빌드 및 환경별 배포 전략
@@ -219,7 +219,7 @@
 ### 3. VM 기반 컨테이너 배포 자동화 (90분)
 
 #### 핵심 문서
-- [VM 기반 컨테이너 배포 자동화](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day3\README.md#vm-기반-컨테이너-배포-자동화)
+- [VM 기반 컨테이너 배포 자동화](/mcp_knowledge_base/cloud_master/textbook\Day3\README.md#vm-기반-컨테이너-배포-자동화)
 
 #### 학습 내용
 - AWS EC2 + Docker / GCP Compute Engine + Docker
@@ -229,7 +229,7 @@
 ### 4. 완전 자동화된 배포 파이프라인 (90분)
 
 #### 핵심 문서
-- [완전 자동화된 배포 파이프라인](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day2\README.md#완전-자동화된-배포-파이프라인)
+- [완전 자동화된 배포 파이프라인](/mcp_knowledge_base/cloud_master/textbook\Day2\README.md#완전-자동화된-배포-파이프라인)
 
 #### 학습 내용
 - GitHub Actions + VM 배포 자동화
@@ -256,7 +256,7 @@
 #### 핵심 문서
 - [로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/load-balancing-guide.md)
 - [Auto Scaling 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/auto-scaling-guide.md)
-- [로드 밸런싱 및 Auto Scaling](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day3\README.md#로드-밸런싱-및-auto-scaling)
+- [로드 밸런싱 및 Auto Scaling](/mcp_knowledge_base/cloud_master/textbook\Day3\README.md#로드-밸런싱-및-auto-scaling)
 
 #### 학습 내용
 - AWS ELB + Auto Scaling Group / GCP Cloud LB + Managed Instance Group
@@ -265,7 +265,7 @@
 ### 2. 모니터링 및 로깅 시스템 (90분)
 
 #### 핵심 문서
-- [모니터링 및 로깅 시스템](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day3\README.md#모니터링-및-로깅-시스템)
+- [모니터링 및 로깅 시스템](/mcp_knowledge_base/cloud_master/textbook\Day3\README.md#모니터링-및-로깅-시스템)
 
 #### 학습 내용
 - CloudWatch, Cloud Monitoring 설정
@@ -277,7 +277,7 @@
 #### 핵심 문서
 - [재해 복구 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/disaster-recovery-guide.md)
 - [통합 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/integration-guide.md)
-- [장애 복구 및 운영 자동화](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day3\README.md#장애-복구-및-운영-자동화)
+- [장애 복구 및 운영 자동화](/mcp_knowledge_base/cloud_master/textbook\Day3\README.md#장애-복구-및-운영-자동화)
 
 #### 학습 내용
 - Health Check 기반 자동 교체 및 복구
@@ -286,7 +286,7 @@
 ### 4. 비용 최적화 및 운영 전략 (90분)
 
 #### 핵심 문서
-- [비용 최적화 및 운영 전략](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day3\README.md#비용-최적화-및-운영-전략)
+- [비용 최적화 및 운영 전략](/mcp_knowledge_base/cloud_master/textbook\Day3\README.md#비용-최적화-및-운영-전략)
 
 #### 학습 내용
 - 클라우드 비용 구조 및 과금 체계 분석
@@ -301,16 +301,22 @@
 - [Auto Scaling 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/auto-scaling-guide.md)
 - [재해 복구 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/disaster-recovery-guide.md)
 - [통합 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/integration-guide.md)
-- [My App 샘플](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day3\my-app)
-- [Actions 데모](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day3\actions-demo)
+- [My App 샘플](/mcp_knowledge_base/cloud_master/textbook\Day3\my-app)
+- [Actions 데모](/mcp_knowledge_base/cloud_master/textbook\Day3\actions-demo)
+
+#### 고급 가이드 문서
+- [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/cost-optimization-guide.md)
+- [모니터링 설정 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/monitoring-setup-guide.md)
+- [문제 해결 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/troubleshooting-guide.md)
+- [프로젝트 설정 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/scripts/PROJECT_SETUP.md)
 
 #### 자동화 스크립트
-- [AWS EC2 생성](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day3\scripts\aws-ec2-create.sh)
-- [AWS 리소스 정리](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day3\scripts\aws-resource-cleanup.sh)
-- [AWS 설정 도우미](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day3\scripts\aws-setup-helper.sh)
-- [GCP Compute 생성](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day3\scripts\gcp-compute-create.sh)
-- [GCP 프로젝트 정리](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day3\scripts\gcp-project-cleanup.sh)
-- [GCP 설정 도우미](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day3\scripts\gcp-setup-helper.sh)
+- [AWS EC2 생성](/mcp_knowledge_base/cloud_master/textbook\Day3\scripts\aws-ec2-create.sh)
+- [AWS 리소스 정리](/mcp_knowledge_base/cloud_master/textbook\Day3\scripts\aws-resource-cleanup.sh)
+- [AWS 설정 도우미](/mcp_knowledge_base/cloud_master/textbook\Day3\scripts\aws-setup-helper.sh)
+- [GCP Compute 생성](/mcp_knowledge_base/cloud_master/textbook\Day3\scripts\gcp-compute-create.sh)
+- [GCP 프로젝트 정리](/mcp_knowledge_base/cloud_master/textbook\Day3\scripts\gcp-project-cleanup.sh)
+- [GCP 설정 도우미](/mcp_knowledge_base/cloud_master/textbook\Day3\scripts\gcp-setup-helper.sh)
 - [프로젝트 설정](/mcp_knowledge_base/cloud_master/textbook/Day3/scripts/PROJECT_SETUP.md)
 
 #### 문제 해결
@@ -330,29 +336,29 @@
 - [GitHub Actions 완전 가이드](/mcp_knowledge_base/cloud_master/install/github-actions-complete-guide.md)
 
 ### 클라우드별 설치 스크립트
-- [AWS Docker Compose 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_docker_compose_aws.sh)
-- [Azure Docker Compose 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_docker_compose_azure.sh)
-- [GCP Docker Compose 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_docker_compose_gcp.sh)
-- [AWS Git 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_git_aws.sh)
-- [Azure Git 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_git_azure.sh)
-- [GCP Git 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_git_gcp.sh)
+- [AWS Docker Compose 설치](/mcp_knowledge_base/cloud_master/install\install_docker_compose_aws.sh)
+- [Azure Docker Compose 설치](/mcp_knowledge_base/cloud_master/install\install_docker_compose_azure.sh)
+- [GCP Docker Compose 설치](/mcp_knowledge_base/cloud_master/install\install_docker_compose_gcp.sh)
+- [AWS Git 설치](/mcp_knowledge_base/cloud_master/install\install_git_aws.sh)
+- [Azure Git 설치](/mcp_knowledge_base/cloud_master/install\install_git_azure.sh)
+- [GCP Git 설치](/mcp_knowledge_base/cloud_master/install\install_git_gcp.sh)
 
 ---
 
 ## 🤖 자동화 및 테스트
 
 ### 자동화 스크립트
-- [1일차 자동화 스크립트](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\automation\day1)
-- [2일차 자동화 스크립트](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\automation\day2)
-- [3일차 자동화 스크립트](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\automation\day3)
-- [자동화 결과](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\automation\results)
+- [1일차 자동화 스크립트](/mcp_knowledge_base/cloud_master/automation\day1)
+- [2일차 자동화 스크립트](/mcp_knowledge_base/cloud_master/automation\day2)
+- [3일차 자동화 스크립트](/mcp_knowledge_base/cloud_master/automation\day3)
+- [자동화 결과](/mcp_knowledge_base/cloud_master/automation\results)
 
 ### 자동화 테스트
-- [마스터 과정 자동화](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\automation_tests\master_course_automation.py)
-- [2일차 스크립트 자동화](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\automation_tests\master_course_day2_scripts.py)
-- [3일차 스크립트 자동화](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\automation_tests\master_course_day3_scripts.py)
-- [자동화 테스트 실행](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\automation_tests\run_master_course_tests.py)
-- [자동화 테스트 검증](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\automation_tests\test_master_course_automation.py)
+- [마스터 과정 자동화](/mcp_knowledge_base/cloud_master/automation_tests\master_course_automation.py)
+- [2일차 스크립트 자동화](/mcp_knowledge_base/cloud_master/automation_tests\master_course_day2_scripts.py)
+- [3일차 스크립트 자동화](/mcp_knowledge_base/cloud_master/automation_tests\master_course_day3_scripts.py)
+- [자동화 테스트 실행](/mcp_knowledge_base/cloud_master/automation_tests\run_master_course_tests.py)
+- [자동화 테스트 검증](/mcp_knowledge_base/cloud_master/automation_tests\test_master_course_automation.py)
 - [사용자 가이드](/mcp_knowledge_base/cloud_master/automation_tests/USER_GUIDE.md)
 
 ---
@@ -444,6 +450,9 @@
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | 
+[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
+[🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | 
+[다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
 
 </div>
