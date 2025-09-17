@@ -11,18 +11,6 @@
 
 </div>
 
-<div align="center">
-
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-## 📖 현재 위치
-**Cloud Master** > **1일차** > **Docker, Git/GitHub, GitHub Actions 기초**
-
-## ⬅️ 이전/다음 네비게이션
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 2일차 →](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md)
-
-</div>
 
 # Cloud Master - 1일차: Docker, Git/GitHub, GitHub Actions 기초
 
@@ -924,6 +912,27 @@ ssh -T git@github.com
 3. **🚀 GitHub Actions**: CI/CD 파이프라인 구축, 자동 배포
 4. **☁️ VM 배포**: AWS EC2, GCP Compute Engine 웹 애플리케이션 배포
 
+### 📝 학습 피드백 수집
+
+#### 실습 완료 체크리스트
+- [ ] Docker 컨테이너 생성 및 실행 완료
+- [ ] Dockerfile 작성 및 이미지 빌드 완료
+- [ ] Git 저장소 생성 및 기본 명령어 실습 완료
+- [ ] GitHub Actions 워크플로우 작성 및 실행 완료
+- [ ] VM에 웹 애플리케이션 배포 완료
+
+#### 학습 난이도 평가
+- **매우 쉬움** ⭐
+- **쉬움** ⭐⭐
+- **보통** ⭐⭐⭐
+- **어려움** ⭐⭐⭐⭐
+- **매우 어려움** ⭐⭐⭐⭐⭐
+
+#### 개선 제안
+- 실습 중 어려웠던 부분: ________________
+- 추가로 배우고 싶은 내용: ________________
+- 실습 시간이 충분했는지: □ 충분함 □ 부족함 □ 과도함
+
 ### 🚀 다음 단계
 
 - **Cloud Master 2일차**: Docker 고급 기법, GitHub Actions 고급 워크플로우
@@ -936,6 +945,7 @@ ssh -T git@github.com
 - [Git 공식 문서](https://git-scm.com/doc)
 - [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
 - [Cloud Master 2일차](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md)
+- [피드백 제출](https://forms.gle/example)
 
 ---
 
@@ -960,19 +970,3 @@ ssh -T git@github.com
 
 
 ---
-
-<div align="center">
-
-## 🔗 관련 과정 및 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-## 📖 현재 위치
-**Cloud Master** > **1일차** > **Cloud Master - 1일차: Docker, Git/GitHub, GitHub Actions 기초**
-
-## ⬅️ 이전/다음 네비게이션
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
-
-## 🔗 관련 과정
-[Cloud Basic 2일차](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
-
-</div>

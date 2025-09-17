@@ -666,6 +666,27 @@ gcloud auth activate-service-account --key-file=student-key.json
 3. **💻 가상머신**: EC2와 Compute Engine 인스턴스 생성 및 관리
 4. **📦 스토리지**: S3와 Cloud Storage 버킷 생성 및 파일 관리
 
+### 📝 학습 피드백 수집
+
+#### 실습 완료 체크리스트
+- [ ] AWS 계정 생성 및 기본 설정 완료
+- [ ] GCP 계정 생성 및 기본 설정 완료
+- [ ] IAM 사용자 및 권한 관리 실습 완료
+- [ ] EC2/Compute Engine 인스턴스 생성 실습 완료
+- [ ] S3/Cloud Storage 버킷 생성 및 파일 관리 실습 완료
+
+#### 학습 난이도 평가
+- **매우 쉬움** ⭐
+- **쉬움** ⭐⭐
+- **보통** ⭐⭐⭐
+- **어려움** ⭐⭐⭐⭐
+- **매우 어려움** ⭐⭐⭐⭐⭐
+
+#### 개선 제안
+- 실습 중 어려웠던 부분: ________________
+- 추가로 배우고 싶은 내용: ________________
+- 실습 시간이 충분했는지: □ 충분함 □ 부족함 □ 과도함
+
 ### 🚀 다음 단계
 
 - **2일차 실습**: 네트워킹, 보안, 데이터베이스 실습
@@ -676,7 +697,8 @@ gcloud auth activate-service-account --key-file=student-key.json
 
 - [AWS 공식 문서](https://docs.aws.amazon.com/)
 - [GCP 공식 문서](https://cloud.google.com/docs)
-- [Cloud Basic 2일차 실습](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md)
+- [Cloud Basic 2일차 실습](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
+- [피드백 제출](https://forms.gle/example)
 
 ---
 

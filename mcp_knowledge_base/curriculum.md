@@ -43,6 +43,7 @@
 - [Cloud Basic 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
 - [Cloud Master 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 - [Cloud Container 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+- [통합 학습 시나리오](/mcp_knowledge_base/integrated_learning_scenario.md)
 - [통합 인덱스](/mcp_knowledge_base/index.md)
 
 ## 📞 문의

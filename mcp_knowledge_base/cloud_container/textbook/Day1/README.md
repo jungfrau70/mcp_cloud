@@ -978,6 +978,27 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 3. **☁️ ECS/Fargate**: 서버리스 컨테이너 실행
 4. **🚀 GitOps**: ArgoCD, Tekton 파이프라인
 
+### 📝 학습 피드백 수집
+
+#### 실습 완료 체크리스트
+- [ ] Kubernetes 클러스터 아키텍처 이해 완료
+- [ ] GKE 클러스터 생성 및 설정 완료
+- [ ] Deployment, Service, Ingress 설정 실습 완료
+- [ ] ECS Fargate 서비스 배포 실습 완료
+- [ ] GitOps 기반 CI/CD 파이프라인 구축 완료
+
+#### 학습 난이도 평가
+- **매우 쉬움** ⭐
+- **쉬움** ⭐⭐
+- **보통** ⭐⭐⭐
+- **어려움** ⭐⭐⭐⭐
+- **매우 어려움** ⭐⭐⭐⭐⭐
+
+#### 개선 제안
+- 실습 중 어려웠던 부분: ________________
+- 추가로 배우고 싶은 내용: ________________
+- 실습 시간이 충분했는지: □ 충분함 □ 부족함 □ 과도함
+
 ### 🚀 다음 단계
 
 - **2일차 실습**: 고가용성 아키텍처, 로드 밸런싱, 모니터링
@@ -988,7 +1009,8 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 - [Kubernetes 공식 문서](https://kubernetes.io/docs/)
 - [GKE 공식 문서](https://cloud.google.com/kubernetes-engine/docs)
-- [Cloud Container 2일차 실습](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md)
+- [Cloud Container 2일차 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/README.md)
+- [피드백 제출](https://forms.gle/example)
 
 ---
 
