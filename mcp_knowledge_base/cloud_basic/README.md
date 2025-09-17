@@ -152,38 +152,6 @@ AWS와 GCP의 기본 서비스들을 차근차근 배워보며, 실무에서 바
 ### Q4: 다음 단계는 무엇인가요?
 **A**: Cloud Basic 완료 후 Cloud Master 과정을 추천합니다. Docker, CI/CD, 고급 배포 기술을 학습할 수 있습니다.
 
-## 🔗 관련 과정
-
-### 📚 전체 커리큘럼
-- [전체 커리큘럼 보기](/mcp_knowledge_base/curriculum.md)
-- [학습 경로 안내](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-### 🚀 다음 단계
-- Cloud Master 과정 - Docker, CI/CD, 고급 배포
-- Cloud Container 과정 - Kubernetes, 오케스트레이션
-
-### 🏠 홈으로
-- [통합 인덱스](/mcp_knowledge_base/index.md)
-
-## 📞 문의 및 지원
-
-### 💬 학습 지원
-- **실시간 질문**: 각 실습 가이드의 댓글 섹션 활용
-- **문제 신고**: GitHub Issues를 통한 버그 신고
-- **기능 요청**: 새로운 기능이나 개선사항 제안
-
-### 📧 연락처
-- **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
-## 🎉 Cloud Basic 과정을 시작하세요!
-
-🚀 Day 1 실습 시작하기 |
-[📚 전체 커리큘럼 보기](/mcp_knowledge_base/curriculum.md) | 
-[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md)
-
-</div>
-
----
 
 ## 🧭 네비게이션
 
