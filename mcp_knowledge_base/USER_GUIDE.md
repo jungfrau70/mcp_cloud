@@ -1,20 +1,3 @@
-<div align="center">
-
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/index.md)
-
-## 📖 현재 위치
-**사용자 가이드**
-
-## 🔗 관련 과정
-[Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
-
-</div>
-
-
-
-
-
 # 📚 클라우드 학습 과정 자동화 가이드
 
 > **대상**: 대학생, 클라우드 강의 수강자 (친숙하지 않은 사용자)  
@@ -398,10 +381,7 @@ git log --oneline -10
 
 <div align="center">
 
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/index.md)
-
-## 📖 현재 위치
+ 현재 위치
 **사용자 가이드**
 
 ## 🔗 관련 과정

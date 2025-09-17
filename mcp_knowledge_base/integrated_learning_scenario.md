@@ -1,18 +1,5 @@
 # 🎯 통합 학습 시나리오 가이드
 
-<div align="center">
-
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/index.md)
-
-## 📖 현재 위치
-**통합 학습 시나리오 가이드**
-
-## 🔗 관련 과정
-[Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
-
-</div>
-
 ## 🎯 학습 시나리오 개요
 
 이 가이드는 **Cloud Basic → Cloud Master → Cloud Container** 과정을 체계적으로 학습할 수 있도록 설계된 통합 학습 시나리오입니다. 각 과정 간의 연계성을 강화하고, 실무 중심의 프로젝트를 통해 종합적인 클라우드 역량을 기를 수 있습니다.
@@ -147,13 +134,6 @@
 
 <div align="center">
 
-## 🔗 관련 과정 및 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/index.md)
-
-## 📖 현재 위치
-**통합 학습 시나리오 가이드**
-
-## 🔗 관련 과정
-[Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
 
 </div>

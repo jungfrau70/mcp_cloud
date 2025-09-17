@@ -1,22 +1,3 @@
-<div align="center">
-
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/index.md)
-
-## 📖 현재 위치
-**통합 자동화**
-
-## 🔗 관련 과정
-[Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
-
-</div>
-
-
-
-
-
-
-
 # 과정 간 연결 검증 보고서
 
 **생성 시간**: 2025-09-15 11:33:21
@@ -115,10 +96,7 @@ Cloud Container (2일)
 
 <div align="center">
 
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/index.md)
-
-## 📖 현재 위치
+ 현재 위치
 **통합 자동화**
 
 ## 🔗 관련 과정

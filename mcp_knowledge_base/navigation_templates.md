@@ -4,50 +4,14 @@
 
 ### Cloud Basic 템플릿
 ```markdown
-<div align="center">
-
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-## 📖 현재 위치
-**Cloud Basic** > **{일차}** > **{주제}**
-
-## ⬅️ 이전/다음 네비게이션
-[← 이전: 이전 문서](/mcp_knowledge_base/cloud_basic/이전_경로) | [다음: 다음 문서 →](/mcp_knowledge_base/cloud_basic/다음_경로)
-
-</div>
 ```
 
 ### Cloud Master 템플릿
 ```markdown
-<div align="center">
-
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-## 📖 현재 위치
-**Cloud Master** > **{일차}** > **{주제}**
-
-## ⬅️ 이전/다음 네비게이션
-[← 이전: 이전 문서](/mcp_knowledge_base/cloud_master/이전_경로) | [다음: 다음 문서 →](/mcp_knowledge_base/cloud_master/다음_경로)
-
-</div>
 ```
 
 ### Cloud Container 템플릿
 ```markdown
-<div align="center">
-
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-## 📖 현재 위치
-**Cloud Container** > **{일차}** > **{주제}**
-
-## ⬅️ 이전/다음 네비게이션
-[← 이전: 이전 문서](/mcp_knowledge_base/cloud_container/이전_경로) | [다음: 다음 문서 →](/mcp_knowledge_base/cloud_container/다음_경로)
-
-</div>
 ```
 
 ## 🎯 표준 하단 링크 구조 (상단 + 관련 과정)
@@ -58,17 +22,7 @@
 
 <div align="center">
 
-## 🔗 관련 과정 및 네비게이션
 [🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-## 📖 현재 위치
-**Cloud Basic** > **{일차}** > **{주제}**
-
-## ⬅️ 이전/다음 네비게이션
-[← 이전: 이전 문서](/mcp_knowledge_base/cloud_basic/이전_경로) | [다음: 다음 문서 →](/mcp_knowledge_base/cloud_basic/다음_경로)
-
-## 🔗 관련 과정
-[Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
 
 </div>
 ```
@@ -79,17 +33,7 @@
 
 <div align="center">
 
-## 🔗 관련 과정 및 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-## 📖 현재 위치
-**Cloud Master** > **{일차}** > **{주제}**
-
-## ⬅️ 이전/다음 네비게이션
-[← 이전: 이전 문서](/mcp_knowledge_base/cloud_master/이전_경로) | [다음: 다음 문서 →](/mcp_knowledge_base/cloud_master/다음_경로)
-
-## 🔗 관련 과정
-[Cloud Basic 2일차](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
 
 </div>
 ```
@@ -100,17 +44,7 @@
 
 <div align="center">
 
-## 🔗 관련 과정 및 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-## 📖 현재 위치
-**Cloud Container** > **{일차}** > **{주제}**
-
-## ⬅️ 이전/다음 네비게이션
-[← 이전: 이전 문서](/mcp_knowledge_base/cloud_container/이전_경로) | [다음: 다음 문서 →](/mcp_knowledge_base/cloud_container/다음_경로)
-
-## 🔗 관련 과정
-[Cloud Master 3일차](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md) | [Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
 
 </div>
 ```
@@ -151,18 +85,6 @@
 
 ### 실습 가이드 상단
 ```markdown
-<div align="center">
-
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/{과정명}/learning-path.md)
-
-## 📖 현재 위치
-**{과정명}** > **{일차}** > **실습 가이드** > **{실습명}**
-
-## ⬅️ 이전/다음 네비게이션
-[← 이전: {일차} 메인](/mcp_knowledge_base/{과정명}/textbook/{일차}/README.md) | [다음: {다음_실습} →](/mcp_knowledge_base/{과정명}/textbook/{일차}/practice/{다음_실습}.md)
-
-</div>
 ```
 
 ### 실습 가이드 하단
@@ -171,17 +93,7 @@
 
 <div align="center">
 
-## 🔗 관련 과정 및 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/{과정명}/learning-path.md)
-
-## 📖 현재 위치
-**{과정명}** > **{일차}** > **실습 가이드** > **{실습명}**
-
-## ⬅️ 이전/다음 네비게이션
-[← 이전: {일차} 메인](/mcp_knowledge_base/{과정명}/textbook/{일차}/README.md) | [다음: {다음_실습} →](/mcp_knowledge_base/{과정명}/textbook/{일차}/practice/{다음_실습}.md)
-
-## 🔗 관련 실습
-[다른 실습 가이드들...]
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
 
 </div>
 ```

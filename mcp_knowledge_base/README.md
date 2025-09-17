@@ -1,20 +1,3 @@
-<div align="center">
-
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/index.md)
-
-## 📖 현재 위치
-**프로젝트 개요**
-
-## 🔗 관련 과정
-[Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
-
-</div>
-
-
-
-
-
 # 클라우드 실무력 강화! AWS & GCP 활용법
 
 > 📋 **전체 커리큘럼**: [curriculum.md](/mcp_knowledge_base/curriculum.md) | [통합 인덱스](/mcp_knowledge_base/index.md)에서 전체 과정 구조를 확인하세요.
@@ -123,10 +106,7 @@ Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일)
 
 <div align="center">
 
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/index.md)
-
-## 📖 현재 위치
+ 현재 위치
 **프로젝트 개요**
 
 ## 🔗 관련 과정

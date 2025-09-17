@@ -1,23 +1,3 @@
-<div align="center">
-
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/index.md)
-
-## 📖 현재 위치
-**작업 문서**
-
-## 🔗 관련 과정
-[Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
-
-</div>
-
-
-
-
-
-
-
-
 ---
 # 커리큘럼 작성
 ## 요청1) 과정 제공 후 커리큘럼 작성 요청 (to: Gemini)
@@ -169,10 +149,7 @@ frontend 프로젝트에서 프로젝트 루트 디렉토리에 있는 .slides_s
 
 <div align="center">
 
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/index.md)
-
-## 📖 현재 위치
+ 현재 위치
 **작업 문서**
 
 ## 🔗 관련 과정

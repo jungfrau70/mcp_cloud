@@ -1,18 +1,5 @@
 <div align="center">
 
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-## 📖 현재 위치
-**Cloud Master** > **1일차** > **2교시: GitHub Actions로 CI/CD 구성**
-
-## ⬅️ 이전/다음 네비게이션
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
-
-</div>
-
-<div align="center">
-
 [← 이전: Cloud Master 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [← 이전: Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-advanced-guide.md) | [다음: 클라우드 배포 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day1/cloud-deployment-guide.md)
 
 </div>
@@ -1118,16 +1105,6 @@ docker rm actions-demo-prod
 
 <div align="center">
 
-## 🔗 관련 과정 및 네비게이션
 [🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-## 📖 현재 위치
-**Cloud Master** > **1일차** > **2교시: GitHub Actions로 CI/CD 구성**
-
-## ⬅️ 이전/다음 네비게이션
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
-
-## 🔗 관련 과정
-[Cloud Basic 2일차](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
 
 </div>

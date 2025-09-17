@@ -23,19 +23,6 @@
 
 **💡 팁**: 각 단계를 순서대로 진행하시면 더 효과적으로 학습할 수 있습니다!
 
-<div align="center">
-
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-## 📖 현재 위치
-**Cloud Basic** > **1일차** > **Cloud Basic - 클라우드 기초 학습 경로**
-
-## ⬅️ 이전/다음 네비게이션
-[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_basic/README.md) | [다음: Cloud Basic 1일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
-
-</div>
-
 # Cloud Basic - 클라우드 기초 학습 경로
 
 > 📋 **전체 개요**: [README.md](/mcp_knowledge_base/cloud_master/README.md) | [통합 커리큘럼](/mcp_knowledge_base/curriculum.md) | [통합 인덱스](/mcp_knowledge_base/index.md)에서 전체 과정 구조를 확인하세요.
@@ -81,6 +68,7 @@
 **📖 이론 학습 자료**
 - [클라우드 개념 및 계정 생성 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md)
 - [AWS 계정 가입 가이드](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md)
+- [Azure 계정 가입 가이드](/mcp_knowledge_base/cloud_basic/accounts/Azure계정가입.md)
 - [GCP 개인계정 가입 가이드](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md)
 - [GCP 조직계정 가입 가이드](/mcp_knowledge_base/cloud_basic/accounts/GCP_조직계정가입.md)
 - [GCP 계정유형비교](/mcp_knowledge_base/cloud_basic/accounts/GCP_계정유형비교.md)
@@ -180,6 +168,12 @@
 - [AWS 기본 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/aws_basic_practice.md)
 - [GCP 기본 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
 - [실습1 AWS GCP](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md)
+
+#### 핵심 가이드 문서
+- [IAM 기초 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md)
+- [스토리지 서비스 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
+- [VM 서비스 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md)
+- [문제 해결 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md)
 
 #### 자동화 스크립트
 - [AWS GCP 설정 스크립트](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day1\scripts\aws-gcp-setup.sh)
@@ -281,6 +275,13 @@
 
 #### 실습 가이드
 - [2일차 실습 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
+
+#### 비교 분석 문서
+- [컴퓨팅 서비스 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md)
+- [데이터베이스 서비스 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md)
+- [네트워킹 서비스 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/network_comparison.md)
+- [스토리지 서비스 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md)
+- [Basic to Master 연계 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
 
 #### 자동화 스크립트
 - [AWS 설정 도우미](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day2\scripts\aws-setup-helper.sh)
@@ -416,10 +417,7 @@
 ## 🔗 관련 과정 및 네비게이션
 [🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
 
-## 📖 현재 위치
-**Cloud Basic** > **1일차** > **Cloud Basic - 클라우드 기초 학습 경로**
-
-## ⬅️ 이전/다음 네비게이션
+ 이전/다음 네비게이션
 [← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_basic/README.md) | [다음: Cloud Basic 1일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
 
 ## 🔗 관련 과정
