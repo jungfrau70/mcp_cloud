@@ -1,13 +1,5 @@
 <template>
   <div class="p-4 select-none">
-    <div class="flex items-center justify-between mb-4">
-      <h3 class="text-lg font-semibold whitespace-nowrap text-gray-800">
-        카테고리
-      </h3>
-      <!-- <button @click="toggleHiddenFiles" class="px-2 py-1 text-xs border rounded" :class="showHiddenFiles ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'" title="숨김 파일 표시/숨김">
-        {{ showHiddenFiles ? '숨김 파일 숨기기' : '숨김 파일 보기' }}
-      </button> -->
-    </div>
     <div v-if="loading">Loading...</div>
     <div v-if="error">{{ error }}</div>
     <!-- 최근 오픈파일 섹션 -->
@@ -55,6 +47,14 @@
       </div>
     </div> -->
 
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold whitespace-nowrap text-gray-800">
+        과정
+      </h3>
+      <!-- <button @click="toggleHiddenFiles" class="px-2 py-1 text-xs border rounded" :class="showHiddenFiles ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'" title="숨김 파일 표시/숨김">
+        {{ showHiddenFiles ? '숨김 파일 숨기기' : '숨김 파일 보기' }}
+      </button> -->
+    </div>
     <!-- 학습 진척률 표시 -->
     <div v-if="displayTree && selectedDirs.length > 0" class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
       <div class="flex items-center justify-between mb-2">
