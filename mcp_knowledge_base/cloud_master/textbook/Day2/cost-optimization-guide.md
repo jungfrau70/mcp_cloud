@@ -9,6 +9,8 @@
 
 
 ## 📋 목차
+
+[📋 목차](#목차)
 1. [비용 예측 개념 이해](#비용-예측-개념-이해)
 2. [비용 관리 도구 활용](#비용-관리-도구-활용)
 3. [비용 최적화 전략](#비용-최적화-전략)
@@ -25,24 +27,34 @@
 
 ### 비용 예측의 중요성
 
+[비용 예측의 중요성](#비용-예측의-중요성)
+
 클라우드 사용량과 비용을 정확히 예측하고 관리하는 것은 **운영 비용 절감과 서비스 안정성 확보에 필수적**입니다.
 
 #### 1. **과거 데이터 분석**
+
+[1. **과거 데이터 분석**](#1-과거-데이터-분석)
 - 지난 12개월의 비용과 사용 데이터 분석
 - 계절성 및 트렌드 파악
 - 비정상적인 비용 증가 패턴 식별
 
 #### 2. **미래 지출 예측**
+
+[2. **미래 지출 예측**](#2-미래-지출-예측)
 - 향후 12개월 예측치 제공
 - 서비스 확장에 따른 비용 증가 예측
 - 예산 계획 수립 지원
 
 #### 3. **비용 최적화 기회**
+
+[3. **비용 최적화 기회**](#3-비용-최적화-기회)
 - 불필요한 리소스 식별
 - 할인 옵션 적용 기회 발견
 - 비용 효율적인 아키텍처 설계
 
 ### 비용 예측 프로세스
+
+[비용 예측 프로세스](#비용-예측-프로세스)
 
 ```mermaid
 graph TB
@@ -62,19 +74,27 @@ graph TB
 
 ### AWS Cost Explorer
 
+[AWS Cost Explorer](#aws-cost-explorer)
+
 #### 1. **기본 기능**
+
+[1. **기본 기능**](#1-기본-기능)
 - **비용 시각화**: 그래프와 차트로 비용 데이터 시각화
 - **비용 분석**: 서비스, 리전, 인스턴스 타입별 비용 분석
 - **예측 기능**: 향후 12개월 비용 예측
 - **예약 인스턴스 권장**: 비용 절감을 위한 RI 권장
 
 #### 2. **주요 메트릭**
+
+[2. **주요 메트릭**](#2-주요-메트릭)
 - **Blended Cost**: 계정 전체의 평균 비용
 - **Unblended Cost**: 실제 사용한 리소스의 비용
 - **Net Unblended Cost**: 크레딧과 할인을 적용한 순 비용
 - **Amortized Cost**: 예약 인스턴스 비용을 월별로 분할
 
 #### 3. **비용 분석 차원**
+
+[3. **비용 분석 차원**](#3-비용-분석-차원)
 - **서비스별**: EC2, RDS, S3 등 서비스별 비용
 - **리전별**: 리전별 비용 분포
 - **인스턴스 타입별**: 인스턴스 타입별 비용
@@ -82,25 +102,35 @@ graph TB
 
 ### GCP Cloud Billing Reports
 
+[GCP Cloud Billing Reports](#gcp-cloud-billing-reports)
+
 #### 1. **기본 기능**
+
+[1. **기본 기능**](#1-기본-기능)
 - **비용 시각화**: 대시보드로 비용 데이터 시각화
 - **비용 분석**: 프로젝트, 서비스, 리전별 비용 분석
 - **예측 기능**: 향후 비용 예측
 - **권장사항**: 비용 절감을 위한 권장사항
 
 #### 2. **주요 메트릭**
+
+[2. **주요 메트릭**](#2-주요-메트릭)
 - **Total Cost**: 총 비용
 - **Net Cost**: 크레딧과 할인을 적용한 순 비용
 - **Credits**: 적용된 크레딧
 - **Tax**: 세금
 
 #### 3. **비용 분석 차원**
+
+[3. **비용 분석 차원**](#3-비용-분석-차원)
 - **프로젝트별**: 프로젝트별 비용 분포
 - **서비스별**: Compute Engine, Cloud SQL 등 서비스별 비용
 - **리전별**: 리전별 비용 분포
 - **라벨별**: 사용자 정의 라벨별 비용
 
 ### 비용 관리 도구 비교
+
+[비용 관리 도구 비교](#비용-관리-도구-비교)
 
 | 기능 | AWS Cost Explorer | GCP Cloud Billing Reports |
 |------|-------------------|---------------------------|
@@ -117,26 +147,38 @@ graph TB
 
 ### 1. 리소스 최적화
 
+[1. 리소스 최적화](#1-리소스-최적화)
+
 #### 미사용 리소스 식별
+
+[미사용 리소스 식별](#미사용-리소스-식별)
 - **Idle EC2 인스턴스**: CPU 사용률이 낮은 인스턴스
 - **미사용 EBS 볼륨**: 연결되지 않은 스토리지
 - **미사용 Elastic IP**: 연결되지 않은 IP 주소
 - **미사용 로드 밸런서**: 트래픽이 없는 로드 밸런서
 
 #### 리소스 크기 최적화
+
+[리소스 크기 최적화](#리소스-크기-최적화)
 - **인스턴스 타입 변경**: 더 적합한 인스턴스 타입으로 변경
 - **스토리지 최적화**: 적절한 스토리지 타입 선택
 - **네트워크 최적화**: 불필요한 데이터 전송 최소화
 
 ### 2. 할인 옵션 활용
 
+[2. 할인 옵션 활용](#2-할인-옵션-활용)
+
 #### AWS 할인 옵션
+
+[AWS 할인 옵션](#aws-할인-옵션)
 - **Reserved Instances**: 1년/3년 약정으로 최대 75% 할인
 - **Savings Plans**: 컴퓨팅 사용량 기반 할인
 - **Spot Instances**: 미사용 인스턴스 최대 90% 할인
 - **Volume Discounts**: 대량 사용 시 할인
 
 #### GCP 할인 옵션
+
+[GCP 할인 옵션](#gcp-할인-옵션)
 - **Committed Use Discounts**: 1년/3년 약정으로 최대 57% 할인
 - **Sustained Use Discounts**: 자동 할인 (최대 30%)
 - **Preemptible Instances**: 미사용 인스턴스 최대 80% 할인
@@ -144,19 +186,27 @@ graph TB
 
 ### 3. 아키텍처 최적화
 
+[3. 아키텍처 최적화](#3-아키텍처-최적화)
+
 #### 서버리스 아키텍처
+
+[서버리스 아키텍처](#서버리스-아키텍처)
 - **AWS Lambda**: 요청 기반 과금
 - **GCP Cloud Functions**: 요청 기반 과금
 - **AWS API Gateway**: API 호출 기반 과금
 - **GCP Cloud Endpoints**: API 호출 기반 과금
 
 #### 컨테이너 최적화
+
+[컨테이너 최적화](#컨테이너-최적화)
 - **AWS ECS Fargate**: 서버리스 컨테이너
 - **GCP Cloud Run**: 서버리스 컨테이너
 - **AWS EKS**: 관리형 Kubernetes
 - **GCP GKE**: 관리형 Kubernetes
 
 ### 비용 최적화 전략 다이어그램
+
+[비용 최적화 전략 다이어그램](#비용-최적화-전략-다이어그램)
 
 ```mermaid
 graph TB
@@ -183,41 +233,59 @@ graph TB
 
 ### AWS Trusted Advisor
 
+[AWS Trusted Advisor](#aws-trusted-advisor)
+
 #### 1. **비용 최적화 권장사항**
+
+[1. **비용 최적화 권장사항**](#1-비용-최적화-권장사항)
 - **Idle Load Balancers**: 사용하지 않는 로드 밸런서
 - **Underutilized EBS Volumes**: 사용률이 낮은 EBS 볼륨
 - **Unassociated Elastic IP Addresses**: 연결되지 않은 Elastic IP
 - **Idle DB Instances**: 사용하지 않는 RDS 인스턴스
 
 #### 2. **성능 권장사항**
+
+[2. **성능 권장사항**](#2-성능-권장사항)
 - **High Utilization Amazon EBS Magnetic Volumes**: 높은 사용률의 EBS 볼륨
 - **Over-provisioned Amazon EBS Volumes**: 과도하게 프로비저닝된 EBS 볼륨
 - **Underutilized Amazon EBS Volumes**: 사용률이 낮은 EBS 볼륨
 
 #### 3. **보안 권장사항**
+
+[3. **보안 권장사항**](#3-보안-권장사항)
 - **Security Groups**: 보안 그룹 설정
 - **IAM Access**: IAM 접근 권한
 - **MFA**: 다중 인증 설정
 
 ### GCP Cloud Recommender
 
+[GCP Cloud Recommender](#gcp-cloud-recommender)
+
 #### 1. **비용 최적화 권장사항**
+
+[1. **비용 최적화 권장사항**](#1-비용-최적화-권장사항)
 - **Machine Type Recommendations**: 인스턴스 타입 권장
 - **Idle VM Recommendations**: 사용하지 않는 VM 권장
 - **Commitment Recommendations**: 커밋 약정 권장
 - **Snapshot Recommendations**: 스냅샷 최적화 권장
 
 #### 2. **성능 권장사항**
+
+[2. **성능 권장사항**](#2-성능-권장사항)
 - **Persistent Disk Recommendations**: 영구 디스크 권장
 - **Network Recommendations**: 네트워크 최적화 권장
 - **Security Recommendations**: 보안 최적화 권장
 
 #### 3. **보안 권장사항**
+
+[3. **보안 권장사항**](#3-보안-권장사항)
 - **IAM Recommendations**: IAM 권한 최적화
 - **Firewall Recommendations**: 방화벽 규칙 최적화
 - **SSL Certificate Recommendations**: SSL 인증서 최적화
 
 ### 권장사항 도구 비교
+
+[권장사항 도구 비교](#권장사항-도구-비교)
 
 | 기능 | AWS Trusted Advisor | GCP Cloud Recommender |
 |------|---------------------|----------------------|
@@ -248,7 +316,11 @@ graph TB
 
 ### 1단계: AWS Cost Explorer 활성화 및 설정
 
+[1단계: AWS Cost Explorer 활성화 및 설정](#1단계-aws-cost-explorer-활성화-및-설정)
+
 #### Cost Explorer 활성화
+
+[Cost Explorer 활성화](#cost-explorer-활성화)
 ```bash
 # AWS 콘솔에서 Cost Explorer 활성화
 # 1. AWS 콘솔 → Billing → Cost Explorer
@@ -264,6 +336,8 @@ aws ce get-cost-and-usage \
 ```
 
 #### 비용 예측 설정
+
+[비용 예측 설정](#비용-예측-설정)
 ```bash
 # 향후 3개월 비용 예측
 aws ce get-cost-forecast \
@@ -282,7 +356,11 @@ aws ce get-cost-and-usage \
 
 ### 2단계: AWS Budgets 설정
 
+[2단계: AWS Budgets 설정](#2단계-aws-budgets-설정)
+
 #### 예산 생성
+
+[예산 생성](#예산-생성)
 ```bash
 # 월별 비용 예산 생성
 aws budgets create-budget \
@@ -320,7 +398,11 @@ aws budgets create-notification \
 
 ### 3단계: AWS Trusted Advisor 권장사항 확인
 
+[3단계: AWS Trusted Advisor 권장사항 확인](#3단계-aws-trusted-advisor-권장사항-확인)
+
 #### 비용 최적화 권장사항 조회
+
+[비용 최적화 권장사항 조회](#비용-최적화-권장사항-조회)
 ```bash
 # Trusted Advisor 권장사항 조회 (API 사용)
 aws support describe-trusted-advisor-checks \
@@ -337,6 +419,8 @@ aws support describe-trusted-advisor-check-summaries \
 ```
 
 #### 미사용 리소스 식별
+
+[미사용 리소스 식별](#미사용-리소스-식별)
 ```bash
 # 미사용 EC2 인스턴스 확인
 aws ec2 describe-instances \
@@ -355,7 +439,11 @@ aws ec2 describe-addresses \
 
 ### 4단계: GCP 비용 관리 도구 설정
 
+[4단계: GCP 비용 관리 도구 설정](#4단계-gcp-비용-관리-도구-설정)
+
 #### Cloud Billing Reports 설정
+
+[Cloud Billing Reports 설정](#cloud-billing-reports-설정)
 ```bash
 # 프로젝트별 비용 조회
 gcloud alpha billing projects list \
@@ -368,6 +456,8 @@ gcloud logging read "resource.type=gce_instance" \
 ```
 
 #### GCP Budgets 설정
+
+[GCP Budgets 설정](#gcp-budgets-설정)
 ```bash
 # 예산 생성
 gcloud alpha billing budgets create \
@@ -390,7 +480,11 @@ gcloud alpha billing budgets create \
 
 ### 5단계: GCP Cloud Recommender 활용
 
+[5단계: GCP Cloud Recommender 활용](#5단계-gcp-cloud-recommender-활용)
+
 #### 권장사항 조회
+
+[권장사항 조회](#권장사항-조회)
 ```bash
 # 인스턴스 타입 권장사항 조회
 gcloud recommender recommendations list \
@@ -409,6 +503,8 @@ gcloud recommender recommendations list \
 ```
 
 #### 권장사항 적용
+
+[권장사항 적용](#권장사항-적용)
 ```bash
 # 인스턴스 타입 변경
 gcloud compute instances set-machine-type INSTANCE_NAME \
@@ -427,7 +523,11 @@ gcloud compute instances delete INSTANCE_NAME \
 
 ### AWS 비용 최적화 스크립트
 
+[AWS 비용 최적화 스크립트](#aws-비용-최적화-스크립트)
+
 #### 비용 분석 및 최적화
+
+[비용 분석 및 최적화](#비용-분석-및-최적화)
 ```bash
 #!/bin/bash
 # aws-cost-optimization.sh
@@ -486,6 +586,8 @@ echo "=== AWS 비용 최적화 분석 완료 ==="
 ```
 
 #### 예산 관리 스크립트
+
+[예산 관리 스크립트](#예산-관리-스크립트)
 ```bash
 #!/bin/bash
 # aws-budget-management.sh
@@ -529,7 +631,11 @@ echo "=== AWS 예산 관리 완료 ==="
 
 ### GCP 비용 최적화 스크립트
 
+[GCP 비용 최적화 스크립트](#gcp-비용-최적화-스크립트)
+
 #### 비용 분석 및 최적화
+
+[비용 분석 및 최적화](#비용-분석-및-최적화)
 ```bash
 #!/bin/bash
 # gcp-cost-optimization.sh
@@ -575,6 +681,8 @@ echo "=== GCP 비용 최적화 분석 완료 ==="
 ```
 
 #### 예산 관리 스크립트
+
+[예산 관리 스크립트](#예산-관리-스크립트)
 ```bash
 #!/bin/bash
 # gcp-budget-management.sh
@@ -615,16 +723,22 @@ echo "=== GCP 예산 관리 완료 ==="
 ## ✅ 예상 결과
 
 ### 비용 예측 결과
+
+[비용 예측 결과](#비용-예측-결과)
 - Cost Explorer에서 선택한 기간의 실제 비용 그래프와 함께 다음 달 예측 비용이 그래프로 표시
 - 서비스별 비용 분석 결과를 통한 비용 구조 파악
 - 향후 3개월 비용 예측을 통한 예산 계획 수립
 
 ### 비용 최적화 결과
+
+[비용 최적화 결과](#비용-최적화-결과)
 - Trusted Advisor/Cloud Recommender의 권장사항 목록에 절감 가능한 리소스가 표시
 - 인스턴스 타입 변경, 예약 사용 전환 등의 권장작업이 제시
 - 미사용 리소스 식별을 통한 즉시 절감 가능한 비용 발견
 
 ### 예산 관리 결과
+
+[예산 관리 결과](#예산-관리-결과)
 - 예산 경고 설정에 따라 예산 80% 초과 시 이메일 알림이 전송
 - 예측 비용 기반 알림을 통한 사전 비용 관리
 - 실시간 비용 모니터링을 통한 예산 초과 방지
@@ -634,6 +748,8 @@ echo "=== GCP 예산 관리 완료 ==="
 ## 🚀 혼자 해보기
 
 ### 기본 과제
+
+[기본 과제](#기본-과제)
 1. **과거 데이터 분석**: 과거 한 달간의 비용 데이터를 바탕으로 AWS Cost Explorer에서 분기별 예측을 생성해 보세요.
 
 2. **권장사항 적용**: Trusted Advisor/Cloud Recommender의 권장사항을 실제로 적용해 보세요.
@@ -641,6 +757,8 @@ echo "=== GCP 예산 관리 완료 ==="
 3. **예산 관리**: 더 정교한 예산 관리 시스템을 구축해 보세요.
 
 ### 고급 과제
+
+[고급 과제](#고급-과제)
 1. **비용 최적화 자동화**: 비용 최적화를 위한 자동화 스크립트를 작성해 보세요.
 
 2. **멀티 클라우드 비용 관리**: AWS와 GCP의 비용을 통합 관리하는 시스템을 구축해 보세요.
@@ -650,6 +768,8 @@ echo "=== GCP 예산 관리 완료 ==="
 ---
 
 ## ❓ 퀴즈
+
+[❓ 퀴즈](#퀴즈)
 
 1. **AWS Trusted Advisor의 Cost Optimization 카테고리에 포함되는 주요 권장사항은 무엇인가요?**
 
@@ -663,6 +783,8 @@ echo "=== GCP 예산 관리 완료 ==="
 
 ## ✅ 체크리스트
 
+[✅ 체크리스트](#체크리스트)
+
 - [ ] 예산(Budgets)을 설정하여 초과 알림을 받도록 했나요?
 - [ ] Cost Explorer나 Billing Reports로 비용 추세를 시각화했나요?
 - [ ] 권장사항에서 확인된 비효율적인 자원을 반영하여 인스턴스 규격을 변경하거나 예약 사용을 적용했나요?
@@ -672,6 +794,8 @@ echo "=== GCP 예산 관리 완료 ==="
 ---
 
 ## 📚 추가 학습 자료
+
+[📚 추가 학습 자료](#추가-학습-자료)
 
 - [AWS Cost Explorer 공식 문서](https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html)
 - [AWS Trusted Advisor 공식 문서](https://docs.aws.amazon.com/awssupport/latest/user/trusted-advisor.html)
@@ -693,6 +817,8 @@ echo "=== GCP 예산 관리 완료 ==="
 </div>
 
 ### 📧 연락처
+
+[📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 

@@ -8,9 +8,13 @@
 
 ## 🎯 실습 개요
 
+[🎯 실습 개요](#실습-개요)
+
 이 가이드는 Container 과정의 모든 학습 내용을 통합하여 **실제 운영 환경과 유사한 시나리오**를 구현하는 종합 실습입니다.
 
 ### 📋 실습 목표
+
+[📋 실습 목표](#실습-목표)
 - Master 과정의 actions-demo 프로젝트를 기반으로 한 고급 컨테이너 배포
 - Kubernetes, Helm, Istio를 활용한 마이크로서비스 아키텍처 구현
 - 고가용성, 확장성, 보안을 고려한 운영 환경 구축
@@ -20,7 +24,11 @@
 
 ## 🏗️ 아키텍처 설계
 
+[🏗️ 아키텍처 설계](#아키텍처-설계)
+
 ### 전체 아키텍처
+
+[전체 아키텍처](#전체-아키텍처)
 ```mermaid
 graph TB
     subgraph "External"
@@ -70,6 +78,8 @@ graph TB
 ```
 
 ### 서비스 구성
+
+[서비스 구성](#서비스-구성)
 - **Frontend**: Container Demo Application (Node.js)
 - **Backend**: MySQL Database + Redis Cache
 - **Gateway**: Istio Ingress Gateway
@@ -80,9 +90,15 @@ graph TB
 
 ## 🚀 실습 환경 준비
 
+[🚀 실습 환경 준비](#실습-환경-준비)
+
 ### 1단계: 사전 요구사항 확인
 
+[1단계: 사전 요구사항 확인](#1단계-사전-요구사항-확인)
+
 #### 필요한 도구
+
+[필요한 도구](#필요한-도구)
 ```bash
 # Kubernetes 클러스터 확인
 kubectl cluster-info
@@ -99,6 +115,8 @@ docker push gcr.io/PROJECT_ID/container-demo:latest
 ```
 
 #### 환경 변수 설정
+
+[환경 변수 설정](#환경-변수-설정)
 ```bash
 export GCP_PROJECT_ID="your-project-id"
 export IMAGE_TAG="latest"
@@ -106,6 +124,8 @@ export NAMESPACE="container-demo"
 ```
 
 ### 2단계: 프로젝트 구조 확인
+
+[2단계: 프로젝트 구조 확인](#2단계-프로젝트-구조-확인)
 ```
 container-demo/
 ├── helm-chart-templates/          # Helm 차트
@@ -127,11 +147,19 @@ container-demo/
 
 ## 📚 실습 단계별 가이드
 
+[📚 실습 단계별 가이드](#실습-단계별-가이드)
+
 ### Day 1: 컨테이너 기술 심화
+
+[Day 1: 컨테이너 기술 심화](#day-1-컨테이너-기술-심화)
 
 #### 1교시: Docker 최적화 (60분)
 
+[1교시: Docker 최적화 (60분)](#1교시-docker-최적화-60분)
+
 ##### 실습 1-1: 멀티스테이지 빌드 적용
+
+[실습 1-1: 멀티스테이지 빌드 적용](#실습-11-멀티스테이지-빌드-적용)
 ```bash
 # 기존 Dockerfile과 비교
 docker build -f Dockerfile -t container-demo:basic .
@@ -142,6 +170,8 @@ docker images | grep container-demo
 ```
 
 ##### 실습 1-2: 보안 강화
+
+[실습 1-2: 보안 강화](#실습-12-보안-강화)
 ```bash
 # 보안 스캔 실행
 docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
@@ -150,7 +180,11 @@ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
 
 #### 2교시: GitHub Actions 고급 기능 (60분)
 
+[2교시: GitHub Actions 고급 기능 (60분)](#2교시-github-actions-고급-기능-60분)
+
 ##### 실습 2-1: 매트릭스 빌드 설정
+
+[실습 2-1: 매트릭스 빌드 설정](#실습-21-매트릭스-빌드-설정)
 ```yaml
 # .github/workflows/advanced-ci.yml
 name: Advanced CI/CD Pipeline
@@ -182,6 +216,8 @@ jobs:
 ```
 
 ##### 실습 2-2: 보안 스캔 통합
+
+[실습 2-2: 보안 스캔 통합](#실습-22-보안-스캔-통합)
 ```yaml
   security-scan:
     runs-on: ubuntu-latest
@@ -202,7 +238,11 @@ jobs:
 
 #### 3교시: 클라우드 컨테이너 서비스 (90분)
 
+[3교시: 클라우드 컨테이너 서비스 (90분)](#3교시-클라우드-컨테이너-서비스-90분)
+
 ##### 실습 3-1: AWS ECS 배포
+
+[실습 3-1: AWS ECS 배포](#실습-31-aws-ecs-배포)
 ```bash
 # ECR 리포지토리 생성
 aws ecr create-repository --repository-name container-demo
@@ -225,6 +265,8 @@ aws ecs create-service --cluster container-demo-cluster --service-name container
 ```
 
 ##### 실습 3-2: GCP GKE 배포
+
+[실습 3-2: GCP GKE 배포](#실습-32-gcp-gke-배포)
 ```bash
 # GKE 클러스터 생성
 gcloud container clusters create container-demo-cluster \
@@ -245,7 +287,11 @@ kubectl apply -f k8s/gcp-gke/deployment.yaml
 
 #### 4교시: 자동화된 배포 전략 (90분)
 
+[4교시: 자동화된 배포 전략 (90분)](#4교시-자동화된-배포-전략-90분)
+
 ##### 실습 4-1: Blue-Green 배포
+
+[실습 4-1: Blue-Green 배포](#실습-41-bluegreen-배포)
 ```bash
 # Blue 환경 배포
 kubectl apply -f k8s/gcp-gke/deployment-blue.yaml
@@ -269,6 +315,8 @@ spec:
 ```
 
 ##### 실습 4-2: 롤백 테스트
+
+[실습 4-2: 롤백 테스트](#실습-42-롤백-테스트)
 ```bash
 # 문제 발생 시 Blue 환경으로 롤백
 kubectl patch virtualservice container-demo-vs -n container-demo --type='merge' -p='
@@ -287,9 +335,15 @@ spec:
 
 ### Day 2: 고가용성 아키텍처
 
+[Day 2: 고가용성 아키텍처](#day-2-고가용성-아키텍처)
+
 #### 1교시: 고가용성 아키텍처 설계 (90분)
 
+[1교시: 고가용성 아키텍처 설계 (90분)](#1교시-고가용성-아키텍처-설계-90분)
+
 ##### 실습 1-1: Multi-AZ 구성
+
+[실습 1-1: Multi-AZ 구성](#실습-11-multiaz-구성)
 ```bash
 # GKE 클러스터를 여러 존에 배포
 gcloud container clusters create container-demo-ha \
@@ -335,6 +389,8 @@ EOF
 ```
 
 ##### 실습 1-2: 로드 밸런싱 설정
+
+[실습 1-2: 로드 밸런싱 설정](#실습-12-로드-밸런싱-설정)
 ```bash
 # GCP Load Balancer 설정
 gcloud compute addresses create container-demo-ip --global
@@ -363,7 +419,11 @@ gcloud compute forwarding-rules create container-demo-rule \
 
 #### 2교시: 모니터링 및 로깅 (90분)
 
+[2교시: 모니터링 및 로깅 (90분)](#2교시-모니터링-및-로깅-90분)
+
 ##### 실습 2-1: Prometheus 설정
+
+[실습 2-1: Prometheus 설정](#실습-21-prometheus-설정)
 ```bash
 # Prometheus 배포
 kubectl apply -f monitoring-advanced/prometheus-config.yaml
@@ -389,6 +449,8 @@ kubectl port-forward svc/prometheus-service 9090:9090 -n container-demo
 ```
 
 ##### 실습 2-2: Grafana 대시보드 구성
+
+[실습 2-2: Grafana 대시보드 구성](#실습-22-grafana-대시보드-구성)
 ```bash
 # Grafana 배포
 kubectl apply -f - <<EOF
@@ -442,7 +504,11 @@ kubectl port-forward svc/grafana-service 3000:3000 -n container-demo
 
 #### 3교시: 운영 자동화 (90분)
 
+[3교시: 운영 자동화 (90분)](#3교시-운영-자동화-90분)
+
 ##### 실습 3-1: 자동 복구 시나리오
+
+[실습 3-1: 자동 복구 시나리오](#실습-31-자동-복구-시나리오)
 ```bash
 # Pod 장애 시뮬레이션
 kubectl delete pod -l app=container-demo -n container-demo
@@ -457,6 +523,8 @@ while true; do wget -q -O- http://container-demo-service:80; done
 ```
 
 ##### 실습 3-2: 알림 시스템 구성
+
+[실습 3-2: 알림 시스템 구성](#실습-32-알림-시스템-구성)
 ```bash
 # AlertManager 설정
 kubectl apply -f - <<EOF
@@ -487,7 +555,11 @@ EOF
 
 ## 🔧 고급 실습 시나리오
 
+[🔧 고급 실습 시나리오](#고급-실습-시나리오)
+
 ### 시나리오 1: 장애 복구 테스트
+
+[시나리오 1: 장애 복구 테스트](#시나리오-1-장애-복구-테스트)
 ```bash
 # 1. Pod 삭제로 장애 시뮬레이션
 kubectl delete pod -l app=container-demo -n container-demo
@@ -500,6 +572,8 @@ curl http://container-demo-service:80/health
 ```
 
 ### 시나리오 2: 부하 테스트
+
+[시나리오 2: 부하 테스트](#시나리오-2-부하-테스트)
 ```bash
 # 1. 부하 생성기 실행
 kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh
@@ -512,6 +586,8 @@ kubectl get hpa -n container-demo -w
 ```
 
 ### 시나리오 3: 보안 테스트
+
+[시나리오 3: 보안 테스트](#시나리오-3-보안-테스트)
 ```bash
 # 1. Network Policy 테스트
 kubectl run -i --tty test-pod --rm --image=busybox --restart=Never -- /bin/sh
@@ -527,13 +603,19 @@ wget -q -O- http://mysql-service:3306
 
 ## 📊 성과 측정
 
+[📊 성과 측정](#성과-측정)
+
 ### 성능 지표
+
+[성능 지표](#성능-지표)
 - **응답 시간**: 95th percentile < 500ms
 - **가용성**: 99.9% 이상
 - **처리량**: 초당 1000 요청 처리
 - **복구 시간**: 장애 발생 시 30초 내 복구
 
 ### 모니터링 지표
+
+[모니터링 지표](#모니터링-지표)
 - **CPU 사용률**: 평균 70% 이하
 - **메모리 사용률**: 평균 80% 이하
 - **에러율**: 0.1% 이하
@@ -543,7 +625,11 @@ wget -q -O- http://mysql-service:3306
 
 ## ✅ 실습 체크리스트
 
+[✅ 실습 체크리스트](#실습-체크리스트)
+
 ### Day 1 체크리스트
+
+[Day 1 체크리스트](#day-1-체크리스트)
 - [ ] Docker 멀티스테이지 빌드 적용
 - [ ] 보안 스캔 통합
 - [ ] GitHub Actions 고급 워크플로우 설정
@@ -553,6 +639,8 @@ wget -q -O- http://mysql-service:3306
 - [ ] 롤백 시나리오 테스트
 
 ### Day 2 체크리스트
+
+[Day 2 체크리스트](#day-2-체크리스트)
 - [ ] Multi-AZ 아키텍처 구성
 - [ ] 로드 밸런싱 설정 완료
 - [ ] Auto Scaling 테스트
@@ -566,9 +654,15 @@ wget -q -O- http://mysql-service:3306
 
 ## 🐛 문제 해결
 
+[🐛 문제 해결](#문제-해결)
+
 ### 자주 발생하는 문제
 
+[자주 발생하는 문제](#자주-발생하는-문제)
+
 #### 1. Pod 시작 실패
+
+[1. Pod 시작 실패](#1-pod-시작-실패)
 ```bash
 # 해결방법: Pod 로그 확인
 kubectl logs -f deployment/container-demo -n container-demo
@@ -578,6 +672,8 @@ kubectl get events -n container-demo --sort-by='.lastTimestamp'
 ```
 
 #### 2. 서비스 연결 실패
+
+[2. 서비스 연결 실패](#2-서비스-연결-실패)
 ```bash
 # 해결방법: 서비스 엔드포인트 확인
 kubectl get endpoints -n container-demo
@@ -587,6 +683,8 @@ kubectl run -i --tty debug --rm --image=busybox --restart=Never -- nslookup cont
 ```
 
 #### 3. 모니터링 데이터 수집 실패
+
+[3. 모니터링 데이터 수집 실패](#3-모니터링-데이터-수집-실패)
 ```bash
 # 해결방법: Prometheus 설정 확인
 kubectl get configmap prometheus-config -n container-demo -o yaml
@@ -600,7 +698,11 @@ curl http://localhost:8080/metrics
 
 ## 📚 참고 자료
 
+[📚 참고 자료](#참고-자료)
+
 ### 공식 문서
+
+[공식 문서](#공식-문서)
 - [Kubernetes 공식 문서](https://kubernetes.io/docs/)
 - [Helm 공식 문서](https://helm.sh/docs/)
 - [Istio 공식 문서](https://istio.io/latest/docs/)
@@ -608,6 +710,8 @@ curl http://localhost:8080/metrics
 - [Grafana 공식 문서](https://grafana.com/docs/)
 
 ### 추가 학습 자료
+
+[추가 학습 자료](#추가-학습-자료)
 - [Kubernetes 고급 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/kubernetes-advanced-guide.md)
 - [Master 과정 연계 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/master-integration-guide.md)
 - [Container 오케스트레이션 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/container-orchestration-guide.md)

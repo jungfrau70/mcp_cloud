@@ -10,17 +10,25 @@
 
 ## 📋 스크립트 개요
 
+[📋 스크립트 개요](#스크립트-개요)
+
 ### 목적
+
+[목적](#목적)
 - 클라우드 리소스 자동 생성 및 관리
 - 배포 프로세스 자동화
 - 모니터링 및 로깅 설정 자동화
 - 비용 최적화 및 관리
 
 ### 지원 클라우드
+
+[지원 클라우드](#지원-클라우드)
 - **AWS**: EC2, S3, RDS, ELB, Auto Scaling
 - **GCP**: Compute Engine, Cloud Storage, Cloud SQL, Load Balancing
 
 ## 📁 스크립트 구조
+
+[📁 스크립트 구조](#스크립트-구조)
 
 ```
 scripts/
@@ -36,9 +44,15 @@ scripts/
 
 ## 🚀 사용 방법
 
+[🚀 사용 방법](#사용-방법)
+
 ### 1. AWS 설정 및 리소스 생성
 
+[1. AWS 설정 및 리소스 생성](#1-aws-설정-및-리소스-생성)
+
 #### AWS 기본 설정
+
+[AWS 기본 설정](#aws-기본-설정)
 ```bash
 # AWS CLI 설정
 ./aws-setup-helper.sh
@@ -51,13 +65,19 @@ scripts/
 ```
 
 #### AWS 스크립트 상세
+
+[AWS 스크립트 상세](#aws-스크립트-상세)
 - **aws-setup-helper.sh**: AWS CLI 설정, IAM 역할 생성, 보안 그룹 설정
 - **aws-ec2-create.sh**: EC2 인스턴스 생성, 키 페어 생성, 보안 그룹 설정
 - **aws-resource-cleanup.sh**: 생성된 리소스 정리, 비용 최적화
 
 ### 2. GCP 설정 및 리소스 생성
 
+[2. GCP 설정 및 리소스 생성](#2-gcp-설정-및-리소스-생성)
+
 #### GCP 기본 설정
+
+[GCP 기본 설정](#gcp-기본-설정)
 ```bash
 # GCP CLI 설정
 ./gcp-setup-helper.sh
@@ -70,15 +90,23 @@ scripts/
 ```
 
 #### GCP 스크립트 상세
+
+[GCP 스크립트 상세](#gcp-스크립트-상세)
 - **gcp-setup-helper.sh**: gcloud CLI 설정, 서비스 계정 생성, API 활성화
 - **gcp-compute-create.sh**: Compute Engine 인스턴스 생성, 방화벽 규칙 설정
 - **gcp-project-cleanup.sh**: 생성된 리소스 정리, 비용 최적화
 
 ## 🔧 스크립트 상세 설명
 
+[🔧 스크립트 상세 설명](#스크립트-상세-설명)
+
 ### AWS 스크립트
 
+[AWS 스크립트](#aws-스크립트)
+
 #### aws-setup-helper.sh
+
+[aws-setup-helper.sh](#awssetuphelpersh)
 ```bash
 #!/bin/bash
 # AWS 기본 설정 스크립트
@@ -100,6 +128,8 @@ aws ec2 create-security-group --group-name MySecurityGroup --description "My Sec
 ```
 
 #### aws-ec2-create.sh
+
+[aws-ec2-create.sh](#awsec2createsh)
 ```bash
 #!/bin/bash
 # EC2 인스턴스 생성 스크립트
@@ -122,7 +152,11 @@ aws ec2 run-instances \
 
 ### GCP 스크립트
 
+[GCP 스크립트](#gcp-스크립트)
+
 #### gcp-setup-helper.sh
+
+[gcp-setup-helper.sh](#gcpsetuphelpersh)
 ```bash
 #!/bin/bash
 # GCP 기본 설정 스크립트
@@ -145,6 +179,8 @@ gcloud iam service-accounts create my-service-account \
 ```
 
 #### gcp-compute-create.sh
+
+[gcp-compute-create.sh](#gcpcomputecreatesh)
 ```bash
 #!/bin/bash
 # Compute Engine 인스턴스 생성 스크립트
@@ -166,7 +202,11 @@ gcloud compute instances create $INSTANCE_NAME \
 
 ## 📊 모니터링 및 로깅
 
+[📊 모니터링 및 로깅](#모니터링-및-로깅)
+
 ### CloudWatch 설정 (AWS)
+
+[CloudWatch 설정 (AWS)](#cloudwatch-설정-aws)
 ```bash
 # CloudWatch 로그 그룹 생성
 aws logs create-log-group --log-group-name /aws/ec2/my-app
@@ -184,6 +224,8 @@ aws cloudwatch put-metric-alarm \
 ```
 
 ### Cloud Monitoring 설정 (GCP)
+
+[Cloud Monitoring 설정 (GCP)](#cloud-monitoring-설정-gcp)
 ```bash
 # Cloud Monitoring 알림 정책 생성
 gcloud alpha monitoring policies create \
@@ -197,7 +239,11 @@ gcloud logging metrics create high_error_rate \
 
 ## 💰 비용 최적화
 
+[💰 비용 최적화](#비용-최적화)
+
 ### AWS 비용 최적화
+
+[AWS 비용 최적화](#aws-비용-최적화)
 ```bash
 # 사용하지 않는 리소스 식별
 aws ec2 describe-instances --query 'Reservations[*].Instances[?State.Name==`stopped`]'
@@ -213,6 +259,8 @@ aws ce get-cost-and-usage \
 ```
 
 ### GCP 비용 최적화
+
+[GCP 비용 최적화](#gcp-비용-최적화)
 ```bash
 # 사용하지 않는 리소스 식별
 gcloud compute instances list --filter="status=TERMINATED"
@@ -226,7 +274,11 @@ gcloud alpha billing budgets list --billing-account=YOUR_BILLING_ACCOUNT
 
 ## 🔒 보안 설정
 
+[🔒 보안 설정](#보안-설정)
+
 ### AWS 보안 설정
+
+[AWS 보안 설정](#aws-보안-설정)
 ```bash
 # 보안 그룹 규칙 설정
 aws ec2 authorize-security-group-ingress \
@@ -242,6 +294,8 @@ aws iam create-policy \
 ```
 
 ### GCP 보안 설정
+
+[GCP 보안 설정](#gcp-보안-설정)
 ```bash
 # 방화벽 규칙 생성
 gcloud compute firewall-rules create allow-ssh \
@@ -257,7 +311,11 @@ gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
 
 ## 🧪 테스트
 
+[🧪 테스트](#테스트)
+
 ### 스크립트 테스트
+
+[스크립트 테스트](#스크립트-테스트)
 ```bash
 # 스크립트 문법 검사
 bash -n script-name.sh
@@ -270,6 +328,8 @@ bash -x script-name.sh
 ```
 
 ### 통합 테스트
+
+[통합 테스트](#통합-테스트)
 ```bash
 # 전체 워크플로우 테스트
 ./integration-test.sh
@@ -283,12 +343,16 @@ bash -x script-name.sh
 
 ## 📚 추가 자료
 
+[📚 추가 자료](#추가-자료)
+
 - [AWS CLI 공식 문서](https://docs.aws.amazon.com/cli/)
 - [gcloud CLI 공식 문서](https://cloud.google.com/sdk/docs)
 - [Bash 스크립팅 가이드](https://www.gnu.org/software/bash/manual/)
 - [Terraform 공식 문서](https://www.terraform.io/docs/)
 
 ## 🤝 기여하기
+
+[🤝 기여하기](#기여하기)
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingScript`)
@@ -298,9 +362,13 @@ bash -x script-name.sh
 
 ## 📄 라이선스
 
+[📄 라이선스](#라이선스)
+
 이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
 
 ## 📞 문의
+
+[📞 문의](#문의)
 
 스크립트에 대한 문의사항이 있으시면 이슈를 생성해 주세요.
 
@@ -317,6 +385,8 @@ bash -x script-name.sh
 </div>
 
 ### 📧 연락처
+
+[📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 

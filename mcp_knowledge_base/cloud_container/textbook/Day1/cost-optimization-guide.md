@@ -8,6 +8,8 @@
 
 ## 🎯 학습 목표
 
+[🎯 학습 목표](#학습-목표)
+
 이 가이드를 통해 다음을 학습합니다:
 - 클라우드 비용 구조 이해
 - 리소스 사용량 모니터링 및 분석
@@ -18,6 +20,8 @@
 ---
 
 ## 📋 목차
+
+[📋 목차](#목차)
 
 1. [클라우드 비용 구조](#클라우드-비용-구조)
 2. [리소스 모니터링 및 분석](#리소스-모니터링-및-분석)
@@ -33,13 +37,19 @@
 
 ### AWS 비용 구조
 
+[AWS 비용 구조](#aws-비용-구조)
+
 #### EC2 비용 요소
+
+[EC2 비용 요소](#ec2-비용-요소)
 - **인스턴스 비용**: 인스턴스 타입, 리전, 사용 시간
 - **스토리지 비용**: EBS 볼륨, 스냅샷, 데이터 전송
 - **네트워크 비용**: 데이터 전송, 로드 밸런서, NAT Gateway
 - **기타 서비스**: RDS, ElastiCache, CloudWatch
 
 #### EKS 비용 요소
+
+[EKS 비용 요소](#eks-비용-요소)
 - **클러스터 비용**: $0.10/시간 (제어 평면)
 - **워커 노드 비용**: EC2 인스턴스 비용
 - **스토리지 비용**: EBS 볼륨, EFS
@@ -47,13 +57,19 @@
 
 ### GCP 비용 구조
 
+[GCP 비용 구조](#gcp-비용-구조)
+
 #### GKE 비용 요소
+
+[GKE 비용 요소](#gke-비용-요소)
 - **클러스터 비용**: $0.10/시간 (제어 평면)
 - **워커 노드 비용**: Compute Engine 인스턴스 비용
 - **스토리지 비용**: Persistent Disk, Cloud Storage
 - **네트워크 비용**: Load Balancer, Cloud NAT
 
 #### Cloud Run 비용 요소
+
+[Cloud Run 비용 요소](#cloud-run-비용-요소)
 - **CPU 비용**: vCPU-초 단위
 - **메모리 비용**: GB-초 단위
 - **요청 비용**: 요청 수 단위
@@ -65,7 +81,11 @@
 
 ### AWS Cost Explorer 설정
 
+[AWS Cost Explorer 설정](#aws-cost-explorer-설정)
+
 #### 비용 분석 대시보드
+
+[비용 분석 대시보드](#비용-분석-대시보드)
 ```yaml
 # cost-analysis-dashboard.yaml
 apiVersion: v1
@@ -120,7 +140,11 @@ data:
 
 ### GCP Cost Management 설정
 
+[GCP Cost Management 설정](#gcp-cost-management-설정)
+
 #### 비용 분석 쿼리
+
+[비용 분석 쿼리](#비용-분석-쿼리)
 ```sql
 -- GCP BigQuery 비용 분석 쿼리
 SELECT
@@ -143,7 +167,11 @@ ORDER BY
 
 ### Prometheus 비용 메트릭
 
+[Prometheus 비용 메트릭](#prometheus-비용-메트릭)
+
 #### 비용 메트릭 수집
+
+[비용 메트릭 수집](#비용-메트릭-수집)
 ```yaml
 # cost-metrics.yaml
 apiVersion: v1
@@ -181,7 +209,11 @@ data:
 
 ### HPA 최적화 설정
 
+[HPA 최적화 설정](#hpa-최적화-설정)
+
 #### 비용 효율적인 HPA
+
+[비용 효율적인 HPA](#비용-효율적인-hpa)
 ```yaml
 # cost-optimized-hpa.yaml
 apiVersion: autoscaling/v2
@@ -237,7 +269,11 @@ spec:
 
 ### VPA 최적화 설정
 
+[VPA 최적화 설정](#vpa-최적화-설정)
+
 #### 리소스 최적화 VPA
+
+[리소스 최적화 VPA](#리소스-최적화-vpa)
 ```yaml
 # cost-optimized-vpa.yaml
 apiVersion: autoscaling.k8s.io/v1
@@ -271,7 +307,11 @@ spec:
 
 ### 스팟 인스턴스 활용
 
+[스팟 인스턴스 활용](#스팟-인스턴스-활용)
+
 #### AWS Spot Instance 설정
+
+[AWS Spot Instance 설정](#aws-spot-instance-설정)
 ```yaml
 # spot-instance-deployment.yaml
 apiVersion: apps/v1
@@ -313,6 +353,8 @@ spec:
 ```
 
 #### GCP Preemptible Instance 설정
+
+[GCP Preemptible Instance 설정](#gcp-preemptible-instance-설정)
 ```yaml
 # preemptible-instance-deployment.yaml
 apiVersion: apps/v1
@@ -354,7 +396,11 @@ spec:
 
 ### 예약 인스턴스 활용
 
+[예약 인스턴스 활용](#예약-인스턴스-활용)
+
 #### AWS Reserved Instance 설정
+
+[AWS Reserved Instance 설정](#aws-reserved-instance-설정)
 ```bash
 # Reserved Instance 구매 (CLI)
 aws ec2 purchase-reserved-instances-offering \
@@ -364,6 +410,8 @@ aws ec2 purchase-reserved-instances-offering \
 ```
 
 #### GCP Committed Use Discount 설정
+
+[GCP Committed Use Discount 설정](#gcp-committed-use-discount-설정)
 ```bash
 # Committed Use Discount 생성
 gcloud compute commitments create container-demo-commitment \
@@ -378,7 +426,11 @@ gcloud compute commitments create container-demo-commitment \
 
 ### 스토리지 클래스 최적화
 
+[스토리지 클래스 최적화](#스토리지-클래스-최적화)
+
 #### AWS EBS 최적화
+
+[AWS EBS 최적화](#aws-ebs-최적화)
 ```yaml
 # ebs-optimized-storage.yaml
 apiVersion: v1
@@ -410,6 +462,8 @@ spec:
 ```
 
 #### GCP Persistent Disk 최적화
+
+[GCP Persistent Disk 최적화](#gcp-persistent-disk-최적화)
 ```yaml
 # gcp-optimized-storage.yaml
 apiVersion: v1
@@ -441,7 +495,11 @@ spec:
 
 ### 스토리지 라이프사이클 관리
 
+[스토리지 라이프사이클 관리](#스토리지-라이프사이클-관리)
+
 #### AWS S3 라이프사이클 설정
+
+[AWS S3 라이프사이클 설정](#aws-s3-라이프사이클-설정)
 ```json
 {
   "Rules": [
@@ -468,6 +526,8 @@ spec:
 ```
 
 #### GCP Cloud Storage 라이프사이클 설정
+
+[GCP Cloud Storage 라이프사이클 설정](#gcp-cloud-storage-라이프사이클-설정)
 ```yaml
 # gcp-lifecycle.yaml
 apiVersion: v1
@@ -518,7 +578,11 @@ data:
 
 ### 네트워크 최적화 설정
 
+[네트워크 최적화 설정](#네트워크-최적화-설정)
+
 #### AWS 네트워크 최적화
+
+[AWS 네트워크 최적화](#aws-네트워크-최적화)
 ```yaml
 # aws-network-optimization.yaml
 apiVersion: v1
@@ -561,6 +625,8 @@ spec:
 ```
 
 #### GCP 네트워크 최적화
+
+[GCP 네트워크 최적화](#gcp-네트워크-최적화)
 ```yaml
 # gcp-network-optimization.yaml
 apiVersion: v1
@@ -606,7 +672,11 @@ spec:
 
 ### 시나리오 1: 기본 비용 최적화
 
+[시나리오 1: 기본 비용 최적화](#시나리오-1-기본-비용-최적화)
+
 #### 1단계: 리소스 모니터링 설정
+
+[1단계: 리소스 모니터링 설정](#1단계-리소스-모니터링-설정)
 ```bash
 # 비용 분석 대시보드 배포
 kubectl apply -f cost-optimization-guide/cost-analysis-dashboard.yaml
@@ -616,6 +686,8 @@ kubectl apply -f cost-optimization-guide/cost-metrics.yaml
 ```
 
 #### 2단계: HPA 최적화
+
+[2단계: HPA 최적화](#2단계-hpa-최적화)
 ```bash
 # 비용 효율적인 HPA 배포
 kubectl apply -f cost-optimization-guide/cost-optimized-hpa.yaml
@@ -625,6 +697,8 @@ kubectl get hpa -n container-demo
 ```
 
 #### 3단계: VPA 최적화
+
+[3단계: VPA 최적화](#3단계-vpa-최적화)
 ```bash
 # VPA 배포
 kubectl apply -f cost-optimization-guide/cost-optimized-vpa.yaml
@@ -635,7 +709,11 @@ kubectl get vpa -n container-demo
 
 ### 시나리오 2: 스팟 인스턴스 활용
 
+[시나리오 2: 스팟 인스턴스 활용](#시나리오-2-스팟-인스턴스-활용)
+
 #### 1단계: 스팟 인스턴스 노드 그룹 생성
+
+[1단계: 스팟 인스턴스 노드 그룹 생성](#1단계-스팟-인스턴스-노드-그룹-생성)
 ```bash
 # AWS EKS 스팟 인스턴스 노드 그룹 생성
 eksctl create nodegroup \
@@ -658,6 +736,8 @@ gcloud container node-pools create spot-pool \
 ```
 
 #### 2단계: 스팟 인스턴스 배포
+
+[2단계: 스팟 인스턴스 배포](#2단계-스팟-인스턴스-배포)
 ```bash
 # 스팟 인스턴스에 Pod 배포
 kubectl apply -f cost-optimization-guide/spot-instance-deployment.yaml
@@ -668,7 +748,11 @@ kubectl get pods -o wide -n container-demo
 
 ### 시나리오 3: 스토리지 비용 최적화
 
+[시나리오 3: 스토리지 비용 최적화](#시나리오-3-스토리지-비용-최적화)
+
 #### 1단계: 스토리지 클래스 최적화
+
+[1단계: 스토리지 클래스 최적화](#1단계-스토리지-클래스-최적화)
 ```bash
 # AWS EBS 최적화 스토리지 배포
 kubectl apply -f cost-optimization-guide/ebs-optimized-storage.yaml
@@ -678,6 +762,8 @@ kubectl apply -f cost-optimization-guide/gcp-optimized-storage.yaml
 ```
 
 #### 2단계: 스토리지 라이프사이클 설정
+
+[2단계: 스토리지 라이프사이클 설정](#2단계-스토리지-라이프사이클-설정)
 ```bash
 # AWS S3 라이프사이클 설정
 aws s3api put-bucket-lifecycle-configuration \
@@ -692,9 +778,15 @@ gsutil lifecycle set lifecycle.json gs://container-demo-bucket
 
 ## 📊 비용 최적화 모니터링
 
+[📊 비용 최적화 모니터링](#비용-최적화-모니터링)
+
 ### 비용 알림 설정
 
+[비용 알림 설정](#비용-알림-설정)
+
 #### AWS Cost Anomaly Detection
+
+[AWS Cost Anomaly Detection](#aws-cost-anomaly-detection)
 ```yaml
 # cost-anomaly-detection.yaml
 apiVersion: v1
@@ -716,6 +808,8 @@ data:
 ```
 
 #### GCP Cost Alert 설정
+
+[GCP Cost Alert 설정](#gcp-cost-alert-설정)
 ```yaml
 # gcp-cost-alert.yaml
 apiVersion: v1
@@ -755,19 +849,27 @@ data:
 
 ## ✅ 체크리스트
 
+[✅ 체크리스트](#체크리스트)
+
 ### 기본 비용 최적화
+
+[기본 비용 최적화](#기본-비용-최적화)
 - [ ] 리소스 모니터링 설정
 - [ ] HPA 최적화
 - [ ] VPA 최적화
 - [ ] 비용 분석 대시보드 구성
 
 ### 고급 비용 최적화
+
+[고급 비용 최적화](#고급-비용-최적화)
 - [ ] 스팟 인스턴스 활용
 - [ ] 예약 인스턴스 활용
 - [ ] 스토리지 클래스 최적화
 - [ ] 네트워크 비용 최적화
 
 ### 비용 모니터링
+
+[비용 모니터링](#비용-모니터링)
 - [ ] 비용 알림 설정
 - [ ] 비용 분석 쿼리 작성
 - [ ] 비용 최적화 리포트 생성
@@ -777,12 +879,18 @@ data:
 
 ## 📚 참고 자료
 
+[📚 참고 자료](#참고-자료)
+
 ### 공식 문서
+
+[공식 문서](#공식-문서)
 - [AWS Cost Optimization 공식 문서](https://aws.amazon.com/pricing/cost-optimization/)
 - [GCP Cost Optimization 공식 문서](https://cloud.google.com/cost-optimization)
 - [Kubernetes Resource Management 공식 문서](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)
 
 ### 추가 학습 자료
+
+[추가 학습 자료](#추가-학습-자료)
 - [자동 복구 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/auto-recovery-guide.md)
 - [보안 정책 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/security-policies-guide.md)
 - [종합 실습 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/comprehensive-practice-guide.md)
@@ -801,6 +909,8 @@ data:
 </div>
 
 ### 📧 연락처
+
+[📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 

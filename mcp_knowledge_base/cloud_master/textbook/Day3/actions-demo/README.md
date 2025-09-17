@@ -10,12 +10,18 @@
 
 ## 📋 프로젝트 개요
 
+[📋 프로젝트 개요](#프로젝트-개요)
+
 ### 목적
+
+[목적](#목적)
 - GitHub Actions 워크플로우 이해
 - 자동화된 빌드 및 배포 파이프라인 구축
 - Docker 컨테이너 기반 애플리케이션 배포
 
 ### 기술 스택
+
+[기술 스택](#기술-스택)
 - **Frontend**: Node.js, Express
 - **Container**: Docker
 - **CI/CD**: GitHub Actions
@@ -23,29 +29,41 @@
 
 ## 🚀 시작하기
 
+[🚀 시작하기](#시작하기)
+
 ### 1. 프로젝트 클론
+
+[1. 프로젝트 클론](#1-프로젝트-클론)
 ```bash
 git clone <repository-url>
 cd actions-demo
 ```
 
 ### 2. 의존성 설치
+
+[2. 의존성 설치](#2-의존성-설치)
 ```bash
 npm install
 ```
 
 ### 3. 로컬 실행
+
+[3. 로컬 실행](#3-로컬-실행)
 ```bash
 npm start
 ```
 
 ### 4. Docker 실행
+
+[4. Docker 실행](#4-docker-실행)
 ```bash
 docker build -t actions-demo .
 docker run -p 3000:3000 actions-demo
 ```
 
 ## 📁 프로젝트 구조
+
+[📁 프로젝트 구조](#프로젝트-구조)
 
 ```
 actions-demo/
@@ -65,7 +83,11 @@ actions-demo/
 
 ## 🔧 GitHub Actions 워크플로우
 
+[🔧 GitHub Actions 워크플로우](#github-actions-워크플로우)
+
 ### CI 파이프라인 (ci.yml)
+
+[CI 파이프라인 (ci.yml)](#ci-파이프라인-ciyml)
 - 코드 체크아웃
 - Node.js 환경 설정
 - 의존성 설치
@@ -73,6 +95,8 @@ actions-demo/
 - 린팅 검사
 
 ### 배포 파이프라인 (deploy.yml)
+
+[배포 파이프라인 (deploy.yml)](#배포-파이프라인-deployyml)
 - 애플리케이션 빌드
 - Docker 이미지 생성
 - 클라우드 VM 배포
@@ -80,7 +104,11 @@ actions-demo/
 
 ## 🐳 Docker 설정
 
+[🐳 Docker 설정](#docker-설정)
+
 ### Dockerfile
+
+[Dockerfile](#dockerfile)
 ```dockerfile
 FROM node:18
 WORKDIR /app
@@ -92,6 +120,8 @@ CMD ["npm", "start"]
 ```
 
 ### Docker Compose
+
+[Docker Compose](#docker-compose)
 ```yaml
 version: '3.8'
 services:
@@ -105,13 +135,19 @@ services:
 
 ## 🚀 클라우드 배포
 
+[🚀 클라우드 배포](#클라우드-배포)
+
 ### AWS EC2 배포
+
+[AWS EC2 배포](#aws-ec2-배포)
 - EC2 인스턴스 생성
 - Docker 설치
 - 애플리케이션 배포
 - 로드 밸런서 설정
 
 ### GCP Compute Engine 배포
+
+[GCP Compute Engine 배포](#gcp-compute-engine-배포)
 - Compute Engine 인스턴스 생성
 - Docker 설치
 - 애플리케이션 배포
@@ -119,40 +155,58 @@ services:
 
 ## 📊 모니터링
 
+[📊 모니터링](#모니터링)
+
 ### 헬스 체크
+
+[헬스 체크](#헬스-체크)
 - `/health` 엔드포인트
 - 애플리케이션 상태 확인
 - 데이터베이스 연결 상태
 
 ### 로깅
+
+[로깅](#로깅)
 - 애플리케이션 로그
 - 에러 로그
 - 성능 메트릭
 
 ## 🧪 테스트
 
+[🧪 테스트](#테스트)
+
 ### 단위 테스트
+
+[단위 테스트](#단위-테스트)
 ```bash
 npm test
 ```
 
 ### 통합 테스트
+
+[통합 테스트](#통합-테스트)
 ```bash
 npm run test:integration
 ```
 
 ### E2E 테스트
+
+[E2E 테스트](#e2e-테스트)
 ```bash
 npm run test:e2e
 ```
 
 ## 📚 추가 자료
 
+[📚 추가 자료](#추가-자료)
+
 - [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
 - [Docker 공식 문서](https://docs.docker.com/)
 - [Node.js 공식 문서](https://nodejs.org/docs/)
 
 ## 🤝 기여하기
+
+[🤝 기여하기](#기여하기)
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -162,9 +216,13 @@ npm run test:e2e
 
 ## 📄 라이선스
 
+[📄 라이선스](#라이선스)
+
 이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
 
 ## 📞 문의
+
+[📞 문의](#문의)
 
 프로젝트에 대한 문의사항이 있으시면 이슈를 생성해 주세요.
 

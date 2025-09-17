@@ -10,7 +10,11 @@
 
 ## 🚀 빠른 시작
 
+[🚀 빠른 시작](#빠른-시작)
+
 ### 1. GCP 프로젝트 설정
+
+[1. GCP 프로젝트 설정](#1-gcp-프로젝트-설정)
 
 ```bash
 # 1. GCP 인증
@@ -33,6 +37,8 @@ gcloud projects delete cloud-deployment-2025-12345
 
 ### 2. VM 생성 및 SSH 키 설정
 
+[2. VM 생성 및 SSH 키 설정](#2-vm-생성-및-ssh-키-설정)
+
 ```bash
 # 1. VM 생성 스크립트 실행
 ./gcp-compute-create.sh
@@ -42,6 +48,8 @@ gcloud projects delete cloud-deployment-2025-12345
 ```
 
 ### 3. SSH 연결
+
+[3. SSH 연결](#3-ssh-연결)
 
 ```bash
 # 방법 1: gcloud 명령어 (권장)
@@ -53,6 +61,8 @@ ssh -i cloud-deployment-key ubuntu@VM_EXTERNAL_IP
 
 ## 📋 프로젝트 정보
 
+[📋 프로젝트 정보](#프로젝트-정보)
+
 - **프로젝트명**: `cloud-deployment`
 - **프로젝트 ID**: `cloud-deployment-2025-12345`
 - **리전**: `asia-northeast3` (서울)
@@ -62,7 +72,11 @@ ssh -i cloud-deployment-key ubuntu@VM_EXTERNAL_IP
 
 ## 🔧 주요 리소스
 
+[🔧 주요 리소스](#주요-리소스)
+
 ### 네트워크 리소스
+
+[네트워크 리소스](#네트워크-리소스)
 - VPC: `cloud-deployment-vpc`
 - 서브넷: `cloud-deployment-subnet`
 - 방화벽 규칙:
@@ -72,12 +86,18 @@ ssh -i cloud-deployment-key ubuntu@VM_EXTERNAL_IP
   - `cloud-deployment-allow-app` (포트 3000, 7000)
 
 ### SSH 키 파일
+
+[SSH 키 파일](#ssh-키-파일)
 - 개인키: `cloud-deployment-key`
 - 공개키: `cloud-deployment-key.pub`
 
 ## 🐛 문제 해결
 
+[🐛 문제 해결](#문제-해결)
+
 ### SSH 연결 문제
+
+[SSH 연결 문제](#ssh-연결-문제)
 ```bash
 # SSH 키 추가
 ./gcp-ssh-key-add.sh
@@ -90,6 +110,8 @@ gcloud compute instances describe cloud-deployment-server --zone=asia-northeast3
 ```
 
 ### 프로젝트 변경
+
+[프로젝트 변경](#프로젝트-변경)
 ```bash
 # 현재 프로젝트 확인
 gcloud config get-value project
@@ -99,6 +121,8 @@ gcloud config set project YOUR_PROJECT_ID
 ```
 
 ## 🗑️ 리소스 정리
+
+[🗑️ 리소스 정리](#리소스-정리)
 
 ```bash
 # 인스턴스 삭제
@@ -119,6 +143,8 @@ gcloud compute networks delete cloud-deployment-vpc --quiet
 
 ## 📝 참고사항
 
+[📝 참고사항](#참고사항)
+
 - 모든 스크립트는 `cloud-deployment` 프로젝트명을 사용합니다
 - **SSH 키는 인스턴스 생성 전에 사전 등록됩니다** (Prerequisite):
   - **프로젝트 메타데이터**: 프로젝트 전체 VM에서 사용 가능
@@ -137,6 +163,8 @@ gcloud compute networks delete cloud-deployment-vpc --quiet
 </div>
 
 ### 📧 연락처
+
+[📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 

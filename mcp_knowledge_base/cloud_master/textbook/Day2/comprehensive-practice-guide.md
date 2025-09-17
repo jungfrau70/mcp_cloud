@@ -9,6 +9,8 @@
 
 
 ## 📋 목차
+
+[📋 목차](#목차)
 1. [종합 실습 개요](#종합-실습-개요)
 2. [컨테이너 오케스트레이션 개념](#컨테이너-오케스트레이션-개념)
 3. [AWS EKS vs GCP GKE 비교](#aws-eks-vs-gcp-gke-비교)
@@ -28,26 +30,36 @@
 현대적인 클라우드 운영에서는 **컨테이너 기반 애플리케이션의 자동 배포와 오토스케일링, 로드밸런싱이 핵심**입니다. 이 종합 실습을 통해 다음을 달성합니다:
 
 #### 1. **컨테이너 오케스트레이션**
+
+[1. **컨테이너 오케스트레이션**](#1-컨테이너-오케스트레이션)
 - Kubernetes 기반 컨테이너 관리
 - 자동 배포 및 스케일링
 - 서비스 디스커버리 및 로드 밸런싱
 
 #### 2. **고가용성 아키텍처**
+
+[2. **고가용성 아키텍처**](#2-고가용성-아키텍처)
 - 멀티 AZ 배포
 - 자동 장애 복구
 - 로드 밸런싱
 
 #### 3. **비용 최적화**
+
+[3. **비용 최적화**](#3-비용-최적화)
 - 자동 스케일링을 통한 비용 절감
 - 리소스 사용률 최적화
 - 예산 관리
 
 #### 4. **모니터링 및 알림**
+
+[4. **모니터링 및 알림**](#4-모니터링-및-알림)
 - 실시간 모니터링
 - 성능 메트릭 수집
 - 장애 알림
 
 ### 실습 시나리오
+
+[실습 시나리오](#실습-시나리오)
 
 **스타트업 D사**는 컨테이너로 구현한 웹 서비스를 AWS와 GCP 환경에 배포하려 합니다. 사용량 급증 시 자동 확장을 원하며, 장애가 발생해도 자동 복구되도록 하고 싶습니다. 또한 예산 내에서 운영 비용을 모니터링해야 합니다.
 
@@ -57,27 +69,39 @@
 
 ### Kubernetes 핵심 개념
 
+[Kubernetes 핵심 개념](#kubernetes-핵심-개념)
+
 #### 1. **Pod**
+
+[1. **Pod**](#1-pod)
 - Kubernetes의 최소 배포 단위
 - 하나 이상의 컨테이너를 포함
 - 공유 네트워크 및 스토리지
 
 #### 2. **Deployment**
+
+[2. **Deployment**](#2-deployment)
 - Pod의 배포 및 관리를 담당
 - 롤링 업데이트 지원
 - 자동 복구 기능
 
 #### 3. **Service**
+
+[3. **Service**](#3-service)
 - Pod에 대한 안정적인 네트워크 엔드포인트 제공
 - 로드 밸런싱
 - 서비스 디스커버리
 
 #### 4. **Ingress**
+
+[4. **Ingress**](#4-ingress)
 - HTTP/HTTPS 트래픽을 서비스로 라우팅
 - SSL 종료
 - 도메인 기반 라우팅
 
 ### 컨테이너 오케스트레이션 아키텍처
+
+[컨테이너 오케스트레이션 아키텍처](#컨테이너-오케스트레이션-아키텍처)
 
 ```mermaid
 graph TB
@@ -109,6 +133,8 @@ graph TB
 
 ### 기본 기능 비교
 
+[기본 기능 비교](#기본-기능-비교)
+
 | 구분 | AWS EKS | GCP GKE |
 |------|---------|---------|
 | **관리형 서비스** | ✅ | ✅ |
@@ -121,13 +147,19 @@ graph TB
 
 ### 네트워킹 비교
 
+[네트워킹 비교](#네트워킹-비교)
+
 #### AWS EKS 네트워킹
+
+[AWS EKS 네트워킹](#aws-eks-네트워킹)
 - **VPC CNI**: AWS VPC와 통합된 네트워킹
 - **ALB Ingress Controller**: Application Load Balancer 연동
 - **NLB**: Network Load Balancer 지원
 - **Service Mesh**: AWS App Mesh 지원
 
 #### GCP GKE 네트워킹
+
+[GCP GKE 네트워킹](#gcp-gke-네트워킹)
 - **VPC-native**: GCP VPC와 통합된 네트워킹
 - **Ingress**: Google Cloud Load Balancer 연동
 - **Service**: 내부 로드 밸런서 지원
@@ -135,13 +167,19 @@ graph TB
 
 ### 스케일링 비교
 
+[스케일링 비교](#스케일링-비교)
+
 #### AWS EKS 스케일링
+
+[AWS EKS 스케일링](#aws-eks-스케일링)
 - **Cluster Autoscaler**: 노드 자동 스케일링
 - **Karpenter**: 서버리스 노드 프로비저닝
 - **HPA**: Pod 수평 스케일링
 - **VPA**: Pod 수직 스케일링
 
 #### GCP GKE 스케일링
+
+[GCP GKE 스케일링](#gcp-gke-스케일링)
 - **Cluster Autoscaler**: 노드 자동 스케일링
 - **Node Auto-provisioning**: 자동 노드 프로비저닝
 - **HPA**: Pod 수평 스케일링
@@ -152,6 +190,8 @@ graph TB
 ## 🏗️ 종합 아키텍처 설계
 
 ### 전체 아키텍처
+
+[전체 아키텍처](#전체-아키텍처)
 
 ```mermaid
 graph TB
@@ -179,7 +219,11 @@ graph TB
 
 ### 멀티 클라우드 아키텍처
 
+[멀티 클라우드 아키텍처](#멀티-클라우드-아키텍처)
+
 #### AWS EKS 아키텍처
+
+[AWS EKS 아키텍처](#aws-eks-아키텍처)
 ```mermaid
 graph TB
     A[사용자] --> B[Route 53]
@@ -200,6 +244,8 @@ graph TB
 ```
 
 #### GCP GKE 아키텍처
+
+[GCP GKE 아키텍처](#gcp-gke-아키텍처)
 ```mermaid
 graph TB
     A[사용자] --> B[Cloud DNS]
@@ -245,7 +291,11 @@ graph TB
 
 ### 1단계: 컨테이너 이미지 준비
 
+[1단계: 컨테이너 이미지 준비](#1단계-컨테이너-이미지-준비)
+
 #### Docker 이미지 생성
+
+[Docker 이미지 생성](#docker-이미지-생성)
 ```dockerfile
 # Dockerfile
 FROM nginx:alpine
@@ -265,6 +315,8 @@ EXPOSE 80
 ```
 
 #### 이미지 빌드 및 푸시
+
+[이미지 빌드 및 푸시](#이미지-빌드-및-푸시)
 ```bash
 # AWS ECR에 이미지 푸시
 aws ecr create-repository --repository-name my-web-app
@@ -281,7 +333,11 @@ docker push gcr.io/my-project/my-web-app
 
 ### 2단계: Kubernetes 클러스터 생성
 
+[2단계: Kubernetes 클러스터 생성](#2단계-kubernetes-클러스터-생성)
+
 #### AWS EKS 클러스터 생성
+
+[AWS EKS 클러스터 생성](#aws-eks-클러스터-생성)
 ```bash
 # EKS 클러스터 생성
 eksctl create cluster \
@@ -300,6 +356,8 @@ kubectl get pods --all-namespaces
 ```
 
 #### GCP GKE 클러스터 생성
+
+[GCP GKE 클러스터 생성](#gcp-gke-클러스터-생성)
 ```bash
 # GKE 클러스터 생성
 gcloud container clusters create my-gke-cluster \
@@ -320,7 +378,11 @@ kubectl get pods --all-namespaces
 
 ### 3단계: 애플리케이션 배포
 
+[3단계: 애플리케이션 배포](#3단계-애플리케이션-배포)
+
 #### Kubernetes 매니페스트 생성
+
+[Kubernetes 매니페스트 생성](#kubernetes-매니페스트-생성)
 ```yaml
 # deployment.yaml
 apiVersion: apps/v1
@@ -402,6 +464,8 @@ spec:
 ```
 
 #### 애플리케이션 배포
+
+[애플리케이션 배포](#애플리케이션-배포)
 ```bash
 # AWS EKS에 배포
 kubectl apply -f deployment.yaml
@@ -422,7 +486,11 @@ kubectl get pods
 
 ### 4단계: 자동 스케일링 구성
 
+[4단계: 자동 스케일링 구성](#4단계-자동-스케일링-구성)
+
 #### HPA (Horizontal Pod Autoscaler) 설정
+
+[HPA (Horizontal Pod Autoscaler) 설정](#hpa-horizontal-pod-autoscaler-설정)
 ```yaml
 # hpa.yaml
 apiVersion: autoscaling/v2
@@ -452,6 +520,8 @@ spec:
 ```
 
 #### Cluster Autoscaler 설정
+
+[Cluster Autoscaler 설정](#cluster-autoscaler-설정)
 ```bash
 # AWS EKS Cluster Autoscaler
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/autoscaler/master/cluster-autoscaler/cloudprovider/aws/examples/cluster-autoscaler-autodiscover.yaml
@@ -473,7 +543,11 @@ kubectl describe hpa web-app-hpa
 
 ### 5단계: 모니터링 설정
 
+[5단계: 모니터링 설정](#5단계-모니터링-설정)
+
 #### AWS CloudWatch 모니터링
+
+[AWS CloudWatch 모니터링](#aws-cloudwatch-모니터링)
 ```bash
 # CloudWatch Agent 설치
 kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/cloudwatch-namespace.yaml
@@ -497,6 +571,8 @@ aws cloudwatch put-metric-alarm \
 ```
 
 #### GCP Cloud Monitoring 모니터링
+
+[GCP Cloud Monitoring 모니터링](#gcp-cloud-monitoring-모니터링)
 ```bash
 # GKE 모니터링 (자동 활성화)
 gcloud container clusters update my-gke-cluster \
@@ -515,7 +591,11 @@ gcloud monitoring policies create \
 
 ### 6단계: 비용 관리 설정
 
+[6단계: 비용 관리 설정](#6단계-비용-관리-설정)
+
 #### AWS 비용 관리
+
+[AWS 비용 관리](#aws-비용-관리)
 ```bash
 # 예산 설정
 aws budgets create-budget \
@@ -552,6 +632,8 @@ aws budgets create-notification \
 ```
 
 #### GCP 비용 관리
+
+[GCP 비용 관리](#gcp-비용-관리)
 ```bash
 # 예산 설정
 gcloud alpha billing budgets create \
@@ -578,7 +660,11 @@ gcloud alpha billing budgets create \
 
 ### 종합 배포 스크립트
 
+[종합 배포 스크립트](#종합-배포-스크립트)
+
 #### AWS EKS 종합 배포 스크립트
+
+[AWS EKS 종합 배포 스크립트](#aws-eks-종합-배포-스크립트)
 ```bash
 #!/bin/bash
 # aws-eks-comprehensive-deployment.sh
@@ -642,6 +728,8 @@ echo "=== AWS EKS 종합 배포 완료 ==="
 ```
 
 #### GCP GKE 종합 배포 스크립트
+
+[GCP GKE 종합 배포 스크립트](#gcp-gke-종합-배포-스크립트)
 ```bash
 #!/bin/bash
 # gcp-gke-comprehensive-deployment.sh
@@ -700,7 +788,11 @@ echo "=== GCP GKE 종합 배포 완료 ==="
 
 ### 부하 테스트 스크립트
 
+[부하 테스트 스크립트](#부하-테스트-스크립트)
+
 #### 부하 테스트 및 스케일링 확인
+
+[부하 테스트 및 스케일링 확인](#부하-테스트-및-스케일링-확인)
 ```bash
 #!/bin/bash
 # load-test-and-scaling.sh
@@ -741,27 +833,37 @@ echo "=== 부하 테스트 및 스케일링 확인 완료 ==="
 ## ✅ 예상 결과
 
 ### 클러스터 생성 결과
+
+[클러스터 생성 결과](#클러스터-생성-결과)
 - EKS/GKE 클러스터가 성공적으로 생성됨
 - 노드가 정상적으로 연결되고 Ready 상태가 됨
 - 기본 시스템 Pod들이 정상적으로 실행됨
 
 ### 애플리케이션 배포 결과
+
+[애플리케이션 배포 결과](#애플리케이션-배포-결과)
 - 웹 애플리케이션이 3개의 Pod로 배포됨
 - Service가 정상적으로 생성되고 Pod에 연결됨
 - Ingress가 생성되고 외부 접근이 가능해짐
 
 ### 자동 스케일링 결과
+
+[자동 스케일링 결과](#자동-스케일링-결과)
 - HPA가 CPU/메모리 사용률을 모니터링함
 - 부하 증가 시 Pod 수가 자동으로 증가함
 - 부하 감소 시 Pod 수가 자동으로 감소함
 - Cluster Autoscaler가 노드 수를 자동으로 조정함
 
 ### 모니터링 결과
+
+[모니터링 결과](#모니터링-결과)
 - CloudWatch/Cloud Monitoring에서 메트릭이 수집됨
 - 알림이 설정되어 임계값 초과 시 알림 발송
 - 대시보드에서 실시간 모니터링 가능
 
 ### 비용 관리 결과
+
+[비용 관리 결과](#비용-관리-결과)
 - 예산이 설정되어 비용 한도 관리
 - 비용 초과 시 알림 발송
 - 비용 최적화를 위한 권장사항 제공
@@ -771,6 +873,8 @@ echo "=== 부하 테스트 및 스케일링 확인 완료 ==="
 ## 🚀 혼자 해보기
 
 ### 기본 과제
+
+[기본 과제](#기본-과제)
 1. **다른 애플리케이션 배포**: 백엔드+프론트엔드 2개 서비스로 구성된 애플리케이션을 배포해 보세요.
 
 2. **고급 스케일링**: VPA(Vertical Pod Autoscaler)를 설정하여 Pod 리소스를 자동으로 조정해 보세요.
@@ -778,6 +882,8 @@ echo "=== 부하 테스트 및 스케일링 확인 완료 ==="
 3. **보안 강화**: Network Policies를 설정하여 Pod 간 통신을 제한해 보세요.
 
 ### 고급 과제
+
+[고급 과제](#고급-과제)
 1. **멀티 클라우드 배포**: AWS EKS와 GCP GKE에 동시에 애플리케이션을 배포해 보세요.
 
 2. **서비스 메시**: Istio를 사용하여 서비스 메시를 구축해 보세요.
@@ -787,6 +893,8 @@ echo "=== 부하 테스트 및 스케일링 확인 완료 ==="
 ---
 
 ## ❓ 퀴즈
+
+[❓ 퀴즈](#퀴즈)
 
 1. **AWS EKS와 GCP GKE의 네트워크 로드밸런싱 방식을 비교해 보세요.**
 
@@ -800,6 +908,8 @@ echo "=== 부하 테스트 및 스케일링 확인 완료 ==="
 
 ## ✅ 체크리스트
 
+[✅ 체크리스트](#체크리스트)
+
 - [ ] 컨테이너 이미지와 레지스트리를 구성했나요?
 - [ ] 클러스터 생성 후 애플리케이션이 정상 기동되었나요?
 - [ ] 오토스케일링(HPA, 클러스터)과 로드밸런싱 설정을 확인했나요?
@@ -810,6 +920,8 @@ echo "=== 부하 테스트 및 스케일링 확인 완료 ==="
 ---
 
 ## 📚 추가 학습 자료
+
+[📚 추가 학습 자료](#추가-학습-자료)
 
 - [AWS EKS 공식 문서](https://docs.aws.amazon.com/eks/)
 - [GCP GKE 공식 문서](https://cloud.google.com/kubernetes-engine/docs)

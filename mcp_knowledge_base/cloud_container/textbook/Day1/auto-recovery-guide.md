@@ -8,6 +8,8 @@
 
 ## 🎯 학습 목표
 
+[🎯 학습 목표](#학습-목표)
+
 이 가이드를 통해 다음을 학습합니다:
 - Kubernetes 자동 복구 메커니즘 이해
 - 헬스체크 및 프로브 설정
@@ -18,6 +20,8 @@
 ---
 
 ## 📋 목차
+
+[📋 목차](#목차)
 
 1. [Kubernetes 자동 복구 메커니즘](#kubernetes-자동-복구-메커니즘)
 2. [헬스체크 및 프로브 설정](#헬스체크-및-프로브-설정)
@@ -32,7 +36,11 @@
 
 ### Pod 자동 복구
 
+[Pod 자동 복구](#pod-자동-복구)
+
 #### 기본 자동 복구
+
+[기본 자동 복구](#기본-자동-복구)
 ```yaml
 # deployment-with-recovery.yaml
 apiVersion: apps/v1
@@ -85,6 +93,8 @@ spec:
 ```
 
 #### 고급 자동 복구 설정
+
+[고급 자동 복구 설정](#고급-자동-복구-설정)
 ```yaml
 # advanced-recovery.yaml
 apiVersion: apps/v1
@@ -178,7 +188,11 @@ spec:
 
 ### 애플리케이션 헬스체크 엔드포인트
 
+[애플리케이션 헬스체크 엔드포인트](#애플리케이션-헬스체크-엔드포인트)
+
 #### Node.js 애플리케이션 헬스체크
+
+[Node.js 애플리케이션 헬스체크](#nodejs-애플리케이션-헬스체크)
 ```javascript
 // health-check.js
 const express = require('express');
@@ -308,7 +322,11 @@ module.exports = app;
 
 ### 고급 프로브 설정
 
+[고급 프로브 설정](#고급-프로브-설정)
+
 #### TCP 소켓 프로브
+
+[TCP 소켓 프로브](#tcp-소켓-프로브)
 ```yaml
 # tcp-probe.yaml
 apiVersion: apps/v1
@@ -349,6 +367,8 @@ spec:
 ```
 
 #### 명령어 실행 프로브
+
+[명령어 실행 프로브](#명령어-실행-프로브)
 ```yaml
 # exec-probe.yaml
 apiVersion: apps/v1
@@ -400,7 +420,11 @@ spec:
 
 ### Horizontal Pod Autoscaler (HPA)
 
+[Horizontal Pod Autoscaler (HPA)](#horizontal-pod-autoscaler-hpa)
+
 #### 기본 HPA 설정
+
+[기본 HPA 설정](#기본-hpa-설정)
 ```yaml
 # hpa-basic.yaml
 apiVersion: autoscaling/v2
@@ -431,6 +455,8 @@ spec:
 ```
 
 #### 고급 HPA 설정
+
+[고급 HPA 설정](#고급-hpa-설정)
 ```yaml
 # hpa-advanced.yaml
 apiVersion: autoscaling/v2
@@ -486,7 +512,11 @@ spec:
 
 ### Vertical Pod Autoscaler (VPA)
 
+[Vertical Pod Autoscaler (VPA)](#vertical-pod-autoscaler-vpa)
+
 #### VPA 설정
+
+[VPA 설정](#vpa-설정)
 ```yaml
 # vpa.yaml
 apiVersion: autoscaling.k8s.io/v1
@@ -519,7 +549,11 @@ spec:
 
 ### 시나리오 1: Pod 장애 시뮬레이션
 
+[시나리오 1: Pod 장애 시뮬레이션](#시나리오-1-pod-장애-시뮬레이션)
+
 #### Pod 삭제 테스트
+
+[Pod 삭제 테스트](#pod-삭제-테스트)
 ```bash
 #!/bin/bash
 # pod-failure-test.sh
@@ -554,6 +588,8 @@ echo "🎉 Pod 장애 시뮬레이션 완료"
 ```
 
 #### 노드 장애 시뮬레이션
+
+[노드 장애 시뮬레이션](#노드-장애-시뮬레이션)
 ```bash
 #!/bin/bash
 # node-failure-test.sh
@@ -601,7 +637,11 @@ echo "🎉 노드 장애 시뮬레이션 완료"
 
 ### 시나리오 2: 애플리케이션 장애 시뮬레이션
 
+[시나리오 2: 애플리케이션 장애 시뮬레이션](#시나리오-2-애플리케이션-장애-시뮬레이션)
+
 #### 메모리 누수 시뮬레이션
+
+[메모리 누수 시뮬레이션](#메모리-누수-시뮬레이션)
 ```bash
 #!/bin/bash
 # memory-leak-test.sh
@@ -656,6 +696,8 @@ kubectl top pods -l app=memory-leak-test -n container-demo --watch
 ```
 
 #### CPU 스파이크 시뮬레이션
+
+[CPU 스파이크 시뮬레이션](#cpu-스파이크-시뮬레이션)
 ```bash
 #!/bin/bash
 # cpu-spike-test.sh
@@ -715,7 +757,11 @@ kubectl top pods -l app=cpu-spike-test -n container-demo --watch
 
 ### Prometheus 알림 규칙
 
+[Prometheus 알림 규칙](#prometheus-알림-규칙)
+
 #### 자동 복구 알림
+
+[자동 복구 알림](#자동-복구-알림)
 ```yaml
 # auto-recovery-alerts.yaml
 apiVersion: v1
@@ -771,7 +817,11 @@ data:
 
 ### 자동 복구 웹훅
 
+[자동 복구 웹훅](#자동-복구-웹훅)
+
 #### 웹훅 서버
+
+[웹훅 서버](#웹훅-서버)
 ```javascript
 // auto-recovery-webhook.js
 const express = require('express');
@@ -872,7 +922,11 @@ app.listen(PORT, () => {
 
 ### 시나리오 1: 기본 자동 복구 테스트
 
+[시나리오 1: 기본 자동 복구 테스트](#시나리오-1-기본-자동-복구-테스트)
+
 #### 1단계: 환경 설정
+
+[1단계: 환경 설정](#1단계-환경-설정)
 ```bash
 # 자동 복구 테스트 환경 배포
 kubectl apply -f auto-recovery-guide/deployment-with-recovery.yaml
@@ -882,6 +936,8 @@ kubectl get pods -l app=container-demo -n container-demo -w
 ```
 
 #### 2단계: Pod 장애 시뮬레이션
+
+[2단계: Pod 장애 시뮬레이션](#2단계-pod-장애-시뮬레이션)
 ```bash
 # Pod 삭제
 kubectl delete pod -l app=container-demo -n container-demo
@@ -891,6 +947,8 @@ kubectl get pods -l app=container-demo -n container-demo
 ```
 
 #### 3단계: 서비스 연속성 확인
+
+[3단계: 서비스 연속성 확인](#3단계-서비스-연속성-확인)
 ```bash
 # 서비스 접속 테스트
 kubectl port-forward svc/container-demo-service 8080:80 -n container-demo &
@@ -899,7 +957,11 @@ curl http://localhost:8080/health
 
 ### 시나리오 2: 고급 자동 복구 테스트
 
+[시나리오 2: 고급 자동 복구 테스트](#시나리오-2-고급-자동-복구-테스트)
+
 #### 1단계: HPA 설정
+
+[1단계: HPA 설정](#1단계-hpa-설정)
 ```bash
 # HPA 배포
 kubectl apply -f auto-recovery-guide/hpa-advanced.yaml
@@ -909,6 +971,8 @@ kubectl get hpa -n container-demo
 ```
 
 #### 2단계: 부하 테스트
+
+[2단계: 부하 테스트](#2단계-부하-테스트)
 ```bash
 # 부하 생성기 실행
 kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh
@@ -918,6 +982,8 @@ while true; do wget -q -O- http://container-demo-service:80; done
 ```
 
 #### 3단계: 자동 스케일링 확인
+
+[3단계: 자동 스케일링 확인](#3단계-자동-스케일링-확인)
 ```bash
 # HPA 동작 확인
 kubectl get hpa -n container-demo -w
@@ -928,7 +994,11 @@ kubectl get pods -l app=container-demo -n container-demo -w
 
 ### 시나리오 3: 모니터링 기반 자동화
 
+[시나리오 3: 모니터링 기반 자동화](#시나리오-3-모니터링-기반-자동화)
+
 #### 1단계: 모니터링 설정
+
+[1단계: 모니터링 설정](#1단계-모니터링-설정)
 ```bash
 # Prometheus 알림 규칙 배포
 kubectl apply -f auto-recovery-guide/auto-recovery-alerts.yaml
@@ -962,6 +1032,8 @@ EOF
 ```
 
 #### 2단계: 장애 시뮬레이션
+
+[2단계: 장애 시뮬레이션](#2단계-장애-시뮬레이션)
 ```bash
 # 메모리 누수 시뮬레이션
 kubectl apply -f auto-recovery-guide/memory-leak-test.yaml
@@ -971,6 +1043,8 @@ kubectl apply -f auto-recovery-guide/cpu-spike-test.yaml
 ```
 
 #### 3단계: 자동 복구 확인
+
+[3단계: 자동 복구 확인](#3단계-자동-복구-확인)
 ```bash
 # 웹훅 로그 확인
 kubectl logs -f deployment/auto-recovery-webhook -n container-demo
@@ -983,13 +1057,19 @@ kubectl logs -f deployment/auto-recovery-webhook -n container-demo
 
 ## ✅ 체크리스트
 
+[✅ 체크리스트](#체크리스트)
+
 ### 기본 자동 복구
+
+[기본 자동 복구](#기본-자동-복구)
 - [ ] Pod 자동 재시작 설정
 - [ ] 헬스체크 및 프로브 설정
 - [ ] 리소스 제한 설정
 - [ ] Pod 분산 배치 설정
 
 ### 고급 자동 복구
+
+[고급 자동 복구](#고급-자동-복구)
 - [ ] HPA 설정 및 테스트
 - [ ] VPA 설정 및 테스트
 - [ ] 다단계 헬스체크 설정
@@ -1011,12 +1091,18 @@ kubectl logs -f deployment/auto-recovery-webhook -n container-demo
 
 ## 📚 참고 자료
 
+[📚 참고 자료](#참고-자료)
+
 ### 공식 문서
+
+[공식 문서](#공식-문서)
 - [Kubernetes 프로브 공식 문서](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
 - [Kubernetes HPA 공식 문서](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
 - [Prometheus 알림 규칙 공식 문서](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/)
 
 ### 추가 학습 자료
+
+[추가 학습 자료](#추가-학습-자료)
 - [Kubernetes 고급 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/kubernetes-advanced-guide.md)
 - [종합 실습 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/comprehensive-practice-guide.md)
 - [모니터링 설정 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day1\monitoring-setup)
@@ -1035,6 +1121,8 @@ kubectl logs -f deployment/auto-recovery-webhook -n container-demo
 </div>
 
 ### 📧 연락처
+
+[📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 

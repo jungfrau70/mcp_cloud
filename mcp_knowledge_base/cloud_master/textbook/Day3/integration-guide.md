@@ -9,6 +9,8 @@
 
 
 ## 📋 목차
+
+[📋 목차](#목차)
 1. [연동 아키텍처 이해](#연동-아키텍처-이해)
 2. [헬스체크 메커니즘](#헬스체크-메커니즘)
 3. [자가 치유(Self-Healing) 시스템](#자가-치유selfhealing-시스템)-시스템)
@@ -24,24 +26,34 @@
 
 ### 로드 밸런서 + 오토스케일링 연동의 중요성
 
+[로드 밸런서 + 오토스케일링 연동의 중요성](#로드-밸런서-오토스케일링-연동의-중요성)
+
 고가용성을 극대화하기 위해 **로드 밸런서와 오토스케일링을 함께 사용**합니다. 이 연동을 통해 다음과 같은 이점을 얻을 수 있습니다:
 
 #### 1. **자동 트래픽 분산**
+
+[1. **자동 트래픽 분산**](#1-자동-트래픽-분산)
 - 인스턴스 확장 시 자동으로 로드 밸런서에 등록
 - 인스턴스 축소 시 자동으로 로드 밸런서에서 제거
 - 수동 개입 없이 트래픽 분산 관리
 
 #### 2. **장애 자동 복구**
+
+[2. **장애 자동 복구**](#2-장애-자동-복구)
 - 비정상 인스턴스 자동 감지
 - 새로운 인스턴스로 자동 교체
 - 서비스 중단 최소화
 
 #### 3. **동적 확장성**
+
+[3. **동적 확장성**](#3-동적-확장성)
 - 트래픽 증가 시 자동 확장
 - 트래픽 감소 시 자동 축소
 - 비용 효율성과 성능의 균형
 
 ### 전체 아키텍처
+
+[전체 아키텍처](#전체-아키텍처)
 
 ```mermaid
 graph TB
@@ -71,39 +83,55 @@ graph TB
 
 ### 헬스체크의 역할
 
+[헬스체크의 역할](#헬스체크의-역할)
+
 헬스체크는 **인스턴스의 상태를 지속적으로 모니터링하여 정상/비정상을 판단하는 메커니즘**입니다.
 
 #### 1. **로드 밸런서 헬스체크**
+
+[1. **로드 밸런서 헬스체크**](#1-로드-밸런서-헬스체크)
 - **목적**: 트래픽 전달 대상 인스턴스 식별
 - **동작**: 비정상 인스턴스로 트래픽 전달 중단
 - **주기**: 30초마다 체크 (기본값)
 
 #### 2. **오토스케일링 헬스체크**
+
+[2. **오토스케일링 헬스체크**](#2-오토스케일링-헬스체크)
 - **목적**: 인스턴스 교체 필요성 판단
 - **동작**: 비정상 인스턴스 자동 교체
 - **주기**: 60초마다 체크 (기본값)
 
 ### 헬스체크 유형
 
+[헬스체크 유형](#헬스체크-유형)
+
 #### 1. **HTTP/HTTPS 헬스체크**
+
+[1. **HTTP/HTTPS 헬스체크**](#1-httphttps-헬스체크)
 ```bash
 # HTTP 헬스체크 설정
 curl -f http://instance-ip/health || exit 1
 ```
 
 #### 2. **TCP 헬스체크**
+
+[2. **TCP 헬스체크**](#2-tcp-헬스체크)
 ```bash
 # TCP 포트 연결 확인
 nc -z instance-ip 80 || exit 1
 ```
 
 #### 3. **커스텀 헬스체크**
+
+[3. **커스텀 헬스체크**](#3-커스텀-헬스체크)
 ```bash
 # 애플리케이션별 커스텀 체크
 curl -f http://instance-ip/api/health/database || exit 1
 ```
 
 ### 헬스체크 설정 비교
+
+[헬스체크 설정 비교](#헬스체크-설정-비교)
 
 | 구분 | AWS ELB | GCP Load Balancer |
 |------|---------|-------------------|
@@ -119,9 +147,13 @@ curl -f http://instance-ip/api/health/database || exit 1
 
 ### 자가 치유의 개념
 
+[자가 치유의 개념](#자가-치유의-개념)
+
 자가 치유는 **장애가 발생한 인스턴스를 자동으로 감지하고 새로운 인스턴스로 교체하여 서비스 연속성을 유지하는 시스템**입니다.
 
 ### 자가 치유 프로세스
+
+[자가 치유 프로세스](#자가-치유-프로세스)
 
 ```mermaid
 sequenceDiagram
@@ -144,17 +176,25 @@ sequenceDiagram
 
 ### 자가 치유 시나리오
 
+[자가 치유 시나리오](#자가-치유-시나리오)
+
 #### 1. **인스턴스 장애**
+
+[1. **인스턴스 장애**](#1-인스턴스-장애)
 - 하드웨어 장애
 - 운영체제 크래시
 - 네트워크 연결 끊김
 
 #### 2. **애플리케이션 장애**
+
+[2. **애플리케이션 장애**](#2-애플리케이션-장애)
 - 애플리케이션 프로세스 종료
 - 메모리 부족
 - 데이터베이스 연결 실패
 
 #### 3. **자동 복구 과정**
+
+[3. **자동 복구 과정**](#3-자동-복구-과정)
 - 장애 감지 (헬스체크 실패)
 - 새 인스턴스 생성
 - 애플리케이션 배포
@@ -181,7 +221,11 @@ sequenceDiagram
 
 ### 1단계: 로드 밸런서와 오토스케일링 그룹 연동
 
+[1단계: 로드 밸런서와 오토스케일링 그룹 연동](#1단계-로드-밸런서와-오토스케일링-그룹-연동)
+
 #### AWS ELB와 ASG 연동
+
+[AWS ELB와 ASG 연동](#aws-elb와-asg-연동)
 ```bash
 # Target Group 생성
 aws elbv2 create-target-group \
@@ -214,6 +258,8 @@ aws autoscaling update-auto-scaling-group \
 ```
 
 #### GCP Load Balancer와 MIG 연동
+
+[GCP Load Balancer와 MIG 연동](#gcp-load-balancer와-mig-연동)
 ```bash
 # 백엔드 서비스 생성
 gcloud compute backend-services create web-backend-service \
@@ -236,7 +282,11 @@ gcloud compute instance-groups managed set-autohealing web-servers-mig \
 
 ### 2단계: 고급 헬스체크 설정
 
+[2단계: 고급 헬스체크 설정](#2단계-고급-헬스체크-설정)
+
 #### 애플리케이션 헬스체크 엔드포인트 생성
+
+[애플리케이션 헬스체크 엔드포인트 생성](#애플리케이션-헬스체크-엔드포인트-생성)
 
 **health-check.sh (AWS/GCP 공통)**
 ```bash
@@ -274,6 +324,8 @@ exit 0
 ```
 
 #### 헬스체크 웹 페이지 생성
+
+[헬스체크 웹 페이지 생성](#헬스체크-웹-페이지-생성)
 
 **health.html**
 ```html
@@ -316,7 +368,11 @@ exit 0
 
 ### 3단계: 모니터링 및 알림 설정
 
+[3단계: 모니터링 및 알림 설정](#3단계-모니터링-및-알림-설정)
+
 #### AWS CloudWatch 알림 설정
+
+[AWS CloudWatch 알림 설정](#aws-cloudwatch-알림-설정)
 ```bash
 # CloudWatch 알람 생성
 aws cloudwatch put-metric-alarm \
@@ -342,6 +398,8 @@ aws sns subscribe \
 ```
 
 #### GCP Cloud Monitoring 알림 설정
+
+[GCP Cloud Monitoring 알림 설정](#gcp-cloud-monitoring-알림-설정)
 ```bash
 # 알림 정책 생성
 gcloud alpha monitoring policies create \
@@ -370,7 +428,11 @@ EOF
 
 ### 4단계: 장애 시뮬레이션 및 복구 확인
 
+[4단계: 장애 시뮬레이션 및 복구 확인](#4단계-장애-시뮬레이션-및-복구-확인)
+
 #### 인스턴스 장애 시뮬레이션
+
+[인스턴스 장애 시뮬레이션](#인스턴스-장애-시뮬레이션)
 ```bash
 # AWS: 인스턴스 강제 종료
 INSTANCE_ID=$(aws autoscaling describe-auto-scaling-groups \
@@ -387,6 +449,8 @@ gcloud compute instances delete web-server-0001 \
 ```
 
 #### 복구 과정 모니터링
+
+[복구 과정 모니터링](#복구-과정-모니터링)
 ```bash
 # AWS: ASG 상태 모니터링
 watch -n 10 'aws autoscaling describe-auto-scaling-groups \
@@ -402,7 +466,11 @@ watch -n 10 'gcloud compute instance-groups managed list-instances web-servers-m
 
 ### 5단계: 애플리케이션 장애 시뮬레이션
 
+[5단계: 애플리케이션 장애 시뮬레이션](#5단계-애플리케이션-장애-시뮬레이션)
+
 #### 애플리케이션 프로세스 종료
+
+[애플리케이션 프로세스 종료](#애플리케이션-프로세스-종료)
 ```bash
 # AWS: HTTP 서비스 중지
 aws ssm send-command \
@@ -420,6 +488,8 @@ gcloud compute ssh web-server-0001 \
 ```
 
 #### 헬스체크 실패 및 복구 확인
+
+[헬스체크 실패 및 복구 확인](#헬스체크-실패-및-복구-확인)
 ```bash
 # 헬스체크 상태 확인
 curl -f http://<LOAD_BALANCER_IP>/health
@@ -440,7 +510,11 @@ gcloud compute backend-services get-health web-backend-service \
 
 ### 고급 헬스체크 설정
 
+[고급 헬스체크 설정](#고급-헬스체크-설정)
+
 #### AWS Target Group 고급 설정
+
+[AWS Target Group 고급 설정](#aws-target-group-고급-설정)
 ```bash
 # 고급 헬스체크 설정
 aws elbv2 modify-target-group \
@@ -459,6 +533,8 @@ aws elbv2 modify-target-group \
 ```
 
 #### GCP 백엔드 서비스 고급 설정
+
+[GCP 백엔드 서비스 고급 설정](#gcp-백엔드-서비스-고급-설정)
 ```bash
 # 고급 헬스체크 설정
 gcloud compute health-checks create http web-health-check \
@@ -479,7 +555,11 @@ gcloud compute backend-services update web-backend-service \
 
 ### 자동 복구 설정
 
+[자동 복구 설정](#자동-복구-설정)
+
 #### AWS ASG 자동 복구
+
+[AWS ASG 자동 복구](#aws-asg-자동-복구)
 ```bash
 # ASG 자동 복구 설정
 aws autoscaling update-auto-scaling-group \
@@ -496,6 +576,8 @@ aws autoscaling set-instance-protection \
 ```
 
 #### GCP MIG 자동 복구
+
+[GCP MIG 자동 복구](#gcp-mig-자동-복구)
 ```bash
 # MIG 자동 복구 설정
 gcloud compute instance-groups managed set-autohealing web-servers-mig \
@@ -513,16 +595,22 @@ gcloud compute instance-templates update web-server-template \
 ## ✅ 예상 결과
 
 ### 연동 동작
+
+[연동 동작](#연동-동작)
 - ASG/MIG에서 인스턴스 생성 시 자동으로 로드 밸런서에 등록
 - ASG/MIG에서 인스턴스 삭제 시 자동으로 로드 밸런서에서 제거
 - 트래픽이 정상 인스턴스로만 전달
 
 ### 헬스체크 동작
+
+[헬스체크 동작](#헬스체크-동작)
 - 정상 인스턴스는 Healthy 상태로 표시
 - 비정상 인스턴스는 Unhealthy 상태로 표시
 - 비정상 인스턴스로는 트래픽 전달 중단
 
 ### 자가 치유 동작
+
+[자가 치유 동작](#자가-치유-동작)
 - 인스턴스 장애 감지 후 자동으로 새 인스턴스 생성
 - 새 인스턴스가 헬스체크 통과 후 트래픽 전달 시작
 - 기존 비정상 인스턴스 자동 종료
@@ -533,6 +621,8 @@ gcloud compute instance-templates update web-server-template \
 ## 🚀 혼자 해보기
 
 ### 기본 과제
+
+[기본 과제](#기본-과제)
 1. **다양한 장애 시뮬레이션**: 네트워크 장애, 디스크 공간 부족, 메모리 부족 등을 시뮬레이션해 보세요.
 
 2. **헬스체크 임계값 조정**: 헬스체크 임계값을 조정하여 민감도를 변경해 보세요.
@@ -540,6 +630,8 @@ gcloud compute instance-templates update web-server-template \
 3. **알림 설정**: 다양한 알림 채널(SMS, Slack, Email)을 설정해 보세요.
 
 ### 고급 과제
+
+[고급 과제](#고급-과제)
 1. **커스텀 헬스체크**: 애플리케이션별 커스텀 헬스체크를 구현해 보세요.
 
 2. **다중 리전 복구**: 여러 리전에 걸친 자동 복구 시스템을 구축해 보세요.
@@ -549,6 +641,8 @@ gcloud compute instance-templates update web-server-template \
 ---
 
 ## ❓ 퀴즈
+
+[❓ 퀴즈](#퀴즈)
 
 1. **ASG와 ELB의 헬스체크는 어떤 차이가 있나요?**
 
@@ -562,6 +656,8 @@ gcloud compute instance-templates update web-server-template \
 
 ## ✅ 체크리스트
 
+[✅ 체크리스트](#체크리스트)
+
 - [ ] ASG/MIG가 로드 밸런서에 정상적으로 연결되었나요?
 - [ ] 헬스체크 기능이 활성화되었나요?
 - [ ] 인스턴스 강제 종료 시 새로운 인스턴스가 기동되었나요?
@@ -572,6 +668,8 @@ gcloud compute instance-templates update web-server-template \
 ---
 
 ## 📚 추가 학습 자료
+
+[📚 추가 학습 자료](#추가-학습-자료)
 
 - [AWS Auto Scaling 헬스체크 가이드](https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-health-checks.html)
 - [GCP Managed Instance Groups 가이드](https://cloud.google.com/compute/docs/instance-groups)
@@ -598,6 +696,8 @@ gcloud compute instance-templates update web-server-template \
 </div>
 
 ### 📧 연락처
+
+[📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 

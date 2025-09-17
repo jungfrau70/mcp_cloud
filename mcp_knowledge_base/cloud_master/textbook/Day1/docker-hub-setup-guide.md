@@ -3,6 +3,8 @@
 
 
 ## 📋 목차
+
+[📋 목차](#목차)
 1. [🐳 Docker Hub란?](#docker-hub란)
 2. [📝 Docker Hub 가입하기](#docker-hub-가입하기)
 3. [Personal Access Token 생성하기](#personal-access-token-생성하기)
@@ -15,15 +17,21 @@
 ## 🐳 Docker Hub란?
 
 ### Docker Hub 소개
+
+[Docker Hub 소개](#docker-hub-소개)
 Docker Hub는 **Docker 이미지를 저장하고 공유하는 클라우드 기반 레지스트리 서비스**입니다.
 
 ### Docker Hub의 주요 기능
+
+[Docker Hub의 주요 기능](#docker-hub의-주요-기능)
 - **이미지 저장**: Docker 이미지를 클라우드에 저장
 - **이미지 공유**: 다른 개발자들과 이미지 공유
 - **자동 빌드**: GitHub과 연동하여 자동으로 이미지 빌드
 - **버전 관리**: 이미지의 여러 버전 관리
 
 ### 왜 Docker Hub가 필요한가?
+
+[왜 Docker Hub가 필요한가?](#왜-docker-hub가-필요한가)
 - **GitHub Actions에서 사용**: CI/CD 파이프라인에서 이미지 푸시
 - **배포 시 사용**: 실제 서버에서 이미지 다운로드
 - **팀 협업**: 팀원들과 이미지 공유
@@ -33,10 +41,14 @@ Docker Hub는 **Docker 이미지를 저장하고 공유하는 클라우드 기�
 ## 📝 Docker Hub 가입하기
 
 ### 1단계: Docker Hub 웹사이트 접속
+
+[1단계: Docker Hub 웹사이트 접속](#1단계-docker-hub-웹사이트-접속)
 1. 웹 브라우저에서 [https://hub.docker.com](https://hub.docker.com) 접속
 2. 오른쪽 상단의 **"Sign Up"** 버튼 클릭
 
 ### 2단계: 계정 정보 입력
+
+[2단계: 계정 정보 입력](#2단계-계정-정보-입력)
 ```
 Username: your-username (고유한 사용자명)
 Email: your-email@example.com
@@ -49,6 +61,8 @@ Password: 안전한 비밀번호 입력
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 ### 4단계: 토큰 생성 및 복사
+
+[4단계: 토큰 생성 및 복사](#4단계-토큰-생성-및-복사)
 1. **"Generate"** 버튼 클릭
 2. 생성된 토큰을 **즉시 복사**하여 안전한 곳에 저장
 3. **⚠️ 중요**: 이 토큰은 다시 볼 수 없으므로 반드시 복사하세요!
@@ -63,14 +77,20 @@ dckr_pat_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
 ## 🔐 GitHub 시크릿 설정하기
 
 ### 1단계: GitHub 저장소 접속
+
+[1단계: GitHub 저장소 접속](#1단계-github-저장소-접속)
 1. GitHub에서 `actions-demo` 저장소 접속
 2. 상단 메뉴에서 **"Settings"** 클릭
 
 ### 2단계: Secrets and variables 메뉴 접속
+
+[2단계: Secrets and variables 메뉴 접속](#2단계-secrets-and-variables-메뉴-접속)
 1. 왼쪽 메뉴에서 **"Secrets and variables"** 클릭
 2. **"Actions"** 선택
 
 ### 3단계: 새 시크릿 생성
+
+[3단계: 새 시크릿 생성](#3단계-새-시크릿-생성)
 1. **"New repository secret"** 버튼 클릭
 2. 시크릿 정보 입력:
    ```
@@ -80,6 +100,8 @@ dckr_pat_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
 3. **"Add secret"** 버튼 클릭
 
 ### 4단계: 시크릿 확인
+
+[4단계: 시크릿 확인](#4단계-시크릿-확인)
 1. 시크릿 목록에서 `DOCKERHUB_TOKEN`이 생성되었는지 확인
 2. **"Update"** 또는 **"Delete"** 버튼으로 나중에 수정 가능
 
@@ -88,6 +110,8 @@ dckr_pat_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
 ## ✅ 설정 확인하기
 
 ### 1단계: 워크플로우 파일 확인
+
+[1단계: 워크플로우 파일 확인](#1단계-워크플로우-파일-확인)
 `.github/workflows/deploy.yml` 파일에서 다음 부분을 확인:
 
 ```yaml
@@ -112,6 +136,8 @@ dckr_pat_1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
 ```
 
 ### 2단계: 코드 푸시하여 테스트
+
+[2단계: 코드 푸시하여 테스트](#2단계-코드-푸시하여-테스트)
 ```bash
 # 변경사항 커밋
 git add .
@@ -120,11 +146,15 @@ git push origin main
 ```
 
 ### 3단계: GitHub Actions 실행 확인
+
+[3단계: GitHub Actions 실행 확인](#3단계-github-actions-실행-확인)
 1. GitHub 저장소 → **"Actions"** 탭
 2. **"Deploy to Docker Hub"** 워크플로우 실행 확인
 3. **"Build and push Docker image"** 단계에서 성공 확인
 
 ### 4단계: Docker Hub에서 이미지 확인
+
+[4단계: Docker Hub에서 이미지 확인](#4단계-docker-hub에서-이미지-확인)
 1. [https://hub.docker.com](https://hub.docker.com)에서 로그인
 2. **"Repositories"** 메뉴에서 `actions-demo` 저장소 확인
 3. 최신 이미지가 업로드되었는지 확인
@@ -135,7 +165,11 @@ git push origin main
 
 ### 자주 발생하는 문제들
 
+[자주 발생하는 문제들](#자주-발생하는-문제들)
+
 #### 1. Docker Hub 로그인 실패
+
+[1. Docker Hub 로그인 실패](#1-docker-hub-로그인-실패)
 ```
 Error: failed to push to registry: unauthorized
 ```
@@ -152,6 +186,8 @@ Error: failed to push to registry: unauthorized
 4. 새 토큰 생성 후 GitHub 시크릿 업데이트
 
 #### 2. 이미지 푸시 실패
+
+[2. 이미지 푸시 실패](#2-이미지-푸시-실패)
 ```
 Error: failed to push to registry: denied
 ```
@@ -166,6 +202,8 @@ Error: failed to push to registry: denied
 3. Docker Hub에서 해당 이름의 저장소가 있는지 확인
 
 #### 3. GitHub 시크릿 설정 실패
+
+[3. GitHub 시크릿 설정 실패](#3-github-시크릿-설정-실패)
 ```
 Error: secret not found
 ```
@@ -180,6 +218,8 @@ Error: secret not found
 3. 시크릿 이름이 정확한지 확인 (대소문자 구분)
 
 #### 4. 워크플로우 실행 안됨
+
+[4. 워크플로우 실행 안됨](#4-워크플로우-실행-안됨)
 **원인**:
 - 파일 경로 오류
 - YAML 문법 오류
@@ -193,15 +233,23 @@ Error: secret not found
 
 ## 📚 추가 자료
 
+[📚 추가 자료](#추가-자료)
+
 ### Docker Hub 공식 문서
+
+[Docker Hub 공식 문서](#docker-hub-공식-문서)
 - [Docker Hub 가이드](https://docs.docker.com/docker-hub/)
 - [Personal Access Tokens](https://docs.docker.com/docker-hub/access-tokens/)
 
 ### GitHub Actions 문서
+
+[GitHub Actions 문서](#github-actions-문서)
 - [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
 - [Docker Actions](https://github.com/marketplace?type=actions&query=docker)
 
 ### 유용한 링크
+
+[유용한 링크](#유용한-링크)
 - [Docker Hub](https://hub.docker.com)
 - [GitHub Actions Marketplace](https://github.com/marketplace?type=actions)
 
@@ -209,12 +257,18 @@ Error: secret not found
 
 ## 🎯 다음 단계
 
+[🎯 다음 단계](#다음-단계)
+
 ### 기본 설정 완료 후
+
+[기본 설정 완료 후](#기본-설정-완료-후)
 1. **Slack 알림 설정**: `SLACK_WEBHOOK_URL` 시크릿 추가
 2. **Codecov 설정**: `CODECOV_TOKEN` 시크릿 추가
 3. **고급 워크플로우**: AWS, GCP 배포 워크플로우 활성화
 
 ### 실습 프로젝트
+
+[실습 프로젝트](#실습-프로젝트)
 1. **로컬 테스트**: `docker run -p 3000:3000 YOUR_USERNAME/actions-demo:main-COMMIT_SHA`
 2. **이미지 태그 관리**: 버전별 태그 생성
 3. **자동 배포**: main 브랜치 푸시 시 자동 배포 확인
@@ -223,12 +277,18 @@ Error: secret not found
 
 ## 💡 팁
 
+[💡 팁](#팁)
+
 ### 보안 관련
+
+[보안 관련](#보안-관련)
 - **토큰 보안**: 토큰을 코드에 직접 입력하지 마세요
 - **정기 갱신**: 토큰을 정기적으로 갱신하세요
 - **권한 최소화**: 필요한 권한만 부여하세요
 
 ### 효율성 관련
+
+[효율성 관련](#효율성-관련)
 - **캐시 활용**: GitHub Actions 캐시를 활용하세요
 - **병렬 처리**: 여러 작업을 병렬로 실행하세요
 - **조건부 실행**: 필요한 경우에만 실행하도록 설정하세요
@@ -260,15 +320,23 @@ Error: secret not found
 ## Personal Access Token 생성하기
 
 ### 개요
+
+[개요](#개요)
 이 섹션에서는 Personal Access Token 생성하기에 대해 다룹니다.
 
 ### 주요 내용
+
+[주요 내용](#주요-내용)
 - [추가 예정] 상세 내용이 곧 추가될 예정입니다.
 
 ### 실습 가이드
+
+[실습 가이드](#실습-가이드)
 1. [추가 예정] 단계별 실습 가이드가 곧 제공될 예정입니다.
 
 ### 참고 자료
+
+[참고 자료](#참고-자료)
 - [추가 예정] 관련 참고 자료가 곧 추가될 예정입니다.
 
 ---

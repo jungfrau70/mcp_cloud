@@ -8,6 +8,8 @@
 
 ## 🎯 실습 목표
 
+[🎯 실습 목표](#실습-목표)
+
 이 실습을 통해 다음을 학습합니다:
 - Application Load Balancer (ALB) 고급 설정
 - Network Load Balancer (NLB) 구성
@@ -16,13 +18,19 @@
 
 ## 📋 사전 준비사항
 
+[📋 사전 준비사항](#사전-준비사항)
+
 - AWS 계정 (Free Tier 가능)
 - GCP 계정 ($300 크레딧)
 - 기본적인 로드 밸런싱 이해
 
 ## ⚖️ AWS Application Load Balancer 고급 설정
 
+[⚖️ AWS Application Load Balancer 고급 설정](#aws-application-load-balancer-고급-설정)
+
 ### 1단계: ALB 생성
+
+[1단계: ALB 생성](#1단계-alb-생성)
 
 ```bash
 # VPC ID 확인
@@ -68,6 +76,8 @@ aws elbv2 create-load-balancer \
 
 ### 2단계: Target Group 생성
 
+[2단계: Target Group 생성](#2단계-target-group-생성)
+
 ```bash
 # Web 서버 Target Group 생성
 aws elbv2 create-target-group \
@@ -97,6 +107,8 @@ aws elbv2 create-target-group \
 ```
 
 ### 3단계: 리스너 및 규칙 설정
+
+[3단계: 리스너 및 규칙 설정](#3단계-리스너-및-규칙-설정)
 
 ```bash
 # HTTP 리스너 생성
@@ -131,7 +143,11 @@ aws elbv2 create-rule \
 
 ## 🌐 AWS Network Load Balancer 구성
 
+[🌐 AWS Network Load Balancer 구성](#aws-network-load-balancer-구성)
+
 ### 1단계: NLB 생성
+
+[1단계: NLB 생성](#1단계-nlb-생성)
 
 ```bash
 # NLB 생성
@@ -166,7 +182,11 @@ aws elbv2 create-listener \
 
 ## ☁️ GCP Cloud Load Balancing 고급 설정
 
+[☁️ GCP Cloud Load Balancing 고급 설정](#gcp-cloud-load-balancing-고급-설정)
+
 ### 1단계: HTTP(S) Load Balancer 생성
+
+[1단계: HTTP(S) Load Balancer 생성](#1단계-https-load-balancer-생성)
 
 ```bash
 # 백엔드 서비스 생성
@@ -203,6 +223,8 @@ gcloud compute forwarding-rules create advanced-https-rule \
 
 ### 2단계: 고급 라우팅 설정
 
+[2단계: 고급 라우팅 설정](#2단계-고급-라우팅-설정)
+
 ```bash
 # 경로 매처 생성
 gcloud compute url-maps add-path-matcher advanced-url-map \
@@ -218,7 +240,11 @@ gcloud compute url-maps add-host-rule advanced-url-map \
 
 ## 🔍 Health Check 고급 설정
 
+[🔍 Health Check 고급 설정](#health-check-고급-설정)
+
 ### 1단계: AWS Health Check 설정
+
+[1단계: AWS Health Check 설정](#1단계-aws-health-check-설정)
 
 ```bash
 # 고급 Health Check 설정
@@ -236,6 +262,8 @@ aws elbv2 modify-target-group \
 ```
 
 ### 2단계: GCP Health Check 설정
+
+[2단계: GCP Health Check 설정](#2단계-gcp-health-check-설정)
 
 ```bash
 # HTTP Health Check 생성
@@ -259,7 +287,11 @@ gcloud compute health-checks create https advanced-https-health-check \
 
 ## 📈 Auto Scaling 연동
 
+[📈 Auto Scaling 연동](#auto-scaling-연동)
+
 ### 1단계: AWS Auto Scaling 설정
+
+[1단계: AWS Auto Scaling 설정](#1단계-aws-auto-scaling-설정)
 
 ```bash
 # Launch Template 생성
@@ -305,6 +337,8 @@ aws autoscaling put-scaling-policy \
 
 ### 2단계: GCP Auto Scaling 설정
 
+[2단계: GCP Auto Scaling 설정](#2단계-gcp-auto-scaling-설정)
+
 ```bash
 # 인스턴스 템플릿 생성
 gcloud compute instance-templates create advanced-template \
@@ -332,7 +366,11 @@ gcloud compute instance-groups managed set-autoscaling advanced-mig \
 
 ## 🧪 로드 밸런싱 테스트
 
+[🧪 로드 밸런싱 테스트](#로드-밸런싱-테스트)
+
 ### 1단계: 부하 테스트
+
+[1단계: 부하 테스트](#1단계-부하-테스트)
 
 ```bash
 # Apache Bench를 사용한 부하 테스트
@@ -350,6 +388,8 @@ done
 
 ### 2단계: 장애 시뮬레이션
 
+[2단계: 장애 시뮬레이션](#2단계-장애-시뮬레이션)
+
 ```bash
 # 인스턴스 중지
 aws ec2 stop-instances --instance-ids $INSTANCE_ID
@@ -366,7 +406,11 @@ curl -I http://LOAD_BALANCER_IP/
 
 ## 📊 모니터링 및 메트릭
 
+[📊 모니터링 및 메트릭](#모니터링-및-메트릭)
+
 ### 1단계: CloudWatch 메트릭 확인
+
+[1단계: CloudWatch 메트릭 확인](#1단계-cloudwatch-메트릭-확인)
 
 ```bash
 # ALB 메트릭 확인
@@ -392,6 +436,8 @@ aws cloudwatch get-metric-statistics \
 
 ### 2단계: GCP 모니터링 설정
 
+[2단계: GCP 모니터링 설정](#2단계-gcp-모니터링-설정)
+
 ```bash
 # 커스텀 메트릭 생성
 gcloud monitoring metrics-descriptors create \
@@ -407,7 +453,11 @@ gcloud alpha monitoring policies create \
 
 ## 📝 실습 결과 확인
 
+[📝 실습 결과 확인](#실습-결과-확인)
+
 ### 체크리스트
+
+[체크리스트](#체크리스트)
 
 - [ ] ALB 고급 설정 완료
 - [ ] NLB 구성 완료
@@ -419,6 +469,8 @@ gcloud alpha monitoring policies create \
 
 ### 성능 지표
 
+[성능 지표](#성능-지표)
+
 - **응답 시간**: 95% 요청이 200ms 이내
 - **가용성**: 99.9% 이상
 - **처리량**: 초당 1000 요청 처리
@@ -426,7 +478,11 @@ gcloud alpha monitoring policies create \
 
 ## 🔧 문제 해결
 
+[🔧 문제 해결](#문제-해결)
+
 ### 자주 발생하는 문제
+
+[자주 발생하는 문제](#자주-발생하는-문제)
 
 1. **Health Check 실패**
    - 보안 그룹/방화벽 규칙 확인
@@ -450,6 +506,8 @@ gcloud alpha monitoring policies create \
 
 ## 📚 추가 학습 자료
 
+[📚 추가 학습 자료](#추가-학습-자료)
+
 - [AWS Load Balancer 공식 문서](https://docs.aws.amazon.com/elasticloadbalancing/)
 - [GCP Load Balancing 공식 문서](https://cloud.google.com/load-balancing/docs)
 - [로드 밸런싱 모범 사례](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/load-balancing.html)
@@ -464,6 +522,8 @@ gcloud alpha monitoring policies create \
 </div>
 
 ### 📧 연락처
+
+[📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 

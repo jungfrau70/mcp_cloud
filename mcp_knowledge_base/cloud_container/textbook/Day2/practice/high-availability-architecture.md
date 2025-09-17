@@ -8,6 +8,8 @@
 
 ## 🎯 실습 목표
 
+[🎯 실습 목표](#실습-목표)
+
 이 실습을 통해 다음을 학습합니다:
 - Multi-AZ 아키텍처 구성
 - Multi-Region 아키텍처 구성
@@ -16,13 +18,19 @@
 
 ## 📋 사전 준비사항
 
+[📋 사전 준비사항](#사전-준비사항)
+
 - AWS 계정 (Free Tier 가능)
 - GCP 계정 ($300 크레딧)
 - 기본적인 클라우드 서비스 이해
 
 ## 🏗️ AWS Multi-AZ 아키텍처 구성
 
+[🏗️ AWS Multi-AZ 아키텍처 구성](#aws-multiaz-아키텍처-구성)
+
 ### 1단계: VPC 및 서브넷 생성
+
+[1단계: VPC 및 서브넷 생성](#1단계-vpc-및-서브넷-생성)
 
 ```bash
 # VPC 생성
@@ -64,6 +72,8 @@ aws ec2 create-subnet \
 
 ### 2단계: 인터넷 게이트웨이 및 NAT 게이트웨이 설정
 
+[2단계: 인터넷 게이트웨이 및 NAT 게이트웨이 설정](#2단계-인터넷-게이트웨이-및-nat-게이트웨이-설정)
+
 ```bash
 # 인터넷 게이트웨이 생성
 aws ec2 create-internet-gateway \
@@ -85,6 +95,8 @@ aws ec2 create-nat-gateway \
 ```
 
 ### 3단계: 라우팅 테이블 설정
+
+[3단계: 라우팅 테이블 설정](#3단계-라우팅-테이블-설정)
 
 ```bash
 # Public 라우팅 테이블 생성
@@ -112,7 +124,11 @@ aws ec2 create-route \
 
 ## ☁️ GCP Multi-Region 아키텍처 구성
 
+[☁️ GCP Multi-Region 아키텍처 구성](#gcp-multiregion-아키텍처-구성)
+
 ### 1단계: VPC 네트워크 생성
+
+[1단계: VPC 네트워크 생성](#1단계-vpc-네트워크-생성)
 
 ```bash
 # VPC 네트워크 생성
@@ -135,6 +151,8 @@ gcloud compute networks subnets create tokyo-subnet \
 
 ### 2단계: 방화벽 규칙 설정
 
+[2단계: 방화벽 규칙 설정](#2단계-방화벽-규칙-설정)
+
 ```bash
 # HTTP/HTTPS 허용 규칙
 gcloud compute firewall-rules create allow-http-https \
@@ -153,7 +171,11 @@ gcloud compute firewall-rules create allow-ssh \
 
 ## 🔄 고가용성 테스트
 
+[🔄 고가용성 테스트](#고가용성-테스트)
+
 ### 1단계: 애플리케이션 배포
+
+[1단계: 애플리케이션 배포](#1단계-애플리케이션-배포)
 
 ```bash
 # 서울 리전에 인스턴스 생성
@@ -176,6 +198,8 @@ gcloud compute instances create tokyo-app-1 \
 ```
 
 ### 2단계: 로드 밸런서 설정
+
+[2단계: 로드 밸런서 설정](#2단계-로드-밸런서-설정)
 
 ```bash
 # 백엔드 서비스 생성
@@ -205,7 +229,11 @@ gcloud compute instance-groups unmanaged add-instances tokyo-group \
 
 ## 📊 모니터링 설정
 
+[📊 모니터링 설정](#모니터링-설정)
+
 ### 1단계: CloudWatch 알람 설정
+
+[1단계: CloudWatch 알람 설정](#1단계-cloudwatch-알람-설정)
 
 ```bash
 # CPU 사용률 알람 생성
@@ -235,6 +263,8 @@ aws cloudwatch put-metric-alarm \
 
 ### 2단계: GCP 모니터링 설정
 
+[2단계: GCP 모니터링 설정](#2단계-gcp-모니터링-설정)
+
 ```bash
 # 알림 정책 생성
 gcloud alpha monitoring policies create \
@@ -247,7 +277,11 @@ gcloud alpha monitoring dashboards create \
 
 ## 🧪 장애 복구 테스트
 
+[🧪 장애 복구 테스트](#장애-복구-테스트)
+
 ### 1단계: 인스턴스 중지 테스트
+
+[1단계: 인스턴스 중지 테스트](#1단계-인스턴스-중지-테스트)
 
 ```bash
 # 서울 리전 인스턴스 중지
@@ -259,6 +293,8 @@ curl -I http://LOAD_BALANCER_IP
 
 ### 2단계: 자동 복구 테스트
 
+[2단계: 자동 복구 테스트](#2단계-자동-복구-테스트)
+
 ```bash
 # 인스턴스 재시작
 gcloud compute instances start seoul-app-1 --zone=asia-northeast3-a
@@ -269,7 +305,11 @@ curl -I http://LOAD_BALANCER_IP
 
 ## 📝 실습 결과 확인
 
+[📝 실습 결과 확인](#실습-결과-확인)
+
 ### 체크리스트
+
+[체크리스트](#체크리스트)
 
 - [ ] Multi-AZ VPC 구성 완료
 - [ ] Multi-Region GCP 구성 완료
@@ -279,13 +319,19 @@ curl -I http://LOAD_BALANCER_IP
 
 ### 성능 지표
 
+[성능 지표](#성능-지표)
+
 - **가용성**: 99.9% 이상
 - **복구 시간**: 5분 이내
 - **응답 시간**: 200ms 이내
 
 ## 🔧 문제 해결
 
+[🔧 문제 해결](#문제-해결)
+
 ### 자주 발생하는 문제
+
+[자주 발생하는 문제](#자주-발생하는-문제)
 
 1. **Health Check 실패**
    - 보안 그룹/방화벽 규칙 확인
@@ -301,6 +347,8 @@ curl -I http://LOAD_BALANCER_IP
 
 ## 📚 추가 학습 자료
 
+[📚 추가 학습 자료](#추가-학습-자료)
+
 - [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)
 - [GCP Architecture Center](https://cloud.google.com/architecture)
 - [고가용성 모범 사례](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/high-availability.html)
@@ -314,6 +362,8 @@ curl -I http://LOAD_BALANCER_IP
 </div>
 
 ### 📧 연락처
+
+[📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 

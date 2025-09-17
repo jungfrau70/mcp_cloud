@@ -10,12 +10,18 @@
 
 ## 📋 프로젝트 개요
 
+[📋 프로젝트 개요](#프로젝트-개요)
+
 ### 목적
+
+[목적](#목적)
 - Docker 컨테이너화 학습
 - 웹 애플리케이션 배포 실습
 - 멀티스테이지 빌드 최적화
 
 ### 기술 스택
+
+[기술 스택](#기술-스택)
 - **Backend**: Node.js, Express
 - **Frontend**: HTML, CSS, JavaScript
 - **Container**: Docker, Docker Compose
@@ -23,13 +29,19 @@
 
 ## 🚀 시작하기
 
+[🚀 시작하기](#시작하기)
+
 ### 1. 프로젝트 클론
+
+[1. 프로젝트 클론](#1-프로젝트-클론)
 ```bash
 git clone <repository-url>
 cd my-app
 ```
 
 ### 2. Docker로 실행
+
+[2. Docker로 실행](#2-docker로-실행)
 ```bash
 # 단일 컨테이너 실행
 docker build -t my-app .
@@ -40,6 +52,8 @@ docker-compose up -d
 ```
 
 ### 3. 로컬 개발 환경
+
+[3. 로컬 개발 환경](#3-로컬-개발-환경)
 ```bash
 # 의존성 설치
 npm install
@@ -52,6 +66,8 @@ npm run build
 ```
 
 ## 📁 프로젝트 구조
+
+[📁 프로젝트 구조](#프로젝트-구조)
 
 ```
 my-app/
@@ -74,7 +90,11 @@ my-app/
 
 ## 🐳 Docker 설정
 
+[🐳 Docker 설정](#docker-설정)
+
 ### Dockerfile (멀티스테이지 빌드)
+
+[Dockerfile (멀티스테이지 빌드)](#dockerfile-멀티스테이지-빌드)
 ```dockerfile
 # Build stage
 FROM node:18-alpine AS builder
@@ -93,6 +113,8 @@ CMD ["npm", "start"]
 ```
 
 ### Docker Compose
+
+[Docker Compose](#docker-compose)
 ```yaml
 version: '3.8'
 services:
@@ -123,7 +145,11 @@ volumes:
 
 ## 🔧 애플리케이션 기능
 
+[🔧 애플리케이션 기능](#애플리케이션-기능)
+
 ### API 엔드포인트
+
+[API 엔드포인트](#api-엔드포인트)
 - `GET /` - 홈페이지
 - `GET /health` - 헬스 체크
 - `GET /api/status` - 애플리케이션 상태
@@ -131,6 +157,8 @@ volumes:
 - `GET /api/data` - 데이터 조회
 
 ### 환경 변수
+
+[환경 변수](#환경-변수)
 ```bash
 NODE_ENV=production
 PORT=3000
@@ -140,7 +168,11 @@ LOG_LEVEL=info
 
 ## 📊 모니터링 및 로깅
 
+[📊 모니터링 및 로깅](#모니터링-및-로깅)
+
 ### 헬스 체크
+
+[헬스 체크](#헬스-체크)
 ```javascript
 app.get('/health', (req, res) => {
   res.status(200).json({
@@ -152,6 +184,8 @@ app.get('/health', (req, res) => {
 ```
 
 ### 로깅 설정
+
+[로깅 설정](#로깅-설정)
 ```javascript
 const winston = require('winston');
 
@@ -170,17 +204,25 @@ const logger = winston.createLogger({
 
 ## 🧪 테스트
 
+[🧪 테스트](#테스트)
+
 ### 단위 테스트
+
+[단위 테스트](#단위-테스트)
 ```bash
 npm test
 ```
 
 ### 통합 테스트
+
+[통합 테스트](#통합-테스트)
 ```bash
 npm run test:integration
 ```
 
 ### Docker 테스트
+
+[Docker 테스트](#docker-테스트)
 ```bash
 # 컨테이너 내부에서 테스트 실행
 docker exec -it my-app npm test
@@ -191,7 +233,11 @@ docker run --rm my-app npm test
 
 ## 🚀 배포
 
+[🚀 배포](#배포)
+
 ### AWS EC2 배포
+
+[AWS EC2 배포](#aws-ec2-배포)
 ```bash
 # EC2 인스턴스에 배포
 docker build -t my-app .
@@ -203,6 +249,8 @@ docker run -d -p 3000:3000 --name my-app my-app
 ```
 
 ### GCP Compute Engine 배포
+
+[GCP Compute Engine 배포](#gcp-compute-engine-배포)
 ```bash
 # GCP 인스턴스에 배포
 gcloud compute instances create-with-container my-app-instance \
@@ -213,12 +261,18 @@ gcloud compute instances create-with-container my-app-instance \
 
 ## 🔒 보안 설정
 
+[🔒 보안 설정](#보안-설정)
+
 ### Docker 보안
+
+[Docker 보안](#docker-보안)
 - 비루트 사용자로 실행
 - 최소 권한 원칙
 - 보안 스캔 실행
 
 ### 애플리케이션 보안
+
+[애플리케이션 보안](#애플리케이션-보안)
 - 입력 검증
 - SQL 인젝션 방지
 - XSS 방지
@@ -226,13 +280,19 @@ gcloud compute instances create-with-container my-app-instance \
 
 ## 📈 성능 최적화
 
+[📈 성능 최적화](#성능-최적화)
+
 ### Docker 최적화
+
+[Docker 최적화](#docker-최적화)
 - 멀티스테이지 빌드
 - .dockerignore 사용
 - 캐시 레이어 최적화
 - 이미지 크기 최소화
 
 ### 애플리케이션 최적화
+
+[애플리케이션 최적화](#애플리케이션-최적화)
 - 메모리 사용량 모니터링
 - CPU 사용량 최적화
 - 데이터베이스 쿼리 최적화
@@ -240,12 +300,16 @@ gcloud compute instances create-with-container my-app-instance \
 
 ## 📚 추가 자료
 
+[📚 추가 자료](#추가-자료)
+
 - [Docker 공식 문서](https://docs.docker.com/)
 - [Node.js 공식 문서](https://nodejs.org/docs/)
 - [Express.js 공식 문서](https://expressjs.com/)
 - [MongoDB 공식 문서](https://docs.mongodb.com/)
 
 ## 🤝 기여하기
+
+[🤝 기여하기](#기여하기)
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -255,9 +319,13 @@ gcloud compute instances create-with-container my-app-instance \
 
 ## 📄 라이선스
 
+[📄 라이선스](#라이선스)
+
 이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
 
 ## 📞 문의
+
+[📞 문의](#문의)
 
 프로젝트에 대한 문의사항이 있으시면 이슈를 생성해 주세요.
 
@@ -274,6 +342,8 @@ gcloud compute instances create-with-container my-app-instance \
 </div>
 
 ### 📧 연락처
+
+[📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 

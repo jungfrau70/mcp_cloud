@@ -7,6 +7,8 @@
 </div>
 
 ## 🎯 실습 목표
+
+[🎯 실습 목표](#실습-목표)
 - GitHub Actions의 기본 개념 이해
 - CI/CD 파이프라인 구축
 - 자동화된 테스트, 빌드, 배포 구현
@@ -14,12 +16,18 @@
 
 ## 📋 실습 환경 준비
 
+[📋 실습 환경 준비](#실습-환경-준비)
+
 ### 필수 계정 및 도구
+
+[필수 계정 및 도구](#필수-계정-및-도구)
 - **GitHub 계정**: Actions 사용을 위한 계정
 - **Docker Hub 계정**: 컨테이너 이미지 저장소 (선택사항)
 - **AWS/GCP 계정**: 클라우드 배포용 (선택사항)
 
 ### 프로젝트 준비
+
+[프로젝트 준비](#프로젝트-준비)
 ```bash
 # 새 프로젝트 디렉토리 생성
 mkdir github-actions-practice
@@ -34,7 +42,11 @@ git remote add origin https://github.com/username/github-actions-practice.git
 
 ## 🚀 실습 1: 기본 워크플로우 생성
 
+[🚀 실습 1: 기본 워크플로우 생성](#실습-1-기본-워크플로우-생성)
+
 ### 1. 프로젝트 파일 생성
+
+[1. 프로젝트 파일 생성](#1-프로젝트-파일-생성)
 
 **package.json**
 ```json
@@ -117,6 +129,8 @@ describe('App Tests', () => {
 
 ### 2. 기본 CI 워크플로우 생성
 
+[2. 기본 CI 워크플로우 생성](#2-기본-ci-워크플로우-생성)
+
 **.github/workflows/ci.yml**
 ```yaml
 name: CI Pipeline
@@ -163,7 +177,11 @@ jobs:
 
 ## 🚀 실습 2: Docker 이미지 자동 빌드
 
+[🚀 실습 2: Docker 이미지 자동 빌드](#실습-2-docker-이미지-자동-빌드)
+
 ### 1. Dockerfile 생성
+
+[1. Dockerfile 생성](#1-dockerfile-생성)
 
 **Dockerfile**
 ```dockerfile
@@ -195,6 +213,8 @@ CMD ["npm", "start"]
 ```
 
 ### 2. Docker 이미지 빌드 워크플로우
+
+[2. Docker 이미지 빌드 워크플로우](#2-docker-이미지-빌드-워크플로우)
 
 **.github/workflows/docker-build.yml**
 ```yaml
@@ -249,7 +269,11 @@ jobs:
 
 ## 🚀 실습 3: 자동 배포 워크플로우
 
+[🚀 실습 3: 자동 배포 워크플로우](#실습-3-자동-배포-워크플로우)
+
 ### 1. VM 배포 워크플로우
+
+[1. VM 배포 워크플로우](#1-vm-배포-워크플로우)
 
 **.github/workflows/deploy.yml**
 ```yaml
@@ -305,6 +329,8 @@ jobs:
 
 ### 2. 환경별 배포 워크플로우
 
+[2. 환경별 배포 워크플로우](#2-환경별-배포-워크플로우)
+
 **.github/workflows/deploy-environments.yml**
 ```yaml
 name: Deploy to Environments
@@ -354,7 +380,11 @@ jobs:
 
 ## 🚀 실습 4: 고급 워크플로우 기능
 
+[🚀 실습 4: 고급 워크플로우 기능](#실습-4-고급-워크플로우-기능)
+
 ### 1. 매트릭스 빌드
+
+[1. 매트릭스 빌드](#1-매트릭스-빌드)
 
 **.github/workflows/matrix-build.yml**
 ```yaml
@@ -403,6 +433,8 @@ jobs:
 ```
 
 ### 2. 조건부 실행
+
+[2. 조건부 실행](#2-조건부-실행)
 
 **.github/workflows/conditional.yml**
 ```yaml
@@ -467,7 +499,11 @@ jobs:
 
 ## 🚀 실습 5: 시크릿 및 환경 변수
 
+[🚀 실습 5: 시크릿 및 환경 변수](#실습-5-시크릿-및-환경-변수)
+
 ### 1. GitHub Secrets 설정
+
+[1. GitHub Secrets 설정](#1-github-secrets-설정)
 1. 저장소 Settings > Secrets and variables > Actions
 2. New repository secret 클릭
 3. 다음 시크릿들 추가:
@@ -481,6 +517,8 @@ jobs:
    - `GCP_SSH_KEY`: GCP SSH 키
 
 ### 2. 환경 변수 사용
+
+[2. 환경 변수 사용](#2-환경-변수-사용)
 
 **.github/workflows/secrets.yml**
 ```yaml
@@ -516,7 +554,11 @@ jobs:
 
 ## 🚀 실습 6: 아티팩트 및 캐시
 
+[🚀 실습 6: 아티팩트 및 캐시](#실습-6-아티팩트-및-캐시)
+
 ### 1. 아티팩트 업로드/다운로드
+
+[1. 아티팩트 업로드/다운로드](#1-아티팩트-업로드다운로드)
 
 **.github/workflows/artifacts.yml**
 ```yaml
@@ -574,6 +616,8 @@ jobs:
 
 ### 2. 캐시 사용
 
+[2. 캐시 사용](#2-캐시-사용)
+
 **.github/workflows/cache.yml**
 ```yaml
 name: Cache Usage
@@ -619,6 +663,8 @@ jobs:
 
 ## 🎯 실습 완료 체크리스트
 
+[🎯 실습 완료 체크리스트](#실습-완료-체크리스트)
+
 - [ ] 기본 CI 워크플로우 생성
 - [ ] Docker 이미지 자동 빌드
 - [ ] VM 자동 배포
@@ -630,12 +676,16 @@ jobs:
 
 ## 📚 추가 학습 자료
 
+[📚 추가 학습 자료](#추가-학습-자료)
+
 - [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
 - [GitHub Actions Marketplace](https://github.com/marketplace?type=actions)
 - [GitHub Actions 예제](https://github.com/actions/starter-workflows)
 - [Docker Actions](https://github.com/docker/build-push-action)
 
 ## 🚀 다음 단계
+
+[🚀 다음 단계](#다음-단계)
 
 - **VM 배포**: 클라우드 환경에 애플리케이션 배포
 - **고급 CI/CD**: 복잡한 배포 파이프라인 구축

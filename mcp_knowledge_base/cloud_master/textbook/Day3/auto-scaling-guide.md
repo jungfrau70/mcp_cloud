@@ -9,6 +9,8 @@
 
 
 ## 📋 목차
+
+[📋 목차](#목차)
 1. [오토 스케일링 개념 이해](#오토-스케일링-개념-이해)
 2. [스케일링 전략](#스케일링-전략)
 3. [AWS ASG vs GCP MIG 비교](#aws-asg-vs-gcp-mig-비교)
@@ -25,26 +27,38 @@
 
 ### 오토 스케일링(Auto Scaling)이란?
 
+[오토 스케일링(Auto Scaling)이란?](#오토-스케일링auto-scaling이란)
+
 오토 스케일링은 **서버 부하나 트래픽 변화에 따라 필요한 인스턴스 수를 자동으로 증감시켜 주는 클라우드의 핵심 기능**입니다.
 
 ### 오토 스케일링의 필요성
 
+[오토 스케일링의 필요성](#오토-스케일링의-필요성)
+
 #### 1. **트래픽 변동성**
+
+[1. **트래픽 변동성**](#1-트래픽-변동성)
 - 갑작스러운 트래픽 증가 (블랙프라이데이, 이벤트 등)
 - 시간대별 트래픽 변화 (업무시간 vs 야간)
 - 계절별 트래픽 변화
 
 #### 2. **비용 효율성**
+
+[2. **비용 효율성**](#2-비용-효율성)
 - 필요할 때만 리소스 사용
 - 사용하지 않는 시간에 리소스 자동 해제
 - 과도한 리소스 프로비저닝 방지
 
 #### 3. **성능 보장**
+
+[3. **성능 보장**](#3-성능-보장)
 - 트래픽 증가 시 자동으로 서버 추가
 - 응답 시간 및 처리량 유지
 - 사용자 경험 향상
 
 ### 스케일링 유형
+
+[스케일링 유형](#스케일링-유형)
 
 ```mermaid
 graph TB
@@ -66,13 +80,19 @@ graph TB
 
 ### 스케일 아웃 vs 스케일 인
 
+[스케일 아웃 vs 스케일 인](#스케일-아웃-vs-스케일-인)
+
 #### **스케일 아웃 (Scale Out)**
+
+[**스케일 아웃 (Scale Out)**](#스케일-아웃-scale-out)
 - **정의**: 인스턴스 수를 증가시키는 것
 - **트리거**: CPU 사용률 증가, 메모리 사용률 증가, 요청 수 증가
 - **장점**: 무중단 확장, 높은 가용성
 - **단점**: 로드 밸런싱 필요, 관리 복잡도 증가
 
 #### **스케일 인 (Scale In)**
+
+[**스케일 인 (Scale In)**](#스케일-인-scale-in)
 - **정의**: 인스턴스 수를 감소시키는 것
 - **트리거**: CPU 사용률 감소, 메모리 사용률 감소, 요청 수 감소
 - **장점**: 비용 절약, 리소스 효율성
@@ -80,17 +100,25 @@ graph TB
 
 ### 스케일링 정책
 
+[스케일링 정책](#스케일링-정책)
+
 #### 1. **예측적 스케일링 (Predictive Scaling)**
+
+[1. **예측적 스케일링 (Predictive Scaling)**](#1-예측적-스케일링-predictive-scaling)
 - 과거 데이터를 기반으로 미래 트래픽 예측
 - 사전에 리소스 확보
 - 예: 매일 오전 9시에 인스턴스 수 증가
 
 #### 2. **반응적 스케일링 (Reactive Scaling)**
+
+[2. **반응적 스케일링 (Reactive Scaling)**](#2-반응적-스케일링-reactive-scaling)
 - 현재 메트릭을 기반으로 즉시 대응
 - 실시간 트래픽 변화에 대응
 - 예: CPU 사용률 70% 초과 시 인스턴스 추가
 
 #### 3. **스케줄 기반 스케일링 (Scheduled Scaling)**
+
+[3. **스케줄 기반 스케일링 (Scheduled Scaling)**](#3-스케줄-기반-스케일링-scheduled-scaling)
 - 미리 정의된 시간에 스케일링 실행
 - 예측 가능한 트래픽 패턴에 적합
 - 예: 업무시간에 인스턴스 수 증가
@@ -100,6 +128,8 @@ graph TB
 ## ⚖️ AWS ASG vs GCP MIG 비교
 
 ### 기능 비교표
+
+[기능 비교표](#기능-비교표)
 
 | 구분 | AWS Auto Scaling Group (ASG) | GCP Managed Instance Group (MIG) |
 |------|------------------------------|-----------------------------------|
@@ -115,7 +145,11 @@ graph TB
 
 ### 아키텍처 비교
 
+[아키텍처 비교](#아키텍처-비교)
+
 #### AWS ASG 아키텍처
+
+[AWS ASG 아키텍처](#aws-asg-아키텍처)
 ```mermaid
 graph TB
     A[CloudWatch 메트릭] --> B[Auto Scaling Group]
@@ -132,6 +166,8 @@ graph TB
 ```
 
 #### GCP MIG 아키텍처
+
+[GCP MIG 아키텍처](#gcp-mig-아키텍처)
 ```mermaid
 graph TB
     A[Cloud Monitoring 메트릭] --> B[Managed Instance Group]
@@ -149,6 +185,8 @@ graph TB
 
 ### 스케일링 정책 비교
 
+[스케일링 정책 비교](#스케일링-정책-비교)
+
 | 정책 유형 | AWS ASG | GCP MIG |
 |-----------|---------|---------|
 | **CPU 기반** | ✅ | ✅ |
@@ -165,25 +203,35 @@ graph TB
 
 ### 기본 메트릭
 
+[기본 메트릭](#기본-메트릭)
+
 #### 1. **CPU 사용률**
+
+[1. **CPU 사용률**](#1-cpu-사용률)
 - **임계값**: 70-80%
 - **스케일 아웃**: CPU > 70%
 - **스케일 인**: CPU < 30%
 - **적용 사례**: CPU 집약적 애플리케이션
 
 #### 2. **메모리 사용률**
+
+[2. **메모리 사용률**](#2-메모리-사용률)
 - **임계값**: 80-90%
 - **스케일 아웃**: Memory > 80%
 - **스케일 인**: Memory < 50%
 - **적용 사례**: 메모리 집약적 애플리케이션
 
 #### 3. **네트워크 사용률**
+
+[3. **네트워크 사용률**](#3-네트워크-사용률)
 - **임계값**: 80%
 - **스케일 아웃**: Network > 80%
 - **스케일 인**: Network < 30%
 - **적용 사례**: 네트워크 집약적 애플리케이션
 
 #### 4. **요청 수 (Request Count)**
+
+[4. **요청 수 (Request Count)**](#4-요청-수-request-count)
 - **임계값**: 1000 req/min
 - **스케일 아웃**: Requests > 1000
 - **스케일 인**: Requests < 300
@@ -191,7 +239,11 @@ graph TB
 
 ### 커스텀 메트릭
 
+[커스텀 메트릭](#커스텀-메트릭)
+
 #### AWS CloudWatch 커스텀 메트릭
+
+[AWS CloudWatch 커스텀 메트릭](#aws-cloudwatch-커스텀-메트릭)
 ```bash
 # 커스텀 메트릭 발송
 aws cloudwatch put-metric-data \
@@ -200,6 +252,8 @@ aws cloudwatch put-metric-data \
 ```
 
 #### GCP Cloud Monitoring 커스텀 메트릭
+
+[GCP Cloud Monitoring 커스텀 메트릭](#gcp-cloud-monitoring-커스텀-메트릭)
 ```bash
 # 커스텀 메트릭 발송
 gcloud logging write my-app-log \
@@ -227,7 +281,11 @@ gcloud logging write my-app-log \
 
 ### 1단계: 인스턴스 템플릿 준비
 
+[1단계: 인스턴스 템플릿 준비](#1단계-인스턴스-템플릿-준비)
+
 #### AWS Launch Template 생성
+
+[AWS Launch Template 생성](#aws-launch-template-생성)
 ```bash
 # Launch Template 생성
 aws ec2 create-launch-template \
@@ -245,6 +303,8 @@ aws ec2 create-launch-template \
 ```
 
 #### GCP Instance Template 생성
+
+[GCP Instance Template 생성](#gcp-instance-template-생성)
 ```bash
 # Instance Template 생성
 gcloud compute instance-templates create web-server-template \
@@ -257,6 +317,8 @@ gcloud compute instance-templates create web-server-template \
 ```
 
 #### 부하 생성 스크립트
+
+[부하 생성 스크립트](#부하-생성-스크립트)
 
 **user-data.sh (AWS)**
 ```bash
@@ -380,7 +442,11 @@ nohup /home/load-generator.sh &
 
 ### 2단계: AWS Auto Scaling Group 생성
 
+[2단계: AWS Auto Scaling Group 생성](#2단계-aws-auto-scaling-group-생성)
+
 #### ASG 생성
+
+[ASG 생성](#asg-생성)
 ```bash
 # Auto Scaling Group 생성
 aws autoscaling create-auto-scaling-group \
@@ -410,7 +476,11 @@ aws autoscaling put-scaling-policy \
 
 ### 3단계: GCP Managed Instance Group 생성
 
+[3단계: GCP Managed Instance Group 생성](#3단계-gcp-managed-instance-group-생성)
+
 #### MIG 생성
+
+[MIG 생성](#mig-생성)
 ```bash
 # Managed Instance Group 생성
 gcloud compute instance-groups managed create web-servers-mig \
@@ -430,7 +500,11 @@ gcloud compute instance-groups managed set-autoscaling web-servers-mig \
 
 ### 4단계: 부하 테스트 및 스케일링 확인
 
+[4단계: 부하 테스트 및 스케일링 확인](#4단계-부하-테스트-및-스케일링-확인)
+
 #### 부하 테스트 실행
+
+[부하 테스트 실행](#부하-테스트-실행)
 ```bash
 # Apache Bench를 사용한 부하 테스트
 # 여러 인스턴스에 동시 요청
@@ -443,6 +517,8 @@ watch -n 5 'curl -s http://<LOAD_BALANCER_IP>/cpu-api | jq .cpu'
 ```
 
 #### 스케일링 상태 확인
+
+[스케일링 상태 확인](#스케일링-상태-확인)
 ```bash
 # AWS ASG 상태 확인
 aws autoscaling describe-auto-scaling-groups \
@@ -455,7 +531,11 @@ gcloud compute instance-groups managed describe web-servers-mig \
 
 ### 5단계: 스케일 인 확인
 
+[5단계: 스케일 인 확인](#5단계-스케일-인-확인)
+
 #### 부하 제거
+
+[부하 제거](#부하-제거)
 ```bash
 # 부하 테스트 중지
 pkill ab
@@ -475,6 +555,8 @@ gcloud compute ssh web-server-0001 --zone=us-central1-a --command="pkill stress-
 ```
 
 #### 스케일 인 확인
+
+[스케일 인 확인](#스케일-인-확인)
 ```bash
 # 5분 후 인스턴스 수 확인
 sleep 300
@@ -495,7 +577,11 @@ gcloud compute instance-groups managed list-instances web-servers-mig \
 
 ### 고급 스케일링 정책
 
+[고급 스케일링 정책](#고급-스케일링-정책)
+
 #### AWS 다중 메트릭 스케일링
+
+[AWS 다중 메트릭 스케일링](#aws-다중-메트릭-스케일링)
 ```bash
 # CPU와 메모리 기반 스케일링 정책
 aws autoscaling put-scaling-policy \
@@ -519,6 +605,8 @@ aws autoscaling put-scaling-policy \
 ```
 
 #### GCP 커스텀 메트릭 스케일링
+
+[GCP 커스텀 메트릭 스케일링](#gcp-커스텀-메트릭-스케일링)
 ```bash
 # 커스텀 메트릭 기반 스케일링
 gcloud compute instance-groups managed set-autoscaling web-servers-mig \
@@ -531,7 +619,11 @@ gcloud compute instance-groups managed set-autoscaling web-servers-mig \
 
 ### 스케줄 기반 스케일링
 
+[스케줄 기반 스케일링](#스케줄-기반-스케일링)
+
 #### AWS 스케줄 기반 스케일링
+
+[AWS 스케줄 기반 스케일링](#aws-스케줄-기반-스케일링)
 ```bash
 # 업무시간 스케일링 (오전 9시)
 aws autoscaling put-scheduled-update-group-action \
@@ -551,6 +643,8 @@ aws autoscaling put-scheduled-update-group-action \
 ```
 
 #### GCP 스케줄 기반 스케일링
+
+[GCP 스케줄 기반 스케일링](#gcp-스케줄-기반-스케일링)
 ```bash
 # 업무시간 스케일링
 gcloud compute instance-groups managed set-autoscaling web-servers-mig \
@@ -569,18 +663,24 @@ gcloud compute instance-groups managed set-autoscaling web-servers-mig \
 ## ✅ 예상 결과
 
 ### 스케일 아웃 동작
+
+[스케일 아웃 동작](#스케일-아웃-동작)
 - CPU 사용률 70% 초과 시 인스턴스 수 증가
 - AWS ASG: DesiredCapacity가 2 → 3 → 4로 증가
 - GCP MIG: 인스턴스 수가 2 → 3 → 4로 증가
 - 새 인스턴스가 자동으로 로드 밸런서에 등록
 
 ### 스케일 인 동작
+
+[스케일 인 동작](#스케일-인-동작)
 - CPU 사용률 30% 미만 시 인스턴스 수 감소
 - AWS ASG: DesiredCapacity가 4 → 3 → 2로 감소
 - GCP MIG: 인스턴스 수가 4 → 3 → 2로 감소
 - 불필요한 인스턴스가 자동으로 종료
 
 ### 비용 절약
+
+[비용 절약](#비용-절약)
 - 부하가 없는 시간에 인스턴스 수 최소화
 - 필요한 만큼만 리소스 사용
 - 자동으로 비용 최적화
@@ -590,6 +690,8 @@ gcloud compute instance-groups managed set-autoscaling web-servers-mig \
 ## 🚀 혼자 해보기
 
 ### 기본 과제
+
+[기본 과제](#기본-과제)
 1. **다른 메트릭 실험**: CPU 대신 메모리 사용률이나 네트워크 사용률로 스케일링 정책을 설정해 보세요.
 
 2. **임계값 조정**: 스케일 아웃/인 임계값을 조정하여 스케일링 민감도를 변경해 보세요.
@@ -597,6 +699,8 @@ gcloud compute instance-groups managed set-autoscaling web-servers-mig \
 3. **쿨다운 시간 조정**: 스케일링 쿨다운 시간을 조정하여 스케일링 빈도를 제어해 보세요.
 
 ### 고급 과제
+
+[고급 과제](#고급-과제)
 1. **예측적 스케일링**: AWS의 예측적 스케일링을 설정하여 미래 트래픽을 예측해 보세요.
 
 2. **커스텀 메트릭**: 애플리케이션별 커스텀 메트릭을 생성하여 스케일링 정책을 설정해 보세요.
@@ -606,6 +710,8 @@ gcloud compute instance-groups managed set-autoscaling web-servers-mig \
 ---
 
 ## ❓ 퀴즈
+
+[❓ 퀴즈](#퀴즈)
 
 1. **Auto Scaling의 스케일 아웃과 스케일 인이 의미하는 바를 설명해 보세요.**
 
@@ -619,6 +725,8 @@ gcloud compute instance-groups managed set-autoscaling web-servers-mig \
 
 ## ✅ 체크리스트
 
+[✅ 체크리스트](#체크리스트)
+
 - [ ] ASG/MIG가 생성되어 최소/최대 용량이 올바르게 설정되었나요?
 - [ ] 스케일링 정책이 CPU 사용률 기반으로 설정되었나요?
 - [ ] 부하 테스트를 통해 인스턴스 수가 증가했나요?
@@ -629,6 +737,8 @@ gcloud compute instance-groups managed set-autoscaling web-servers-mig \
 ---
 
 ## 📚 추가 학습 자료
+
+[📚 추가 학습 자료](#추가-학습-자료)
 
 - [AWS Auto Scaling 공식 문서](https://docs.aws.amazon.com/autoscaling/)
 - [GCP Managed Instance Groups 공식 문서](https://cloud.google.com/compute/docs/instance-groups)
@@ -650,6 +760,8 @@ gcloud compute instance-groups managed set-autoscaling web-servers-mig \
 </div>
 
 ### 📧 연락처
+
+[📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 

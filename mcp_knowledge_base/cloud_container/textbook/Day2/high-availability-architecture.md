@@ -7,14 +7,20 @@
 </div>
 
 ## 개요
+
+[개요](#개요)
 이 가이드는 Cloud Container 2일차의 고가용성 아키텍처 설계 실습을 위한 상세 가이드입니다.
 
 ## 학습 목표
+
+[학습 목표](#학습-목표)
 - Multi-AZ/Multi-Region 아키텍처 이해
 - 고가용성 설계 원칙 학습
 - 실제 서비스 시나리오 아키텍처 구현
 
 ## 실습 내용
+
+[실습 내용](#실습-내용)
 1. **Multi-AZ 구성**
    - AWS: 여러 가용 영역에 리소스 분산
    - GCP: 여러 리전에 리소스 분산
@@ -28,6 +34,8 @@
    - Auto Scaling 정책 구성
 
 ## 참고 자료
+
+[참고 자료](#참고-자료)
 - [AWS 고가용성 가이드](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/high-availability.html)
 - [GCP 고가용성 가이드](https://cloud.google.com/architecture/framework/reliability/design-principles)
 
@@ -40,6 +48,8 @@
 </div>
 
 ### 📧 연락처
+
+[📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 

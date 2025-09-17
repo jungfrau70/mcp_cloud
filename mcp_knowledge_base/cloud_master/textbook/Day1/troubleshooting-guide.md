@@ -9,6 +9,8 @@
 
 
 ## 📋 목차
+
+[📋 목차](#목차)
 1. [Docker 관련 문제](#docker-관련-문제)
 2. [GitHub Actions 관련 문제](#github-actions-관련-문제)
 3. [AWS ECS 관련 문제](#aws-ecs-관련-문제)
@@ -25,17 +27,25 @@
 
 ### 문제 1: Docker 빌드 실패
 
+[문제 1: Docker 빌드 실패](#문제-1-docker-빌드-실패)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 ERROR: failed to solve: failed to compute cache key: failed to calculate checksum of ref
 ```
 
 #### 원인
+
+[원인](#원인)
 - Dockerfile 문법 오류
 - 베이스 이미지가 존재하지 않음
 - 네트워크 연결 문제
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. Dockerfile 문법 확인
 docker build --no-cache -t my-app .
@@ -49,17 +59,25 @@ docker run --rm alpine ping -c 3 google.com
 
 ### 문제 2: 컨테이너 시작 실패
 
+[문제 2: 컨테이너 시작 실패](#문제-2-컨테이너-시작-실패)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 ERROR: container exited with code 1
 ```
 
 #### 원인
+
+[원인](#원인)
 - 애플리케이션 코드 오류
 - 환경변수 설정 문제
 - 포트 충돌
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. 컨테이너 로그 확인
 docker logs <container_id>
@@ -73,17 +91,25 @@ docker run -e DEBUG=1 my-app
 
 ### 문제 3: Docker Compose 서비스 시작 실패
 
+[문제 3: Docker Compose 서비스 시작 실패](#문제-3-docker-compose-서비스-시작-실패)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 ERROR: for web  Cannot start service web: driver failed programming external connectivity
 ```
 
 #### 원인
+
+[원인](#원인)
 - 포트 충돌
 - 네트워크 설정 문제
 - 볼륨 마운트 오류
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. 포트 사용 확인
 netstat -tulpn | grep :3000
@@ -102,17 +128,25 @@ docker-compose up -d
 
 ### 문제 1: 워크플로우 실행 실패
 
+[문제 1: 워크플로우 실행 실패](#문제-1-워크플로우-실행-실패)
+
 #### 증상
+
+[증상](#증상)
 ```yaml
 Error: Process completed with exit code 1
 ```
 
 #### 원인
+
+[원인](#원인)
 - 시크릿 설정 누락
 - 권한 부족
 - 워크플로우 문법 오류
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. 시크릿 확인
 # GitHub Repository → Settings → Secrets and variables → Actions
@@ -126,16 +160,24 @@ Error: Process completed with exit code 1
 
 ### 문제 2: Docker Hub 푸시 실패
 
+[문제 2: Docker Hub 푸시 실패](#문제-2-docker-hub-푸시-실패)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 Error: denied: requested access to the resource is denied
 ```
 
 #### 원인
+
+[원인](#원인)
 - Docker Hub 토큰 누락 또는 만료
 - 저장소 권한 부족
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. Docker Hub 토큰 재생성
 # Docker Hub → Account Settings → Security → New Access Token
@@ -150,16 +192,24 @@ Error: denied: requested access to the resource is denied
 
 ### 문제 1: AWS ECS 배포 실패
 
+[문제 1: AWS ECS 배포 실패](#문제-1-aws-ecs-배포-실패)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 Error: User is not authorized to perform: ecs:UpdateService
 ```
 
 #### 원인
+
+[원인](#원인)
 - IAM 권한 부족
 - 액세스 키 만료
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. IAM 정책 확인
 aws iam list-attached-user-policies --user-name github-actions-deploy
@@ -171,16 +221,24 @@ aws iam list-attached-user-policies --user-name github-actions-deploy
 
 ### 문제 2: GCP Cloud Run 배포 실패
 
+[문제 2: GCP Cloud Run 배포 실패](#문제-2-gcp-cloud-run-배포-실패)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 Error: Permission 'run.services.create' denied
 ```
 
 #### 원인
+
+[원인](#원인)
 - 서비스 계정 권한 부족
 - API 미활성화
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. 서비스 계정 권한 확인
 gcloud projects get-iam-policy PROJECT_ID
@@ -200,7 +258,11 @@ gcloud services enable run.googleapis.com
 
 ### 문제 1: AWS와 GCP 동시 배포 실패
 
+[문제 1: AWS와 GCP 동시 배포 실패](#문제-1-aws와-gcp-동시-배포-실패)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 # AWS 배포는 성공, GCP 배포는 실패
 AWS ECS Status: success
@@ -208,10 +270,14 @@ GCP Cloud Run Status: failure
 ```
 
 #### 원인
+
+[원인](#원인)
 - 클라우드별 독립적인 권한 문제
 - 네트워크 연결 문제
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. 각 클라우드별 권한 독립 확인
 # AWS: IAM 정책 확인
@@ -223,16 +289,24 @@ GCP Cloud Run Status: failure
 
 ### 문제 2: Docker 이미지 태그 불일치
 
+[문제 2: Docker 이미지 태그 불일치](#문제-2-docker-이미지-태그-불일치)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 Error: image not found in registry
 ```
 
 #### 원인
+
+[원인](#원인)
 - 이미지 태그 불일치
 - 레지스트리 동기화 문제
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. 이미지 태그 확인
 docker images | grep actions-demo
@@ -247,17 +321,25 @@ docker images | grep actions-demo
 
 ### 문제 1: 워크플로우 실행 실패
 
+[문제 1: 워크플로우 실행 실패](#문제-1-워크플로우-실행-실패)
+
 #### 증상
+
+[증상](#증상)
 ```yaml
 Error: Process completed with exit code 1
 ```
 
 #### 원인
+
+[원인](#원인)
 - YAML 문법 오류
 - Secrets 설정 누락
 - 권한 부족
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```yaml
 # 1. YAML 문법 검증
 name: Test Workflow
@@ -284,17 +366,25 @@ permissions:
 
 ### 문제 2: Docker 이미지 빌드 실패
 
+[문제 2: Docker 이미지 빌드 실패](#문제-2-docker-이미지-빌드-실패)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 ERROR: failed to solve: failed to compute cache key
 ```
 
 #### 원인
+
+[원인](#원인)
 - Dockerfile 경로 오류
 - 컨텍스트 문제
 - 캐시 문제
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```yaml
 # 1. 올바른 컨텍스트 설정
 - name: Build Docker image
@@ -313,17 +403,25 @@ ERROR: failed to solve: failed to compute cache key
 
 ### 문제 3: AWS/GCP 인증 실패
 
+[문제 3: AWS/GCP 인증 실패](#문제-3-awsgcp-인증-실패)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 ERROR: The security token included in the request is invalid
 ```
 
 #### 원인
+
+[원인](#원인)
 - 잘못된 자격증명
 - 만료된 토큰
 - 권한 부족
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```yaml
 # 1. AWS 자격증명 확인
 - name: Configure AWS credentials
@@ -348,17 +446,25 @@ ERROR: The security token included in the request is invalid
 
 ### 문제 1: ECS 서비스 시작 실패
 
+[문제 1: ECS 서비스 시작 실패](#문제-1-ecs-서비스-시작-실패)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 ERROR: Service was unable to place a task
 ```
 
 #### 원인
+
+[원인](#원인)
 - 리소스 부족
 - 보안 그룹 설정 문제
 - 서브넷 설정 문제
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. 클러스터 용량 확인
 aws ecs describe-clusters --clusters my-cluster
@@ -372,17 +478,25 @@ aws ec2 describe-subnets --subnet-ids subnet-12345
 
 ### 문제 2: ECR 이미지 푸시 실패
 
+[문제 2: ECR 이미지 푸시 실패](#문제-2-ecr-이미지-푸시-실패)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 ERROR: no basic auth credentials
 ```
 
 #### 원인
+
+[원인](#원인)
 - ECR 로그인 실패
 - 권한 부족
 - 리포지토리 존재하지 않음
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. ECR 로그인
 aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.us-west-1.amazonaws.com
@@ -396,17 +510,25 @@ aws ecr describe-repositories --repository-names my-app
 
 ### 문제 3: ECS 태스크 중지
 
+[문제 3: ECS 태스크 중지](#문제-3-ecs-태스크-중지)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 ERROR: Task stopped with exit code 1
 ```
 
 #### 원인
+
+[원인](#원인)
 - 애플리케이션 오류
 - 환경변수 문제
 - 헬스체크 실패
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. 태스크 로그 확인
 aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name ecs/my-app/<task-id>
@@ -422,19 +544,29 @@ aws ecs describe-services --cluster my-cluster --services my-app-service
 
 ## ☸️ GCP GKE 관련 문제
 
+[☸️ GCP GKE 관련 문제](#gcp-gke-관련-문제)
+
 ### 문제 1: GKE 클러스터 생성 실패
 
+[문제 1: GKE 클러스터 생성 실패](#문제-1-gke-클러스터-생성-실패)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 ERROR: (gcloud.container.clusters.create) ResponseError: code=400, message=Insufficient regional quota
 ```
 
 #### 원인
+
+[원인](#원인)
 - 할당량 초과
 - 권한 부족
 - 리전 설정 문제
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. 할당량 확인
 gcloud compute project-info describe --project=YOUR_PROJECT_ID
@@ -448,17 +580,25 @@ gcloud container clusters create my-cluster --zone us-central1-b
 
 ### 문제 2: Pod 시작 실패
 
+[문제 2: Pod 시작 실패](#문제-2-pod-시작-실패)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 ERROR: ImagePullBackOff
 ```
 
 #### 원인
+
+[원인](#원인)
 - 이미지 경로 오류
 - GCR 권한 문제
 - 이미지 존재하지 않음
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. 이미지 확인
 gcloud container images list --repository=gcr.io/YOUR_PROJECT_ID
@@ -472,17 +612,25 @@ docker push gcr.io/YOUR_PROJECT_ID/my-app:latest
 
 ### 문제 3: Service 외부 IP 할당 실패
 
+[문제 3: Service 외부 IP 할당 실패](#문제-3-service-외부-ip-할당-실패)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 EXTERNAL-IP: <pending>
 ```
 
 #### 원인
+
+[원인](#원인)
 - LoadBalancer 할당량 초과
 - 방화벽 규칙 문제
 - 네트워크 설정 문제
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. Service 상세 정보 확인
 kubectl describe service my-app-service
@@ -500,17 +648,25 @@ gcloud compute networks list
 
 ### 문제 1: 컨테이너 간 통신 실패
 
+[문제 1: 컨테이너 간 통신 실패](#문제-1-컨테이너-간-통신-실패)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 ERROR: Connection refused
 ```
 
 #### 원인
+
+[원인](#원인)
 - 네트워크 설정 문제
 - 포트 매핑 오류
 - 방화벽 차단
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```yaml
 # docker-compose.yml에서 네트워크 설정
 version: '3.8'
@@ -533,17 +689,25 @@ networks:
 
 ### 문제 2: 외부 접속 불가
 
+[문제 2: 외부 접속 불가](#문제-2-외부-접속-불가)
+
 #### 증상
+
+[증상](#증상)
 ```bash
 ERROR: Connection timeout
 ```
 
 #### 원인
+
+[원인](#원인)
 - 보안 그룹 설정
 - 로드 밸런서 설정
 - DNS 문제
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```bash
 # 1. 보안 그룹 확인 (AWS)
 aws ec2 describe-security-groups --group-ids sg-12345
@@ -561,12 +725,18 @@ nslookup <domain-name>
 
 ### 문제 1: 빌드 시간이 너무 오래 걸림
 
+[문제 1: 빌드 시간이 너무 오래 걸림](#문제-1-빌드-시간이-너무-오래-걸림)
+
 #### 원인
+
+[원인](#원인)
 - 캐시 미사용
 - 불필요한 의존성
 - 네트워크 지연
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```dockerfile
 # 1. 멀티스테이지 빌드 사용
 FROM node:18 AS builder
@@ -589,12 +759,18 @@ npm-debug.log
 
 ### 문제 2: 컨테이너 메모리 사용량 과다
 
+[문제 2: 컨테이너 메모리 사용량 과다](#문제-2-컨테이너-메모리-사용량-과다)
+
 #### 원인
+
+[원인](#원인)
 - 메모리 누수
 - 리소스 제한 없음
 - 비효율적인 코드
 
 #### 해결 방법
+
+[해결 방법](#해결-방법)
 ```yaml
 # Kubernetes 리소스 제한
 resources:
@@ -612,6 +788,8 @@ resources:
 
 ### Docker 오류 코드
 
+[Docker 오류 코드](#docker-오류-코드)
+
 | 오류 코드 | 의미 | 해결 방법 |
 |-----------|------|-----------|
 | **125** | Docker 데몬 오류 | Docker 서비스 재시작 |
@@ -620,6 +798,8 @@ resources:
 | **128** | 잘못된 종료 인수 | 종료 코드 확인 |
 
 ### Kubernetes 오류 코드
+
+[Kubernetes 오류 코드](#kubernetes-오류-코드)
 
 | 오류 코드 | 의미 | 해결 방법 |
 |-----------|------|-----------|
@@ -630,6 +810,8 @@ resources:
 | **127** | 명령어를 찾을 수 없음 | 이미지 확인 |
 
 ### AWS ECS 오류 코드
+
+[AWS ECS 오류 코드](#aws-ecs-오류-코드)
 
 | 오류 코드 | 의미 | 해결 방법 |
 |-----------|------|-----------|
@@ -642,7 +824,11 @@ resources:
 
 ## 🔧 디버깅 도구 및 명령어
 
+[🔧 디버깅 도구 및 명령어](#디버깅-도구-및-명령어)
+
 ### Docker 디버깅
+
+[Docker 디버깅](#docker-디버깅)
 ```bash
 # 컨테이너 로그 확인
 docker logs <container_id>
@@ -659,6 +845,8 @@ docker system prune
 ```
 
 ### Kubernetes 디버깅
+
+[Kubernetes 디버깅](#kubernetes-디버깅)
 ```bash
 # Pod 로그 확인
 kubectl logs <pod_name>
@@ -674,6 +862,8 @@ kubectl get events --sort-by=.metadata.creationTimestamp
 ```
 
 ### AWS ECS 디버깅
+
+[AWS ECS 디버깅](#aws-ecs-디버깅)
 ```bash
 # 서비스 상태 확인
 aws ecs describe-services --cluster my-cluster --services my-app-service
@@ -686,6 +876,8 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name <stream_n
 ```
 
 ### GCP GKE 디버깅
+
+[GCP GKE 디버깅](#gcp-gke-디버깅)
 ```bash
 # 클러스터 상태 확인
 gcloud container clusters describe my-cluster --zone us-central1-a
@@ -702,19 +894,27 @@ kubectl top pods
 
 ## 📞 지원 및 도움말
 
+[📞 지원 및 도움말](#지원-및-도움말)
+
 ### 공식 문서
+
+[공식 문서](#공식-문서)
 - [Docker 공식 문서](https://docs.docker.com/)
 - [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
 - [AWS ECS 공식 문서](https://docs.aws.amazon.com/ecs/)
 - [GCP GKE 공식 문서](https://cloud.google.com/kubernetes-engine/docs)
 
 ### 커뮤니티 지원
+
+[커뮤니티 지원](#커뮤니티-지원)
 - [Docker Community](https://forums.docker.com/)
 - [GitHub Community](https://github.community/)
 - [AWS Developer Forums](https://forums.aws.amazon.com/)
 - [Google Cloud Community](https://cloud.google.com/community)
 
 ### 문제 보고
+
+[문제 보고](#문제-보고)
 문제가 지속되면 다음 정보와 함께 이슈를 생성하세요:
 - 오류 메시지 전체
 - 실행 환경 정보
@@ -725,7 +925,11 @@ kubectl top pods
 
 ## ✅ 체크리스트
 
+[✅ 체크리스트](#체크리스트)
+
 ### 문제 해결 전 확인사항
+
+[문제 해결 전 확인사항](#문제-해결-전-확인사항)
 - [ ] 최신 버전 사용 중인가요?
 - [ ] 권한 설정이 올바른가요?
 - [ ] 네트워크 연결이 정상인가요?
@@ -733,6 +937,8 @@ kubectl top pods
 - [ ] 로그를 확인했나요?
 
 ### 문제 해결 후 확인사항
+
+[문제 해결 후 확인사항](#문제-해결-후-확인사항)
 - [ ] 문제가 해결되었나요?
 - [ ] 다른 기능에 영향을 주지 않나요?
 - [ ] 성능이 정상인가요?

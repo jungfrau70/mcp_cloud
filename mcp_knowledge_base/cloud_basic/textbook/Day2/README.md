@@ -2,10 +2,14 @@
 
 ## 🎯 학습 목표
 
+[🎯 학습 목표](#학습-목표)
+
 오늘은 AWS와 GCP의 핵심 서비스를 비교 분석하고, 비용 최적화와 보안의 기초를 학습합니다. 
 이 과정을 완료하면 두 클라우드 플랫폼의 장단점을 이해하고, 프로젝트에 적합한 서비스를 선택할 수 있는 역량을 갖추게 됩니다.
 
 ### 📋 구체적인 학습 목표
+
+[📋 구체적인 학습 목표](#구체적인-학습-목표)
 - **서비스 비교 분석**: AWS와 GCP의 주요 서비스를 체계적으로 비교할 수 있습니다
 - **비용 구조 이해**: 클라우드 서비스의 비용 구조를 이해하고 예상 비용을 계산할 수 있습니다
 - **최적화 전략 수립**: 프로젝트에 맞는 비용 최적화 전략을 수립할 수 있습니다
@@ -14,6 +18,8 @@
 
 ## ⏱️ 예상 소요시간
 
+[⏱️ 예상 소요시간](#예상-소요시간)
+
 - **이론 학습**: 2시간 (서비스 비교, 비용 구조)
 - **실습**: 5시간 (비교 분석, 최적화 실습)
 - **정리 및 프로젝트**: 1시간
@@ -21,48 +27,72 @@
 
 ## 📚 학습 순서
 
+[📚 학습 순서](#학습-순서)
+
 ### 🌅 오전 (4시간)
 
+[🌅 오전 (4시간)](#오전-4시간)
+
 #### 1단계: 컴퓨팅 서비스 비교 (1시간)
+
+[1단계: 컴퓨팅 서비스 비교 (1시간)](#1단계-컴퓨팅-서비스-비교-1시간)
 - [EC2 vs Compute Engine 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md)
 - [인스턴스 유형 분석](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md#인스턴스-유형-분석)
 - [가격 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md#가격-비교)
 
 #### 2단계: 스토리지 서비스 비교 (1시간)
+
+[2단계: 스토리지 서비스 비교 (1시간)](#2단계-스토리지-서비스-비교-1시간)
 - [S3 vs Cloud Storage 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md)
 - [스토리지 클래스 분석](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md#스토리지-클래스-분석)
 - [성능 및 가격 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md#성능-및-가격-비교)
 
 #### 3단계: 데이터베이스 서비스 비교 (1시간)
+
+[3단계: 데이터베이스 서비스 비교 (1시간)](#3단계-데이터베이스-서비스-비교-1시간)
 - [RDS vs Cloud SQL 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md)
 - [NoSQL 서비스 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md#nosql-서비스-비교)
 - [관리형 서비스 장단점](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md#관리형-서비스-장단점)
 
 #### 4단계: 네트워킹 서비스 비교 (1시간)
+
+[4단계: 네트워킹 서비스 비교 (1시간)](#4단계-네트워킹-서비스-비교-1시간)
 - [VPC vs VPC 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/network_comparison.md)
 - [로드 밸런서 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/network_comparison.md#로드-밸런서-비교)
 - [CDN 서비스 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/network_comparison.md#cdn-서비스-비교)
 
 ### 🌆 오후 (4시간)
 
+[🌆 오후 (4시간)](#오후-4시간)
+
 #### 5단계: 비용 최적화 실습 (2시간)
+
+[5단계: 비용 최적화 실습 (2시간)](#5단계-비용-최적화-실습-2시간)
 - [비용 분석 도구 사용](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md#비용-분석-도구)
 - [리소스 최적화](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md#리소스-최적화)
 - [예산 설정 및 모니터링](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md#예산-설정-및-모니터링)
 
 #### 6단계: 보안 및 모니터링 기초 (1시간)
+
+[6단계: 보안 및 모니터링 기초 (1시간)](#6단계-보안-및-모니터링-기초-1시간)
 - [IAM 권한 관리](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md#고급-권한-관리)
 - [보안 그룹 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md#보안-그룹-설정)
 - [기본 모니터링 설정](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md#모니터링-설정)
 
 #### 7단계: 종합 프로젝트 (1시간)
+
+[7단계: 종합 프로젝트 (1시간)](#7단계-종합-프로젝트-1시간)
 - [프로젝트 요구사항 분석](/mcp_knowledge_base/cloud_basic/textbook/Day2/basic-to-master-bridge.md)
 - [서비스 선택 및 설계](/mcp_knowledge_base/cloud_basic/textbook/Day2/basic-to-master-bridge.md#서비스-선택-및-설계)
 - [비용 예상 및 최적화](/mcp_knowledge_base/cloud_basic/textbook/Day2/basic-to-master-bridge.md#비용-예상-및-최적화)
 
 ## 💻 실습 가이드
 
+[💻 실습 가이드](#실습-가이드)
+
 ### 🔧 비교 분석 도구
+
+[🔧 비교 분석 도구](#비교-분석-도구)
 실습을 위해 다음 도구들을 활용합니다:
 
 1. **AWS 비용 계산기**
@@ -79,7 +109,11 @@
 
 ### 📝 실습 체크리스트
 
+[📝 실습 체크리스트](#실습-체크리스트)
+
 #### 서비스 비교 체크리스트
+
+[서비스 비교 체크리스트](#서비스-비교-체크리스트)
 - [ ] 컴퓨팅 서비스 비교 완료
 - [ ] 스토리지 서비스 비교 완료
 - [ ] 데이터베이스 서비스 비교 완료
@@ -87,12 +121,16 @@
 - [ ] 각 서비스의 장단점 정리 완료
 
 #### 비용 최적화 체크리스트
+
+[비용 최적화 체크리스트](#비용-최적화-체크리스트)
 - [ ] 현재 사용 중인 리소스 분석 완료
 - [ ] 비용 최적화 방안 도출 완료
 - [ ] 예산 설정 및 알림 구성 완료
 - [ ] 모니터링 대시보드 설정 완료
 
 #### 보안 설정 체크리스트
+
+[보안 설정 체크리스트](#보안-설정-체크리스트)
 - [ ] IAM 사용자 권한 검토 완료
 - [ ] 보안 그룹 규칙 검토 완료
 - [ ] 기본 모니터링 설정 완료
@@ -100,7 +138,11 @@
 
 ## ✅ 완료 확인
 
+[✅ 완료 확인](#완료-확인)
+
 ### 🎯 학습 목표 달성 확인
+
+[🎯 학습 목표 달성 확인](#학습-목표-달성-확인)
 다음 질문들에 답할 수 있다면 학습 목표를 달성한 것입니다:
 
 1. **서비스 비교**
@@ -120,6 +162,8 @@
    - 비용과 성능을 고려한 최적의 솔루션을 제안할 수 있나요?
 
 ### 📊 실습 결과 확인
+
+[📊 실습 결과 확인](#실습-결과-확인)
 - **서비스 비교**: 모든 서비스 비교 분석 완료
 - **비용 최적화**: 최적화 방안 도출 및 적용 완료
 - **보안 설정**: 기본 보안 설정 완료
@@ -127,9 +171,15 @@
 
 ## 🔧 문제해결
 
+[🔧 문제해결](#문제해결)
+
 ### 자주 발생하는 문제들
 
+[자주 발생하는 문제들](#자주-발생하는-문제들)
+
 #### 1. 비용 계산 오류
+
+[1. 비용 계산 오류](#1-비용-계산-오류)
 **문제**: 예상 비용과 실제 비용이 크게 다름
 **해결**:
 - 사용량 패턴을 정확히 분석
@@ -137,6 +187,8 @@
 - 추가 서비스 비용 포함
 
 #### 2. 서비스 선택 어려움
+
+[2. 서비스 선택 어려움](#2-서비스-선택-어려움)
 **문제**: 비슷한 서비스 중 선택이 어려움
 **해결**:
 - 프로젝트 요구사항 명확히 정의
@@ -144,6 +196,8 @@
 - 프로토타입으로 테스트
 
 #### 3. 보안 설정 복잡함
+
+[3. 보안 설정 복잡함](#3-보안-설정-복잡함)
 **문제**: 보안 설정이 복잡하고 어려움
 **해결**:
 - 기본 보안 설정부터 단계적으로 진행
@@ -151,24 +205,34 @@
 - AWS/GCP 보안 가이드 참조
 
 ### 📞 추가 도움
+
+[📞 추가 도움](#추가-도움)
 - [종합 문제해결 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md)
 - [비용 최적화 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md#비용-최적화-가이드)
 - [보안 모범 사례](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md#보안-모범-사례)
 
 ## ➡️ 다음 단계
 
+[➡️ 다음 단계](#다음-단계)
+
 ### 🚀 Cloud Master 과정 준비
+
+[🚀 Cloud Master 과정 준비](#cloud-master-과정-준비)
 Cloud Basic을 성공적으로 완료했다면, 다음 단계인 Cloud Master 과정을 추천합니다:
 
 - Cloud Master 과정
 - Cloud Master Day1: Docker, Git/GitHub, GitHub Actions 기초
 
 ### 🔗 관련 자료
+
+[🔗 관련 자료](#관련-자료)
 - Cloud Basic 과정 전체
 - [학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
 - [전체 커리큘럼](/mcp_knowledge_base/curriculum.md)
 
 ### 🎯 다음 단계 학습 목표
+
+[🎯 다음 단계 학습 목표](#다음-단계-학습-목표)
 Cloud Master 과정에서는 다음 내용을 학습하게 됩니다:
 - Docker 컨테이너 기술
 - Git/GitHub 협업 워크플로우
@@ -181,6 +245,8 @@ Cloud Master 과정에서는 다음 내용을 학습하게 됩니다:
 <div align="center">
 
 ## 🎉 Day 2 실습을 시작하세요!
+
+[🎉 Day 2 실습을 시작하세요!](#day-2-실습을-시작하세요)
 
 [🚀 실습 시작하기](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md) | 
 📚 Cloud Basic 과정 전체 |

@@ -23,18 +23,24 @@
 ## 🎯 학습 목표
 
 ### 핵심 학습 목표
+
+[핵심 학습 목표](#핵심-학습-목표)
 - **AWS EC2** 인스턴스 생성 및 관리
 - **GCP Compute Engine** 인스턴스 생성 및 관리
 - **인스턴스 타입** 및 **이미지** 선택 기준 이해
 - **네트워킹** 및 **보안** 설정 방법 학습
 
 ### 실습 후 달성할 수 있는 능력
+
+[실습 후 달성할 수 있는 능력](#실습-후-달성할-수-있는-능력)
 - ✅ AWS EC2 인스턴스 생성 및 관리
 - ✅ GCP Compute Engine 인스턴스 생성 및 관리
 - ✅ 인스턴스 타입 및 이미지 선택
 - ✅ 네트워킹 및 보안 설정
 
 ### 예상 소요 시간
+
+[예상 소요 시간](#예상-소요-시간)
 - **AWS EC2 기초**: 60-90분
 - **GCP Compute Engine 기초**: 60-90분
 - **비교 분석**: 30-45분
@@ -51,11 +57,15 @@
 <summary>📖 AWS EC2 개요</summary>
 
 ### EC2란?
+
+[EC2란?](#ec2란)
 - **Elastic Compute Cloud**: AWS의 가상머신 서비스
 - **확장 가능**: 필요에 따라 인스턴스 수 조정
 - **다양한 옵션**: 다양한 인스턴스 타입과 이미지 제공
 
 ### 주요 특징
+
+[주요 특징](#주요-특징)
 - **온디맨드**: 필요할 때만 사용
 - **유연한 결제**: 사용한 만큼만 비용 지불
 - **보안**: VPC와 보안 그룹을 통한 네트워크 보안
@@ -64,10 +74,14 @@
 
 ### 1.1 EC2 기본 개념
 
+[1.1 EC2 기본 개념](#11-ec2-기본-개념)
+
 <details>
 <summary>💻 인스턴스 타입</summary>
 
 ### 인스턴스 패밀리
+
+[인스턴스 패밀리](#인스턴스-패밀리)
 - **t3**: 범용, 버스트 가능한 성능
 - **m5**: 범용, 균형잡힌 성능
 - **c5**: 컴퓨팅 최적화
@@ -75,6 +89,8 @@
 - **g4**: GPU 최적화
 
 ### 인스턴스 크기
+
+[인스턴스 크기](#인스턴스-크기)
 - **nano**: 0.5 vCPU, 0.5 GB RAM
 - **micro**: 1 vCPU, 1 GB RAM (Free Tier)
 - **small**: 1 vCPU, 2 GB RAM
@@ -82,6 +98,8 @@
 - **large**: 2 vCPU, 8 GB RAM
 
 ### 선택 기준
+
+[선택 기준](#선택-기준)
 - **Free Tier**: t3.micro (12개월 무료)
 - **개발/테스트**: t3.small, t3.medium
 - **프로덕션**: m5.large 이상
@@ -92,12 +110,16 @@
 <summary>🖼️ AMI (Amazon Machine Image)</summary>
 
 ### AMI 유형
+
+[AMI 유형](#ami-유형)
 - **Amazon Linux 2**: AWS 최적화 Linux
 - **Ubuntu**: 인기 있는 Linux 배포판
 - **Windows Server**: Windows 환경
 - **커스텀 AMI**: 사용자 정의 이미지
 
 ### AMI 선택 기준
+
+[AMI 선택 기준](#ami-선택-기준)
 - **운영체제**: Linux vs Windows
 - **애플리케이션**: 웹 서버, 데이터베이스 등
 - **보안**: 보안 패치 적용 여부
@@ -106,6 +128,8 @@
 </details>
 
 ### 1.2 EC2 인스턴스 생성
+
+[1.2 EC2 인스턴스 생성](#12-ec2-인스턴스-생성)
 
 <details>
 <summary>🌐 웹 콘솔 방식</summary>
@@ -159,6 +183,8 @@ aws ec2 run-instances \
 
 ### 1.3 EC2 인스턴스 관리
 
+[1.3 EC2 인스턴스 관리](#13-ec2-인스턴스-관리)
+
 <details>
 <summary>📊 인스턴스 상태 확인</summary>
 ```bash
@@ -198,11 +224,15 @@ ssh -i cloud-student-key.pem ec2-user@$INSTANCE_IP
 <summary>📖 GCP Compute Engine 개요</summary>
 
 ### Compute Engine이란?
+
+[Compute Engine이란?](#compute-engine이란)
 - **Google Cloud의 가상머신 서비스**: GCP의 가상머신 서비스
 - **확장 가능**: 필요에 따라 인스턴스 수 조정
 - **다양한 옵션**: 다양한 머신 타입과 이미지 제공
 
 ### 주요 특징
+
+[주요 특징](#주요-특징)
 - **온디맨드**: 필요할 때만 사용
 - **유연한 결제**: 사용한 만큼만 비용 지불
 - **보안**: VPC와 방화벽을 통한 네트워크 보안
@@ -211,10 +241,14 @@ ssh -i cloud-student-key.pem ec2-user@$INSTANCE_IP
 
 ### 2.1 Compute Engine 기본 개념
 
+[2.1 Compute Engine 기본 개념](#21-compute-engine-기본-개념)
+
 <details>
 <summary>💻 머신 유형</summary>
 
 ### 머신 패밀리
+
+[머신 패밀리](#머신-패밀리)
 - **e2**: 범용, 비용 효율적
 - **n1**: 범용, 균형잡힌 성능
 - **c2**: 컴퓨팅 최적화
@@ -222,12 +256,16 @@ ssh -i cloud-student-key.pem ec2-user@$INSTANCE_IP
 - **a2**: GPU 최적화
 
 ### 머신 크기
+
+[머신 크기](#머신-크기)
 - **micro**: 0.5-1 vCPU, 0.5-1 GB RAM (Free Tier)
 - **small**: 1 vCPU, 2 GB RAM
 - **medium**: 1 vCPU, 4 GB RAM
 - **large**: 2 vCPU, 8 GB RAM
 
 ### 선택 기준
+
+[선택 기준](#선택-기준)
 - **Free Tier**: e2-micro (12개월 무료)
 - **개발/테스트**: e2-small, e2-medium
 - **프로덕션**: n1-standard-1 이상
@@ -238,12 +276,16 @@ ssh -i cloud-student-key.pem ec2-user@$INSTANCE_IP
 <summary>🖼️ 이미지</summary>
 
 ### 이미지 유형
+
+[이미지 유형](#이미지-유형)
 - **Ubuntu**: 인기 있는 Linux 배포판
 - **Debian**: 안정적인 Linux 배포판
 - **CentOS**: 엔터프라이즈 Linux
 - **Windows Server**: Windows 환경
 
 ### 이미지 선택 기준
+
+[이미지 선택 기준](#이미지-선택-기준)
 - **운영체제**: Linux vs Windows
 - **애플리케이션**: 웹 서버, 데이터베이스 등
 - **보안**: 보안 패치 적용 여부
@@ -252,6 +294,8 @@ ssh -i cloud-student-key.pem ec2-user@$INSTANCE_IP
 </details>
 
 ### 2.2 Compute Engine 인스턴스 생성
+
+[2.2 Compute Engine 인스턴스 생성](#22-compute-engine-인스턴스-생성)
 
 <details>
 <summary>🌐 웹 콘솔 방식</summary>
@@ -291,6 +335,8 @@ gcloud compute instances create cloud-student-server \
 </details>
 
 ### 2.3 Compute Engine 인스턴스 관리
+
+[2.3 Compute Engine 인스턴스 관리](#23-compute-engine-인스턴스-관리)
 
 <details>
 <summary>📊 인스턴스 상태 확인</summary>
@@ -337,6 +383,8 @@ gcloud compute instances describe cloud-student-server \
 | **가격** | 시간당 | 초당 |
 
 ### 주요 차이점
+
+[주요 차이점](#주요-차이점)
 - **AWS**: 보안 그룹 기반 네트워크 보안
 - **GCP**: 방화벽 규칙 기반 네트워크 보안
 - **가격**: GCP는 초당 과금으로 더 유연함
@@ -352,12 +400,16 @@ gcloud compute instances describe cloud-student-server \
 <summary>📖 실습 과제 개요</summary>
 
 ### 실습 목적
+
+[실습 목적](#실습-목적)
 - **AWS EC2**: 인스턴스 생성, 관리, SSH 접속
 - **GCP Compute Engine**: 인스턴스 생성, 관리, SSH 접속
 - **비교 분석**: 두 플랫폼의 차이점 이해
 - **네트워킹**: 보안 그룹/방화벽 설정
 
 ### 실습 결과물
+
+[실습 결과물](#실습-결과물)
 - AWS EC2 인스턴스 생성 및 관리
 - GCP Compute Engine 인스턴스 생성 및 관리
 - SSH 접속 및 기본 명령어 실행
@@ -366,6 +418,8 @@ gcloud compute instances describe cloud-student-server \
 </details>
 
 ### 기본 과제
+
+[기본 과제](#기본-과제)
 
 <details>
 <summary>📋 기본 과제 목록</summary>
@@ -377,6 +431,8 @@ gcloud compute instances describe cloud-student-server \
 </details>
 
 ### 고급 과제
+
+[고급 과제](#고급-과제)
 
 <details>
 <summary>📋 고급 과제 목록</summary>
@@ -391,22 +447,30 @@ gcloud compute instances describe cloud-student-server \
 
 ## ✅ 체크리스트
 
+[✅ 체크리스트](#체크리스트)
+
 <details>
 <summary>📋 학습 완료 체크리스트</summary>
 
 ### AWS EC2 설정
+
+[AWS EC2 설정](#aws-ec2-설정)
 - [ ] AWS EC2 인스턴스 생성 완료
 - [ ] SSH 접속 테스트 완료
 - [ ] 보안 그룹 설정 완료
 - [ ] 웹 서버 설치 및 테스트 완료
 
 ### GCP Compute Engine 설정
+
+[GCP Compute Engine 설정](#gcp-compute-engine-설정)
 - [ ] GCP Compute Engine 인스턴스 생성 완료
 - [ ] SSH 접속 테스트 완료
 - [ ] 방화벽 규칙 설정 완료
 - [ ] 웹 서버 설치 및 테스트 완료
 
 ### 비교 및 분석
+
+[비교 및 분석](#비교-및-분석)
 - [ ] 성능 비교 분석 완료
 - [ ] 비용 분석 완료
 - [ ] 보안 설정 비교 완료
@@ -421,6 +485,8 @@ gcloud compute instances describe cloud-student-server \
 <summary>🐛 자주 발생하는 문제</summary>
 
 ### AWS EC2 관련 문제
+
+[AWS EC2 관련 문제](#aws-ec2-관련-문제)
 <details>
 <summary>❌ EC2 인스턴스 생성 실패</summary>
 
@@ -466,6 +532,8 @@ aws ec2 describe-instances --instance-ids i-1234567890abcdef0
 </details>
 
 ### GCP Compute Engine 관련 문제
+
+[GCP Compute Engine 관련 문제](#gcp-compute-engine-관련-문제)
 <details>
 <summary>❌ Compute Engine 인스턴스 생성 실패</summary>
 
@@ -517,18 +585,24 @@ gcloud compute instances describe INSTANCE_NAME --zone=ZONE
 <summary>📖 추가 학습 자료</summary>
 
 ### 공식 문서
+
+[공식 문서](#공식-문서)
 - [AWS EC2 공식 문서](https://docs.aws.amazon.com/ec2/)
 - [GCP Compute Engine 공식 문서](https://cloud.google.com/compute/docs)
 - [AWS EC2 인스턴스 타입](https://aws.amazon.com/ec2/instance-types/)
 - [GCP 머신 타입](https://cloud.google.com/compute/docs/machine-types)
 
 ### 유용한 리소스
+
+[유용한 리소스](#유용한-리소스)
 - [AWS EC2 모범 사례](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-best-practices.html)
 - [GCP Compute Engine 모범 사례](https://cloud.google.com/compute/docs/best-practices)
 - [AWS EC2 가격 계산기](https://calculator.aws/)
 - [GCP 가격 계산기](https://cloud.google.com/products/calculator)
 
 ### 관련 프로젝트
+
+[관련 프로젝트](#관련-프로젝트)
 - [AWS EC2 샘플 프로젝트](https://github.com/aws-samples/ec2-examples)
 - [GCP Compute Engine 샘플 프로젝트](https://github.com/GoogleCloudPlatform/compute-samples)
 
@@ -538,11 +612,15 @@ gcloud compute instances describe INSTANCE_NAME --zone=ZONE
 <summary>🚀 다음 단계</summary>
 
 ### 4교시 준비
+
+[4교시 준비](#4교시-준비)
 1. **스토리지 서비스**: AWS S3, GCP Cloud Storage
 2. **데이터베이스 서비스**: AWS RDS, GCP Cloud SQL
 3. **네트워킹**: VPC, 서브넷, 라우팅
 
 ### 고급 기능
+
+[고급 기능](#고급-기능)
 1. **오토 스케일링**: 자동 확장/축소
 2. **로드 밸런싱**: 트래픽 분산
 3. **모니터링**: CloudWatch, Cloud Monitoring
@@ -553,9 +631,13 @@ gcloud compute instances describe INSTANCE_NAME --zone=ZONE
 
 ## 🎉 완료!
 
+[🎉 완료!](#완료)
+
 축하합니다! 가상머신 서비스 실습을 완료했습니다.
 
 ### 📚 학습 요약
+
+[📚 학습 요약](#학습-요약)
 
 이번 교시를 통해 다음을 배웠습니다:
 
@@ -566,11 +648,15 @@ gcloud compute instances describe INSTANCE_NAME --zone=ZONE
 
 ### 🚀 다음 단계
 
+[🚀 다음 단계](#다음-단계)
+
 - **4교시 실습**: [스토리지 서비스 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
 - **실제 프로젝트 적용**: 자신의 프로젝트에 가상머신 적용
 - **고급 기능 학습**: 오토 스케일링, 로드 밸런싱, 모니터링
 
 ### 💡 추가 학습 자료
+
+[💡 추가 학습 자료](#추가-학습-자료)
 
 - [AWS EC2 공식 문서](https://docs.aws.amazon.com/ec2/)
 - [GCP Compute Engine 공식 문서](https://cloud.google.com/compute/docs)

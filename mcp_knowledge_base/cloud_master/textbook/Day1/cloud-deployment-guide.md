@@ -28,18 +28,24 @@
 <summary>📖 이번 실습에서 배우게 될 내용 </summary>
 
 ### 핵심 학습 목표
+
+[핵심 학습 목표](#핵심-학습-목표)
 - **GitHub Actions CI/CD 파이프라인** 구축 및 이해
 - **가상머신에 Node.js 애플리케이션** 자동 배포
 - **Docker 컨테이너**를 활용한 배포 방식 학습
 - **AWS EC2와 GCP Compute Engine** 두 플랫폼에서의 실습
 
 ### 실습 후 달성할 수 있는 능력
+
+[실습 후 달성할 수 있는 능력](#실습-후-달성할-수-있는-능력)
 - ✅ GitHub Actions 워크플로우 작성 및 관리
 - ✅ 가상머신 인프라 자동 생성 및 설정
 - ✅ Docker를 활용한 애플리케이션 배포
 - ✅ CI/CD 파이프라인 구축 및 모니터링
 
 ### 예상 소요 시간
+
+[예상 소요 시간](#예상-소요-시간)
 - **기본 실습**: 45-60분
 - **고급 실습**: 90-120분
 - **전체 과정**: 2-3시간
@@ -54,11 +60,15 @@
 <summary>🎯 프로젝트 개요 </summary>
 
 ### 프로젝트 정보
+
+[프로젝트 정보](#프로젝트-정보)
 - **저장소**: [https://github.com/jungfrau70/actions-demo.git](https://github.com/jungfrau70/actions-demo.git)
 - **언어**: JavaScript (76.2%), Dockerfile (23.8%)
 - **목적**: GitHub Actions를 사용한 CI/CD 파이프라인 학습용 데모 프로젝트
 
 ### 프로젝트 구조
+
+[프로젝트 구조](#프로젝트-구조)
 ```
 actions-demo/
 ├── .github/workflows/     # GitHub Actions 워크플로우
@@ -75,12 +85,16 @@ actions-demo/
 <summary>🚀 애플리케이션 특징 </summary>
 
 ### Node.js Express 애플리케이션
+
+[Node.js Express 애플리케이션](#nodejs-express-애플리케이션)
 - **프레임워크**: Express.js
 - **포트**: 3000 (기본)
 - **기능**: 간단한 웹 서버 및 API 엔드포인트
 - **테스트**: Jest를 사용한 단위 테스트
 
 ### Docker 지원
+
+[Docker 지원](#docker-지원)
 - **멀티스테이지 빌드**: 최적화된 이미지 크기
 - **보안**: 비루트 사용자로 실행
 - **포트**: 3000번 포트 노출
@@ -96,6 +110,8 @@ actions-demo/
 <summary>🔧 현재 활성화된 워크플로우 </summary>
 
 ### ✅ 기본 워크플로우 (활성화됨)
+
+[✅ 기본 워크플로우 (활성화됨)](#기본-워크플로우-활성화됨)
 
 1. **CI Pipeline** (`ci.yml`)
    - 트리거: `push` (main, develop), `pull_request` (main)
@@ -117,12 +133,16 @@ actions-demo/
 <summary>📋 필수 계정 및 도구 </summary>
 
 ### 필수 계정
+
+[필수 계정](#필수-계정)
 - **GitHub 계정**: 저장소 포크 및 Actions 사용
 - **Docker Hub 계정**: Docker 이미지 저장소
 - **AWS 계정**: EC2 인스턴스 배포용
 - **GCP 계정**: Compute Engine 배포용
 
 ### 필수 도구
+
+[필수 도구](#필수-도구)
 - **Git**: 코드 버전 관리
 - **Docker**: 컨테이너 이미지 빌드 및 실행
 - **Node.js**: 로컬 개발 및 테스트
@@ -133,6 +153,8 @@ actions-demo/
 <summary>🔧 GitHub 저장소 설정 </summary>
 
 ### 1단계: 저장소 포크
+
+[1단계: 저장소 포크](#1단계-저장소-포크)
 1. [actions-demo 저장소](https://github.com/jungfrau70/actions-demo.git) 방문
 2. "Fork" 버튼 클릭하여 자신의 계정으로 포크
 3. 포크된 저장소를 로컬로 클론
@@ -143,6 +165,8 @@ cd actions-demo
 ```
 
 ### 2단계: GitHub Secrets 설정
+
+[2단계: GitHub Secrets 설정](#2단계-github-secrets-설정)
 저장소 → Settings → Secrets and variables → Actions
 
 <details>
@@ -185,6 +209,8 @@ cd actions-demo
 <summary>🐳 Docker 환경 설정 </summary>
 
 ### Docker 설치 확인
+
+[Docker 설치 확인](#docker-설치-확인)
 ```bash
 # Docker 버전 확인
 docker --version
@@ -195,6 +221,8 @@ docker info
 ```
 
 ### Docker Hub 로그인
+
+[Docker Hub 로그인](#docker-hub-로그인)
 ```bash
 # Docker Hub에 로그인
 docker login
@@ -213,6 +241,8 @@ docker system info | grep Username
 <summary>🖥️ AWS EC2 가상머신 배포 </summary>
 
 ### 🚀 GitHub Actions를 통한 자동 배포
+
+[🚀 GitHub Actions를 통한 자동 배포](#github-actions를-통한-자동-배포)
 
 <details>
 <summary>⚡ 1단계: VM Docker 배포 워크플로우 활성화</summary>
@@ -237,11 +267,15 @@ git push origin main
 <summary>⚡ 2단계: GitHub Actions 워크플로우 확인</summary>
 
 ### 워크플로우 실행 확인
+
+[워크플로우 실행 확인](#워크플로우-실행-확인)
 1. GitHub 저장소 → Actions 탭
 2. "VM Docker Deploy" 워크플로우 실행 확인
 3. 각 단계별 로그 확인
 
 ### 배포 과정
+
+[배포 과정](#배포-과정)
 1. **코드 체크아웃**: 저장소 코드 다운로드
 2. **Docker 이미지 빌드**: 애플리케이션을 Docker 이미지로 빌드
 3. **Docker Hub 푸시**: 빌드된 이미지를 Docker Hub에 업로드
@@ -255,11 +289,15 @@ git push origin main
 <summary>⚡ 3단계: 배포 결과 확인</summary>
 
 ### 배포 성공 확인
+
+[배포 성공 확인](#배포-성공-확인)
 - **GitHub Actions**: 모든 단계가 성공적으로 완료
 - **Docker Hub**: 이미지가 정상적으로 업로드됨
 - **AWS EC2**: 인스턴스가 실행 중이고 애플리케이션 접근 가능
 
 ### 접속 정보 확인
+
+[접속 정보 확인](#접속-정보-확인)
 ```bash
 # EC2 인스턴스 정보 조회
 aws ec2 describe-instances \
@@ -278,6 +316,8 @@ curl http://YOUR_EC2_PUBLIC_IP:3000
 <summary>☁️ GCP Compute Engine 가상머신 배포 </summary>
 
 ### 🚀 GitHub Actions를 통한 자동 배포
+
+[🚀 GitHub Actions를 통한 자동 배포](#github-actions를-통한-자동-배포)
 
 <details>
 <summary>⚡ 1단계: GCP 배포 워크플로우 활성화</summary>
@@ -298,6 +338,8 @@ git push origin main
 <summary>⚡ 2단계: GCP 배포 과정 확인</summary>
 
 ### 배포 과정
+
+[배포 과정](#배포-과정)
 1. **코드 체크아웃**: 저장소 코드 다운로드
 2. **Docker 이미지 빌드**: 애플리케이션을 Docker 이미지로 빌드
 3. **Docker Hub 푸시**: 빌드된 이미지를 Docker Hub에 업로드
@@ -311,11 +353,15 @@ git push origin main
 <summary>⚡ 3단계: GCP 배포 결과 확인</summary>
 
 ### 배포 성공 확인
+
+[배포 성공 확인](#배포-성공-확인)
 - **GitHub Actions**: 모든 단계가 성공적으로 완료
 - **Docker Hub**: 이미지가 정상적으로 업로드됨
 - **GCP Compute Engine**: 인스턴스가 실행 중이고 애플리케이션 접근 가능
 
 ### 접속 정보 확인
+
+[접속 정보 확인](#접속-정보-확인)
 ```bash
 # GCE 인스턴스 정보 조회
 gcloud compute instances list --filter="name:actions-demo"
@@ -336,6 +382,8 @@ curl http://YOUR_GCE_EXTERNAL_IP:3000
 <summary>📝 워크플로우 파일 구조 </summary>
 
 ### 기본 워크플로우 파일들
+
+[기본 워크플로우 파일들](#기본-워크플로우-파일들)
 
 <details>
 <summary>🔧 CI Pipeline (ci.yml)</summary>
@@ -453,6 +501,8 @@ jobs:
 
 ### 환경별 배포 설정
 
+[환경별 배포 설정](#환경별-배포-설정)
+
 <details>
 <summary>🌍 환경 변수 설정</summary>
 
@@ -510,6 +560,8 @@ env:
 <summary>🐛 자주 발생하는 문제 </summary>
 
 ### GitHub Actions 관련 문제
+
+[GitHub Actions 관련 문제](#github-actions-관련-문제)
 
 <details>
 <summary>❌ 워크플로우가 실행되지 않음</summary>
@@ -575,18 +627,24 @@ aws ec2 describe-instances --instance-ids i-xxxxxxxx
 <summary>📖 추가 학습 자료 </summary>
 
 ### 공식 문서
+
+[공식 문서](#공식-문서)
 - [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
 - [Docker 공식 문서](https://docs.docker.com/)
 - [AWS EC2 공식 문서](https://docs.aws.amazon.com/ec2/)
 - [GCP Compute Engine 공식 문서](https://cloud.google.com/compute/docs)
 
 ### 유용한 리소스
+
+[유용한 리소스](#유용한-리소스)
 - [GitHub Actions Marketplace](https://github.com/marketplace?type=actions)
 - [Docker Hub](https://hub.docker.com/)
 - [AWS Free Tier](https://aws.amazon.com/free/)
 - [GCP Free Tier](https://cloud.google.com/free)
 
 ### 관련 프로젝트
+
+[관련 프로젝트](#관련-프로젝트)
 - [actions-demo 저장소](https://github.com/jungfrau70/actions-demo.git)
 - [GitHub Actions 예제 모음](https://github.com/actions/starter-workflows)
 
@@ -596,12 +654,16 @@ aws ec2 describe-instances --instance-ids i-xxxxxxxx
 <summary>🚀 다음 단계 </summary>
 
 ### 고급 기능 구현
+
+[고급 기능 구현](#고급-기능-구현)
 1. **멀티클라우드 배포**: AWS와 GCP 동시 배포
 2. **자동 스케일링**: 트래픽에 따른 인스턴스 자동 확장
 3. **모니터링**: CloudWatch, Stackdriver 연동
 4. **보안 강화**: SSL/TLS 인증서, WAF 설정
 
 ### CI/CD 파이프라인 고도화
+
+[CI/CD 파이프라인 고도화](#cicd-파이프라인-고도화)
 1. **테스트 자동화**: 단위 테스트, 통합 테스트, E2E 테스트
 2. **코드 품질**: SonarQube, CodeClimate 연동
 3. **보안 스캔**: Snyk, OWASP ZAP 연동
@@ -613,9 +675,13 @@ aws ec2 describe-instances --instance-ids i-xxxxxxxx
 
 ## 🎉 완료!
 
+[🎉 완료!](#완료)
+
 축하합니다! GitHub Actions를 통한 가상머신 배포 실습을 완료했습니다.
 
 ### 📚 학습 요약
+
+[📚 학습 요약](#학습-요약)
 
 이번 실습을 통해 다음을 배웠습니다:
 
@@ -627,11 +693,15 @@ aws ec2 describe-instances --instance-ids i-xxxxxxxx
 
 ### 🚀 다음 단계
 
+[🚀 다음 단계](#다음-단계)
+
 - **실제 프로젝트 적용**: 자신의 프로젝트에 CI/CD 파이프라인 구축
 - **고급 기능 구현**: 모니터링, 자동 스케일링, 보안 강화
 - **다른 플랫폼 탐색**: Azure, DigitalOcean 등 다른 클라우드 플랫폼
 
 ### 💡 추가 학습 자료
+
+[💡 추가 학습 자료](#추가-학습-자료)
 
 - [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
 - [Docker 공식 문서](https://docs.docker.com/)

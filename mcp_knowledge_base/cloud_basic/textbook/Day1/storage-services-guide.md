@@ -23,18 +23,24 @@
 ## 🎯 학습 목표
 
 ### 핵심 학습 목표
+
+[핵심 학습 목표](#핵심-학습-목표)
 - **AWS S3** 버킷 생성 및 파일 관리
 - **GCP Cloud Storage** 버킷 생성 및 파일 관리
 - **객체 스토리지** 개념 및 활용 사례 이해
 - **정적 웹사이트 호스팅** 설정 방법 학습
 
 ### 실습 후 달성할 수 있는 능력
+
+[실습 후 달성할 수 있는 능력](#실습-후-달성할-수-있는-능력)
 - ✅ AWS S3 버킷 생성 및 파일 관리
 - ✅ GCP Cloud Storage 버킷 생성 및 파일 관리
 - ✅ 객체 스토리지 개념 이해
 - ✅ 정적 웹사이트 호스팅 설정
 
 ### 예상 소요 시간
+
+[예상 소요 시간](#예상-소요-시간)
 - **AWS S3 기초**: 60-90분
 - **GCP Cloud Storage 기초**: 60-90분
 - **비교 분석**: 30-45분
@@ -51,11 +57,15 @@
 <summary>📖 AWS S3 개요</summary>
 
 ### S3란?
+
+[S3란?](#s3란)
 - **Simple Storage Service**: AWS의 객체 스토리지 서비스
 - **확장 가능**: 무제한 스토리지 용량
 - **내구성**: 99.999999999% (11 9's) 내구성
 
 ### 주요 특징
+
+[주요 특징](#주요-특징)
 - **객체 기반**: 파일을 객체로 저장
 - **REST API**: HTTP/HTTPS를 통한 접근
 - **버전 관리**: 파일 버전 관리 지원
@@ -64,16 +74,22 @@
 
 ### 1.1 S3 기본 개념
 
+[1.1 S3 기본 개념](#11-s3-기본-개념)
+
 <details>
 <summary>🪣 버킷 (Bucket)</summary>
 
 ### 버킷 특징
+
+[버킷 특징](#버킷-특징)
 - **전역 고유 이름**: 전 세계적으로 고유한 이름 필요
 - **리전 선택**: 데이터 저장 위치 선택
 - **버전 관리**: 파일 버전 관리 기능
 - **생명주기 정책**: 자동 삭제 및 아카이브
 
 ### 버킷 설정
+
+[버킷 설정](#버킷-설정)
 - **퍼블릭 액세스**: 공개/비공개 설정
 - **암호화**: 서버 측 암호화 설정
 - **로깅**: 액세스 로그 설정
@@ -85,12 +101,16 @@
 <summary>📄 객체 (Object)</summary>
 
 ### 객체 특징
+
+[객체 특징](#객체-특징)
 - **키 (Key)**: 파일의 고유 식별자
 - **메타데이터**: 파일에 대한 추가 정보
 - **ACL**: 접근 제어 목록
 - **태그**: 객체 분류 및 관리
 
 ### 객체 관리
+
+[객체 관리](#객체-관리)
 - **업로드**: 단일/멀티파트 업로드
 - **다운로드**: 직접 다운로드 또는 URL 생성
 - **삭제**: 단일/일괄 삭제
@@ -99,6 +119,8 @@
 </details>
 
 ### 1.2 S3 버킷 생성 및 관리
+
+[1.2 S3 버킷 생성 및 관리](#12-s3-버킷-생성-및-관리)
 
 <details>
 <summary>🌐 웹 콘솔 방식</summary>
@@ -130,6 +152,8 @@ aws s3api get-bucket-location --bucket BUCKET_NAME
 
 ### 1.3 S3 파일 업로드/다운로드
 
+[1.3 S3 파일 업로드/다운로드](#13-s3-파일-업로드다운로드)
+
 <details>
 <summary>📤 파일 업로드</summary>
 ```bash
@@ -159,6 +183,8 @@ aws s3 cp s3://cloud-student-bucket-[버킷명]/remote-folder/ ./downloaded-fold
 </details>
 
 ### 1.4 S3 정적 웹사이트 호스팅
+
+[1.4 S3 정적 웹사이트 호스팅](#14-s3-정적-웹사이트-호스팅)
 
 <details>
 <summary>🌐 웹사이트 설정</summary>
@@ -199,11 +225,15 @@ echo "Website URL: http://cloud-student-bucket-[버킷명].s3-website.ap-northea
 <summary>📖 GCP Cloud Storage 개요</summary>
 
 ### Cloud Storage란?
+
+[Cloud Storage란?](#cloud-storage란)
 - **Google Cloud의 객체 스토리지 서비스**: GCP의 객체 스토리지 서비스
 - **확장 가능**: 무제한 스토리지 용량
 - **내구성**: 99.999999999% (11 9's) 내구성
 
 ### 주요 특징
+
+[주요 특징](#주요-특징)
 - **객체 기반**: 파일을 객체로 저장
 - **REST API**: HTTP/HTTPS를 통한 접근
 - **버전 관리**: 파일 버전 관리 지원
@@ -212,16 +242,22 @@ echo "Website URL: http://cloud-student-bucket-[버킷명].s3-website.ap-northea
 
 ### 2.1 Cloud Storage 기본 개념
 
+[2.1 Cloud Storage 기본 개념](#21-cloud-storage-기본-개념)
+
 <details>
 <summary>🪣 버킷 (Bucket)</summary>
 
 ### 버킷 특징
+
+[버킷 특징](#버킷-특징)
 - **전역 고유 이름**: 전 세계적으로 고유한 이름 필요
 - **리전 선택**: 데이터 저장 위치 선택
 - **스토리지 클래스**: Standard, Nearline, Coldline, Archive
 - **생명주기 규칙**: 자동 삭제 및 아카이브
 
 ### 버킷 설정
+
+[버킷 설정](#버킷-설정)
 - **퍼블릭 액세스**: 공개/비공개 설정
 - **암호화**: 서버 측 암호화 설정
 - **로깅**: 액세스 로그 설정
@@ -233,12 +269,16 @@ echo "Website URL: http://cloud-student-bucket-[버킷명].s3-website.ap-northea
 <summary>📄 객체 (Object)</summary>
 
 ### 객체 특징
+
+[객체 특징](#객체-특징)
 - **이름**: 파일의 고유 식별자
 - **메타데이터**: 파일에 대한 추가 정보
 - **ACL**: 접근 제어 목록
 - **라벨**: 객체 분류 및 관리
 
 ### 객체 관리
+
+[객체 관리](#객체-관리)
 - **업로드**: 단일/멀티파트 업로드
 - **다운로드**: 직접 다운로드 또는 URL 생성
 - **삭제**: 단일/일괄 삭제
@@ -247,6 +287,8 @@ echo "Website URL: http://cloud-student-bucket-[버킷명].s3-website.ap-northea
 </details>
 
 ### 2.2 Cloud Storage 버킷 생성 및 관리
+
+[2.2 Cloud Storage 버킷 생성 및 관리](#22-cloud-storage-버킷-생성-및-관리)
 
 <details>
 <summary>🌐 웹 콘솔 방식</summary>
@@ -281,6 +323,8 @@ gsutil ls -L -b gs://BUCKET_NAME
 
 ### 2.3 Cloud Storage 파일 업로드/다운로드
 
+[2.3 Cloud Storage 파일 업로드/다운로드](#23-cloud-storage-파일-업로드다운로드)
+
 <details>
 <summary>📤 파일 업로드</summary>
 ```bash
@@ -310,6 +354,8 @@ gsutil -m cp -r gs://cloud-student-bucket-[버킷명]/remote-folder/ ./downloade
 </details>
 
 ### 2.4 Cloud Storage 정적 웹사이트 호스팅
+
+[2.4 Cloud Storage 정적 웹사이트 호스팅](#24-cloud-storage-정적-웹사이트-호스팅)
 
 <details>
 <summary>🌐 웹사이트 설정</summary>
@@ -358,6 +404,8 @@ echo "Website URL: https://storage.googleapis.com/cloud-student-bucket-[버킷�
 | **가격** | GB당 월 요금 | GB당 월 요금 |
 
 ### 주요 차이점
+
+[주요 차이점](#주요-차이점)
 - **AWS S3**: 더 많은 스토리지 클래스 옵션
 - **GCP Cloud Storage**: 더 세분화된 스토리지 클래스
 - **가격**: GCP가 일반적으로 더 저렴
@@ -373,12 +421,16 @@ echo "Website URL: https://storage.googleapis.com/cloud-student-bucket-[버킷�
 <summary>📖 실습 과제 개요</summary>
 
 ### 실습 목적
+
+[실습 목적](#실습-목적)
 - **AWS S3**: 버킷 생성, 파일 관리, 웹사이트 호스팅
 - **GCP Cloud Storage**: 버킷 생성, 파일 관리, 웹사이트 호스팅
 - **비교 분석**: 두 플랫폼의 차이점 이해
 - **정적 웹사이트**: 정적 웹사이트 호스팅 설정
 
 ### 실습 결과물
+
+[실습 결과물](#실습-결과물)
 - AWS S3 버킷 생성 및 파일 관리
 - GCP Cloud Storage 버킷 생성 및 파일 관리
 - 정적 웹사이트 호스팅 설정
@@ -387,6 +439,8 @@ echo "Website URL: https://storage.googleapis.com/cloud-student-bucket-[버킷�
 </details>
 
 ### 기본 과제
+
+[기본 과제](#기본-과제)
 
 <details>
 <summary>📋 기본 과제 목록</summary>
@@ -398,6 +452,8 @@ echo "Website URL: https://storage.googleapis.com/cloud-student-bucket-[버킷�
 </details>
 
 ### 고급 과제
+
+[고급 과제](#고급-과제)
 
 <details>
 <summary>📋 고급 과제 목록</summary>
@@ -412,22 +468,30 @@ echo "Website URL: https://storage.googleapis.com/cloud-student-bucket-[버킷�
 
 ## ✅ 체크리스트
 
+[✅ 체크리스트](#체크리스트)
+
 <details>
 <summary>📋 학습 완료 체크리스트</summary>
 
 ### AWS S3 설정
+
+[AWS S3 설정](#aws-s3-설정)
 - [ ] AWS S3 버킷 생성 완료
 - [ ] 파일 업로드/다운로드 테스트 완료
 - [ ] 정적 웹사이트 호스팅 설정 완료
 - [ ] 버킷 정책 및 권한 설정 완료
 
 ### GCP Cloud Storage 설정
+
+[GCP Cloud Storage 설정](#gcp-cloud-storage-설정)
 - [ ] GCP Cloud Storage 버킷 생성 완료
 - [ ] 파일 업로드/다운로드 테스트 완료
 - [ ] 정적 웹사이트 호스팅 설정 완료
 - [ ] 버킷 정책 및 권한 설정 완료
 
 ### 비교 및 분석
+
+[비교 및 분석](#비교-및-분석)
 - [ ] 성능 비교 분석 완료
 - [ ] 비용 분석 완료
 - [ ] 기능 비교 분석 완료
@@ -442,6 +506,8 @@ echo "Website URL: https://storage.googleapis.com/cloud-student-bucket-[버킷�
 <summary>🐛 자주 발생하는 문제</summary>
 
 ### AWS S3 관련 문제
+
+[AWS S3 관련 문제](#aws-s3-관련-문제)
 <details>
 <summary>❌ S3 버킷 생성 실패</summary>
 
@@ -487,6 +553,8 @@ aws s3 cp FILE_NAME s3://BUCKET_NAME/ --storage-class STANDARD_IA
 </details>
 
 ### GCP Cloud Storage 관련 문제
+
+[GCP Cloud Storage 관련 문제](#gcp-cloud-storage-관련-문제)
 <details>
 <summary>❌ Cloud Storage 버킷 생성 실패</summary>
 
@@ -537,18 +605,24 @@ gsutil -m cp FILE_NAME gs://BUCKET_NAME/
 <summary>📖 추가 학습 자료</summary>
 
 ### 공식 문서
+
+[공식 문서](#공식-문서)
 - [AWS S3 공식 문서](https://docs.aws.amazon.com/s3/)
 - [GCP Cloud Storage 공식 문서](https://cloud.google.com/storage/docs)
 - [AWS S3 스토리지 클래스](https://aws.amazon.com/s3/storage-classes/)
 - [GCP Cloud Storage 스토리지 클래스](https://cloud.google.com/storage/docs/storage-classes)
 
 ### 유용한 리소스
+
+[유용한 리소스](#유용한-리소스)
 - [AWS S3 모범 사례](https://docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance.html)
 - [GCP Cloud Storage 모범 사례](https://cloud.google.com/storage/docs/best-practices)
 - [AWS S3 가격 계산기](https://calculator.aws/)
 - [GCP 가격 계산기](https://cloud.google.com/products/calculator)
 
 ### 관련 프로젝트
+
+[관련 프로젝트](#관련-프로젝트)
 - [AWS S3 샘플 프로젝트](https://github.com/aws-samples/amazon-s3-samples)
 - [GCP Cloud Storage 샘플 프로젝트](https://github.com/GoogleCloudPlatform/cloud-storage-samples)
 
@@ -558,11 +632,15 @@ gsutil -m cp FILE_NAME gs://BUCKET_NAME/
 <summary>🚀 다음 단계</summary>
 
 ### 실습 프로젝트 준비
+
+[실습 프로젝트 준비](#실습-프로젝트-준비)
 1. **통합 프로젝트**: AWS와 GCP 서비스 통합
 2. **네트워킹**: VPC, 서브넷, 라우팅
 3. **보안**: 보안 그룹, 방화벽, 암호화
 
 ### 고급 기능
+
+[고급 기능](#고급-기능)
 1. **백업 및 복원**: 자동 백업, 스냅샷
 2. **모니터링**: CloudWatch, Cloud Monitoring
 3. **비용 최적화**: 예약 인스턴스, 스팟 인스턴스
@@ -573,9 +651,13 @@ gsutil -m cp FILE_NAME gs://BUCKET_NAME/
 
 ## 🎉 완료!
 
+[🎉 완료!](#완료)
+
 축하합니다! 스토리지 서비스 실습을 완료했습니다.
 
 ### 📚 학습 요약
+
+[📚 학습 요약](#학습-요약)
 
 이번 교시를 통해 다음을 배웠습니다:
 
@@ -586,11 +668,15 @@ gsutil -m cp FILE_NAME gs://BUCKET_NAME/
 
 ### 🚀 다음 단계
 
+[🚀 다음 단계](#다음-단계)
+
 - **실습 프로젝트**: [통합 실습 프로젝트](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day1\practice\README.md)
 - **실제 프로젝트 적용**: 자신의 프로젝트에 스토리지 서비스 적용
 - **고급 기능 학습**: CDN 연동, 비용 최적화, 모니터링
 
 ### 💡 추가 학습 자료
+
+[💡 추가 학습 자료](#추가-학습-자료)
 
 - [AWS S3 공식 문서](https://docs.aws.amazon.com/s3/)
 - [GCP Cloud Storage 공식 문서](https://cloud.google.com/storage/docs)

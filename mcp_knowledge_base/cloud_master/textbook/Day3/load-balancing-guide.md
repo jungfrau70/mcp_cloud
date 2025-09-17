@@ -9,6 +9,8 @@
 
 
 ## 📋 목차
+
+[📋 목차](#목차)
 1. [고가용성 개념 이해](#고가용성-개념-이해)
 2. [로드 밸런싱 개념](#로드-밸런싱-개념)
 3. [AWS ELB vs GCP Cloud Load Balancing 비교](#aws-elb-vs-gcp-cloud-load-balancing-비교)
@@ -25,23 +27,35 @@
 
 ### 고가용성(High Availability)이란?
 
+[고가용성(High Availability)이란?](#고가용성high-availability이란)
+
 고가용성은 **시스템이 장애 발생 시에도 서비스를 계속 제공할 수 있도록 여러 구성 요소를 중복 배치하는 설계 원칙**입니다.
 
 ### 고가용성의 핵심 요소
 
+[고가용성의 핵심 요소](#고가용성의-핵심-요소)
+
 #### 1. **다중화(Redundancy)**
+
+[1. **다중화(Redundancy)**](#1-다중화redundancy)
 - 여러 서버, 데이터베이스, 네트워크 경로를 중복 배치
 - 단일 장애점(Single Point of Failure) 제거
 
 #### 2. **장애 감지(Failure Detection)**
+
+[2. **장애 감지(Failure Detection)**](#2-장애-감지failure-detection)
 - 헬스체크를 통한 서비스 상태 모니터링
 - 자동 장애 감지 및 대응
 
 #### 3. **자동 복구(Automatic Recovery)**
+
+[3. **자동 복구(Automatic Recovery)**](#3-자동-복구automatic-recovery)
 - 장애 발생 시 자동으로 정상 서비스로 전환
 - 사용자 개입 없이 서비스 연속성 유지
 
 ### 고가용성 구현 방법
+
+[고가용성 구현 방법](#고가용성-구현-방법)
 
 ```mermaid
 graph TB
@@ -61,6 +75,8 @@ graph TB
 
 ### 가용성 수준
 
+[가용성 수준](#가용성-수준)
+
 | 가용성 수준 | 다운타임/년 | 다운타임/월 | 설명 |
 |-------------|-------------|-------------|------|
 | **99%** | 3.65일 | 7.2시간 | 기본적인 고가용성 |
@@ -74,9 +90,13 @@ graph TB
 
 ### 로드 밸런싱이란?
 
+[로드 밸런싱이란?](#로드-밸런싱이란)
+
 로드 밸런싱은 **사용자 요청을 여러 백엔드 서버에 고르게 분산시켜 특정 서버의 과부하를 방지하고 시스템 안정성을 높이는 기술**입니다.
 
 ### 로드 밸런싱의 장점
+
+[로드 밸런싱의 장점](#로드-밸런싱의-장점)
 
 | 장점 | 설명 |
 |------|------|
@@ -87,12 +107,18 @@ graph TB
 
 ### 로드 밸런싱 계층
 
+[로드 밸런싱 계층](#로드-밸런싱-계층)
+
 #### 1. **L4 (Transport Layer)**
+
+[1. **L4 (Transport Layer)**](#1-l4-transport-layer)
 - TCP/UDP 레벨에서 로드 밸런싱
 - 빠른 처리 속도, 단순한 로직
 - 예: AWS NLB, GCP Network Load Balancer
 
 #### 2. **L7 (Application Layer)**
+
+[2. **L7 (Application Layer)**](#2-l7-application-layer)
 - HTTP/HTTPS 레벨에서 로드 밸런싱
 - 고급 라우팅, SSL 종료, 콘텐츠 기반 라우팅
 - 예: AWS ALB, GCP HTTP(S) Load Balancer
@@ -103,6 +129,8 @@ graph TB
 
 ### 로드 밸런서 유형 비교
 
+[로드 밸런서 유형 비교](#로드-밸런서-유형-비교)
+
 | 구분 | AWS ELB | GCP Cloud Load Balancing |
 |------|---------|--------------------------|
 | **Application Load Balancer** | ALB (L7) | HTTP(S) Load Balancer (L7) |
@@ -111,6 +139,8 @@ graph TB
 | **Global Load Balancer** | CloudFront | Global HTTP(S) Load Balancer |
 
 ### 기능 비교표
+
+[기능 비교표](#기능-비교표)
 
 | 기능 | AWS ALB | AWS NLB | GCP HTTP(S) LB | GCP Network LB |
 |------|---------|---------|----------------|----------------|
@@ -125,7 +155,11 @@ graph TB
 
 ### 아키텍처 비교
 
+[아키텍처 비교](#아키텍처-비교)
+
 #### AWS ELB 아키텍처
+
+[AWS ELB 아키텍처](#aws-elb-아키텍처)
 ```mermaid
 graph TB
     A[사용자] --> B[Route 53<br/>DNS]
@@ -141,6 +175,8 @@ graph TB
 ```
 
 #### GCP Cloud Load Balancing 아키텍처
+
+[GCP Cloud Load Balancing 아키텍처](#gcp-cloud-load-balancing-아키텍처)
 ```mermaid
 graph TB
     A[사용자] --> B[Global HTTP(S) Load Balancer]
@@ -160,27 +196,39 @@ graph TB
 
 ### 주요 알고리즘
 
+[주요 알고리즘](#주요-알고리즘)
+
 #### 1. **Round Robin (라운드 로빈)**
+
+[1. **Round Robin (라운드 로빈)**](#1-round-robin-라운드-로빈)
 - 요청을 순서대로 각 서버에 분배
 - 가장 기본적이고 단순한 방식
 - 서버 성능이 동일할 때 효과적
 
 #### 2. **Least Connections (최소 연결)**
+
+[2. **Least Connections (최소 연결)**](#2-least-connections-최소-연결)
 - 현재 연결 수가 가장 적은 서버에 요청 전달
 - 세션이 오래 지속되는 경우에 효과적
 - 서버 부하를 고려한 분산
 
 #### 3. **Weighted Round Robin (가중 라운드 로빈)**
+
+[3. **Weighted Round Robin (가중 라운드 로빈)**](#3-weighted-round-robin-가중-라운드-로빈)
 - 서버별로 가중치를 부여하여 분배
 - 성능이 다른 서버들에 적합
 - 가중치에 비례하여 요청 분배
 
 #### 4. **IP Hash (IP 해시)**
+
+[4. **IP Hash (IP 해시)**](#4-ip-hash-ip-해시)
 - 클라이언트 IP를 기반으로 서버 선택
 - 동일한 클라이언트는 항상 같은 서버로 연결
 - 세션 유지가 필요한 경우에 사용
 
 ### 알고리즘 선택 가이드
+
+[알고리즘 선택 가이드](#알고리즘-선택-가이드)
 
 | 상황 | 권장 알고리즘 | 이유 |
 |------|---------------|------|
@@ -209,7 +257,11 @@ graph TB
 
 ### 1단계: 웹 서버 인스턴스 준비
 
+[1단계: 웹 서버 인스턴스 준비](#1단계-웹-서버-인스턴스-준비)
+
 #### AWS EC2 인스턴스 생성
+
+[AWS EC2 인스턴스 생성](#aws-ec2-인스턴스-생성)
 ```bash
 # 보안 그룹 생성 (HTTP 포트 80 개방)
 aws ec2 create-security-group \
@@ -233,6 +285,8 @@ aws ec2 run-instances \
 ```
 
 #### GCP Compute Engine 인스턴스 생성
+
+[GCP Compute Engine 인스턴스 생성](#gcp-compute-engine-인스턴스-생성)
 ```bash
 # 방화벽 규칙 생성
 gcloud compute firewall-rules create allow-http \
@@ -257,6 +311,8 @@ gcloud compute instances create web-server-2 \
 ```
 
 #### 웹 서버 설정 스크립트
+
+[웹 서버 설정 스크립트](#웹-서버-설정-스크립트)
 
 **user-data.sh (AWS)**
 ```bash
@@ -288,7 +344,11 @@ echo "<p>Zone: $(curl -s http://metadata.google.internal/computeMetadata/v1/inst
 
 ### 2단계: AWS Application Load Balancer 생성
 
+[2단계: AWS Application Load Balancer 생성](#2단계-aws-application-load-balancer-생성)
+
 #### ALB 생성
+
+[ALB 생성](#alb-생성)
 ```bash
 # Target Group 생성
 aws elbv2 create-target-group \
@@ -323,7 +383,11 @@ aws elbv2 create-listener \
 
 ### 3단계: GCP HTTP(S) Load Balancer 생성
 
+[3단계: GCP HTTP(S) Load Balancer 생성](#3단계-gcp-https-load-balancer-생성)
+
 #### HTTP Load Balancer 생성
+
+[HTTP Load Balancer 생성](#http-load-balancer-생성)
 ```bash
 # 인스턴스 그룹 생성
 gcloud compute instance-groups unmanaged create web-servers-ig \
@@ -371,7 +435,11 @@ gcloud compute forwarding-rules create web-forwarding-rule \
 
 ### 4단계: 로드 밸런싱 테스트
 
+[4단계: 로드 밸런싱 테스트](#4단계-로드-밸런싱-테스트)
+
 #### 부하 테스트 실행
+
+[부하 테스트 실행](#부하-테스트-실행)
 ```bash
 # Apache Bench를 사용한 부하 테스트
 # AWS ALB 테스트
@@ -388,6 +456,8 @@ done
 ```
 
 #### 헬스체크 확인
+
+[헬스체크 확인](#헬스체크-확인)
 ```bash
 # AWS Target Group 상태 확인
 aws elbv2 describe-target-health \
@@ -400,7 +470,11 @@ gcloud compute backend-services get-health web-backend-service \
 
 ### 5단계: 장애 시뮬레이션
 
+[5단계: 장애 시뮬레이션](#5단계-장애-시뮬레이션)
+
 #### 인스턴스 중지
+
+[인스턴스 중지](#인스턴스-중지)
 ```bash
 # AWS 인스턴스 중지
 aws ec2 stop-instances --instance-ids i-1234567890abcdef0
@@ -410,6 +484,8 @@ gcloud compute instances stop web-server-1 --zone=us-central1-a
 ```
 
 #### 로드 밸런서 동작 확인
+
+[로드 밸런서 동작 확인](#로드-밸런서-동작-확인)
 ```bash
 # 중지된 인스턴스가 Unhealthy로 표시되는지 확인
 # 다른 인스턴스로만 트래픽이 전달되는지 확인
@@ -422,7 +498,11 @@ curl http://my-web-alb-1234567890.us-west-2.elb.amazonaws.com/
 
 ### 고급 ALB 설정
 
+[고급 ALB 설정](#고급-alb-설정)
+
 #### Path 기반 라우팅
+
+[Path 기반 라우팅](#path-기반-라우팅)
 ```bash
 # API 서버용 Target Group 생성
 aws elbv2 create-target-group \
@@ -440,6 +520,8 @@ aws elbv2 create-rule \
 ```
 
 #### Host 기반 라우팅
+
+[Host 기반 라우팅](#host-기반-라우팅)
 ```bash
 # Host 기반 라우팅 규칙 추가
 aws elbv2 create-rule \
@@ -451,7 +533,11 @@ aws elbv2 create-rule \
 
 ### 고급 GCP Load Balancer 설정
 
+[고급 GCP Load Balancer 설정](#고급-gcp-load-balancer-설정)
+
 #### 다중 백엔드 서비스
+
+[다중 백엔드 서비스](#다중-백엔드-서비스)
 ```bash
 # API 서버용 백엔드 서비스 생성
 gcloud compute backend-services create api-backend-service \
@@ -467,6 +553,8 @@ gcloud compute url-maps add-path-matcher web-url-map \
 ```
 
 #### SSL 인증서 설정
+
+[SSL 인증서 설정](#ssl-인증서-설정)
 ```bash
 # SSL 인증서 생성
 gcloud compute ssl-certificates create web-ssl-cert \
@@ -489,16 +577,22 @@ gcloud compute forwarding-rules create web-https-forwarding-rule \
 ## ✅ 예상 결과
 
 ### 로드 밸런싱 동작
+
+[로드 밸런싱 동작](#로드-밸런싱-동작)
 - 로드 밸런서 DNS/IP로 접속 시 두 서버가 번갈아 응답
 - 각 서버의 응답 비율이 약 50:50으로 분산
 - 서버 식별 정보(호스트명, IP, AZ)가 번갈아 표시
 
 ### 헬스체크 동작
+
+[헬스체크 동작](#헬스체크-동작)
 - 정상 인스턴스는 Healthy 상태로 표시
 - 중지된 인스턴스는 Unhealthy 상태로 표시
 - Unhealthy 인스턴스로는 트래픽 전달 중단
 
 ### 장애 대응
+
+[장애 대응](#장애-대응)
 - 인스턴스 중지 시 다른 인스턴스로만 트래픽 전달
 - 서비스 중단 없이 계속 응답
 - 인스턴스 재시작 시 자동으로 트래픽 전달 재개
@@ -508,6 +602,8 @@ gcloud compute forwarding-rules create web-https-forwarding-rule \
 ## 🚀 혼자 해보기
 
 ### 기본 과제
+
+[기본 과제](#기본-과제)
 1. **HTTPS 설정**: SSL 인증서를 추가하여 HTTPS 로드 밸런싱을 구현해 보세요.
 
 2. **다중 백엔드**: 웹 서버와 API 서버를 분리하여 Path 기반 라우팅을 설정해 보세요.
@@ -515,6 +611,8 @@ gcloud compute forwarding-rules create web-https-forwarding-rule \
 3. **고정 IP**: GCP에서 고정 IP를 할당하여 로드 밸런서에 연결해 보세요.
 
 ### 고급 과제
+
+[고급 과제](#고급-과제)
 1. **Cross-Region 로드 밸런싱**: 여러 리전에 서버를 배치하고 Global Load Balancer를 설정해 보세요.
 
 2. **CDN 연동**: CloudFront(AWS) 또는 Cloud CDN(GCP)을 연동하여 정적 콘텐츠를 최적화해 보세요.
@@ -524,6 +622,8 @@ gcloud compute forwarding-rules create web-https-forwarding-rule \
 ---
 
 ## ❓ 퀴즈
+
+[❓ 퀴즈](#퀴즈)
 
 1. **로드 밸런서가 인스턴스를 고르게 선택하는 대표적인 알고리즘 3가지를 말해보세요.**
 
@@ -537,6 +637,8 @@ gcloud compute forwarding-rules create web-https-forwarding-rule \
 
 ## ✅ 체크리스트
 
+[✅ 체크리스트](#체크리스트)
+
 - [ ] 웹 서버 인스턴스 2대 이상이 생성되었나요?
 - [ ] 각 인스턴스에 웹 서비스가 정상 동작하나요?
 - [ ] 로드 밸런서가 생성되고 인스턴스가 대상으로 등록되었나요?
@@ -547,6 +649,8 @@ gcloud compute forwarding-rules create web-https-forwarding-rule \
 ---
 
 ## 📚 추가 학습 자료
+
+[📚 추가 학습 자료](#추가-학습-자료)
 
 - [AWS ELB 공식 문서](https://docs.aws.amazon.com/elasticloadbalancing/)
 - [GCP Load Balancing 공식 문서](https://cloud.google.com/load-balancing/docs)
@@ -568,6 +672,8 @@ gcloud compute forwarding-rules create web-https-forwarding-rule \
 </div>
 
 ### 📧 연락처
+
+[📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 
