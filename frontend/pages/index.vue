@@ -1,140 +1,70 @@
 <template>
-  <div class="bg-slate-900 text-white font-sans overflow-hidden">
-    <!-- Floating Navigation -->
-    <header class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-6xl px-4">
-      <nav class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-3 shadow-2xl">
-        <div class="flex justify-between items-center">
-          <div class="flex items-center gap-3">
-            <div class="p-2 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl">
-              <UIcon name="i-lucide-graduation-cap" class="w-6 h-6 text-white" />
-            </div>
-            <span class="text-lg font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              MCP Cloud Platform
-            </span>
-          </div>
-          <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
-            <NuxtLink to="#features" class="hover:text-blue-400 transition-colors duration-300">주요 기능</NuxtLink>
-            <NuxtLink to="#curriculum" class="hover:text-blue-400 transition-colors duration-300">교육 과정</NuxtLink>
-            <NuxtLink to="#how-it-works" class="hover:text-blue-400 transition-colors duration-300">동작 방식</NuxtLink>
-            <NuxtLink to="/knowledge-base" class="hover:text-blue-400 transition-colors duration-300">지식베이스</NuxtLink>
-          </nav>
-          <UButton to="/curriculum" variant="solid" class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 border-0 px-6 py-2 rounded-xl shadow-lg transition-all duration-300 hover:shadow-blue-500/25 hover:scale-105">
-            <UIcon name="i-lucide-rocket" class="w-4 h-4 mr-2" />
-            시작하기
-          </UButton>
+  <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-slate-900 dark:to-indigo-900">
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 text-white">
+      <!-- Background Pattern -->
+      <div class="absolute inset-0 opacity-20">
+        <div class="w-full h-full bg-dot-pattern"></div>
         </div>
-      </nav>
-    </header>
-
-    <main>
-      <!-- Hero Section with Animated Background -->
-      <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <!-- Animated Background Elements -->
-        <div class="absolute inset-0 -z-10">
-          <div class="absolute top-20 left-10 w-72 h-72 bg-blue-500/20 rounded-full filter blur-3xl animate-pulse"></div>
-          <div class="absolute top-40 right-20 w-96 h-96 bg-purple-500/20 rounded-full filter blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
-          <div class="absolute bottom-20 left-1/3 w-80 h-80 bg-cyan-500/20 rounded-full filter blur-3xl animate-pulse" style="animation-delay: 4s;"></div>
-          
-          <!-- Floating Elements -->
-          <div class="absolute top-1/4 left-1/4 animate-float">
-            <div class="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl shadow-2xl">
-              <UIcon name="i-lucide-brain-circuit" class="w-8 h-8 text-blue-400" />
-            </div>
-          </div>
-          <div class="absolute top-1/3 right-1/4 animate-float-delayed">
-            <div class="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl shadow-2xl">
-              <UIcon name="i-lucide-cloud" class="w-8 h-8 text-purple-400" />
-            </div>
-          </div>
-          <div class="absolute bottom-1/3 left-1/5 animate-float-slow">
-            <div class="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl shadow-2xl">
-              <UIcon name="i-lucide-code" class="w-8 h-8 text-cyan-400" />
-            </div>
-          </div>
+      
+      <div class="relative z-10">
+        <UContainer class="py-24 lg:py-32">
+          <div class="text-center max-w-4xl mx-auto">
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm font-medium mb-8 animate-fade-in">
+              <UIcon name="i-lucide-sparkles" class="w-4 h-4 text-yellow-300" />
+              <span>{{ heroData.headline }}</span>
         </div>
 
-        <div class="container mx-auto px-6 text-center relative z-10">
-          <!-- Main Heading with Animated Gradient -->
-          <div class="mb-8">
-            <h1 class="text-5xl md:text-7xl font-black tracking-tight mb-6">
-              <span class="block bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent animate-gradient-x">
-                AI 기반 클라우드
-              </span>
-              <span class="block text-white mt-2">교육 플랫폼</span>
+            <!-- Main Title -->
+            <h1 class="text-5xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent animate-slide-up">
+              {{ heroData.title }}
             </h1>
             
-            <!-- Subtitle with Typewriter Effect -->
-            <div class="relative inline-block">
-              <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-                실무 중심의 체계적인 커리큘럼으로 
-                <span class="text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text font-semibold">
-                  클라우드 전문가
-                </span>
-                가 되어보세요
-              </p>
-              <div class="absolute -inset-1 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg blur opacity-30"></div>
-            </div>
-          </div>
-
-          <!-- Stats Cards -->
-          <div class="flex flex-wrap justify-center gap-6 mb-12">
-            <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl hover:bg-white/10 transition-all duration-300">
-              <div class="text-3xl font-bold text-blue-400">5000+</div>
-              <div class="text-sm text-gray-400">수강생</div>
-            </div>
-            <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl hover:bg-white/10 transition-all duration-300">
-              <div class="text-3xl font-bold text-purple-400">98%</div>
-              <div class="text-sm text-gray-400">취업률</div>
-            </div>
-            <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl hover:bg-white/10 transition-all duration-300">
-              <div class="text-3xl font-bold text-cyan-400">24/7</div>
-              <div class="text-sm text-gray-400">AI 지원</div>
-            </div>
-          </div>
+            <!-- Description -->
+            <p class="text-xl lg:text-2xl text-blue-100 mb-12 max-w-3xl mx-auto leading-relaxed animate-slide-up animation-delay-200">
+              {{ heroData.description }}
+            </p>
 
           <!-- CTA Buttons -->
-          <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up animation-delay-400">
             <UButton 
-              to="/curriculum" 
-              size="xl" 
-              class="group bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 border-0 px-10 py-4 rounded-2xl shadow-xl transition-all duration-300 hover:shadow-blue-500/25 hover:scale-105"
-            >
-              <UIcon name="i-lucide-play-circle" class="w-6 h-6 mr-3 group-hover:rotate-12 transition-transform" />
-              <span class="text-lg font-semibold">무료 체험 시작</span>
-            </UButton>
-            
-            <UButton 
-              to="#how-it-works" 
-              variant="outline" 
-              size="xl" 
-              class="border-2 border-white/20 hover:border-white/40 hover:bg-white/5 px-10 py-4 rounded-2xl backdrop-blur-sm transition-all duration-300 hover:scale-105"
-            >
-              <UIcon name="i-lucide-book-open" class="w-6 h-6 mr-3" />
-              <span class="text-lg font-semibold">커리큘럼 보기</span>
+                v-for="link in heroData.links"
+                :key="link.label"
+                :to="link.to"
+                :target="link.target"
+                :color="link.color || 'white'"
+                :variant="link.variant || 'solid'"
+                :size="link.size || 'xl'"
+                :icon="link.icon"
+                class="px-8 py-4 text-lg font-semibold shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 transition-all duration-300"
+              >
+                {{ link.label }}
             </UButton>
           </div>
+          </div>
+        </UContainer>
         </div>
 
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-            <div class="w-1 h-3 bg-white/50 rounded-full mt-2 animate-pulse"></div>
-          </div>
-        </div>
+      <!-- Floating Elements -->
+      <div class="absolute top-20 left-10 w-20 h-20 bg-white/10 rounded-full blur-xl animate-float"></div>
+      <div class="absolute bottom-20 right-10 w-32 h-32 bg-blue-400/20 rounded-full blur-2xl animate-float animation-delay-1000"></div>
+      <div class="absolute top-1/2 left-1/4 w-16 h-16 bg-purple-400/20 rounded-full blur-lg animate-float animation-delay-2000"></div>
       </section>
       
-      <!-- Features Section with Interactive Cards -->
-      <section id="features" class="py-24 relative">
-        <div class="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900"></div>
-        <div class="container mx-auto px-6 relative z-10">
+    <!-- Features Section -->
+    <section class="py-24 bg-white dark:bg-gray-900">
+      <UContainer>
           <div class="text-center mb-20">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6">
-              <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                혁신적인 학습 경험
-              </span>
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium mb-6">
+            <UIcon name="i-lucide-rocket" class="w-4 h-4" />
+            <span>핵심 기능</span>
+          </div>
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+            강사와 학생을 위한 교육 플랫폼
             </h2>
-            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-              AI 기술과 실무 프로젝트를 결합한 차세대 클라우드 교육
+          <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            강사는 교육 기획 도구로, 학생은 실습 중심 학습으로 클라우드 & AI 전문가가 되세요
             </p>
           </div>
           
@@ -142,99 +72,57 @@
             <div
               v-for="(feature, index) in features"
               :key="feature.title"
-              class="group relative p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 hover:-translate-y-2 hover:bg-white/10"
-              :style="{ animationDelay: `${index * 200}ms` }"
-            >
-              <!-- Animated Border -->
-              <div class="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
-              
-              <div class="relative z-10">
-                <!-- Icon with Gradient Background -->
-                <div class="mb-6 inline-block p-4 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl group-hover:from-blue-500/30 group-hover:to-purple-500/30 transition-all duration-300">
-                  <UIcon :name="feature.icon" class="w-8 h-8 text-blue-400 group-hover:text-blue-300 transition-colors" />
+            class="group relative"
+            :style="{ animationDelay: `${index * 100}ms` }"
+          >
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+            <UCard class="relative bg-white dark:bg-gray-800 border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 group-hover:scale-105">
+              <template #header>
+                <div class="flex items-center gap-4">
+                  <div class="p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg">
+                    <UIcon :name="feature.icon" class="w-6 h-6 text-white" />
                 </div>
-                
-                <h3 class="text-xl font-bold text-white mb-3 group-hover:text-blue-300 transition-colors">
+                  <h3 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                   {{ feature.title }}
                 </h3>
-                <p class="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
+                </div>
+              </template>
+
+              <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
                   {{ feature.description }}
                 </p>
+
+              <UButton
+                v-if="feature.action"
+                :to="feature.action.to"
+                :target="feature.action.target"
+                variant="ghost"
+                color="primary"
+                size="sm"
+                class="w-full group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 transition-colors"
+              >
+                {{ feature.action.label }}
+                <UIcon name="i-lucide-arrow-right" class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+              </UButton>
+            </UCard>
               </div>
             </div>
-          </div>
-        </div>
+      </UContainer>
       </section>
 
-      <!-- Learning Path Section -->
-      <section id="how-it-works" class="py-24 relative overflow-hidden">
-        <div class="absolute inset-0">
-          <div class="absolute top-20 right-20 w-96 h-96 bg-blue-500/10 rounded-full filter blur-3xl"></div>
-          <div class="absolute bottom-20 left-20 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl"></div>
-        </div>
-        
-        <div class="container mx-auto px-6 relative z-10">
+    <!-- Course Overview Section -->
+    <section class="py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-slate-900 dark:to-indigo-900">
+      <UContainer>
           <div class="text-center mb-20">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6">
-              <span class="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                학습 여정
-              </span>
-            </h2>
-            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-              체계적인 단계별 학습으로 전문가까지
-            </p>
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-sm font-medium mb-6">
+            <UIcon name="i-lucide-graduation-cap" class="w-4 h-4" />
+            <span>교육 과정</span>
           </div>
-          
-          <!-- Interactive Timeline -->
-          <div class="relative max-w-4xl mx-auto">
-            <!-- Connecting Line -->
-            <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 via-purple-500 to-cyan-500 transform -translate-x-1/2 hidden lg:block"></div>
-            
-            <div class="space-y-16">
-              <div v-for="(step, index) in workflowSteps" :key="step.title" class="relative">
-                <div class="flex items-center justify-center lg:justify-start" :class="index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'">
-                  <!-- Content Card -->
-                  <div class="flex-1 max-w-md">
-                    <div class="group p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 hover:-translate-y-1">
-                      <div class="flex items-center gap-4 mb-4">
-                        <div class="p-3 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl">
-                          <UIcon :name="step.icon" class="w-6 h-6 text-blue-400" />
-                        </div>
-                        <div class="px-3 py-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full text-sm font-semibold">
-                          Step {{ index + 1 }}
-                        </div>
-                      </div>
-                      <h3 class="text-xl font-bold text-white mb-3">{{ step.title }}</h3>
-                      <p class="text-gray-400 leading-relaxed">{{ step.description }}</p>
-                    </div>
-                  </div>
-                  
-                  <!-- Center Icon (Desktop) -->
-                  <div class="hidden lg:flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full shadow-lg mx-8 z-10">
-                    <div class="w-3 h-3 bg-white rounded-full"></div>
-                  </div>
-                  
-                  <!-- Spacer -->
-                  <div class="flex-1 max-w-md hidden lg:block"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Curriculum Section with Course Cards -->
-      <section id="curriculum" class="py-24 relative">
-        <div class="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900"></div>
-        <div class="container mx-auto px-6 relative z-10">
-          <div class="text-center mb-20">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6">
-              <span class="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                전문가 양성 커리큘럼
-              </span>
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+            클라우드 실무력 강화 과정
             </h2>
-            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-              실무 프로젝트 중심의 체계적인 학습 과정
+          <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            3단계 체계적 학습으로 클라우드 전문가가 되세요
             </p>
           </div>
           
@@ -242,271 +130,393 @@
             <div
               v-for="(course, index) in courses"
               :key="course.name"
-              class="group relative overflow-hidden rounded-3xl transition-all duration-500 hover:scale-105"
-            >
-              <!-- Background with Gradient -->
-              <div class="absolute inset-0 bg-gradient-to-br" :class="course.gradient"></div>
-              <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300"></div>
+            class="group relative"
+            :style="{ animationDelay: `${index * 200}ms` }"
+          >
+            <div class="absolute inset-0 rounded-3xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" :class="course.gradient"></div>
+            <UCard class="relative overflow-hidden border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-3 group-hover:scale-105" :class="course.gradient">
+              <!-- Decorative Elements -->
+              <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
+              <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-12 -translate-x-12"></div>
               
-              <!-- Content -->
-              <div class="relative z-10 p-8 h-full flex flex-col">
-                <!-- Course Icon & Badge -->
-                <div class="flex items-center justify-between mb-6">
-                  <div class="p-4 bg-white/10 backdrop-blur-sm rounded-2xl group-hover:bg-white/20 transition-all duration-300">
-                    <UIcon :name="course.icon" class="w-8 h-8 text-white" />
+              <template #header>
+                <div class="text-center relative z-10">
+                  <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl mb-6 shadow-lg">
+                    <UIcon :name="course.icon" class="w-10 h-10 text-white" />
                   </div>
-                  <div class="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-semibold text-white">
+                  <h3 class="text-3xl font-bold text-white mb-3">{{ course.name }}</h3>
+                  <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white/90 text-sm font-medium">
+                    <UIcon name="i-lucide-clock" class="w-4 h-4" />
                     {{ course.duration }}
                   </div>
                 </div>
-                
-                <!-- Course Title -->
-                <h3 class="text-2xl font-bold text-white mb-4">{{ course.name }}</h3>
-                
-                <!-- Course Topics -->
-                <div class="flex-1 mb-6">
+              </template>
+
+              <div class="space-y-6 relative z-10">
+                <div class="text-white/95">
+                  <h4 class="font-bold text-lg mb-4 flex items-center gap-2">
+                    <UIcon name="i-lucide-book-open" class="w-5 h-5" />
+                    주요 내용
+                  </h4>
                   <ul class="space-y-3">
-                    <li v-for="topic in course.topics" :key="topic" class="flex items-start gap-3">
-                      <div class="p-1 bg-green-500/20 rounded-full mt-1">
-                        <UIcon name="i-lucide-check" class="w-3 h-3 text-green-400" />
+                    <li v-for="item in course.topics" :key="item" class="flex items-start gap-3">
+                      <div class="flex-shrink-0 w-5 h-5 bg-green-400 rounded-full flex items-center justify-center mt-0.5">
+                        <UIcon name="i-lucide-check" class="w-3 h-3 text-white" />
                       </div>
-                      <span class="text-white/90 text-sm leading-relaxed">{{ topic }}</span>
+                      <span class="text-sm leading-relaxed">{{ item }}</span>
                     </li>
                   </ul>
                 </div>
                 
-                <!-- Course CTA -->
+                <div class="text-white/95">
+                  <h4 class="font-bold text-lg mb-3 flex items-center gap-2">
+                    <UIcon name="i-lucide-server" class="w-5 h-5" />
+                    실습 환경
+                  </h4>
+                  <p class="text-sm leading-relaxed bg-white/10 backdrop-blur-sm rounded-lg p-3">{{ course.environment }}</p>
+                </div>
+
                 <UButton
                   :to="course.link"
                   variant="solid"
+                  color="white"
                   size="lg"
-                  block
-                  class="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 transition-all duration-300 group-hover:bg-white/30"
+                  class="w-full mt-8 font-bold text-lg py-4 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"
                 >
-                  <span class="text-white font-semibold">과정 상세보기</span>
-                  <UIcon name="i-lucide-arrow-right" class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  과정 상세보기
+                  <UIcon name="i-lucide-arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </UButton>
               </div>
+            </UCard>
             </div>
           </div>
-        </div>
+      </UContainer>
       </section>
       
-      <!-- Testimonials Section -->
-      <section class="py-24 relative overflow-hidden">
-        <div class="absolute inset-0">
-          <div class="absolute top-1/4 left-10 w-72 h-72 bg-blue-500/10 rounded-full filter blur-3xl animate-pulse"></div>
-          <div class="absolute bottom-1/4 right-10 w-72 h-72 bg-purple-500/10 rounded-full filter blur-3xl animate-pulse" style="animation-delay: 3s;"></div>
+    <!-- MCP Services Section -->
+    <section class="py-24 bg-white dark:bg-gray-900">
+      <UContainer>
+        <div class="text-center mb-20">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm font-medium mb-6">
+            <UIcon name="i-lucide-robot" class="w-4 h-4" />
+            <span>AI 교육 도구</span>
         </div>
-        
-        <div class="container mx-auto px-6 relative z-10">
-          <div class="text-center mb-20">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6">
-              <span class="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
-                수강생 성공 스토리
-              </span>
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+            AI 교육 도구 통합
             </h2>
-            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-              실제 취업에 성공한 수강생들의 생생한 후기
+          <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            다양한 AI 도구들을 통합하여 강력한 교육 지원 기능을 제공합니다
             </p>
           </div>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div
-              v-for="testimonial in testimonials"
-              :key="testimonial.name"
-              class="group p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl hover:shadow-yellow-500/20 transition-all duration-500 hover:-translate-y-2"
-            >
-              <!-- Quote Icon -->
-              <div class="mb-6">
-                <UIcon name="i-lucide-quote" class="w-8 h-8 text-yellow-400" />
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div
+            v-for="(service, index) in mcpServices"
+            :key="service.name"
+            class="group relative"
+            :style="{ animationDelay: `${index * 150}ms` }"
+          >
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl blur opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+            <UCard class="relative text-center border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 group-hover:scale-105 bg-white dark:bg-gray-800">
+              <div class="p-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <UIcon :name="service.icon" class="w-8 h-8 text-white" />
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                  {{ service.name }}
+                </h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                  {{ service.description }}
+                </p>
+                <UBadge
+                  :color="service.status === 'active' ? 'green' : 'gray'"
+                  variant="soft"
+                  size="lg"
+                  class="font-semibold"
+                >
+                  <UIcon :name="service.status === 'active' ? 'i-lucide-check-circle' : 'i-lucide-clock'" class="w-4 h-4 mr-1" />
+                  {{ service.status === 'active' ? '활성' : '준비중' }}
+                </UBadge>
+              </div>
+            </UCard>
+          </div>
+        </div>
+      </UContainer>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="py-24 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white relative overflow-hidden">
+      <!-- Background Pattern -->
+      <div class="absolute inset-0 opacity-20">
+        <div class="w-full h-full bg-dot-pattern"></div>
               </div>
               
-              <!-- Quote Text -->
-              <blockquote class="text-gray-300 leading-relaxed mb-6 italic">
-                "{{ testimonial.quote }}"
-              </blockquote>
-              
-              <!-- Author Info -->
-              <div class="flex items-center gap-4">
-                <UAvatar :src="testimonial.avatar" size="lg" class="ring-2 ring-white/20" />
-                <div>
-                  <p class="font-semibold text-white">{{ testimonial.name }}</p>
-                  <p class="text-sm text-gray-400">{{ testimonial.role }}</p>
+      <UContainer class="relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+          <div
+            v-for="(stat, index) in statistics"
+            :key="stat.label"
+            class="group"
+            :style="{ animationDelay: `${index * 200}ms` }"
+          >
+            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/20 transition-all duration-300 hover:scale-105">
+              <div class="text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+                {{ stat.value }}
                 </div>
+              <div class="text-white/90 text-lg font-medium">{{ stat.label }}</div>
               </div>
             </div>
           </div>
-        </div>
+      </UContainer>
       </section>
       
       <!-- CTA Section -->
-      <section class="py-24 relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-cyan-600/20"></div>
-        <div class="absolute inset-0">
-          <div class="absolute top-20 left-20 w-96 h-96 bg-white/5 rounded-full filter blur-3xl animate-pulse"></div>
-          <div class="absolute bottom-20 right-20 w-96 h-96 bg-white/5 rounded-full filter blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+    <section class="py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-slate-900 dark:to-indigo-900">
+      <UContainer>
+        <div class="text-center max-w-4xl mx-auto">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm font-medium mb-6">
+            <UIcon name="i-lucide-target" class="w-4 h-4" />
+            <span>지금 시작하세요</span>
         </div>
-        
-        <div class="container mx-auto px-6 relative z-10">
-          <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-4xl md:text-6xl font-black mb-6">
-              <span class="bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent">
-                지금 바로 시작하세요!
-              </span>
+          <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+            지금 시작하세요!
             </h2>
-            <p class="text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
-              수천 명의 개발자들이 선택한 최고의 클라우드 교육 플랫폼에서
-              <span class="text-blue-400 font-semibold">당신의 성공 스토리</span>를 만들어보세요.
+          <p class="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            강사는 교육 기획 도구로, 학생은 실습 중심 학습으로 클라우드 & AI 전문가가 되세요
             </p>
-            
-            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <div class="flex flex-col sm:flex-row gap-6 justify-center">
               <UButton
                 to="/curriculum"
                 size="xl"
-                class="group bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 border-0 px-12 py-6 rounded-2xl shadow-2xl transition-all duration-300 hover:shadow-blue-500/30 hover:scale-110"
-              >
-                <UIcon name="i-lucide-rocket" class="w-6 h-6 mr-3 group-hover:rotate-12 transition-transform" />
-                <span class="text-xl font-bold">무료로 시작하기</span>
+              color="primary"
+              class="px-10 py-5 text-lg font-bold shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 transition-all duration-300"
+            >
+              <UIcon name="i-lucide-chalkboard-teacher" class="w-6 h-6 mr-3" />
+              강사용 도구 시작하기
+            </UButton>
+            <UButton
+              to="/knowledge-base"
+              size="xl"
+              variant="outline"
+              color="primary"
+              class="px-10 py-5 text-lg font-bold border-2 hover:bg-primary-50 dark:hover:bg-primary-900/20 transform hover:-translate-y-1 transition-all duration-300"
+            >
+              <UIcon name="i-lucide-graduation-cap" class="w-6 h-6 mr-3" />
+              학생용 실습 시작하기
+            </UButton>
+            <UButton
+              to="/ai-assistant"
+              size="xl"
+              variant="outline"
+              color="purple"
+              class="px-10 py-5 text-lg font-bold border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20 transform hover:-translate-y-1 transition-all duration-300"
+            >
+              <UIcon name="i-lucide-robot" class="w-6 h-6 mr-3" />
+              AI 어시스턴트 체험
               </UButton>
-              
-              <div class="text-center">
-                <p class="text-sm text-gray-400">✨ 7일 무료 체험</p>
-                <p class="text-sm text-gray-400">💳 신용카드 없이 가능</p>
               </div>
             </div>
-          </div>
-        </div>
+      </UContainer>
       </section>
 
       <!-- Footer -->
-      <footer class="relative border-t border-white/10 bg-slate-900/50 backdrop-blur-sm">
-        <div class="container mx-auto px-6 py-16">
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <!-- Brand Column -->
+    <footer class="bg-gradient-to-r from-gray-900 via-slate-900 to-gray-900 text-white py-16 relative overflow-hidden">
+      <!-- Background Pattern -->
+      <div class="absolute inset-0 opacity-50">
+        <div class="w-full h-full bg-dot-pattern"></div>
+      </div>
+      
+      <UContainer class="relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
             <div class="md:col-span-1">
               <div class="flex items-center gap-3 mb-6">
-                <div class="p-2 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl">
-                  <UIcon name="i-lucide-graduation-cap" class="w-6 h-6 text-white" />
+              <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <UIcon name="i-lucide-cloud" class="w-6 h-6 text-white" />
                 </div>
-                <span class="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  MCP Cloud Platform
-                </span>
+              <h3 class="text-xl font-bold">클라우드 & AI 교육 플랫폼</h3>
               </div>
               <p class="text-gray-400 leading-relaxed mb-6">
-                AI 기반 멀티클라우드 관리 플랫폼으로 클라우드 실무력을 강화하세요.
+              강사와 학생을 위한 스마트 교육 솔루션으로 클라우드 & AI 전문가를 양성합니다
               </p>
               <div class="flex gap-4">
-                <a href="#" class="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
-                  <UIcon name="i-lucide-github" class="w-5 h-5 text-gray-400 hover:text-white" />
+              <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
+                <UIcon name="i-simple-icons-github" class="w-5 h-5" />
                 </a>
-                <a href="#" class="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
-                  <UIcon name="i-lucide-twitter" class="w-5 h-5 text-gray-400 hover:text-white" />
+              <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
+                <UIcon name="i-simple-icons-twitter" class="w-5 h-5" />
                 </a>
-                <a href="#" class="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
-                  <UIcon name="i-lucide-linkedin" class="w-5 h-5 text-gray-400 hover:text-white" />
+              <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
+                <UIcon name="i-simple-icons-linkedin" class="w-5 h-5" />
                 </a>
               </div>
             </div>
-            
-            <!-- Courses Column -->
             <div>
-              <h4 class="font-semibold text-white mb-6">과정</h4>
+            <h4 class="font-bold text-lg mb-6 flex items-center gap-2">
+              <UIcon name="i-lucide-graduation-cap" class="w-5 h-5 text-blue-400" />
+              과정
+            </h4>
               <ul class="space-y-3">
-                <li><NuxtLink to="/curriculum?path=cloud_basic" class="text-gray-400 hover:text-white transition-colors">Cloud Basic</NuxtLink></li>
-                <li><NuxtLink to="/curriculum?path=cloud_master" class="text-gray-400 hover:text-white transition-colors">Cloud Master</NuxtLink></li>
-                <li><NuxtLink to="/curriculum?path=cloud_container" class="text-gray-400 hover:text-white transition-colors">Cloud Container</NuxtLink></li>
+              <li><NuxtLink to="/curriculum?path=cloud_basic" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2 group">
+                <UIcon name="i-lucide-arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                Cloud Basic
+              </NuxtLink></li>
+              <li><NuxtLink to="/curriculum?path=cloud_master" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2 group">
+                <UIcon name="i-lucide-arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                Cloud Master
+              </NuxtLink></li>
+              <li><NuxtLink to="/curriculum?path=cloud_container" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2 group">
+                <UIcon name="i-lucide-arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                Cloud Container
+              </NuxtLink></li>
               </ul>
             </div>
-            
-            <!-- Resources Column -->
             <div>
-              <h4 class="font-semibold text-white mb-6">리소스</h4>
+            <h4 class="font-bold text-lg mb-6 flex items-center gap-2">
+              <UIcon name="i-lucide-folder" class="w-5 h-5 text-purple-400" />
+              리소스
+            </h4>
               <ul class="space-y-3">
-                <li><NuxtLink to="/knowledge-base" class="text-gray-400 hover:text-white transition-colors">지식베이스</NuxtLink></li>
-                <li><NuxtLink to="/billing" class="text-gray-400 hover:text-white transition-colors">요금제</NuxtLink></li>
-                <li><NuxtLink to="/cli" class="text-gray-400 hover:text-white transition-colors">CLI 도구</NuxtLink></li>
+              <li><NuxtLink to="/knowledge-base" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2 group">
+                <UIcon name="i-lucide-arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                지식베이스
+              </NuxtLink></li>
+              <li><NuxtLink to="/billing" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2 group">
+                <UIcon name="i-lucide-arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                요금제
+              </NuxtLink></li>
+              <li><NuxtLink to="/cli" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2 group">
+                <UIcon name="i-lucide-arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                CLI 도구
+              </NuxtLink></li>
               </ul>
             </div>
-            
-            <!-- Support Column -->
             <div>
-              <h4 class="font-semibold text-white mb-6">지원</h4>
+            <h4 class="font-bold text-lg mb-6 flex items-center gap-2">
+              <UIcon name="i-lucide-help-circle" class="w-5 h-5 text-green-400" />
+              지원
+            </h4>
               <ul class="space-y-3">
-                <li><a href="#" class="text-gray-400 hover:text-white transition-colors">문의하기</a></li>
-                <li><a href="#" class="text-gray-400 hover:text-white transition-colors">도움말</a></li>
-                <li><a href="#" class="text-gray-400 hover:text-white transition-colors">커뮤니티</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2 group">
+                <UIcon name="i-lucide-arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                문의하기
+              </a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2 group">
+                <UIcon name="i-lucide-arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                도움말
+              </a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2 group">
+                <UIcon name="i-lucide-arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                커뮤니티
+              </a></li>
               </ul>
             </div>
           </div>
-          
-          <div class="border-t border-white/10 mt-12 pt-8 text-center">
-            <p class="text-gray-500">&copy; 2024 MCP Cloud Platform. All rights reserved.</p>
+        <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-gray-400 text-sm">&copy; 2024 클라우드 & AI 교육 플랫폼. All rights reserved.</p>
+          <div class="flex gap-6 text-sm text-gray-400">
+            <a href="#" class="hover:text-white transition-colors">개인정보처리방침</a>
+            <a href="#" class="hover:text-white transition-colors">이용약관</a>
+            <a href="#" class="hover:text-white transition-colors">쿠키정책</a>
           </div>
         </div>
+      </UContainer>
       </footer>
-    </main>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 definePageMeta({
   layout: 'default',
-  title: 'MCP Cloud Platform - AI 기반 멀티클라우드 관리',
-  description: 'AI 에이전트와 함께하는 멀티클라우드 관리 플랫폼으로 AWS, GCP 환경을 통합 관리하고 클라우드 실무력을 강화하세요.'
+  title: '클라우드 & AI 교육 플랫폼 - 강사와 학생을 위한 스마트 교육 솔루션',
+  description: '강사를 위한 교육 기획 도구와 학생을 위한 실습 중심 학습 환경을 제공하는 통합 교육 플랫폼입니다.'
+})
+
+// Hero Section Data
+const heroData = ref({
+  title: '클라우드 & AI 교육 플랫폼',
+  description: '강사를 위한 교육 기획 도구와 학생을 위한 실습 중심 학습 환경을 제공하는 통합 교육 플랫폼입니다.',
+  headline: '강사와 학생을 위한 스마트 교육 솔루션',
+  links: [
+    {
+      label: '학생용 실습',
+      to: '/curriculum',
+      icon: 'i-lucide-chalkboard-teacher',
+      color: 'primary',
+      variant: 'solid'
+    },
+    {
+      label: '강사용 도구',
+      to: '/knowledge-base',
+      icon: 'i-lucide-graduation-cap',
+      color: 'white',
+      variant: 'outline'
+    }
+  ]
 })
 
 // Features Data
 const features = ref([
   {
-    title: 'AI 기반 맞춤형 학습',
-    description: 'AI가 학습자의 수준과 진도를 분석하여 개인화된 학습 경로와 과제를 제공합니다.',
-    icon: 'i-lucide-brain-circuit'
+    title: '강사용 교육 기획 도구',
+    description: 'AI 기반 교육 자료 생성, 커리큘럼 설계, 실습 환경 구축을 자동화합니다.',
+    icon: 'i-lucide-chalkboard-teacher',
+    action: {
+      label: '실습 시작하기',
+      to: '/knowledge-base',
+      target: '_self'
+    }
   },
   {
-    title: '실시간 실습 환경',
-    description: '브라우저에서 바로 접근할 수 있는 클라우드 실습 환경으로 실제 프로젝트를 경험할 수 있습니다.',
-    icon: 'i-lucide-monitor'
+    title: '학생용 실습 환경',
+    description: '실습 중심 학습(이론:실습 = 2:8)을 위한 안전한 클라우드 실습 환경을 제공합니다.',
+    icon: 'i-lucide-graduation-cap',
+    action: {
+      label: '강사 도구 사용하기',
+      to: '/curriculum',
+      target: '_self'
+    }
   },
   {
-    title: '멀티클라우드 통합 관리',
-    description: 'AWS, GCP 등 분산된 클라우드 환경을 단일 대시보드에서 통합 관리하고 최적화합니다.',
-    icon: 'i-lucide-cloudy'
+    title: 'AI 교육 어시스턴트',
+    description: '학생 질문 답변, 학습 진도 관리, 개인화된 학습 경로 추천을 제공합니다.',
+    icon: 'i-lucide-brain',
+    action: {
+      label: 'AI 어시스턴트 체험',
+      to: '/ai-assistant',
+      target: '_self'
+    }
   },
   {
-    title: '프로젝트 기반 학습',
-    description: '실무에서 사용하는 실제 프로젝트를 통해 이론과 실습을 동시에 학습할 수 있습니다.',
-    icon: 'i-lucide-folder-open'
+    title: '실시간 학습 모니터링',
+    description: '학생의 실습 진행 상황과 이해도를 실시간으로 추적하고 피드백을 제공합니다.',
+    icon: 'i-lucide-bar-chart-3',
+    action: {
+      label: '모니터링 대시보드',
+      to: '/billing',
+      target: '_self'
+    }
   },
   {
-    title: '24/7 AI 멘토링',
-    description: 'AI 멘토가 24시간 학습자의 질문에 답하고 개인별 맞춤 피드백을 제공합니다.',
-    icon: 'i-lucide-message-circle'
+    title: '자동화된 평가 시스템',
+    description: '실습 결과 자동 검증, 성과 측정, 학습 효과 분석을 통한 객관적 평가를 제공합니다.',
+    icon: 'i-lucide-award',
+    action: {
+      label: '평가 시스템 보기',
+      to: '/curriculum?path=cloud_master',
+      target: '_self'
+    }
   },
   {
-    title: '취업 지원 시스템',
-    description: '포트폴리오 관리부터 기업 연결까지 체계적인 취업 지원 프로그램을 제공합니다.',
-  }
-])
-
-// Workflow Steps Data
-const workflowSteps = ref([
-  {
-    title: '개인 맞춤 진단',
-    description: 'AI가 현재 실력을 진단하고 최적의 학습 경로를 추천합니다.',
-    icon: 'i-lucide-user-search'
-  },
-  {
-    title: '단계별 실습',
-    description: '이론 학습 후 즉시 실습으로 이어지는 체계적인 학습 과정을 제공합니다.',
-    icon: 'i-lucide-layers'
-  },
-  {
-    title: '포트폴리오 완성',
-    description: '학습한 내용을 바탕으로 실무 수준의 포트폴리오를 구축합니다.',
-    icon: 'i-lucide-award'
+    title: '협업 학습 도구',
+    description: '팀 프로젝트, 피어 리뷰, 실시간 협업을 통한 효과적인 학습 환경을 구축합니다.',
+    icon: 'i-lucide-users',
+    action: {
+      label: '협업 도구 사용하기',
+      to: '/knowledge-base',
+      target: '_self'
+    }
   }
 ])
 
@@ -515,156 +525,226 @@ const courses = ref([
   {
     name: 'Cloud Basic',
     duration: '2일 과정',
-    icon: 'i-lucide-cloud',
-    gradient: 'from-blue-500/20 to-blue-700/20',
+    icon: 'i-lucide-book-open',
+    gradient: 'bg-gradient-to-br from-blue-500 to-blue-600',
     topics: [
       'AWS/GCP 기초 서비스',
       'IAM 사용자 및 권한 관리',
       'EC2/Compute Engine 인스턴스',
-      'S3/Cloud Storage 버킷 관리',
-      '기본 네트워킹 개념'
+      'S3/Cloud Storage 버킷 관리'
     ],
+    environment: 'AWS Free Tier + GCP Free Tier',
     link: '/curriculum?path=cloud_basic'
   },
   {
     name: 'Cloud Master',
     duration: '3일 과정',
     icon: 'i-lucide-graduation-cap',
-    gradient: 'from-purple-500/20 to-purple-700/20',
+    gradient: 'bg-gradient-to-br from-purple-500 to-purple-600',
     topics: [
       'Docker 컨테이너 기술',
       'Git/GitHub 버전 관리',
       'GitHub Actions CI/CD',
-      'VM 기반 웹 애플리케이션 배포',
-      '모니터링 및 로깅'
+      'VM 기반 웹 애플리케이션 배포'
     ],
+    environment: 'AWS Free Tier + GCP Free Tier + GitHub',
     link: '/curriculum?path=cloud_master'
   },
   {
     name: 'Cloud Container',
     duration: '2일 과정',
     icon: 'i-lucide-container',
-    gradient: 'from-green-500/20 to-green-700/20',
+    gradient: 'bg-gradient-to-br from-green-500 to-green-600',
     topics: [
       'Kubernetes 클러스터 아키텍처',
       'GKE 클러스터 관리',
       'ECS/Fargate 서버리스 컨테이너',
-      '고가용성 아키텍처 설계',
-      '마이크로서비스 패턴'
+      '고가용성 아키텍처 설계'
     ],
+    environment: 'AWS Free Tier + GCP Free Tier + GitHub',
     link: '/curriculum?path=cloud_container'
   }
 ])
 
-// Testimonials Data
-const testimonials = ref([
+// AI Education Tools Data
+const mcpServices = ref([
   {
-    name: '김민준',
-    role: '백엔드 개발자, 스타트업',
-    quote: '복잡한 클라우드 개념을 실습 위주로 배우니 이해가 정말 잘 됐습니다. 이제 AWS와 GCP를 자신있게 다룰 수 있게 됐어요.',
-    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026704d'
+    name: '교육 자료 생성 AI',
+    description: '강사용 커리큘럼 및 실습 가이드 자동 생성',
+    icon: 'i-lucide-file-text',
+    status: 'active'
   },
   {
-    name: '이서연',
-    role: '데브옵스 엔지니어, IT 기업',
-    quote: 'AI를 이용한 인프라 관리가 이렇게 강력할 줄 몰랐습니다. 반복적인 배포 작업이 줄어들어 핵심 업무에 더 집중할 수 있게 됐습니다.',
-    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026705d'
+    name: '학습 진도 관리',
+    description: '학생별 학습 진행 상황 추적 및 분석',
+    icon: 'i-lucide-trending-up',
+    status: 'active'
   },
   {
-    name: '박지훈',
-    role: '프로덕트 매니저, 핀테크',
-    quote: '개발팀과의 커뮤니케이션에 큰 도움이 됐습니다. 클라우드 아키텍처에 대한 이해도가 높아져 더 효율적인 기획이 가능해졌습니다.',
-    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026706d'
+    name: '실습 환경 자동화',
+    description: '클라우드 실습 환경 자동 구축 및 관리',
+    icon: 'i-lucide-server',
+    status: 'active'
+  },
+  {
+    name: 'AI 튜터링 시스템',
+    description: '개인화된 학습 지원 및 질문 답변',
+    icon: 'i-lucide-message-circle',
+    status: 'active'
   }
 ])
 
+// Statistics Data
+const statistics = ref([
+  { value: '3+', label: '교육 과정' },
+  { value: '50+', label: '실습 가이드' },
+  { value: '100+', label: 'AI 교육 도구' },
+  { value: '24/7', label: '학습 지원' }
+])
+
+// MCP 서비스 상태 확인
+const checkMCPStatus = async () => {
+  try {
+    // 실제 MCP 서비스 상태를 확인하는 로직을 여기에 추가
+    // 예: API 호출을 통한 서비스 상태 확인
+    console.log('MCP 서비스 상태 확인 중...')
+  } catch (error) {
+    console.error('MCP 서비스 상태 확인 실패:', error)
+  }
+}
+
+onMounted(() => {
+  checkMCPStatus()
+})
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
-/* Custom Animations */
-@keyframes gradient-x {
-  0%, 100% {
-    background-size: 200% 200%;
-    background-position: left center;
+/* 애니메이션 정의 */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  50% {
-    background-size: 200% 200%;
-    background-position: right center;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(3deg); }
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
-@keyframes float-delayed {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-15px) rotate(-2deg); }
+/* 애니메이션 클래스 */
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out forwards;
 }
 
-@keyframes float-slow {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-10px) rotate(1deg); }
-}
-
-.animate-gradient-x {
-  animation: gradient-x 6s ease infinite;
-  background-size: 200% 200%;
+.animate-slide-up {
+  animation: slide-up 1s ease-out forwards;
+  opacity: 0;
 }
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
 
-.animate-float-delayed {
-  animation: float-delayed 8s ease-in-out infinite;
+/* 애니메이션 지연 */
+.animation-delay-200 {
+  animation-delay: 0.2s;
 }
 
-.animate-float-slow {
-  animation: float-slow 10s ease-in-out infinite;
+.animation-delay-400 {
+  animation-delay: 0.4s;
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
+.animation-delay-1000 {
+  animation-delay: 1s;
 }
 
-/* Glass morphism effects */
-.backdrop-blur-xl {
-  backdrop-filter: blur(16px);
+.animation-delay-2000 {
+  animation-delay: 2s;
 }
 
-/* Custom hover effects */
-.hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* 호버 효과 개선 */
+.group:hover .group-hover\:translate-x-1 {
+  transform: translateX(0.25rem);
 }
 
-.hover-lift:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+.group:hover .group-hover\:scale-110 {
+  transform: scale(1.1);
 }
 
-/* Button glow effects */
-.btn-glow {
-  position: relative;
-  overflow: hidden;
+/* 그라데이션 텍스트 */
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
-.btn-glow::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition: left 0.5s;
+/* 백드롭 블러 지원 */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
 }
 
-.btn-glow:hover::before {
-  left: 100%;
+/* 커스텀 그림자 */
+.shadow-3xl {
+  box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* 반응형 개선 */
+@media (max-width: 768px) {
+  .text-5xl {
+    font-size: 2.5rem;
+  }
+  
+  .text-7xl {
+    font-size: 3.5rem;
+  }
+  
+  .py-24 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
+
+/* 다크 모드 개선 */
+@media (prefers-color-scheme: dark) {
+  .bg-gradient-to-br {
+    background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+  }
+}
+
+/* 스크롤 애니메이션을 위한 Intersection Observer 지원 */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 배경 패턴 */
+.bg-dot-pattern {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 </style>
