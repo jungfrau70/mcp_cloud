@@ -95,7 +95,7 @@
 #### 1. 클라우드 계정 생성 실습 (30분)
 
 **🔧 실습 가이드**
-- [1일차 실습 가이드](./textbook/Day1/README.md#클라우드-개념-및-계정-생성)
+- [1일차 실습 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day1\README.md#클라우드-개념-및-계정-생성)
 - [AWS 기초 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/aws_basic_practice.md)
 - [GCP 기초 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
 
@@ -107,7 +107,7 @@
 #### 2. IAM 기초 실습 (30분)
 
 **🔧 실습 가이드**
-- [1일차 실습 가이드](./textbook/Day1/README.md#iam-기초-실습)
+- [1일차 실습 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day1\README.md#iam-기초-실습)
 
 **🎯 실습 내용**
 - AWS IAM 사용자 생성 및 권한 부여
@@ -117,7 +117,7 @@
 #### 3. 가상머신 서비스 실습 (30분)
 
 **🔧 실습 가이드**
-- [1일차 실습 가이드](./textbook/Day1/README.md#가상머신-서비스-기초)
+- [1일차 실습 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day1\README.md#가상머신-서비스-기초)
 
 **🎯 실습 내용**
 - AWS EC2 인스턴스 생성 및 SSH 접속
@@ -141,7 +141,7 @@
 #### 🛠️ 실습 학습 (60분)
 
 **🔧 실습 가이드**
-- [1일차 실습 가이드](./textbook/Day1/README.md#스토리지-서비스-기초)
+- [1일차 실습 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day1\README.md#스토리지-서비스-기초)
 
 **🎯 실습 내용**
 - AWS S3 버킷 생성 및 파일 업로드/다운로드
@@ -157,9 +157,9 @@
 - [실습1 AWS GCP](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md)
 
 #### 자동화 스크립트
-- [AWS GCP 설정 스크립트](./textbook/Day1/scripts/aws-gcp-setup.sh)
-- [AWS 설정 도우미](./textbook/Day1/scripts/aws-setup-helper.sh)
-- [GCP 설정 도우미](./textbook/Day1/scripts/gcp-setup-helper.sh)
+- [AWS GCP 설정 스크립트](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day1\scripts\aws-gcp-setup.sh)
+- [AWS 설정 도우미](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day1\scripts\aws-setup-helper.sh)
+- [GCP 설정 도우미](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day1\scripts\gcp-setup-helper.sh)
 
 #### 문제 해결
 - [문제 해결 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md)
@@ -173,7 +173,7 @@
 #### 1. 네트워킹 기초 이론 (30분)
 
 **📖 이론 학습 자료**
-- [네트워킹 기본 개념](./textbook/Day2/README.md#네트워킹-기본-개념)
+- [네트워킹 기본 개념](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day2\README.md#네트워킹-기본-개념)
 - [AWS VPC vs GCP VPC 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/network_comparison.md)
 
 **🎯 이론 학습 내용**
@@ -185,7 +185,7 @@
 #### 2. 보안 그룹 및 방화벽 이론 (30분)
 
 **📖 이론 학습 자료**
-- [보안 그룹 및 방화벽 설정](./textbook/Day2/README.md#보안-그룹-및-방화벽-설정)
+- [보안 그룹 및 방화벽 설정](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day2\README.md#보안-그룹-및-방화벽-설정)
 
 **🎯 이론 학습 내용**
 - AWS Security Groups vs GCP Firewall Rules
@@ -209,7 +209,7 @@
 #### 1. 네트워킹 기초 실습 (60분)
 
 **🔧 실습 가이드**
-- [2일차 실습 가이드](./textbook/Day2/README.md#네트워킹-기초-실습)
+- [2일차 실습 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day2\README.md#네트워킹-기초-실습)
 - [2일차 계정 설정 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/aws-gcp-account-setup.md)
 
 **🎯 실습 내용**
@@ -221,7 +221,7 @@
 #### 2. 보안 그룹 및 방화벽 실습 (45분)
 
 **🔧 실습 가이드**
-- [2일차 실습 가이드](./textbook/Day2/README.md#보안-그룹-및-방화벽-실습)
+- [2일차 실습 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day2\README.md#보안-그룹-및-방화벽-실습)
 
 **🎯 실습 내용**
 - AWS Security Groups 생성 및 규칙 설정
@@ -232,7 +232,7 @@
 #### 3. 데이터베이스 서비스 실습 (45분)
 
 **🔧 실습 가이드**
-- [2일차 실습 가이드](./textbook/Day2/README.md#데이터베이스-서비스-기초)
+- [2일차 실습 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day2\README.md#데이터베이스-서비스-기초)
 
 **🎯 실습 내용**
 - AWS RDS MySQL 인스턴스 생성 및 연결
@@ -243,7 +243,7 @@
 #### 4. 종합 실습 및 비교 분석 (30분)
 
 **🔧 실습 가이드**
-- [웹 서버 + 데이터베이스 구성 종합 실습](./textbook/Day2/README.md#종합-실습-및-비교-분석)
+- [웹 서버 + 데이터베이스 구성 종합 실습](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day2\README.md#종합-실습-및-비교-분석)
 - [Basic to Master 연계 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
 
 **🎯 실습 내용**
@@ -258,8 +258,8 @@
 - [2일차 실습 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
 
 #### 자동화 스크립트
-- [AWS 설정 도우미](./textbook/Day2/scripts/aws-setup-helper.sh)
-- [GCP 설정 도우미](./textbook/Day2/scripts/gcp-setup-helper.sh)
+- [AWS 설정 도우미](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day2\scripts\aws-setup-helper.sh)
+- [GCP 설정 도우미](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day2\scripts\gcp-setup-helper.sh)
 
 ---
 
@@ -275,12 +275,12 @@
 - [GitHub Actions 완전 가이드](/mcp_knowledge_base/cloud_basic/install/github-actions-complete-guide.md)
 
 ### 클라우드별 설치 스크립트
-- [AWS Docker Compose 설치](./install/install_docker_compose_aws.sh)
-- [Azure Docker Compose 설치](./install/install_docker_compose_azure.sh)
-- [GCP Docker Compose 설치](./install/install_docker_compose_gcp.sh)
-- [AWS Git 설치](./install/install_git_aws.sh)
-- [Azure Git 설치](./install/install_git_azure.sh)
-- [GCP Git 설치](./install/install_git_gcp.sh)
+- [AWS Docker Compose 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\install\install_docker_compose_aws.sh)
+- [Azure Docker Compose 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\install\install_docker_compose_azure.sh)
+- [GCP Docker Compose 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\install\install_docker_compose_gcp.sh)
+- [AWS Git 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\install\install_git_aws.sh)
+- [Azure Git 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\install\install_git_azure.sh)
+- [GCP Git 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\install\install_git_gcp.sh)
 
 ---
 
@@ -291,15 +291,15 @@
 - [자동화 테스트 README](/mcp_knowledge_base/cloud_basic/automation_tests/README.md)
 
 ### 자동화 스크립트
-- [1일차 자동화 스크립트](./automation/day1/)
-- [2일차 자동화 스크립트](./automation/day2/)
-- [자동화 결과](./automation/results/)
+- [1일차 자동화 스크립트](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\automation\day1)
+- [2일차 자동화 스크립트](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\automation\day2)
+- [자동화 결과](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\automation\results)
 
 ### 자동화 테스트
-- [기본 과정 자동화](./automation_tests/basic_course_automation.py)
-- [2일차 스크립트 자동화](./automation_tests/basic_course_day2_scripts.py)
-- [자동화 테스트 실행](./automation_tests/run_basic_course_tests.py)
-- [자동화 테스트 검증](./automation_tests/test_basic_course_automation.py)
+- [기본 과정 자동화](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\automation_tests\basic_course_automation.py)
+- [2일차 스크립트 자동화](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\automation_tests\basic_course_day2_scripts.py)
+- [자동화 테스트 실행](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\automation_tests\run_basic_course_tests.py)
+- [자동화 테스트 검증](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\automation_tests\test_basic_course_automation.py)
 - [사용자 가이드](/mcp_knowledge_base/cloud_basic/automation_tests/USER_GUIDE.md)
 
 ---

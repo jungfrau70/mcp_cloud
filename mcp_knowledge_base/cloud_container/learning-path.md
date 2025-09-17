@@ -65,8 +65,8 @@
 #### 2. 컨테이너 오케스트레이션 고급 기법 이론 (60분)
 
 **📖 이론 학습 자료**
-- [Deployment, Service, Ingress 설정](./textbook/Day1/README.md#deployment-service-ingress-설정)
-- [ConfigMap, Secret, PersistentVolume 관리](./textbook/Day1/README.md#configmap-secret-persistentvolume-관리)
+- [Deployment, Service, Ingress 설정](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day1\README.md#deployment-service-ingress-설정)
+- [ConfigMap, Secret, PersistentVolume 관리](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day1\README.md#configmap-secret-persistentvolume-관리)
 
 **🎯 이론 학습 내용**
 - Deployment, Service, Ingress 고급 설정
@@ -102,8 +102,8 @@
 #### 3. AWS ECS 및 Fargate 심화 실습 (90분)
 
 **🔧 실습 가이드**
-- [ECS 클러스터 구성 및 태스크 정의](./textbook/Day2/README.md#ecs-클러스터-구성-및-태스크-정의)
-- [Fargate 서버리스 컨테이너 실행](./textbook/Day2/README.md#fargate-서버리스-컨테이너-실행)
+- [ECS 클러스터 구성 및 태스크 정의](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day2\README.md#ecs-클러스터-구성-및-태스크-정의)
+- [Fargate 서버리스 컨테이너 실행](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day2\README.md#fargate-서버리스-컨테이너-실행)
 
 **🎯 실습 내용**
 - ECS 클러스터 구성 및 태스크 정의
@@ -116,7 +116,7 @@
 #### 📚 이론 학습 (30분)
 
 **📖 이론 학습 자료**
-- [GitOps 기반 배포 자동화](./textbook/Day2/README.md#gitops-기반-배포-자동화)
+- [GitOps 기반 배포 자동화](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day2\README.md#gitops-기반-배포-자동화)
 
 **🎯 이론 학습 내용**
 - Multi-stage 배포 파이프라인
@@ -152,18 +152,18 @@
 - [보안 정책 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/security-policies-guide.md)
 
 #### 고급 설정 파일
-- [Docker Compose 설정](./textbook/Day1/docker-compose.yml)
-- [컨테이너 데모 설정](./textbook/Day1/container-demo-setup.sh)
-- [Helm 차트 템플릿](./textbook/Day1/helm-chart-templates/)
-- [Istio 설정](./textbook/Day1/istio-config/)
-- [Nginx 설정](./textbook/Day1/nginx/)
-- [Prometheus 설정](./textbook/Day1/monitoring-advanced/)
+- [Docker Compose 설정](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day1\docker-compose.yml)
+- [컨테이너 데모 설정](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day1\container-demo-setup.sh)
+- [Helm 차트 템플릿](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day1\helm-chart-templates)
+- [Istio 설정](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day1\istio-config)
+- [Nginx 설정](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day1\nginx)
+- [Prometheus 설정](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day1\monitoring-advanced)
 
 #### 자동화 스크립트
-- [AWS 설정 도우미](./textbook/Day1/scripts/aws-setup-helper.sh)
-- [GCP 설정 도우미](./textbook/Day1/scripts/gcp-setup-helper.sh)
-- [컨테이너 종합 배포](./textbook/Day1/scripts/container-comprehensive-deploy.sh)
-- [고급 배포](./textbook/Day1/scripts/deploy-advanced.sh)
+- [AWS 설정 도우미](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day1\scripts\aws-setup-helper.sh)
+- [GCP 설정 도우미](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day1\scripts\gcp-setup-helper.sh)
+- [컨테이너 종합 배포](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day1\scripts\container-comprehensive-deploy.sh)
+- [고급 배포](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day1\scripts\deploy-advanced.sh)
 
 #### 고급 가이드
 - [자동 복구 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/auto-recovery-guide.md)
@@ -284,8 +284,8 @@
 - [모니터링 설정 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/monitoring-setup.md)
 
 #### 자동화 스크립트
-- [AWS 설정 도우미](./textbook/Day2/scripts/aws-setup-helper.sh)
-- [GCP 설정 도우미](./textbook/Day2/scripts/gcp-setup-helper.sh)
+- [AWS 설정 도우미](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day2\scripts\aws-setup-helper.sh)
+- [GCP 설정 도우미](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day2\scripts\gcp-setup-helper.sh)
 
 #### 문제 해결
 - [Multi-AZ 문제 해결](/mcp_knowledge_base/cloud_container/textbook/Day2/troubleshooting/multi-az-issues.md)
@@ -302,15 +302,15 @@
 - [Docker Compose 설치](/mcp_knowledge_base/cloud_container/install/install_docker_compose.md)
 - [Git 설치](/mcp_knowledge_base/cloud_container/install/install_git.md)
 - [GitHub Actions 완전 가이드](/mcp_knowledge_base/cloud_container/install/github-actions-complete-guide.md)
-- [Helm 설치](./install/get_helm.sh)
+- [Helm 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\install\get_helm.sh)
 
 ### 클라우드별 설치 스크립트
-- [AWS Docker Compose 설치](./install/install_docker_compose_aws.sh)
-- [Azure Docker Compose 설치](./install/install_docker_compose_azure.sh)
-- [GCP Docker Compose 설치](./install/install_docker_compose_gcp.sh)
-- [AWS Git 설치](./install/install_git_aws.sh)
-- [Azure Git 설치](./install/install_git_azure.sh)
-- [GCP Git 설치](./install/install_git_gcp.sh)
+- [AWS Docker Compose 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\install\install_docker_compose_aws.sh)
+- [Azure Docker Compose 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\install\install_docker_compose_azure.sh)
+- [GCP Docker Compose 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\install\install_docker_compose_gcp.sh)
+- [AWS Git 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\install\install_git_aws.sh)
+- [Azure Git 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\install\install_git_azure.sh)
+- [GCP Git 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\install\install_git_gcp.sh)
 
 ### 컨테이너 과정 특화 도구
 - [GitHub Actions 가이드](/mcp_knowledge_base/cloud_container/github-actions.md)
@@ -324,21 +324,21 @@
 - [자동화 테스트 README](/mcp_knowledge_base/cloud_container/automation_tests/README.md)
 
 ### 자동화 스크립트
-- [1일차 자동화 스크립트](./automation/day1/)
-- [2일차 자동화 스크립트](./automation/day2/)
-- [자동화 결과](./automation/results/)
+- [1일차 자동화 스크립트](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\automation\day1)
+- [2일차 자동화 스크립트](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\automation\day2)
+- [자동화 결과](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\automation\results)
 
 ### 자동화 테스트
-- [컨테이너 과정 자동화](./automation_tests/container_course_automation.py)
-- [2일차 스크립트 자동화](./automation_tests/container_course_day2_scripts.py)
-- [자동화 테스트 실행](./automation_tests/run_container_course_tests.py)
-- [자동화 테스트 검증](./automation_tests/test_container_course_automation.py)
+- [컨테이너 과정 자동화](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\automation_tests\container_course_automation.py)
+- [2일차 스크립트 자동화](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\automation_tests\container_course_day2_scripts.py)
+- [자동화 테스트 실행](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\automation_tests\run_container_course_tests.py)
+- [자동화 테스트 검증](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\automation_tests\test_container_course_automation.py)
 - [사용자 가이드](/mcp_knowledge_base/cloud_container/automation_tests/USER_GUIDE.md)
 
 ### 도구 설치 스크립트
-- [Helm 설치](./automation_tests/get_helm.sh)
-- [도구 설치 (Windows)](./automation_tests/install_tools_simple.ps1)
-- [도구 설치 (Linux/Mac)](./automation_tests/install_tools.sh)
+- [Helm 설치](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\automation_tests\get_helm.sh)
+- [도구 설치 (Windows)](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\automation_tests\install_tools_simple.ps1)
+- [도구 설치 (Linux/Mac)](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\automation_tests\install_tools.sh)
 
 ---
 

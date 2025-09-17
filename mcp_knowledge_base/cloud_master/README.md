@@ -101,9 +101,9 @@ Cloud Master 과정을 시작하기 전에 다음 도구들을 설치해야 합�
 
 각 클라우드 플랫폼별 자동 설치 스크립트를 제공합니다:
 
-- **AWS 환경**: [install_git_aws.sh](install/install_git_aws.sh)
-- **Azure 환경**: [install_git_azure.sh](install/install_git_azure.sh)
-- **GCP 환경**: [install_git_gcp.sh](install/install_git_gcp.sh)
+- **AWS 환경**: [install_git_aws.sh](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_git_aws.sh)
+- **Azure 환경**: [install_git_azure.sh](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_git_azure.sh)
+- **GCP 환경**: [install_git_gcp.sh](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_git_gcp.sh)
 
 #### 📋 설치 체크리스트
 
@@ -127,11 +127,11 @@ Cloud Master 과정을 시작하기 전에 다음 도구들을 설치해야 합�
 
 설치 과정에서 문제가 발생하면 각 설치 가이드의 "문제 해결" 섹션을 참조하세요:
 
-- [Git 문제 해결](install/install_git.md#문제-해결)
-- [Docker 문제 해결](install/install_docker.md#문제-해결)
-- [AWS CLI 문제 해결](install/install_aws_cli.md#문제-해결)
-- [Azure CLI 문제 해결](install/install_azure_cli.md#문제-해결)
-- [Google Cloud CLI 문제 해결](install/install_glcoud_cli.md#문제-해결)
+- [Git 문제 해결](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_git.md#문제-해결)
+- [Docker 문제 해결](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_docker.md#문제-해결)
+- [AWS CLI 문제 해결](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_aws_cli.md#문제-해결)
+- [Azure CLI 문제 해결](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_azure_cli.md#문제-해결)
+- [Google Cloud CLI 문제 해결](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_glcoud_cli.md#문제-해결)
 
 #### 🎯 다음 단계
 
@@ -236,7 +236,7 @@ Cloud Master 과정을 시작하기 전에 다음 도구들을 설치해야 합�
 
 ### Day 3
 - [로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/load-balancing-guide.md)
-- [모니터링 설정 가이드](./textbook/Day3/monitoring-advanced/monitoring-setup.yaml)
+- [모니터링 설정 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day3\monitoring-advanced\monitoring-setup.yaml)
 - [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/cost-optimization/cost-optimization-guide.md)
 
 > 📚 **전체 실습 가이드**: [Day1 README](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Day2 README](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md) | [Day3 README](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
@@ -310,3 +310,72 @@ Master 과정에서 문제가 발생하면:
 [Cloud Basic 2일차](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
 
 </div>
+
+## 🔗 관련 자료
+
+### 📁 설치 가이드
+- [Github Actions Complete Guide](/cloud_master/install/github-actions-complete-guide.md)
+- [Install Aws Cli](/cloud_master/install/install_aws_cli.md)
+- [Install Azure Cli](/cloud_master/install/install_azure_cli.md)
+- [Install Docker](/cloud_master/install/install_docker.md)
+- [Install Docker Compose](/cloud_master/install/install_docker_compose.md)
+- [Install Git](/cloud_master/install/install_git.md)
+- [Install Glcoud Cli](/cloud_master/install/install_glcoud_cli.md)
+
+### 💻 실습 가이드
+- [Docker Basics](/cloud_master/textbook/Day1/practice/docker-basics.md)
+- [Git Github Basics](/cloud_master/textbook/Day1/practice/git-github-basics.md)
+- [Github Actions Basics](/cloud_master/textbook/Day1/practice/github-actions-basics.md)
+- [Vm Deployment](/cloud_master/textbook/Day1/practice/vm-deployment.md)
+- [Comprehensive Practice Guide](/cloud_master/textbook/Day2/comprehensive-practice-guide.md)
+
+### 📚 가이드 문서
+- [User Guide](/cloud_master/automation_tests/USER_GUIDE.md)
+- [Github Actions Complete Guide](/cloud_master/install/github-actions-complete-guide.md)
+- [Aws Gcp Deployment Guide](/cloud_master/textbook/Day1/aws-gcp-deployment-guide.md)
+- [Cicd Pipeline Guide](/cloud_master/textbook/Day1/cicd-pipeline-guide.md)
+- [Cloud Deployment Guide](/cloud_master/textbook/Day1/cloud-deployment-guide.md)
+- [Docker Advanced Guide](/cloud_master/textbook/Day1/docker-advanced-guide.md)
+- [Docker Basic Guide](/cloud_master/textbook/Day1/docker-basic-guide.md)
+- [Docker Compose Guide](/cloud_master/textbook/Day1/docker-compose-guide.md)
+- [Docker Hub Setup Guide](/cloud_master/textbook/Day1/docker-hub-setup-guide.md)
+- [Github Actions Guide](/cloud_master/textbook/Day1/github-actions-guide.md)
+- [Troubleshooting Guide](/cloud_master/textbook/Day1/troubleshooting-guide.md)
+- [Comprehensive Practice Guide](/cloud_master/textbook/Day2/comprehensive-practice-guide.md)
+- [Cost Optimization Guide](/cloud_master/textbook/Day2/cost-optimization-guide.md)
+- [Cost Structure Guide](/cloud_master/textbook/Day2/cost-structure-guide.md)
+- [Monitoring Guide](/cloud_master/textbook/Day2/monitoring-guide.md)
+- [Troubleshooting Guide](/cloud_master/textbook/Day2/troubleshooting-guide.md)
+- [Auto Scaling Guide](/cloud_master/textbook/Day3/auto-scaling-guide.md)
+- [Cost Optimization Guide](/cloud_master/textbook/Day3/cost-optimization-guide.md)
+- [Disaster Recovery Guide](/cloud_master/textbook/Day3/disaster-recovery-guide.md)
+- [Integration Guide](/cloud_master/textbook/Day3/integration-guide.md)
+- [Load Balancing Guide](/cloud_master/textbook/Day3/load-balancing-guide.md)
+- [Monitoring Setup Guide](/cloud_master/textbook/Day3/monitoring-setup-guide.md)
+- [Troubleshooting Guide](/cloud_master/textbook/Day3/troubleshooting-guide.md)
+- [Cost Optimization Guide](/cloud_master/textbook/Day3/cost-optimization/cost-optimization-guide.md)
+
+### 📄 기타 자료
+- [Learning Path](/cloud_master/learning-path.md)
+- [Readme](/cloud_master/README.md)
+- [과정명](/cloud_master/과정명.md)
+- [과정상세](/cloud_master/과정상세.md)
+- [Aws계정가입](/cloud_master/accounts/AWS계정가입.md)
+- [Azure계정가입](/cloud_master/accounts/Azure계정가입.md)
+- [Gcp 개인계정가입](/cloud_master/accounts/GCP_개인계정가입.md)
+- [Gcp 계정유형비교](/cloud_master/accounts/GCP_계정유형비교.md)
+- [Gcp 조직계정가입](/cloud_master/accounts/GCP_조직계정가입.md)
+- [클라우드계정관리비교](/cloud_master/accounts/클라우드계정관리비교.md)
+- [Readme](/cloud_master/automation/README.md)
+- [Readme](/cloud_master/automation_tests/README.md)
+- [User Guide](/cloud_master/automation_tests/USER_GUIDE.md)
+- [Aws Gcp Permissions Setup](/cloud_master/textbook/Day1/aws-gcp-permissions-setup.md)
+- [Readme](/cloud_master/textbook/Day1/README.md)
+- [Project Setup](/cloud_master/textbook/Day1/scripts/PROJECT_SETUP.md)
+- [Readme](/cloud_master/textbook/Day1/scripts/README.md)
+- [Readme](/cloud_master/textbook/Day2/README.md)
+- [Readme](/cloud_master/textbook/Day3/README.md)
+- [Readme](/cloud_master/textbook/Day3/actions-demo/README.md)
+- [Readme](/cloud_master/textbook/Day3/my-app/README.md)
+- [Project Setup](/cloud_master/textbook/Day3/scripts/PROJECT_SETUP.md)
+- [Readme](/cloud_master/textbook/Day3/scripts/README.md)

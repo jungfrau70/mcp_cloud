@@ -83,9 +83,9 @@
 - [비용 최적화 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/cost-optimization-guide.md)
 
 ### Day 2
-- [고가용성 아키텍처 가이드](./textbook/Day2/README.md#-고가용성-아키텍처-설계)
-- [모니터링 설정 가이드](./textbook/Day2/README.md#-모니터링-및-로깅-시스템)
-- [종합 프로젝트 실습](./textbook/Day2/README.md#-종합-프로젝트-및-최적화)
+- [고가용성 아키텍처 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day2\README.md#-고가용성-아키텍처-설계)
+- [모니터링 설정 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day2\README.md#-모니터링-및-로깅-시스템)
+- [종합 프로젝트 실습](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day2\README.md#-종합-프로젝트-및-최적화)
 
 > 📚 **전체 실습 가이드**: [Day1 README](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md) | [Day2 README](/mcp_knowledge_base/cloud_container/textbook/Day2/README.md)
 
@@ -156,3 +156,55 @@ Advanced 과정에서 문제가 발생하면:
 [Cloud Master 3일차](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md) | [Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
 
 </div>
+
+## 🔗 관련 자료
+
+### 📁 설치 가이드
+- [Github Actions Complete Guide](/cloud_container/install/github-actions-complete-guide.md)
+- [Install Aws Cli](/cloud_container/install/install_aws_cli.md)
+- [Install Azure Cli](/cloud_container/install/install_azure_cli.md)
+- [Install Docker](/cloud_container/install/install_docker.md)
+- [Install Docker Compose](/cloud_container/install/install_docker_compose.md)
+- [Install Git](/cloud_container/install/install_git.md)
+- [Install Glcoud Cli](/cloud_container/install/install_glcoud_cli.md)
+
+### 💻 실습 가이드
+- [Comprehensive Practice Guide](/cloud_container/textbook/Day1/comprehensive-practice-guide.md)
+- [Container Basics](/cloud_container/textbook/Day1/practice/container-basics.md)
+- [Kubernetes Basics](/cloud_container/textbook/Day1/practice/kubernetes-basics.md)
+- [Advanced Load Balancing](/cloud_container/textbook/Day2/practice/advanced-load-balancing.md)
+- [Comprehensive Project](/cloud_container/textbook/Day2/practice/comprehensive-project.md)
+- [High Availability Architecture](/cloud_container/textbook/Day2/practice/high-availability-architecture.md)
+- [Monitoring System Setup](/cloud_container/textbook/Day2/practice/monitoring-system-setup.md)
+
+### 📚 가이드 문서
+- [User Guide](/cloud_container/automation_tests/USER_GUIDE.md)
+- [Github Actions Complete Guide](/cloud_container/install/github-actions-complete-guide.md)
+- [Auto Recovery Guide](/cloud_container/textbook/Day1/auto-recovery-guide.md)
+- [Comprehensive Practice Guide](/cloud_container/textbook/Day1/comprehensive-practice-guide.md)
+- [Container Orchestration Guide](/cloud_container/textbook/Day1/container-orchestration-guide.md)
+- [Cost Optimization Guide](/cloud_container/textbook/Day1/cost-optimization-guide.md)
+- [Kubernetes Advanced Guide](/cloud_container/textbook/Day1/kubernetes-advanced-guide.md)
+- [Master Integration Guide](/cloud_container/textbook/Day1/master-integration-guide.md)
+- [Security Policies Guide](/cloud_container/textbook/Day1/security-policies-guide.md)
+
+### 📄 기타 자료
+- [Github Actions](/cloud_container/github-actions.md)
+- [Learning Path](/cloud_container/learning-path.md)
+- [Readme](/cloud_container/README.md)
+- [과정명](/cloud_container/과정명.md)
+- [과정상세](/cloud_container/과정상세.md)
+- [Aws계정가입](/cloud_container/accounts/AWS계정가입.md)
+- [Azure계정가입](/cloud_container/accounts/Azure계정가입.md)
+- [Gcp 개인계정가입](/cloud_container/accounts/GCP_개인계정가입.md)
+- [Gcp 계정유형비교](/cloud_container/accounts/GCP_계정유형비교.md)
+- [Gcp 조직계정가입](/cloud_container/accounts/GCP_조직계정가입.md)
+- [클라우드계정관리비교](/cloud_container/accounts/클라우드계정관리비교.md)
+- [Readme](/cloud_container/automation/README.md)
+- [Readme](/cloud_container/automation_tests/README.md)
+- [User Guide](/cloud_container/automation_tests/USER_GUIDE.md)
+- [Readme](/cloud_container/textbook/Day1/README.md)
+- [High Availability Architecture](/cloud_container/textbook/Day2/high-availability-architecture.md)
+- [Monitoring Setup](/cloud_container/textbook/Day2/monitoring-setup.md)
+- [Readme](/cloud_container/textbook/Day2/README.md)
+- [Multi Az Issues](/cloud_container/textbook/Day2/troubleshooting/multi-az-issues.md)

@@ -810,7 +810,7 @@ docker-compose port service-name port
 
 - [Docker 공식 문서](https://docs.docker.com/)
 - [Docker Best Practices](https://docs.docker.com/develop/dev-best-practices/)
-- [GitHub Actions 고급 실습](./github-actions-advanced-guide)
+- [GitHub Actions 고급 실습](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day1\github-actions-advanced-guide)
 
 ---
 

@@ -280,7 +280,7 @@ gcloud compute networks delete cloud-deployment-vpc --quiet
 
 GCP VM에 SSH로 접속하려면 공개키를 메타데이터에 등록해야 합니다. 스크립트는 세 가지 방법으로 SSH 키를 등록합니다:
 
-> 📖 **상세 가이드**: [GCP_SSH_KEY_GUIDE.md](./GCP_SSH_KEY_GUIDE.md)에서 SSH 키 등록 방법과 우선순위에 대한 자세한 설명을 확인하세요.
+> 📖 **상세 가이드**: [GCP_SSH_KEY_GUIDE.md](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day1\scripts\GCP_SSH_KEY_GUIDE.md)에서 SSH 키 등록 방법과 우선순위에 대한 자세한 설명을 확인하세요.
 
 #### 1. 자동 등록 (권장)
 `gcp-compute-create.sh` 스크립트는 **인스턴스 생성 전에** SSH 키를 자동으로 등록합니다:

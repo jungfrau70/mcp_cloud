@@ -403,7 +403,7 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 1일차 실습이 완료되었다면 [고가용성 아키텍처 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/high-availability-architecture.md)부터 시작하세요.
 
 ### 문제가 있나요?
-실습 중 문제가 발생하면 [트러블슈팅 가이드](./troubleshooting/)를 참고하세요.
+실습 중 문제가 발생하면 [트러블슈팅 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day2\troubleshooting)를 참고하세요.
 
 ---
 

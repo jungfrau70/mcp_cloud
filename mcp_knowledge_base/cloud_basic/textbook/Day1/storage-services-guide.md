@@ -599,7 +599,7 @@ gsutil -m cp FILE_NAME gs://BUCKET_NAME/
 
 ### 🚀 다음 단계
 
-- **실습 프로젝트**: [통합 실습 프로젝트](practice/README.md)
+- **실습 프로젝트**: [통합 실습 프로젝트](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day1\practice\README.md)
 - **실제 프로젝트 적용**: 자신의 프로젝트에 스토리지 서비스 적용
 - **고급 기능 학습**: CDN 연동, 비용 최적화, 모니터링
 
@@ -607,7 +607,7 @@ gsutil -m cp FILE_NAME gs://BUCKET_NAME/
 
 - [AWS S3 공식 문서](https://docs.aws.amazon.com/s3/)
 - [GCP Cloud Storage 공식 문서](https://cloud.google.com/storage/docs)
-- [통합 실습 프로젝트](practice/README.md)
+- [통합 실습 프로젝트](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day1\practice\README.md)
 
 ---
 

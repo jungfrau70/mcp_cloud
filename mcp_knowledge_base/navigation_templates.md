@@ -13,7 +13,7 @@
 **Cloud Basic** > **{일차}** > **{주제}**
 
 ## ⬅️ 이전/다음 네비게이션
-[← 이전: {이전_문서}](/mcp_knowledge_base/cloud_basic/{이전_경로}) | [다음: {다음_문서} →](/mcp_knowledge_base/cloud_basic/{다음_경로})
+[← 이전: 이전 문서](/mcp_knowledge_base/cloud_basic/이전_경로) | [다음: 다음 문서 →](/mcp_knowledge_base/cloud_basic/다음_경로)
 
 </div>
 ```
@@ -29,7 +29,7 @@
 **Cloud Master** > **{일차}** > **{주제}**
 
 ## ⬅️ 이전/다음 네비게이션
-[← 이전: {이전_문서}](/mcp_knowledge_base/cloud_master/{이전_경로}) | [다음: {다음_문서} →](/mcp_knowledge_base/cloud_master/{다음_경로})
+[← 이전: 이전 문서](/mcp_knowledge_base/cloud_master/이전_경로) | [다음: 다음 문서 →](/mcp_knowledge_base/cloud_master/다음_경로)
 
 </div>
 ```
@@ -45,7 +45,7 @@
 **Cloud Container** > **{일차}** > **{주제}**
 
 ## ⬅️ 이전/다음 네비게이션
-[← 이전: {이전_문서}](/mcp_knowledge_base/cloud_container/{이전_경로}) | [다음: {다음_문서} →](/mcp_knowledge_base/cloud_container/{다음_경로})
+[← 이전: 이전 문서](/mcp_knowledge_base/cloud_container/이전_경로) | [다음: 다음 문서 →](/mcp_knowledge_base/cloud_container/다음_경로)
 
 </div>
 ```
@@ -65,7 +65,7 @@
 **Cloud Basic** > **{일차}** > **{주제}**
 
 ## ⬅️ 이전/다음 네비게이션
-[← 이전: {이전_문서}](/mcp_knowledge_base/cloud_basic/{이전_경로}) | [다음: {다음_문서} →](/mcp_knowledge_base/cloud_basic/{다음_경로})
+[← 이전: 이전 문서](/mcp_knowledge_base/cloud_basic/이전_경로) | [다음: 다음 문서 →](/mcp_knowledge_base/cloud_basic/다음_경로)
 
 ## 🔗 관련 과정
 [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
@@ -86,7 +86,7 @@
 **Cloud Master** > **{일차}** > **{주제}**
 
 ## ⬅️ 이전/다음 네비게이션
-[← 이전: {이전_문서}](/mcp_knowledge_base/cloud_master/{이전_경로}) | [다음: {다음_문서} →](/mcp_knowledge_base/cloud_master/{다음_경로})
+[← 이전: 이전 문서](/mcp_knowledge_base/cloud_master/이전_경로) | [다음: 다음 문서 →](/mcp_knowledge_base/cloud_master/다음_경로)
 
 ## 🔗 관련 과정
 [Cloud Basic 2일차](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
@@ -107,7 +107,7 @@
 **Cloud Container** > **{일차}** > **{주제}**
 
 ## ⬅️ 이전/다음 네비게이션
-[← 이전: {이전_문서}](/mcp_knowledge_base/cloud_container/{이전_경로}) | [다음: {다음_문서} →](/mcp_knowledge_base/cloud_container/{다음_경로})
+[← 이전: 이전 문서](/mcp_knowledge_base/cloud_container/이전_경로) | [다음: 다음 문서 →](/mcp_knowledge_base/cloud_container/다음_경로)
 
 ## 🔗 관련 과정
 [Cloud Master 3일차](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md) | [Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)

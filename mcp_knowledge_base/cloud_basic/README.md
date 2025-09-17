@@ -185,3 +185,57 @@ Basic 과정에서 문제가 발생하면:
 [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
 
 </div>
+
+## 🔗 관련 자료
+
+### 📁 설치 가이드
+- [Github Actions Complete Guide](/cloud_basic/install/github-actions-complete-guide.md)
+- [Install Aws Cli](/cloud_basic/install/install_aws_cli.md)
+- [Install Azure Cli](/cloud_basic/install/install_azure_cli.md)
+- [Install Docker](/cloud_basic/install/install_docker.md)
+- [Install Docker Compose](/cloud_basic/install/install_docker_compose.md)
+- [Install Git](/cloud_basic/install/install_git.md)
+- [Install Glcoud Cli](/cloud_basic/install/install_glcoud_cli.md)
+
+### 💻 실습 가이드
+- [Aws Basic Practice](/cloud_basic/textbook/Day1/practice/aws_basic_practice.md)
+- [Gcp Basic Practice](/cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
+- [실습1 Aws Gcp](/cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md)
+- [Basic To Master Bridge](/cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
+
+### 📚 가이드 문서
+- [Automation Guide](/cloud_basic/AUTOMATION_GUIDE.md)
+- [User Guide](/cloud_basic/automation_tests/USER_GUIDE.md)
+- [Github Actions Complete Guide](/cloud_basic/install/github-actions-complete-guide.md)
+- [Iam Basics Guide](/cloud_basic/textbook/Day1/iam-basics-guide.md)
+- [Storage Services Guide](/cloud_basic/textbook/Day1/storage-services-guide.md)
+- [Troubleshooting Guide](/cloud_basic/textbook/Day1/troubleshooting-guide.md)
+- [Vm Services Guide](/cloud_basic/textbook/Day1/vm-services-guide.md)
+
+### 📄 기타 자료
+- [Automation Guide](/cloud_basic/AUTOMATION_GUIDE.md)
+- [Learning Path](/cloud_basic/learning-path.md)
+- [Readme](/cloud_basic/README.md)
+- [과정명](/cloud_basic/과정명.md)
+- [과정상세](/cloud_basic/과정상세.md)
+- [Aws계정가입](/cloud_basic/accounts/AWS계정가입.md)
+- [Azure계정가입](/cloud_basic/accounts/Azure계정가입.md)
+- [Gcp 개인계정가입](/cloud_basic/accounts/GCP_개인계정가입.md)
+- [Gcp 계정유형비교](/cloud_basic/accounts/GCP_계정유형비교.md)
+- [Gcp 조직계정가입](/cloud_basic/accounts/GCP_조직계정가입.md)
+- [클라우드계정관리비교](/cloud_basic/accounts/클라우드계정관리비교.md)
+- [Readme](/cloud_basic/automation/README.md)
+- [Readme](/cloud_basic/automation_tests/README.md)
+- [User Guide](/cloud_basic/automation_tests/USER_GUIDE.md)
+- [Readme](/cloud_basic/presentation/README.md)
+- [클라우드실무력강화 활용법(기초)](/cloud_basic/presentation/클라우드실무력강화_활용법(기초).md)
+- [클라우드실무력강화 활용법(기초) 교재](/cloud_basic/presentation/클라우드실무력강화_활용법(기초)_교재.md)
+- [클라우드실무력강화 활용법(기초) 실습](/cloud_basic/presentation/클라우드실무력강화_활용법(기초)_실습.md)
+- [Aws Gcp Account Setup](/cloud_basic/textbook/Day1/aws-gcp-account-setup.md)
+- [Readme](/cloud_basic/textbook/Day1/README.md)
+- [Aws Gcp Account Setup](/cloud_basic/textbook/Day2/aws-gcp-account-setup.md)
+- [Compute Comparison](/cloud_basic/textbook/Day2/compute_comparison.md)
+- [Database Comparison](/cloud_basic/textbook/Day2/database_comparison.md)
+- [Network Comparison](/cloud_basic/textbook/Day2/network_comparison.md)
+- [Readme](/cloud_basic/textbook/Day2/README.md)
+- [Storage Comparison](/cloud_basic/textbook/Day2/storage_comparison.md)

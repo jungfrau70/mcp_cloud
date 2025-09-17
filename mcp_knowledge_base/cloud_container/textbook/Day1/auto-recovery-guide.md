@@ -1032,7 +1032,7 @@ kubectl logs -f deployment/auto-recovery-webhook -n container-demo
 ### 추가 학습 자료
 - [Kubernetes 고급 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/kubernetes-advanced-guide.md)
 - [종합 실습 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/comprehensive-practice-guide.md)
-- [모니터링 설정 가이드](./monitoring-setup)
+- [모니터링 설정 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day1\monitoring-setup)
 
 ---
 
