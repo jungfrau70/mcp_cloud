@@ -24,7 +24,7 @@
           class="px-3 py-1 text-sm rounded bg-gray-500 text-white hover:bg-gray-600 transition-colors"
           :title="allDetailsExpanded ? '모든 목차 접기' : '모든 목차 펼치기'"
         >
-          {{ allDetailsExpanded ? '📁 접기' : '📂 펼치기' }}
+          {{ allDetailsExpanded ? '🔼 접기' : '🔽 펼치기' }}
         </button>
         <button
           v-if="path && !isSlideView"

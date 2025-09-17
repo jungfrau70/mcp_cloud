@@ -31,7 +31,7 @@
         <button @click="toggleDiff" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300" :disabled="!versions.length">Diff</button>
         <button @click="requestOutline" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300" :disabled="outlineLoading">Refresh Outline</button>
         <button @click="toggleAllDetails" class="px-2 py-1 rounded bg-blue-200 hover:bg-blue-300 text-blue-700" :title="allDetailsExpanded ? '모든 목차 접기' : '모든 목차 펼치기'">
-          {{ allDetailsExpanded ? '📁 접기' : '📂 펼치기' }}
+          {{ allDetailsExpanded ? '🔼 접기' : '🔽 펼치기' }}
         </button>
         <span v-if="saving" class="text-gray-500 text-xs">Saving...</span>
         <span v-if="lastSaved" class="text-gray-400 text-xs">v{{ lastVersion }} @ {{ lastSaved }}</span>
