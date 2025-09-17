@@ -458,3 +458,7 @@ az vm create `
 [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
 
 </div>
+
+### 📧 연락처
+- **이메일**: inhwan.jung@gmail.com
+- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)

@@ -282,56 +282,9 @@ git version 2.42.0
 # 전역 사용자 이름 설정
 git config --global user.name "Your Name"
 
-# 전역 이메일 설정
-git config --global user.email "your.email@example.com"
-
-# 설정 확인
-git config --global --list
-```
-
-### 2. 기본 브랜치 설정
-
-```bash
-# 기본 브랜치를 main으로 설정
-git config --global init.defaultBranch main
-
-# 기본 브랜치 확인
-git config --global init.defaultBranch
-```
-
-### 3. 에디터 설정
-
-```bash
-# 기본 에디터 설정
-git config --global core.editor "code --wait"  # VS Code
-git config --global core.editor "vim"          # Vim
-git config --global core.editor "nano"         # Nano
-```
-
-### 4. 줄 바꿈 설정
-
-```bash
-# Windows에서 줄 바꿈 자동 변환 비활성화
-git config --global core.autocrlf false
-
-# Unix/Linux/macOS에서 줄 바꿈 설정
-git config --global core.autocrlf input
-```
-
-### 5. SSH 키 설정
-
-```bash
-# SSH 키 생성
-ssh-keygen -t ed25519 -C "your.email@example.com"
-
-# SSH 키를 SSH 에이전트에 추가
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
-
-# 공개 키 복사 (GitHub/GitLab에 추가)
-cat ~/.ssh/id_ed25519.pub
-```
-
+# 전역 ### 📧 연락처
+- **이메일**: inhwan.jung@gmail.com
+- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 ### 6. 자격 증명 관리
 
 ```bash

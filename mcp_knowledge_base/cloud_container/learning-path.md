@@ -441,17 +441,9 @@
 3. **Fargate 서비스 배포 실패**: 서브넷 및 보안 그룹 설정 확인
 4. **모니터링 설정 실패**: IAM 권한 및 메트릭 네임스페이스 확인
 
-### 지원 및 문의
-- **이메일 문의**: cloud-training@example.com
-- **슬랙 채널**: #cloud-container-support
-- **오피스 아워**: 매주 화요일, 목요일 14:00-16:00
-
----
-
-[← 이전: [과정명] [일차] 메인](/mcp_knowledge_base/cloud_container/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
-
-</div>
-
+### 지원 및 ### 📧 연락처
+- **이메일**: inhwan.jung@gmail.com
+- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 #### 계정 관련 문서
 - [AWS계정가입](/mcp_knowledge_base/cloud_container/accounts/AWS계정가입.md)
 - [Azure계정가입](/mcp_knowledge_base/cloud_container/accounts/Azure계정가입.md)

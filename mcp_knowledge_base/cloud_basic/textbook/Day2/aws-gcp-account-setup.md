@@ -64,3 +64,7 @@ Cloud Basic 2일차의 클라우드 계정 설정 및 기본 서비스 실습을
 [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
 
 </div>
+
+### 📧 연락처
+- **이메일**: inhwan.jung@gmail.com
+- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)

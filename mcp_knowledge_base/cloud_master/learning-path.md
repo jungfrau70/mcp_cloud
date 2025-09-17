@@ -430,17 +430,9 @@
 3. **VM 배포 실패**: 보안 그룹 및 네트워크 설정 확인
 4. **CI/CD 파이프라인 오류**: 워크플로우 파일 문법 및 단계별 실행 확인
 
-### 지원 및 문의
-- **이메일 문의**: cloud-training@example.com
-- **슬랙 채널**: #cloud-master-support
-- **오피스 아워**: 매주 화요일, 목요일 14:00-16:00
-
----
-
-[← 이전: [과정명] [일차] 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
-
-</div>
-
+### 지원 및 ### 📧 연락처
+- **이메일**: inhwan.jung@gmail.com
+- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 #### 계정 관련 문서
 - [AWS계정가입](/mcp_knowledge_base/cloud_master/accounts/AWS계정가입.md)
 - [Azure계정가입](/mcp_knowledge_base/cloud_master/accounts/Azure계정가입.md)

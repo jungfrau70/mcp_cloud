@@ -173,14 +173,8 @@ AWS와 GCP의 기본 서비스들을 차근차근 배워보며, 실무에서 바
 - **기능 요청**: 새로운 기능이나 개선사항 제안
 
 ### 📧 연락처
-- **이메일**: support@cloud-education.com
-- **GitHub**: [프로젝트 저장소](https://github.com/your-repo/mcp_cloud)
-- **문서**: [온라인 문서](https://docs.cloud-education.com)
-
----
-
-<div align="center">
-
+- **이메일**: inhwan.jung@gmail.com
+- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 ## 🎉 Cloud Basic 과정을 시작하세요!
 
 [🚀 Day 1 실습 시작하기](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | 

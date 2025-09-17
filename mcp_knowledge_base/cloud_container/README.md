@@ -181,14 +181,8 @@ Kubernetes, 고가용성 아키텍처, 고급 모니터링 등
 - **기능 요청**: 새로운 기능이나 개선사항 제안
 
 ### 📧 연락처
-- **이메일**: support@cloud-education.com
-- **GitHub**: [프로젝트 저장소](https://github.com/your-repo/mcp_cloud)
-- **문서**: [온라인 문서](https://docs.cloud-education.com)
-
----
-
-<div align="center">
-
+- **이메일**: inhwan.jung@gmail.com
+- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 ## 🎉 Cloud Container 과정을 시작하세요!
 
 [🚀 Day 1 실습 시작하기](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md) | 

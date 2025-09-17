@@ -364,13 +364,9 @@ cat validation_results/integrated_validation_[날짜시간].json
 - **권한 최소화**: 필요한 최소 권한만 부여
 - **리소스 태깅**: 생성한 리소스에 적절한 태그 부여
 
-## 📞 **지원 및 문의**
-
-### 1. 문제 신고
-- **GitHub Issues**: [저장소 Issues](https://github.com/your-repo/issues)
-- **이메일**: training@example.com
-- **슬랙**: #cloud-training-support
-
+## 📞 **지원 및 ### 📧 연락처
+- **이메일**: inhwan.jung@gmail.com
+- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 ### 2. 추가 자료
 - **교재**: `mcp_knowledge_base/cloud_*/textbook/`
 - **실습 가이드**: `mcp_knowledge_base/cloud_*/textbook/Day*/README.md`

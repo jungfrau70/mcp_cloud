@@ -203,3 +203,7 @@ Day 2에서는 다음 내용을 학습하게 됩니다:
 [🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md)
 
 </div>
+
+### 📧 연락처
+- **이메일**: inhwan.jung@gmail.com
+- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)

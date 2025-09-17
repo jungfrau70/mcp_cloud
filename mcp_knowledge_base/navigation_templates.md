@@ -209,3 +209,7 @@
 - [ ] 모든 링크 경로 정확성 확인
 - [ ] 이모지와 텍스트 일관성 확인
 - [ ] 기존 복잡한 링크 구조 제거
+
+### 📧 연락처
+- **이메일**: inhwan.jung@gmail.com
+- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)

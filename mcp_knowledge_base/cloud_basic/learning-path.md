@@ -410,21 +410,9 @@
 3. **네트워크 연결 문제**: VPC 및 보안 그룹 설정 확인
 4. **비용 초과 문제**: Free Tier 한도 확인 및 리소스 정리
 
-### 지원 및 문의
-- **이메일 문의**: cloud-training@example.com
-- **슬랙 채널**: #cloud-basic-support
-- **오피스 아워**: 매주 화요일, 목요일 14:00-16:00
-
----
-
-[← 이전: [과정명] [일차] 메인](/mcp_knowledge_base/cloud_basic/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
-
-</div>
-
----
-
-<div align="center">
-
+### 지원 및 ### 📧 연락처
+- **이메일**: inhwan.jung@gmail.com
+- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 ## 🔗 관련 과정 및 네비게이션
 [🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
 

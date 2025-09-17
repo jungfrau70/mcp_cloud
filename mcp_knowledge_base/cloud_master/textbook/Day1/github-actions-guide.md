@@ -1077,10 +1077,9 @@ docker rm actions-demo-prod
 
 ### 알림
 - 배포 완료 시 Slack 알림 (설정된 경우)
-- 이메일 알림 (GitHub 설정에 따라)
-
----
-
+- ### 📧 연락처
+- **이메일**: inhwan.jung@gmail.com
+- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 ## 🚀 혼자 해보기
 
 ### 기본 과제
@@ -1088,29 +1087,9 @@ docker rm actions-demo-prod
 
 2. **Lint 추가**: ESLint나 Prettier 같은 코드 스타일 검사를 추가로 수행하도록 새로운 스텝을 추가해 보세요.
 
-3. **알림 설정**: 워크플로우 성공/실패 시 이메일이나 Slack 알림을 설정해 보세요.
-
-### 고급 과제
-1. **매트릭스 전략**: 여러 Node.js 버전과 운영체제에서 테스트를 실행하도록 매트릭스 전략을 구현해 보세요.
-
-2. **조건부 실행**: 특정 파일이 변경되었을 때만 특정 Job을 실행하도록 조건부 실행을 구현해 보세요.
-
-3. **환경별 배포**: staging과 production 환경을 분리하여 각각 다른 배포 전략을 적용해 보세요.
-
----
-
-## ❓ 퀴즈
-
-1. **GitHub Actions 워크플로우는 어디에 저장해야 하나요?**
-
-2. **`runs-on` 옵션은 무슨 역할을 하나요?**
-
-3. **워크플로우를 트리거할 수 있는 이벤트 종류 3가지를 말해보세요.**
-
-4. **`needs` 키워드는 어떤 용도로 사용되나요?**
-
----
-
+3. **알림 설정**: 워크플로우 성공/실패 시 ### 📧 연락처
+- **이메일**: inhwan.jung@gmail.com
+- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 ## ✅ 체크리스트
 
 - [ ] .github/workflows 디렉터리를 만들었나요?

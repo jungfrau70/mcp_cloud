@@ -59,47 +59,9 @@ Password: 안전한 비밀번호 입력
 
 **⚠️ 주의사항**:
 - **Username**: 고유해야 하며, 나중에 이미지 이름에 사용됩니다
-- **Email**: 실제 사용하는 이메일 주소를 입력하세요
-- **Password**: 8자 이상, 대소문자, 숫자, 특수문자 포함 권장
-
-### 3단계: 이메일 인증
-1. 입력한 이메일 주소로 인증 메일이 발송됩니다
-2. 이메일을 확인하고 **"Verify Email"** 링크 클릭
-3. 인증 완료 후 Docker Hub에 로그인
-
-### 4단계: 프로필 설정 (선택사항)
-1. **"Complete your profile"** 페이지에서 정보 입력
-2. **"Skip for now"**를 클릭하여 나중에 설정 가능
-
----
-
-## 🔑 Personal Access Token 생성하기
-
-### 1단계: Docker Hub 로그인
-1. [https://hub.docker.com](https://hub.docker.com)에서 로그인
-2. 오른쪽 상단의 **사용자 아이콘** 클릭
-3. **"Account Settings"** 선택
-
-### 2단계: Settings 메뉴로 이동
-1. 왼쪽 메뉴에서 **"Settings"** 클릭
-2. **"Personal access token"** 블레이드 클릭
-3. **"Generate new token"** 버튼 클릭
-
-### 3단계: 토큰 생성
-```
-Access Token Description: GitHub Actions
-Access Permissions: Read, Write, Delete (권장)
-Expiration: 1 year (권장)
-```
-
-**📋 토큰 설명**:
-- **Description**: 토큰의 용도를 명확히 표시 (예: "GitHub Actions")
-- **Permissions**: 
-  - **Read**: 이미지 다운로드
-  - **Write**: 이미지 업로드
-  - **Delete**: 이미지 삭제
-- **Expiration**: 보안을 위해 1년 권장
-
+- **Email**: 실제 사용하는 ### 📧 연락처
+- **이메일**: inhwan.jung@gmail.com
+- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 ### 4단계: 토큰 생성 및 복사
 1. **"Generate"** 버튼 클릭
 2. 생성된 토큰을 **즉시 복사**하여 안전한 곳에 저장
