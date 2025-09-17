@@ -19,17 +19,17 @@
 
 ### 1. Cloud Basic (기초 과정)
 - **과정 개요**: [과정명.md](/mcp_knowledge_base/cloud_basic/과정명.md) | [과정상세.md](/mcp_knowledge_base/cloud_basic/과정상세.md)
-- **실습 가이드**: [README.md](/mcp_knowledge_base/cloud_basic/README.md)
+- **실습 가이드**: README.md
 - **학습 목표**: 클라우드 기본 개념 이해, AWS/GCP 계정 생성, 핵심 서비스 실습
 
 ### 2. Cloud Master (마스터 과정)
 - **과정 개요**: [과정명.md](/mcp_knowledge_base/cloud_master/과정명.md) | [과정상세.md](/mcp_knowledge_base/cloud_master/과정상세.md)
-- **실습 가이드**: [README.md](/mcp_knowledge_base/cloud_master/README.md)
+- **실습 가이드**: README.md
 - **학습 목표**: Docker 컨테이너화, CI/CD 파이프라인, VM 기반 배포 자동화
 
 ### 3. Cloud Container (컨테이너 심화)
 - **과정 개요**: [과정명.md](/mcp_knowledge_base/cloud_container/과정명.md) | [과정상세.md](/mcp_knowledge_base/cloud_container/과정상세.md)
-- **실습 가이드**: [README.md](/mcp_knowledge_base/cloud_container/README.md)
+- **실습 가이드**: README.md
 - **학습 목표**: Kubernetes 오케스트레이션, 고가용성 아키텍처, 엔터프라이즈급 운영
 
 ---
@@ -88,31 +88,6 @@ Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일)
 - [Docker 공식 문서](https://docs.docker.com/)
 - [Kubernetes 공식 문서](https://kubernetes.io/docs/)
 - [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-
----
-
-
-
-
----
-
-
-
----
-
-
-
----
-
-<div align="center">
-
- 현재 위치
-**프로젝트 개요**
-
-## 🔗 관련 과정
-[Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
-
-</div>
 
 ---
 

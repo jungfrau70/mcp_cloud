@@ -381,9 +381,6 @@ git log --oneline -10
 
 <div align="center">
 
- 현재 위치
-**사용자 가이드**
-
 ## 🔗 관련 과정
 [Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
 

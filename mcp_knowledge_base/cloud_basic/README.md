@@ -101,15 +101,15 @@ AWS와 GCP의 기본 서비스들을 차근차근 배워보며, 실무에서 바
 ```
 
 ### 3️⃣ 첫 번째 실습 시작
-1. [Day 1 실습 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)로 이동
+1. Day 1 실습 가이드로 이동
 2. [AWS 계정 생성 가이드](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md) 따라하기
 3. [GCP 계정 생성 가이드](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md) 따라하기
 
 ## 📚 학습 자료
 
 ### 📖 교재
-- [Day 1: AWS & GCP 기초 서비스 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
-- [Day 2: 서비스 비교 및 최적화](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
+- Day 1: AWS & GCP 기초 서비스 실습
+- Day 2: 서비스 비교 및 최적화
 
 ### 🔧 실습 가이드
 - [AWS 계정 생성](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md)
@@ -150,7 +150,7 @@ AWS와 GCP의 기본 서비스들을 차근차근 배워보며, 실무에서 바
 **A**: 각 실습 가이드에 문제해결 섹션이 있으며, [종합 문제해결 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md)도 제공됩니다.
 
 ### Q4: 다음 단계는 무엇인가요?
-**A**: Cloud Basic 완료 후 [Cloud Master 과정](/mcp_knowledge_base/cloud_master/README.md)을 추천합니다. Docker, CI/CD, 고급 배포 기술을 학습할 수 있습니다.
+**A**: Cloud Basic 완료 후 Cloud Master 과정을 추천합니다. Docker, CI/CD, 고급 배포 기술을 학습할 수 있습니다.
 
 ## 🔗 관련 과정
 
@@ -159,8 +159,8 @@ AWS와 GCP의 기본 서비스들을 차근차근 배워보며, 실무에서 바
 - [학습 경로 안내](/mcp_knowledge_base/cloud_basic/learning-path.md)
 
 ### 🚀 다음 단계
-- [Cloud Master 과정](/mcp_knowledge_base/cloud_master/README.md) - Docker, CI/CD, 고급 배포
-- [Cloud Container 과정](/mcp_knowledge_base/cloud_container/README.md) - Kubernetes, 오케스트레이션
+- Cloud Master 과정 - Docker, CI/CD, 고급 배포
+- Cloud Container 과정 - Kubernetes, 오케스트레이션
 
 ### 🏠 홈으로
 - [통합 인덱스](/mcp_knowledge_base/index.md)
@@ -177,7 +177,7 @@ AWS와 GCP의 기본 서비스들을 차근차근 배워보며, 실무에서 바
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 ## 🎉 Cloud Basic 과정을 시작하세요!
 
-[🚀 Day 1 실습 시작하기](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | 
+🚀 Day 1 실습 시작하기 |
 [📚 전체 커리큘럼 보기](/mcp_knowledge_base/curriculum.md) | 
 [🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md)
 
@@ -193,15 +193,6 @@ AWS와 GCP의 기본 서비스들을 차근차근 배워보며, 실무에서 바
 [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
 [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
 
-[📅 Day1 시작하기](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | 
-[📅 Day2 시작하기](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
-
-</div>
-
----
-
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[📅 Day1 시작하기](mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
 
 </div>

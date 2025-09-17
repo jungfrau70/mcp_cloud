@@ -87,8 +87,8 @@
 - 🔗 [모니터링 설정 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/monitoring-setup.md)
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Basic 과정](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) - AWS/GCP 기초 과정
-- 🔗 [Cloud Master 과정](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) - Docker, CI/CD 심화 과정
+- 🔗 Cloud Basic 과정 - AWS/GCP 기초 과정
+- 🔗 Cloud Master 과정 - Docker, CI/CD 심화 과정
 - 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
 - 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
 - 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/learning-path.md) - Cloud Container 학습 경로
@@ -386,27 +386,13 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 
 ---
 
-**🎯 이제 클라우드 컨테이너 기술의 모든 기본기를 갖추었습니다! 실제 프로젝트에 적용해보세요.**
-
-
-
----
-
-
-
----
-
-
-
----
-
-
-
----
-
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+## 🎉 Day 2 실습을 시작하세요!
+
+[🚀 실습 시작하기](/mcp_knowledge_base/cloud_container/textbook/Day1/practice/container-basics.md) | 
+📚 Cloud Basic 과정 전체 |
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md)
 
 </div>
 

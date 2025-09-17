@@ -121,16 +121,16 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 ```
 
 ### 3️⃣ 첫 번째 실습 시작
-1. [Day 1 실습 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)로 이동
+1. Day 1 실습 가이드로 이동
 2. [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-basic-guide.md) 따라하기
 3. [Git/GitHub 기초](/mcp_knowledge_base/cloud_master/textbook/Day1/git-github-basics.md) 따라하기
 
 ## 📚 학습 자료
 
 ### 📖 교재
-- [Day 1: Docker, Git/GitHub, GitHub Actions 기초](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
-- [Day 2: 비용 최적화 및 모니터링](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md)
-- [Day 3: 고급 아키텍처 및 배포](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
+- Day 1: Docker, Git/GitHub, GitHub Actions 기초
+- Day 2: 비용 최적화 및 모니터링
+- Day 3: 고급 아키텍처 및 배포
 
 ### 🔧 실습 가이드
 - [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-basic-guide.md)
@@ -179,7 +179,7 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 **A**: 네, 가능합니다! 이 과정의 모든 내용은 실제 프로덕션 환경에서 사용되는 기술들입니다.
 
 ### Q4: 다음 단계는 무엇인가요?
-**A**: [Cloud Container 과정](/mcp_knowledge_base/cloud_container/README.md)을 추천합니다. Kubernetes와 고급 오케스트레이션 기술을 학습할 수 있습니다.
+**A**: Cloud Container 과정을 추천합니다. Kubernetes와 고급 오케스트레이션 기술을 학습할 수 있습니다.
 
 ## 🔗 관련 과정
 
@@ -188,10 +188,10 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 - [학습 경로 안내](/mcp_knowledge_base/cloud_master/learning-path.md)
 
 ### 🚀 이전 단계
-- [Cloud Basic 과정](/mcp_knowledge_base/cloud_basic/README.md) - 클라우드 기초
+- Cloud Basic 과정 - 클라우드 기초
 
 ### 🚀 다음 단계
-- [Cloud Container 과정](/mcp_knowledge_base/cloud_container/README.md) - Kubernetes, 오케스트레이션
+- Cloud Container 과정 - Kubernetes, 오케스트레이션
 
 ### 🏠 홈으로
 - [통합 인덱스](/mcp_knowledge_base/index.md)
@@ -208,7 +208,7 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 ## 🎉 Cloud Master 과정을 시작하세요!
 
-[🚀 Day 1 실습 시작하기](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | 
+🚀 Day 1 실습 시작하기 |
 [📚 전체 커리큘럼 보기](/mcp_knowledge_base/curriculum.md) | 
 [🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md)
 
@@ -224,16 +224,8 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
 [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
-[📅 Day1 시작하기](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | 
-[📅 Day2 시작하기](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md) | 
-[📅 Day3 시작하기](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
-
-</div>
-
----
-
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+📅 Day1 시작하기 |
+📅 Day2 시작하기 |
+📅 Day3 시작하기
 
 </div>

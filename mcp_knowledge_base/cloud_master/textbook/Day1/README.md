@@ -310,8 +310,8 @@ GitHub Actions는 GitHub 저장소에서 직접 CI/CD 워크플로우를 구축�
 - 🔗 [클라우드 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/cloud-deployment-guide.md) - VM 기반 웹 애플리케이션 배포
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Basic 과정](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) - AWS/GCP 기초 과정
-- 🔗 [Cloud Container 과정](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md) - Kubernetes 고급 과정
+- 🔗 Cloud Basic 과정 - AWS/GCP 기초 과정
+- 🔗 Cloud Container 과정 - Kubernetes 고급 과정
 - 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
 - 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
 - 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/cloud_master/learning-path.md) - Cloud Master 학습 경로
@@ -1157,27 +1157,22 @@ ssh -T git@github.com
 - [Docker 공식 문서](https://docs.docker.com/)
 - [Git 공식 문서](https://git-scm.com/doc)
 - [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [Cloud Master 2일차](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md)
+- Cloud Master 2일차
 - [피드백 제출](https://forms.gle/example)
 
 ---
 
-<div align="center">
+*🎯 이제 Docker, Git/GitHub, GitHub Actions의 기본기를 갖추었습니다! Cloud Master 2일차로 진행하세요.**
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
-
-**🎯 이제 Docker, Git/GitHub, GitHub Actions의 기본기를 갖추었습니다! Cloud Master 2일차로 진행하세요.**
-
-
-
----
-
----
+## 🧭 네비게이션
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | 
+[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
+[🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+
+[📅 Day2 시작하기](mcp_knowledge_base/cloud_master/textbook/Day2/README.md)
 
 </div>
+

@@ -213,7 +213,25 @@ def kb_move(payload: KBItemMove):
     if not src.exists():
         raise HTTPException(status_code=404, detail='Source not found')
     dst = _safe_path(payload.new_path)
+    
+    # 휴지통 디렉토리인 경우 특별 처리
+    if payload.new_path.startswith('.trash/'):
+        # 휴지통 루트 디렉토리 생성
+        trash_root = _safe_path('.trash')
+        if not trash_root.exists():
+            trash_root.mkdir(parents=True, exist_ok=True)
+            print(f"휴지통 디렉토리 생성: {trash_root}")
+        
+        # 타임스탬프 디렉토리 생성
+        timestamp_dir = _safe_path('/'.join(payload.new_path.split('/')[:2]))
+        if not timestamp_dir.exists():
+            timestamp_dir.mkdir(parents=True, exist_ok=True)
+            print(f"휴지통 타임스탬프 디렉토리 생성: {timestamp_dir}")
+    
+    # 대상 디렉토리 생성 (기존 로직)
     dst.parent.mkdir(parents=True, exist_ok=True)
+    
+    # 파일/디렉토리 이동
     src.rename(dst)
     return {"moved": {"from": payload.path, "to": payload.new_path}}
 
@@ -226,6 +244,60 @@ def kb_delete_item(path: str):
         raise HTTPException(status_code=400, detail='Use directory delete endpoint')
     fp.unlink()
     return {"deleted": path}
+
+@router.get('/trash')
+def kb_list_trash():
+    """휴지통에 있는 파일 목록 조회"""
+    trash_root = _safe_path('.trash')
+    if not trash_root.exists():
+        return {"trash_items": []}
+    
+    trash_items = []
+    for timestamp_dir in trash_root.iterdir():
+        if timestamp_dir.is_dir():
+            for item in timestamp_dir.rglob('*'):
+                if item.is_file():
+                    # 원본 경로 복원 (타임스탬프 디렉토리 제거)
+                    original_path = str(item.relative_to(timestamp_dir))
+                    trash_items.append({
+                        "original_path": original_path,
+                        "trash_path": str(item.relative_to(_safe_path('.'))),
+                        "deleted_at": timestamp_dir.name,
+                        "size": item.stat().st_size
+                    })
+    
+    return {"trash_items": trash_items}
+
+@router.post('/trash/restore')
+def kb_restore_from_trash(trash_path: str):
+    """휴지통에서 파일 복원"""
+    trash_item = _safe_path(trash_path)
+    if not trash_item.exists():
+        raise HTTPException(status_code=404, detail='Trash item not found')
+    
+    # 원본 경로로 복원
+    original_path = _safe_path(trash_item.relative_to(_safe_path('.trash').joinpath(trash_item.parts[1])))
+    original_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    trash_item.rename(original_path)
+    return {"restored": {"from": trash_path, "to": str(original_path)}}
+
+@router.delete('/trash/empty')
+def kb_empty_trash():
+    """휴지통 비우기"""
+    trash_root = _safe_path('.trash')
+    if not trash_root.exists():
+        return {"emptied": True, "deleted_count": 0}
+    
+    deleted_count = 0
+    for item in trash_root.rglob('*'):
+        if item.is_file():
+            item.unlink()
+            deleted_count += 1
+        elif item.is_dir() and item != trash_root:
+            item.rmdir()
+    
+    return {"emptied": True, "deleted_count": deleted_count}
 
 @router.delete('/directory')
 def kb_delete_directory(path: str, recursive: bool = False):

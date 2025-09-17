@@ -209,8 +209,8 @@ Git을 단일 진실 소스로 사용하여 인프라와 애플리케이션을 �
 - 🔗 [종합 트러블슈팅 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/troubleshooting/multi-az-issues.md)
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Basic 과정](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) - AWS/GCP 기초 과정
-- 🔗 [Cloud Master 과정](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) - Docker, CI/CD 심화 과정
+- 🔗 Cloud Basic 과정 - AWS/GCP 기초 과정
+- 🔗 Cloud Master 과정 - Docker, CI/CD 심화 과정
 - 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
 - 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
 - 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/learning-path.md) - Cloud Container 학습 경로
@@ -1122,34 +1122,18 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 - [Kubernetes 공식 문서](https://kubernetes.io/docs/)
 - [GKE 공식 문서](https://cloud.google.com/kubernetes-engine/docs)
-- [Cloud Container 2일차 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/README.md)
+- Cloud Container 2일차 실습
 - [피드백 제출](https://forms.gle/example)
-
----
-
-
-
-**🎯 이제 Kubernetes와 컨테이너 오케스트레이션의 기본기를 갖추었습니다! 2일차 실습으로 진행하세요.**
-
-
-
----
-
-
-
----
-
-
 
 ---
 
 <div align="center">
 
- 현재 위치
-**Cloud Container** > **1일차** > **Kubernetes 및 GKE 고급 오케스트레이션**
+## 🎉 Day 1 실습을 시작하세요!
 
-## ⬅️ 이전/다음 네비게이션
-[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_container/README.md) | [다음: Cloud Container 2일차 →](/mcp_knowledge_base/cloud_container/textbook/Day2/README.md)
+[🚀 실습 시작하기](/mcp_knowledge_base/cloud_container/textbook/Day1/practice/container-basics.md) | 
+📚 Cloud Basic 과정 전체 |
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md)
 
 </div>
 
@@ -1157,6 +1141,7 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+## ⬅️ 이전/다음 네비게이션
+← 이전: Cloud Container 메인 | [다음: Cloud Container 2일차 →](/mcp_knowledge_base/cloud_container/textbook/Day2/README.md)
 
 </div>

@@ -3,12 +3,12 @@
 
 
 ## 📋 목차
-1. [Docker Hub란?](#docker-hub란)
-2. [Docker Hub 가입하기](#docker-hub-가입하기)
+1. [🐳 Docker Hub란?](#docker-hub란)
+2. [📝 Docker Hub 가입하기](#docker-hub-가입하기)
 3. [Personal Access Token 생성하기](#personal-access-token-생성하기)
-4. [GitHub 시크릿 설정하기](#github-시크릿-설정하기)
-5. [설정 확인하기](#설정-확인하기)
-6. [문제 해결](#문제-해결)
+4. [🔐 GitHub 시크릿 설정하기](#github-시크릿-설정하기)
+5. [✅ 설정 확인하기](#설정-확인하기)
+6. [🐛 문제 해결](#문제-해결)
 
 ---
 

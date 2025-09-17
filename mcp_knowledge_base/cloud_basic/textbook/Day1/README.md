@@ -178,10 +178,10 @@
 ### 📅 Day 2 준비
 Day 1을 성공적으로 완료했다면, 다음 단계인 Day 2로 진행할 수 있습니다:
 
-- [Day 2: 서비스 비교 및 최적화](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
+- Day 2: 서비스 비교 및 최적화
 
 ### 🔗 관련 자료
-- [Cloud Basic 과정 전체](/mcp_knowledge_base/cloud_basic/README.md)
+- Cloud Basic 과정 전체
 - [학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
 - [전체 커리큘럼](/mcp_knowledge_base/curriculum.md)
 
@@ -199,19 +199,21 @@ Day 2에서는 다음 내용을 학습하게 됩니다:
 ## 🎉 Day 1 실습을 시작하세요!
 
 [🚀 실습 시작하기](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md) | 
-[📚 Cloud Basic 과정 전체](/mcp_knowledge_base/cloud_basic/README.md) | 
+📚 Cloud Basic 과정 전체 |
 [🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md)
 
 </div>
 
-### 📧 연락처
-- **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
-
 ---
+
+## 🧭 네비게이션
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | 
+[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
+[🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+[📅 Day1 시작하기](mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
 
 </div>

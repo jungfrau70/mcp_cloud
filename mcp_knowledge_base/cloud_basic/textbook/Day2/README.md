@@ -160,11 +160,11 @@
 ### 🚀 Cloud Master 과정 준비
 Cloud Basic을 성공적으로 완료했다면, 다음 단계인 Cloud Master 과정을 추천합니다:
 
-- [Cloud Master 과정](/mcp_knowledge_base/cloud_master/README.md)
-- [Cloud Master Day1: Docker, Git/GitHub, GitHub Actions 기초](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
+- Cloud Master 과정
+- Cloud Master Day1: Docker, Git/GitHub, GitHub Actions 기초
 
 ### 🔗 관련 자료
-- [Cloud Basic 과정 전체](/mcp_knowledge_base/cloud_basic/README.md)
+- Cloud Basic 과정 전체
 - [학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
 - [전체 커리큘럼](/mcp_knowledge_base/curriculum.md)
 
@@ -183,7 +183,7 @@ Cloud Master 과정에서는 다음 내용을 학습하게 됩니다:
 ## 🎉 Day 2 실습을 시작하세요!
 
 [🚀 실습 시작하기](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md) | 
-[📚 Cloud Basic 과정 전체](/mcp_knowledge_base/cloud_basic/README.md) | 
+📚 Cloud Basic 과정 전체 |
 [🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md)
 
 </div>

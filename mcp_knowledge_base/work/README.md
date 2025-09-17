@@ -153,7 +153,7 @@ frontend 프로젝트에서 프로젝트 루트 디렉토리에 있는 .slides_s
 **작업 문서**
 
 ## 🔗 관련 과정
-[Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+Cloud Basic 1일차 | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
 
 </div>
 

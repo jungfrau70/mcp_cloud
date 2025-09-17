@@ -297,8 +297,8 @@ kubectl version --client
 - 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/troubleshooting-guide.md) - 비용 관리, 모니터링, Kubernetes 문제 해결
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Basic 과정](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) - AWS/GCP 기초 과정
-- 🔗 [Cloud Container 과정](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md) - Kubernetes 고급 과정
+- 🔗 Cloud Basic 과정 - AWS/GCP 기초 과정
+- 🔗 Cloud Container 과정 - Kubernetes 고급 과정
 - 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
 - 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
 - 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/cloud_master/learning-path.md) - Cloud Master 학습 경로
@@ -851,16 +851,15 @@ jobs:
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
-
----
+## 🧭 네비게이션
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | 
+[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
+[🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+
+[📅 Day3 시작하기](mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
 
 </div>
+

@@ -540,14 +540,66 @@ async function deleteCurrent(){
   try{
     const p = props.path
     if(!p) return
-    const ok = confirm('이 문서를 휴지통으로 이동할까요?')
-    if(!ok) return
-    const apiBase = resolveApiBase()
-    const ts = new Date().toISOString().replace(/[-:T.Z]/g,'').slice(0,14)
-    const trashPath = `.trash/${ts}/${p}`
-    await fetch(`${apiBase}/v1/knowledge-base/move`, { method:'POST', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path: p, new_path: trashPath }) })
-    try { window.dispatchEvent(new CustomEvent('kb:deleted', { detail:{ path: p, trashPath } })) } catch {}
-  }catch{ alert('삭제 실패') }
+    
+    // 삭제 옵션 선택
+    const deleteOption = confirm('이 문서를 완전히 삭제할까요?\n\n확인: 완전 삭제\n취소: 휴지통으로 이동')
+    
+    // API 베이스 URL 설정
+    const apiBase = process.client ? window.location.origin : 'http://localhost:3000'
+    
+    console.log('파일 삭제 시도:', { path: p, deleteOption, apiBase })
+    
+    let response
+    
+    if (deleteOption) {
+      // 완전 삭제
+      response = await fetch(`${apiBase}/api/v1/knowledge-base/item?path=${encodeURIComponent(p)}`, { 
+        method:'DELETE', 
+        headers:{ 
+          'X-API-Key':'my_mcp_eagle_tiger' 
+        }
+      })
+    } else {
+      // 휴지통으로 이동
+      const ts = new Date().toISOString().replace(/[-:T.Z]/g,'').slice(0,14)
+      const trashPath = `.trash/${ts}/${p}`
+      
+      console.log('휴지통으로 이동:', { originalPath: p, trashPath })
+      
+      response = await fetch(`${apiBase}/api/v1/knowledge-base/move`, { 
+        method:'POST', 
+        headers:{ 
+          'Content-Type':'application/json',
+          'X-API-Key':'my_mcp_eagle_tiger' 
+        }, 
+        body: JSON.stringify({ path: p, new_path: trashPath }) 
+      })
+    }
+    
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`)
+    }
+    
+    const result = await response.json()
+    console.log('파일 삭제 성공:', result)
+    
+    try { 
+      window.dispatchEvent(new CustomEvent('kb:deleted', { detail:{ path: p, result } })) 
+    } catch {}
+    
+    // 삭제 후 뷰 모드로 전환
+    try { 
+      window.dispatchEvent(new CustomEvent('kb:mode', { detail: { to: 'view' }})) 
+    } catch{}
+    
+    // 성공 메시지 표시
+    alert(deleteOption ? '파일이 완전히 삭제되었습니다.' : '파일이 휴지통으로 이동되었습니다.')
+    
+  }catch(error){ 
+    console.error('삭제 실패:', error)
+    alert(`삭제 실패: ${error.message}`) 
+  }
 }
 
 function scrollToLine(line){

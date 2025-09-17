@@ -1,6 +1,6 @@
 <template>
   <div class="h-full flex flex-col">
-    <div class="flex-grow overflow-y-auto p-6 bg-white">
+    <div class="flex-grow overflow-y-auto p-6 pt-8 bg-white">
       <ClientOnly>
         <transition name="fade" mode="out-in">
           <div>
@@ -81,5 +81,19 @@ watch(() => props.activeContent, (newContent) => {
 }
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
+}
+
+/* 모바일 환경에서 상단 패딩 조정 */
+@media (max-width: 768px) {
+  .flex-grow.overflow-y-auto {
+    padding: 1rem 0.75rem 1.5rem 0.75rem;
+  }
+}
+
+/* 매우 좁은 화면에서 추가 최적화 */
+@media (max-width: 480px) {
+  .flex-grow.overflow-y-auto {
+    padding: 0.75rem 0.5rem 1rem 0.5rem;
+  }
 }
 </style>

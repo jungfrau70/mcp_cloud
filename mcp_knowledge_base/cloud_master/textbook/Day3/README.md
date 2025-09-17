@@ -251,16 +251,16 @@
 - 🔗 [장애 복구 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/disaster-recovery-guide.md) - 장애 시뮬레이션 및 복구
 
 ### 📚 데모 프로젝트
-- 🔗 [Actions Demo 프로젝트](/mcp_knowledge_base/cloud_master/textbook/Day3/actions-demo/README.md) - GitHub Actions CI/CD 데모
-- 🔗 [My App 프로젝트](/mcp_knowledge_base/cloud_master/textbook/Day3/my-app/README.md) - Docker 기반 웹 애플리케이션
-- 🔗 [스크립트 모음](/mcp_knowledge_base/cloud_master/textbook/Day3/scripts/README.md) - AWS/GCP 자동화 스크립트
+- 🔗 Actions Demo 프로젝트 - GitHub Actions CI/CD 데모
+- 🔗 My App 프로젝트 - Docker 기반 웹 애플리케이션
+- 🔗 스크립트 모음 - AWS/GCP 자동화 스크립트
 
 ### 🛠️ 문제 해결 가이드
 - 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/troubleshooting-guide.md) - 로드 밸런싱, 오토스케일링, 모니터링 문제 해결
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Basic 과정](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) - AWS/GCP 기초 과정
-- 🔗 [Cloud Container 과정](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md) - Kubernetes 고급 과정
+- 🔗 Cloud Basic 과정 - AWS/GCP 기초 과정
+- 🔗 Cloud Container 과정 - Kubernetes 고급 과정
 - 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
 - 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
 - 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/cloud_master/learning-path.md) - Cloud Master 학습 경로
@@ -873,27 +873,21 @@ aws cloudwatch get-metric-statistics \
 
 - [AWS ELB 공식 문서](https://docs.aws.amazon.com/elasticloadbalancing/)
 - [GCP Cloud Load Balancing 공식 문서](https://cloud.google.com/load-balancing/docs)
-- [Cloud Container 과정](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+- Cloud Container 과정
 
 ---
 
 **🎯 이제 고급 클라우드 운영 기술을 갖추었습니다! Cloud Container 과정으로 진행하세요.**
 
 
-
-
 ---
+
+## 🧭 네비게이션
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
-
----
-
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | 
+[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
+[🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
 </div>

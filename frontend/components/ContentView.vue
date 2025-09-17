@@ -1,7 +1,7 @@
 <template>
-  <div v-if="content || slide" class="h-full overflow-y-auto bg-white" ref="contentContainer">
+  <div v-if="content || slide" class="h-full overflow-y-auto bg-white content-view-container" ref="contentContainer">
     <!-- Header with path navigation and actions -->
-    <div class="flex items-center justify-between px-4 pt-3 pb-2 border-b border-gray-200" v-if="path">
+    <div class="flex items-center justify-between px-4 pt-6 pb-2 border-b border-gray-200" v-if="path">
       <!-- Path breadcrumb -->
       <div class="flex items-center space-x-2 text-sm text-gray-600">
         <button
@@ -46,14 +46,14 @@
 
     <!-- Fade between content and slides in-place -->
     <transition name="fade" mode="out-in">
-      <div v-if="!isSlideView && !isLoading" key="content-view" class="prose max-w-none p-4">
+      <div v-if="!isSlideView && !isLoading" key="content-view" class="prose max-w-none p-4 pt-6">
         <div v-html="renderedContent"></div>
       </div>
-      <div v-else-if="isSlideView && !isLoading" key="slides-view">
+      <div v-else-if="isSlideView && !isLoading" key="slides-view" class="pt-6">
         <div v-if="slidePdfUrl" class="w-full">
           <iframe :src="slidePdfUrl" class="w-full min-h-[60vh]"></iframe>
         </div>
-        <div v-else class="prose max-w-none">
+        <div v-else class="prose max-w-none p-4">
           <div v-html="slideHtml"></div>
         </div>
       </div>
@@ -1276,6 +1276,84 @@ watch(() => props.content, (c) => {
   
   .mermaid-zoom-level {
     color: #9ca3af;
+  }
+}
+
+/* 상단 네비게이션 바와의 겹침 방지 */
+.content-view-container {
+  padding-top: 1rem;
+}
+
+/* 모바일 및 좁은 화면 대응 */
+@media (max-width: 768px) {
+  .content-view-container {
+    padding-top: 1.5rem;
+  }
+  
+  .prose {
+    padding: 1rem 0.75rem !important;
+  }
+  
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    margin-top: 1rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  .prose h1 {
+    font-size: 1.75rem !important;
+  }
+  
+  .prose h2 {
+    font-size: 1.5rem !important;
+  }
+  
+  .prose h3 {
+    font-size: 1.25rem !important;
+  }
+  
+  /* 테이블 가로 스크롤 개선 */
+  .prose table {
+    font-size: 0.875rem;
+  }
+  
+  .prose th, .prose td {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  /* 코드 블록 모바일 최적화 */
+  .prose pre {
+    font-size: 0.75rem;
+    padding: 0.75rem;
+    margin: 0.75rem 0;
+  }
+  
+  .prose code {
+    font-size: 0.8em;
+    padding: 0.125rem 0.25rem;
+  }
+}
+
+/* 매우 좁은 화면 (320px 이하) */
+@media (max-width: 320px) {
+  .prose {
+    padding: 0.75rem 0.5rem !important;
+  }
+  
+  .prose h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  .prose h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  .prose h3 {
+    font-size: 1.125rem !important;
+  }
+  
+  .prose pre {
+    font-size: 0.7rem;
+    padding: 0.5rem;
   }
 }
 </style>
