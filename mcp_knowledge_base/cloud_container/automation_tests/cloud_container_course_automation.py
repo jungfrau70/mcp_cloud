@@ -2,6 +2,21 @@
 """
 Cloud Container 과정 자동화 스크립트
 Kubernetes, GKE, ECS, Fargate 실습 자동화
+
+교재 연계성:
+- Cloud Container 1일차: Kubernetes 및 GKE 고급 오케스트레이션
+  * Kubernetes 고급 아키텍처 (150분)
+  * 컨테이너 오케스트레이션 고급 기법 (150분)
+  * AWS ECS 및 Fargate 심화 (120분)
+  * 고급 CI/CD 파이프라인 (90분)
+
+- Cloud Container 2일차: 고가용성 및 확장성 아키텍처
+  * 고가용성 아키텍처 설계 (120분)
+  * 로드 밸런싱 및 Auto Scaling (90분)
+  * 모니터링 및 로깅 시스템 (90분)
+  * 보안 및 네트워크 정책 (90분)
+
+학습 시나리오: "Kubernetes 클러스터에서의 마이크로서비스 운영"
 """
 
 import os

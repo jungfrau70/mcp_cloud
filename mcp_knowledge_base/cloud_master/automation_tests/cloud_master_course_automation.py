@@ -2,6 +2,27 @@
 """
 Cloud Master 과정 자동화 스크립트
 Docker, Git/GitHub, CI/CD 자동화
+
+교재 연계성:
+- Cloud Master 1일차: Docker, Git/GitHub, GitHub Actions 기초
+  * Docker 기초 및 컨테이너 기술 (120분)
+  * Git/GitHub 기초 및 협업 (90분)
+  * GitHub Actions CI/CD 파이프라인 (150분)
+  * VM 기반 웹 애플리케이션 배포 (90분)
+
+- Cloud Master 2일차: Docker 고급 기법 및 GitHub Actions 고급 워크플로우
+  * Docker Compose를 활용한 다중 서비스 관리 (90분)
+  * 멀티스테이지 빌드 및 이미지 최적화 (90분)
+  * 고급 GitHub Actions 워크플로우 (120분)
+  * 환경별 배포 전략 (90분)
+
+- Cloud Master 3일차: 고가용성 및 Auto Scaling 아키텍처
+  * Multi-AZ, Multi-Region 아키텍처 (120분)
+  * 로드 밸런싱 및 Auto Scaling (90분)
+  * 모니터링 및 로깅 시스템 (90분)
+  * 장애 복구 시뮬레이션 (90분)
+
+학습 시나리오: "컨테이너화된 애플리케이션의 자동 배포"
 """
 
 import os

@@ -2,6 +2,16 @@
 """
 통합 클라우드 과정 자동화 시스템
 Cloud Basic → Cloud Master → Cloud Container 연계 자동화
+
+교재 연계성:
+- Cloud Basic: 클라우드 기초 서비스 실습 (AWS/GCP 계정, IAM, EC2/Compute Engine, S3/Cloud Storage)
+- Cloud Master: Docker 컨테이너화 및 CI/CD 파이프라인 (Docker, Git/GitHub, GitHub Actions, VM 배포)
+- Cloud Container: Kubernetes 오케스트레이션 (GKE, ECS/Fargate, 고급 CI/CD, 고가용성 아키텍처)
+
+학습 시나리오:
+1. Basic → Master: 기초 클라우드 서비스 → 컨테이너화 및 자동화
+2. Master → Container: VM 기반 배포 → 컨테이너 오케스트레이션
+3. 전체 과정: 점진적 복잡성 증가와 실무 중심 프로젝트
 """
 
 import os

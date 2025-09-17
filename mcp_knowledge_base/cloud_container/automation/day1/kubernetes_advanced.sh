@@ -1,25 +1,45 @@
 #!/bin/bash
-# Kubernetes 고급 아키텍처 실습 스크립트
+# Cloud Container 1일차: Kubernetes 고급 아키텍처 실습 스크립트
+# 교재: Cloud Container - 1일차: Kubernetes 및 GKE 고급 오케스트레이션
 
 set -e
 
-echo "Kubernetes 고급 아키텍처 실습 시작..."
+# 색상 코드 정의
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+echo -e "${BLUE}========================================${NC}"
+echo -e "${BLUE}  Cloud Container 1일차: Kubernetes 고급 실습${NC}"
+echo -e "${BLUE}========================================${NC}"
+
+# 1. Kubernetes 고급 아키텍처 (150분)
+echo -e "\n${YELLOW}1. Kubernetes 고급 아키텍처 실습${NC}"
+echo "=========================================="
 
 # kubectl 설치 확인
+echo -e "\n${BLUE}1.1 kubectl 설치 확인${NC}"
 if ! command -v kubectl &> /dev/null; then
-    echo "ERROR: kubectl이 설치되지 않았습니다."
+    echo -e "${RED}ERROR: kubectl이 설치되지 않았습니다.${NC}"
+    echo -e "${YELLOW}kubectl 설치 가이드를 참조하세요:${NC}"
+    echo "https://kubernetes.io/docs/tasks/tools/"
     exit 1
 fi
 
 # Kubernetes 클러스터 정보 확인
+echo -e "\n${BLUE}1.2 Kubernetes 클러스터 정보 확인${NC}"
 echo "Kubernetes 클러스터 정보:"
 kubectl cluster-info
 
 # 클러스터 노드 확인
+echo -e "\n${BLUE}1.3 클러스터 노드 확인${NC}"
 echo "클러스터 노드:"
 kubectl get nodes -o wide
 
 # 네임스페이스 생성
+echo -e "\n${BLUE}1.4 네임스페이스 생성${NC}"
 echo "네임스페이스 생성 중..."
 kubectl create namespace container-course --dry-run=client -o yaml | kubectl apply -f -
 
