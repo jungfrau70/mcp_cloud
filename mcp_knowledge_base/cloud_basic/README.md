@@ -1,241 +1,206 @@
-<div align="center">
+# ☁️ Cloud Basic - 클라우드 기초 실습 과정
 
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+## 👋 안녕하세요!
 
-## 📖 현재 위치
-**Cloud Basic** > **1일차** > **AWS/GCP Basic 과정**
+**Cloud Basic 과정에 오신 것을 환영합니다!** 🎉
 
-## ⬅️ 이전/다음 네비게이션
-[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_basic/README.md) | [다음: Cloud Basic 1일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+이 과정은 클라우드 컴퓨팅을 처음 접하는 분들을 위해 특별히 설계되었습니다. 
+AWS와 GCP의 기본 서비스들을 차근차근 배워보며, 실무에서 바로 활용할 수 있는 
+실습 중심의 학습을 진행합니다.
 
-</div>
+초보자도 쉽게 따라할 수 있도록 단계별로 안내해드리겠습니다!
 
-# AWS/GCP Basic 과정
+**궁금한 점이 있으시면 언제든 문의해주세요!** 
+문제가 발생하거나 도움이 필요하시면 언제든 연락주시면 친절하게 도와드리겠습니다.
+## 📋 사전 요구사항
 
-<div align="center">
+이 과정을 수강하기 전에 다음 사항들을 확인해주세요:
 
-[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+- **기본적인 컴퓨터 사용 능력**: 파일 관리, 인터넷 사용 등 기본적인 컴퓨터 활용 능력
+- **인터넷 연결**: 안정적인 인터넷 연결 환경 (클라우드 서비스 사용을 위해 필요)
+- **학습 시간**: 일일 2-3시간의 학습 시간 확보 (총 2일 과정)
+- **학습 의지**: 새로운 기술에 대한 호기심과 학습 의지
+- **선수 지식**: 특별한 선수 지식은 필요하지 않습니다. 초보자도 쉽게 따라할 수 있도록 설계되었습니다.
+## 🎯 과정 소개
 
-</div>
+**Cloud Basic**은 클라우드 컴퓨팅의 기초를 학습하고 AWS와 GCP의 핵심 서비스를 실습하는 과정입니다. 
+초보자도 쉽게 따라할 수 있도록 단계별로 구성되어 있으며, 실제 프로젝트에서 바로 활용할 수 있는 실무 중심의 내용으로 구성되어 있습니다.
 
-> 📋 **전체 개요**: [README.md](/mcp_knowledge_base/cloud_master/README.md) | [통합 커리큘럼](/mcp_knowledge_base/curriculum.md) | [통합 인덱스](/mcp_knowledge_base/index.md)에서 전체 과정 구조를 확인하세요.
+### 📋 과정 정보
+- **대상자**: 클라우드 초보자, IT 관련 전공자, 클라우드 전환을 고려하는 개발자
+- **예상 소요시간**: 2일 (총 16시간)
+- **난이도**: 초급 (Beginner)
+- **선수 요구사항**: 
+  - 기본적인 컴퓨터 사용 능력
+  - 인터넷 사용 경험
+  - 클라우드 서비스에 대한 기본적인 관심
 
-> 📋 **과정 개요**: [과정상세.md](/mcp_knowledge_base/cloud_basic/과정상세.md)에서 상세한 교육 정보를 확인하세요.
+## 📚 학습 목표
 
-## 📋 개요
+이 과정을 완료하면 다음과 같은 능력을 갖추게 됩니다:
 
-이 Basic 과정은 **클라우드 입문자**를 대상으로 한 기초 클라우드 기술 교육입니다.
+### 🎯 핵심 목표
+- **클라우드 기본 개념 이해**: 클라우드 컴퓨팅의 핵심 개념과 장점을 설명할 수 있습니다
+- **AWS & GCP 계정 설정**: 두 클라우드 플랫폼의 계정을 생성하고 기본 설정을 완료할 수 있습니다
+- **핵심 서비스 활용**: EC2, S3, Compute Engine, Cloud Storage 등 핵심 서비스를 실제로 사용할 수 있습니다
+- **비용 관리**: 클라우드 서비스의 비용 구조를 이해하고 최적화할 수 있습니다
+- **보안 기초**: IAM, 보안 그룹 등 기본적인 보안 설정을 할 수 있습니다
 
-### 🎯 대상 학습자
-- 클라우드 입문자
-- IT 기초 지식이 있는 개발자
-- 클라우드를 처음 접하는 시스템 관리자
-- 클라우드 기초 지식을 쌓고 싶은 일반 사용자
+### 🚀 실무 적용 목표
+- **프로젝트 시작**: 실제 프로젝트에서 클라우드 서비스를 선택하고 시작할 수 있습니다
+- **문제 해결**: 일반적인 클라우드 관련 문제를 스스로 해결할 수 있습니다
+- **다음 단계 준비**: Cloud Master 과정으로 자연스럽게 연결될 수 있습니다
 
----
+## 📋 과정 개요
 
-## 📚 과정 구성
+### 📅 Day 1: AWS & GCP 기초 서비스 실습 (8시간)
+**목표**: 클라우드 기본 개념을 이해하고 핵심 서비스를 실습합니다
 
-### Day 1: AWS & GCP 기초 서비스 실습
-- **1교시**: 클라우드 개념 및 계정 생성
-  - 클라우드 컴퓨팅 개요와 장점
-  - AWS와 GCP 서비스 개요 및 비교
-  - 실습: AWS Free Tier 계정 생성 및 콘솔 탐색
-  - 실습: GCP 계정 생성 및 $300 크레딧 활성화
+#### 🌅 오전 (4시간)
+- **09:00-10:00**: 클라우드 기본 개념 및 AWS/GCP 소개
+- **10:00-11:00**: AWS 계정 생성 및 기본 설정
+- **11:00-12:00**: GCP 계정 생성 및 기본 설정
 
-- **2교시**: IAM 기초 실습
-  - AWS IAM: 사용자, 그룹, 역할, 정책 개념
-  - GCP IAM: 서비스 계정, 역할, 권한 관리
-  - 실습: AWS IAM 사용자 생성 및 권한 부여
-  - 실습: GCP 서비스 계정 생성 및 키 관리
+#### 🌆 오후 (4시간)
+- **13:00-14:00**: EC2 인스턴스 생성 및 관리
+- **14:00-15:00**: S3 스토리지 서비스 실습
+- **15:00-16:00**: Compute Engine 및 Cloud Storage 실습
+- **16:00-17:00**: 종합 실습 및 정리
 
-- **3교시**: 가상머신 서비스 기초
-  - AWS EC2 vs GCP Compute Engine 비교
-  - 인스턴스 타입, 이미지, 리전 개념
-  - 실습: AWS EC2 인스턴스 생성 및 SSH 접속
-  - 실습: GCP Compute Engine 인스턴스 생성 및 접속
+### 📅 Day 2: 서비스 비교 및 최적화 (8시간)
+**목표**: AWS와 GCP 서비스를 비교 분석하고 최적화 방법을 학습합니다
 
-- **4교시**: 스토리지 서비스 기초
-  - AWS S3 vs GCP Cloud Storage 비교
-  - 객체 스토리지 개념과 활용 사례
-  - 실습: AWS S3 버킷 생성 및 파일 업로드/다운로드
-  - 실습: GCP Cloud Storage 버킷 생성 및 파일 관리
+#### 🌅 오전 (4시간)
+- **09:00-10:00**: 컴퓨팅 서비스 비교 분석
+- **10:00-11:00**: 스토리지 서비스 비교 분석
+- **11:00-12:00**: 데이터베이스 서비스 비교 분석
 
-### Day 2: 네트워크, 보안 및 데이터베이스 실습
-- **1교시**: 네트워킹 기초 실습
-  - AWS VPC vs GCP VPC 개념 및 비교
-  - 서브넷, 라우팅, 게이트웨이, NAT 게이트웨이
-  - 실습: AWS VPC 및 서브넷 구성
-  - 실습: GCP VPC 네트워크 및 서브넷 생성
-
-- **2교시**: 보안 그룹 및 방화벽 실습
-  - AWS Security Groups vs GCP Firewall Rules
-  - 인바운드/아웃바운드 규칙 설정 및 모범 사례
-  - 실습: AWS Security Groups 생성 및 규칙 설정
-  - 실습: GCP Firewall Rules 생성 및 테스트
-
-- **3교시**: 데이터베이스 서비스 기초
-  - AWS RDS vs GCP Cloud SQL 비교
-  - 관계형 데이터베이스 관리 및 백업
-  - 실습: AWS RDS MySQL 인스턴스 생성 및 연결
-  - 실습: GCP Cloud SQL MySQL 인스턴스 생성 및 접속
-
-- **4교시**: 종합 실습 및 비교 분석
-  - 웹 서버 + 데이터베이스 구성 종합 실습
-  - AWS vs GCP 서비스별 비용 및 성능 비교
-  - 실습: 간단한 웹 애플리케이션을 AWS와 GCP에 각각 배포
-  - 실습: 리소스 정리 및 비용 모니터링
-
----
-
-## Master 과정과의 연계
-
-### Basic 과정에서 학습한 내용
-- ✅ 클라우드 기본 개념
-- ✅ AWS/GCP 계정 생성 및 설정
-- ✅ IAM 권한 관리 기초
-- ✅ 핵심 서비스 실습 경험
-
-### Master 과정에서 확장하는 내용
-- 🚀 **Docker 컨테이너화**: 애플리케이션 컨테이너화
-- 🚀 **CI/CD 파이프라인**: GitHub Actions 자동화
-- 🚀 **고급 배포**: 컨테이너 기반 배포
-- 🚀 **운영 자동화**: 모니터링, 알림, 자동 복구
-
----
-
-## 📖 학습 자료
-
-### Day 1
-- [클라우드 계정 설정 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/aws-gcp-account-setup.md)
-- [IAM 기초 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md)
-- [가상머신 서비스 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md)
-- [스토리지 서비스 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
-
-### Day 2
-- [네트워킹 기초 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
-- [종합 실습 프로젝트](/mcp_knowledge_base/cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
-
-> 📚 **전체 실습 가이드**: [Day1 README](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Day2 README](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
-
----
-
-## 🎯 학습 목표
-
-이 Basic 과정을 통해 다음을 달성합니다:
-
-1. **클라우드 기본 개념**: 클라우드 컴퓨팅의 핵심 개념 이해
-2. **계정 및 권한 관리**: AWS/GCP 계정 생성 및 IAM 기초
-3. **핵심 서비스 실습**: VM, 스토리지, 네트워크, 데이터베이스 기본 활용
-4. **실무 기초**: 간단한 웹 애플리케이션을 클라우드에 배포
-
----
+#### 🌆 오후 (4시간)
+- **13:00-14:00**: 네트워킹 서비스 비교 분석
+- **14:00-15:00**: 비용 최적화 전략
+- **15:00-16:00**: 보안 및 모니터링 기초
+- **16:00-17:00**: 종합 프로젝트 및 다음 단계 안내
 
 ## 🚀 시작하기
 
-Basic 과정을 시작하기 전에 다음을 확인하세요:
+### 1️⃣ 사전 준비
+다음 항목들을 미리 준비해주세요:
 
-### 필수 선수 과정
-- [ ] IT 기초 지식 (OS, 네트워크 기본 이해)
-- [ ] Linux 기본 명령어 경험 권장
-- [ ] 인터넷 및 웹 서비스 개념 이해
+- **컴퓨터**: Windows, Mac, Linux 중 하나
+- **인터넷 연결**: 안정적인 인터넷 연결
+- **이메일 주소**: AWS와 GCP 계정 생성용
+- **신용카드**: 클라우드 서비스 가입용 (무료 크레딧 사용)
 
-> **다음 과정**: [Cloud Master 과정](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
+### 2️⃣ 환경 설정
+```bash
+# AWS CLI 설치 (Windows)
+# https://aws.amazon.com/cli/ 에서 다운로드
 
-### 환경 준비
-- [ ] AWS Free Tier 계정 생성
-- [ ] GCP 계정 생성 ($300 크레딧)
-- [ ] AWS CLI, gcloud CLI 설치
-- [ ] SSH 클라이언트 설정
+# GCP CLI 설치 (Windows)
+# https://cloud.google.com/sdk/docs/install 에서 다운로드
+```
 
-### 권장 사항
-- 클라우드 서비스의 기본 개념 숙지
-- 실습용 프로젝트 준비
-- 비용 모니터링 설정
+### 3️⃣ 첫 번째 실습 시작
+1. [Day 1 실습 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)로 이동
+2. [AWS 계정 생성 가이드](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md) 따라하기
+3. [GCP 계정 생성 가이드](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md) 따라하기
 
----
+## 📚 학습 자료
 
-## 📞 지원
+### 📖 교재
+- [Day 1: AWS & GCP 기초 서비스 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+- [Day 2: 서비스 비교 및 최적화](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
 
-Basic 과정에서 문제가 발생하면:
-1. [각 교시별 문제 해결 섹션](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md) 확인
-2. 실습 환경 및 권한 설정 재확인
-3. 클라우드 계정 설정 상태 점검
+### 🔧 실습 가이드
+- [AWS 계정 생성](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md)
+- [GCP 계정 생성](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md)
+- [Azure 계정 생성](/mcp_knowledge_base/cloud_basic/accounts/Azure계정가입.md)
 
-> 🆘 **지원 채널**: [과정상세.md](/mcp_knowledge_base/cloud_basic/과정상세.md)에서 문의 정보를 확인하세요.
+### 🛠️ 설치 가이드
+- [AWS CLI 설치](/mcp_knowledge_base/cloud_basic/install/install_aws_cli.md)
+- [GCP CLI 설치](/mcp_knowledge_base/cloud_basic/install/install_gcp_cli.md)
+- [Azure CLI 설치](/mcp_knowledge_base/cloud_basic/install/install_azure_cli.md)
 
-**🎯 목표**: 클라우드의 기본기를 탄탄히 쌓고 다음 단계인 Master 과정으로 나아갈 수 있는 기초를 다집니다.
+## ✅ 학습 체크리스트
 
+### Day 1 완료 확인
+- [ ] AWS 계정 생성 및 기본 설정 완료
+- [ ] GCP 계정 생성 및 기본 설정 완료
+- [ ] EC2 인스턴스 생성 및 연결 성공
+- [ ] S3 버킷 생성 및 파일 업로드 성공
+- [ ] Compute Engine 인스턴스 생성 성공
+- [ ] Cloud Storage 버킷 생성 및 파일 업로드 성공
+
+### Day 2 완료 확인
+- [ ] AWS와 GCP 서비스 비교 분석 완료
+- [ ] 비용 최적화 전략 이해
+- [ ] 보안 설정 기본 사항 이해
+- [ ] 종합 프로젝트 완료
+- [ ] 다음 단계 학습 계획 수립
+
+## ❓ 자주 묻는 질문 (FAQ)
+
+### Q1: 클라우드 경험이 전혀 없어도 수강할 수 있나요?
+**A**: 네, 가능합니다! 이 과정은 클라우드 초보자를 위해 설계되었으며, 기본적인 컴퓨터 사용 능력만 있으면 충분합니다.
+
+### Q2: 비용이 얼마나 발생하나요?
+**A**: AWS와 GCP 모두 무료 크레딧을 제공합니다. 실습 과정에서 발생하는 비용은 월 $5-10 정도이며, 무료 크레딧으로 대부분 커버됩니다.
+
+### Q3: 실습 중 문제가 발생하면 어떻게 하나요?
+**A**: 각 실습 가이드에 문제해결 섹션이 있으며, [종합 문제해결 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md)도 제공됩니다.
+
+### Q4: 다음 단계는 무엇인가요?
+**A**: Cloud Basic 완료 후 [Cloud Master 과정](/mcp_knowledge_base/cloud_master/README.md)을 추천합니다. Docker, CI/CD, 고급 배포 기술을 학습할 수 있습니다.
+
+## 🔗 관련 과정
+
+### 📚 전체 커리큘럼
+- [전체 커리큘럼 보기](/mcp_knowledge_base/curriculum.md)
+- [학습 경로 안내](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+### 🚀 다음 단계
+- [Cloud Master 과정](/mcp_knowledge_base/cloud_master/README.md) - Docker, CI/CD, 고급 배포
+- [Cloud Container 과정](/mcp_knowledge_base/cloud_container/README.md) - Kubernetes, 오케스트레이션
+
+### 🏠 홈으로
+- [통합 인덱스](/mcp_knowledge_base/index.md)
+
+## 📞 문의 및 지원
+
+### 💬 학습 지원
+- **실시간 질문**: 각 실습 가이드의 댓글 섹션 활용
+- **문제 신고**: GitHub Issues를 통한 버그 신고
+- **기능 요청**: 새로운 기능이나 개선사항 제안
+
+### 📧 연락처
+- **이메일**: support@cloud-education.com
+- **GitHub**: [프로젝트 저장소](https://github.com/your-repo/mcp_cloud)
+- **문서**: [온라인 문서](https://docs.cloud-education.com)
 
 ---
 
 <div align="center">
 
-## 🔗 관련 과정 및 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+## 🎉 Cloud Basic 과정을 시작하세요!
 
-## 📖 현재 위치
-**Cloud Basic** > **1일차** > **AWS/GCP Basic 과정**
-
-## ⬅️ 이전/다음 네비게이션
-[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_basic/README.md) | [다음: Cloud Basic 1일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
-
-## 🔗 관련 과정
-[Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+[🚀 Day 1 실습 시작하기](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | 
+[📚 전체 커리큘럼 보기](/mcp_knowledge_base/curriculum.md) | 
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md)
 
 </div>
 
-## 🔗 관련 자료
+---
 
-### 📁 설치 가이드
-- [Github Actions Complete Guide](/cloud_basic/install/github-actions-complete-guide.md)
-- [Install Aws Cli](/cloud_basic/install/install_aws_cli.md)
-- [Install Azure Cli](/cloud_basic/install/install_azure_cli.md)
-- [Install Docker](/cloud_basic/install/install_docker.md)
-- [Install Docker Compose](/cloud_basic/install/install_docker_compose.md)
-- [Install Git](/cloud_basic/install/install_git.md)
-- [Install Glcoud Cli](/cloud_basic/install/install_glcoud_cli.md)
+## 🧭 네비게이션
 
-### 💻 실습 가이드
-- [Aws Basic Practice](/cloud_basic/textbook/Day1/practice/aws_basic_practice.md)
-- [Gcp Basic Practice](/cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
-- [실습1 Aws Gcp](/cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md)
-- [Basic To Master Bridge](/cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
+<div align="center">
 
-### 📚 가이드 문서
-- [Automation Guide](/cloud_basic/AUTOMATION_GUIDE.md)
-- [User Guide](/cloud_basic/automation_tests/USER_GUIDE.md)
-- [Github Actions Complete Guide](/cloud_basic/install/github-actions-complete-guide.md)
-- [Iam Basics Guide](/cloud_basic/textbook/Day1/iam-basics-guide.md)
-- [Storage Services Guide](/cloud_basic/textbook/Day1/storage-services-guide.md)
-- [Troubleshooting Guide](/cloud_basic/textbook/Day1/troubleshooting-guide.md)
-- [Vm Services Guide](/cloud_basic/textbook/Day1/vm-services-guide.md)
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | 
+[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
+[🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
 
-### 📄 기타 자료
-- [Automation Guide](/cloud_basic/AUTOMATION_GUIDE.md)
-- [Learning Path](/cloud_basic/learning-path.md)
-- [Readme](/cloud_basic/README.md)
-- [과정명](/cloud_basic/과정명.md)
-- [과정상세](/cloud_basic/과정상세.md)
-- [Aws계정가입](/cloud_basic/accounts/AWS계정가입.md)
-- [Azure계정가입](/cloud_basic/accounts/Azure계정가입.md)
-- [Gcp 개인계정가입](/cloud_basic/accounts/GCP_개인계정가입.md)
-- [Gcp 계정유형비교](/cloud_basic/accounts/GCP_계정유형비교.md)
-- [Gcp 조직계정가입](/cloud_basic/accounts/GCP_조직계정가입.md)
-- [클라우드계정관리비교](/cloud_basic/accounts/클라우드계정관리비교.md)
-- [Readme](/cloud_basic/automation/README.md)
-- [Readme](/cloud_basic/automation_tests/README.md)
-- [User Guide](/cloud_basic/automation_tests/USER_GUIDE.md)
-- [Readme](/cloud_basic/presentation/README.md)
-- [클라우드실무력강화 활용법(기초)](/cloud_basic/presentation/클라우드실무력강화_활용법(기초).md)
-- [클라우드실무력강화 활용법(기초) 교재](/cloud_basic/presentation/클라우드실무력강화_활용법(기초)_교재.md)
-- [클라우드실무력강화 활용법(기초) 실습](/cloud_basic/presentation/클라우드실무력강화_활용법(기초)_실습.md)
-- [Aws Gcp Account Setup](/cloud_basic/textbook/Day1/aws-gcp-account-setup.md)
-- [Readme](/cloud_basic/textbook/Day1/README.md)
-- [Aws Gcp Account Setup](/cloud_basic/textbook/Day2/aws-gcp-account-setup.md)
-- [Compute Comparison](/cloud_basic/textbook/Day2/compute_comparison.md)
-- [Database Comparison](/cloud_basic/textbook/Day2/database_comparison.md)
-- [Network Comparison](/cloud_basic/textbook/Day2/network_comparison.md)
-- [Readme](/cloud_basic/textbook/Day2/README.md)
-- [Storage Comparison](/cloud_basic/textbook/Day2/storage_comparison.md)
+[📅 Day1 시작하기](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | 
+[📅 Day2 시작하기](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md)
+
+</div>
+

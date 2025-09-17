@@ -1,0 +1,5 @@
+# PDF textbook generation dependencies
+markdown==3.5.1
+pdfkit==1.0.0
+beautifulsoup4==4.12.2
+Pygments==2.16.1

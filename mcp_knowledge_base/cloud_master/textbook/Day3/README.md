@@ -7,15 +7,10 @@
 **Cloud Master** > **3일차** > **Cloud Master - 3일차: 로드 밸런싱, 모니터링, 비용 최적화**
 
 ## ⬅️ 이전/다음 네비게이션
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 3일차 →](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) 
 
 </div>
 
-<div align="center">
-
-[← 이전: Cloud Master 2일차](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md) | [다음: Cloud Master 3일차 →](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [다음 과정: Cloud Container 1일차 →](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
-
-</div>
 
 # Cloud Master - 3일차: 로드 밸런싱, 모니터링, 비용 최적화 이론 및 실습
 
@@ -912,9 +907,9 @@ aws cloudwatch get-metric-statistics \
 **Cloud Master** > **3일차** > **Cloud Master - 3일차: 로드 밸런싱, 모니터링, 비용 최적화**
 
 ## ⬅️ 이전/다음 네비게이션
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 3일차 →](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md)
 
 ## 🔗 관련 과정
-[Cloud Basic 2일차](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+[Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
 
 </div>

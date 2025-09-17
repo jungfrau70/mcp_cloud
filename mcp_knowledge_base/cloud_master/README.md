@@ -1,381 +1,238 @@
-<div align="center">
+# 🚀 Cloud Master - 클라우드 실무 마스터 과정
 
-## 🏠 최상위 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+## 👋 안녕하세요!
 
-## 📖 현재 위치
-**Cloud Master** > **1일차** > **AWS/GCP Master 과정**
+**Cloud Master 과정에 오신 것을 환영합니다!** 🚀
 
-## ⬅️ 이전/다음 네비게이션
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
+이 과정은 Cloud Basic을 마스터한 분들을 위한 고급 과정입니다. 
+Docker, GitHub Actions, CI/CD 파이프라인 등 현대적인 개발 도구들을 
+실무 중심으로 학습하며, 실제 프로젝트에 바로 적용할 수 있는 
+고급 기술들을 습득하게 됩니다.
 
-</div>
+함께 클라우드 마스터가 되어보세요!
 
-# AWS/GCP Master 과정
+**궁금한 점이 있으시면 언제든 문의해주세요!** 
+문제가 발생하거나 도움이 필요하시면 언제든 연락주시면 친절하게 도와드리겠습니다.
+## 📋 사전 요구사항
 
-<div align="center">
+이 과정을 수강하기 전에 다음 사항들을 확인해주세요:
 
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+- **Cloud Basic 과정 이수**: Cloud Basic 과정의 내용을 이해하고 있어야 합니다
+- **기본적인 리눅스 명령어**: 터미널 사용과 기본적인 리눅스 명령어에 대한 이해
+- **Git 기본 사용법**: 버전 관리 시스템 Git의 기본적인 사용법
+- **개발 환경**: 로컬 개발 환경 구축 경험 (선택사항)
+- **학습 시간**: 일일 3-4시간의 학습 시간 확보 (총 3일 과정)
+- **실습 환경**: AWS와 GCP 계정 (무료 크레딧 사용 가능)
+## 🎯 과정 소개
 
-</div>
+**Cloud Master**는 클라우드 환경에서 실제 프로젝트를 구축하고 운영하는 데 필요한 실무 기술을 학습하는 과정입니다. 
+Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 있는 전문적인 역량을 기를 수 있습니다.
 
-> 📋 **전체 개요**: [README.md](/mcp_knowledge_base/cloud_master/README.md) | [통합 커리큘럼](/mcp_knowledge_base/curriculum.md) | [통합 인덱스](/mcp_knowledge_base/index.md)에서 전체 과정 구조를 확인하세요.
+### 📋 과정 정보
+- **대상자**: Cloud Basic 완료자, 개발자, DevOps 엔지니어, 클라우드 아키텍트
+- **예상 소요시간**: 3일 (총 24시간)
+- **난이도**: 중급 (Intermediate)
+- **선수 요구사항**: 
+  - Cloud Basic 과정 완료 또는 동등한 수준
+  - 기본적인 리눅스 명령어 사용 능력
+  - Git 기본 사용법 이해
 
-> 📋 **과정 개요**: [과정상세.md](/mcp_knowledge_base/cloud_master/과정상세.md)에서 상세한 교육 정보를 확인하세요.
+## 📚 학습 목표
 
-## 📋 개요
+이 과정을 완료하면 다음과 같은 전문적인 능력을 갖추게 됩니다:
 
-이 Master 과정은 **클라우드 실무 전반을 아우르는 마스터 수준 과정**입니다.
+### 🎯 핵심 목표
+- **Docker 마스터**: 컨테이너 기술을 완전히 이해하고 활용할 수 있습니다
+- **CI/CD 파이프라인 구축**: GitHub Actions를 활용한 자동화 파이프라인을 구축할 수 있습니다
+- **고급 배포 기술**: Blue-Green, Canary 배포 등 고급 배포 전략을 구현할 수 있습니다
+- **모니터링 및 로깅**: Prometheus, Grafana를 활용한 모니터링 시스템을 구축할 수 있습니다
+- **비용 최적화**: 클라우드 비용을 분석하고 최적화할 수 있습니다
 
-### 🎯 대상 학습자
-- Cloud Basic 과정을 수료한 학습자 (필수)
-- DevOps, 인프라 운영 및 최적화를 담당하는 IT 전문가
-- AWS/GCP 환경에서 실무 통합 역량을 강화하려는 아키텍트 및 엔지니어
+### 🚀 실무 적용 목표
+- **프로덕션 환경 구축**: 실제 서비스 운영에 필요한 인프라를 구축할 수 있습니다
+- **팀 협업**: Git/GitHub을 활용한 효율적인 팀 협업이 가능합니다
+- **문제 해결**: 복잡한 시스템 문제를 분석하고 해결할 수 있습니다
+- **아키텍처 설계**: 확장 가능하고 안정적인 시스템 아키텍처를 설계할 수 있습니다
 
----
+## 📋 과정 개요
 
-## 📚 과정 구성
+### 📅 Day 1: Docker, Git/GitHub, GitHub Actions 기초 (8시간)
+**목표**: 컨테이너 기술과 CI/CD의 기초를 학습합니다
 
-### Day 0: Install
+#### 🌅 오전 (4시간)
+- **09:00-10:00**: Docker 기본 개념 및 설치
+- **10:00-11:00**: Docker 이미지 생성 및 관리
+- **11:00-12:00**: Docker Compose를 활용한 멀티 컨테이너 관리
 
-#### 🛠️ 필수 도구 설치
+#### 🌆 오후 (4시간)
+- **13:00-14:00**: Git/GitHub 기초 및 협업 워크플로우
+- **14:00-15:00**: GitHub Actions 기본 개념
+- **15:00-16:00**: CI/CD 파이프라인 구축 실습
+- **16:00-17:00**: 종합 실습 및 정리
 
-Cloud Master 과정을 시작하기 전에 다음 도구들을 설치해야 합니다:
+### 📅 Day 2: 비용 최적화 및 모니터링 (8시간)
+**목표**: 클라우드 비용을 최적화하고 모니터링 시스템을 구축합니다
 
-##### 1. Git 설치 및 설정
-- **목적**: 버전 관리 및 GitHub 연동
-- **가이드**: [Git 설치 가이드](/mcp_knowledge_base/cloud_master/install/install_git.md)
-- **설치 확인**:
-  ```bash
-  git --version
-  git config --global user.name "Your Name"
-  git config --global user.email "your.email@example.com"
-  ```
+#### 🌅 오전 (4시간)
+- **09:00-10:00**: 클라우드 비용 구조 분석
+- **10:00-11:00**: 비용 최적화 전략 및 도구
+- **11:00-12:00**: 모니터링 시스템 설계
 
-##### 2. Docker 설치 및 설정
-- **목적**: 컨테이너 기반 애플리케이션 배포
-- **가이드**: [Docker 설치 가이드](/mcp_knowledge_base/cloud_master/install/install_docker.md)
-- **설치 확인**:
-  ```bash
-  docker --version
-  docker run hello-world
-  ```
+#### 🌆 오후 (4시간)
+- **13:00-14:00**: Prometheus 설치 및 설정
+- **14:00-15:00**: Grafana 대시보드 구축
+- **15:00-16:00**: 알림 시스템 구축
+- **16:00-17:00**: 종합 실습 및 정리
 
-##### 3. AWS CLI 설치 및 설정
-- **목적**: AWS 서비스와의 상호작용
-- **가이드**: [AWS CLI 설치 가이드](/mcp_knowledge_base/cloud_master/install/install_aws_cli.md)
-- **설치 확인**:
-  ```bash
-  aws --version
-  aws configure
-  ```
+### 📅 Day 3: 고급 아키텍처 및 배포 (8시간)
+**목표**: 고가용성과 확장성을 갖춘 고급 아키텍처를 구축합니다
 
-##### 4. Azure CLI 설치 및 설정
-- **목적**: Azure 서비스와의 상호작용
-- **가이드**: [Azure CLI 설치 가이드](/mcp_knowledge_base/cloud_master/install/install_azure_cli.md)
-- **설치 확인**:
-  ```bash
-  az --version
-  az login
-  ```
+#### 🌅 오전 (4시간)
+- **09:00-10:00**: 자동 스케일링 설정
+- **10:00-11:00**: 로드 밸런싱 구성
+- **11:00-12:00**: 고가용성 아키텍처 설계
 
-##### 5. Google Cloud CLI 설치 및 설정
-- **목적**: GCP 서비스와의 상호작용
-- **가이드**: [Google Cloud CLI 설치 가이드](/mcp_knowledge_base/cloud_master/install/install_glcoud_cli.md)
-- **설치 확인**:
-  ```bash
-  gcloud --version
-  gcloud auth login
-  ```
-
-##### 6. GitHub Actions 설정
-- **목적**: CI/CD 파이프라인 구축
-- **가이드**: [GitHub Actions 완전 가이드](/mcp_knowledge_base/cloud_master/install/github-actions-complete-guide.md)
-- **설치 확인**:
-  ```bash
-  # GitHub 저장소 생성 및 Actions 활성화
-  # .github/workflows/ 디렉토리 생성
-  ```
-
-#### 🔧 설치 스크립트 (자동화)
-
-각 클라우드 플랫폼별 자동 설치 스크립트를 제공합니다:
-
-- **AWS 환경**: [install_git_aws.sh](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_git_aws.sh)
-- **Azure 환경**: [install_git_azure.sh](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_git_azure.sh)
-- **GCP 환경**: [install_git_gcp.sh](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_git_gcp.sh)
-
-#### 📋 설치 체크리스트
-
-- [ ] Git 설치 및 사용자 정보 설정
-- [ ] Docker 설치 및 실행 확인
-- [ ] AWS CLI 설치 및 자격 증명 설정
-- [ ] Azure CLI 설치 및 로그인
-- [ ] Google Cloud CLI 설치 및 인증
-- [ ] GitHub 계정 생성 및 SSH 키 설정
-- [ ] GitHub Actions 워크플로우 이해
-- [ ] 모든 도구 버전 확인
-
-#### ⚠️ 주의사항
-
-1. **시스템 요구사항**: 각 도구별 최소 시스템 요구사항 확인
-2. **권한 설정**: Docker 사용자 그룹 추가 및 권한 설정
-3. **네트워크 설정**: 프록시 환경에서의 추가 설정 필요
-4. **보안**: 클라우드 계정 자격 증명 안전한 관리
-
-#### 🆘 문제 해결
-
-설치 과정에서 문제가 발생하면 각 설치 가이드의 "문제 해결" 섹션을 참조하세요:
-
-- [Git 문제 해결](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_git.md#문제-해결)
-- [Docker 문제 해결](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_docker.md#문제-해결)
-- [AWS CLI 문제 해결](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_aws_cli.md#문제-해결)
-- [Azure CLI 문제 해결](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_azure_cli.md#문제-해결)
-- [Google Cloud CLI 문제 해결](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\install\install_glcoud_cli.md#문제-해결)
-
-#### 🎯 다음 단계
-
-모든 도구 설치가 완료되면 [Day 1: AWS & GCP 고급 아키텍처](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)로 진행하세요.
-
-### Day 1: Docker, Git/GitHub, GitHub Actions 기초
-- **1교시**: Docker 기초 및 컨테이너 기술
-  - Docker 개념 및 아키텍처 이해
-  - Dockerfile 작성 및 이미지 빌드
-  - Docker Compose를 활용한 다중 서비스 관리
-  - 실습: Node.js 웹 애플리케이션 컨테이너화
-
-- **2교시**: Git/GitHub 기초 및 협업
-  - Git 기본 명령어 및 워크플로우
-  - GitHub 저장소 생성 및 관리
-  - 브랜치 전략 및 Pull Request 활용
-  - 실습: 팀 프로젝트 기반 Git 협업
-
-- **3교시**: GitHub Actions CI/CD 파이프라인
-  - GitHub Actions 개념 및 워크플로우 구조
-  - 자동화된 테스트, 빌드, 배포 파이프라인
-  - Docker 이미지 자동 빌드 및 레지스트리 푸시
-  - 실습: GitHub Actions로 CI/CD 파이프라인 구축
-
-- **4교시**: VM 기반 웹 애플리케이션 배포
-  - AWS EC2 + Docker / GCP Compute Engine + Docker
-  - 웹 애플리케이션 배포 및 도메인 연결
-  - 기본 모니터링 및 로그 관리
-  - 실습: 완전 자동화된 VM 배포 파이프라인
-
-### Day 2: 고급 CI/CD 및 VM 기반 컨테이너 배포
-- **1교시**: Docker 고급 기법 및 최적화
-  - Dockerfile 멀티스테이지 빌드 및 최적화
-  - Docker Compose 고급 설정 및 오케스트레이션
-  - 실습: 프로덕션급 Docker 이미지 빌드 및 최적화
-
-- **2교시**: GitHub Actions 고급 워크플로우
-  - 매트릭스 빌드 및 환경별 배포 전략
-  - 시크릿 관리 및 보안 설정
-  - 실습: 고급 CI/CD 파이프라인 구축
-
-- **3교시**: VM 기반 컨테이너 배포 자동화
-  - AWS EC2 + Docker / GCP Compute Engine + Docker
-  - 컨테이너 오케스트레이션 및 관리
-  - 실습: 고가용성 컨테이너 배포 환경 구성
-
-- **4교시**: 완전 자동화된 배포 파이프라인
-  - GitHub Actions + VM 배포 자동화
-  - 실습: GitHub 푸시 → Docker 빌드 → VM 배포 자동화
-
-### Day 3: 로드 밸런싱, 모니터링, 비용 최적화
-- **1교시**: 로드 밸런싱 및 Auto Scaling
-  - AWS ELB + Auto Scaling Group / GCP Cloud LB + Managed Instance Group
-  - 실습: VM 기반 로드 밸런싱 환경 구성
-
-- **2교시**: 모니터링 및 로깅 시스템
-  - CloudWatch, Cloud Monitoring 설정
-  - Prometheus + Grafana 모니터링 구축
-  - 실습: 종합 모니터링 대시보드 구축
-
-- **3교시**: 장애 복구 및 운영 자동화
-  - Health Check 기반 자동 교체 및 복구
-  - 실습: 장애 시뮬레이션 및 자동 복구 테스트
-
-- **4교시**: 비용 최적화 및 운영 전략
-  - 클라우드 비용 구조 및 과금 체계 분석
-  - VM 기반 아키텍처 비용 분석 및 최적화
-  - 실습: 비용 최적화 전략 수립 및 발표
-
----
-
-## Container 과정과의 연계
-
-### Master 과정에서 학습한 내용
-- ✅ Docker 컨테이너화 및 최적화
-- ✅ CI/CD 파이프라인 구축
-- ✅ VM 기반 컨테이너 배포
-- ✅ 로드 밸런싱 및 모니터링
-
-### Container 과정에서 확장하는 내용
-- 🚀 **Kubernetes 오케스트레이션**: EKS/GKE 클러스터 관리
-- 🚀 **고가용성 아키텍처**: Multi-AZ 배포 및 장애 복구
-- 🚀 **서비스 메시**: Istio를 활용한 트래픽 관리
-- 🚀 **고급 모니터링**: Prometheus, Grafana, ELK Stack
-
----
-
-## 📖 학습 자료
-
-### Day 1
-- [Docker 기본 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-basic-guide.md)
-- [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-advanced-guide.md)
-- [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/github-actions-guide.md)
-- [Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-compose-guide.md)
-- [VM 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/cloud-deployment-guide.md)
-
-### Day 2
-- [비용 구조 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-structure-guide.md)
-- [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-optimization-guide.md)
-- [모니터링 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/monitoring-guide.md)
-- [종합 실습 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/comprehensive-practice-guide.md)
-
-### Day 3
-- [로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/load-balancing-guide.md)
-- [모니터링 설정 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day3\monitoring-advanced\monitoring-setup.yaml)
-- [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/cost-optimization/cost-optimization-guide.md)
-
-> 📚 **전체 실습 가이드**: [Day1 README](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Day2 README](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md) | [Day3 README](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
-
----
-
-## 🎯 학습 목표
-
-이 Master 과정을 통해 다음을 달성합니다:
-
-1. **Docker 마스터**: 컨테이너화 및 최적화 기법
-2. **CI/CD 파이프라인**: GitHub Actions 자동화
-3. **VM 기반 배포**: AWS/GCP 환경에서 컨테이너 배포
-4. **운영 자동화**: 모니터링, 로깅, 장애 복구
-5. **비용 최적화**: 클라우드 비용 분석 및 최적화 전략
-
----
+#### 🌆 오후 (4시간)
+- **13:00-14:00**: 재해 복구 계획 수립
+- **14:00-15:00**: Blue-Green 배포 구현
+- **15:00-16:00**: 종합 프로젝트
+- **16:00-17:00**: 다음 단계 안내 및 정리
 
 ## 🚀 시작하기
 
-Master 과정을 시작하기 전에 다음을 확인하세요:
+### 1️⃣ 사전 준비
+다음 항목들을 미리 준비해주세요:
 
-### 필수 선수 과정
-- [ ] [Cloud Basic 과정](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) 수료
-- [ ] Linux 기본 명령어 사용법 숙지
-- [ ] 웹 애플리케이션 개발 경험 권장
-- [ ] 프로그래밍 기초 지식 (JavaScript, Python 등)
+- **Cloud Basic 완료**: 기본적인 클라우드 서비스 사용 경험
+- **개발 환경**: VS Code, Git, Docker Desktop
+- **클라우드 계정**: AWS, GCP 계정 (무료 크레딧 사용)
+- **GitHub 계정**: 코드 저장 및 협업용
 
-> **다음 과정**: [Cloud Container 과정](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md) | [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
+### 2️⃣ 환경 설정
+```bash
+# Docker Desktop 설치
+# https://www.docker.com/products/docker-desktop
 
-### 환경 준비
-- [ ] Docker Desktop 설치 및 설정
-- [ ] Git/GitHub 계정 및 CLI 설정
-- [ ] AWS/GCP 계정 및 CLI 설정
-- [ ] VS Code 또는 선호하는 IDE
+# Git 설치 (이미 설치되어 있다면 생략)
+# https://git-scm.com/downloads
 
-### 권장 사항
-- Docker 기초 경험
-- Git/GitHub 사용 경험
-- 클라우드 서비스 기본 이해
-- 실습용 프로젝트 준비
+# VS Code 설치
+# https://code.visualstudio.com/
+```
 
----
+### 3️⃣ 첫 번째 실습 시작
+1. [Day 1 실습 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)로 이동
+2. [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-basic-guide.md) 따라하기
+3. [Git/GitHub 기초](/mcp_knowledge_base/cloud_master/textbook/Day1/git-github-basics.md) 따라하기
 
-## 📞 지원
+## 📚 학습 자료
 
-Master 과정에서 문제가 발생하면:
-1. [각 교시별 문제 해결 섹션](/mcp_knowledge_base/cloud_master/textbook/Day1/troubleshooting-guide.md) 확인
-2. Docker 및 Git 환경 설정 재확인
-3. 클라우드 계정 권한 및 설정 점검
+### 📖 교재
+- [Day 1: Docker, Git/GitHub, GitHub Actions 기초](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
+- [Day 2: 비용 최적화 및 모니터링](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md)
+- [Day 3: 고급 아키텍처 및 배포](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
 
-> 🆘 **지원 채널**: [과정상세.md](/mcp_knowledge_base/cloud_master/과정상세.md)에서 문의 정보를 확인하세요.
+### 🔧 실습 가이드
+- [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-basic-guide.md)
+- [Git/GitHub 기초](/mcp_knowledge_base/cloud_master/textbook/Day1/git-github-basics.md)
+- [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/github-actions-guide.md)
+- [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-optimization-guide.md)
+- [모니터링 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/monitoring-guide.md)
 
-**🎯 목표**: 클라우드 실무의 핵심 기술을 마스터하고 다음 단계인 Container 과정으로 나아갈 수 있는 실무 역량을 기릅니다.
+### 🛠️ 설치 가이드
+- [Docker 설치](/mcp_knowledge_base/cloud_master/install/install_docker.md)
+- [Git 설치](/mcp_knowledge_base/cloud_master/install/install_git.md)
+- [GitHub Actions 설정](/mcp_knowledge_base/cloud_master/install/github-actions-setup.md)
 
+## ✅ 학습 체크리스트
+
+### Day 1 완료 확인
+- [ ] Docker 기본 명령어 숙지
+- [ ] Docker 이미지 생성 및 실행 성공
+- [ ] Docker Compose로 멀티 컨테이너 구성 성공
+- [ ] Git 기본 워크플로우 이해
+- [ ] GitHub Actions 파이프라인 구축 성공
+
+### Day 2 완료 확인
+- [ ] 클라우드 비용 분석 완료
+- [ ] 비용 최적화 전략 수립
+- [ ] Prometheus 모니터링 시스템 구축
+- [ ] Grafana 대시보드 생성
+- [ ] 알림 시스템 설정 완료
+
+### Day 3 완료 확인
+- [ ] 자동 스케일링 설정 완료
+- [ ] 로드 밸런싱 구성 성공
+- [ ] 고가용성 아키텍처 설계
+- [ ] 재해 복구 계획 수립
+- [ ] Blue-Green 배포 구현 성공
+
+## ❓ 자주 묻는 질문 (FAQ)
+
+### Q1: Cloud Basic을 완료하지 않았는데 수강할 수 있나요?
+**A**: Cloud Basic 과정을 먼저 완료하는 것을 강력히 권장합니다. 이 과정은 중급 수준의 내용으로 구성되어 있어 기본 지식이 필요합니다.
+
+### Q2: Docker 경험이 없어도 괜찮나요?
+**A**: 네, 괜찮습니다! 이 과정에서 Docker 기초부터 차근차근 학습할 수 있습니다.
+
+### Q3: 실제 프로젝트에 바로 적용할 수 있나요?
+**A**: 네, 가능합니다! 이 과정의 모든 내용은 실제 프로덕션 환경에서 사용되는 기술들입니다.
+
+### Q4: 다음 단계는 무엇인가요?
+**A**: [Cloud Container 과정](/mcp_knowledge_base/cloud_container/README.md)을 추천합니다. Kubernetes와 고급 오케스트레이션 기술을 학습할 수 있습니다.
+
+## 🔗 관련 과정
+
+### 📚 전체 커리큘럼
+- [전체 커리큘럼 보기](/mcp_knowledge_base/curriculum.md)
+- [학습 경로 안내](/mcp_knowledge_base/cloud_master/learning-path.md)
+
+### 🚀 이전 단계
+- [Cloud Basic 과정](/mcp_knowledge_base/cloud_basic/README.md) - 클라우드 기초
+
+### 🚀 다음 단계
+- [Cloud Container 과정](/mcp_knowledge_base/cloud_container/README.md) - Kubernetes, 오케스트레이션
+
+### 🏠 홈으로
+- [통합 인덱스](/mcp_knowledge_base/index.md)
+
+## 📞 문의 및 지원
+
+### 💬 학습 지원
+- **실시간 질문**: 각 실습 가이드의 댓글 섹션 활용
+- **문제 신고**: GitHub Issues를 통한 버그 신고
+- **기능 요청**: 새로운 기능이나 개선사항 제안
+
+### 📧 연락처
+- **이메일**: support@cloud-education.com
+- **GitHub**: [프로젝트 저장소](https://github.com/your-repo/mcp_cloud)
+- **문서**: [온라인 문서](https://docs.cloud-education.com)
 
 ---
 
 <div align="center">
 
-## 🔗 관련 과정 및 네비게이션
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+## 🎉 Cloud Master 과정을 시작하세요!
 
-## 📖 현재 위치
-**Cloud Master** > **1일차** > **AWS/GCP Master 과정**
-
-## ⬅️ 이전/다음 네비게이션
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)
-
-## 🔗 관련 과정
-[Cloud Basic 2일차](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+[🚀 Day 1 실습 시작하기](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | 
+[📚 전체 커리큘럼 보기](/mcp_knowledge_base/curriculum.md) | 
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md)
 
 </div>
 
-## 🔗 관련 자료
+---
 
-### 📁 설치 가이드
-- [Github Actions Complete Guide](/cloud_master/install/github-actions-complete-guide.md)
-- [Install Aws Cli](/cloud_master/install/install_aws_cli.md)
-- [Install Azure Cli](/cloud_master/install/install_azure_cli.md)
-- [Install Docker](/cloud_master/install/install_docker.md)
-- [Install Docker Compose](/cloud_master/install/install_docker_compose.md)
-- [Install Git](/cloud_master/install/install_git.md)
-- [Install Glcoud Cli](/cloud_master/install/install_glcoud_cli.md)
+## 🧭 네비게이션
 
-### 💻 실습 가이드
-- [Docker Basics](/cloud_master/textbook/Day1/practice/docker-basics.md)
-- [Git Github Basics](/cloud_master/textbook/Day1/practice/git-github-basics.md)
-- [Github Actions Basics](/cloud_master/textbook/Day1/practice/github-actions-basics.md)
-- [Vm Deployment](/cloud_master/textbook/Day1/practice/vm-deployment.md)
-- [Comprehensive Practice Guide](/cloud_master/textbook/Day2/comprehensive-practice-guide.md)
+<div align="center">
 
-### 📚 가이드 문서
-- [User Guide](/cloud_master/automation_tests/USER_GUIDE.md)
-- [Github Actions Complete Guide](/cloud_master/install/github-actions-complete-guide.md)
-- [Aws Gcp Deployment Guide](/cloud_master/textbook/Day1/aws-gcp-deployment-guide.md)
-- [Cicd Pipeline Guide](/cloud_master/textbook/Day1/cicd-pipeline-guide.md)
-- [Cloud Deployment Guide](/cloud_master/textbook/Day1/cloud-deployment-guide.md)
-- [Docker Advanced Guide](/cloud_master/textbook/Day1/docker-advanced-guide.md)
-- [Docker Basic Guide](/cloud_master/textbook/Day1/docker-basic-guide.md)
-- [Docker Compose Guide](/cloud_master/textbook/Day1/docker-compose-guide.md)
-- [Docker Hub Setup Guide](/cloud_master/textbook/Day1/docker-hub-setup-guide.md)
-- [Github Actions Guide](/cloud_master/textbook/Day1/github-actions-guide.md)
-- [Troubleshooting Guide](/cloud_master/textbook/Day1/troubleshooting-guide.md)
-- [Comprehensive Practice Guide](/cloud_master/textbook/Day2/comprehensive-practice-guide.md)
-- [Cost Optimization Guide](/cloud_master/textbook/Day2/cost-optimization-guide.md)
-- [Cost Structure Guide](/cloud_master/textbook/Day2/cost-structure-guide.md)
-- [Monitoring Guide](/cloud_master/textbook/Day2/monitoring-guide.md)
-- [Troubleshooting Guide](/cloud_master/textbook/Day2/troubleshooting-guide.md)
-- [Auto Scaling Guide](/cloud_master/textbook/Day3/auto-scaling-guide.md)
-- [Cost Optimization Guide](/cloud_master/textbook/Day3/cost-optimization-guide.md)
-- [Disaster Recovery Guide](/cloud_master/textbook/Day3/disaster-recovery-guide.md)
-- [Integration Guide](/cloud_master/textbook/Day3/integration-guide.md)
-- [Load Balancing Guide](/cloud_master/textbook/Day3/load-balancing-guide.md)
-- [Monitoring Setup Guide](/cloud_master/textbook/Day3/monitoring-setup-guide.md)
-- [Troubleshooting Guide](/cloud_master/textbook/Day3/troubleshooting-guide.md)
-- [Cost Optimization Guide](/cloud_master/textbook/Day3/cost-optimization/cost-optimization-guide.md)
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | 
+[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
+[🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
-### 📄 기타 자료
-- [Learning Path](/cloud_master/learning-path.md)
-- [Readme](/cloud_master/README.md)
-- [과정명](/cloud_master/과정명.md)
-- [과정상세](/cloud_master/과정상세.md)
-- [Aws계정가입](/cloud_master/accounts/AWS계정가입.md)
-- [Azure계정가입](/cloud_master/accounts/Azure계정가입.md)
-- [Gcp 개인계정가입](/cloud_master/accounts/GCP_개인계정가입.md)
-- [Gcp 계정유형비교](/cloud_master/accounts/GCP_계정유형비교.md)
-- [Gcp 조직계정가입](/cloud_master/accounts/GCP_조직계정가입.md)
-- [클라우드계정관리비교](/cloud_master/accounts/클라우드계정관리비교.md)
-- [Readme](/cloud_master/automation/README.md)
-- [Readme](/cloud_master/automation_tests/README.md)
-- [User Guide](/cloud_master/automation_tests/USER_GUIDE.md)
-- [Aws Gcp Permissions Setup](/cloud_master/textbook/Day1/aws-gcp-permissions-setup.md)
-- [Readme](/cloud_master/textbook/Day1/README.md)
-- [Project Setup](/cloud_master/textbook/Day1/scripts/PROJECT_SETUP.md)
-- [Readme](/cloud_master/textbook/Day1/scripts/README.md)
-- [Readme](/cloud_master/textbook/Day2/README.md)
-- [Readme](/cloud_master/textbook/Day3/README.md)
-- [Readme](/cloud_master/textbook/Day3/actions-demo/README.md)
-- [Readme](/cloud_master/textbook/Day3/my-app/README.md)
-- [Project Setup](/cloud_master/textbook/Day3/scripts/PROJECT_SETUP.md)
-- [Readme](/cloud_master/textbook/Day3/scripts/README.md)
+[📅 Day1 시작하기](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | 
+[📅 Day2 시작하기](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md) | 
+[📅 Day3 시작하기](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
+
+</div>
+
