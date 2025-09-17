@@ -5,7 +5,7 @@
       <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
           <div class="flex items-center">
-            <button @click="toggleSidebar" class="mr-3 p-2 rounded hover:bg-gray-100 focus:outline-none" title="Toggle sidebar">
+            <button v-if="isLoggedIn" @click="toggleSidebar" class="mr-3 p-2 rounded hover:bg-gray-100 focus:outline-none" title="Toggle sidebar">
               <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
@@ -55,9 +55,9 @@
 
     <!-- Main IDE Layout -->
     <div class="flex flex-grow overflow-hidden bg-gray-100 relative">
-      <!-- Left Panel: hidden entirely on knowledge-base when Markdown tab active -->
+      <!-- Left Panel: hidden entirely on knowledge-base when Markdown tab active, or for guest users -->
       <aside
-        v-if="!isKnowledgeBase"
+        v-if="!isKnowledgeBase && isLoggedIn"
         class="bg-white border-r border-gray-200 flex-shrink-0 overflow-y-auto shadow-md transition-all duration-200"
         :style="{ width: isSidebarCollapsed ? '0px' : sidebarWidth + 'px' }"
       >
@@ -70,14 +70,14 @@
       </aside>
       <!-- Resizer -->
       <div
-        v-if="!isKnowledgeBase && !isSidebarCollapsed"
+        v-if="!isKnowledgeBase && !isSidebarCollapsed && isLoggedIn"
         class="w-1 cursor-col-resize bg-gray-200 hover:bg-gray-300"
         @mousedown="startResize"
       ></div>
       
       <!-- 왼쪽 사이드바 토글 핸들 (회색) -->
       <div
-        v-if="!isKnowledgeBase"
+        v-if="!isKnowledgeBase && isLoggedIn"
         class="absolute top-1/2 -translate-y-1/2 z-20"
         :style="{ left: isSidebarCollapsed ? '0px' : (sidebarWidth + 'px') }"
       >
@@ -140,7 +140,7 @@
 
       <!-- Right Panel: AI Assistant -->
       <!-- Chat reveal handle -->
-      <div v-if="!isKnowledgeBase && (!isCurriculumRoute || isTutorOrAdmin)"
+      <div v-if="!isKnowledgeBase && (!isCurriculumRoute || isTutorOrAdmin) && isLoggedIn"
            class="absolute top-1/2 -translate-y-1/2 right-0 z-20">
         <button @click="chatVisible = !chatVisible"
                 class="chat-handle"
@@ -151,14 +151,14 @@
         </button>
       </div>
 
-      <!-- Chat resizer (visible only when chat is open) -->
-      <div v-if="!isKnowledgeBase && chatVisible && (!isCurriculumRoute || isTutorOrAdmin)"
+      <!-- Chat resizer (visible only when chat is open and user is logged in) -->
+      <div v-if="!isKnowledgeBase && chatVisible && (!isCurriculumRoute || isTutorOrAdmin) && isLoggedIn"
            class="chat-resizer"
            @mousedown="startChatResize"
            :style="{ right: (chatWidth + 'px') }"></div>
 
       <transition name="fade" mode="out-in">
-        <aside v-if="!isKnowledgeBase && chatVisible && (!isCurriculumRoute || isTutorOrAdmin)" class="bg-white border-l border-gray-200 flex-shrink-0 overflow-y-auto shadow-md"
+        <aside v-if="!isKnowledgeBase && chatVisible && (!isCurriculumRoute || isTutorOrAdmin) && isLoggedIn" class="bg-white border-l border-gray-200 flex-shrink-0 overflow-y-auto shadow-md"
                :style="{ width: chatWidth + 'px' }">
           <AIAssistantPanel />
         </aside>
