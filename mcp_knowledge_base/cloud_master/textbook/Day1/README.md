@@ -92,6 +92,97 @@ Docker는 애플리케이션을 컨테이너라는 경량화된, 이식 가능�
 - **Docker Hub**: 공식 이미지 레지스트리
 - **Docker Compose**: 다중 컨테이너 애플리케이션 관리
 
+#### Docker 기본 명령어
+```bash
+# 이미지 관리
+docker pull <image>          # 이미지 다운로드
+docker images               # 이미지 목록 확인
+docker rmi <image>          # 이미지 삭제
+
+# 컨테이너 관리
+docker run <image>          # 컨테이너 실행
+docker ps                   # 실행 중인 컨테이너 확인
+docker stop <container>     # 컨테이너 중지
+docker rm <container>       # 컨테이너 삭제
+
+# 빌드 및 실행
+docker build -t <name> .    # Dockerfile로 이미지 빌드
+docker exec -it <container> /bin/bash  # 컨테이너 내부 접속
+```
+
+#### Dockerfile 기본 구조
+```dockerfile
+# 베이스 이미지
+FROM node:18-alpine
+
+# 작업 디렉토리 설정
+WORKDIR /app
+
+# 의존성 파일 복사
+COPY package*.json ./
+
+# 의존성 설치
+RUN npm install
+
+# 애플리케이션 코드 복사
+COPY . .
+
+# 포트 노출
+EXPOSE 3000
+
+# 애플리케이션 실행
+CMD ["npm", "start"]
+```
+
+#### Docker Compose 기본 구조
+```yaml
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - db
+  
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=myapp
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+```
+
+#### Docker 모범 사례
+- **멀티스테이지 빌드**: 최종 이미지 크기 최적화
+- **레이어 캐싱**: 빌드 속도 향상을 위한 의존성 우선 설치
+- **보안**: root 사용자 사용 금지, 최소 권한 원칙
+- **이미지 최적화**: 불필요한 파일 제거, .dockerignore 사용
+
+#### Docker 네트워킹
+- **Bridge 네트워크**: 기본 네트워크, 컨테이너 간 통신
+- **Host 네트워크**: 호스트 네트워크 직접 사용
+- **Overlay 네트워크**: 여러 호스트 간 컨테이너 통신
+- **Custom 네트워크**: 사용자 정의 네트워크 생성
+
+#### Docker 볼륨 관리
+- **Named Volume**: Docker가 관리하는 영구 스토리지
+- **Bind Mount**: 호스트 디렉토리를 컨테이너에 마운트
+- **tmpfs Mount**: 메모리 기반 임시 파일시스템
+- **Volume Driver**: 외부 스토리지 시스템 연동
+
+#### Docker 실습 가이드
+- 🔗 [Docker 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/docker-basics.md)
+- 🔗 [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-advanced-guide.md)
+- 🔗 [Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-compose-guide.md)
+- 🔗 [Docker Hub 설정 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-hub-setup-guide.md)
+
 </details>
 
 <details>
