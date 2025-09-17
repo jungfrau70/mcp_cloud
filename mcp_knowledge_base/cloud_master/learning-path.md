@@ -46,57 +46,94 @@
 
 ---
 
-## 📅 1일차: Docker, Git/GitHub, GitHub Actions 기초
+## 📅 1일차: Docker, Git/GitHub, GitHub Actions 이론 및 실습
 
-### 1. Docker 기초 및 컨테이너 기술 (120분)
+### 📚 이론 학습 (120분)
 
-#### 핵심 문서
+#### 1. Docker 기초 및 컨테이너 기술 이론 (60분)
+
+**📖 이론 학습 자료**
 - [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-advanced-guide.md)
 - [Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-compose-guide.md)
 - [Docker Hub 설정 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-hub-setup-guide.md)
-- [Docker 기본 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/docker-basics.md)
 
-#### 학습 내용
+**🎯 이론 학습 내용**
 - Docker 개념 및 아키텍처 이해
-- Dockerfile 작성 및 이미지 빌드
+- 컨테이너 vs 가상머신 비교
+- Dockerfile 작성 원칙 및 모범 사례
 - Docker Compose를 활용한 다중 서비스 관리
-- 실습: Node.js 웹 애플리케이션 컨테이너화
+- 컨테이너 레지스트리 및 이미지 관리
 
-### 2. Git/GitHub 기초 및 협업 (90분)
+#### 2. Git/GitHub 기초 및 협업 이론 (30분)
 
-#### 핵심 문서
+**📖 이론 학습 자료**
 - [Git GitHub 기본 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/git-github-basics.md)
-- [1일차 실습 가이드](./textbook/Day1/README.md#git-github-버전-관리)
 
-#### 학습 내용
+**🎯 이론 학습 내용**
 - Git 기본 명령어 및 워크플로우
 - GitHub 저장소 생성 및 관리
 - 브랜치 전략 및 Pull Request 활용
-- 실습: 팀 프로젝트 기반 Git 협업
+- 협업 워크플로우 및 코드 리뷰
 
-### 3. GitHub Actions CI/CD 파이프라인 (150분)
+#### 3. GitHub Actions CI/CD 파이프라인 이론 (30분)
 
-#### 핵심 문서
+**📖 이론 학습 자료**
 - [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/github-actions-guide.md)
 - [CI/CD 파이프라인 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/cicd-pipeline-guide.md)
-- [GitHub Actions 기본 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/github-actions-basics.md)
-- [Actions 데모](./textbook/Day1/actions-demo/)
 
-#### 학습 내용
+**🎯 이론 학습 내용**
 - GitHub Actions 개념 및 워크플로우 구조
 - 자동화된 테스트, 빌드, 배포 파이프라인
 - Docker 이미지 자동 빌드 및 레지스트리 푸시
-- 실습: GitHub Actions로 CI/CD 파이프라인 구축
+- CI/CD 모범 사례 및 보안 고려사항
 
-### 4. VM 기반 웹 애플리케이션 배포 (90분)
+### 🛠️ 실습 학습 (300분)
 
-#### 핵심 문서
+#### 1. Docker 기초 및 컨테이너 기술 실습 (120분)
+
+**🔧 실습 가이드**
+- [Docker 기본 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/docker-basics.md)
+- [1일차 실습 가이드](./textbook/Day1/README.md#docker-기초-및-컨테이너-기술)
+
+**🎯 실습 내용**
+- Node.js 웹 애플리케이션 컨테이너화
+- Dockerfile 작성 및 이미지 빌드
+- Docker Compose를 활용한 다중 서비스 구성
+- 컨테이너 로그 및 모니터링
+
+#### 2. Git/GitHub 기초 및 협업 실습 (90분)
+
+**🔧 실습 가이드**
+- [1일차 실습 가이드](./textbook/Day1/README.md#git-github-버전-관리)
+
+**🎯 실습 내용**
+- GitHub 저장소 생성 및 초기 설정
+- 브랜치 생성 및 관리
+- Pull Request 생성 및 코드 리뷰
+- 팀 프로젝트 기반 Git 협업
+
+#### 3. GitHub Actions CI/CD 파이프라인 실습 (90분)
+
+**🔧 실습 가이드**
+- [GitHub Actions 기본 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/github-actions-basics.md)
+- [Actions 데모](./textbook/Day1/actions-demo/)
+
+**🎯 실습 내용**
+- GitHub Actions 워크플로우 작성
+- 자동화된 테스트 및 빌드 파이프라인 구축
+- Docker 이미지 자동 빌드 및 푸시
+- 배포 자동화 및 환경별 설정
+
+### 🚀 VM 기반 웹 애플리케이션 배포 이론 및 실습 (90분)
+
+#### 📚 이론 학습 (30분)
+
+**📖 이론 학습 자료**
 - [클라우드 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/cloud-deployment-guide.md)
 - [AWS GCP 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/aws-gcp-deployment-guide.md)
 - [AWS GCP 권한 설정](/mcp_knowledge_base/cloud_master/textbook/Day1/aws-gcp-permissions-setup.md)
-- [VM 배포 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/vm-deployment.md)
 
-#### 학습 내용
+**🎯 이론 학습 내용**
 - AWS EC2 + Docker / GCP Compute Engine + Docker
 - 웹 애플리케이션 배포 및 도메인 연결
 - 기본 모니터링 및 로그 관리

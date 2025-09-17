@@ -17,21 +17,28 @@
 
 </div>
 
-# Cloud Master - 3일차: 로드 밸런싱, 모니터링, 비용 최적화
-
-
+# Cloud Master - 3일차: 로드 밸런싱, 모니터링, 비용 최적화 이론 및 실습
 
 <details>
 <summary>📋 목차</summary>
 
+## 📚 이론 학습
 1. [🎯 학습 목표](#학습-목표)
-2. [📚 실습 가이드](#실습-가이드)
-3. [🔧 실습 환경 준비](#실습-환경-준비)
-4. [🚀 로드 밸런싱 및 Auto Scaling](#로드-밸런싱-및-auto-scaling)
-5. [📊 컨테이너 모니터링 및 로깅](#컨테이너-모니터링-및-로깅)
-6. [🔄 장애 복구 및 운영 자동화](#장애-복구-및-운영-자동화)
-7. [💰 비용 최적화 및 운영 전략](#비용-최적화-및-운영-전략)
-8. [📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
+2. [🚀 로드 밸런싱 및 Auto Scaling 이론](#로드-밸런싱-및-auto-scaling-이론)
+3. [📊 컨테이너 모니터링 및 로깅 이론](#컨테이너-모니터링-및-로깅-이론)
+4. [🔄 장애 복구 및 운영 자동화 이론](#장애-복구-및-운영-자동화-이론)
+5. [💰 비용 최적화 및 운영 전략 이론](#비용-최적화-및-운영-전략-이론)
+
+## 🛠️ 실습 학습
+6. [📚 실습 가이드](#실습-가이드)
+7. [🔧 실습 환경 준비](#실습-환경-준비)
+8. [🚀 로드 밸런싱 및 Auto Scaling 실습](#로드-밸런싱-및-auto-scaling-실습)
+9. [📊 컨테이너 모니터링 및 로깅 실습](#컨테이너-모니터링-및-로깅-실습)
+10. [🔄 장애 복구 및 운영 자동화 실습](#장애-복구-및-운영-자동화-실습)
+11. [💰 비용 최적화 및 운영 전략 실습](#비용-최적화-및-운영-전략-실습)
+
+## 📚 참고 자료
+12. [📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
 
 </details>
 
@@ -59,6 +66,174 @@
 - **전체 과정**: 6-8시간
 
 ---
+
+## 📚 이론 학습
+
+### 🚀 로드 밸런싱 및 Auto Scaling 이론
+
+<details>
+<summary>🚀 로드 밸런싱 이론</summary>
+
+#### 로드 밸런싱이란?
+여러 서버에 트래픽을 분산시켜 성능과 가용성을 향상시키는 기술입니다.
+
+#### 로드 밸런싱 장점
+- **고가용성**: 서버 장애 시 다른 서버로 트래픽 전환
+- **성능 향상**: 트래픽 분산으로 응답 시간 단축
+- **확장성**: 서버 추가로 용량 확장
+- **부하 분산**: CPU, 메모리 사용량 균등 분산
+
+#### AWS ELB (Elastic Load Balancer)
+- **ALB (Application Load Balancer)**: 7계층 로드 밸런싱
+- **NLB (Network Load Balancer)**: 4계층 로드 밸런싱
+- **CLB (Classic Load Balancer)**: 레거시 로드 밸런서
+- **Gateway Load Balancer**: 3계층 로드 밸런싱
+
+#### GCP Cloud Load Balancing
+- **HTTP(S) Load Balancing**: 글로벌 HTTP(S) 로드 밸런싱
+- **TCP/UDP Load Balancing**: 지역 TCP/UDP 로드 밸런싱
+- **Internal Load Balancing**: 내부 로드 밸런싱
+- **Network Load Balancing**: 프리미엄 네트워크 로드 밸런싱
+
+#### 로드 밸런싱 알고리즘
+- **Round Robin**: 순차적으로 서버 선택
+- **Least Connections**: 연결 수가 가장 적은 서버 선택
+- **IP Hash**: 클라이언트 IP 기반 서버 선택
+- **Weighted**: 서버별 가중치 적용
+
+</details>
+
+<details>
+<summary>📊 Auto Scaling 이론</summary>
+
+#### Auto Scaling이란?
+워크로드에 따라 자동으로 리소스를 확장하거나 축소하는 기능입니다.
+
+#### Auto Scaling 장점
+- **비용 최적화**: 필요할 때만 리소스 사용
+- **성능 보장**: 트래픽 증가 시 자동 확장
+- **가용성 향상**: 장애 시 자동 복구
+- **운영 효율성**: 수동 개입 최소화
+
+#### AWS Auto Scaling
+- **Auto Scaling Group**: EC2 인스턴스 자동 관리
+- **Launch Template**: 인스턴스 생성 템플릿
+- **Scaling Policy**: 확장/축소 정책
+- **Health Check**: 인스턴스 상태 모니터링
+
+#### GCP Managed Instance Group
+- **Instance Template**: VM 생성 템플릿
+- **Auto Scaling Policy**: 확장/축소 정책
+- **Health Check**: VM 상태 모니터링
+- **Load Balancing**: 자동 로드 밸런싱
+
+#### Auto Scaling 정책
+- **Target Tracking**: 메트릭 기반 자동 조정
+- **Step Scaling**: 단계별 확장/축소
+- **Simple Scaling**: 단순 확장/축소
+- **Scheduled Scaling**: 시간 기반 조정
+
+</details>
+
+<details>
+<summary>📊 컨테이너 모니터링 및 로깅 이론</summary>
+
+#### 모니터링이란?
+시스템의 상태, 성능, 가용성을 지속적으로 관찰하고 측정하는 활동입니다.
+
+#### 모니터링의 중요성
+- **장애 예방**: 문제 발생 전 조기 감지
+- **성능 최적화**: 병목 지점 식별 및 개선
+- **용량 계획**: 리소스 사용량 분석
+- **비용 관리**: 리소스 효율성 모니터링
+
+#### AWS CloudWatch
+- **메트릭**: 시스템 및 애플리케이션 지표
+- **로그**: 애플리케이션 및 시스템 로그
+- **알람**: 임계값 기반 알림
+- **대시보드**: 시각화된 모니터링 화면
+
+#### GCP Cloud Monitoring
+- **메트릭**: 시스템 및 애플리케이션 지표
+- **로그**: Cloud Logging 통합
+- **알림**: 임계값 기반 알림
+- **대시보드**: 시각화된 모니터링 화면
+
+#### 컨테이너 모니터링 도구
+- **Prometheus**: 메트릭 수집 및 저장
+- **Grafana**: 시각화 및 대시보드
+- **ELK Stack**: 로그 수집, 분석, 시각화
+- **Jaeger**: 분산 추적
+
+</details>
+
+<details>
+<summary>🔄 장애 복구 및 운영 자동화 이론</summary>
+
+#### 장애 복구란?
+시스템 장애 발생 시 서비스를 정상 상태로 복구하는 과정입니다.
+
+#### 장애 복구 전략
+- **Prevention**: 장애 예방
+- **Detection**: 장애 감지
+- **Response**: 장애 대응
+- **Recovery**: 서비스 복구
+
+#### Health Check
+- **Liveness Probe**: 컨테이너 생존 상태 확인
+- **Readiness Probe**: 서비스 준비 상태 확인
+- **Startup Probe**: 시작 상태 확인
+- **Custom Health Check**: 사용자 정의 헬스 체크
+
+#### 자동 복구 메커니즘
+- **Auto Restart**: 자동 재시작
+- **Auto Scaling**: 자동 확장
+- **Load Balancing**: 트래픽 전환
+- **Failover**: 장애 시 대체 시스템 활성화
+
+#### 운영 자동화
+- **Infrastructure as Code**: 인프라 코드화
+- **Configuration Management**: 설정 관리 자동화
+- **Deployment Automation**: 배포 자동화
+- **Monitoring Automation**: 모니터링 자동화
+
+</details>
+
+<details>
+<summary>💰 비용 최적화 및 운영 전략 이론</summary>
+
+#### 비용 최적화란?
+클라우드 리소스 사용을 최적화하여 비용을 절감하는 활동입니다.
+
+#### 비용 최적화 전략
+- **Right Sizing**: 적절한 리소스 크기 선택
+- **Reserved Instances**: 예약 인스턴스 활용
+- **Spot Instances**: 스팟 인스턴스 활용
+- **Auto Scaling**: 필요에 따른 자동 조정
+
+#### AWS 비용 최적화
+- **Cost Explorer**: 비용 분석 도구
+- **Trusted Advisor**: 비용 최적화 권장사항
+- **Reserved Instances**: 예약 인스턴스
+- **Savings Plans**: 절약 플랜
+
+#### GCP 비용 최적화
+- **Billing Reports**: 비용 분석 보고서
+- **Recommender**: 비용 최적화 권장사항
+- **Committed Use Discounts**: 약정 사용 할인
+- **Sustained Use Discounts**: 지속 사용 할인
+
+#### 운영 전략
+- **24/7 모니터링**: 24시간 모니터링
+- **자동화**: 반복 작업 자동화
+- **문서화**: 운영 절차 문서화
+- **팀 교육**: 운영팀 역량 강화
+
+</details>
+
+---
+
+## 🛠️ 실습 학습
 
 ## 📚 실습 가이드
 

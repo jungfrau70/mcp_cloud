@@ -47,11 +47,13 @@
 
 ---
 
-## 📅 1일차: AWS & GCP 기초 서비스 실습
+## 📅 1일차: AWS & GCP 기초 서비스 이론 및 실습
 
-### 1. 클라우드 개념 및 계정 생성 (30분)
+### 📚 이론 학습 (90분)
 
-#### 핵심 문서
+#### 1. 클라우드 개념 및 계정 생성 이론 (30분)
+
+**📖 이론 학습 자료**
 - [클라우드 개념 및 계정 생성 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md)
 - [AWS 계정 가입 가이드](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md)
 - [GCP 개인계정 가입 가이드](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md)
@@ -59,49 +61,92 @@
 - [GCP 계정유형비교](/mcp_knowledge_base/cloud_basic/accounts/GCP_계정유형비교.md)
 - [클라우드계정관리비교](/mcp_knowledge_base/cloud_basic/accounts/클라우드계정관리비교.md)
 
-#### 학습 내용
+**🎯 이론 학습 내용**
 - 클라우드 컴퓨팅 개요와 장점
 - AWS와 GCP 서비스 개요 및 비교
-- 실습: AWS Free Tier 계정 생성 및 콘솔 탐색
-- 실습: GCP 계정 생성 및 $300 크레딧 활성화
+- 클라우드 계정 유형 및 관리 방법
+- Free Tier 및 크레딧 정책 이해
 
-### 2. IAM 기초 실습 (45분)
+#### 2. IAM 기초 이론 (30분)
 
-#### 핵심 문서
+**📖 이론 학습 자료**
 - [IAM 기초 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md)
-- [1일차 실습 가이드](./textbook/Day1/README.md#iam-기초-실습)
 
-#### 학습 내용
+**🎯 이론 학습 내용**
 - AWS IAM: 사용자, 그룹, 역할, 정책 개념
 - GCP IAM: 서비스 계정, 역할, 권한 관리
-- 실습: AWS IAM 사용자 생성 및 권한 부여
-- 실습: GCP 서비스 계정 생성 및 키 관리
+- 클라우드 보안의 기본 원칙
+- 권한 관리 모범 사례
 
-### 3. 가상머신 서비스 기초 (60분)
+#### 3. 가상머신 서비스 기초 이론 (30분)
 
-#### 핵심 문서
+**📖 이론 학습 자료**
 - [VM 서비스 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md)
 - [AWS EC2 vs GCP Compute Engine 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md)
-- [1일차 실습 가이드](./textbook/Day1/README.md#가상머신-서비스-기초)
 
-#### 학습 내용
+**🎯 이론 학습 내용**
 - AWS EC2 vs GCP Compute Engine 비교
 - 인스턴스 타입, 이미지, 리전 개념
-- 실습: AWS EC2 인스턴스 생성 및 SSH 접속
-- 실습: GCP Compute Engine 인스턴스 생성 및 접속
+- 가상머신 생성 및 관리 방법
+- 네트워킹 및 보안 설정
 
-### 4. 스토리지 서비스 기초 (45분)
+### 🛠️ 실습 학습 (90분)
 
-#### 핵심 문서
+#### 1. 클라우드 계정 생성 실습 (30분)
+
+**🔧 실습 가이드**
+- [1일차 실습 가이드](./textbook/Day1/README.md#클라우드-개념-및-계정-생성)
+- [AWS 기초 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/aws_basic_practice.md)
+- [GCP 기초 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
+
+**🎯 실습 내용**
+- AWS Free Tier 계정 생성 및 콘솔 탐색
+- GCP 계정 생성 및 $300 크레딧 활성화
+- 클라우드 콘솔 기본 사용법 학습
+
+#### 2. IAM 기초 실습 (30분)
+
+**🔧 실습 가이드**
+- [1일차 실습 가이드](./textbook/Day1/README.md#iam-기초-실습)
+
+**🎯 실습 내용**
+- AWS IAM 사용자 생성 및 권한 부여
+- GCP 서비스 계정 생성 및 키 관리
+- IAM 정책 테스트 및 검증
+
+#### 3. 가상머신 서비스 실습 (30분)
+
+**🔧 실습 가이드**
+- [1일차 실습 가이드](./textbook/Day1/README.md#가상머신-서비스-기초)
+
+**🎯 실습 내용**
+- AWS EC2 인스턴스 생성 및 SSH 접속
+- GCP Compute Engine 인스턴스 생성 및 접속
+- 인스턴스 상태 모니터링 및 관리
+
+### 📦 스토리지 서비스 이론 및 실습 (90분)
+
+#### 📚 이론 학습 (30분)
+
+**📖 이론 학습 자료**
 - [스토리지 서비스 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
 - [AWS S3 vs GCP Cloud Storage 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md)
-- [1일차 실습 가이드](./textbook/Day1/README.md#스토리지-서비스-기초)
 
-#### 학습 내용
+**🎯 이론 학습 내용**
 - AWS S3 vs GCP Cloud Storage 비교
 - 객체 스토리지 개념과 활용 사례
-- 실습: AWS S3 버킷 생성 및 파일 업로드/다운로드
-- 실습: GCP Cloud Storage 버킷 생성 및 파일 관리
+- 스토리지 클래스 및 비용 최적화
+- 데이터 보안 및 암호화
+
+#### 🛠️ 실습 학습 (60분)
+
+**🔧 실습 가이드**
+- [1일차 실습 가이드](./textbook/Day1/README.md#스토리지-서비스-기초)
+
+**🎯 실습 내용**
+- AWS S3 버킷 생성 및 파일 업로드/다운로드
+- GCP Cloud Storage 버킷 생성 및 파일 관리
+- 스토리지 정책 및 권한 설정
 
 ### 📚 1일차 실습 자료
 
@@ -121,57 +166,91 @@
 
 ---
 
-## 📅 2일차: 네트워크, 보안 및 데이터베이스 실습
+## 📅 2일차: 네트워크, 보안 및 데이터베이스 이론 및 실습
 
-### 1. 네트워킹 기초 실습 (60분)
+### 📚 이론 학습 (90분)
 
-#### 핵심 문서
+#### 1. 네트워킹 기초 이론 (30분)
+
+**📖 이론 학습 자료**
 - [네트워킹 기본 개념](./textbook/Day2/README.md#네트워킹-기본-개념)
 - [AWS VPC vs GCP VPC 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/network_comparison.md)
+
+**🎯 이론 학습 내용**
+- AWS VPC vs GCP VPC 개념 및 비교
+- 서브넷, 라우팅, 게이트웨이, NAT 게이트웨이
+- 클라우드 네트워킹 아키텍처 이해
+- 네트워크 보안 및 격리 개념
+
+#### 2. 보안 그룹 및 방화벽 이론 (30분)
+
+**📖 이론 학습 자료**
+- [보안 그룹 및 방화벽 설정](./textbook/Day2/README.md#보안-그룹-및-방화벽-설정)
+
+**🎯 이론 학습 내용**
+- AWS Security Groups vs GCP Firewall Rules
+- 인바운드/아웃바운드 규칙 설정 및 모범 사례
+- 클라우드 보안 모델 이해
+- 방화벽 정책 설계 원칙
+
+#### 3. 데이터베이스 서비스 기초 이론 (30분)
+
+**📖 이론 학습 자료**
+- [AWS RDS vs GCP Cloud SQL 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md)
+
+**🎯 이론 학습 내용**
+- AWS RDS vs GCP Cloud SQL 비교
+- 관계형 데이터베이스 관리 및 백업
+- 클라우드 데이터베이스 서비스 특징
+- 데이터 보안 및 암호화
+
+### 🛠️ 실습 학습 (180분)
+
+#### 1. 네트워킹 기초 실습 (60분)
+
+**🔧 실습 가이드**
 - [2일차 실습 가이드](./textbook/Day2/README.md#네트워킹-기초-실습)
 - [2일차 계정 설정 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/aws-gcp-account-setup.md)
 
-#### 학습 내용
-- AWS VPC vs GCP VPC 개념 및 비교
-- 서브넷, 라우팅, 게이트웨이, NAT 게이트웨이
-- 실습: AWS VPC 및 서브넷 구성
-- 실습: GCP VPC 네트워크 및 서브넷 생성
+**🎯 실습 내용**
+- AWS VPC 및 서브넷 구성
+- GCP VPC 네트워크 및 서브넷 생성
+- 라우팅 테이블 및 게이트웨이 설정
+- 네트워크 연결성 테스트
 
-### 2. 보안 그룹 및 방화벽 실습 (45분)
+#### 2. 보안 그룹 및 방화벽 실습 (45분)
 
-#### 핵심 문서
-- [보안 그룹 및 방화벽 설정](./textbook/Day2/README.md#보안-그룹-및-방화벽-설정)
+**🔧 실습 가이드**
 - [2일차 실습 가이드](./textbook/Day2/README.md#보안-그룹-및-방화벽-실습)
 
-#### 학습 내용
-- AWS Security Groups vs GCP Firewall Rules
-- 인바운드/아웃바운드 규칙 설정 및 모범 사례
-- 실습: AWS Security Groups 생성 및 규칙 설정
-- 실습: GCP Firewall Rules 생성 및 테스트
+**🎯 실습 내용**
+- AWS Security Groups 생성 및 규칙 설정
+- GCP Firewall Rules 생성 및 테스트
+- 보안 정책 검증 및 테스트
+- 네트워크 보안 모니터링
 
-### 3. 데이터베이스 서비스 기초 (60분)
+#### 3. 데이터베이스 서비스 실습 (45분)
 
-#### 핵심 문서
-- [AWS RDS vs GCP Cloud SQL 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md)
+**🔧 실습 가이드**
 - [2일차 실습 가이드](./textbook/Day2/README.md#데이터베이스-서비스-기초)
 
-#### 학습 내용
-- AWS RDS vs GCP Cloud SQL 비교
-- 관계형 데이터베이스 관리 및 백업
-- 실습: AWS RDS MySQL 인스턴스 생성 및 연결
-- 실습: GCP Cloud SQL MySQL 인스턴스 생성 및 접속
+**🎯 실습 내용**
+- AWS RDS MySQL 인스턴스 생성 및 연결
+- GCP Cloud SQL MySQL 인스턴스 생성 및 접속
+- 데이터베이스 백업 및 복원 테스트
+- 데이터베이스 성능 모니터링
 
-### 4. 종합 실습 및 비교 분석 (60분)
+#### 4. 종합 실습 및 비교 분석 (30분)
 
-#### 핵심 문서
+**🔧 실습 가이드**
 - [웹 서버 + 데이터베이스 구성 종합 실습](./textbook/Day2/README.md#종합-실습-및-비교-분석)
 - [Basic to Master 연계 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
 
-#### 학습 내용
-- 웹 서버 + 데이터베이스 구성 종합 실습
+**🎯 실습 내용**
+- 간단한 웹 애플리케이션을 AWS와 GCP에 각각 배포
 - AWS vs GCP 서비스별 비용 및 성능 비교
-- 실습: 간단한 웹 애플리케이션을 AWS와 GCP에 각각 배포
-- 실습: 리소스 정리 및 비용 모니터링
+- 리소스 정리 및 비용 모니터링
+- 다음 과정(Cloud Master) 준비
 
 ### 📚 2일차 실습 자료
 
