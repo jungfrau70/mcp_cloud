@@ -187,3 +187,11 @@ Cloud Master 과정에서는 다음 내용을 학습하게 됩니다:
 [🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md)
 
 </div>
+
+---
+
+<div align="center">
+
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+</div>

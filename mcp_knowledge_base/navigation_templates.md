@@ -73,12 +73,6 @@
 
 ### 학습 경로 (learning-path.md)
 ```markdown
-<div align="center">
-
-## 🔗 학습 경로
-**{과정명} 상세 학습 경로 및 가이드**
-
-</div>
 ```
 
 ## 🎯 실습 가이드 템플릿
@@ -125,3 +119,11 @@
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+
+---
+
+<div align="center">
+
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+
+</div>

@@ -1152,3 +1152,11 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 [← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_container/README.md) | [다음: Cloud Container 2일차 →](/mcp_knowledge_base/cloud_container/textbook/Day2/README.md)
 
 </div>
+
+---
+
+<div align="center">
+
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+
+</div>
