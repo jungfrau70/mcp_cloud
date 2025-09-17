@@ -256,3 +256,19 @@ Error: secret not found
 [🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
 </div>
+
+## Personal Access Token 생성하기
+
+### 개요
+이 섹션에서는 Personal Access Token 생성하기에 대해 다룹니다.
+
+### 주요 내용
+- [추가 예정] 상세 내용이 곧 추가될 예정입니다.
+
+### 실습 가이드
+1. [추가 예정] 단계별 실습 가이드가 곧 제공될 예정입니다.
+
+### 참고 자료
+- [추가 예정] 관련 참고 자료가 곧 추가될 예정입니다.
+
+---

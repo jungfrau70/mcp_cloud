@@ -1,0 +1,130 @@
+{
+  "timestamp": "2025-09-17T14:28:32.482211",
+  "total_files_processed": 4,
+  "total_fixes": 12,
+  "successful_fixes": 1,
+  "failed_fixes": 11,
+  "fixed_files": [
+    "cloud_basic\\textbook\\Day1\\aws-gcp-account-setup.md",
+    "cloud_basic\\textbook\\Day1\\practice\\aws_basic_practice.md",
+    "cloud_master\\textbook\\Day1\\docker-hub-setup-guide.md",
+    "cloud_master\\textbook\\Day2\\troubleshooting-guide.md"
+  ],
+  "fix_report": [
+    {
+      "file": "cloud_basic\\textbook\\Day1\\aws-gcp-account-setup.md",
+      "total_fixes": 5,
+      "successful_fixes": 1,
+      "failed_fixes": 4,
+      "fixes": [
+        {
+          "line": 18,
+          "old_anchor": "[📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)",
+          "new_anchor": "NO_MATCH_FOUND",
+          "matched_heading": null,
+          "error": "매칭되는 헤딩을 찾을 수 없음"
+        },
+        {
+          "line": 17,
+          "old_anchor": "[🧪 실습 과제](#실습-과제)",
+          "new_anchor": "NO_MATCH_FOUND",
+          "matched_heading": null,
+          "error": "매칭되는 헤딩을 찾을 수 없음"
+        },
+        {
+          "line": 16,
+          "old_anchor": "[💰 비용 관리 설정](#비용-관리-설정)",
+          "new_anchor": "NO_MATCH_FOUND",
+          "matched_heading": null,
+          "error": "매칭되는 헤딩을 찾을 수 없음"
+        },
+        {
+          "line": 15,
+          "old_anchor": "[✅ 계정 설정 검증](#계정-설정-검증)",
+          "new_anchor": "NO_MATCH_FOUND",
+          "matched_heading": null,
+          "error": "매칭되는 헤딩을 찾을 수 없음"
+        },
+        {
+          "line": 14,
+          "old_anchor": "[🚀 GCP 계정 생성 및 설정](#gcp-계정-생성-및-설정)",
+          "new_anchor": "[🚀 GCP 계정 생성 및 설정](#1교시-aws-gcp-계정-생성-및-설정)",
+          "matched_heading": "1교시: AWS & GCP 계정 생성 및 설정"
+        }
+      ]
+    },
+    {
+      "file": "cloud_basic\\textbook\\Day1\\practice\\aws_basic_practice.md",
+      "total_fixes": 5,
+      "successful_fixes": 0,
+      "failed_fixes": 5,
+      "fixes": [
+        {
+          "line": 31,
+          "old_anchor": "[📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)",
+          "new_anchor": "NO_MATCH_FOUND",
+          "matched_heading": null,
+          "error": "매칭되는 헤딩을 찾을 수 없음"
+        },
+        {
+          "line": 30,
+          "old_anchor": "[📦 4단계: S3 스토리지 서비스 활용](#4단계-s3-스토리지-서비스-활용)",
+          "new_anchor": "NO_MATCH_FOUND",
+          "matched_heading": null,
+          "error": "매칭되는 헤딩을 찾을 수 없음"
+        },
+        {
+          "line": 29,
+          "old_anchor": "[💻 3단계: EC2 인스턴스 생성 및 관리](#3단계-ec2-인스턴스-생성-및-관리)",
+          "new_anchor": "NO_MATCH_FOUND",
+          "matched_heading": null,
+          "error": "매칭되는 헤딩을 찾을 수 없음"
+        },
+        {
+          "line": 28,
+          "old_anchor": "[👥 2단계: IAM 사용자 및 권한 관리](#2단계-iam-사용자-및-권한-관리)",
+          "new_anchor": "NO_MATCH_FOUND",
+          "matched_heading": null,
+          "error": "매칭되는 헤딩을 찾을 수 없음"
+        },
+        {
+          "line": 27,
+          "old_anchor": "[🚀 1단계: AWS 계정 생성 및 설정](#1단계-aws-계정-생성-및-설정)",
+          "new_anchor": "NO_MATCH_FOUND",
+          "matched_heading": null,
+          "error": "매칭되는 헤딩을 찾을 수 없음"
+        }
+      ]
+    },
+    {
+      "file": "cloud_master\\textbook\\Day1\\docker-hub-setup-guide.md",
+      "total_fixes": 1,
+      "successful_fixes": 0,
+      "failed_fixes": 1,
+      "fixes": [
+        {
+          "line": 8,
+          "old_anchor": "[Personal Access Token 생성하기](#personal-access-token-생성하기)",
+          "new_anchor": "NO_MATCH_FOUND",
+          "matched_heading": null,
+          "error": "매칭되는 헤딩을 찾을 수 없음"
+        }
+      ]
+    },
+    {
+      "file": "cloud_master\\textbook\\Day2\\troubleshooting-guide.md",
+      "total_fixes": 1,
+      "successful_fixes": 0,
+      "failed_fixes": 1,
+      "fixes": [
+        {
+          "line": 14,
+          "old_anchor": "[Kubernetes 관련 문제](#kubernetes-관련-문제)",
+          "new_anchor": "NO_MATCH_FOUND",
+          "matched_heading": null,
+          "error": "매칭되는 헤딩을 찾을 수 없음"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "timestamp": "2025-09-17T14:31:26.096006",
+  "total_files_processed": 4,
+  "total_sections_added": 11,
+  "processed_files": [
+    {
+      "file": "cloud_basic\\textbook\\Day1\\aws-gcp-account-setup.md",
+      "added_sections": 4,
+      "sections": [
+        "✅ 계정 설정 검증",
+        "💰 비용 관리 설정",
+        "🧪 실습 과제",
+        "📚 문제 해결 및 참고 자료"
+      ]
+    },
+    {
+      "file": "cloud_basic\\textbook\\Day1\\practice\\aws_basic_practice.md",
+      "added_sections": 5,
+      "sections": [
+        "🚀 1단계: AWS 계정 생성 및 설정",
+        "👥 2단계: IAM 사용자 및 권한 관리",
+        "💻 3단계: EC2 인스턴스 생성 및 관리",
+        "📦 4단계: S3 스토리지 서비스 활용",
+        "📚 문제 해결 및 참고 자료"
+      ]
+    },
+    {
+      "file": "cloud_master\\textbook\\Day1\\docker-hub-setup-guide.md",
+      "added_sections": 1,
+      "sections": [
+        "Personal Access Token 생성하기"
+      ]
+    },
+    {
+      "file": "cloud_master\\textbook\\Day2\\troubleshooting-guide.md",
+      "added_sections": 1,
+      "sections": [
+        "Kubernetes 관련 문제"
+      ]
+    }
+  ]
+}

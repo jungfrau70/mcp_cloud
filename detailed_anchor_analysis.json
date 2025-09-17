@@ -1,0 +1,1761 @@
+{
+  "cloud_basic\\textbook\\Day1\\aws-gcp-account-setup.md": {
+    "file": "cloud_basic\\textbook\\Day1\\aws-gcp-account-setup.md",
+    "total_headings": 15,
+    "total_toc_links": 7,
+    "headings": [
+      {
+        "level": 1,
+        "text": "1교시: AWS & GCP 계정 생성 및 설정",
+        "line_number": 1,
+        "anchor_id": "1교시-aws-gcp-계정-생성-및-설정"
+      },
+      {
+        "level": 2,
+        "text": "🎯 학습 목표",
+        "line_number": 24,
+        "anchor_id": "학습-목표"
+      },
+      {
+        "level": 3,
+        "text": "핵심 학습 목표",
+        "line_number": 26,
+        "anchor_id": "핵심-학습-목표"
+      },
+      {
+        "level": 3,
+        "text": "실습 후 달성할 수 있는 능력",
+        "line_number": 33,
+        "anchor_id": "실습-후-달성할-수-있는-능력"
+      },
+      {
+        "level": 3,
+        "text": "예상 소요 시간",
+        "line_number": 40,
+        "anchor_id": "예상-소요-시간"
+      },
+      {
+        "level": 2,
+        "text": "🚀 AWS 계정 생성 및 설정",
+        "line_number": 49,
+        "anchor_id": "aws-계정-생성-및-설정"
+      },
+      {
+        "level": 3,
+        "text": "AWS 계정 생성 방법",
+        "line_number": 54,
+        "anchor_id": "aws-계정-생성-방법"
+      },
+      {
+        "level": 3,
+        "text": "중요 사항",
+        "line_number": 59,
+        "anchor_id": "중요-사항"
+      },
+      {
+        "level": 3,
+        "text": "1.1 AWS 계정 생성",
+        "line_number": 66,
+        "anchor_id": "11-aws-계정-생성"
+      },
+      {
+        "level": 3,
+        "text": "2교시 준비",
+        "line_number": 77,
+        "anchor_id": "2교시-준비"
+      },
+      {
+        "level": 3,
+        "text": "고급 기능",
+        "line_number": 82,
+        "anchor_id": "고급-기능"
+      },
+      {
+        "level": 2,
+        "text": "🎉 완료!",
+        "line_number": 91,
+        "anchor_id": "완료"
+      },
+      {
+        "level": 3,
+        "text": "📚 학습 요약",
+        "line_number": 95,
+        "anchor_id": "학습-요약"
+      },
+      {
+        "level": 3,
+        "text": "🚀 다음 단계",
+        "line_number": 104,
+        "anchor_id": "다음-단계"
+      },
+      {
+        "level": 3,
+        "text": "💡 추가 학습 자료",
+        "line_number": 110,
+        "anchor_id": "추가-학습-자료"
+      }
+    ],
+    "toc_links": [
+      {
+        "text": "🎯 학습 목표",
+        "href": "학습-목표",
+        "line_number": 12
+      },
+      {
+        "text": "🚀 AWS 계정 생성 및 설정",
+        "href": "aws-계정-생성-및-설정",
+        "line_number": 13
+      },
+      {
+        "text": "🚀 GCP 계정 생성 및 설정",
+        "href": "1교시-aws-gcp-계정-생성-및-설정",
+        "line_number": 14
+      },
+      {
+        "text": "✅ 계정 설정 검증",
+        "href": "계정-설정-검증",
+        "line_number": 15
+      },
+      {
+        "text": "💰 비용 관리 설정",
+        "href": "비용-관리-설정",
+        "line_number": 16
+      },
+      {
+        "text": "🧪 실습 과제",
+        "href": "실습-과제",
+        "line_number": 17
+      },
+      {
+        "text": "📚 문제 해결 및 참고 자료",
+        "href": "문제-해결-및-참고-자료",
+        "line_number": 18
+      }
+    ],
+    "matching_analysis": [
+      {
+        "link": {
+          "text": "🎯 학습 목표",
+          "href": "학습-목표",
+          "line_number": 12
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 2,
+          "text": "🎯 학습 목표",
+          "line_number": 24,
+          "anchor_id": "학습-목표"
+        }
+      },
+      {
+        "link": {
+          "text": "🚀 AWS 계정 생성 및 설정",
+          "href": "aws-계정-생성-및-설정",
+          "line_number": 13
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 2,
+          "text": "🚀 AWS 계정 생성 및 설정",
+          "line_number": 49,
+          "anchor_id": "aws-계정-생성-및-설정"
+        }
+      },
+      {
+        "link": {
+          "text": "🚀 GCP 계정 생성 및 설정",
+          "href": "1교시-aws-gcp-계정-생성-및-설정",
+          "line_number": 14
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 1,
+          "text": "1교시: AWS & GCP 계정 생성 및 설정",
+          "line_number": 1,
+          "anchor_id": "1교시-aws-gcp-계정-생성-및-설정"
+        }
+      },
+      {
+        "link": {
+          "text": "✅ 계정 설정 검증",
+          "href": "계정-설정-검증",
+          "line_number": 15
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "💰 비용 관리 설정",
+          "href": "비용-관리-설정",
+          "line_number": 16
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "🧪 실습 과제",
+          "href": "실습-과제",
+          "line_number": 17
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "📚 문제 해결 및 참고 자료",
+          "href": "문제-해결-및-참고-자료",
+          "line_number": 18
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      }
+    ],
+    "unmatched_links": [
+      {
+        "link": {
+          "text": "✅ 계정 설정 검증",
+          "href": "계정-설정-검증",
+          "line_number": 15
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "💰 비용 관리 설정",
+          "href": "비용-관리-설정",
+          "line_number": 16
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "🧪 실습 과제",
+          "href": "실습-과제",
+          "line_number": 17
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "📚 문제 해결 및 참고 자료",
+          "href": "문제-해결-및-참고-자료",
+          "line_number": 18
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      }
+    ],
+    "partial_matches": []
+  },
+  "cloud_basic\\textbook\\Day1\\practice\\aws_basic_practice.md": {
+    "file": "cloud_basic\\textbook\\Day1\\practice\\aws_basic_practice.md",
+    "total_headings": 19,
+    "total_toc_links": 8,
+    "headings": [
+      {
+        "level": 2,
+        "text": "🎯 실습 목표",
+        "line_number": 2,
+        "anchor_id": "실습-목표"
+      },
+      {
+        "level": 1,
+        "text": "AWS 기초 실습 가이드",
+        "line_number": 13,
+        "anchor_id": "aws-기초-실습-가이드"
+      },
+      {
+        "level": 2,
+        "text": "🎯 학습 목표",
+        "line_number": 37,
+        "anchor_id": "학습-목표"
+      },
+      {
+        "level": 3,
+        "text": "핵심 학습 목표",
+        "line_number": 42,
+        "anchor_id": "핵심-학습-목표"
+      },
+      {
+        "level": 3,
+        "text": "실습 후 달성할 수 있는 능력",
+        "line_number": 48,
+        "anchor_id": "실습-후-달성할-수-있는-능력"
+      },
+      {
+        "level": 3,
+        "text": "예상 소요 시간",
+        "line_number": 54,
+        "anchor_id": "예상-소요-시간"
+      },
+      {
+        "level": 2,
+        "text": "📚 실습 개요",
+        "line_number": 65,
+        "anchor_id": "실습-개요"
+      },
+      {
+        "level": 3,
+        "text": "실습 목적",
+        "line_number": 70,
+        "anchor_id": "실습-목적"
+      },
+      {
+        "level": 3,
+        "text": "실습 범위",
+        "line_number": 73,
+        "anchor_id": "실습-범위"
+      },
+      {
+        "level": 3,
+        "text": "실습 환경",
+        "line_number": 79,
+        "anchor_id": "실습-환경"
+      },
+      {
+        "level": 3,
+        "text": "실습 결과물",
+        "line_number": 84,
+        "anchor_id": "실습-결과물"
+      },
+      {
+        "level": 2,
+        "text": "🔧 실습 환경 준비",
+        "line_number": 93,
+        "anchor_id": "실습-환경-준비"
+      },
+      {
+        "level": 3,
+        "text": "필수 계정",
+        "line_number": 98,
+        "anchor_id": "필수-계정"
+      },
+      {
+        "level": 3,
+        "text": "Cloud Basic 과정 계속",
+        "line_number": 102,
+        "anchor_id": "cloud-basic-과정-계속"
+      },
+      {
+        "level": 3,
+        "text": "Cloud Intermediate 과정 준비",
+        "line_number": 107,
+        "anchor_id": "cloud-intermediate-과정-준비"
+      },
+      {
+        "level": 2,
+        "text": "🎉 실습 완료!",
+        "line_number": 116,
+        "anchor_id": "실습-완료"
+      },
+      {
+        "level": 3,
+        "text": "📚 학습 요약",
+        "line_number": 120,
+        "anchor_id": "학습-요약"
+      },
+      {
+        "level": 3,
+        "text": "🚀 다음 단계",
+        "line_number": 129,
+        "anchor_id": "다음-단계"
+      },
+      {
+        "level": 3,
+        "text": "💡 추가 학습 아이디어",
+        "line_number": 135,
+        "anchor_id": "추가-학습-아이디어"
+      }
+    ],
+    "toc_links": [
+      {
+        "text": "🎯 학습 목표",
+        "href": "학습-목표",
+        "line_number": 24
+      },
+      {
+        "text": "📚 실습 개요",
+        "href": "실습-개요",
+        "line_number": 25
+      },
+      {
+        "text": "🔧 실습 환경 준비",
+        "href": "실습-환경-준비",
+        "line_number": 26
+      },
+      {
+        "text": "🚀 1단계: AWS 계정 생성 및 설정",
+        "href": "1단계-aws-계정-생성-및-설정",
+        "line_number": 27
+      },
+      {
+        "text": "👥 2단계: IAM 사용자 및 권한 관리",
+        "href": "2단계-iam-사용자-및-권한-관리",
+        "line_number": 28
+      },
+      {
+        "text": "💻 3단계: EC2 인스턴스 생성 및 관리",
+        "href": "3단계-ec2-인스턴스-생성-및-관리",
+        "line_number": 29
+      },
+      {
+        "text": "📦 4단계: S3 스토리지 서비스 활용",
+        "href": "4단계-s3-스토리지-서비스-활용",
+        "line_number": 30
+      },
+      {
+        "text": "📚 문제 해결 및 참고 자료",
+        "href": "문제-해결-및-참고-자료",
+        "line_number": 31
+      }
+    ],
+    "matching_analysis": [
+      {
+        "link": {
+          "text": "🎯 학습 목표",
+          "href": "학습-목표",
+          "line_number": 24
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 2,
+          "text": "🎯 학습 목표",
+          "line_number": 37,
+          "anchor_id": "학습-목표"
+        }
+      },
+      {
+        "link": {
+          "text": "📚 실습 개요",
+          "href": "실습-개요",
+          "line_number": 25
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 2,
+          "text": "📚 실습 개요",
+          "line_number": 65,
+          "anchor_id": "실습-개요"
+        }
+      },
+      {
+        "link": {
+          "text": "🔧 실습 환경 준비",
+          "href": "실습-환경-준비",
+          "line_number": 26
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 2,
+          "text": "🔧 실습 환경 준비",
+          "line_number": 93,
+          "anchor_id": "실습-환경-준비"
+        }
+      },
+      {
+        "link": {
+          "text": "🚀 1단계: AWS 계정 생성 및 설정",
+          "href": "1단계-aws-계정-생성-및-설정",
+          "line_number": 27
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "👥 2단계: IAM 사용자 및 권한 관리",
+          "href": "2단계-iam-사용자-및-권한-관리",
+          "line_number": 28
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "💻 3단계: EC2 인스턴스 생성 및 관리",
+          "href": "3단계-ec2-인스턴스-생성-및-관리",
+          "line_number": 29
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "📦 4단계: S3 스토리지 서비스 활용",
+          "href": "4단계-s3-스토리지-서비스-활용",
+          "line_number": 30
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "📚 문제 해결 및 참고 자료",
+          "href": "문제-해결-및-참고-자료",
+          "line_number": 31
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      }
+    ],
+    "unmatched_links": [
+      {
+        "link": {
+          "text": "🚀 1단계: AWS 계정 생성 및 설정",
+          "href": "1단계-aws-계정-생성-및-설정",
+          "line_number": 27
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "👥 2단계: IAM 사용자 및 권한 관리",
+          "href": "2단계-iam-사용자-및-권한-관리",
+          "line_number": 28
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "💻 3단계: EC2 인스턴스 생성 및 관리",
+          "href": "3단계-ec2-인스턴스-생성-및-관리",
+          "line_number": 29
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "📦 4단계: S3 스토리지 서비스 활용",
+          "href": "4단계-s3-스토리지-서비스-활용",
+          "line_number": 30
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "📚 문제 해결 및 참고 자료",
+          "href": "문제-해결-및-참고-자료",
+          "line_number": 31
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      }
+    ],
+    "partial_matches": []
+  },
+  "cloud_master\\textbook\\Day1\\docker-hub-setup-guide.md": {
+    "file": "cloud_master\\textbook\\Day1\\docker-hub-setup-guide.md",
+    "total_headings": 37,
+    "total_toc_links": 6,
+    "headings": [
+      {
+        "level": 1,
+        "text": "Docker Hub 가입 및 토큰 설정 가이드",
+        "line_number": 1,
+        "anchor_id": "docker-hub-가입-및-토큰-설정-가이드"
+      },
+      {
+        "level": 2,
+        "text": "📋 목차",
+        "line_number": 5,
+        "anchor_id": "목차"
+      },
+      {
+        "level": 2,
+        "text": "🐳 Docker Hub란?",
+        "line_number": 15,
+        "anchor_id": "docker-hub란"
+      },
+      {
+        "level": 3,
+        "text": "Docker Hub 소개",
+        "line_number": 17,
+        "anchor_id": "docker-hub-소개"
+      },
+      {
+        "level": 3,
+        "text": "Docker Hub의 주요 기능",
+        "line_number": 20,
+        "anchor_id": "docker-hub의-주요-기능"
+      },
+      {
+        "level": 3,
+        "text": "왜 Docker Hub가 필요한가?",
+        "line_number": 26,
+        "anchor_id": "왜-docker-hub가-필요한가"
+      },
+      {
+        "level": 2,
+        "text": "📝 Docker Hub 가입하기",
+        "line_number": 33,
+        "anchor_id": "docker-hub-가입하기"
+      },
+      {
+        "level": 3,
+        "text": "1단계: Docker Hub 웹사이트 접속",
+        "line_number": 35,
+        "anchor_id": "1단계-docker-hub-웹사이트-접속"
+      },
+      {
+        "level": 3,
+        "text": "2단계: 계정 정보 입력",
+        "line_number": 39,
+        "anchor_id": "2단계-계정-정보-입력"
+      },
+      {
+        "level": 3,
+        "text": "4단계: 토큰 생성 및 복사",
+        "line_number": 51,
+        "anchor_id": "4단계-토큰-생성-및-복사"
+      },
+      {
+        "level": 2,
+        "text": "🔐 GitHub 시크릿 설정하기",
+        "line_number": 63,
+        "anchor_id": "github-시크릿-설정하기"
+      },
+      {
+        "level": 3,
+        "text": "1단계: GitHub 저장소 접속",
+        "line_number": 65,
+        "anchor_id": "1단계-github-저장소-접속"
+      },
+      {
+        "level": 3,
+        "text": "2단계: Secrets and variables 메뉴 접속",
+        "line_number": 69,
+        "anchor_id": "2단계-secrets-and-variables-메뉴-접속"
+      },
+      {
+        "level": 3,
+        "text": "3단계: 새 시크릿 생성",
+        "line_number": 73,
+        "anchor_id": "3단계-새-시크릿-생성"
+      },
+      {
+        "level": 3,
+        "text": "4단계: 시크릿 확인",
+        "line_number": 82,
+        "anchor_id": "4단계-시크릿-확인"
+      },
+      {
+        "level": 2,
+        "text": "✅ 설정 확인하기",
+        "line_number": 88,
+        "anchor_id": "설정-확인하기"
+      },
+      {
+        "level": 3,
+        "text": "1단계: 워크플로우 파일 확인",
+        "line_number": 90,
+        "anchor_id": "1단계-워크플로우-파일-확인"
+      },
+      {
+        "level": 3,
+        "text": "2단계: 코드 푸시하여 테스트",
+        "line_number": 114,
+        "anchor_id": "2단계-코드-푸시하여-테스트"
+      },
+      {
+        "level": 1,
+        "text": "변경사항 커밋",
+        "line_number": 116,
+        "anchor_id": "변경사항-커밋"
+      },
+      {
+        "level": 3,
+        "text": "3단계: GitHub Actions 실행 확인",
+        "line_number": 122,
+        "anchor_id": "3단계-github-actions-실행-확인"
+      },
+      {
+        "level": 3,
+        "text": "4단계: Docker Hub에서 이미지 확인",
+        "line_number": 127,
+        "anchor_id": "4단계-docker-hub에서-이미지-확인"
+      },
+      {
+        "level": 2,
+        "text": "🐛 문제 해결",
+        "line_number": 134,
+        "anchor_id": "문제-해결"
+      },
+      {
+        "level": 3,
+        "text": "자주 발생하는 문제들",
+        "line_number": 136,
+        "anchor_id": "자주-발생하는-문제들"
+      },
+      {
+        "level": 4,
+        "text": "1. Docker Hub 로그인 실패",
+        "line_number": 138,
+        "anchor_id": "1-docker-hub-로그인-실패"
+      },
+      {
+        "level": 4,
+        "text": "2. 이미지 푸시 실패",
+        "line_number": 154,
+        "anchor_id": "2-이미지-푸시-실패"
+      },
+      {
+        "level": 4,
+        "text": "3. GitHub 시크릿 설정 실패",
+        "line_number": 168,
+        "anchor_id": "3-github-시크릿-설정-실패"
+      },
+      {
+        "level": 4,
+        "text": "4. 워크플로우 실행 안됨",
+        "line_number": 182,
+        "anchor_id": "4-워크플로우-실행-안됨"
+      },
+      {
+        "level": 2,
+        "text": "📚 추가 자료",
+        "line_number": 194,
+        "anchor_id": "추가-자료"
+      },
+      {
+        "level": 3,
+        "text": "Docker Hub 공식 문서",
+        "line_number": 196,
+        "anchor_id": "docker-hub-공식-문서"
+      },
+      {
+        "level": 3,
+        "text": "GitHub Actions 문서",
+        "line_number": 200,
+        "anchor_id": "github-actions-문서"
+      },
+      {
+        "level": 3,
+        "text": "유용한 링크",
+        "line_number": 204,
+        "anchor_id": "유용한-링크"
+      },
+      {
+        "level": 2,
+        "text": "🎯 다음 단계",
+        "line_number": 210,
+        "anchor_id": "다음-단계"
+      },
+      {
+        "level": 3,
+        "text": "기본 설정 완료 후",
+        "line_number": 212,
+        "anchor_id": "기본-설정-완료-후"
+      },
+      {
+        "level": 3,
+        "text": "실습 프로젝트",
+        "line_number": 217,
+        "anchor_id": "실습-프로젝트"
+      },
+      {
+        "level": 2,
+        "text": "💡 팁",
+        "line_number": 224,
+        "anchor_id": "팁"
+      },
+      {
+        "level": 3,
+        "text": "보안 관련",
+        "line_number": 226,
+        "anchor_id": "보안-관련"
+      },
+      {
+        "level": 3,
+        "text": "효율성 관련",
+        "line_number": 231,
+        "anchor_id": "효율성-관련"
+      }
+    ],
+    "toc_links": [
+      {
+        "text": "Docker Hub란?",
+        "href": "docker-hub란",
+        "line_number": 6
+      },
+      {
+        "text": "Docker Hub 가입하기",
+        "href": "docker-hub-가입하기",
+        "line_number": 7
+      },
+      {
+        "text": "Personal Access Token 생성하기",
+        "href": "personal-access-token-생성하기",
+        "line_number": 8
+      },
+      {
+        "text": "GitHub 시크릿 설정하기",
+        "href": "github-시크릿-설정하기",
+        "line_number": 9
+      },
+      {
+        "text": "설정 확인하기",
+        "href": "설정-확인하기",
+        "line_number": 10
+      },
+      {
+        "text": "문제 해결",
+        "href": "문제-해결",
+        "line_number": 11
+      }
+    ],
+    "matching_analysis": [
+      {
+        "link": {
+          "text": "Docker Hub란?",
+          "href": "docker-hub란",
+          "line_number": 6
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 2,
+          "text": "🐳 Docker Hub란?",
+          "line_number": 15,
+          "anchor_id": "docker-hub란"
+        }
+      },
+      {
+        "link": {
+          "text": "Docker Hub 가입하기",
+          "href": "docker-hub-가입하기",
+          "line_number": 7
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 2,
+          "text": "📝 Docker Hub 가입하기",
+          "line_number": 33,
+          "anchor_id": "docker-hub-가입하기"
+        }
+      },
+      {
+        "link": {
+          "text": "Personal Access Token 생성하기",
+          "href": "personal-access-token-생성하기",
+          "line_number": 8
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "GitHub 시크릿 설정하기",
+          "href": "github-시크릿-설정하기",
+          "line_number": 9
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 2,
+          "text": "🔐 GitHub 시크릿 설정하기",
+          "line_number": 63,
+          "anchor_id": "github-시크릿-설정하기"
+        }
+      },
+      {
+        "link": {
+          "text": "설정 확인하기",
+          "href": "설정-확인하기",
+          "line_number": 10
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 2,
+          "text": "✅ 설정 확인하기",
+          "line_number": 88,
+          "anchor_id": "설정-확인하기"
+        }
+      },
+      {
+        "link": {
+          "text": "문제 해결",
+          "href": "문제-해결",
+          "line_number": 11
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 2,
+          "text": "🐛 문제 해결",
+          "line_number": 134,
+          "anchor_id": "문제-해결"
+        }
+      }
+    ],
+    "unmatched_links": [
+      {
+        "link": {
+          "text": "Personal Access Token 생성하기",
+          "href": "personal-access-token-생성하기",
+          "line_number": 8
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      }
+    ],
+    "partial_matches": []
+  },
+  "cloud_master\\textbook\\Day2\\troubleshooting-guide.md": {
+    "file": "cloud_master\\textbook\\Day2\\troubleshooting-guide.md",
+    "total_headings": 120,
+    "total_toc_links": 6,
+    "headings": [
+      {
+        "level": 1,
+        "text": "트러블슈팅 가이드",
+        "line_number": 7,
+        "anchor_id": "트러블슈팅-가이드"
+      },
+      {
+        "level": 2,
+        "text": "📋 목차",
+        "line_number": 11,
+        "anchor_id": "목차"
+      },
+      {
+        "level": 2,
+        "text": "💰 비용 관리 관련 문제",
+        "line_number": 21,
+        "anchor_id": "비용-관리-관련-문제"
+      },
+      {
+        "level": 3,
+        "text": "문제 1: Cost Explorer 데이터가 표시되지 않음",
+        "line_number": 23,
+        "anchor_id": "문제-1-cost-explorer-데이터가-표시되지-않음"
+      },
+      {
+        "level": 4,
+        "text": "증상",
+        "line_number": 25,
+        "anchor_id": "증상"
+      },
+      {
+        "level": 4,
+        "text": "원인",
+        "line_number": 30,
+        "anchor_id": "원인"
+      },
+      {
+        "level": 4,
+        "text": "해결 방법",
+        "line_number": 35,
+        "anchor_id": "해결-방법"
+      },
+      {
+        "level": 1,
+        "text": "Cost Explorer 활성화 확인",
+        "line_number": 37,
+        "anchor_id": "cost-explorer-활성화-확인"
+      },
+      {
+        "level": 1,
+        "text": "권한 확인",
+        "line_number": 43,
+        "anchor_id": "권한-확인"
+      },
+      {
+        "level": 1,
+        "text": "필요한 권한 추가",
+        "line_number": 46,
+        "anchor_id": "필요한-권한-추가"
+      },
+      {
+        "level": 3,
+        "text": "문제 2: 예산 알림이 발송되지 않음",
+        "line_number": 52,
+        "anchor_id": "문제-2-예산-알림이-발송되지-않음"
+      },
+      {
+        "level": 4,
+        "text": "증상",
+        "line_number": 54,
+        "anchor_id": "증상"
+      },
+      {
+        "level": 4,
+        "text": "원인",
+        "line_number": 58,
+        "anchor_id": "원인"
+      },
+      {
+        "level": 4,
+        "text": "해결 방법",
+        "line_number": 63,
+        "anchor_id": "해결-방법"
+      },
+      {
+        "level": 1,
+        "text": "SNS 구독 상태 확인",
+        "line_number": 65,
+        "anchor_id": "sns-구독-상태-확인"
+      },
+      {
+        "level": 1,
+        "text": "구독 확인 요청",
+        "line_number": 69,
+        "anchor_id": "구독-확인-요청"
+      },
+      {
+        "level": 1,
+        "text": "예산 설정 확인",
+        "line_number": 74,
+        "anchor_id": "예산-설정-확인"
+      },
+      {
+        "level": 1,
+        "text": "테스트 알림 발송",
+        "line_number": 78,
+        "anchor_id": "테스트-알림-발송"
+      },
+      {
+        "level": 3,
+        "text": "문제 3: GCP 비용 데이터가 표시되지 않음",
+        "line_number": 84,
+        "anchor_id": "문제-3-gcp-비용-데이터가-표시되지-않음"
+      },
+      {
+        "level": 4,
+        "text": "증상",
+        "line_number": 86,
+        "anchor_id": "증상"
+      },
+      {
+        "level": 4,
+        "text": "원인",
+        "line_number": 91,
+        "anchor_id": "원인"
+      },
+      {
+        "level": 4,
+        "text": "해결 방법",
+        "line_number": 96,
+        "anchor_id": "해결-방법"
+      },
+      {
+        "level": 1,
+        "text": "Billing 계정 확인",
+        "line_number": 98,
+        "anchor_id": "billing-계정-확인"
+      },
+      {
+        "level": 1,
+        "text": "프로젝트에 Billing 연결",
+        "line_number": 101,
+        "anchor_id": "프로젝트에-billing-연결"
+      },
+      {
+        "level": 1,
+        "text": "Billing 권한 확인",
+        "line_number": 105,
+        "anchor_id": "billing-권한-확인"
+      },
+      {
+        "level": 1,
+        "text": "필요한 권한 추가",
+        "line_number": 108,
+        "anchor_id": "필요한-권한-추가"
+      },
+      {
+        "level": 2,
+        "text": "📊 모니터링 관련 문제",
+        "line_number": 116,
+        "anchor_id": "모니터링-관련-문제"
+      },
+      {
+        "level": 3,
+        "text": "문제 1: CloudWatch 메트릭이 수집되지 않음",
+        "line_number": 118,
+        "anchor_id": "문제-1-cloudwatch-메트릭이-수집되지-않음"
+      },
+      {
+        "level": 4,
+        "text": "증상",
+        "line_number": 120,
+        "anchor_id": "증상"
+      },
+      {
+        "level": 4,
+        "text": "원인",
+        "line_number": 124,
+        "anchor_id": "원인"
+      },
+      {
+        "level": 4,
+        "text": "해결 방법",
+        "line_number": 129,
+        "anchor_id": "해결-방법"
+      },
+      {
+        "level": 1,
+        "text": "CloudWatch Agent 상태 확인",
+        "line_number": 131,
+        "anchor_id": "cloudwatch-agent-상태-확인"
+      },
+      {
+        "level": 1,
+        "text": "CloudWatch Agent 재시작",
+        "line_number": 134,
+        "anchor_id": "cloudwatch-agent-재시작"
+      },
+      {
+        "level": 1,
+        "text": "IAM 권한 확인",
+        "line_number": 137,
+        "anchor_id": "iam-권한-확인"
+      },
+      {
+        "level": 1,
+        "text": "필요한 권한 추가",
+        "line_number": 140,
+        "anchor_id": "필요한-권한-추가"
+      },
+      {
+        "level": 1,
+        "text": "메트릭 수동 전송 테스트",
+        "line_number": 145,
+        "anchor_id": "메트릭-수동-전송-테스트"
+      },
+      {
+        "level": 3,
+        "text": "문제 2: GCP Cloud Monitoring 메트릭이 수집되지 않음",
+        "line_number": 151,
+        "anchor_id": "문제-2-gcp-cloud-monitoring-메트릭이-수집되지-않음"
+      },
+      {
+        "level": 4,
+        "text": "증상",
+        "line_number": 153,
+        "anchor_id": "증상"
+      },
+      {
+        "level": 4,
+        "text": "원인",
+        "line_number": 157,
+        "anchor_id": "원인"
+      },
+      {
+        "level": 4,
+        "text": "해결 방법",
+        "line_number": 162,
+        "anchor_id": "해결-방법"
+      },
+      {
+        "level": 1,
+        "text": "Ops Agent 상태 확인",
+        "line_number": 164,
+        "anchor_id": "ops-agent-상태-확인"
+      },
+      {
+        "level": 1,
+        "text": "Ops Agent 재시작",
+        "line_number": 167,
+        "anchor_id": "ops-agent-재시작"
+      },
+      {
+        "level": 1,
+        "text": "API 활성화 확인",
+        "line_number": 170,
+        "anchor_id": "api-활성화-확인"
+      },
+      {
+        "level": 1,
+        "text": "Monitoring API 활성화",
+        "line_number": 173,
+        "anchor_id": "monitoring-api-활성화"
+      },
+      {
+        "level": 1,
+        "text": "권한 확인",
+        "line_number": 176,
+        "anchor_id": "권한-확인"
+      },
+      {
+        "level": 1,
+        "text": "필요한 권한 추가",
+        "line_number": 179,
+        "anchor_id": "필요한-권한-추가"
+      },
+      {
+        "level": 3,
+        "text": "문제 3: 알림이 발송되지 않음",
+        "line_number": 185,
+        "anchor_id": "문제-3-알림이-발송되지-않음"
+      },
+      {
+        "level": 4,
+        "text": "증상",
+        "line_number": 187,
+        "anchor_id": "증상"
+      },
+      {
+        "level": 4,
+        "text": "원인",
+        "line_number": 191,
+        "anchor_id": "원인"
+      },
+      {
+        "level": 2,
+        "text": "🌐 네트워킹 관련 문제",
+        "line_number": 197,
+        "anchor_id": "네트워킹-관련-문제"
+      },
+      {
+        "level": 3,
+        "text": "문제 1: Pod 간 통신이 안됨",
+        "line_number": 199,
+        "anchor_id": "문제-1-pod-간-통신이-안됨"
+      },
+      {
+        "level": 4,
+        "text": "증상",
+        "line_number": 201,
+        "anchor_id": "증상"
+      },
+      {
+        "level": 4,
+        "text": "원인",
+        "line_number": 205,
+        "anchor_id": "원인"
+      },
+      {
+        "level": 4,
+        "text": "해결 방법",
+        "line_number": 210,
+        "anchor_id": "해결-방법"
+      },
+      {
+        "level": 1,
+        "text": "Pod 네트워크 확인",
+        "line_number": 212,
+        "anchor_id": "pod-네트워크-확인"
+      },
+      {
+        "level": 1,
+        "text": "Service DNS 확인",
+        "line_number": 215,
+        "anchor_id": "service-dns-확인"
+      },
+      {
+        "level": 1,
+        "text": "네트워크 정책 확인",
+        "line_number": 218,
+        "anchor_id": "네트워크-정책-확인"
+      },
+      {
+        "level": 1,
+        "text": "Service 엔드포인트 확인",
+        "line_number": 222,
+        "anchor_id": "service-엔드포인트-확인"
+      },
+      {
+        "level": 3,
+        "text": "문제 2: Ingress가 작동하지 않음",
+        "line_number": 227,
+        "anchor_id": "문제-2-ingress가-작동하지-않음"
+      },
+      {
+        "level": 4,
+        "text": "증상",
+        "line_number": 229,
+        "anchor_id": "증상"
+      },
+      {
+        "level": 4,
+        "text": "원인",
+        "line_number": 233,
+        "anchor_id": "원인"
+      },
+      {
+        "level": 4,
+        "text": "해결 방법",
+        "line_number": 238,
+        "anchor_id": "해결-방법"
+      },
+      {
+        "level": 1,
+        "text": "Ingress Controller 확인",
+        "line_number": 240,
+        "anchor_id": "ingress-controller-확인"
+      },
+      {
+        "level": 1,
+        "text": "AWS ALB Ingress Controller 설치",
+        "line_number": 243,
+        "anchor_id": "aws-alb-ingress-controller-설치"
+      },
+      {
+        "level": 1,
+        "text": "GCP Ingress Controller 확인",
+        "line_number": 246,
+        "anchor_id": "gcp-ingress-controller-확인"
+      },
+      {
+        "level": 1,
+        "text": "Ingress 상태 확인",
+        "line_number": 249,
+        "anchor_id": "ingress-상태-확인"
+      },
+      {
+        "level": 1,
+        "text": "로드 밸런서 상태 확인 (AWS)",
+        "line_number": 253,
+        "anchor_id": "로드-밸런서-상태-확인-aws"
+      },
+      {
+        "level": 1,
+        "text": "로드 밸런서 상태 확인 (GCP)",
+        "line_number": 256,
+        "anchor_id": "로드-밸런서-상태-확인-gcp"
+      },
+      {
+        "level": 2,
+        "text": "⚡ 성능 및 최적화 문제",
+        "line_number": 262,
+        "anchor_id": "성능-및-최적화-문제"
+      },
+      {
+        "level": 3,
+        "text": "문제 1: 애플리케이션 응답 시간이 느림",
+        "line_number": 264,
+        "anchor_id": "문제-1-애플리케이션-응답-시간이-느림"
+      },
+      {
+        "level": 4,
+        "text": "증상",
+        "line_number": 266,
+        "anchor_id": "증상"
+      },
+      {
+        "level": 4,
+        "text": "원인",
+        "line_number": 270,
+        "anchor_id": "원인"
+      },
+      {
+        "level": 4,
+        "text": "해결 방법",
+        "line_number": 275,
+        "anchor_id": "해결-방법"
+      },
+      {
+        "level": 1,
+        "text": "Pod 리소스 사용량 확인",
+        "line_number": 277,
+        "anchor_id": "pod-리소스-사용량-확인"
+      },
+      {
+        "level": 1,
+        "text": "노드 리소스 사용량 확인",
+        "line_number": 281,
+        "anchor_id": "노드-리소스-사용량-확인"
+      },
+      {
+        "level": 1,
+        "text": "애플리케이션 로그 확인",
+        "line_number": 285,
+        "anchor_id": "애플리케이션-로그-확인"
+      },
+      {
+        "level": 1,
+        "text": "네트워크 지연 확인",
+        "line_number": 288,
+        "anchor_id": "네트워크-지연-확인"
+      },
+      {
+        "level": 1,
+        "text": "데이터베이스 연결 확인",
+        "line_number": 291,
+        "anchor_id": "데이터베이스-연결-확인"
+      },
+      {
+        "level": 3,
+        "text": "문제 2: 클러스터 자동 스케일링이 느림",
+        "line_number": 295,
+        "anchor_id": "문제-2-클러스터-자동-스케일링이-느림"
+      },
+      {
+        "level": 4,
+        "text": "증상",
+        "line_number": 297,
+        "anchor_id": "증상"
+      },
+      {
+        "level": 4,
+        "text": "원인",
+        "line_number": 301,
+        "anchor_id": "원인"
+      },
+      {
+        "level": 4,
+        "text": "해결 방법",
+        "line_number": 306,
+        "anchor_id": "해결-방법"
+      },
+      {
+        "level": 1,
+        "text": "Cluster Autoscaler 로그 확인",
+        "line_number": 308,
+        "anchor_id": "cluster-autoscaler-로그-확인"
+      },
+      {
+        "level": 1,
+        "text": "HPA 설정 확인",
+        "line_number": 311,
+        "anchor_id": "hpa-설정-확인"
+      },
+      {
+        "level": 1,
+        "text": "노드 그룹 설정 확인 (AWS)",
+        "line_number": 315,
+        "anchor_id": "노드-그룹-설정-확인-aws"
+      },
+      {
+        "level": 1,
+        "text": "노드 풀 설정 확인 (GCP)",
+        "line_number": 320,
+        "anchor_id": "노드-풀-설정-확인-gcp"
+      },
+      {
+        "level": 3,
+        "text": "문제 3: 비용이 예상보다 높음",
+        "line_number": 326,
+        "anchor_id": "문제-3-비용이-예상보다-높음"
+      },
+      {
+        "level": 4,
+        "text": "증상",
+        "line_number": 328,
+        "anchor_id": "증상"
+      },
+      {
+        "level": 4,
+        "text": "원인",
+        "line_number": 332,
+        "anchor_id": "원인"
+      },
+      {
+        "level": 4,
+        "text": "해결 방법",
+        "line_number": 337,
+        "anchor_id": "해결-방법"
+      },
+      {
+        "level": 1,
+        "text": "리소스 사용률 확인",
+        "line_number": 339,
+        "anchor_id": "리소스-사용률-확인"
+      },
+      {
+        "level": 1,
+        "text": "미사용 리소스 식별",
+        "line_number": 343,
+        "anchor_id": "미사용-리소스-식별"
+      },
+      {
+        "level": 1,
+        "text": "인스턴스 타입 최적화",
+        "line_number": 347,
+        "anchor_id": "인스턴스-타입-최적화"
+      },
+      {
+        "level": 1,
+        "text": "할인 옵션 확인",
+        "line_number": 350,
+        "anchor_id": "할인-옵션-확인"
+      },
+      {
+        "level": 1,
+        "text": "비용 권장사항 확인",
+        "line_number": 354,
+        "anchor_id": "비용-권장사항-확인"
+      },
+      {
+        "level": 2,
+        "text": "🚨 일반적인 오류 코드",
+        "line_number": 364,
+        "anchor_id": "일반적인-오류-코드"
+      },
+      {
+        "level": 3,
+        "text": "AWS 오류 코드",
+        "line_number": 366,
+        "anchor_id": "aws-오류-코드"
+      },
+      {
+        "level": 3,
+        "text": "GCP 오류 코드",
+        "line_number": 376,
+        "anchor_id": "gcp-오류-코드"
+      },
+      {
+        "level": 3,
+        "text": "Kubernetes 오류 코드",
+        "line_number": 386,
+        "anchor_id": "kubernetes-오류-코드"
+      },
+      {
+        "level": 2,
+        "text": "🔧 디버깅 도구 및 명령어",
+        "line_number": 397,
+        "anchor_id": "디버깅-도구-및-명령어"
+      },
+      {
+        "level": 3,
+        "text": "AWS 디버깅",
+        "line_number": 399,
+        "anchor_id": "aws-디버깅"
+      },
+      {
+        "level": 1,
+        "text": "로그 확인",
+        "line_number": 401,
+        "anchor_id": "로그-확인"
+      },
+      {
+        "level": 1,
+        "text": "메트릭 확인",
+        "line_number": 405,
+        "anchor_id": "메트릭-확인"
+      },
+      {
+        "level": 1,
+        "text": "이벤트 확인",
+        "line_number": 414,
+        "anchor_id": "이벤트-확인"
+      },
+      {
+        "level": 3,
+        "text": "GCP 디버깅",
+        "line_number": 418,
+        "anchor_id": "gcp-디버깅"
+      },
+      {
+        "level": 1,
+        "text": "로그 확인",
+        "line_number": 420,
+        "anchor_id": "로그-확인"
+      },
+      {
+        "level": 1,
+        "text": "메트릭 확인",
+        "line_number": 423,
+        "anchor_id": "메트릭-확인"
+      },
+      {
+        "level": 1,
+        "text": "이벤트 확인",
+        "line_number": 426,
+        "anchor_id": "이벤트-확인"
+      },
+      {
+        "level": 3,
+        "text": "Kubernetes 디버깅",
+        "line_number": 430,
+        "anchor_id": "kubernetes-디버깅"
+      },
+      {
+        "level": 1,
+        "text": "클러스터 상태 확인",
+        "line_number": 432,
+        "anchor_id": "클러스터-상태-확인"
+      },
+      {
+        "level": 1,
+        "text": "리소스 사용량 확인",
+        "line_number": 437,
+        "anchor_id": "리소스-사용량-확인"
+      },
+      {
+        "level": 1,
+        "text": "이벤트 확인",
+        "line_number": 441,
+        "anchor_id": "이벤트-확인"
+      },
+      {
+        "level": 1,
+        "text": "로그 확인",
+        "line_number": 444,
+        "anchor_id": "로그-확인"
+      },
+      {
+        "level": 2,
+        "text": "📞 지원 및 도움말",
+        "line_number": 451,
+        "anchor_id": "지원-및-도움말"
+      },
+      {
+        "level": 3,
+        "text": "공식 문서",
+        "line_number": 453,
+        "anchor_id": "공식-문서"
+      },
+      {
+        "level": 3,
+        "text": "커뮤니티 지원",
+        "line_number": 459,
+        "anchor_id": "커뮤니티-지원"
+      },
+      {
+        "level": 3,
+        "text": "문제 보고",
+        "line_number": 465,
+        "anchor_id": "문제-보고"
+      },
+      {
+        "level": 2,
+        "text": "✅ 체크리스트",
+        "line_number": 475,
+        "anchor_id": "체크리스트"
+      },
+      {
+        "level": 3,
+        "text": "문제 해결 전 확인사항",
+        "line_number": 477,
+        "anchor_id": "문제-해결-전-확인사항"
+      },
+      {
+        "level": 3,
+        "text": "문제 해결 후 확인사항",
+        "line_number": 484,
+        "anchor_id": "문제-해결-후-확인사항"
+      }
+    ],
+    "toc_links": [
+      {
+        "text": "비용 관리 관련 문제",
+        "href": "비용-관리-관련-문제",
+        "line_number": 12
+      },
+      {
+        "text": "모니터링 관련 문제",
+        "href": "모니터링-관련-문제",
+        "line_number": 13
+      },
+      {
+        "text": "Kubernetes 관련 문제",
+        "href": "kubernetes-관련-문제",
+        "line_number": 14
+      },
+      {
+        "text": "네트워킹 관련 문제",
+        "href": "네트워킹-관련-문제",
+        "line_number": 15
+      },
+      {
+        "text": "성능 및 최적화 문제",
+        "href": "성능-및-최적화-문제",
+        "line_number": 16
+      },
+      {
+        "text": "일반적인 오류 코드",
+        "href": "일반적인-오류-코드",
+        "line_number": 17
+      }
+    ],
+    "matching_analysis": [
+      {
+        "link": {
+          "text": "비용 관리 관련 문제",
+          "href": "비용-관리-관련-문제",
+          "line_number": 12
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 2,
+          "text": "💰 비용 관리 관련 문제",
+          "line_number": 21,
+          "anchor_id": "비용-관리-관련-문제"
+        }
+      },
+      {
+        "link": {
+          "text": "모니터링 관련 문제",
+          "href": "모니터링-관련-문제",
+          "line_number": 13
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 2,
+          "text": "📊 모니터링 관련 문제",
+          "line_number": 116,
+          "anchor_id": "모니터링-관련-문제"
+        }
+      },
+      {
+        "link": {
+          "text": "Kubernetes 관련 문제",
+          "href": "kubernetes-관련-문제",
+          "line_number": 14
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      },
+      {
+        "link": {
+          "text": "네트워킹 관련 문제",
+          "href": "네트워킹-관련-문제",
+          "line_number": 15
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 2,
+          "text": "🌐 네트워킹 관련 문제",
+          "line_number": 197,
+          "anchor_id": "네트워킹-관련-문제"
+        }
+      },
+      {
+        "link": {
+          "text": "성능 및 최적화 문제",
+          "href": "성능-및-최적화-문제",
+          "line_number": 16
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 2,
+          "text": "⚡ 성능 및 최적화 문제",
+          "line_number": 262,
+          "anchor_id": "성능-및-최적화-문제"
+        }
+      },
+      {
+        "link": {
+          "text": "일반적인 오류 코드",
+          "href": "일반적인-오류-코드",
+          "line_number": 17
+        },
+        "status": "MATCHED",
+        "matched_heading": {
+          "level": 2,
+          "text": "🚨 일반적인 오류 코드",
+          "line_number": 364,
+          "anchor_id": "일반적인-오류-코드"
+        }
+      }
+    ],
+    "unmatched_links": [
+      {
+        "link": {
+          "text": "Kubernetes 관련 문제",
+          "href": "kubernetes-관련-문제",
+          "line_number": 14
+        },
+        "status": "NO_MATCH",
+        "possible_matches": []
+      }
+    ],
+    "partial_matches": []
+  }
+}
