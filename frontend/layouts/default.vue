@@ -13,8 +13,8 @@
             <a href="/" class="text-xl font-bold text-gray-900">
               GoldenCicle
             </a>
-            <!-- 현재 열린 파일 정보 -->
-            <div v-if="currentFileInfo.title && (route.path.startsWith('/curriculum') || route.path.startsWith('/knowledge-base'))" 
+            <!-- 현재 열린 파일 정보 - 숨김 처리 -->
+            <div v-if="false && currentFileInfo.title && (route.path.startsWith('/curriculum') || route.path.startsWith('/knowledge-base'))" 
                  class="ml-4 px-3 py-1 bg-blue-50 text-blue-700 rounded-md text-sm font-medium">
               📄 {{ currentFileInfo.title }}
             </div>

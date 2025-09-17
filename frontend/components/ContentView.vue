@@ -21,7 +21,7 @@
       <div class="flex items-center gap-2">
         <button
           @click="toggleAllDetails"
-          class="px-3 py-1 text-sm rounded bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+          class="px-3 py-1 text-sm rounded bg-gray-500 text-white hover:bg-gray-600 transition-colors"
           :title="allDetailsExpanded ? '모든 목차 접기' : '모든 목차 펼치기'"
         >
           {{ allDetailsExpanded ? '📁 접기' : '📂 펼치기' }}
@@ -29,7 +29,7 @@
         <button
           v-if="path && !isSlideView"
           @click="downloadPdf"
-          class="px-3 py-1 text-sm rounded bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
+          class="px-3 py-1 text-sm rounded bg-gray-500 text-white hover:bg-gray-600 transition-colors"
         >
           PDF
         </button>
