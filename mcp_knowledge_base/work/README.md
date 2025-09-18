@@ -169,7 +169,7 @@ frontend 프로젝트에서 프로젝트 루트 디렉토리에 있는 .slides_s
 **작업 문서**
 
 ## 🔗 관련 과정
-Cloud Basic 1일차 | [Cloud Master 1일차](/mcp_knowledge_base/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/README.md)
+Cloud Basic 1일차 | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
 
 </div>
 
@@ -180,3 +180,6 @@ Cloud Basic 1일차 | [Cloud Master 1일차](/mcp_knowledge_base/README.md) | [C
 [🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>
+
+요청) 과정별로 실습내용이 많이 달라졌을 거야. 해서, 자동화 코드도 이에 부합하게 갱신되게 해 줘. 
+요청) 자동화 코드 수행 중간에 실패하더라도, 생성한 리소스를 다시 사용할 수 있도록 체크하는 로직 추가해 주고, 사용자 가이드도 갱신해 줘. 

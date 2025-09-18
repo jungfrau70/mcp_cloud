@@ -10,7 +10,7 @@ from pathlib import Path
 from unittest.mock import patch, MagicMock
 import os
 
-from container_course_automation import ContainerCourseAutomation, CourseConfig, DayPlan
+from .container_course_automation import ContainerCourseAutomation, CourseConfig, DayPlan
 
 class TestContainerCourseAutomation:
     """Container 과정 자동화 테스트 클래스"""

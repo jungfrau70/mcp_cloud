@@ -16,7 +16,7 @@ import json
 import sys
 sys.path.append(str(Path(__file__).parent))
 
-from master_course_automation import MasterCourseAutomation, CourseConfig, DayPlan
+from .master_course_automation import MasterCourseAutomation, CourseConfig, DayPlan
 
 class TestCourseConfig:
     """CourseConfig """
