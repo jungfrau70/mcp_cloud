@@ -37,28 +37,24 @@
 
 #### 1단계: 클라우드 기본 개념 이해 (1시간)
 
-[1단계: 클라우드 기본 개념 이해 (1시간)](#1단계-클라우드-기본-개념-이해-1시간)
 - [클라우드 컴퓨팅 개념](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md#클라우드-기본-개념)
 - [AWS 서비스 개요](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md#aws-서비스-개요)
 - [GCP 서비스 개요](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md#gcp-서비스-개요)
 
 #### 2단계: AWS 계정 생성 및 설정 (1시간)
 
-[2단계: AWS 계정 생성 및 설정 (1시간)](#2단계-aws-계정-생성-및-설정-1시간)
 - [AWS 계정 생성](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md)
 - [AWS CLI 설치 및 설정](/mcp_knowledge_base/cloud_basic/install/install_aws_cli.md)
 - [기본 보안 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md)
 
 #### 3단계: GCP 계정 생성 및 설정 (1시간)
 
-[3단계: GCP 계정 생성 및 설정 (1시간)](#3단계-gcp-계정-생성-및-설정-1시간)
 - [GCP 계정 생성](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md)
 - [GCP CLI 설치 및 설정](/mcp_knowledge_base/cloud_basic/install/install_gcp_cli.md)
 - [프로젝트 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md#gcp-프로젝트-설정)
 
 #### 4단계: 기본 실습 환경 확인 (1시간)
 
-[4단계: 기본 실습 환경 확인 (1시간)](#4단계-기본-실습-환경-확인-1시간)
 - [환경 설정 확인](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md#환경-설정-확인)
 - [연결 테스트](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md#연결-테스트)
 
@@ -68,28 +64,24 @@
 
 #### 5단계: AWS EC2 실습 (1시간)
 
-[5단계: AWS EC2 실습 (1시간)](#5단계-aws-ec2-실습-1시간)
 - [EC2 인스턴스 생성](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md#ec2-인스턴스-생성)
 - [SSH 연결](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md#ssh-연결)
 - [기본 명령어 실행](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md#기본-명령어-실행)
 
 #### 6단계: AWS S3 실습 (1시간)
 
-[6단계: AWS S3 실습 (1시간)](#6단계-aws-s3-실습-1시간)
 - [S3 버킷 생성](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md#s3-버킷-생성)
 - [파일 업로드/다운로드](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md#파일-업로드다운로드)
 - [권한 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md#권한-설정)
 
 #### 7단계: GCP Compute Engine 실습 (1시간)
 
-[7단계: GCP Compute Engine 실습 (1시간)](#7단계-gcp-compute-engine-실습-1시간)
 - [Compute Engine 인스턴스 생성](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md#compute-engine-인스턴스-생성)
 - [SSH 연결](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md#gcp-ssh-연결)
 - [기본 명령어 실행](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md#gcp-기본-명령어-실행)
 
 #### 8단계: GCP Cloud Storage 실습 (1시간)
 
-[8단계: GCP Cloud Storage 실습 (1시간)](#8단계-gcp-cloud-storage-실습-1시간)
 - [Cloud Storage 버킷 생성](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md#cloud-storage-버킷-생성)
 - [파일 업로드/다운로드](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md#gcp-파일-업로드다운로드)
 - [권한 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md#gcp-권한-설정)
@@ -132,7 +124,6 @@
 
 #### AWS 실습 체크리스트
 
-[AWS 실습 체크리스트](#aws-실습-체크리스트)
 - [ ] AWS 계정 생성 완료
 - [ ] AWS CLI 설치 및 설정 완료
 - [ ] EC2 인스턴스 생성 성공
@@ -142,7 +133,6 @@
 
 #### GCP 실습 체크리스트
 
-[GCP 실습 체크리스트](#gcp-실습-체크리스트)
 - [ ] GCP 계정 생성 완료
 - [ ] GCP CLI 설치 및 설정 완료
 - [ ] Compute Engine 인스턴스 생성 성공
@@ -190,7 +180,6 @@
 
 #### 1. AWS 계정 생성 문제
 
-[1. AWS 계정 생성 문제](#1-aws-계정-생성-문제)
 **문제**: 신용카드 정보 입력 시 오류 발생
 **해결**: 
 - 카드 정보를 정확히 입력했는지 확인
@@ -199,7 +188,6 @@
 
 #### 2. SSH 연결 실패
 
-[2. SSH 연결 실패](#2-ssh-연결-실패)
 **문제**: EC2 인스턴스에 SSH 연결이 안됨
 **해결**:
 - 보안 그룹에서 SSH(22번 포트) 허용 확인
@@ -208,7 +196,6 @@
 
 #### 3. GCP 프로젝트 설정 문제
 
-[3. GCP 프로젝트 설정 문제](#3-gcp-프로젝트-설정-문제)
 **문제**: GCP 프로젝트 생성 후 CLI에서 인식하지 못함
 **해결**:
 - `gcloud auth login` 실행
@@ -217,7 +204,6 @@
 
 #### 4. 권한 오류
 
-[4. 권한 오류](#4-권한-오류)
 **문제**: S3 버킷에 파일 업로드 시 권한 오류
 **해결**:
 - IAM 사용자 권한 확인

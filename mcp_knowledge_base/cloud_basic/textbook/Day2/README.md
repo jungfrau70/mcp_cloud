@@ -35,28 +35,24 @@
 
 #### 1단계: 컴퓨팅 서비스 비교 (1시간)
 
-[1단계: 컴퓨팅 서비스 비교 (1시간)](#1단계-컴퓨팅-서비스-비교-1시간)
 - [EC2 vs Compute Engine 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md)
 - [인스턴스 유형 분석](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md#인스턴스-유형-분석)
 - [가격 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md#가격-비교)
 
 #### 2단계: 스토리지 서비스 비교 (1시간)
 
-[2단계: 스토리지 서비스 비교 (1시간)](#2단계-스토리지-서비스-비교-1시간)
 - [S3 vs Cloud Storage 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md)
 - [스토리지 클래스 분석](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md#스토리지-클래스-분석)
 - [성능 및 가격 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md#성능-및-가격-비교)
 
 #### 3단계: 데이터베이스 서비스 비교 (1시간)
 
-[3단계: 데이터베이스 서비스 비교 (1시간)](#3단계-데이터베이스-서비스-비교-1시간)
 - [RDS vs Cloud SQL 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md)
 - [NoSQL 서비스 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md#nosql-서비스-비교)
 - [관리형 서비스 장단점](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md#관리형-서비스-장단점)
 
 #### 4단계: 네트워킹 서비스 비교 (1시간)
 
-[4단계: 네트워킹 서비스 비교 (1시간)](#4단계-네트워킹-서비스-비교-1시간)
 - [VPC vs VPC 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/network_comparison.md)
 - [로드 밸런서 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/network_comparison.md#로드-밸런서-비교)
 - [CDN 서비스 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/network_comparison.md#cdn-서비스-비교)
@@ -67,21 +63,18 @@
 
 #### 5단계: 비용 최적화 실습 (2시간)
 
-[5단계: 비용 최적화 실습 (2시간)](#5단계-비용-최적화-실습-2시간)
 - [비용 분석 도구 사용](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md#비용-분석-도구)
 - [리소스 최적화](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md#리소스-최적화)
 - [예산 설정 및 모니터링](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md#예산-설정-및-모니터링)
 
 #### 6단계: 보안 및 모니터링 기초 (1시간)
 
-[6단계: 보안 및 모니터링 기초 (1시간)](#6단계-보안-및-모니터링-기초-1시간)
 - [IAM 권한 관리](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md#고급-권한-관리)
 - [보안 그룹 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md#보안-그룹-설정)
 - [기본 모니터링 설정](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md#모니터링-설정)
 
 #### 7단계: 종합 프로젝트 (1시간)
 
-[7단계: 종합 프로젝트 (1시간)](#7단계-종합-프로젝트-1시간)
 - [프로젝트 요구사항 분석](/mcp_knowledge_base/cloud_basic/textbook/Day2/basic-to-master-bridge.md)
 - [서비스 선택 및 설계](/mcp_knowledge_base/cloud_basic/textbook/Day2/basic-to-master-bridge.md#서비스-선택-및-설계)
 - [비용 예상 및 최적화](/mcp_knowledge_base/cloud_basic/textbook/Day2/basic-to-master-bridge.md#비용-예상-및-최적화)
@@ -113,7 +106,6 @@
 
 #### 서비스 비교 체크리스트
 
-[서비스 비교 체크리스트](#서비스-비교-체크리스트)
 - [ ] 컴퓨팅 서비스 비교 완료
 - [ ] 스토리지 서비스 비교 완료
 - [ ] 데이터베이스 서비스 비교 완료
@@ -122,7 +114,6 @@
 
 #### 비용 최적화 체크리스트
 
-[비용 최적화 체크리스트](#비용-최적화-체크리스트)
 - [ ] 현재 사용 중인 리소스 분석 완료
 - [ ] 비용 최적화 방안 도출 완료
 - [ ] 예산 설정 및 알림 구성 완료
@@ -130,7 +121,6 @@
 
 #### 보안 설정 체크리스트
 
-[보안 설정 체크리스트](#보안-설정-체크리스트)
 - [ ] IAM 사용자 권한 검토 완료
 - [ ] 보안 그룹 규칙 검토 완료
 - [ ] 기본 모니터링 설정 완료
@@ -179,7 +169,6 @@
 
 #### 1. 비용 계산 오류
 
-[1. 비용 계산 오류](#1-비용-계산-오류)
 **문제**: 예상 비용과 실제 비용이 크게 다름
 **해결**:
 - 사용량 패턴을 정확히 분석
@@ -188,7 +177,6 @@
 
 #### 2. 서비스 선택 어려움
 
-[2. 서비스 선택 어려움](#2-서비스-선택-어려움)
 **문제**: 비슷한 서비스 중 선택이 어려움
 **해결**:
 - 프로젝트 요구사항 명확히 정의
@@ -197,7 +185,6 @@
 
 #### 3. 보안 설정 복잡함
 
-[3. 보안 설정 복잡함](#3-보안-설정-복잡함)
 **문제**: 보안 설정이 복잡하고 어려움
 **해결**:
 - 기본 보안 설정부터 단계적으로 진행

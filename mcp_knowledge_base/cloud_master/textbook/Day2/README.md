@@ -3,26 +3,38 @@
 <details>
 <summary>📋 목차</summary>
 
-## 📚 이론 학습
+## 🎯 강의 시나리오 (표준 순서)
 
-1. [🎯 학습 목표](#학습-목표)
-2. [🐳 Docker 고급 기법 및 최적화](#docker-고급-기법-및-최적화)
-3. [🚀 GitHub Actions 고급 워크플로우](#github-actions-고급-워크플로우)
-4. [☸️ Kubernetes 기초 및 클러스터 관리](#kubernetes-기초-및-클러스터-관리)
-5. [🔄 완전 자동화된 배포 파이프라인](#완전-자동화된-배포-파이프라인)
+1. [🎯 학습 목표](#🎯-학습-목표)
+2. [🔧 실습 환경 준비](#🔧-실습-환경-준비)
+3. [✅ 실습 환경 확인](#✅-실습-환경-확인)
+4. [📚 이론 학습](#📚-이론-학습)
+5. [🛠️ 실습 학습](#🛠️-실습-학습)
+6. [🧹 실습 정리](#🧹-실습-정리)
 
-## 🛠️ 실습 학습
+## 🧹 실습 정리
 
-1. [🔧 실습 환경 준비](#실습-환경-준비)
-2. [🔧 실습 가이드](#실습-가이드)
-3. [🐳 Docker 고급 기법 및 최적화 실습](#docker-고급-기법-및-최적화)
-4. [🚀 GitHub Actions 고급 워크플로우 실습](#github-actions-고급-워크플로우)
-5. [☸️ Kubernetes 기초 및 클러스터 관리 실습](#kubernetes-기초-및-클러스터-관리)
-6. [🔄 완전 자동화된 배포 파이프라인 실습](#완전-자동화된-배포-파이프라인)
+### 자동 정리 (권장)
+```bash
+# Day2 실습 자동 정리
+./mcp_knowledge_base/cloud_master/repos/automation/day2/kubernetes-practice-automation.sh --cleanup
+
+# 또는 수동 정리
+kubectl delete namespace k8s-practice 2>/dev/null || true
+docker stop $(docker ps -aq) 2>/dev/null || true
+docker rm $(docker ps -aq) 2>/dev/null || true
+docker system prune -f
+```
+
+### 정리 확인
+- [ ] Kubernetes 리소스 정리
+- [ ] 모든 컨테이너 중지 및 삭제
+- [ ] 사용하지 않는 이미지 정리
+- [ ] Docker 볼륨 정리
 
 ## 📚 참고 자료
 
-1. [📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
+1. [📚 문제 해결 및 참고 자료](#📚-문제-해결-및-참고-자료)
 
 </details>
 
@@ -53,6 +65,74 @@
 - **VM 컨테이너 배포**: 120-150분
 - **완전 자동화**: 90-120분
 - **전체 과정**: 7-9시간
+
+---
+
+## 🔧 실습 환경 준비
+
+### 필수 도구 설치
+
+#### AWS CLI 설치 및 설정
+```bash
+# AWS CLI 설치 확인
+aws --version
+
+# AWS CLI 설정
+aws configure
+```
+
+#### gcloud CLI 설치 및 설정
+```bash
+# gcloud CLI 설치 확인
+gcloud --version
+
+# gcloud CLI 설정
+gcloud auth login
+gcloud config set project YOUR_PROJECT_ID
+```
+
+#### Docker 및 Docker Compose 설치
+```bash
+# Docker 설치 확인
+docker --version
+docker-compose --version
+
+# Docker 서비스 시작
+sudo systemctl start docker
+sudo systemctl enable docker
+```
+
+#### Git 설치 및 설정
+```bash
+# Git 설치 확인
+git --version
+
+# Git 설정
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+```
+
+#### kubectl 설치 (Kubernetes 실습용)
+```bash
+# kubectl 설치 확인
+kubectl version --client
+
+# kubectl 설치 (Linux)
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+```
+
+### 클라우드 계정 설정
+
+#### AWS 계정 설정
+- [AWS 계정 생성 및 설정](/mcp_knowledge_base/cloud_master/accounts/AWS계정가입.md)
+- IAM 사용자 생성 및 권한 설정
+- EC2 키 페어 생성
+
+#### GCP 계정 설정
+- [GCP 계정 생성 및 설정](/mcp_knowledge_base/cloud_master/accounts/GCP_개인계정가입.md)
+- 프로젝트 생성 및 활성화
+- 서비스 계정 생성 및 키 다운로드
 
 ---
 
@@ -216,6 +296,12 @@
 
 ## 🛠️ 실습 학습
 
+### 📁 실습 자료 구조
+- **실습 가이드**: `practices/` - 이론적 실습 가이드 (마크다운)
+- **실습 코드**: `repos/samples/day2/` - 실제 실행 가능한 코드
+- **자동화 스크립트**: `repos/automation/day2/` - 실습 자동화 도구
+- **클라우드 스크립트**: `repos/cloud-scripts/` - 클라우드 리소스 관리
+
 <details>
 <summary>🔧 실습 환경 준비</summary>
 
@@ -285,8 +371,15 @@ docker swarm init
 
 ### ✅ 실습 전 체크리스트
 
-#### 환경 확인
+### 실습 환경 확인
 
+#### 자동 환경 체크 (권장)
+```bash
+# 통합 환경 체크 스크립트 실행 (Kubernetes 포함)
+./mcp_knowledge_base/cloud_master/repos/cloud-scripts/environment-check.sh day2
+```
+
+#### 수동 환경 확인
 - [ ] AWS CLI가 정상 설정되어 있는가?
 ```bash
 aws sts get-caller-identity
@@ -301,6 +394,11 @@ gcloud auth list
 ```bash
 kubectl version --client
 ```
+
+#### 환경 체크 결과 해석
+- **90% 이상**: 실습 준비 완료 ✅
+- **70-89%**: 일부 실습 제한 가능 ⚠️
+- **70% 미만**: 환경 설정 필요 ❌
 
 #### 계정 준비
 
@@ -1390,6 +1488,15 @@ jobs:
 
 ### 종합 실습
 - 🔗 [종합 실습 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/comprehensive-practice-guide.md) - 전체 과정 통합 실습
+
+### 실습 프로젝트
+- 🔗 [My App 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day2/my-app/) - 고급 Docker 및 Kubernetes 애플리케이션
+- 🔗 [Actions Demo 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day2/actions-demo/) - 고급 CI/CD 파이프라인
+
+### 자동화 스크립트
+- 🔗 [AWS 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/) - 고급 AWS 리소스 자동 생성
+- 🔗 [GCP 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/) - 고급 GCP 리소스 자동 생성
+- 🔗 [프로젝트 설정 가이드](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/PROJECT_SETUP.md) - 전체 환경 설정
 
 ### 문제 해결
 - 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/troubleshooting-guide.md) - 고급 문제 해결

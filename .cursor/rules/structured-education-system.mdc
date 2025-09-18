@@ -1,0 +1,295 @@
+---
+alwaysApply: true
+---
+## 🎯 학습 목표
+
+### 핵심 학습 목표
+- **[주제] 기초** [설명]
+- **[주제] 고급** [설명]
+
+### 실습 후 달성할 수 있는 능력
+- ✅ [능력 1]
+- ✅ [능력 2]
+
+### 예상 소요 시간
+- **[주제] 기초**: 90-120분
+- **[주제] 고급**: 60-90분
+- **전체 과정**: 5-7시간
+
+---
+
+## 🛠️ 실습 학습
+
+### 📁 실습 코드 및 자동화
+- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_master/repos/samples/day[숫자]/[주제]/`
+- **자동화 스크립트**: `/mcp_knowledge_base/cloud_master/repos/automation/day[숫자]/[주제]-practice-automation.sh`
+- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_master/repos/cloud-scripts/`
+
+<details>
+<summary>🚀 실습 환경 준비</summary>
+
+#### 필수 도구
+- **[도구 1]**: [설명]
+- **[도구 2]**: [설명]
+
+#### 환경 설정
+```bash
+# [도구] 설치 확인
+[도구] --version
+
+# [도구] 설정 확인
+[도구] [설정 명령어]
+```
+
+</details>
+
+<details>
+<summary>🔧 1단계: [주제] 기초 실습</summary>
+
+#### [주제] 생성
+```bash
+# [주제] 생성
+[명령어]
+
+# [주제] 상태 확인
+[확인 명령어]
+```
+
+#### [주제] 삭제
+```bash
+# [주제] 삭제
+[삭제 명령어]
+```
+
+</details>
+
+---
+
+## 📚 참고 자료
+
+### 유용한 명령어
+```bash
+# [주제] 관리
+[명령어 1]
+[명령어 2]
+```
+
+### 문제 해결
+1. **[문제 1]**
+   - [해결 방법 1]
+   - [해결 방법 2]
+
+2. **[문제 2]**
+   - [해결 방법 1]
+   - [해결 방법 2]
+
+---
+
+## 🧹 실습 정리
+
+### 자동 정리
+```bash
+# [일차] 실습 자동 정리
+./mcp_knowledge_base/cloud_master/repos/automation/day[숫자]/[주제]-practice-automation.sh --cleanup
+```
+
+### 수동 정리
+```bash
+# [주제] 정리
+[정리 명령어 1]
+[정리 명령어 2]
+```
+
+### 정리 확인
+- [ ] [확인 항목 1]
+- [ ] [확인 항목 2]
+```
+
+## 🔧 환경 체크 시스템 규칙
+
+### **통합 환경 체크 스크립트**
+```bash
+#!/bin/bash
+
+# 통합 환경 체크 스크립트
+# [과정명] 과정용 환경 검증 도구
+
+# 색상 정의
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
+NC='\033[0m' # No Color
+
+# 로그 함수
+log_info() { echo -e "${BLUE}[INFO]${NC} $1"; }
+log_success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
+log_warning() { echo -e "${YELLOW}[WARNING]${NC} $1"; }
+log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
+
+# 체크 결과 저장
+CHECKS_PASSED=0
+CHECKS_FAILED=0
+TOTAL_CHECKS=0
+
+# 체크 함수
+check_command() {
+    local command_name="$1"
+    local command="$2"
+    local expected_output="$3"
+    
+    TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
+    
+    log_info "체크 중: $command_name"
+    
+    if command -v "$command" &> /dev/null; then
+        if [ -n "$expected_output" ]; then
+            if eval "$command" | grep -q "$expected_output"; then
+                log_success "✅ $command_name: 정상"
+                CHECKS_PASSED=$((CHECKS_PASSED + 1))
+            else
+                log_error "❌ $command_name: 예상 출력과 다름"
+                CHECKS_FAILED=$((CHECKS_FAILED + 1))
+            fi
+        else
+            log_success "✅ $command_name: 설치됨"
+            CHECKS_PASSED=$((CHECKS_PASSED + 1))
+        fi
+    else
+        log_error "❌ $command_name: 설치되지 않음"
+        CHECKS_FAILED=$((CHECKS_FAILED + 1))
+    fi
+}
+
+# 결과 요약
+print_summary() {
+    log_header "=== 환경 체크 결과 요약 ==="
+    
+    local success_rate=$((CHECKS_PASSED * 100 / TOTAL_CHECKS))
+    
+    if [ "$success_rate" -ge 90 ]; then
+        log_success "🎉 환경 체크 통과! (${success_rate}%)"
+    elif [ "$success_rate" -ge 70 ]; then
+        log_warning "⚠️ 환경 체크 부분 통과 (${success_rate}%)"
+    else
+        log_error "❌ 환경 체크 실패 (${success_rate}%)"
+    fi
+}
+
+# 메인 실행
+main() {
+    # [주제별 환경 체크 로직]
+    print_summary
+}
+
+# 스크립트 실행
+main "$@"
+```
+
+## 📋 품질 관리 규칙
+
+### **문서 무결성 체크**
+- [ ] 모든 practices 파일에 repos 연결 정보 포함
+- [ ] 모든 README.md에 실습 자료 구조 섹션 포함
+- [ ] 모든 자동화 스크립트에 환경 체크 통합
+- [ ] 모든 실습에 정리 섹션 포함
+
+### **구조 일관성 체크**
+- [ ] 모든 Day에 동일한 디렉토리 구조
+- [ ] 모든 practices 파일에 동일한 섹션 구조
+- [ ] 모든 자동화 스크립트에 동일한 함수 구조
+- [ ] 모든 환경 체크에 동일한 결과 해석
+
+### **연결 관계 체크**
+- [ ] practices ↔ samples 매칭률 100%
+- [ ] practices ↔ automation 매칭률 100%
+- [ ] README ↔ practices 연결 100%
+- [ ] learning-path ↔ 전체 구조 연결 100%
+
+## 🚀 확장 규칙
+
+### **새로운 Day 추가 시**
+1. `textbook/Day[N]/` 디렉토리 생성
+2. `README.md` 표준 구조 적용
+3. `practices/` 디렉토리 생성 및 파일 추가
+4. `repos/samples/day[N]/` 디렉토리 생성
+5. `repos/automation/day[N]/` 디렉토리 생성
+6. 환경 체크 스크립트에 새 Day 로직 추가
+
+### **새로운 주제 추가 시**
+1. `practices/[주제]-basics.md` 파일 생성
+2. `repos/samples/day[N]/[주제]/` 디렉토리 생성
+3. `repos/automation/day[N]/[주제]-practice-automation.sh` 스크립트 생성
+4. README.md에 새 주제 섹션 추가
+
+### **새로운 도구 추가 시**
+1. `guides/install_[도구].md` 가이드 생성
+2. 환경 체크 스크립트에 새 도구 체크 로직 추가
+3. 자동화 스크립트에 새 도구 설치 로직 추가
+
+## 📊 성과 지표
+
+### **구조 완성도**
+- **디렉토리 구조 일관성**: 100%
+- **파일 구조 표준화**: 100%
+- **연결 관계 완성도**: 100%
+
+### **교육 효과**
+- **학습자 만족도**: 목표 90% 이상
+- **실습 완료율**: 목표 95% 이상
+- **환경 설정 성공률**: 목표 90% 이상
+
+### **시스템 안정성**
+- **자동화 스크립트 성공률**: 95% 이상
+- **환경 체크 정확도**: 90% 이상
+- **문서 링크 무결성**: 100%
+
+## 🔗 앵커 링크 관리 규칙
+
+### **바로 아래 위치한 제목 앵커 링크 제거 규칙**
+- **목적**: README.md 파일에서 바로 아래 위치한 제목의 불필요한 앵커 링크 제거
+- **적용 대상**: 모든 README.md 파일
+- **제거 패턴**: `#### 제목` 바로 아래에 있는 `[제목](#제목)` 형태의 앵커 링크
+
+### **제거해야 할 앵커 링크 예시**
+```markdown
+#### 필수 계정
+
+[필수 계정](#필수-계정)  <!-- ❌ 제거 대상 -->
+- **AWS 계정**: Free Tier 계정
+```
+
+### **올바른 형태**
+```markdown
+#### 필수 계정
+
+- **AWS 계정**: Free Tier 계정
+```
+
+### **자동 제거 도구 사용법**
+```bash
+# 모든 README.md 파일에서 바로 아래 위치한 제목 앵커 링크 제거
+grep -r "^#### .+$\n\n\[.+\]\(#.+\)$" mcp_knowledge_base/ --include="*.md" -l | xargs sed -i '/^#### .+$/,/^\[.+\]\(#.+\)$/d'
+```
+
+### **수동 제거 방법**
+1. `^#### .+$` 패턴으로 제목 찾기
+2. 바로 아래 줄에 `[제목](#제목)` 형태의 앵커 링크 확인
+3. 해당 앵커 링크 줄 제거
+
+### **검증 방법**
+```bash
+# 제거 후 검증
+grep -r "^#### .+$\n\n\[.+\]\(#.+\)$" mcp_knowledge_base/ --include="*.md"
+# 결과가 없으면 성공
+```
+
+### **적용된 파일 목록**
+- ✅ Cloud Master Day3 README.md (54개 앵커 링크 제거)
+- ✅ Cloud Master Day1 README.md (3개 앵커 링크 제거)
+- ✅ Cloud Container Day1 README.md (24개 앵커 링크 제거)
+- ✅ Cloud Basic Day1 README.md (14개 앵커 링크 제거)
+- ✅ Cloud Basic Day2 README.md (13개 앵커 링크 제거)
+
+이 규칙을 통해 일관되고 체계적인 교육 교구 시스템을 구축할 수 있습니다.
