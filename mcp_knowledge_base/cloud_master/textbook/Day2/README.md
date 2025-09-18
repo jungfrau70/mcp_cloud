@@ -6,18 +6,19 @@
 ## 📚 이론 학습
 
 1. [🎯 학습 목표](#학습-목표)
-2. [🐳 Docker 기초 및 컨테이너 기술](#docker-설치-및-설정-컨테이너-오케스트레이션-구현)
-3. [📝 Git/GitHub 기초 및 협업](#kubernetes-기초-및-클러스터-관리)
-4. [🚀 GitHub Actions CI/CD 파이프라인](#github-actions-고급-워크플로우)
-5. [🖥️ VM 기반 웹 애플리케이션 배포](#cloud-master-2일차-고급-cicd-및-vm-기반-컨테이너-배포-이론-및-실습)
+2. [🐳 Docker 고급 기법 및 최적화](#docker-고급-기법-및-최적화)
+3. [🚀 GitHub Actions 고급 워크플로우](#github-actions-고급-워크플로우)
+4. [☸️ Kubernetes 기초 및 클러스터 관리](#kubernetes-기초-및-클러스터-관리)
+5. [🔄 완전 자동화된 배포 파이프라인](#완전-자동화된-배포-파이프라인)
 
 ## 🛠️ 실습 학습
 
 1. [🔧 실습 환경 준비](#실습-환경-준비)
-2. [🐳 Docker 기초 및 컨테이너 기술 실습](#docker-설치-및-설정-컨테이너-오케스트레이션-구현)
-3. [📝 Git/GitHub 기초 및 협업 실습](#kubernetes-기초-및-클러스터-관리)
-4. [🚀 GitHub Actions CI/CD 파이프라인 실습](#github-actions-고급-워크플로우)
-5. [🖥️ VM 기반 웹 애플리케이션 배포 실습](#cloud-master-2일차-고급-cicd-및-vm-기반-컨테이너-배포-이론-및-실습)
+2. [🔧 실습 가이드](#실습-가이드)
+3. [🐳 Docker 고급 기법 및 최적화 실습](#docker-고급-기법-및-최적화)
+4. [🚀 GitHub Actions 고급 워크플로우 실습](#github-actions-고급-워크플로우)
+5. [☸️ Kubernetes 기초 및 클러스터 관리 실습](#kubernetes-기초-및-클러스터-관리)
+6. [🔄 완전 자동화된 배포 파이프라인 실습](#완전-자동화된-배포-파이프라인)
 
 ## 📚 참고 자료
 
@@ -57,10 +58,8 @@
 
 ## 📚 이론 학습
 
-### 🐳 Docker 고급 기법 및 최적화 이론
-
 <details>
-<summary>🐳 Docker 고급 기법</summary>
+<summary>🐳 Docker 고급 기법 및 최적화</summary>
 
 #### 멀티스테이지 빌드란?
 
@@ -90,7 +89,7 @@
 </details>
 
 <details>
-<summary>🚀 GitHub Actions 고급 워크플로우 이론</summary>
+<summary>🚀 GitHub Actions 고급 워크플로우</summary>
 
 #### 매트릭스 빌드란?
 
@@ -120,7 +119,7 @@
 </details>
 
 <details>
-<summary>🚀 Kubernetes 기초 및 클러스터 관리 이론</summary>
+<summary>☸️ Kubernetes 기초 및 클러스터 관리</summary>
 
 #### Kubernetes란?
 
@@ -153,7 +152,7 @@
 </details>
 
 <details>
-<summary>🚀 VM 기반 컨테이너 배포 자동화 이론</summary>
+<summary>🔄 완전 자동화된 배포 파이프라인</summary>
 
 #### VM 기반 컨테이너 배포란?
 
@@ -215,10 +214,10 @@
 
 ---
 
-## 🛠️ 실습
+## 🛠️ 실습 학습
 
 <details>
-<summary>🚀 실습 환경 준비</summary>
+<summary>🔧 실습 환경 준비</summary>
 
 ### 📦 필수 소프트웨어 설치
 
@@ -314,7 +313,7 @@ kubectl version --client
 
 
 <details>
-<summary>🔗 실습 가이드</summary>
+<summary>🔧 실습 가이드</summary>
 
 
 ### 🚀 시작하기
@@ -328,6 +327,36 @@ kubectl version --client
 - 🔗 [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-optimization-guide.md) - 비용 예측 및 최적화
 - 🔗 [모니터링 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/monitoring-guide.md) - CloudWatch/Cloud Monitoring 설정
 - 🔗 [종합 실습 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/comprehensive-practice-guide.md) - EKS/GKE 컨테이너 오케스트레이션
+
+### ⚠️ 실습 주의사항 및 문제 해결
+
+#### 환경 요구사항
+- **최소 사양**: 16GB RAM, 100GB 디스크 공간, 8코어 CPU
+- **네트워크**: 안정적인 인터넷 연결 (Kubernetes 이미지 다운로드용)
+- **OS**: Windows 10/11, macOS 10.15+, Ubuntu 20.04+
+
+#### 자주 발생하는 문제
+1. **Docker 멀티스테이지 빌드 실패**
+   - 해결방법: Dockerfile 문법 확인, 빌드 컨텍스트 확인
+   - 명령어: `docker build --no-cache -t 이미지명 .`
+
+2. **Kubernetes 클러스터 구성 실패**
+   - 해결방법: minikube 또는 kind 설치 확인, 리소스 할당 확인
+   - 명령어: `kubectl cluster-info`로 클러스터 상태 확인
+
+3. **GitHub Actions 시크릿 사용 실패**
+   - 해결방법: 저장소 시크릿 설정 확인, 워크플로우 파일 문법 검사
+   - 확인: Settings > Secrets and variables > Actions
+
+4. **VM 컨테이너 배포 실패**
+   - 해결방법: Docker 설치 확인, 포트 설정 확인, 방화벽 규칙 확인
+   - 명령어: `docker ps`, `netstat -tlnp`로 상태 확인
+
+#### 실습 검증 방법
+- **Docker**: `docker images`, `docker system df`로 이미지 최적화 확인
+- **Kubernetes**: `kubectl get pods`, `kubectl get services`로 배포 상태 확인
+- **GitHub Actions**: Actions 탭에서 워크플로우 실행 상태 확인
+- **VM 배포**: `curl http://VM_IP:포트`로 서비스 접속 확인
 
 ### 🛠️ 문제 해결 가이드
 
@@ -365,7 +394,8 @@ kubectl version --client
 
 ---
 
-## 🐳 Docker 고급 기법 및 최적화
+<details>
+<summary>🐳 Docker 고급 기법 및 최적화 실습</summary>
 
 ### 📚 이론: 컨테이너 아키텍처 원리
 
@@ -424,9 +454,10 @@ USER nextjs
 3. **이미지 크기 최적화**
 4. **보안 취약점 스캔**
 
----
+</details>
 
-## 🚀 GitHub Actions 고급 워크플로우
+<details>
+<summary>🚀 GitHub Actions 고급 워크플로우 실습</summary>
 
 ### 📚 이론: CI/CD 파이프라인 아키텍처
 
@@ -485,9 +516,10 @@ jobs:
 3. **시크릿 관리 구현**
 4. **성능 최적화**
 
----
+</details>
 
-## 🚀 Kubernetes 기초 및 클러스터 관리
+<details>
+<summary>☸️ Kubernetes 기초 및 클러스터 관리 실습</summary>
 
 ### 📚 이론: Kubernetes 기초 개념
 
@@ -506,24 +538,64 @@ jobs:
 
 ### kubectl 기본 명령어
 
+#### 1단계: kubectl 설치 및 설정
 ```bash
-# 클러스터 정보 확인
+# kubectl 설치 (Linux)
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+# kubectl 설치 확인
+kubectl version --client
+
+# 클러스터 연결 확인
 kubectl cluster-info
 kubectl get nodes
+```
 
+#### 2단계: 기본 리소스 관리
+```bash
 # Pod 관리
 kubectl get pods
+kubectl get pods -o wide
 kubectl describe pod <pod-name>
 kubectl logs <pod-name>
+kubectl logs -f <pod-name>  # 실시간 로그 확인
+
+# Pod 생성 및 삭제
+kubectl run nginx-pod --image=nginx
+kubectl delete pod nginx-pod
 
 # Deployment 관리
 kubectl get deployments
 kubectl create deployment nginx --image=nginx
 kubectl scale deployment nginx --replicas=3
+kubectl rollout status deployment/nginx
+kubectl rollout history deployment/nginx
 
 # Service 관리
 kubectl get services
 kubectl expose deployment nginx --port=80 --type=LoadBalancer
+kubectl get endpoints
+```
+
+#### 3단계: 고급 명령어
+```bash
+# 네임스페이스 관리
+kubectl get namespaces
+kubectl create namespace my-namespace
+kubectl config set-context --current --namespace=my-namespace
+
+# 리소스 상세 정보
+kubectl get all
+kubectl get all -o wide
+kubectl describe node <node-name>
+
+# 리소스 편집
+kubectl edit deployment nginx
+kubectl patch deployment nginx -p '{"spec":{"replicas":5}}'
+
+# 포트 포워딩
+kubectl port-forward deployment/nginx 8080:80
 ```
 
 ### EKS 클러스터 생성 (AWS)
@@ -644,9 +716,305 @@ kubectl get secrets
 4. **스케일링 및 업데이트**
 5. **ConfigMap/Secret 활용**
 
----
+### 🔧 Kubernetes 실습 환경 설정 가이드
 
-## 🚀 VM 기반 컨테이너 배포 자동화
+#### 1. 로컬 Kubernetes 환경 구축
+
+**Minikube 설치 및 설정**
+```bash
+# Minikube 설치 (macOS)
+brew install minikube
+
+# Minikube 설치 (Linux)
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+
+# Minikube 시작
+minikube start --driver=docker --memory=4096 --cpus=2
+
+# 클러스터 상태 확인
+minikube status
+kubectl get nodes
+```
+
+**Kind (Kubernetes in Docker) 설정**
+```bash
+# Kind 설치
+go install sigs.k8s.io/kind@v0.20.0
+
+# 클러스터 생성
+kind create cluster --name cloud-master-cluster
+
+# 클러스터 목록 확인
+kind get clusters
+
+# kubectl 컨텍스트 설정
+kubectl cluster-info --context kind-cloud-master-cluster
+```
+
+#### 2. 클라우드 Kubernetes 서비스 설정
+
+**AWS EKS 클러스터 생성**
+```bash
+# EKS CLI 설치
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+
+# EKS 클러스터 생성
+eksctl create cluster \
+  --name cloud-master-eks \
+  --region ap-northeast-2 \
+  --nodegroup-name workers \
+  --node-type t3.medium \
+  --nodes 2 \
+  --nodes-min 1 \
+  --nodes-max 3 \
+  --managed
+
+# 클러스터 연결 확인
+aws eks update-kubeconfig --region ap-northeast-2 --name cloud-master-eks
+kubectl get nodes
+```
+
+**Google GKE 클러스터 생성**
+```bash
+# GKE 클러스터 생성
+gcloud container clusters create cloud-master-gke \
+  --zone=asia-northeast3-a \
+  --num-nodes=2 \
+  --machine-type=e2-medium \
+  --enable-autoscaling \
+  --min-nodes=1 \
+  --max-nodes=3
+
+# 클러스터 연결
+gcloud container clusters get-credentials cloud-master-gke --zone=asia-northeast3-a
+kubectl get nodes
+```
+
+#### 3. 필수 도구 설치 및 설정
+
+**kubectl 설치**
+```bash
+# kubectl 설치 (macOS)
+brew install kubectl
+
+# kubectl 설치 (Linux)
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+# kubectl 버전 확인
+kubectl version --client
+```
+
+**Helm 설치**
+```bash
+# Helm 설치
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+# Helm 버전 확인
+helm version
+
+# Helm 저장소 추가
+helm repo add stable https://charts.helm.sh/stable
+helm repo update
+```
+
+**k9s (Kubernetes CLI 도구) 설치**
+```bash
+# k9s 설치 (macOS)
+brew install k9s
+
+# k9s 설치 (Linux)
+wget https://github.com/derailed/k9s/releases/download/v0.27.4/k9s_Linux_amd64.tar.gz
+tar -xzf k9s_Linux_amd64.tar.gz
+sudo mv k9s /usr/local/bin/
+
+# k9s 실행
+k9s
+```
+
+#### 4. 네임스페이스 및 리소스 설정
+
+**개발 환경 네임스페이스 생성**
+```bash
+# 네임스페이스 생성
+kubectl create namespace development
+kubectl create namespace staging
+kubectl create namespace production
+
+# 네임스페이스 확인
+kubectl get namespaces
+
+# 기본 네임스페이스 설정
+kubectl config set-context --current --namespace=development
+```
+
+**리소스 할당량 설정**
+```yaml
+# resource-quota.yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: dev-quota
+  namespace: development
+spec:
+  hard:
+    requests.cpu: "2"
+    requests.memory: 4Gi
+    limits.cpu: "4"
+    limits.memory: 8Gi
+    pods: "10"
+    services: "5"
+    persistentvolumeclaims: "4"
+```
+
+```bash
+# 리소스 할당량 적용
+kubectl apply -f resource-quota.yaml
+
+# 할당량 확인
+kubectl describe quota dev-quota -n development
+```
+
+#### 5. 모니터링 및 로깅 설정
+
+**Prometheus 설치**
+```bash
+# Prometheus Helm 차트 설치
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+# Prometheus 설치
+helm install prometheus prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  --create-namespace \
+  --set grafana.adminPassword=admin123
+
+# 설치 상태 확인
+kubectl get pods -n monitoring
+```
+
+**Grafana 접근 설정**
+```bash
+# Grafana 서비스 포트 포워딩
+kubectl port-forward -n monitoring svc/prometheus-grafana 3000:80
+
+# 브라우저에서 http://localhost:3000 접속
+# 사용자명: admin, 비밀번호: admin123
+```
+
+#### 6. 실습 환경 검증
+
+**클러스터 상태 확인**
+```bash
+# 노드 상태 확인
+kubectl get nodes -o wide
+
+# 클러스터 정보 확인
+kubectl cluster-info
+
+# API 리소스 목록 확인
+kubectl api-resources
+
+# 네임스페이스별 리소스 확인
+kubectl get all --all-namespaces
+```
+
+**테스트 애플리케이션 배포**
+```yaml
+# test-app.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-app
+  namespace: development
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: test-app
+  template:
+    metadata:
+      labels:
+        app: test-app
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.21
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-app-service
+  namespace: development
+spec:
+  selector:
+    app: test-app
+  ports:
+  - port: 80
+    targetPort: 80
+  type: LoadBalancer
+```
+
+```bash
+# 테스트 애플리케이션 배포
+kubectl apply -f test-app.yaml
+
+# 배포 상태 확인
+kubectl get pods -n development
+kubectl get services -n development
+
+# 애플리케이션 접근 테스트
+kubectl port-forward -n development svc/test-app-service 8080:80
+# 브라우저에서 http://localhost:8080 접속
+```
+
+#### 7. 문제 해결 가이드
+
+**자주 발생하는 문제와 해결방법**
+
+1. **Pod가 Pending 상태인 경우**
+```bash
+# Pod 상세 정보 확인
+kubectl describe pod <pod-name> -n <namespace>
+
+# 노드 리소스 확인
+kubectl top nodes
+kubectl describe node <node-name>
+```
+
+2. **서비스 접근 불가**
+```bash
+# 서비스 엔드포인트 확인
+kubectl get endpoints -n <namespace>
+
+# Pod 로그 확인
+kubectl logs <pod-name> -n <namespace>
+```
+
+3. **네트워크 정책 문제**
+```bash
+# 네트워크 정책 확인
+kubectl get networkpolicies -n <namespace>
+
+# DNS 해결 테스트
+kubectl run -it --rm debug --image=busybox --restart=Never -- nslookup kubernetes.default
+```
+
+</details>
+
+<details>
+<summary>🔄 완전 자동화된 배포 파이프라인 실습</summary>
 
 ### 📚 이론: 클라우드 인프라 아키텍처
 
@@ -733,9 +1101,10 @@ docker swarm join-token worker
 3. **컨테이너 배포**
 4. **고가용성 설정**
 
----
+</details>
 
-## 🔄 완전 자동화된 배포 파이프라인
+<details>
+<summary>🔄 완전 자동화된 배포 파이프라인 실습</summary>
 
 ### 📚 이론: DevOps 및 자동화 원리
 
@@ -850,9 +1219,66 @@ jobs:
 4. **모니터링 및 알림 설정** - Health Check 및 자동 롤백 구현
 5. **협업 워크플로우 구축** - PR 기반 코드 리뷰 및 승인 프로세스
 
+</details>
+
 ---
 
 ## 📚 문제 해결 및 참고 자료
+
+### 📊 학습 평가 기준
+
+#### 실습 완료 기준
+1. **Docker 고급 실습 (25점)**
+   - ✅ 멀티스테이지 빌드 구현 (10점)
+   - ✅ 이미지 최적화 및 보안 스캔 (10점)
+   - ✅ Docker Compose 고급 구성 (5점)
+
+2. **GitHub Actions 고급 실습 (25점)**
+   - ✅ 복잡한 워크플로우 작성 (10점)
+   - ✅ 시크릿 및 환경 변수 관리 (10점)
+   - ✅ 조건부 실행 및 병렬 처리 (5점)
+
+3. **Kubernetes 실습 (30점)**
+   - ✅ 클러스터 구성 및 관리 (15점)
+   - ✅ 애플리케이션 배포 및 스케일링 (10점)
+   - ✅ 서비스 및 인그레스 설정 (5점)
+
+4. **VM 컨테이너 배포 실습 (20점)**
+   - ✅ 완전 자동화된 배포 파이프라인 구축 (15점)
+   - ✅ 모니터링 및 로깅 설정 (5점)
+
+#### 학습 목표 달성 평가
+- **90점 이상**: 모든 고급 학습 목표 달성, 전문가 수준
+- **80-89점**: 고급 학습 목표 달성, 실무 적용 가능
+- **70-79점**: 기본 고급 목표 달성, 추가 학습 권장
+- **70점 미만**: 중급 개념 재학습 필요
+
+#### 실습 결과물 제출
+1. **최적화된 Docker 이미지**: 멀티스테이지 빌드, 보안 스캔 결과
+2. **고급 GitHub Actions**: 복잡한 워크플로우, 시크릿 관리
+3. **Kubernetes 매니페스트**: 배포, 서비스, 인그레스 설정 파일
+4. **자동화 스크립트**: 완전 자동화된 배포 파이프라인
+
+### 📖 용어 사전
+
+#### Docker 고급 용어
+- **멀티스테이지 빌드(Multi-stage Build)**: 여러 단계로 나누어 이미지 크기 최적화
+- **레이어 캐싱(Layer Caching)**: Docker 레이어 재사용으로 빌드 속도 향상
+- **이미지 스캔(Image Scanning)**: 보안 취약점 검사 및 해결
+- **레지스트리 미러(Registry Mirror)**: 이미지 다운로드 속도 향상
+
+#### Kubernetes 용어
+- **파드(Pod)**: Kubernetes의 최소 배포 단위
+- **디플로이먼트(Deployment)**: 파드의 배포 및 관리
+- **서비스(Service)**: 파드에 대한 네트워크 접근 제공
+- **인그레스(Ingress)**: 외부에서 클러스터 내 서비스 접근
+- **네임스페이스(Namespace)**: 리소스 격리 및 관리
+
+#### CI/CD 고급 용어
+- **매트릭스 빌드(Matrix Build)**: 여러 환경에서 동시 빌드
+- **의존성 캐싱(Dependency Caching)**: 빌드 속도 향상을 위한 캐시
+- **아티팩트 관리(Artifact Management)**: 빌드 결과물 저장 및 관리
+- **롤백(Rollback)**: 문제 발생 시 이전 버전으로 복구
 
 ### 일반적인 문제 해결
 
@@ -935,7 +1361,34 @@ jobs:
 - **로드 밸런싱**: 트래픽 분산 및 고가용성
 - **자동 복구**: 장애 발생 시 자동 복구 시스템
 
+## 📚 관련 가이드 문서
 
+### Docker 고급 기법
+- 🔗 [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
+- 🔗 [Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/docker-compose-guide.md) - 다중 서비스 관리
+
+### GitHub Actions 고급 워크플로우
+- 🔗 [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/github-actions-guide.md) - CI/CD 파이프라인 구축
+- 🔗 [매트릭스 빌드 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/matrix-build-guide.md) - 다중 환경 빌드
+
+### Kubernetes 및 컨테이너 오케스트레이션
+- 🔗 [Kubernetes 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/kubernetes-guide.md) - 컨테이너 오케스트레이션
+- 🔗 [Kubernetes 실습 환경 설정](/mcp_knowledge_base/cloud_master/textbook/Day2/kubernetes-setup-guide.md) - 클러스터 구축
+
+### 완전 자동화된 배포 파이프라인
+- 🔗 [자동화 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/automated-deployment-guide.md) - 완전 자동화된 배포
+- 🔗 [인프라 as 코드 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/infrastructure-as-code-guide.md) - Terraform, CloudFormation
+
+### 모니터링 및 비용 관리
+- 🔗 [모니터링 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/monitoring-guide.md) - Prometheus, Grafana 설정
+- 🔗 [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-optimization-guide.md) - 클라우드 비용 관리
+- 🔗 [비용 구조 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-structure-guide.md) - 비용 분석 및 예측
+
+### 종합 실습
+- 🔗 [종합 실습 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/comprehensive-practice-guide.md) - 전체 과정 통합 실습
+
+### 문제 해결
+- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/troubleshooting-guide.md) - 고급 문제 해결
 
 ---
 

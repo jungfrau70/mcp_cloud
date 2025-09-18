@@ -6,25 +6,23 @@
 ## 📚 이론 학습
 
 1. [🎯 학습 목표](#학습-목표)
-2. [🚀 로드 밸런싱 및 Auto Scaling](#로드-밸런싱-및-auto-scaling)
+2. [⚖️ 로드 밸런싱 및 Auto Scaling](#로드-밸런싱-및-auto-scaling)
 3. [📊 컨테이너 모니터링 및 로깅](#컨테이너-모니터링-및-로깅)
 4. [🔄 장애 복구 및 운영 자동화](#장애-복구-및-운영-자동화)
 5. [💰 비용 최적화 및 운영 전략](#비용-최적화-및-운영-전략)
 
 ## 🛠️ 실습 학습
 
-6. [📚 실습 가이드](#실습-가이드)
-7. [🔧 실습 환경 준비](#실습-환경-준비)
-8. [🚀 로드 밸런싱 및 Auto Scaling 실습](#로드-밸런싱-및-auto-scaling-이론)
-9. [📊 컨테이너 모니터링 및 로깅 실습](#컨테이너-모니터링-및-로깅)
-10. [🔄 장애 복구 및 운영 자동화 실습](#장애-복구-및-운영-자동화)
-11. [💰 비용 최적화 및 운영 전략 실습](#비용-최적화-및-운영-전략)
+1. [🔧 실습 환경 준비](#실습-환경-준비)
+2. [🔧 실습 가이드](#실습-가이드)
+3. [⚖️ 로드 밸런싱 및 Auto Scaling 실습](#로드-밸런싱-및-auto-scaling)
+4. [📊 컨테이너 모니터링 및 로깅 실습](#컨테이너-모니터링-및-로깅)
+5. [🔄 장애 복구 및 운영 자동화 실습](#장애-복구-및-운영-자동화)
+6. [💰 비용 최적화 및 운영 전략 실습](#비용-최적화-및-운영-전략)
 
 ## 📚 참고 자료
 
-[📚 참고 자료](#참고-자료)
-12. [📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
-
+1. [📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
 
 </details>
 
@@ -59,12 +57,10 @@
 
 ---
 
-## 📚 이론
-
-### 🚀 로드 밸런싱 및 Auto Scaling 이론
+## 📚 이론 학습
 
 <details>
-<summary>🚀 로드 밸런싱 이론</summary>
+<summary>⚖️ 로드 밸런싱 및 Auto Scaling</summary>
 
 #### 로드 밸런싱이란?
 
@@ -101,7 +97,7 @@
 </details>
 
 <details>
-<summary>📊 Auto Scaling 이론</summary>
+<summary>📊 Auto Scaling</summary>
 
 #### Auto Scaling이란?
 
@@ -138,7 +134,7 @@
 </details>
 
 <details>
-<summary>📊 컨테이너 모니터링 및 로깅 이론</summary>
+<summary>📊 컨테이너 모니터링 및 로깅</summary>
 
 #### 모니터링이란?
 
@@ -175,7 +171,7 @@
 </details>
 
 <details>
-<summary>🔄 장애 복구 및 운영 자동화 이론</summary>
+<summary>🔄 장애 복구 및 운영 자동화</summary>
 
 #### 장애 복구란?
 
@@ -212,7 +208,7 @@
 </details>
 
 <details>
-<summary>💰 비용 최적화 및 운영 전략 이론</summary>
+<summary>💰 비용 최적화 및 운영 전략</summary>
 
 #### 비용 최적화란?
 
@@ -250,12 +246,152 @@
 
 ---
 
-## 🛠️ 실습
-
-### 🚀 로드 밸런싱 및 Auto Scaling 실습
+## 🛠️ 실습 학습
 
 <details>
-<summary>📖 실습 개요</summary>
+<summary>🔧 실습 환경 준비</summary>
+
+### 📋 필수 계정 및 도구
+
+#### 필수 계정
+
+[필수 계정](#필수-계정)
+- **AWS 계정**: Free Tier 계정
+- **GCP 계정**: $300 크레딧 계정
+- **GitHub 계정**: 저장소 관리 및 Actions 사용
+- **Docker Hub 계정**: 컨테이너 이미지 저장소
+
+#### 필수 도구
+
+[필수 도구](#필수-도구)
+- **AWS CLI**: AWS 서비스 관리
+- **gcloud CLI**: Google Cloud 서비스 관리
+- **Docker**: 컨테이너 이미지 빌드
+- **kubectl**: Kubernetes 클러스터 관리 (선택사항)
+
+</details>
+
+<details>
+<summary>🔧 실습 가이드</summary>
+
+### 📖 상세 실습 가이드
+
+[📖 상세 실습 가이드](#상세-실습-가이드)
+- 🔗 [로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/load-balancing-guide.md) - ELB, Cloud Load Balancing 구성
+- 🔗 [Auto Scaling 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/auto-scaling-guide.md) - ASG, MIG 자동 확장 설정
+- 🔗 [통합 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/integration-guide.md) - 로드 밸런서 + 오토스케일링 연동
+- 🔗 [장애 복구 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/disaster-recovery-guide.md) - 장애 시뮬레이션 및 복구
+
+### ⚠️ 실습 주의사항 및 문제 해결
+
+#### 환경 요구사항
+- **최소 사양**: 32GB RAM, 200GB 디스크 공간, 16코어 CPU
+- **네트워크**: 안정적인 인터넷 연결 (대용량 이미지 다운로드용)
+- **OS**: Windows 10/11, macOS 10.15+, Ubuntu 20.04+
+
+#### 자주 발생하는 문제
+1. **로드 밸런서 구성 실패**
+   - 해결방법: 보안 그룹 규칙 확인, 서브넷 설정 확인
+   - 명령어: `aws elbv2 describe-load-balancers`로 상태 확인
+
+2. **Auto Scaling 그룹 생성 실패**
+   - 해결방법: 시작 템플릿 확인, IAM 역할 권한 확인
+   - 명령어: `aws autoscaling describe-auto-scaling-groups`로 상태 확인
+
+3. **모니터링 알람 설정 실패**
+   - 해결방법: CloudWatch 메트릭 확인, SNS 토픽 설정 확인
+   - 명령어: `aws cloudwatch describe-alarms`로 알람 상태 확인
+
+4. **장애 복구 테스트 실패**
+   - 해결방법: 백업 정책 확인, 복구 절차 검증
+   - 명령어: `aws backup describe-backup-job`로 백업 상태 확인
+
+#### 실습 검증 방법
+- **로드 밸런싱**: `curl http://로드밸런서DNS`로 트래픽 분산 확인
+- **Auto Scaling**: `kubectl get hpa` 또는 `aws autoscaling describe-policies`로 스케일링 확인
+- **모니터링**: CloudWatch 대시보드에서 메트릭 확인
+- **장애 복구**: 백업 복원 테스트 및 RTO/RPO 측정
+
+### 📚 데모 프로젝트
+
+[📚 데모 프로젝트](#데모-프로젝트)
+- 🔗 Actions Demo 프로젝트 - GitHub Actions CI/CD 데모
+- 🔗 My App 프로젝트 - Docker 기반 웹 애플리케이션
+- 🔗 스크립트 모음 - AWS/GCP 자동화 스크립트
+
+### 🛠️ 문제 해결 가이드
+
+[🛠️ 문제 해결 가이드](#문제-해결-가이드)
+- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/troubleshooting-guide.md) - 로드 밸런싱, 오토스케일링, 모니터링 문제 해결
+
+### 🔗 관련 과정 링크
+
+[🔗 관련 과정 링크](#관련-과정-링크)
+- 🔗 Cloud Basic 과정 - AWS/GCP 기초 과정
+- 🔗 Cloud Container 과정 - Kubernetes 고급 과정
+- 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
+- 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
+- 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/cloud_master/learning-path.md) - Cloud Master 학습 경로
+
+---
+
+### 🔧 실습 환경 준비
+
+<details>
+<summary>📋 필수 계정 및 도구</summary>
+
+#### 필수 계정
+
+[필수 계정](#필수-계정)
+- **AWS 계정**: Free Tier 계정
+- **GCP 계정**: $300 크레딧 계정
+- **GitHub 계정**: 저장소 관리 및 Actions 사용
+- **Docker Hub 계정**: 컨테이너 이미지 저장소
+
+#### 필수 도구
+
+[필수 도구](#필수-도구)
+- **AWS CLI**: AWS 서비스 관리
+- **gcloud CLI**: Google Cloud 서비스 관리
+- **Docker**: 컨테이너 이미지 빌드
+- **kubectl**: Kubernetes 클러스터 관리 (선택사항)
+
+</details>
+
+<details>
+<summary>🔧 1일차 실습 완료 확인</summary>
+
+#### 필수 완료 사항
+
+[필수 완료 사항](#필수-완료-사항)
+- [ ] Docker 고급 기술 및 최적화 완료
+- [ ] GitHub Actions 고급 워크플로우 구축
+- [ ] VM 기반 컨테이너 배포 자동화
+- [ ] 완전 자동화된 CI/CD 파이프라인
+
+#### 실습 환경 확인
+
+[실습 환경 확인](#실습-환경-확인)
+```bash
+# AWS CLI 설정 확인
+aws sts get-caller-identity
+
+# gcloud 설정 확인
+gcloud auth list
+
+# Docker 설정 확인
+docker --version
+docker-compose --version
+```
+
+</details>
+
+---
+
+<details>
+<summary>⚖️ 로드 밸런싱 및 Auto Scaling 실습</summary>
+
+### 📖 실습 개요
 
 #### 실습 구성
 
@@ -582,12 +718,12 @@ gcloud compute instance-groups managed set-autoscaling my-app-mig \
 
 </details>
 
----
-
-## 📊 컨테이너 모니터링 및 로깅
+</details>
 
 <details>
-<summary>📖 모니터링 개념</summary>
+<summary>📊 컨테이너 모니터링 및 로깅 실습</summary>
+
+### 📖 모니터링 개념
 
 ### 모니터링의 3가지 기둥
 
@@ -612,17 +748,39 @@ gcloud compute instance-groups managed set-autoscaling my-app-mig \
 
 ### CloudWatch 메트릭 설정
 
-[CloudWatch 메트릭 설정](#cloudwatch-메트릭-설정)
+#### 1단계: CloudWatch 기본 설정
+```bash
+# AWS CLI 설정 확인
+aws sts get-caller-identity
+
+# CloudWatch 서비스 상태 확인
+aws cloudwatch describe-alarms --max-items 5
+
+# 기본 메트릭 확인
+aws cloudwatch list-metrics --namespace AWS/EC2
+```
+
+#### 2단계: 커스텀 메트릭 전송
 ```bash
 # 커스텀 메트릭 전송
 aws cloudwatch put-metric-data \
     --namespace "MyApp/ECS" \
     --metric-data MetricName=RequestCount,Value=100,Unit=Count
 
-# CloudWatch 대시보드 생성
-aws cloudwatch put-dashboard \
-    --dashboard-name "MyApp-Dashboard" \
-    --dashboard-body '{
+# 여러 메트릭 동시 전송
+aws cloudwatch put-metric-data \
+    --namespace "MyApp/ECS" \
+    --metric-data \
+        MetricName=RequestCount,Value=150,Unit=Count \
+        MetricName=ResponseTime,Value=250,Unit=Milliseconds \
+        MetricName=ErrorRate,Value=0.05,Unit=Percent
+```
+
+#### 3단계: CloudWatch 대시보드 생성
+```bash
+# 대시보드 JSON 파일 생성
+cat > dashboard.json << 'EOF'
+{
         "widgets": [
             {
                 "type": "metric",
@@ -635,9 +793,40 @@ aws cloudwatch put-dashboard \
                     "region": "ap-northeast-2",
                     "title": "EC2 CPU Utilization"
                 }
+        },
+        {
+            "type": "metric",
+            "properties": {
+                "metrics": [
+                    ["AWS/EC2", "NetworkIn", "InstanceId", "i-1234567890abcdef0"],
+                    ["AWS/EC2", "NetworkOut", "InstanceId", "i-1234567890abcdef0"]
+                ],
+                "period": 300,
+                "stat": "Sum",
+                "region": "ap-northeast-2",
+                "title": "Network Traffic"
             }
-        ]
-    }'
+        }
+    ]
+}
+EOF
+
+# 대시보드 생성
+aws cloudwatch put-dashboard \
+    --dashboard-name "MyApp-Dashboard" \
+    --dashboard-body file://dashboard.json
+```
+
+#### 4단계: 대시보드 확인 및 관리
+```bash
+# 대시보드 목록 확인
+aws cloudwatch list-dashboards
+
+# 특정 대시보드 정보 확인
+aws cloudwatch get-dashboard --dashboard-name "MyApp-Dashboard"
+
+# 대시보드 삭제
+aws cloudwatch delete-dashboards --dashboard-names "MyApp-Dashboard"
 ```
 
 ### CloudWatch 알람 설정
@@ -694,14 +883,563 @@ scrape_configs:
     scrape_interval: 5s
 ```
 
+### 🔧 모니터링 도구 설정 가이드 상세화
+
+#### 1. Prometheus 고급 설정
+
+**Prometheus 서버 설정**
+```yaml
+# prometheus-server.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitoring
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+      external_labels:
+        cluster: 'cloud-master'
+        environment: 'production'
+    
+    rule_files:
+      - "/etc/prometheus/rules/*.yml"
+    
+    alerting:
+      alertmanagers:
+        - static_configs:
+            - targets:
+              - alertmanager:9093
+    
+    scrape_configs:
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
+      
+      - job_name: 'kubernetes-pods'
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+            action: keep
+            regex: true
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+            action: replace
+            target_label: __metrics_path__
+            regex: (.+)
+          - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+            action: replace
+            regex: ([^:]+)(?::\d+)?;(\d+)
+            replacement: $1:$2
+            target_label: __address__
+          - action: labelmap
+            regex: __meta_kubernetes_pod_label_(.+)
+          - source_labels: [__meta_kubernetes_namespace]
+            action: replace
+            target_label: kubernetes_namespace
+          - source_labels: [__meta_kubernetes_pod_name]
+            action: replace
+            target_label: kubernetes_pod_name
+      
+      - job_name: 'kubernetes-nodes'
+        kubernetes_sd_configs:
+          - role: node
+        relabel_configs:
+          - action: labelmap
+            regex: __meta_kubernetes_node_label_(.+)
+          - target_label: __address__
+            replacement: kubernetes.default.svc:443
+          - source_labels: [__meta_kubernetes_node_name]
+            regex: (.+)
+            target_label: __metrics_path__
+            replacement: /api/v1/nodes/${1}/proxy/metrics
+```
+
+**Prometheus 서버 배포**
+```yaml
+# prometheus-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+      - name: prometheus
+        image: prom/prometheus:v2.45.0
+        args:
+          - '--config.file=/etc/prometheus/prometheus.yml'
+          - '--storage.tsdb.path=/prometheus/'
+          - '--web.console.libraries=/etc/prometheus/console_libraries'
+          - '--web.console.templates=/etc/prometheus/consoles'
+          - '--storage.tsdb.retention.time=200h'
+          - '--web.enable-lifecycle'
+        ports:
+        - containerPort: 9090
+        volumeMounts:
+        - name: prometheus-config-volume
+          mountPath: /etc/prometheus/
+        - name: prometheus-storage-volume
+          mountPath: /prometheus/
+      volumes:
+      - name: prometheus-config-volume
+        configMap:
+          defaultMode: 420
+          name: prometheus-config
+      - name: prometheus-storage-volume
+        emptyDir: {}
+```
+
+#### 2. Grafana 고급 설정
+
+**Grafana 대시보드 설정**
+```yaml
+# grafana-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:10.0.0
+        ports:
+        - containerPort: 3000
+        env:
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          value: "admin123"
+        - name: GF_USERS_ALLOW_SIGN_UP
+          value: "false"
+        volumeMounts:
+        - name: grafana-storage
+          mountPath: /var/lib/grafana
+        - name: grafana-datasources
+          mountPath: /etc/grafana/provisioning/datasources
+        - name: grafana-dashboards
+          mountPath: /etc/grafana/provisioning/dashboards
+      volumes:
+      - name: grafana-storage
+        emptyDir: {}
+      - name: grafana-datasources
+        configMap:
+          name: grafana-datasources
+      - name: grafana-dashboards
+        configMap:
+          name: grafana-dashboards
+```
+
+**Grafana 데이터소스 설정**
+```yaml
+# grafana-datasources.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  namespace: monitoring
+data:
+  datasources.yaml: |
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      access: proxy
+      url: http://prometheus:9090
+      isDefault: true
+      editable: true
+    - name: CloudWatch
+      type: cloudwatch
+      access: proxy
+      jsonData:
+        authType: keys
+        defaultRegion: ap-northeast-2
+      secureJsonData:
+        accessKey: ${AWS_ACCESS_KEY_ID}
+        secretKey: ${AWS_SECRET_ACCESS_KEY}
+```
+
+#### 3. AlertManager 설정
+
+**AlertManager 구성**
+```yaml
+# alertmanager-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: monitoring
+data:
+  alertmanager.yml: |
+    global:
+      smtp_smarthost: 'localhost:587'
+      smtp_from: 'alerts@cloud-master.com'
+    
+    route:
+      group_by: ['alertname']
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 1h
+      receiver: 'web.hook'
+      routes:
+      - match:
+          severity: critical
+        receiver: 'critical-alerts'
+      - match:
+          severity: warning
+        receiver: 'warning-alerts'
+    
+    receivers:
+    - name: 'web.hook'
+      webhook_configs:
+      - url: 'http://webhook:5001/'
+    
+    - name: 'critical-alerts'
+      email_configs:
+      - to: 'admin@cloud-master.com'
+        subject: 'Critical Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          {{ end }}
+    
+    - name: 'warning-alerts'
+      email_configs:
+      - to: 'team@cloud-master.com'
+        subject: 'Warning Alert: {{ .GroupLabels.alertname }}'
+```
+
+#### 4. 커스텀 메트릭 수집
+
+**애플리케이션 메트릭 노출**
+```javascript
+// Node.js 애플리케이션 예제
+const express = require('express');
+const client = require('prom-client');
+
+const app = express();
+
+// 메트릭 레지스트리 생성
+const register = new client.Registry();
+
+// 기본 메트릭 수집
+client.collectDefaultMetrics({ register });
+
+// 커스텀 메트릭 정의
+const httpRequestDuration = new client.Histogram({
+  name: 'http_request_duration_seconds',
+  help: 'Duration of HTTP requests in seconds',
+  labelNames: ['method', 'route', 'status_code'],
+  buckets: [0.1, 0.3, 0.5, 0.7, 1, 3, 5, 7, 10]
+});
+
+const httpRequestTotal = new client.Counter({
+  name: 'http_requests_total',
+  help: 'Total number of HTTP requests',
+  labelNames: ['method', 'route', 'status_code']
+});
+
+const activeConnections = new client.Gauge({
+  name: 'active_connections',
+  help: 'Number of active connections'
+});
+
+// 메트릭을 레지스트리에 등록
+register.registerMetric(httpRequestDuration);
+register.registerMetric(httpRequestTotal);
+register.registerMetric(activeConnections);
+
+// 미들웨어로 메트릭 수집
+app.use((req, res, next) => {
+  const start = Date.now();
+  
+  res.on('finish', () => {
+    const duration = (Date.now() - start) / 1000;
+    const labels = {
+      method: req.method,
+      route: req.route ? req.route.path : req.path,
+      status_code: res.statusCode
+    };
+    
+    httpRequestDuration.observe(labels, duration);
+    httpRequestTotal.inc(labels);
+  });
+  
+  next();
+});
+
+// 메트릭 엔드포인트
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', register.contentType);
+  res.end(await register.metrics());
+});
+
+// 헬스체크 엔드포인트
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'healthy' });
+});
+
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
+```
+
+#### 5. 로그 수집 및 분석
+
+**ELK Stack 설정**
+```yaml
+# elasticsearch-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+  namespace: logging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+      - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+        env:
+        - name: discovery.type
+          value: single-node
+        - name: ES_JAVA_OPTS
+          value: "-Xms512m -Xmx512m"
+        ports:
+        - containerPort: 9200
+        volumeMounts:
+        - name: elasticsearch-storage
+          mountPath: /usr/share/elasticsearch/data
+      volumes:
+      - name: elasticsearch-storage
+        emptyDir: {}
+```
+
+**Fluentd 로그 수집기**
+```yaml
+# fluentd-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-config
+  namespace: logging
+data:
+  fluent.conf: |
+    <source>
+      @type tail
+      path /var/log/containers/*.log
+      pos_file /var/log/fluentd-containers.log.pos
+      tag kubernetes.*
+      format json
+      time_key time
+      time_format %Y-%m-%dT%H:%M:%S.%NZ
+    </source>
+    
+    <filter kubernetes.**>
+      @type kubernetes_metadata
+    </filter>
+    
+    <match kubernetes.**>
+      @type elasticsearch
+      host elasticsearch.logging.svc.cluster.local
+      port 9200
+      index_name kubernetes
+      type_name _doc
+    </match>
+```
+
+#### 6. 모니터링 대시보드 설정
+
+**Kubernetes 대시보드**
+```yaml
+# kubernetes-dashboard.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kubernetes-dashboard
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubernetes-dashboard
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: kubernetes-dashboard
+  namespace: kube-system
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernetes-dashboard
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubernetes-dashboard
+  template:
+    metadata:
+      labels:
+        app: kubernetes-dashboard
+    spec:
+      serviceAccountName: kubernetes-dashboard
+      containers:
+      - name: kubernetes-dashboard
+        image: kubernetesui/dashboard:v2.7.0
+        ports:
+        - containerPort: 9090
+        args:
+        - --auto-generate-certificates
+        - --namespace=kubernetes-dashboard
+```
+
+#### 7. 모니터링 알림 설정
+
+**Slack 알림 설정**
+```yaml
+# slack-alerts.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: slack-alerts
+  namespace: monitoring
+data:
+  slack-alerts.yml: |
+    global:
+      slack_api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+    
+    route:
+      group_by: ['alertname', 'cluster', 'service']
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 1h
+      receiver: 'slack-notifications'
+      routes:
+      - match:
+          severity: critical
+        receiver: 'slack-critical'
+      - match:
+          severity: warning
+        receiver: 'slack-warning'
+    
+    receivers:
+    - name: 'slack-notifications'
+      slack_configs:
+      - channel: '#alerts'
+        title: 'Cloud Master Alert'
+        text: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+    
+    - name: 'slack-critical'
+      slack_configs:
+      - channel: '#critical-alerts'
+        title: '🚨 Critical Alert'
+        text: |
+          {{ range .Alerts }}
+          *Alert:* {{ .Annotations.summary }}
+          *Description:* {{ .Annotations.description }}
+          *Severity:* {{ .Labels.severity }}
+          {{ end }}
+    
+    - name: 'slack-warning'
+      slack_configs:
+      - channel: '#warning-alerts'
+        title: '⚠️ Warning Alert'
+        text: |
+          {{ range .Alerts }}
+          *Alert:* {{ .Annotations.summary }}
+          *Description:* {{ .Annotations.description }}
+          {{ end }}
+```
+
+#### 8. 성능 모니터링 및 최적화
+
+**애플리케이션 성능 모니터링**
+```yaml
+# apm-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apm-config
+  namespace: monitoring
+data:
+  apm.yml: |
+    # APM (Application Performance Monitoring) 설정
+    apm:
+      enabled: true
+      server:
+        host: "0.0.0.0"
+        port: 8200
+      secret_token: "your-secret-token"
+      api_key: "your-api-key"
+    
+    # 트레이스 수집 설정
+    traces:
+      enabled: true
+      sampling_rate: 0.1  # 10% 샘플링
+    
+    # 메트릭 수집 설정
+    metrics:
+      enabled: true
+      interval: 30s
+    
+    # 로그 수집 설정
+    logs:
+      enabled: true
+      level: info
+```
+
+**리소스 사용량 모니터링**
+```bash
+# cAdvisor를 통한 컨테이너 메트릭 수집
+kubectl apply -f https://raw.githubusercontent.com/google/cadvisor/master/deploy/kubernetes/cadvisor-daemonset.yaml
+
+# Node Exporter를 통한 노드 메트릭 수집
+kubectl apply -f https://raw.githubusercontent.com/prometheus/node_exporter/master/examples/k8s-daemonset.yaml
+
+# kube-state-metrics를 통한 Kubernetes 메트릭 수집
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/kube-state-metrics/master/examples/standard/kube-state-metrics.yaml
+```
+
 </details>
 
----
-
-## 🔄 장애 복구 및 운영 자동화
+</details>
 
 <details>
-<summary>📖 장애 복구 전략</summary>
+<summary>🔄 장애 복구 및 운영 자동화 실습</summary>
+
+### 📖 장애 복구 전략
 
 ### Health Check 기반 복구
 
@@ -791,12 +1529,12 @@ gcloud compute instance-groups managed set-autohealing my-app-mig \
 
 </details>
 
----
-
-## 💰 비용 최적화 및 운영 전략
+</details>
 
 <details>
-<summary>📖 비용 최적화 전략</summary>
+<summary>💰 비용 최적화 및 운영 전략 실습</summary>
+
+### 📖 비용 최적화 전략
 
 ### AWS 비용 최적화
 
@@ -853,9 +1591,69 @@ gcloud billing budgets create \
 
 </details>
 
+</details>
+
 ---
 
 ## 📚 문제 해결 및 참고 자료
+
+### 📊 학습 평가 기준
+
+#### 실습 완료 기준
+1. **로드 밸런싱 실습 (25점)**
+   - ✅ ELB/Cloud Load Balancing 구성 (10점)
+   - ✅ 헬스 체크 및 라우팅 설정 (10점)
+   - ✅ SSL/TLS 인증서 설정 (5점)
+
+2. **Auto Scaling 실습 (25점)**
+   - ✅ ASG/MIG 구성 및 정책 설정 (15점)
+   - ✅ 스케일링 메트릭 및 알람 설정 (10점)
+
+3. **모니터링 및 로깅 실습 (25점)**
+   - ✅ CloudWatch/Cloud Monitoring 설정 (15점)
+   - ✅ 대시보드 및 알람 구성 (10점)
+
+4. **장애 복구 및 운영 자동화 실습 (25점)**
+   - ✅ 백업 및 복구 절차 구현 (15점)
+   - ✅ 운영 자동화 스크립트 작성 (10점)
+
+#### 학습 목표 달성 평가
+- **90점 이상**: 모든 운영 목표 달성, 시니어 엔지니어 수준
+- **80-89점**: 운영 목표 달성, 실무 운영 가능
+- **70-79점**: 기본 운영 목표 달성, 추가 학습 권장
+- **70점 미만**: 중급 개념 재학습 필요
+
+#### 실습 결과물 제출
+1. **로드 밸런서 구성**: ELB/Cloud Load Balancing 설정 및 테스트 결과
+2. **Auto Scaling 설정**: ASG/MIG 구성 및 스케일링 테스트 결과
+3. **모니터링 대시보드**: CloudWatch/Cloud Monitoring 대시보드 스크린샷
+4. **장애 복구 계획**: 백업 정책 및 복구 절차 문서
+
+### 📖 용어 사전
+
+#### 로드 밸런싱 용어
+- **로드 밸런서(Load Balancer)**: 트래픽을 여러 서버에 분산하는 장치
+- **헬스 체크(Health Check)**: 서버 상태를 주기적으로 확인하는 기능
+- **스티키 세션(Sticky Session)**: 클라이언트를 특정 서버에 고정하는 기능
+- **SSL 터미네이션(SSL Termination)**: 로드 밸런서에서 SSL 암호화를 해제하는 기능
+
+#### Auto Scaling 용어
+- **오토 스케일링 그룹(ASG)**: 자동으로 인스턴스를 관리하는 그룹
+- **스케일링 정책(Scaling Policy)**: 스케일링 조건과 동작을 정의하는 정책
+- **쿨다운(Cooldown)**: 스케일링 동작 후 대기하는 시간
+- **스케일링 메트릭(Scaling Metric)**: 스케일링 판단 기준이 되는 지표
+
+#### 모니터링 용어
+- **메트릭(Metric)**: 시스템 상태를 나타내는 수치 데이터
+- **알람(Alarm)**: 특정 조건에서 발생하는 알림
+- **대시보드(Dashboard)**: 여러 메트릭을 한눈에 보는 화면
+- **로그(Log)**: 시스템 동작 기록
+
+#### 장애 복구 용어
+- **RTO(Recovery Time Objective)**: 장애 발생 후 서비스 복구까지의 목표 시간
+- **RPO(Recovery Point Objective)**: 장애 발생 시점에서 데이터 손실 허용 범위
+- **백업(Backup)**: 데이터의 복사본을 만드는 작업
+- **복구(Recovery)**: 백업에서 원본 상태로 복원하는 작업
 
 <details>
 <summary>🐛 자주 발생하는 문제</summary>
@@ -1003,6 +1801,38 @@ aws cloudwatch get-metric-statistics \
 
 **🎯 이제 고급 클라우드 운영 기술을 갖추었습니다! Cloud Container 과정으로 진행하세요.**
 
+
+## 📚 관련 가이드 문서
+
+### 로드 밸런싱 및 Auto Scaling
+- 🔗 [로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/load-balancing-guide.md) - ELB, Cloud Load Balancing 구성
+- 🔗 [Auto Scaling 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/auto-scaling-guide.md) - ASG, MIG 자동 확장 설정
+- 🔗 [통합 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/integration-guide.md) - 로드 밸런서 + 오토스케일링 연동
+
+### 컨테이너 모니터링 및 로깅
+- 🔗 [모니터링 설정 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/monitoring-setup-guide.md) - Prometheus, Grafana 고급 설정
+- 🔗 [고급 모니터링 설정](/mcp_knowledge_base/cloud_master/textbook/Day3/monitoring-advanced/) - YAML 설정 파일
+- 🔗 [ELK Stack 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/elk-stack-guide.md) - 로그 수집 및 분석
+
+### 장애 복구 및 운영 자동화
+- 🔗 [장애 복구 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/disaster-recovery-guide.md) - 장애 시뮬레이션 및 복구
+- 🔗 [운영 자동화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/operations-automation-guide.md) - 자동화 스크립트
+
+### 비용 최적화 및 운영 전략
+- 🔗 [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/cost-optimization-guide.md) - 클라우드 비용 최적화
+- 🔗 [비용 최적화 상세 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/cost-optimization/) - 비용 분석 도구
+
+### 실습 프로젝트
+- 🔗 [My App 프로젝트](/mcp_knowledge_base/cloud_master/textbook/Day3/my-app/) - 고가용성 웹 애플리케이션
+- 🔗 [Actions Demo 프로젝트](/mcp_knowledge_base/cloud_master/textbook/Day3/actions-demo/) - 고급 CI/CD 파이프라인
+
+### 자동화 스크립트
+- 🔗 [AWS 설정 스크립트](/mcp_knowledge_base/cloud_master/textbook/Day3/scripts/) - 고가용성 AWS 리소스 생성
+- 🔗 [GCP 설정 스크립트](/mcp_knowledge_base/cloud_master/textbook/Day3/scripts/) - 고가용성 GCP 리소스 생성
+- 🔗 [프로젝트 설정 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/scripts/PROJECT_SETUP.md) - 전체 환경 설정
+
+### 문제 해결
+- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/troubleshooting-guide.md) - 운영 환경 문제 해결
 
 ---
 

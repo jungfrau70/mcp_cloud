@@ -316,6 +316,61 @@ git --version
 - 🔗 [GitHub Actions 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/github-actions-basics.md) - CI/CD 파이프라인 구축
 - 🔗 [VM 배포 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/vm-deployment.md) - AWS EC2, GCP Compute Engine 배포
 
+### 📚 관련 가이드 문서
+
+#### Docker 관련 가이드
+- 🔗 [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-basic-guide.md) - Docker 기본 개념 및 명령어
+- 🔗 [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
+- 🔗 [Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-compose-guide.md) - 다중 서비스 관리
+- 🔗 [Docker Hub 설정 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-hub-setup-guide.md) - 이미지 저장소 설정
+
+#### GitHub Actions 관련 가이드
+- 🔗 [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/github-actions-guide.md) - CI/CD 파이프라인 구축
+- 🔗 [CI/CD 파이프라인 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/cicd-pipeline-guide.md) - 완전한 CI/CD 파이프라인
+
+#### 클라우드 배포 가이드
+- 🔗 [AWS/GCP 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/aws-gcp-deployment-guide.md) - 클라우드 배포 전략
+- 🔗 [클라우드 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/cloud-deployment-guide.md) - 일반적인 클라우드 배포
+- 🔗 [AWS/GCP 권한 설정](/mcp_knowledge_base/cloud_master/textbook/Day1/aws-gcp-permissions-setup.md) - IAM 및 서비스 계정 설정
+
+#### 실습 프로젝트
+- 🔗 [My App 프로젝트](/mcp_knowledge_base/cloud_master/textbook/Day1/my-app/) - Docker 기반 웹 애플리케이션
+- 🔗 [Actions Demo 프로젝트](/mcp_knowledge_base/cloud_master/textbook/Day1/actions-demo/) - GitHub Actions CI/CD 데모
+
+#### 자동화 스크립트
+- 🔗 [AWS 설정 스크립트](/mcp_knowledge_base/cloud_master/textbook/Day1/scripts/) - AWS 리소스 자동 생성
+- 🔗 [GCP 설정 스크립트](/mcp_knowledge_base/cloud_master/textbook/Day1/scripts/) - GCP 리소스 자동 생성
+- 🔗 [프로젝트 설정 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/scripts/PROJECT_SETUP.md) - 전체 환경 설정
+
+#### 문제 해결
+- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/troubleshooting-guide.md) - 자주 발생하는 문제 해결
+
+### ⚠️ 실습 주의사항 및 문제 해결
+
+#### 환경 요구사항
+- **최소 사양**: 8GB RAM, 50GB 디스크 공간, 4코어 CPU
+- **네트워크**: 안정적인 인터넷 연결 (Docker 이미지 다운로드용)
+- **OS**: Windows 10/11, macOS 10.15+, Ubuntu 18.04+
+
+#### 자주 발생하는 문제
+1. **Docker 설치 오류**
+   - 해결방법: Docker Desktop 재시작, WSL2 활성화 확인
+   - 명령어: `docker --version`으로 설치 확인
+
+2. **GitHub Actions 실행 실패**
+   - 해결방법: 저장소 권한 확인, 워크플로우 파일 문법 검사
+   - 확인: Actions 탭에서 로그 확인
+
+3. **VM 접속 불가**
+   - 해결방법: 보안 그룹/방화벽 규칙 확인, SSH 키 권한 확인
+   - 명령어: `ssh -i key.pem user@ip`로 접속 테스트
+
+#### 실습 검증 방법
+- **Docker**: `docker ps`, `docker images` 명령어로 컨테이너/이미지 확인
+- **Git**: `git status`, `git log` 명령어로 상태 확인
+- **GitHub Actions**: Actions 탭에서 워크플로우 실행 상태 확인
+- **VM 배포**: 브라우저에서 `http://VM_IP:포트` 접속 확인
+
 ### 📚 개념 학습 가이드
 
 - 🔗 [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
@@ -426,6 +481,32 @@ docker info
 
 ### 기본 명령어 실습
 
+#### 1단계: Docker 설치 및 확인
+```bash
+# Docker 설치 (Ubuntu/Debian)
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+
+# Docker 공식 GPG 키 추가
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+# Docker 저장소 추가
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Docker 설치
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+
+# Docker 서비스 시작 및 자동 시작 설정
+sudo systemctl start docker
+sudo systemctl enable docker
+
+# Docker 설치 확인
+docker --version
+docker run hello-world
+```
+
+#### 2단계: 기본 명령어 실습
 ```bash
 # Hello World 컨테이너 실행
 docker run hello-world
@@ -441,6 +522,48 @@ docker images
 
 # 컨테이너 중지
 docker stop <container_id>
+
+# 컨테이너 제거
+docker rm <container_id>
+
+# 이미지 제거
+docker rmi <image_id>
+```
+
+#### 3단계: 웹 서버 컨테이너 실습
+```bash
+# Nginx 이미지 다운로드
+docker pull nginx:latest
+
+# Nginx 컨테이너 실행 (포트 매핑)
+docker run -d --name my-nginx -p 8080:80 nginx
+
+# 컨테이너 상태 확인
+docker ps
+docker logs my-nginx
+
+# 컨테이너 내부 접속
+docker exec -it my-nginx /bin/bash
+
+# 컨테이너 중지 및 제거
+docker stop my-nginx
+docker rm my-nginx
+```
+
+#### 4단계: 볼륨 마운트 실습
+```bash
+# 호스트 디렉토리와 컨테이너 디렉토리 연결
+mkdir -p ~/nginx-html
+echo "<h1>Hello from Docker Volume!</h1>" > ~/nginx-html/index.html
+
+# 볼륨 마운트로 Nginx 실행
+docker run -d --name nginx-volume \
+  -p 8081:80 \
+  -v ~/nginx-html:/usr/share/nginx/html \
+  nginx
+
+# 브라우저에서 http://localhost:8081 접속 확인
+```
 
 # 컨테이너 삭제
 docker rm <container_id>
@@ -754,6 +877,102 @@ jobs:
       
     - name: Run linting
       run: npm run lint
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-files
+        path: dist/
+```
+
+### GitHub Actions 실습 단계
+
+#### 1단계: 워크플로우 파일 생성
+```bash
+# .github/workflows 디렉토리 생성
+mkdir -p .github/workflows
+
+# 워크플로우 파일 생성
+cat > .github/workflows/ci.yml << 'EOF'
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run tests
+      run: npm test
+      
+    - name: Run linting
+      run: npm run lint
+EOF
+```
+
+#### 2단계: package.json 설정 확인
+```json
+{
+  "name": "my-web-app",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint .",
+    "build": "webpack --mode production",
+    "start": "node server.js"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "eslint": "^8.0.0",
+    "webpack": "^5.0.0"
+  }
+}
+```
+
+#### 3단계: 워크플로우 실행 및 확인
+```bash
+# 변경사항 커밋 및 푸시
+git add .
+git commit -m "Add GitHub Actions CI workflow"
+git push origin main
+
+# GitHub에서 Actions 탭 확인
+# 1. GitHub 저장소 페이지에서 "Actions" 탭 클릭
+# 2. "CI Pipeline" 워크플로우 클릭
+# 3. 실행 상태 및 로그 확인
+```
+
+#### 4단계: 워크플로우 디버깅
+```bash
+# 워크플로우 실행 실패 시 로그 확인
+# 1. Actions 탭에서 실패한 워크플로우 클릭
+# 2. 실패한 Job 클릭
+# 3. 실패한 Step 클릭하여 상세 로그 확인
+
+# 일반적인 문제 해결
+# - Node.js 버전 불일치: package.json의 engines 필드 확인
+# - 의존성 설치 실패: package-lock.json 파일 확인
+# - 테스트 실패: 로컬에서 npm test 실행하여 확인
 ```
 
 ### .github/workflows/deploy.yml
@@ -850,6 +1069,266 @@ jobs:
 ```
 
 </details>
+
+</details>
+
+<details>
+<summary>🚀 GitHub Actions 고급 워크플로우 예시</summary>
+
+### 멀티 환경 배포 워크플로우
+
+```yaml
+name: Multi-Environment Deployment
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # 코드 품질 검사
+  quality-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run linting
+      run: npm run lint
+    
+    - name: Run tests
+      run: npm test
+    
+    - name: Run security audit
+      run: npm audit --audit-level moderate
+
+  # 개발 환경 배포
+  deploy-dev:
+    needs: quality-check
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    environment: development
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Deploy to Development
+      run: |
+        echo "Deploying to development environment"
+        # 개발 환경 배포 스크립트
+        ./scripts/deploy-dev.sh
+
+  # 스테이징 환경 배포
+  deploy-staging:
+    needs: quality-check
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: staging
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Deploy to Staging
+      run: |
+        echo "Deploying to staging environment"
+        # 스테이징 환경 배포 스크립트
+        ./scripts/deploy-staging.sh
+
+  # 프로덕션 환경 배포
+  deploy-production:
+    needs: [quality-check, deploy-staging]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Deploy to Production
+      run: |
+        echo "Deploying to production environment"
+        # 프로덕션 환경 배포 스크립트
+        ./scripts/deploy-production.sh
+```
+
+### 컨테이너 보안 스캔 워크플로우
+
+```yaml
+name: Container Security Scan
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * 1'  # 매주 월요일 오전 2시
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build Docker image
+      run: docker build -t ${{ env.IMAGE_NAME }} .
+    
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: ${{ env.IMAGE_NAME }}
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+    
+    - name: Upload Trivy scan results
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: 'trivy-results.sarif'
+    
+    - name: Run Snyk security scan
+      uses: snyk/actions/node@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --severity-threshold=high
+```
+
+### 자동화된 테스트 및 성능 측정
+
+```yaml
+name: Automated Testing and Performance
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run unit tests
+      run: npm run test:unit
+    
+    - name: Run integration tests
+      run: npm run test:integration
+    
+    - name: Run E2E tests
+      run: npm run test:e2e
+    
+    - name: Performance testing
+      run: |
+        npm run test:performance
+        # Lighthouse CI 실행
+        npx @lhci/cli autorun
+
+  # 성능 벤치마크
+  performance-benchmark:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build application
+      run: npm run build
+    
+    - name: Start application
+      run: |
+        npm start &
+        sleep 10
+    
+    - name: Run performance tests
+      run: |
+        # Artillery를 사용한 부하 테스트
+        npx artillery run performance-test.yml
+    
+    - name: Generate performance report
+      run: |
+        # 성능 리포트 생성
+        npx lighthouse-ci autorun --upload.target=temporary-public-storage
+```
+
+### 자동화된 문서 생성 및 배포
+
+```yaml
+name: Documentation Generation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Generate API documentation
+      run: |
+        npm run docs:generate
+        # JSDoc을 사용한 API 문서 생성
+    
+    - name: Generate code coverage report
+      run: |
+        npm run test:coverage
+        # Codecov에 커버리지 리포트 업로드
+    
+    - name: Deploy documentation
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs
+        cname: docs.yourdomain.com
+```
 
 </details>
 
@@ -1002,6 +1481,70 @@ jobs:
 ---
 
 ## 📚 문제 해결 및 참고 자료
+
+### 📊 학습 평가 기준
+
+#### 실습 완료 기준
+1. **Docker 실습 (30점)**
+   - ✅ Docker 이미지 빌드 성공 (10점)
+   - ✅ 컨테이너 실행 및 접속 확인 (10점)
+   - ✅ Docker Compose로 다중 서비스 구성 (10점)
+
+2. **Git/GitHub 실습 (25점)**
+   - ✅ Git 저장소 초기화 및 커밋 (10점)
+   - ✅ 브랜치 생성 및 머지 (10점)
+   - ✅ GitHub에 푸시 및 Pull Request 생성 (5점)
+
+3. **GitHub Actions 실습 (25점)**
+   - ✅ 워크플로우 파일 작성 (10점)
+   - ✅ 자동 빌드 및 테스트 실행 (10점)
+   - ✅ 아티팩트 생성 및 저장 (5점)
+
+4. **VM 배포 실습 (20점)**
+   - ✅ AWS EC2 또는 GCP Compute Engine 인스턴스 생성 (10점)
+   - ✅ 웹 애플리케이션 배포 및 접속 확인 (10점)
+
+#### 학습 목표 달성 평가
+- **90점 이상**: 모든 학습 목표 달성, 고급 주제 학습 권장
+- **80-89점**: 기본 학습 목표 달성, 추가 실습 권장
+- **70-79점**: 부분적 학습 목표 달성, 복습 필요
+- **70점 미만**: 기초 개념 재학습 필요
+
+#### 실습 결과물 제출
+1. **Docker 이미지**: Docker Hub 또는 GitHub Container Registry 업로드
+2. **GitHub 저장소**: 실습 코드 및 문서 포함
+3. **GitHub Actions**: 성공적으로 실행된 워크플로우 스크린샷
+4. **배포 URL**: VM에 배포된 웹 애플리케이션 접속 링크
+
+### 📖 용어 사전
+
+#### Docker 관련 용어
+- **컨테이너(Container)**: 애플리케이션과 의존성을 패키징한 가벼운 실행 환경
+- **이미지(Image)**: 컨테이너를 생성하는 템플릿
+- **Dockerfile**: 이미지를 빌드하기 위한 명령어 집합
+- **Docker Compose**: 다중 컨테이너 애플리케이션을 정의하고 실행하는 도구
+- **레지스트리(Registry)**: Docker 이미지를 저장하고 공유하는 서비스
+
+#### Git/GitHub 관련 용어
+- **저장소(Repository)**: 프로젝트의 모든 파일과 변경 이력이 저장되는 공간
+- **커밋(Commit)**: 파일 변경사항을 저장소에 기록하는 행위
+- **브랜치(Branch)**: 독립적인 개발 라인
+- **머지(Merge)**: 브랜치의 변경사항을 다른 브랜치에 통합
+- **Pull Request**: 코드 변경사항을 검토하고 머지하기 위한 요청
+
+#### CI/CD 관련 용어
+- **CI (Continuous Integration)**: 코드 변경사항을 자동으로 통합하고 테스트
+- **CD (Continuous Deployment)**: 테스트된 코드를 자동으로 배포
+- **워크플로우(Workflow)**: 자동화된 작업의 순서와 조건을 정의
+- **액션(Action)**: 워크플로우에서 실행되는 개별 작업
+- **아티팩트(Artifact)**: 빌드 과정에서 생성되는 파일
+
+#### 클라우드 관련 용어
+- **VM (Virtual Machine)**: 물리적 서버를 가상화한 컴퓨팅 환경
+- **인스턴스(Instance)**: 클라우드에서 실행되는 VM
+- **보안 그룹(Security Group)**: 네트워크 접근을 제어하는 방화벽 규칙
+- **키 페어(Key Pair)**: SSH 접속을 위한 공개/개인 키 쌍
+- **로드 밸런서(Load Balancer)**: 트래픽을 여러 인스턴스에 분산
 
 <details>
 <summary>🐛 자주 발생하는 문제</summary>
