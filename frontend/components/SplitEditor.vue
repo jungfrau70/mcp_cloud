@@ -334,7 +334,39 @@ marked.setOptions({
   smartypants: false
 })
 
-const rendered = computed(() => DOMPurify.sanitize(marked.parse(draft.value || '')))
+// 이미지 경로를 API 엔드포인트로 변환하는 함수 (ContentView와 동일)
+function convertImagePaths(content, currentPath) {
+  if (!content || !currentPath) return content;
+  
+  // 현재 파일의 디렉토리 경로 추출
+  const currentDir = currentPath.substring(0, currentPath.lastIndexOf('/'));
+  
+  // 상대 경로 이미지 패턴 매칭: ![alt](../images/...) 또는 ![alt](./images/...)
+  const imagePattern = /!\[([^\]]*)\]\(\.\.?\/images\/([^)]+)\)/g;
+  
+  return content.replace(imagePattern, (match, alt, imagePath) => {
+    // 상대 경로를 절대 경로로 변환
+    let fullImagePath = imagePath;
+    if (match.includes('../images/')) {
+      // ../images/ 경로인 경우 상위 디렉토리에서 images 폴더 찾기
+      const parentDir = currentDir.substring(0, currentDir.lastIndexOf('/'));
+      fullImagePath = `${parentDir}/images/${imagePath}`;
+    } else if (match.includes('./images/')) {
+      // ./images/ 경로인 경우 현재 디렉토리에서 images 폴더
+      fullImagePath = `${currentDir}/images/${imagePath}`;
+    }
+    
+    // API 엔드포인트로 변환
+    const apiPath = `/api/v1/curriculum/file?path=${encodeURIComponent(fullImagePath)}`;
+    return `![${alt}](${apiPath})`;
+  });
+}
+
+const rendered = computed(() => {
+  const content = draft.value || '';
+  const contentWithConvertedImages = convertImagePaths(content, props.path || '');
+  return DOMPurify.sanitize(marked.parse(contentWithConvertedImages));
+})
 
 // View mode text for toggle button
 const viewModeText = computed(() => {

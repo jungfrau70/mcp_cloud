@@ -282,12 +282,43 @@ const titleText = computed(() => {
   return props.path ? props.path.split('/').pop().replace(/_/g, ' ').replace(/\.md$/i, '') : '';
 });
 
+// 이미지 경로를 API 엔드포인트로 변환하는 함수
+function convertImagePaths(content, currentPath) {
+  if (!content || !currentPath) return content;
+  
+  // 현재 파일의 디렉토리 경로 추출
+  const currentDir = currentPath.substring(0, currentPath.lastIndexOf('/'));
+  
+  // 상대 경로 이미지 패턴 매칭: ![alt](../images/...) 또는 ![alt](./images/...)
+  const imagePattern = /!\[([^\]]*)\]\(\.\.?\/images\/([^)]+)\)/g;
+  
+  return content.replace(imagePattern, (match, alt, imagePath) => {
+    // 상대 경로를 절대 경로로 변환
+    let fullImagePath = imagePath;
+    if (match.includes('../images/')) {
+      // ../images/ 경로인 경우 상위 디렉토리에서 images 폴더 찾기
+      const parentDir = currentDir.substring(0, currentDir.lastIndexOf('/'));
+      fullImagePath = `${parentDir}/images/${imagePath}`;
+    } else if (match.includes('./images/')) {
+      // ./images/ 경로인 경우 현재 디렉토리에서 images 폴더
+      fullImagePath = `${currentDir}/images/${imagePath}`;
+    }
+    
+    // API 엔드포인트로 변환
+    const apiPath = `/api/v1/curriculum/file?path=${encodeURIComponent(fullImagePath)}`;
+    return `![${alt}](${apiPath})`;
+  });
+}
+
 // Render content (SplitEditor와 동일한 방식 사용)
 const renderedContent = computed(() => {
   if (!props.content) return '';
   
+  // 이미지 경로 변환
+  const contentWithConvertedImages = convertImagePaths(props.content, props.path || '');
+  
   // SplitEditor와 완전히 동일한 렌더링 방식 사용
-  const html = DOMPurify.sanitize(marked.parse(props.content), { ADD_URI_SAFE: ['mdc'] });
+  const html = DOMPurify.sanitize(marked.parse(contentWithConvertedImages), { ADD_URI_SAFE: ['mdc'] });
   
   return html;
 });
