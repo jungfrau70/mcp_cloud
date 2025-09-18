@@ -35,6 +35,11 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
   - 기본적인 리눅스 명령어 사용 능력
   - Git 기본 사용법 이해
 
+### 과정 구성
+- [**Day 1**](mcp_knowledge_base\cloud_master\textbook\Day1\README.md): Docker, Git/GitHub, GitHub Actions 기초
+- [**Day 2**](mcp_knowledge_base\cloud_master\textbook\Day2\README.md): 고급 CI/CD 및 VM 기반 컨테이너 배포
+- [**Day 3**](mcp_knowledge_base\cloud_master\textbook\Day3\README.md): 로드 밸런싱, 모니터링, 비용 최적화
+
 ## 📚 학습 목표
 
 이 과정을 완료하면 다음과 같은 전문적인 능력을 갖추게 됩니다:
@@ -54,7 +59,7 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 
 ## 📋 과정 개요
 
-### 📅 Day 1: Docker, Git/GitHub, GitHub Actions 기초 (8시간)
+📅 Day 1: Docker, Git/GitHub, GitHub Actions 기초 (8시간)
 **목표**: 컨테이너 기술과 CI/CD의 기초를 학습합니다
 
 #### 🌅 오전 (4시간)
@@ -68,7 +73,7 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 - **15:00-16:00**: CI/CD 파이프라인 구축 실습
 - **16:00-17:00**: 종합 실습 및 정리
 
-### 📅 Day 2: 비용 최적화 및 모니터링 (8시간)
+📅 Day 2: 비용 최적화 및 모니터링 (8시간)
 **목표**: 클라우드 비용을 최적화하고 모니터링 시스템을 구축합니다
 
 #### 🌅 오전 (4시간)
@@ -82,7 +87,7 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 - **15:00-16:00**: 알림 시스템 구축
 - **16:00-17:00**: 종합 실습 및 정리
 
-### 📅 Day 3: 고급 아키텍처 및 배포 (8시간)
+📅 Day 3: 고급 아키텍처 및 배포 (8시간)
 **목표**: 고가용성과 확장성을 갖춘 고급 아키텍처를 구축합니다
 
 #### 🌅 오전 (4시간)
@@ -181,9 +186,6 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 ---
 
 ## 🧭 네비게이션
-
-
-
 
 <div align="center">
 

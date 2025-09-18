@@ -3,11 +3,6 @@
 
 이 과정은 다음과 같은 순서로 진행됩니다:
 
-### 과정 구성
-- [**Day 1**](mcp_knowledge_base\cloud_master\textbook\Day1\README.md): Docker, Git/GitHub, GitHub Actions 기초
-- [**Day 2**](mcp_knowledge_base\cloud_master\textbook\Day2\README.md): 고급 CI/CD 및 VM 기반 컨테이너 배포
-- [**Day 3**](mcp_knowledge_base\cloud_master\textbook\Day3\README.md): 로드 밸런싱, 모니터링, 비용 최적화
-
 ### 1단계: 환경 준비 (1시간)
 - Docker 설치 및 기본 설정
 - Git/GitHub 계정 설정
@@ -20,17 +15,25 @@
 - GitHub Actions CI/CD 파이프라인
 - 클라우드 배포 전략
 
+
+
 ### 3단계: Day2 - 운영 최적화 (5시간)
 - 비용 최적화 전략 및 실습
 - 모니터링 시스템 구축
 - 종합 실습 프로젝트
 - 운영 모범 사례 학습
 
+
+
 ### 4단계: Day3 - 고급 아키텍처 (6시간)
 - 자동 스케일링 시스템 구축
 - 고급 로드 밸런싱
 - 재해 복구 전략 수립
 - 통합 시스템 구축
+
+[Day1 바로가기](cp_knowledge_base\cloud_master\textbook\Day1\README.md)
+[Day2 바로가기](cp_knowledge_base\cloud_master\textbook\Day2\README.md)
+[Day3 바로가기](cp_knowledge_base\cloud_master\textbook\Day3\README.md)
 
 **💡 팁**: 각 Day의 내용을 순차적으로 학습하시면 체계적인 이해가 가능합니다!
 
@@ -81,7 +84,6 @@
 ---
 
 ## 📅 1일차: Docker, Git/GitHub, GitHub Actions 이론 및 실습  
-
 
 ### 📚 이론 학습 (120분) 
 
@@ -209,7 +211,7 @@
 
 ---
 
-## 📅 2일차: 고급 CI/CD 및 VM 기반 컨테이너 배포
+## 📅 2일차: 고급 CI/CD 및 VM 기반 컨테이너 배포 > [](cp_knowledge_base\cloud_master\textbook\Day2\README.md)
 
 ### 1. Docker 고급 기법 및 최적화 (90분)
 
@@ -266,7 +268,7 @@
 
 ---
 
-## 📅 3일차: 로드 밸런싱, 모니터링, 비용 최적화
+## 📅 3일차: 로드 밸런싱, 모니터링, 비용 최적화 > [](cp_knowledge_base\cloud_master\textbook\Day3\README.md)
 
 ### 1. 로드 밸런싱 및 Auto Scaling (90분)
 

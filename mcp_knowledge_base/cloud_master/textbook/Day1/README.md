@@ -1790,42 +1790,9 @@ docker system prune -f
 
 축하합니다! Cloud Master 1일차 실습을 완료했습니다.
 
-### 📚 학습 요약
-
-이번 실습을 통해 다음을 배웠습니다:
-
-1. **🐳 Docker**: 컨테이너 개념, Dockerfile 작성, Docker Compose
-2. **📝 Git/GitHub**: 버전 관리, 브랜치 전략, 협업 워크플로우
-3. **🚀 GitHub Actions**: CI/CD 파이프라인 구축, 자동 배포
-4. **☁️ VM 배포**: AWS EC2, GCP Compute Engine 웹 애플리케이션 배포
-
-### 📝 학습 피드백 수집
-
-#### 실습 완료 체크리스트
-
-- [ ] Docker 컨테이너 생성 및 실행 완료
-- [ ] Dockerfile 작성 및 이미지 빌드 완료
-- [ ] Git 저장소 생성 및 기본 명령어 실습 완료
-- [ ] GitHub Actions 워크플로우 작성 및 실행 완료
-- [ ] VM에 웹 애플리케이션 배포 완료
-
-#### 학습 난이도 평가
-
-- **매우 쉬움** ⭐
-- **쉬움** ⭐⭐
-- **보통** ⭐⭐⭐
-- **어려움** ⭐⭐⭐⭐
-- **매우 어려움** ⭐⭐⭐⭐⭐
-
-#### 개선 제안
-
-- 실습 중 어려웠던 부분: ________________
-- 추가로 배우고 싶은 내용: ________________
-- 실습 시간이 충분했는지: □ 충분함 □ 부족함 □ 과도함
-
 ### 🚀 다음 단계
 
-- **Cloud Master 2일차**: Docker 고급 기법, GitHub Actions 고급 워크플로우
+- **Cloud Master 2일차**: 고급 CI/CD 및 VM 기반 컨테이너 배포
 - **실제 프로젝트 적용**: 자신의 프로젝트에 학습한 기술 적용
 - **고급 기능 학습**: 모니터링, 로드 밸런싱, 자동 스케일링
 
@@ -1834,23 +1801,18 @@ docker system prune -f
 - [Docker 공식 문서](https:///docs.docker.com/)
 - [Git 공식 문서](https:///git-scm.com/doc)
 - [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
-- Cloud Master 2일차
 - [피드백 제출](https:///forms.gle/example)
 
 ---
 
 *🎯 이제 Docker, Git/GitHub, GitHub Actions의 기본기를 갖추었습니다! Cloud Master 2일차로 진행하세요.**
 
+- [**Day 1**](mcp_knowledge_base\cloud_master\textbook\Day1\README.md): Docker, Git/GitHub, GitHub Actions 기초
+- [**Day 2**](mcp_knowledge_base\cloud_master\textbook\Day2\README.md): 고급 CI/CD 및 VM 기반 컨테이너 배포
+- [**Day 3**](mcp_knowledge_base\cloud_master\textbook\Day3\README.md): 로드 밸런싱, 모니터링, 비용 최적화
+
 
 ## 🧭 네비게이션
-
-
-
-
-
-
-
-
 
 <div align="center">
 

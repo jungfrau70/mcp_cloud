@@ -1909,70 +1909,6 @@ aws cloudwatch get-metric-statistics /
 
 </details>
 
----
-
-
-## 🧹 실습 정리
-
-### 자동 정리 (권장)
-```bash
-# Day3 실습 자동 정리
-./mcp_knowledge_base/cloud_master/repos/automation/day3/monitoring-practice-automation.sh --cleanup
-
-# 또는 수동 정리
-kubectl delete namespace monitoring 2>/dev/null || true
-docker-compose down -v 2>/dev/null || true
-docker stop $(docker ps -aq) 2>/dev/null || true
-docker rm $(docker ps -aq) 2>/dev/null || true
-docker system prune -f
-```
-
-### 정리 확인
-- [ ] 모니터링 리소스 정리
-- [ ] Kubernetes 리소스 정리
-- [ ] 모든 컨테이너 중지 및 삭제
-- [ ] 사용하지 않는 이미지 정리
-- [ ] Docker 볼륨 정리
-
----
-
-## 🎉 완료!
-
-[🎉 완료!](#🎉-완료)
-
-축하합니다! Cloud Master 2일차 실습을 완료했습니다.
-
-### 📚 학습 요약
-
-[📚 학습 요약](#📚-학습-요약)
-
-이번 실습을 통해 다음을 배웠습니다:
-
-1. **⚖️ 로드 밸런싱**: ELB, Cloud Load Balancing 구성
-2. **📈 Auto Scaling**: 자동 확장 및 축소 정책
-3. **📊 모니터링**: CloudWatch, Cloud Monitoring 설정
-4. **🔄 장애 복구**: Health Check 기반 자동 복구
-
-### 🚀 다음 단계
-
-[🚀 다음 단계](#🚀-다음-단계)
-
-- **Cloud Container 과정**: Kubernetes, ECS, Fargate
-- **실제 프로젝트 적용**: 자신의 프로젝트에 고급 기능 적용
-- **고급 기능 학습**: 서비스 메시, 보안, 성능 최적화
-
-### 💡 추가 학습 자료
-
-[💡 추가 학습 자료](#💡-추가-학습-자료)
-
-- [AWS ELB 공식 문서](https:///docs.aws.amazon.com/elasticloadbalancing/)
-- [GCP Cloud Load Balancing 공식 문서](https:///cloud.google.com/load-balancing/docs)
-- Cloud Container 과정
-
----
-
-**🎯 이제 고급 클라우드 운영 기술을 갖추었습니다! Cloud Container 과정으로 진행하세요.**
-
 
 ## 📚 관련 가이드 문서
 
@@ -2008,10 +1944,72 @@ docker system prune -f
 
 ---
 
+
+## 🧹 실습 정리
+
+### 자동 정리 (권장)
+```bash
+# Day3 실습 자동 정리
+./mcp_knowledge_base/cloud_master/repos/automation/day3/monitoring-practice-automation.sh --cleanup
+
+# 또는 수동 정리
+kubectl delete namespace monitoring 2>/dev/null || true
+docker-compose down -v 2>/dev/null || true
+docker stop $(docker ps -aq) 2>/dev/null || true
+docker rm $(docker ps -aq) 2>/dev/null || true
+docker system prune -f
+```
+
+### 정리 확인
+- [ ] 모니터링 리소스 정리
+- [ ] Kubernetes 리소스 정리
+- [ ] 모든 컨테이너 중지 및 삭제
+- [ ] 사용하지 않는 이미지 정리
+- [ ] Docker 볼륨 정리
+
+---
+
+## 🎉 완료!
+
+[🎉 완료!](#🎉-완료)
+
+축하합니다! Cloud Master 3일차 학습을 완료했습니다.
+
+### 📚 학습 요약
+
+[📚 학습 요약](#📚-학습-요약)
+
+이번 실습을 통해 다음을 배웠습니다:
+
+1. **⚖️ 로드 밸런싱**: ELB, Cloud Load Balancing 구성
+2. **📈 Auto Scaling**: 자동 확장 및 축소 정책
+3. **📊 모니터링**: CloudWatch, Cloud Monitoring 설정
+4. **🔄 장애 복구**: Health Check 기반 자동 복구
+
+### 🚀 다음 단계
+
+[🚀 다음 단계](#🚀-다음-단계)
+
+- **Cloud Container 과정**: Kubernetes, ECS, Fargate
+- **실제 프로젝트 적용**: 자신의 프로젝트에 고급 기능 적용
+- **고급 기능 학습**: 서비스 메시, 보안, 성능 최적화
+
+### 💡 추가 학습 자료
+
+[💡 추가 학습 자료](#💡-추가-학습-자료)
+
+- [AWS ELB 공식 문서](https:///docs.aws.amazon.com/elasticloadbalancing/)
+- [GCP Cloud Load Balancing 공식 문서](https:///cloud.google.com/load-balancing/docs)
+- Cloud Container 과정
+
+---
+
+**🎯 이제 고급 클라우드 운영 기술을 갖추었습니다! Cloud Container 과정으로 진행하세요.**
+
+
+---
+
 ## 🧭 네비게이션
-
-
-
 
 <div align="center">
 
