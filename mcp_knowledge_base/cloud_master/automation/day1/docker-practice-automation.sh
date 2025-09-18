@@ -61,9 +61,18 @@ step1_docker_installation() {
     log_info "Docker 정보 확인:"
     docker info | head -20
     
+    # Hello World 이미지 확인 및 실행
+    log_info "Hello World 이미지 확인:"
+    if docker images | grep -q "hello-world"; then
+        log_info "Hello World 이미지가 이미 존재합니다."
+    else
+        log_info "Hello World 이미지 다운로드 중..."
+        docker pull hello-world
+    fi
+    
     # Hello World 컨테이너 실행
     log_info "Hello World 컨테이너 실행:"
-    docker run hello-world
+    docker run --rm hello-world
     
     log_success "1단계 완료: Docker 설치 및 확인"
 }
@@ -84,9 +93,14 @@ step2_basic_commands() {
     log_info "모든 컨테이너 확인:"
     docker ps -a
     
-    # Nginx 이미지 다운로드
-    log_info "Nginx 이미지 다운로드:"
-    docker pull nginx:latest
+    # Nginx 이미지 확인 및 다운로드
+    log_info "Nginx 이미지 확인:"
+    if docker images | grep -q "nginx.*latest"; then
+        log_info "Nginx 이미지가 이미 존재합니다."
+    else
+        log_info "Nginx 이미지 다운로드 중..."
+        docker pull nginx:latest
+    fi
     
     # 다운로드된 이미지 확인
     log_info "다운로드된 이미지 확인:"
@@ -99,9 +113,21 @@ step2_basic_commands() {
 step3_web_server_practice() {
     log_info "=== 3단계: 웹 서버 컨테이너 실습 ==="
     
+    # 기존 컨테이너 정리
+    log_info "기존 컨테이너 정리:"
+    if docker ps -a | grep -q "my-nginx"; then
+        log_info "기존 my-nginx 컨테이너를 중지하고 삭제합니다."
+        docker stop my-nginx 2>/dev/null || true
+        docker rm my-nginx 2>/dev/null || true
+    fi
+    
     # Nginx 컨테이너 실행 (포트 매핑)
     log_info "Nginx 컨테이너 실행 (포트 8080):"
     docker run -d --name my-nginx -p 8080:80 nginx
+    
+    # 컨테이너 시작 대기
+    log_info "컨테이너 시작 대기 (5초)..."
+    sleep 5
     
     # 컨테이너 상태 확인
     log_info "컨테이너 상태 확인:"
@@ -130,6 +156,14 @@ step3_web_server_practice() {
 step4_volume_mount_practice() {
     log_info "=== 4단계: 볼륨 마운트 실습 ==="
     
+    # 기존 컨테이너 정리
+    log_info "기존 컨테이너 정리:"
+    if docker ps -a | grep -q "nginx-volume"; then
+        log_info "기존 nginx-volume 컨테이너를 중지하고 삭제합니다."
+        docker stop nginx-volume 2>/dev/null || true
+        docker rm nginx-volume 2>/dev/null || true
+    fi
+    
     # 호스트 디렉토리 생성
     log_info "호스트 디렉토리 생성:"
     mkdir -p ~/nginx-html
@@ -142,6 +176,10 @@ step4_volume_mount_practice() {
         -p 8081:80 \
         -v ~/nginx-html:/usr/share/nginx/html \
         nginx
+    
+    # 컨테이너 시작 대기
+    log_info "컨테이너 시작 대기 (5초)..."
+    sleep 5
     
     # 컨테이너 상태 확인
     log_info "볼륨 마운트 컨테이너 상태 확인:"
@@ -161,6 +199,20 @@ step4_volume_mount_practice() {
 # 5단계: Dockerfile 실습
 step5_dockerfile_practice() {
     log_info "=== 5단계: Dockerfile 실습 ==="
+    
+    # 기존 컨테이너 정리
+    log_info "기존 컨테이너 정리:"
+    if docker ps -a | grep -q "my-web-app"; then
+        log_info "기존 my-web-app 컨테이너를 중지하고 삭제합니다."
+        docker stop my-web-app 2>/dev/null || true
+        docker rm my-web-app 2>/dev/null || true
+    fi
+    
+    # 기존 이미지 정리
+    if docker images | grep -q "my-web-app"; then
+        log_info "기존 my-web-app 이미지를 삭제합니다."
+        docker rmi my-web-app 2>/dev/null || true
+    fi
     
     # 실습용 디렉토리 생성
     log_info "실습용 디렉토리 생성:"

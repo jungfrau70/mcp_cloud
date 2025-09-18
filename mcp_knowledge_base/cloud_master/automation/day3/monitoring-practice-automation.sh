@@ -115,6 +115,10 @@ step1_prometheus_grafana_setup() {
     mkdir -p ~/monitoring-practice
     cd ~/monitoring-practice
     
+    # 기존 컨테이너 정리
+    log_info "기존 모니터링 컨테이너 정리:"
+    docker-compose down 2>/dev/null || true
+    
     # Docker Compose 파일 생성
     log_info "Docker Compose 파일 생성:"
     cat > docker-compose.yml << 'EOF'
@@ -313,8 +317,12 @@ EOF
     docker-compose ps
     
     # 서비스 시작 대기
-    log_info "서비스 시작 대기 (30초)..."
-    sleep 30
+    log_info "서비스 시작 대기 (60초)..."
+    sleep 60
+    
+    # 서비스 상태 재확인
+    log_info "서비스 상태 재확인:"
+    docker-compose ps
     
     log_success "1단계 완료: Prometheus & Grafana 모니터링 스택 설정"
 }
@@ -333,6 +341,7 @@ step2_cloudwatch_setup() {
         echo "  AWS Secret Access Key: YOUR_SECRET_KEY"
         echo "  Default region name: ap-northeast-2"
         echo "  Default output format: json"
+        log_warning "AWS 설정을 완료한 후 스크립트를 다시 실행하세요."
         return
     fi
     
@@ -386,11 +395,16 @@ step2_cloudwatch_setup() {
 }
 EOF
     
-    # CloudWatch 대시보드 생성
-    log_info "CloudWatch 대시보드 생성:"
-    aws cloudwatch put-dashboard \
-        --dashboard-name "CloudMaster-Practice" \
-        --dashboard-body file://cloudwatch-dashboard.json
+    # CloudWatch 대시보드 확인 및 생성
+    log_info "CloudWatch 대시보드 확인:"
+    if aws cloudwatch get-dashboard --dashboard-name "CloudMaster-Practice" &> /dev/null; then
+        log_info "CloudMaster-Practice 대시보드가 이미 존재합니다."
+    else
+        log_info "CloudWatch 대시보드 생성:"
+        aws cloudwatch put-dashboard \
+            --dashboard-name "CloudMaster-Practice" \
+            --dashboard-body file://cloudwatch-dashboard.json
+    fi
     
     # 커스텀 메트릭 전송
     log_info "커스텀 메트릭 전송:"
@@ -402,14 +416,25 @@ EOF
     log_info "메트릭 확인:"
     aws cloudwatch list-metrics --namespace "CloudMaster/Practice"
     
-    # CloudWatch 로그 그룹 생성
-    log_info "CloudWatch 로그 그룹 생성:"
-    aws logs create-log-group --log-group-name "/cloudmaster/practice"
+    # CloudWatch 로그 그룹 확인 및 생성
+    log_info "CloudWatch 로그 그룹 확인:"
+    if aws logs describe-log-groups --log-group-name-prefix "/cloudmaster/practice" --query 'logGroups[0].logGroupName' --output text | grep -q "/cloudmaster/practice"; then
+        log_info "로그 그룹 /cloudmaster/practice가 이미 존재합니다."
+    else
+        log_info "CloudWatch 로그 그룹 생성:"
+        aws logs create-log-group --log-group-name "/cloudmaster/practice"
+    fi
     
-    # 로그 스트림 생성
-    aws logs create-log-stream \
-        --log-group-name "/cloudmaster/practice" \
-        --log-stream-name "application-logs"
+    # 로그 스트림 확인 및 생성
+    log_info "로그 스트림 확인:"
+    if aws logs describe-log-streams --log-group-name "/cloudmaster/practice" --log-stream-name-prefix "application-logs" --query 'logStreams[0].logStreamName' --output text | grep -q "application-logs"; then
+        log_info "로그 스트림 application-logs가 이미 존재합니다."
+    else
+        log_info "로그 스트림 생성:"
+        aws logs create-log-stream \
+            --log-group-name "/cloudmaster/practice" \
+            --log-stream-name "application-logs"
+    fi
     
     # 로그 이벤트 전송
     log_info "로그 이벤트 전송:"

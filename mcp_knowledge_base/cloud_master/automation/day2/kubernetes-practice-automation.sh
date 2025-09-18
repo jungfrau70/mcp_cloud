@@ -108,9 +108,14 @@ install_minikube() {
 step1_start_cluster() {
     log_info "=== 1단계: Kubernetes 클러스터 시작 ==="
     
-    # Minikube 시작
-    log_info "Minikube 클러스터 시작:"
-    minikube start --driver=docker --memory=4096 --cpus=2
+    # Minikube 상태 확인
+    log_info "Minikube 상태 확인:"
+    if minikube status | grep -q "Running"; then
+        log_info "Minikube가 이미 실행 중입니다."
+    else
+        log_info "Minikube 클러스터 시작:"
+        minikube start --driver=docker --memory=4096 --cpus=2
+    fi
     
     # 클러스터 상태 확인
     log_info "클러스터 상태 확인:"
@@ -131,13 +136,29 @@ step1_start_cluster() {
 step2_basic_resource_management() {
     log_info "=== 2단계: 기본 리소스 관리 실습 ==="
     
-    # 실습용 네임스페이스 생성
-    log_info "실습용 네임스페이스 생성:"
-    kubectl create namespace k8s-practice
+    # 실습용 네임스페이스 확인 및 생성
+    log_info "실습용 네임스페이스 확인:"
+    if kubectl get namespace k8s-practice &> /dev/null; then
+        log_info "k8s-practice 네임스페이스가 이미 존재합니다."
+    else
+        log_info "실습용 네임스페이스 생성:"
+        kubectl create namespace k8s-practice
+    fi
+    
+    # 기존 Pod 정리
+    log_info "기존 Pod 정리:"
+    if kubectl get pod nginx-pod -n k8s-practice &> /dev/null; then
+        log_info "기존 nginx-pod를 삭제합니다."
+        kubectl delete pod nginx-pod -n k8s-practice --ignore-not-found=true
+    fi
     
     # Pod 생성
     log_info "Pod 생성:"
     kubectl run nginx-pod --image=nginx:1.21 --namespace=k8s-practice
+    
+    # Pod 시작 대기
+    log_info "Pod 시작 대기 (30초)..."
+    kubectl wait --for=condition=Ready pod/nginx-pod -n k8s-practice --timeout=60s
     
     # Pod 상태 확인
     log_info "Pod 상태 확인:"
@@ -163,9 +184,20 @@ step2_basic_resource_management() {
 step3_deployment_practice() {
     log_info "=== 3단계: Deployment 실습 ==="
     
+    # 기존 Deployment 정리
+    log_info "기존 Deployment 정리:"
+    if kubectl get deployment nginx-deployment -n k8s-practice &> /dev/null; then
+        log_info "기존 nginx-deployment를 삭제합니다."
+        kubectl delete deployment nginx-deployment -n k8s-practice --ignore-not-found=true
+    fi
+    
     # Deployment 생성
     log_info "Deployment 생성:"
     kubectl create deployment nginx-deployment --image=nginx:1.21 --replicas=3 --namespace=k8s-practice
+    
+    # Deployment 시작 대기
+    log_info "Deployment 시작 대기 (60초)..."
+    kubectl wait --for=condition=Available deployment/nginx-deployment -n k8s-practice --timeout=120s
     
     # Deployment 상태 확인
     log_info "Deployment 상태 확인:"

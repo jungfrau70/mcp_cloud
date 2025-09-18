@@ -18,6 +18,10 @@ except Exception:
 def _safe_path(rel: str) -> Path:
     rel = (rel or '').strip().lstrip('/\\')
     p = (KB_ROOT / rel).resolve()
+    print(f"DEBUG: rel = {rel}")
+    print(f"DEBUG: KB_ROOT = {KB_ROOT}")
+    print(f"DEBUG: p = {p}")
+    print(f"DEBUG: p.exists() = {p.exists()}")
     if not str(p).startswith(str(KB_ROOT)):
         raise HTTPException(status_code=400, detail='Invalid path')
     return p

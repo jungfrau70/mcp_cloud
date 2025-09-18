@@ -298,10 +298,13 @@ function convertImagePaths(content, currentPath) {
     if (match.includes('../images/')) {
       // ../images/ 경로인 경우 상위 디렉토리에서 images 폴더 찾기
       const parentDir = currentDir.substring(0, currentDir.lastIndexOf('/'));
-      fullImagePath = `${parentDir}/images/${imagePath}`;
+      // textbook 디렉토리가 포함된 경우 제거
+      const cleanParentDir = parentDir.replace('/textbook', '');
+      fullImagePath = `${cleanParentDir}/images/${imagePath}`;
     } else if (match.includes('./images/')) {
       // ./images/ 경로인 경우 현재 디렉토리에서 images 폴더
-      fullImagePath = `${currentDir}/images/${imagePath}`;
+      const cleanCurrentDir = currentDir.replace('/textbook', '');
+      fullImagePath = `${cleanCurrentDir}/images/${imagePath}`;
     }
     
     // API 엔드포인트로 변환
