@@ -73,7 +73,7 @@
           </h3>
           <div class="mt-2 text-sm text-yellow-700">
             <p class="mb-2">
-              요청하신 파일 <code class="bg-yellow-100 px-1 py-0.5 rounded text-xs">{{ path }}</code>이(가) 존재하지 않거나 접근할 수 없습니다.
+              요청하신 파일 <code class="bg-yellow-100 px-1 py-0.5 rounded text-xs">{{ getDisplayPath(path) }}</code>이(가) 존재하지 않거나 접근할 수 없습니다.
             </p>
             <div v-if="referrerPath || referrerTitle" class="bg-white p-3 rounded border border-yellow-200">
               <p class="text-xs text-gray-600 mb-1">이 링크는 다음 페이지에서 호출되었습니다:</p>
@@ -83,7 +83,7 @@
                 </svg>
                 <div>
                   <p v-if="referrerTitle" class="font-medium text-gray-900">{{ referrerTitle }}</p>
-                  <p v-if="referrerPath" class="text-xs text-gray-500">{{ referrerPath }}</p>
+                  <p v-if="referrerPath" class="text-xs text-gray-500">{{ getDisplayPath(referrerPath) }}</p>
                 </div>
               </div>
               <div class="mt-2 flex space-x-2">
@@ -457,22 +457,23 @@ const setupCodeBlockHandlers = () => {
 const getDisplayPath = (filePath) => {
   if (!filePath) return 'Unknown'
   
-  // 전체 경로를 한글로 디코딩하여 표시용으로 사용
-  try {
-    // 경로를 세그먼트별로 분리하여 각각 디코딩
-    const parts = filePath.split('/')
-    const decodedParts = parts.map(part => {
-      if (!part) return part
-      
-      // 개선된 안전한 디코딩 사용
-      return processPathSafely(part, 'decode').result
-    })
-    
-    return decodedParts.join('/')
-  } catch (error) {
-    console.warn('Failed to decode display path:', filePath, error)
+  // 이미 디코딩된 경로인지 확인 (한글이 포함되어 있으면 이미 디코딩됨)
+  if (/[가-힣]/.test(filePath)) {
     return filePath
   }
+  
+  // URL 인코딩된 문자가 있는 경우에만 디코딩 시도
+  if (/%[0-9A-Fa-f]{2}/.test(filePath)) {
+    try {
+      return decodeURIComponent(filePath)
+    } catch (error) {
+      console.warn('Failed to decode display path:', filePath, error)
+      return filePath
+    }
+  }
+  
+  // 인코딩된 문자가 없으면 원본 반환
+  return filePath
 }
 
 const navigateToFileTree = () => {
