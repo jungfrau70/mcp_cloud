@@ -5,7 +5,6 @@
 
 ## 📚 이론 학습
 
-[📚 이론 학습](#이론-학습)
 1. [🎯 학습 목표](#학습-목표)
 2. [🚀 로드 밸런싱 및 Auto Scaling](#로드-밸런싱-및-auto-scaling)
 3. [📊 컨테이너 모니터링 및 로깅](#컨테이너-모니터링-및-로깅)
@@ -14,7 +13,6 @@
 
 ## 🛠️ 실습 학습
 
-[🛠️ 실습 학습](#실습-학습)
 6. [📚 실습 가이드](#실습-가이드)
 7. [🔧 실습 환경 준비](#실습-환경-준비)
 8. [🚀 로드 밸런싱 및 Auto Scaling 실습](#로드-밸런싱-및-auto-scaling-이론)
@@ -26,7 +24,6 @@
 
 [📚 참고 자료](#참고-자료)
 12. [📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
-
 
 
 </details>
@@ -62,9 +59,7 @@
 
 ---
 
-## 📚 이론 학습
-
-[📚 이론 학습](#이론-학습)
+## 📚 이론
 
 ### 🚀 로드 밸런싱 및 Auto Scaling 이론
 
@@ -73,12 +68,10 @@
 
 #### 로드 밸런싱이란?
 
-[로드 밸런싱이란?](#로드-밸런싱이란)
 여러 서버에 트래픽을 분산시켜 성능과 가용성을 향상시키는 기술입니다.
 
 #### 로드 밸런싱 장점
 
-[로드 밸런싱 장점](#로드-밸런싱-장점)
 - **고가용성**: 서버 장애 시 다른 서버로 트래픽 전환
 - **성능 향상**: 트래픽 분산으로 응답 시간 단축
 - **확장성**: 서버 추가로 용량 확장
@@ -86,7 +79,6 @@
 
 #### AWS ELB (Elastic Load Balancer)
 
-[AWS ELB (Elastic Load Balancer)](#aws-elb-elastic-load-balancer)
 - **ALB (Application Load Balancer)**: 7계층 로드 밸런싱
 - **NLB (Network Load Balancer)**: 4계층 로드 밸런싱
 - **CLB (Classic Load Balancer)**: 레거시 로드 밸런서
@@ -94,7 +86,6 @@
 
 #### GCP Cloud Load Balancing
 
-[GCP Cloud Load Balancing](#gcp-cloud-load-balancing)
 - **HTTP(S) Load Balancing**: 글로벌 HTTP(S) 로드 밸런싱
 - **TCP/UDP Load Balancing**: 지역 TCP/UDP 로드 밸런싱
 - **Internal Load Balancing**: 내부 로드 밸런싱
@@ -102,7 +93,6 @@
 
 #### 로드 밸런싱 알고리즘
 
-[로드 밸런싱 알고리즘](#로드-밸런싱-알고리즘)
 - **Round Robin**: 순차적으로 서버 선택
 - **Least Connections**: 연결 수가 가장 적은 서버 선택
 - **IP Hash**: 클라이언트 IP 기반 서버 선택
@@ -115,12 +105,10 @@
 
 #### Auto Scaling이란?
 
-[Auto Scaling이란?](#auto-scaling이란)
 워크로드에 따라 자동으로 리소스를 확장하거나 축소하는 기능입니다.
 
 #### Auto Scaling 장점
 
-[Auto Scaling 장점](#auto-scaling-장점)
 - **비용 최적화**: 필요할 때만 리소스 사용
 - **성능 보장**: 트래픽 증가 시 자동 확장
 - **가용성 향상**: 장애 시 자동 복구
@@ -128,7 +116,6 @@
 
 #### AWS Auto Scaling
 
-[AWS Auto Scaling](#aws-auto-scaling)
 - **Auto Scaling Group**: EC2 인스턴스 자동 관리
 - **Launch Template**: 인스턴스 생성 템플릿
 - **Scaling Policy**: 확장/축소 정책
@@ -136,7 +123,6 @@
 
 #### GCP Managed Instance Group
 
-[GCP Managed Instance Group](#gcp-managed-instance-group)
 - **Instance Template**: VM 생성 템플릿
 - **Auto Scaling Policy**: 확장/축소 정책
 - **Health Check**: VM 상태 모니터링
@@ -144,7 +130,6 @@
 
 #### Auto Scaling 정책
 
-[Auto Scaling 정책](#auto-scaling-정책)
 - **Target Tracking**: 메트릭 기반 자동 조정
 - **Step Scaling**: 단계별 확장/축소
 - **Simple Scaling**: 단순 확장/축소
@@ -157,12 +142,10 @@
 
 #### 모니터링이란?
 
-[모니터링이란?](#모니터링이란)
 시스템의 상태, 성능, 가용성을 지속적으로 관찰하고 측정하는 활동입니다.
 
 #### 모니터링의 중요성
 
-[모니터링의 중요성](#모니터링의-중요성)
 - **장애 예방**: 문제 발생 전 조기 감지
 - **성능 최적화**: 병목 지점 식별 및 개선
 - **용량 계획**: 리소스 사용량 분석
@@ -170,7 +153,6 @@
 
 #### AWS CloudWatch
 
-[AWS CloudWatch](#aws-cloudwatch)
 - **메트릭**: 시스템 및 애플리케이션 지표
 - **로그**: 애플리케이션 및 시스템 로그
 - **알람**: 임계값 기반 알림
@@ -178,7 +160,6 @@
 
 #### GCP Cloud Monitoring
 
-[GCP Cloud Monitoring](#gcp-cloud-monitoring)
 - **메트릭**: 시스템 및 애플리케이션 지표
 - **로그**: Cloud Logging 통합
 - **알림**: 임계값 기반 알림
@@ -186,7 +167,6 @@
 
 #### 컨테이너 모니터링 도구
 
-[컨테이너 모니터링 도구](#컨테이너-모니터링-도구)
 - **Prometheus**: 메트릭 수집 및 저장
 - **Grafana**: 시각화 및 대시보드
 - **ELK Stack**: 로그 수집, 분석, 시각화
@@ -199,12 +179,10 @@
 
 #### 장애 복구란?
 
-[장애 복구란?](#장애-복구란)
 시스템 장애 발생 시 서비스를 정상 상태로 복구하는 과정입니다.
 
 #### 장애 복구 전략
 
-[장애 복구 전략](#장애-복구-전략)
 - **Prevention**: 장애 예방
 - **Detection**: 장애 감지
 - **Response**: 장애 대응
@@ -212,7 +190,6 @@
 
 #### Health Check
 
-[Health Check](#health-check)
 - **Liveness Probe**: 컨테이너 생존 상태 확인
 - **Readiness Probe**: 서비스 준비 상태 확인
 - **Startup Probe**: 시작 상태 확인
@@ -220,7 +197,6 @@
 
 #### 자동 복구 메커니즘
 
-[자동 복구 메커니즘](#자동-복구-메커니즘)
 - **Auto Restart**: 자동 재시작
 - **Auto Scaling**: 자동 확장
 - **Load Balancing**: 트래픽 전환
@@ -228,7 +204,6 @@
 
 #### 운영 자동화
 
-[운영 자동화](#운영-자동화)
 - **Infrastructure as Code**: 인프라 코드화
 - **Configuration Management**: 설정 관리 자동화
 - **Deployment Automation**: 배포 자동화
@@ -241,12 +216,10 @@
 
 #### 비용 최적화란?
 
-[비용 최적화란?](#비용-최적화란)
 클라우드 리소스 사용을 최적화하여 비용을 절감하는 활동입니다.
 
 #### 비용 최적화 전략
 
-[비용 최적화 전략](#비용-최적화-전략)
 - **Right Sizing**: 적절한 리소스 크기 선택
 - **Reserved Instances**: 예약 인스턴스 활용
 - **Spot Instances**: 스팟 인스턴스 활용
@@ -254,7 +227,6 @@
 
 #### AWS 비용 최적화
 
-[AWS 비용 최적화](#aws-비용-최적화)
 - **Cost Explorer**: 비용 분석 도구
 - **Trusted Advisor**: 비용 최적화 권장사항
 - **Reserved Instances**: 예약 인스턴스
@@ -262,7 +234,6 @@
 
 #### GCP 비용 최적화
 
-[GCP 비용 최적화](#gcp-비용-최적화)
 - **Billing Reports**: 비용 분석 보고서
 - **Recommender**: 비용 최적화 권장사항
 - **Committed Use Discounts**: 약정 사용 할인
@@ -270,7 +241,6 @@
 
 #### 운영 전략
 
-[운영 전략](#운영-전략)
 - **24/7 모니터링**: 24시간 모니터링
 - **자동화**: 반복 작업 자동화
 - **문서화**: 운영 절차 문서화
@@ -280,16 +250,14 @@
 
 ---
 
-## 🛠️ 실습 학습
+## 🛠️ 실습
 
-[🛠️ 실습 학습](#실습-학습)
-
-## 📚 실습 가이드
+### 🚀 로드 밸런싱 및 Auto Scaling 실습
 
 <details>
-<summary>📖 실습 가이드 개요</summary>
+<summary>📖 실습 개요</summary>
 
-### 실습 구성
+#### 실습 구성
 
 [실습 구성](#실습-구성)
 1. **로드 밸런싱 및 Auto Scaling** (150분)
@@ -297,7 +265,7 @@
 3. **장애 복구 및 운영 자동화** (90분)
 4. **비용 최적화 및 운영 전략** (60분)
 
-### 실습 방식
+#### 실습 방식
 
 [실습 방식](#실습-방식)
 - **로드 밸런싱**: ELB, Cloud Load Balancing 구성
@@ -305,7 +273,7 @@
 - **모니터링**: Prometheus, Grafana, CloudWatch
 - **장애 복구**: Health Check 기반 자동 교체
 
-### 실습 결과물
+#### 실습 결과물
 
 [실습 결과물](#실습-결과물)
 - 로드 밸런서 구성
@@ -349,12 +317,12 @@
 
 ---
 
-## 🔧 실습 환경 준비
+### 🔧 실습 환경 준비
 
 <details>
 <summary>📋 필수 계정 및 도구</summary>
 
-### 필수 계정
+#### 필수 계정
 
 [필수 계정](#필수-계정)
 - **AWS 계정**: Free Tier 계정
@@ -362,7 +330,7 @@
 - **GitHub 계정**: 저장소 관리 및 Actions 사용
 - **Docker Hub 계정**: 컨테이너 이미지 저장소
 
-### 필수 도구
+#### 필수 도구
 
 [필수 도구](#필수-도구)
 - **AWS CLI**: AWS 서비스 관리
@@ -375,7 +343,7 @@
 <details>
 <summary>🔧 1일차 실습 완료 확인</summary>
 
-### 필수 완료 사항
+#### 필수 완료 사항
 
 [필수 완료 사항](#필수-완료-사항)
 - [ ] Docker 고급 기술 및 최적화 완료
@@ -383,7 +351,7 @@
 - [ ] VM 기반 컨테이너 배포 자동화
 - [ ] 완전 자동화된 CI/CD 파이프라인
 
-### 실습 환경 확인
+#### 실습 환경 확인
 
 [실습 환경 확인](#실습-환경-확인)
 ```bash
@@ -402,19 +370,19 @@ docker-compose --version
 
 ---
 
-## 🚀 로드 밸런싱 및 Auto Scaling
+### 🚀 로드 밸런싱 및 Auto Scaling
 
 <details>
 <summary>📖 로드 밸런싱 개념</summary>
 
-### 로드 밸런싱이란?
+#### 로드 밸런싱이란?
 
 [로드 밸런싱이란?](#로드-밸런싱이란)
 - **정의**: 여러 서버에 트래픽을 분산하는 기술
 - **목적**: 가용성 향상, 성능 최적화, 장애 복구
 - **유형**: Layer 4 (TCP/UDP), Layer 7 (HTTP/HTTPS)
 
-### AWS ELB vs GCP Cloud Load Balancing
+#### AWS ELB vs GCP Cloud Load Balancing
 
 [AWS ELB vs GCP Cloud Load Balancing](#aws-elb-vs-gcp-cloud-load-balancing)
 | 구분 | AWS ELB | GCP Cloud Load Balancing |
@@ -429,7 +397,7 @@ docker-compose --version
 <details>
 <summary>🔗 AWS ELB 실습</summary>
 
-### Application Load Balancer 생성
+#### Application Load Balancer 생성
 
 [Application Load Balancer 생성](#application-load-balancer-생성)
 ```bash
@@ -473,7 +441,7 @@ aws elbv2 create-load-balancer \
     --type application
 ```
 
-### Target Group 생성
+#### Target Group 생성
 
 [Target Group 생성](#target-group-생성)
 ```bash
@@ -501,7 +469,7 @@ aws elbv2 register-targets \
 <details>
 <summary>🔗 GCP Cloud Load Balancing 실습</summary>
 
-### HTTP(S) Load Balancer 생성
+#### HTTP(S) Load Balancer 생성
 
 [HTTP(S) Load Balancer 생성](#https-load-balancer-생성)
 ```bash
@@ -1040,12 +1008,15 @@ aws cloudwatch get-metric-statistics \
 
 ## 🧭 네비게이션
 
-[🧭 네비게이션](#네비게이션)
-
 <div align="center">
 
 [🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | 
 [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
 [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
+[📅 Day1 시작하기](mcp_knowledge_base/cloud_master/textbook/Day1/README.md) |
+[📅 Day2 시작하기](mcp_knowledge_base/cloud_master/textbook/Day2/README.md) |
+[📅 Day3 시작하기](mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
+
 </div>
+

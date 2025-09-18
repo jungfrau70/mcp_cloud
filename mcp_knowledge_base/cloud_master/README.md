@@ -11,8 +11,6 @@ Docker, GitHub Actions, CI/CD 파이프라인 등 현대적인 개발 도구들�
 
 함께 클라우드 마스터가 되어보세요!
 
-**궁금한 점이 있으시면 언제든 문의해주세요!** 
-문제가 발생하거나 도움이 필요하시면 언제든 연락주시면 친절하게 도와드리겠습니다.
 ## 📋 사전 요구사항
 
 이 과정을 수강하기 전에 다음 사항들을 확인해주세요:
@@ -119,18 +117,17 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 # VS Code 설치
 # https://code.visualstudio.com/
 ```
-
-### 3️⃣ 첫 번째 실습 시작
-1. Day 1 실습 가이드로 이동
-2. [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-basic-guide.md) 따라하기
-3. [Git/GitHub 기초](/mcp_knowledge_base/cloud_master/textbook/Day1/git-github-basics.md) 따라하기
-
 ## 📚 학습 자료
 
 ### 📖 교재
 - Day 1: Docker, Git/GitHub, GitHub Actions 기초
 - Day 2: 비용 최적화 및 모니터링
 - Day 3: 고급 아키텍처 및 배포
+
+### 🛠️ 설치 가이드
+- [Docker 설치](/mcp_knowledge_base/cloud_master/install/install_docker.md)
+- [Git 설치](/mcp_knowledge_base/cloud_master/install/install_git.md)
+- [GitHub Actions 설정](/mcp_knowledge_base/cloud_master/install/github-actions-setup.md)
 
 ### 🔧 실습 가이드
 - [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-basic-guide.md)
@@ -139,10 +136,10 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 - [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-optimization-guide.md)
 - [모니터링 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/monitoring-guide.md)
 
-### 🛠️ 설치 가이드
-- [Docker 설치](/mcp_knowledge_base/cloud_master/install/install_docker.md)
-- [Git 설치](/mcp_knowledge_base/cloud_master/install/install_git.md)
-- [GitHub Actions 설정](/mcp_knowledge_base/cloud_master/install/github-actions-setup.md)
+### 3️⃣ 첫 번째 실습 시작
+1. Day 1 실습 가이드로 이동
+2. [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-basic-guide.md) 따라하기
+3. [Git/GitHub 기초](/mcp_knowledge_base/cloud_master/textbook/Day1/git-github-basics.md) 따라하기
 
 ## ✅ 학습 체크리스트
 
@@ -181,39 +178,6 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 ### Q4: 다음 단계는 무엇인가요?
 **A**: Cloud Container 과정을 추천합니다. Kubernetes와 고급 오케스트레이션 기술을 학습할 수 있습니다.
 
-## 🔗 관련 과정
-
-### 📚 전체 커리큘럼
-- [전체 커리큘럼 보기](/mcp_knowledge_base/curriculum.md)
-- [학습 경로 안내](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-### 🚀 이전 단계
-- Cloud Basic 과정 - 클라우드 기초
-
-### 🚀 다음 단계
-- Cloud Container 과정 - Kubernetes, 오케스트레이션
-
-### 🏠 홈으로
-- [통합 인덱스](/mcp_knowledge_base/index.md)
-
-## 📞 문의 및 지원
-
-### 💬 학습 지원
-- **실시간 질문**: 각 실습 가이드의 댓글 섹션 활용
-- **문제 신고**: GitHub Issues를 통한 버그 신고
-- **기능 요청**: 새로운 기능이나 개선사항 제안
-
-### 📧 연락처
-- **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
-## 🎉 Cloud Master 과정을 시작하세요!
-
-🚀 Day 1 실습 시작하기 |
-[📚 전체 커리큘럼 보기](/mcp_knowledge_base/curriculum.md) | 
-[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md)
-
-</div>
-
 ---
 
 ## 🧭 네비게이션
@@ -224,8 +188,9 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
 [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
 
-📅 Day1 시작하기 |
-📅 Day2 시작하기 |
-📅 Day3 시작하기
+[📅 Day1 시작하기](mcp_knowledge_base/cloud_master/textbook/Day1/README.md) |
+[📅 Day2 시작하기](mcp_knowledge_base/cloud_master/textbook/Day2/README.md) |
+[📅 Day3 시작하기](mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
 
 </div>
+

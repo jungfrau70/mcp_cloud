@@ -1,5 +1,5 @@
 import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'vue-bundle-renderer/runtime';
-import { c as buildAssetsURL, u as useRuntimeConfig, g as getResponseStatusText, e as getResponseStatus, f as defineRenderHandler, p as publicAssetsURL, h as getQuery, i as createError, j as getRouteRules, b as useNitroApp } from '../_/nitro.mjs';
+import { j as joinRelativeURL, u as useRuntimeConfig, g as getResponseStatusText, a as getResponseStatus, d as defineRenderHandler, b as getQuery, c as createError, e as getRouteRules, f as useNitroApp } from '../nitro/nitro.mjs';
 import { createHead as createHead$1, propsToString, renderSSRHead } from 'unhead/server';
 import { stringify, uneval } from 'devalue';
 import { toValue, isRef } from 'vue';
@@ -9,11 +9,9 @@ import 'node:https';
 import 'node:events';
 import 'node:buffer';
 import 'node:fs';
-import 'node:url';
-import '@iconify/utils';
-import 'node:crypto';
-import 'consola';
 import 'node:path';
+import 'node:crypto';
+import 'node:url';
 
 const VueResolver = (_, value) => {
   return isRef(value) ? toValue(value) : value;
@@ -44,13 +42,25 @@ const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width
 
 const appRootTag = "div";
 
-const appRootAttrs = {"id":"__nuxt","class":"isolate"};
+const appRootAttrs = {"id":"__nuxt"};
 
 const appTeleportTag = "div";
 
 const appTeleportAttrs = {"id":"teleports"};
 
 const appId = "nuxt-app";
+
+function buildAssetsDir() {
+  return useRuntimeConfig().app.buildAssetsDir;
+}
+function buildAssetsURL(...path) {
+  return joinRelativeURL(publicAssetsURL(), buildAssetsDir(), ...path);
+}
+function publicAssetsURL(...path) {
+  const app = useRuntimeConfig().app;
+  const publicBase = app.cdnURL || app.baseURL;
+  return path.length ? joinRelativeURL(publicBase, ...path) : publicBase;
+}
 
 const APP_ROOT_OPEN_TAG = `<${appRootTag}${propsToString(appRootAttrs)}>`;
 const APP_ROOT_CLOSE_TAG = `</${appRootTag}>`;
