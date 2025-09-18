@@ -14,11 +14,6 @@
 
 # Kubernetes 기초 실습 가이드
 
-<div align="center">
-
-[← 이전: 컨테이너 기초 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/practice/container-basics.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: Cloud Container 2일차 →](/mcp_knowledge_base/cloud_container/textbook/Day2/README.md) | [← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 <details>
 <summary>📋 목차</summary>
@@ -138,7 +133,7 @@ winget install Kubernetes.kubectl
 brew install kubectl
 
 # Ubuntu
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https:///dl.k8s.io/release/$(curl -L -s https:///dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
 # gcloud CLI 설치
 # Windows
@@ -148,7 +143,7 @@ winget install Google.CloudSDK
 brew install google-cloud-sdk
 
 # Ubuntu
-curl https://sdk.cloud.google.com | bash
+curl https:///sdk.cloud.google.com | bash
 ```
 
 </details>
@@ -246,16 +241,16 @@ graph TB
 [💻 CLI 방식](#cli-방식)
 ```bash
 # GKE 클러스터 생성
-gcloud container clusters create cloud-container-cluster \
-  --zone=asia-northeast3-a \
-  --num-nodes=3 \
-  --machine-type=e2-medium \
-  --enable-autoscaling \
-  --min-nodes=1 \
+gcloud container clusters create cloud-container-cluster /
+  --zone=asia-northeast3-a /
+  --num-nodes=3 /
+  --machine-type=e2-medium /
+  --enable-autoscaling /
+  --min-nodes=1 /
   --max-nodes=5
 
 # 클러스터 인증
-gcloud container clusters get-credentials cloud-container-cluster \
+gcloud container clusters get-credentials cloud-container-cluster /
   --zone=asia-northeast3-a
 
 # 클러스터 확인
@@ -469,8 +464,8 @@ spec:
 
 ```bash
 # Secret 생성
-kubectl create secret generic app-secret \
-  --from-literal=username=admin \
+kubectl create secret generic app-secret /
+  --from-literal=username=admin /
   --from-literal=password=secret123
 
 # Secret 확인
@@ -584,7 +579,7 @@ spec:
 
 ```bash
 # Nginx Ingress Controller 설치
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/cloud/deploy.yaml
+kubectl apply -f https:///raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/cloud/deploy.yaml
 
 # Ingress Controller 상태 확인
 kubectl get pods -n ingress-nginx
@@ -681,7 +676,7 @@ kubectl delete pv app-pv
 kubectl delete ingress app-ingress
 
 # 클러스터 삭제
-gcloud container clusters delete cloud-container-cluster \
+gcloud container clusters delete cloud-container-cluster /
   --zone=asia-northeast3-a
 ```
 
@@ -765,14 +760,14 @@ gcloud compute project-info describe
 **해결방법**:
 ```bash
 # 1. 클러스터 인증 정보 가져오기
-gcloud container clusters get-credentials cloud-container-cluster \
+gcloud container clusters get-credentials cloud-container-cluster /
   --zone=asia-northeast3-a
 
 # 2. 연결 테스트
 kubectl cluster-info
 
 # 3. 클러스터 상태 확인
-gcloud container clusters describe cloud-container-cluster \
+gcloud container clusters describe cloud-container-cluster /
   --zone=asia-northeast3-a
 ```
 
@@ -860,26 +855,26 @@ kubectl exec -it <pod-name> -- ls /etc/config
 ### 공식 문서
 
 [공식 문서](#공식-문서)
-- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
-- [GKE 공식 문서](https://cloud.google.com/kubernetes-engine/docs)
-- [Kubernetes 실습 환경](https://kubernetes.io/docs/tutorials/)
-- [Kubernetes 대시보드](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
+- [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
+- [GKE 공식 문서](https:///cloud.google.com/kubernetes-engine/docs)
+- [Kubernetes 실습 환경](https:///kubernetes.io/docs/tutorials/)
+- [Kubernetes 대시보드](https:///kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
 
 ### 유용한 리소스
 
 [유용한 리소스](#유용한-리소스)
-- [Kubernetes Playground](https://www.katacoda.com/courses/kubernetes)
-- [Kubernetes Examples](https://github.com/kubernetes/examples)
-- [GKE Workshop](https://cloud.google.com/kubernetes-engine/docs/tutorials)
-- [Kubernetes Best Practices](https://kubernetes.io/docs/concepts/configuration/overview/)
+- [Kubernetes Playground](https:///www.katacoda.com/courses/kubernetes)
+- [Kubernetes Examples](https:///github.com/kubernetes/examples)
+- [GKE Workshop](https:///cloud.google.com/kubernetes-engine/docs/tutorials)
+- [Kubernetes Best Practices](https:///kubernetes.io/docs/concepts/configuration/overview/)
 
 ### 관련 프로젝트
 
 [관련 프로젝트](#관련-프로젝트)
-- [Kubernetes 샘플](https://github.com/kubernetes/examples)
-- [GKE 샘플](https://github.com/GoogleCloudPlatform/kubernetes-engine-samples)
-- [Kubernetes Helm Charts](https://github.com/helm/charts)
-- [Istio 샘플](https://github.com/istio/istio)
+- [Kubernetes 샘플](https:///github.com/kubernetes/examples)
+- [GKE 샘플](https:///github.com/GoogleCloudPlatform/kubernetes-engine-samples)
+- [Kubernetes Helm Charts](https:///github.com/helm/charts)
+- [Istio 샘플](https:///github.com/istio/istio)
 
 </details>
 
@@ -961,16 +956,13 @@ kubectl exec -it <pod-name> -- ls /etc/config
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: 컨테이너 기초 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/practice/container-basics.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: Cloud Container 2일차 →](/mcp_knowledge_base/README.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

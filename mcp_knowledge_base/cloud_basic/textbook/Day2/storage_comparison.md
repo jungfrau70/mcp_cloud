@@ -1,10 +1,5 @@
 # 스토리지 서비스 비교 (S3 vs Cloud Storage)
 
-<div align="center">
-
-[← 이전: Cloud Basic 2일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 학습 목표
 
@@ -544,8 +539,8 @@ Phase 3: 전체 마이그레이션
 [1. 스토리지 클래스 최적화](#1-스토리지-클래스-최적화)
 ```bash
 # 수명 주기 정책 설정
-aws s3api put-bucket-lifecycle-configuration \
-    --bucket my-bucket \
+aws s3api put-bucket-lifecycle-configuration /
+    --bucket my-bucket /
     --lifecycle-configuration file://lifecycle-policy.json
 
 # 예시 정책
@@ -635,31 +630,28 @@ gsutil lifecycle set lifecycle-policy.json gs://my-bucket
 ## 참고 자료
 
 [참고 자료](#참고-자료)
-- [AWS S3 사용자 가이드](https://docs.aws.amazon.com/s3/latest/userguide/)
-- [GCP Cloud Storage 문서](https://cloud.google.com/storage/docs)
-- [AWS S3 가격](https://aws.amazon.com/s3/pricing/)
-- [GCP Cloud Storage 가격](https://cloud.google.com/storage/pricing)
-- [S3에서 Cloud Storage로 마이그레이션](https://cloud.google.com/storage/docs/migrating)
+- [AWS S3 사용자 가이드](https:///docs.aws.amazon.com/s3/latest/userguide/)
+- [GCP Cloud Storage 문서](https:///cloud.google.com/storage/docs)
+- [AWS S3 가격](https:///aws.amazon.com/s3/pricing/)
+- [GCP Cloud Storage 가격](https:///cloud.google.com/storage/pricing)
+- [S3에서 Cloud Storage로 마이그레이션](https:///cloud.google.com/storage/docs/migrating)
 
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 
 [📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[← 이전: Cloud Basic 2일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

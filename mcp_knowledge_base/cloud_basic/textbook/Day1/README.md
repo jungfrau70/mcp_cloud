@@ -37,26 +37,26 @@
 
 #### 1단계: 클라우드 기본 개념 이해 (1시간)
 
-- [클라우드 컴퓨팅 개념](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md#클라우드-기본-개념)
-- [AWS 서비스 개요](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md#aws-서비스-개요)
-- [GCP 서비스 개요](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md#gcp-서비스-개요)
+- [클라우드 컴퓨팅 개념](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md)
+- [AWS 서비스 개요](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md)
+- [GCP 서비스 개요](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md)
 
 #### 2단계: AWS 계정 생성 및 설정 (1시간)
 
 - [AWS 계정 생성](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md)
-- [AWS CLI 설치 및 설정](/mcp_knowledge_base/cloud_basic/install/install_aws_cli.md)
+- [AWS CLI 설치 및 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_aws_cli.md)
 - [기본 보안 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md)
 
 #### 3단계: GCP 계정 생성 및 설정 (1시간)
 
 - [GCP 계정 생성](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md)
-- [GCP CLI 설치 및 설정](/mcp_knowledge_base/cloud_basic/install/install_gcp_cli.md)
-- [프로젝트 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md#gcp-프로젝트-설정)
+- [GCP CLI 설치 및 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_glcoud_cli.md)
+- [프로젝트 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md)
 
 #### 4단계: 기본 실습 환경 확인 (1시간)
 
-- [환경 설정 확인](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md#환경-설정-확인)
-- [연결 테스트](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md#연결-테스트)
+- [환경 설정 확인](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md)
+- [연결 테스트](/mcp_knowledge_base/cloud_basic/textbook/Day1/aws-gcp-account-setup.md)
 
 ### 🌆 오후 (4시간)
 
@@ -64,27 +64,27 @@
 
 #### 5단계: AWS EC2 실습 (1시간)
 
-- [EC2 인스턴스 생성](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md#ec2-인스턴스-생성)
-- [SSH 연결](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md#ssh-연결)
-- [기본 명령어 실행](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md#기본-명령어-실행)
+- [EC2 인스턴스 생성](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md)
+- [SSH 연결](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md)
+- [기본 명령어 실행](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md)
 
 #### 6단계: AWS S3 실습 (1시간)
 
-- [S3 버킷 생성](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md#s3-버킷-생성)
-- [파일 업로드/다운로드](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md#파일-업로드다운로드)
-- [권한 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md#권한-설정)
+- [S3 버킷 생성](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
+- [파일 업로드/다운로드](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
+- [권한 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
 
 #### 7단계: GCP Compute Engine 실습 (1시간)
 
-- [Compute Engine 인스턴스 생성](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md#compute-engine-인스턴스-생성)
-- [SSH 연결](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md#gcp-ssh-연결)
-- [기본 명령어 실행](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md#gcp-기본-명령어-실행)
+- [Compute Engine 인스턴스 생성](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md)
+- [SSH 연결](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md)
+- [기본 명령어 실행](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md)
 
 #### 8단계: GCP Cloud Storage 실습 (1시간)
 
-- [Cloud Storage 버킷 생성](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md#cloud-storage-버킷-생성)
-- [파일 업로드/다운로드](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md#gcp-파일-업로드다운로드)
-- [권한 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md#gcp-권한-설정)
+- [Cloud Storage 버킷 생성](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
+- [파일 업로드/다운로드](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
+- [권한 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
 
 ## 💻 실습 가이드
 
@@ -98,7 +98,7 @@
 1. **AWS CLI 설치**
    ```bash
    # Windows
-   # https://aws.amazon.com/cli/ 에서 다운로드
+   # https:///aws.amazon.com/cli/ 에서 다운로드
    
    # 설치 확인
    aws --version
@@ -107,7 +107,7 @@
 2. **GCP CLI 설치**
    ```bash
    # Windows
-   # https://cloud.google.com/sdk/docs/install 에서 다운로드
+   # https:///cloud.google.com/sdk/docs/install 에서 다운로드
    
    # 설치 확인
    gcloud --version
@@ -214,8 +214,8 @@
 
 [📞 추가 도움](#추가-도움)
 - [종합 문제해결 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md)
-- [AWS 공식 문서](https://docs.aws.amazon.com/)
-- [GCP 공식 문서](https://cloud.google.com/docs)
+- [AWS 공식 문서](https:///docs.aws.amazon.com/)
+- [GCP 공식 문서](https:///cloud.google.com/docs)
 
 ## ➡️ 다음 단계
 
@@ -232,7 +232,7 @@ Day 1을 성공적으로 완료했다면, 다음 단계인 Day 2로 진행할 �
 
 [🔗 관련 자료](#관련-자료)
 - Cloud Basic 과정 전체
-- [학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+- [학습 경로](/mcp_knowledge_base/learning-path.md)
 - [전체 커리큘럼](/mcp_knowledge_base/curriculum.md)
 
 ### 🎯 다음 단계 학습 목표
@@ -268,8 +268,8 @@ Day 2에서는 다음 내용을 학습하게 됩니다:
 
 [🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | 
 [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
-[🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
-[📅 Day1 시작하기](mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+[📅 Day1 시작하기](/mcp_knowledge_base/README.md)
 
 </div>

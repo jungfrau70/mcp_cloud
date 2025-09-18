@@ -109,13 +109,13 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 ### 2️⃣ 환경 설정
 ```bash
 # Docker Desktop 설치
-# https://www.docker.com/products/docker-desktop
+# https:///www.docker.com/products/docker-desktop
 
 # Git 설치 (이미 설치되어 있다면 생략)
-# https://git-scm.com/downloads
+# https:///git-scm.com/downloads
 
 # VS Code 설치
-# https://code.visualstudio.com/
+# https:///code.visualstudio.com/
 ```
 ## 📚 학습 자료
 
@@ -125,21 +125,21 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 - Day 3: 고급 아키텍처 및 배포
 
 ### 🛠️ 설치 가이드
-- [Docker 설치](/mcp_knowledge_base/cloud_master/install/install_docker.md)
-- [Git 설치](/mcp_knowledge_base/cloud_master/install/install_git.md)
-- [GitHub Actions 설정](/mcp_knowledge_base/cloud_master/install/github-actions-setup.md)
+- [Docker 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_docker.md)
+- [Git 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_git.md)
+- [GitHub Actions 설정](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-guide.md)
 
 ### 🔧 실습 가이드
-- [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-basic-guide.md)
-- [Git/GitHub 기초](/mcp_knowledge_base/cloud_master/textbook/Day1/git-github-basics.md)
-- [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/github-actions-guide.md)
-- [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-optimization-guide.md)
-- [모니터링 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/monitoring-guide.md)
+- [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-basic-guide.md)
+- [Git/GitHub 기초](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/git-github-basics.md)
+- [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-guide.md)
+- [비용 최적화 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/cost-optimization-guide.md)
+- [모니터링 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/guides/monitoring-guide.md)
 
 ### 3️⃣ 첫 번째 실습 시작
 1. Day 1 실습 가이드로 이동
-2. [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-basic-guide.md) 따라하기
-3. [Git/GitHub 기초](/mcp_knowledge_base/cloud_master/textbook/Day1/git-github-basics.md) 따라하기
+2. [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-basic-guide.md) 따라하기
+3. [Git/GitHub 기초](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/git-github-basics.md) 따라하기
 
 ## ✅ 학습 체크리스트
 
@@ -182,15 +182,11 @@ Docker, CI/CD, 고급 배포 기술을 통해 현업에서 바로 활용할 수 
 
 ## 🧭 네비게이션
 
+
+
+
 <div align="center">
 
-[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | 
-[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
-[🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-[📅 Day1 시작하기](mcp_knowledge_base/cloud_master/textbook/Day1/README.md) |
-[📅 Day2 시작하기](mcp_knowledge_base/cloud_master/textbook/Day2/README.md) |
-[📅 Day3 시작하기](mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>
-

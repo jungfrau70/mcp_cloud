@@ -1,10 +1,5 @@
 # 4교시: 스토리지 서비스 실습
 
-<div align="center">
-
-[← 이전: Cloud Basic 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 <details>
 <summary>📋 목차</summary>
@@ -207,8 +202,8 @@ EOF
 aws s3 cp index.html s3://cloud-student-bucket-[버킷명]/
 
 # 정적 웹사이트 호스팅 활성화
-aws s3 website s3://cloud-student-bucket-[버킷명]/ \
-  --index-document index.html \
+aws s3 website s3://cloud-student-bucket-[버킷명]/ /
+  --index-document index.html /
   --error-document index.html
 
 # 웹사이트 URL 확인
@@ -381,7 +376,7 @@ gsutil cp index.html gs://cloud-student-bucket-[버킷명]/
 gsutil web set -m index.html -e index.html gs://cloud-student-bucket-[버킷명]
 
 # 웹사이트 URL 확인
-echo "Website URL: https://storage.googleapis.com/cloud-student-bucket-[버킷명]/index.html"
+echo "Website URL: https:///storage.googleapis.com/cloud-student-bucket-[버킷명]/index.html"
 ```
 
 </details>
@@ -607,24 +602,24 @@ gsutil -m cp FILE_NAME gs://BUCKET_NAME/
 ### 공식 문서
 
 [공식 문서](#공식-문서)
-- [AWS S3 공식 문서](https://docs.aws.amazon.com/s3/)
-- [GCP Cloud Storage 공식 문서](https://cloud.google.com/storage/docs)
-- [AWS S3 스토리지 클래스](https://aws.amazon.com/s3/storage-classes/)
-- [GCP Cloud Storage 스토리지 클래스](https://cloud.google.com/storage/docs/storage-classes)
+- [AWS S3 공식 문서](https:///docs.aws.amazon.com/s3/)
+- [GCP Cloud Storage 공식 문서](https:///cloud.google.com/storage/docs)
+- [AWS S3 스토리지 클래스](https:///aws.amazon.com/s3/storage-classes/)
+- [GCP Cloud Storage 스토리지 클래스](https:///cloud.google.com/storage/docs/storage-classes)
 
 ### 유용한 리소스
 
 [유용한 리소스](#유용한-리소스)
-- [AWS S3 모범 사례](https://docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance.html)
-- [GCP Cloud Storage 모범 사례](https://cloud.google.com/storage/docs/best-practices)
-- [AWS S3 가격 계산기](https://calculator.aws/)
-- [GCP 가격 계산기](https://cloud.google.com/products/calculator)
+- [AWS S3 모범 사례](https:///docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance.html)
+- [GCP Cloud Storage 모범 사례](https:///cloud.google.com/storage/docs/best-practices)
+- [AWS S3 가격 계산기](https:///calculator.aws/)
+- [GCP 가격 계산기](https:///cloud.google.com/products/calculator)
 
 ### 관련 프로젝트
 
 [관련 프로젝트](#관련-프로젝트)
-- [AWS S3 샘플 프로젝트](https://github.com/aws-samples/amazon-s3-samples)
-- [GCP Cloud Storage 샘플 프로젝트](https://github.com/GoogleCloudPlatform/cloud-storage-samples)
+- [AWS S3 샘플 프로젝트](https:///github.com/aws-samples/amazon-s3-samples)
+- [GCP Cloud Storage 샘플 프로젝트](https:///github.com/GoogleCloudPlatform/cloud-storage-samples)
 
 </details>
 
@@ -670,7 +665,7 @@ gsutil -m cp FILE_NAME gs://BUCKET_NAME/
 
 [🚀 다음 단계](#다음-단계)
 
-- **실습 프로젝트**: [통합 실습 프로젝트](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day1\practice\README.md)
+- **실습 프로젝트**: [통합 실습 프로젝트](/mcp_knowledge_base/README.md)
 - **실제 프로젝트 적용**: 자신의 프로젝트에 스토리지 서비스 적용
 - **고급 기능 학습**: CDN 연동, 비용 최적화, 모니터링
 
@@ -678,9 +673,9 @@ gsutil -m cp FILE_NAME gs://BUCKET_NAME/
 
 [💡 추가 학습 자료](#추가-학습-자료)
 
-- [AWS S3 공식 문서](https://docs.aws.amazon.com/s3/)
-- [GCP Cloud Storage 공식 문서](https://cloud.google.com/storage/docs)
-- [통합 실습 프로젝트](/mcp_knowledge_base/mcp_knowledge_base\cloud_basic\textbook\Day1\practice\README.md)
+- [AWS S3 공식 문서](https:///docs.aws.amazon.com/s3/)
+- [GCP Cloud Storage 공식 문서](https:///cloud.google.com/storage/docs)
+- [통합 실습 프로젝트](/mcp_knowledge_base/README.md)
 
 ---
 
@@ -689,16 +684,13 @@ gsutil -m cp FILE_NAME gs://BUCKET_NAME/
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[← 이전: Cloud Basic 1일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

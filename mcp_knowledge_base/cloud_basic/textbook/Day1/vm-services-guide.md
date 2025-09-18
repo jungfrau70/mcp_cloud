@@ -1,10 +1,5 @@
 # 3교시: 가상머신 서비스 실습
 
-<div align="center">
-
-[← 이전: Cloud Basic 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 <details>
 <summary>📋 목차</summary>
@@ -152,30 +147,30 @@
 <summary>💻 CLI 방식</summary>
 ```bash
 # 키 페어 생성
-aws ec2 create-key-pair \
-  --key-name cloud-student-key \
-  --query 'KeyMaterial' \
+aws ec2 create-key-pair /
+  --key-name cloud-student-key /
+  --query 'KeyMaterial' /
   --output text > cloud-student-key.pem
 
 # 보안 그룹 생성
-aws ec2 create-security-group \
-  --group-name web-server-sg \
+aws ec2 create-security-group /
+  --group-name web-server-sg /
   --description "Security group for web server"
 
 # 보안 그룹 규칙 추가
-aws ec2 authorize-security-group-ingress \
-  --group-name web-server-sg \
-  --protocol tcp \
-  --port 22 \
+aws ec2 authorize-security-group-ingress /
+  --group-name web-server-sg /
+  --protocol tcp /
+  --port 22 /
   --cidr 0.0.0.0/0
 
 # EC2 인스턴스 시작
-aws ec2 run-instances \
-  --image-id ami-0c76973fbe0ee100c \
-  --count 1 \
-  --instance-type t3.micro \
-  --key-name cloud-student-key \
-  --security-groups web-server-sg \
+aws ec2 run-instances /
+  --image-id ami-0c76973fbe0ee100c /
+  --count 1 /
+  --instance-type t3.micro /
+  --key-name cloud-student-key /
+  --security-groups web-server-sg /
   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=cloud-student-server}]'
 ```
 
@@ -189,9 +184,9 @@ aws ec2 run-instances \
 <summary>📊 인스턴스 상태 확인</summary>
 ```bash
 # 인스턴스 목록 확인
-aws ec2 describe-instances \
-  --filters "Name=tag:Name,Values=cloud-student-server" \
-  --query 'Reservations[*].Instances[*].[InstanceId,State.Name,PublicIpAddress]' \
+aws ec2 describe-instances /
+  --filters "Name=tag:Name,Values=cloud-student-server" /
+  --query 'Reservations[*].Instances[*].[InstanceId,State.Name,PublicIpAddress]' /
   --output table
 
 # 인스턴스 시작/중지
@@ -205,9 +200,9 @@ aws ec2 stop-instances --instance-ids i-1234567890abcdef0
 <summary>🔐 SSH 접속</summary>
 ```bash
 # 인스턴스 IP 확인
-INSTANCE_IP=$(aws ec2 describe-instances \
-  --filters "Name=tag:Name,Values=cloud-student-server" \
-  --query 'Reservations[*].Instances[*].PublicIpAddress' \
+INSTANCE_IP=$(aws ec2 describe-instances /
+  --filters "Name=tag:Name,Values=cloud-student-server" /
+  --query 'Reservations[*].Instances[*].PublicIpAddress' /
   --output text)
 
 # SSH 접속
@@ -318,17 +313,17 @@ ssh -i cloud-student-key.pem ec2-user@$INSTANCE_IP
 <summary>💻 CLI 방식</summary>
 ```bash
 # 방화벽 규칙 생성
-gcloud compute firewall-rules create allow-http-https \
-  --allow tcp:80,tcp:443 \
-  --source-ranges 0.0.0.0/0 \
+gcloud compute firewall-rules create allow-http-https /
+  --allow tcp:80,tcp:443 /
+  --source-ranges 0.0.0.0/0 /
   --description "Allow HTTP and HTTPS traffic"
 
 # Compute Engine 인스턴스 생성
-gcloud compute instances create cloud-student-server \
-  --zone=asia-northeast3-a \
-  --machine-type=e2-micro \
-  --image-family=ubuntu-2204-lts \
-  --image-project=ubuntu-os-cloud \
+gcloud compute instances create cloud-student-server /
+  --zone=asia-northeast3-a /
+  --machine-type=e2-micro /
+  --image-family=ubuntu-2204-lts /
+  --image-project=ubuntu-os-cloud /
   --tags=web-server
 ```
 
@@ -345,7 +340,7 @@ gcloud compute instances create cloud-student-server \
 gcloud compute instances list
 
 # 인스턴스 상세 정보
-gcloud compute instances describe cloud-student-server \
+gcloud compute instances describe cloud-student-server /
   --zone=asia-northeast3-a
 ```
 
@@ -358,8 +353,8 @@ gcloud compute instances describe cloud-student-server \
 gcloud compute ssh cloud-student-server --zone=asia-northeast3-a
 
 # 또는 직접 SSH 접속
-gcloud compute instances describe cloud-student-server \
-  --zone=asia-northeast3-a \
+gcloud compute instances describe cloud-student-server /
+  --zone=asia-northeast3-a /
   --format='get(networkInterfaces[0].accessConfigs[0].natIP)'
 ```
 
@@ -587,24 +582,24 @@ gcloud compute instances describe INSTANCE_NAME --zone=ZONE
 ### 공식 문서
 
 [공식 문서](#공식-문서)
-- [AWS EC2 공식 문서](https://docs.aws.amazon.com/ec2/)
-- [GCP Compute Engine 공식 문서](https://cloud.google.com/compute/docs)
-- [AWS EC2 인스턴스 타입](https://aws.amazon.com/ec2/instance-types/)
-- [GCP 머신 타입](https://cloud.google.com/compute/docs/machine-types)
+- [AWS EC2 공식 문서](https:///docs.aws.amazon.com/ec2/)
+- [GCP Compute Engine 공식 문서](https:///cloud.google.com/compute/docs)
+- [AWS EC2 인스턴스 타입](https:///aws.amazon.com/ec2/instance-types/)
+- [GCP 머신 타입](https:///cloud.google.com/compute/docs/machine-types)
 
 ### 유용한 리소스
 
 [유용한 리소스](#유용한-리소스)
-- [AWS EC2 모범 사례](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-best-practices.html)
-- [GCP Compute Engine 모범 사례](https://cloud.google.com/compute/docs/best-practices)
-- [AWS EC2 가격 계산기](https://calculator.aws/)
-- [GCP 가격 계산기](https://cloud.google.com/products/calculator)
+- [AWS EC2 모범 사례](https:///docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-best-practices.html)
+- [GCP Compute Engine 모범 사례](https:///cloud.google.com/compute/docs/best-practices)
+- [AWS EC2 가격 계산기](https:///calculator.aws/)
+- [GCP 가격 계산기](https:///cloud.google.com/products/calculator)
 
 ### 관련 프로젝트
 
 [관련 프로젝트](#관련-프로젝트)
-- [AWS EC2 샘플 프로젝트](https://github.com/aws-samples/ec2-examples)
-- [GCP Compute Engine 샘플 프로젝트](https://github.com/GoogleCloudPlatform/compute-samples)
+- [AWS EC2 샘플 프로젝트](https:///github.com/aws-samples/ec2-examples)
+- [GCP Compute Engine 샘플 프로젝트](https:///github.com/GoogleCloudPlatform/compute-samples)
 
 </details>
 
@@ -658,8 +653,8 @@ gcloud compute instances describe INSTANCE_NAME --zone=ZONE
 
 [💡 추가 학습 자료](#추가-학습-자료)
 
-- [AWS EC2 공식 문서](https://docs.aws.amazon.com/ec2/)
-- [GCP Compute Engine 공식 문서](https://cloud.google.com/compute/docs)
+- [AWS EC2 공식 문서](https:///docs.aws.amazon.com/ec2/)
+- [GCP Compute Engine 공식 문서](https:///cloud.google.com/compute/docs)
 - [스토리지 서비스 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/storage-services-guide.md)
 
 ---
@@ -669,16 +664,13 @@ gcloud compute instances describe INSTANCE_NAME --zone=ZONE
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[← 이전: Cloud Basic 1일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

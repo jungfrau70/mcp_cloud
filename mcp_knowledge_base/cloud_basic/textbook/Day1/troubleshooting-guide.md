@@ -1,10 +1,5 @@
 # 트러블슈팅 가이드
 
-<div align="center">
-
-[← 이전: Cloud Basic 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 📋 목차
 
@@ -52,7 +47,7 @@ winget install Google.CloudSDK
 brew install google-cloud-sdk
 
 # Ubuntu
-curl https://sdk.cloud.google.com | bash
+curl https:///sdk.cloud.google.com | bash
 exec -l $SHELL
 
 # 설치 확인
@@ -292,9 +287,9 @@ aws iam list-attached-group-policies --group-name GROUP_NAME
 [권한 부족 오류](#권한-부족-오류)
 ```bash
 # 필요한 권한 확인
-aws iam simulate-principal-policy \
-  --policy-source-arn arn:aws:iam::ACCOUNT:user/USER_NAME \
-  --action-names ec2:RunInstances \
+aws iam simulate-principal-policy /
+  --policy-source-arn arn:aws:iam::ACCOUNT:user/USER_NAME /
+  --action-names ec2:RunInstances /
   --resource-arns arn:aws:ec2:REGION:ACCOUNT:instance/*
 ```
 
@@ -324,8 +319,8 @@ gcloud iam service-accounts get-iam-policy SERVICE_ACCOUNT_EMAIL
 gcloud iam roles describe roles/compute.instanceAdmin
 
 # 권한 부여
-gcloud projects add-iam-policy-binding PROJECT_ID \
-  --member="user:USER_EMAIL" \
+gcloud projects add-iam-policy-binding PROJECT_ID /
+  --member="user:USER_EMAIL" /
   --role="roles/compute.instanceAdmin"
 ```
 
@@ -347,9 +342,9 @@ gcloud projects add-iam-policy-binding PROJECT_ID \
 aws logs describe-log-groups --log-group-name-prefix /aws/cloudtrail
 
 # 특정 이벤트 검색
-aws logs filter-log-events \
-  --log-group-name /aws/cloudtrail \
-  --start-time 1640995200000 \
+aws logs filter-log-events /
+  --log-group-name /aws/cloudtrail /
+  --start-time 1640995200000 /
   --end-time 1641081600000
 ```
 
@@ -361,7 +356,7 @@ aws logs filter-log-events \
 gcloud logging read "resource.type=gce_instance" --limit=10
 
 # 특정 시간대 로그
-gcloud logging read "timestamp>=\"2024-01-01T00:00:00Z\"" --limit=10
+gcloud logging read "timestamp>=/"2024-01-01T00:00:00Z/"" --limit=10
 ```
 
 ### 6.2 지원 채널
@@ -371,16 +366,16 @@ gcloud logging read "timestamp>=\"2024-01-01T00:00:00Z\"" --limit=10
 #### AWS 지원
 
 [AWS 지원](#aws-지원)
-- [AWS Support Center](https://console.aws.amazon.com/support/)
-- [AWS Documentation](https://docs.aws.amazon.com/)
-- [AWS Forums](https://forums.aws.amazon.com/)
+- [AWS Support Center](https:///console.aws.amazon.com/support/)
+- [AWS Documentation](https:///docs.aws.amazon.com/)
+- [AWS Forums](https:///forums.aws.amazon.com/)
 
 #### GCP 지원
 
 [GCP 지원](#gcp-지원)
-- [GCP Support](https://cloud.google.com/support/)
-- [GCP Documentation](https://cloud.google.com/docs/)
-- [GCP Community](https://cloud.google.com/community/)
+- [GCP Support](https:///cloud.google.com/support/)
+- [GCP Documentation](https:///cloud.google.com/docs/)
+- [GCP Community](https:///cloud.google.com/community/)
 
 ---
 
@@ -406,22 +401,19 @@ gcloud logging read "timestamp>=\"2024-01-01T00:00:00Z\"" --limit=10
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 
 [📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[← 이전: Cloud Basic 1일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

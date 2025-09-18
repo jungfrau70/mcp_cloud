@@ -1,13 +1,5 @@
 # 로드 밸런싱 가이드
 
-<div align="center">
-
-[← 이전: Cloud Master 3일차 메인](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md) | 
-[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
-[🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | 
-[다음: Auto Scaling 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day3/auto-scaling-guide.md)
-
-</div>
 
 ---
 
@@ -143,11 +135,11 @@ aws elbv2 create-listener --load-balancer-arn $ALB_ARN --protocol HTTP --port 80
 #### 1단계: 인스턴스 템플릿 생성
 ```bash
 # 인스턴스 템플릿 생성
-gcloud compute instance-templates create web-server-template \
-    --image-family=ubuntu-2004-lts \
-    --image-project=ubuntu-os-cloud \
-    --machine-type=e2-micro \
-    --tags=web-server \
+gcloud compute instance-templates create web-server-template /
+    --image-family=ubuntu-2004-lts /
+    --image-project=ubuntu-os-cloud /
+    --machine-type=e2-micro /
+    --tags=web-server /
     --metadata=startup-script='#!/bin/bash
 apt-get update
 apt-get install -y nginx
@@ -158,54 +150,54 @@ systemctl restart nginx'
 #### 2단계: Managed Instance Group 생성
 ```bash
 # Managed Instance Group 생성
-gcloud compute instance-groups managed create web-server-group \
-    --template=web-server-template \
-    --size=2 \
+gcloud compute instance-groups managed create web-server-group /
+    --template=web-server-template /
+    --size=2 /
     --zone=asia-northeast3-a
 
 # 인스턴스 그룹에 인스턴스 추가
-gcloud compute instance-groups managed set-named-ports web-server-group \
-    --named-ports=http:80 \
+gcloud compute instance-groups managed set-named-ports web-server-group /
+    --named-ports=http:80 /
     --zone=asia-northeast3-a
 ```
 
 #### 3단계: Health Check 생성
 ```bash
 # Health Check 생성
-gcloud compute health-checks create http web-health-check \
-    --port=80 \
+gcloud compute health-checks create http web-health-check /
+    --port=80 /
     --request-path=/
 ```
 
 #### 4단계: Backend Service 생성
 ```bash
 # Backend Service 생성
-gcloud compute backend-services create web-backend-service \
-    --protocol=HTTP \
-    --health-checks=web-health-check \
+gcloud compute backend-services create web-backend-service /
+    --protocol=HTTP /
+    --health-checks=web-health-check /
     --global
 
 # Backend Service에 인스턴스 그룹 추가
-gcloud compute backend-services add-backend web-backend-service \
-    --instance-group=web-server-group \
-    --instance-group-zone=asia-northeast3-a \
+gcloud compute backend-services add-backend web-backend-service /
+    --instance-group=web-server-group /
+    --instance-group-zone=asia-northeast3-a /
     --global
 ```
 
 #### 5단계: URL Map 및 Target Proxy 생성
 ```bash
 # URL Map 생성
-gcloud compute url-maps create web-map \
+gcloud compute url-maps create web-map /
     --default-service=web-backend-service
 
 # Target HTTP Proxy 생성
-gcloud compute target-http-proxies create web-proxy \
+gcloud compute target-http-proxies create web-proxy /
     --url-map=web-map
 
 # Forwarding Rule 생성
-gcloud compute forwarding-rules create web-rule \
-    --global \
-    --target-http-proxy=web-proxy \
+gcloud compute forwarding-rules create web-rule /
+    --global /
+    --target-http-proxy=web-proxy /
     --ports=80
 ```
 
@@ -219,21 +211,21 @@ gcloud compute forwarding-rules create web-rule \
 aws acm request-certificate --domain-name example.com --validation-method DNS
 
 # SSL 인증서 생성 (GCP)
-gcloud compute ssl-certificates create web-ssl-cert \
+gcloud compute ssl-certificates create web-ssl-cert /
     --domains=example.com
 ```
 
 ### 로드 밸런싱 알고리즘 설정
 ```bash
 # AWS: Target Group 설정
-aws elbv2 modify-target-group-attributes \
-    --target-group-arn $TARGET_GROUP_ARN \
+aws elbv2 modify-target-group-attributes /
+    --target-group-arn $TARGET_GROUP_ARN /
     --attributes Key=deregistration_delay.timeout_seconds,Value=30
 
 # GCP: Backend Service 설정
-gcloud compute backend-services update web-backend-service \
-    --balancing-mode=UTILIZATION \
-    --max-utilization=0.8 \
+gcloud compute backend-services update web-backend-service /
+    --balancing-mode=UTILIZATION /
+    --max-utilization=0.8 /
     --global
 ```
 
@@ -308,24 +300,23 @@ done
 ## 📚 참고 자료
 
 ### AWS 공식 문서
-- [Application Load Balancer 가이드](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/)
-- [Network Load Balancer 가이드](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/)
+- [Application Load Balancer 가이드](https:///docs.aws.amazon.com/elasticloadbalancing/latest/application/)
+- [Network Load Balancer 가이드](https:///docs.aws.amazon.com/elasticloadbalancing/latest/network/)
 
 ### GCP 공식 문서
-- [Cloud Load Balancing 가이드](https://cloud.google.com/load-balancing/docs)
-- [HTTP(S) Load Balancing 가이드](https://cloud.google.com/load-balancing/docs/https)
+- [Cloud Load Balancing 가이드](https:///cloud.google.com/load-balancing/docs)
+- [HTTP(S) Load Balancing 가이드](https:///cloud.google.com/load-balancing/docs/https)
 
 ### 추가 학습 자료
-- [로드 밸런싱 알고리즘 비교](https://www.nginx.com/resources/glossary/load-balancing/)
-- [고가용성 아키텍처 설계](https://aws.amazon.com/architecture/well-architected/)
+- [로드 밸런싱 알고리즘 비교](https:///www.nginx.com/resources/glossary/load-balancing/)
+- [고가용성 아키텍처 설계](https:///aws.amazon.com/architecture/well-architected/)
 
 ---
 
+
+
 <div align="center">
 
-[← 이전: Cloud Master 3일차 메인](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md) | 
-[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
-[🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | 
-[다음: Auto Scaling 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day3/auto-scaling-guide.md)
+[← 이전: Cloud Master 3일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
 
 </div>

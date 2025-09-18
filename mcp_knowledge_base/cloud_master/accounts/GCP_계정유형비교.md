@@ -1,10 +1,5 @@
 # GCP 계정 유형 비교 가이드
 
-<div align="center">
-
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 📋 개요
 
@@ -175,21 +170,21 @@ gcloud organizations create --display-name="My Organization"
 gcloud projects move PROJECT_ID --organization=ORGANIZATION_ID
 
 # 2. 폴더 구조 생성
-gcloud resource-manager folders create \
-  --display-name="Production" \
+gcloud resource-manager folders create /
+  --display-name="Production" /
   --parent="organizations/ORGANIZATION_ID"
 ```
 
 #### 3단계: 사용자 및 권한 이전
 ```bash
 # 1. 사용자를 조직에 초대
-gcloud organizations add-iam-policy-binding ORGANIZATION_ID \
-  --member="user:user@domain.com" \
+gcloud organizations add-iam-policy-binding ORGANIZATION_ID /
+  --member="user:user@domain.com" /
   --role="roles/resourcemanager.projectCreator"
 
 # 2. 기존 권한 재할당
-gcloud projects add-iam-policy-binding PROJECT_ID \
-  --member="user:user@domain.com" \
+gcloud projects add-iam-policy-binding PROJECT_ID /
+  --member="user:user@domain.com" /
   --role="roles/editor"
 ```
 
@@ -363,12 +358,12 @@ graph TD
 ## 🚀 다음 단계
 
 ### 개인 계정 사용자
-- [GCP 개인 계정 가입 가이드](/mcp_knowledge_base/cloud_master/accounts/GCP_개인계정가입.md) 참조
+- [GCP 개인 계정 가입 가이드](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md) 참조
 - **Always Free** 서비스 활용
 - **개인 프로젝트** 포트폴리오 구축
 
 ### 조직 계정 사용자
-- [GCP 조직 계정 가입 가이드](/mcp_knowledge_base/cloud_master/accounts/GCP_조직계정가입.md) 참조
+- [GCP 조직 계정 가입 가이드](/mcp_knowledge_base/cloud_basic/accounts/GCP_조직계정가입.md) 참조
 - **조직 정책** 설정
 - **팀 협업** 워크플로 구축
 
@@ -377,32 +372,29 @@ graph TD
 ## 📞 지원 및 문의
 
 ### 공식 지원
-- [GCP 지원 센터](https://cloud.google.com/support/)
-- [Google Workspace 지원](https://support.google.com/a/)
-- [Cloud Identity 지원](https://support.google.com/cloudidentity/)
+- [GCP 지원 센터](https:///cloud.google.com/support/)
+- [Google Workspace 지원](https:///support.google.com/a/)
+- [Cloud Identity 지원](https:///support.google.com/cloudidentity/)
 
 ### 커뮤니티 지원
-- [GCP 커뮤니티](https://cloud.google.com/community/)
-- [Stack Overflow](https://stackoverflow.com/questions/tagged/google-cloud-platform)
-- [Reddit r/googlecloud](https://www.reddit.com/r/googlecloud/)
+- [GCP 커뮤니티](https:///cloud.google.com/community/)
+- [Stack Overflow](https:///stackoverflow.com/questions/tagged/google-cloud-platform)
+- [Reddit r/googlecloud](https:///www.reddit.com/r/googlecloud/)
 
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

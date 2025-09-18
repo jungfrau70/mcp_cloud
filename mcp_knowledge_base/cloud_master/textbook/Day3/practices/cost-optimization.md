@@ -62,16 +62,16 @@ aws ce get-cost-and-usage --time-period Start=2023-01-01,End=2023-01-02 --granul
 #### Reserved Instances 구매
 ```bash
 # Reserved Instances 구매
-aws ec2 purchase-reserved-instances-offering \
-  --reserved-instances-offering-id 12345678-1234-1234-1234-123456789012 \
+aws ec2 purchase-reserved-instances-offering /
+  --reserved-instances-offering-id 12345678-1234-1234-1234-123456789012 /
   --instance-count 1
 
 # Reserved Instances 목록 확인
 aws ec2 describe-reserved-instances
 
 # Reserved Instances 수정
-aws ec2 modify-reserved-instances \
-  --reserved-instances-ids r-12345678 \
+aws ec2 modify-reserved-instances /
+  --reserved-instances-ids r-12345678 /
   --target-configurations '{
     "ReservedInstancesId": "r-12345678",
     "TargetConfiguration": {
@@ -85,10 +85,10 @@ aws ec2 modify-reserved-instances \
 #### Spot Instances 활용
 ```bash
 # Spot Instance 요청
-aws ec2 request-spot-instances \
-  --spot-price "0.01" \
-  --instance-count 1 \
-  --type "one-time" \
+aws ec2 request-spot-instances /
+  --spot-price "0.01" /
+  --instance-count 1 /
+  --type "one-time" /
   --launch-specification '{
     "ImageId": "ami-0c02fb55956c7d316",
     "InstanceType": "t3.micro",
@@ -107,10 +107,10 @@ aws ec2 cancel-spot-instance-requests --spot-instance-request-ids sir-12345678
 #### Savings Plans 설정
 ```bash
 # Compute Savings Plans 구매
-aws savingsplans create-savings-plan \
-  --savings-plan-offering-id "arn:aws:savingsplans::123456789012:offering/12345678-1234-1234-1234-123456789012" \
-  --commitment "1000" \
-  --upfront-payment-amount "1000" \
+aws savingsplans create-savings-plan /
+  --savings-plan-offering-id "arn:aws:savingsplans::123456789012:offering/12345678-1234-1234-1234-123456789012" /
+  --commitment "1000" /
+  --upfront-payment-amount "1000" /
   --payment-option "All Upfront"
 
 # Savings Plans 목록 확인
@@ -156,9 +156,9 @@ data:
 #### Committed Use Discounts
 ```bash
 # Committed Use Discount 생성
-gcloud compute commitments create web-commitment \
-  --plan 12-month \
-  --resources vcpu=4,memory=16 \
+gcloud compute commitments create web-commitment /
+  --plan 12-month /
+  --resources vcpu=4,memory=16 /
   --region us-central1
 
 # Committed Use Discount 목록 확인
@@ -171,43 +171,43 @@ gcloud compute commitments describe web-commitment --region us-central1
 #### Preemptible Instances 활용
 ```bash
 # Preemptible Instance Group 생성
-gcloud compute instance-groups managed create preemptible-group \
-  --template web-template \
-  --size 2 \
-  --zone us-central1-a \
+gcloud compute instance-groups managed create preemptible-group /
+  --template web-template /
+  --size 2 /
+  --zone us-central1-a /
   --preemptible
 
 # Preemptible Instance Group 자동 스케일링
-gcloud compute instance-groups managed set-autoscaling preemptible-group \
-  --max-num-replicas 10 \
-  --min-num-replicas 2 \
-  --target-cpu-utilization 0.7 \
+gcloud compute instance-groups managed set-autoscaling preemptible-group /
+  --max-num-replicas 10 /
+  --min-num-replicas 2 /
+  --target-cpu-utilization 0.7 /
   --zone us-central1-a
 ```
 
 #### 커스텀 머신 타입 활용
 ```bash
 # 커스텀 머신 타입으로 인스턴스 생성
-gcloud compute instances create custom-instance \
-  --custom-cpu 2 \
-  --custom-memory 4 \
-  --zone us-central1-a \
-  --image-family ubuntu-2004-lts \
+gcloud compute instances create custom-instance /
+  --custom-cpu 2 /
+  --custom-memory 4 /
+  --zone us-central1-a /
+  --image-family ubuntu-2004-lts /
   --image-project ubuntu-os-cloud
 
 # 커스텀 머신 타입 템플릿 생성
-gcloud compute instance-templates create custom-template \
-  --custom-cpu 1 \
-  --custom-memory 2 \
-  --machine-type custom-1-2048 \
+gcloud compute instance-templates create custom-template /
+  --custom-cpu 1 /
+  --custom-memory 2 /
+  --machine-type custom-1-2048 /
   --zone us-central1-a
 ```
 
 #### 리소스 태깅 및 라벨링
 ```bash
 # 인스턴스에 라벨 추가
-gcloud compute instances add-labels custom-instance \
-  --labels environment=production,team=backend,cost-center=engineering \
+gcloud compute instances add-labels custom-instance /
+  --labels environment=production,team=backend,cost-center=engineering /
   --zone us-central1-a
 
 # 라벨 기반 리소스 필터링
@@ -225,26 +225,26 @@ gcloud billing budgets list --billing-account=123456789012
 #### AWS Cost Explorer 설정
 ```bash
 # Cost Explorer 데이터 활성화
-aws ce get-cost-and-usage \
-  --time-period Start=2023-01-01,End=2023-01-31 \
-  --granularity MONTHLY \
-  --metrics BlendedCost \
+aws ce get-cost-and-usage /
+  --time-period Start=2023-01-01,End=2023-01-31 /
+  --granularity MONTHLY /
+  --metrics BlendedCost /
   --group-by Type=DIMENSION,Key=SERVICE
 
 # 비용 및 사용량 보고서 생성
-aws ce get-cost-and-usage \
-  --time-period Start=2023-01-01,End=2023-01-31 \
-  --granularity DAILY \
-  --metrics BlendedCost,UsageQuantity \
-  --group-by Type=DIMENSION,Key=SERVICE \
+aws ce get-cost-and-usage /
+  --time-period Start=2023-01-01,End=2023-01-31 /
+  --granularity DAILY /
+  --metrics BlendedCost,UsageQuantity /
+  --group-by Type=DIMENSION,Key=SERVICE /
   --filter file://cost-filter.json
 ```
 
 #### AWS Budget 설정
 ```bash
 # Budget 생성
-aws budgets create-budget \
-  --account-id 123456789012 \
+aws budgets create-budget /
+  --account-id 123456789012 /
   --budget '{
     "BudgetName": "Monthly-Budget",
     "BudgetLimit": {
@@ -259,15 +259,15 @@ aws budgets create-budget \
   }'
 
 # Budget 알림 설정
-aws budgets create-notification \
-  --account-id 123456789012 \
-  --budget-name "Monthly-Budget" \
+aws budgets create-notification /
+  --account-id 123456789012 /
+  --budget-name "Monthly-Budget" /
   --notification '{
     "NotificationType": "ACTUAL",
     "ComparisonOperator": "GREATER_THAN",
     "Threshold": 80,
     "ThresholdType": "PERCENTAGE"
-  }' \
+  }' /
   --subscribers '[
     {
       "SubscriptionType": "EMAIL",
@@ -282,19 +282,19 @@ aws budgets create-notification \
 gcloud billing accounts list
 
 # Budget 생성
-gcloud billing budgets create \
-  --billing-account=123456789012 \
-  --display-name="Monthly Budget" \
-  --budget-amount=1000USD \
-  --threshold-rule=percent:80 \
+gcloud billing budgets create /
+  --billing-account=123456789012 /
+  --display-name="Monthly Budget" /
+  --budget-amount=1000USD /
+  --threshold-rule=percent:80 /
   --threshold-rule=percent:100
 
 # Budget 알림 설정
-gcloud billing budgets create \
-  --billing-account=123456789012 \
-  --display-name="High Usage Alert" \
-  --budget-amount=1000USD \
-  --threshold-rule=percent:90 \
+gcloud billing budgets create /
+  --billing-account=123456789012 /
+  --display-name="High Usage Alert" /
+  --budget-amount=1000USD /
+  --threshold-rule=percent:90 /
   --notification-rule=pubsub-topic=projects/my-project/topics/billing-alerts
 ```
 
@@ -414,7 +414,7 @@ def get_cost_optimization_recommendations():
     print("Reserved Instance 권장사항:")
     print(json.dumps(ri_recommendations, indent=2, default=str))
     
-    print("\nSavings Plans 권장사항:")
+    print("/nSavings Plans 권장사항:")
     print(json.dumps(sp_recommendations, indent=2, default=str))
 
 if __name__ == "__main__":

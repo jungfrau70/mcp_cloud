@@ -14,11 +14,6 @@
 
 # 종합 프로젝트 실습
 
-<div align="center">
-
-[← 이전: Cloud Container 2일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 🎯 프로젝트 개요
 
@@ -110,59 +105,59 @@ S3 (Static Assets)
 # infrastructure-setup.sh
 
 # VPC 생성
-VPC_ID=$(aws ec2 create-vpc \
-    --cidr-block 10.0.0.0/16 \
-    --tag-specifications 'ResourceType=vpc,Tags=[{Key=Name,Value=production-vpc}]' \
-    --query 'Vpc.VpcId' \
+VPC_ID=$(aws ec2 create-vpc /
+    --cidr-block 10.0.0.0/16 /
+    --tag-specifications 'ResourceType=vpc,Tags=[{Key=Name,Value=production-vpc}]' /
+    --query 'Vpc.VpcId' /
     --output text)
 
 echo "VPC ID: $VPC_ID"
 
 # 인터넷 게이트웨이 생성
-IGW_ID=$(aws ec2 create-internet-gateway \
-    --tag-specifications 'ResourceType=internet-gateway,Tags=[{Key=Name,Value=production-igw}]' \
-    --query 'InternetGateway.InternetGatewayId' \
+IGW_ID=$(aws ec2 create-internet-gateway /
+    --tag-specifications 'ResourceType=internet-gateway,Tags=[{Key=Name,Value=production-igw}]' /
+    --query 'InternetGateway.InternetGatewayId' /
     --output text)
 
 # VPC에 인터넷 게이트웨이 연결
-aws ec2 attach-internet-gateway \
-    --vpc-id $VPC_ID \
+aws ec2 attach-internet-gateway /
+    --vpc-id $VPC_ID /
     --internet-gateway-id $IGW_ID
 
 # Public 서브넷 생성 (AZ-a)
-PUBLIC_SUBNET_1=$(aws ec2 create-subnet \
-    --vpc-id $VPC_ID \
-    --cidr-block 10.0.1.0/24 \
-    --availability-zone ap-northeast-2a \
-    --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=public-subnet-1}]' \
-    --query 'Subnet.SubnetId' \
+PUBLIC_SUBNET_1=$(aws ec2 create-subnet /
+    --vpc-id $VPC_ID /
+    --cidr-block 10.0.1.0/24 /
+    --availability-zone ap-northeast-2a /
+    --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=public-subnet-1}]' /
+    --query 'Subnet.SubnetId' /
     --output text)
 
 # Public 서브넷 생성 (AZ-c)
-PUBLIC_SUBNET_2=$(aws ec2 create-subnet \
-    --vpc-id $VPC_ID \
-    --cidr-block 10.0.2.0/24 \
-    --availability-zone ap-northeast-2c \
-    --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=public-subnet-2}]' \
-    --query 'Subnet.SubnetId' \
+PUBLIC_SUBNET_2=$(aws ec2 create-subnet /
+    --vpc-id $VPC_ID /
+    --cidr-block 10.0.2.0/24 /
+    --availability-zone ap-northeast-2c /
+    --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=public-subnet-2}]' /
+    --query 'Subnet.SubnetId' /
     --output text)
 
 # Private 서브넷 생성 (AZ-a)
-PRIVATE_SUBNET_1=$(aws ec2 create-subnet \
-    --vpc-id $VPC_ID \
-    --cidr-block 10.0.10.0/24 \
-    --availability-zone ap-northeast-2a \
-    --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=private-subnet-1}]' \
-    --query 'Subnet.SubnetId' \
+PRIVATE_SUBNET_1=$(aws ec2 create-subnet /
+    --vpc-id $VPC_ID /
+    --cidr-block 10.0.10.0/24 /
+    --availability-zone ap-northeast-2a /
+    --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=private-subnet-1}]' /
+    --query 'Subnet.SubnetId' /
     --output text)
 
 # Private 서브넷 생성 (AZ-c)
-PRIVATE_SUBNET_2=$(aws ec2 create-subnet \
-    --vpc-id $VPC_ID \
-    --cidr-block 10.0.20.0/24 \
-    --availability-zone ap-northeast-2c \
-    --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=private-subnet-2}]' \
-    --query 'Subnet.SubnetId' \
+PRIVATE_SUBNET_2=$(aws ec2 create-subnet /
+    --vpc-id $VPC_ID /
+    --cidr-block 10.0.20.0/24 /
+    --availability-zone ap-northeast-2c /
+    --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=private-subnet-2}]' /
+    --query 'Subnet.SubnetId' /
     --output text)
 
 echo "Public Subnets: $PUBLIC_SUBNET_1, $PUBLIC_SUBNET_2"
@@ -175,54 +170,54 @@ echo "Private Subnets: $PRIVATE_SUBNET_1, $PRIVATE_SUBNET_2"
 
 ```bash
 # ALB 보안 그룹
-ALB_SG_ID=$(aws ec2 create-security-group \
-    --group-name production-alb-sg \
-    --description "Security group for ALB" \
-    --vpc-id $VPC_ID \
-    --query 'GroupId' \
+ALB_SG_ID=$(aws ec2 create-security-group /
+    --group-name production-alb-sg /
+    --description "Security group for ALB" /
+    --vpc-id $VPC_ID /
+    --query 'GroupId' /
     --output text)
 
 # HTTP/HTTPS 허용
-aws ec2 authorize-security-group-ingress \
-    --group-id $ALB_SG_ID \
-    --protocol tcp \
-    --port 80 \
+aws ec2 authorize-security-group-ingress /
+    --group-id $ALB_SG_ID /
+    --protocol tcp /
+    --port 80 /
     --cidr 0.0.0.0/0
 
-aws ec2 authorize-security-group-ingress \
-    --group-id $ALB_SG_ID \
-    --protocol tcp \
-    --port 443 \
+aws ec2 authorize-security-group-ingress /
+    --group-id $ALB_SG_ID /
+    --protocol tcp /
+    --port 443 /
     --cidr 0.0.0.0/0
 
 # ECS 보안 그룹
-ECS_SG_ID=$(aws ec2 create-security-group \
-    --group-name production-ecs-sg \
-    --description "Security group for ECS" \
-    --vpc-id $VPC_ID \
-    --query 'GroupId' \
+ECS_SG_ID=$(aws ec2 create-security-group /
+    --group-name production-ecs-sg /
+    --description "Security group for ECS" /
+    --vpc-id $VPC_ID /
+    --query 'GroupId' /
     --output text)
 
 # ALB에서 ECS로 트래픽 허용
-aws ec2 authorize-security-group-ingress \
-    --group-id $ECS_SG_ID \
-    --protocol tcp \
-    --port 3000 \
+aws ec2 authorize-security-group-ingress /
+    --group-id $ECS_SG_ID /
+    --protocol tcp /
+    --port 3000 /
     --source-group $ALB_SG_ID
 
 # RDS 보안 그룹
-RDS_SG_ID=$(aws ec2 create-security-group \
-    --group-name production-rds-sg \
-    --description "Security group for RDS" \
-    --vpc-id $VPC_ID \
-    --query 'GroupId' \
+RDS_SG_ID=$(aws ec2 create-security-group /
+    --group-name production-rds-sg /
+    --description "Security group for RDS" /
+    --vpc-id $VPC_ID /
+    --query 'GroupId' /
     --output text)
 
 # ECS에서 RDS로 트래픽 허용
-aws ec2 authorize-security-group-ingress \
-    --group-id $RDS_SG_ID \
-    --protocol tcp \
-    --port 3306 \
+aws ec2 authorize-security-group-ingress /
+    --group-id $RDS_SG_ID /
+    --protocol tcp /
+    --port 3306 /
     --source-group $ECS_SG_ID
 ```
 
@@ -358,7 +353,7 @@ USER nextjs
 EXPOSE 3000
 
 # 헬스 체크
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 /
     CMD curl -f http://localhost:3000/health || exit 1
 
 # 애플리케이션 실행
@@ -430,23 +425,23 @@ volumes:
 
 ```bash
 # DB 서브넷 그룹 생성
-aws rds create-db-subnet-group \
-    --db-subnet-group-name production-db-subnet-group \
-    --db-subnet-group-description "Subnet group for production RDS" \
+aws rds create-db-subnet-group /
+    --db-subnet-group-name production-db-subnet-group /
+    --db-subnet-group-description "Subnet group for production RDS" /
     --subnet-ids $PRIVATE_SUBNET_1 $PRIVATE_SUBNET_2
 
 # RDS 인스턴스 생성
-aws rds create-db-instance \
-    --db-instance-identifier production-mysql \
-    --db-instance-class db.t3.micro \
-    --engine mysql \
-    --master-username admin \
-    --master-user-password MySecurePassword123 \
-    --allocated-storage 20 \
-    --vpc-security-group-ids $RDS_SG_ID \
-    --db-subnet-group-name production-db-subnet-group \
-    --backup-retention-period 7 \
-    --multi-az \
+aws rds create-db-instance /
+    --db-instance-identifier production-mysql /
+    --db-instance-class db.t3.micro /
+    --engine mysql /
+    --master-username admin /
+    --master-user-password MySecurePassword123 /
+    --allocated-storage 20 /
+    --vpc-security-group-ids $RDS_SG_ID /
+    --db-subnet-group-name production-db-subnet-group /
+    --backup-retention-period 7 /
+    --multi-az /
     --storage-encrypted
 ```
 
@@ -456,18 +451,18 @@ aws rds create-db-instance \
 
 ```bash
 # Redis 서브넷 그룹 생성
-aws elasticache create-cache-subnet-group \
-    --cache-subnet-group-name production-redis-subnet-group \
-    --cache-subnet-group-description "Subnet group for production Redis" \
+aws elasticache create-cache-subnet-group /
+    --cache-subnet-group-name production-redis-subnet-group /
+    --cache-subnet-group-description "Subnet group for production Redis" /
     --subnet-ids $PRIVATE_SUBNET_1 $PRIVATE_SUBNET_2
 
 # Redis 클러스터 생성
-aws elasticache create-cache-cluster \
-    --cache-cluster-id production-redis \
-    --cache-node-type cache.t3.micro \
-    --engine redis \
-    --num-cache-nodes 1 \
-    --cache-subnet-group-name production-redis-subnet-group \
+aws elasticache create-cache-cluster /
+    --cache-cluster-id production-redis /
+    --cache-node-type cache.t3.micro /
+    --engine redis /
+    --num-cache-nodes 1 /
+    --cache-subnet-group-name production-redis-subnet-group /
     --security-group-ids $RDS_SG_ID
 ```
 
@@ -477,9 +472,9 @@ aws elasticache create-cache-cluster \
 
 ```bash
 # ECS 클러스터 생성
-aws ecs create-cluster \
-    --cluster-name production-cluster \
-    --capacity-providers FARGATE FARGATE_SPOT \
+aws ecs create-cluster /
+    --cluster-name production-cluster /
+    --capacity-providers FARGATE FARGATE_SPOT /
     --default-capacity-provider-strategy capacityProvider=FARGATE,weight=1
 
 # Task Definition 생성
@@ -557,36 +552,36 @@ aws ecs register-task-definition --cli-input-json file://task-definition.json
 
 ```bash
 # ALB 생성
-ALB_ARN=$(aws elbv2 create-load-balancer \
-    --name production-alb \
-    --subnets $PUBLIC_SUBNET_1 $PUBLIC_SUBNET_2 \
-    --security-groups $ALB_SG_ID \
-    --scheme internet-facing \
-    --type application \
-    --ip-address-type ipv4 \
-    --query 'LoadBalancers[0].LoadBalancerArn' \
+ALB_ARN=$(aws elbv2 create-load-balancer /
+    --name production-alb /
+    --subnets $PUBLIC_SUBNET_1 $PUBLIC_SUBNET_2 /
+    --security-groups $ALB_SG_ID /
+    --scheme internet-facing /
+    --type application /
+    --ip-address-type ipv4 /
+    --query 'LoadBalancers[0].LoadBalancerArn' /
     --output text)
 
 # Target Group 생성
-TARGET_GROUP_ARN=$(aws elbv2 create-target-group \
-    --name production-targets \
-    --protocol HTTP \
-    --port 3000 \
-    --vpc-id $VPC_ID \
-    --target-type ip \
-    --health-check-path /health \
-    --health-check-interval-seconds 30 \
-    --health-check-timeout-seconds 5 \
-    --healthy-threshold-count 2 \
-    --unhealthy-threshold-count 3 \
-    --query 'TargetGroups[0].TargetGroupArn' \
+TARGET_GROUP_ARN=$(aws elbv2 create-target-group /
+    --name production-targets /
+    --protocol HTTP /
+    --port 3000 /
+    --vpc-id $VPC_ID /
+    --target-type ip /
+    --health-check-path /health /
+    --health-check-interval-seconds 30 /
+    --health-check-timeout-seconds 5 /
+    --healthy-threshold-count 2 /
+    --unhealthy-threshold-count 3 /
+    --query 'TargetGroups[0].TargetGroupArn' /
     --output text)
 
 # 리스너 생성
-aws elbv2 create-listener \
-    --load-balancer-arn $ALB_ARN \
-    --protocol HTTP \
-    --port 80 \
+aws elbv2 create-listener /
+    --load-balancer-arn $ALB_ARN /
+    --protocol HTTP /
+    --port 80 /
     --default-actions Type=forward,TargetGroupArn=$TARGET_GROUP_ARN
 ```
 
@@ -600,8 +595,8 @@ aws elbv2 create-listener \
 
 ```bash
 # 로그 그룹 생성
-aws logs create-log-group \
-    --log-group-name /ecs/production-app \
+aws logs create-log-group /
+    --log-group-name /ecs/production-app /
     --retention-in-days 30
 ```
 
@@ -611,29 +606,29 @@ aws logs create-log-group \
 
 ```bash
 # CPU 사용률 알람
-aws cloudwatch put-metric-alarm \
-    --alarm-name "Production-High-CPU" \
-    --alarm-description "Alarm when CPU exceeds 80%" \
-    --metric-name CPUUtilization \
-    --namespace AWS/ECS \
-    --statistic Average \
-    --period 300 \
-    --threshold 80.0 \
-    --comparison-operator GreaterThanThreshold \
-    --evaluation-periods 2 \
+aws cloudwatch put-metric-alarm /
+    --alarm-name "Production-High-CPU" /
+    --alarm-description "Alarm when CPU exceeds 80%" /
+    --metric-name CPUUtilization /
+    --namespace AWS/ECS /
+    --statistic Average /
+    --period 300 /
+    --threshold 80.0 /
+    --comparison-operator GreaterThanThreshold /
+    --evaluation-periods 2 /
     --alarm-actions arn:aws:sns:ap-northeast-2:ACCOUNT:alerts
 
 # 메모리 사용률 알람
-aws cloudwatch put-metric-alarm \
-    --alarm-name "Production-High-Memory" \
-    --alarm-description "Alarm when memory exceeds 80%" \
-    --metric-name MemoryUtilization \
-    --namespace AWS/ECS \
-    --statistic Average \
-    --period 300 \
-    --threshold 80.0 \
-    --comparison-operator GreaterThanThreshold \
-    --evaluation-periods 2 \
+aws cloudwatch put-metric-alarm /
+    --alarm-name "Production-High-Memory" /
+    --alarm-description "Alarm when memory exceeds 80%" /
+    --metric-name MemoryUtilization /
+    --namespace AWS/ECS /
+    --statistic Average /
+    --period 300 /
+    --threshold 80.0 /
+    --comparison-operator GreaterThanThreshold /
+    --evaluation-periods 2 /
     --alarm-actions arn:aws:sns:ap-northeast-2:ACCOUNT:alerts
 ```
 
@@ -643,8 +638,8 @@ aws cloudwatch put-metric-alarm \
 
 ```bash
 # 종합 대시보드 생성
-aws cloudwatch put-dashboard \
-    --dashboard-name "Production-Dashboard" \
+aws cloudwatch put-dashboard /
+    --dashboard-name "Production-Dashboard" /
     --dashboard-body '{
         "widgets": [
             {
@@ -689,9 +684,9 @@ aws cloudwatch put-dashboard \
 #!/bin/bash
 # load-test.sh
 
-ALB_DNS=$(aws elbv2 describe-load-balancers \
-    --names production-alb \
-    --query 'LoadBalancers[0].DNSName' \
+ALB_DNS=$(aws elbv2 describe-load-balancers /
+    --names production-alb /
+    --query 'LoadBalancers[0].DNSName' /
     --output text)
 
 echo "Testing load balancer: $ALB_DNS"
@@ -712,23 +707,23 @@ wrk -t12 -c400 -d30s http://$ALB_DNS/api/users
 # failover-test.sh
 
 # ECS 서비스의 태스크 수 확인
-TASK_COUNT=$(aws ecs describe-services \
-    --cluster production-cluster \
-    --services production-service \
-    --query 'services[0].runningCount' \
+TASK_COUNT=$(aws ecs describe-services /
+    --cluster production-cluster /
+    --services production-service /
+    --query 'services[0].runningCount' /
     --output text)
 
 echo "Current task count: $TASK_COUNT"
 
 # 태스크 중지 (장애 시뮬레이션)
-TASK_ARN=$(aws ecs list-tasks \
-    --cluster production-cluster \
-    --service-name production-service \
-    --query 'taskArns[0]' \
+TASK_ARN=$(aws ecs list-tasks /
+    --cluster production-cluster /
+    --service-name production-service /
+    --query 'taskArns[0]' /
     --output text)
 
-aws ecs stop-task \
-    --cluster production-cluster \
+aws ecs stop-task /
+    --cluster production-cluster /
     --task $TASK_ARN
 
 echo "Stopped task: $TASK_ARN"
@@ -736,10 +731,10 @@ echo "Stopped task: $TASK_ARN"
 # Auto Scaling이 새로운 태스크를 생성하는지 확인
 sleep 60
 
-NEW_TASK_COUNT=$(aws ecs describe-services \
-    --cluster production-cluster \
-    --services production-service \
-    --query 'services[0].runningCount' \
+NEW_TASK_COUNT=$(aws ecs describe-services /
+    --cluster production-cluster /
+    --services production-service /
+    --query 'services[0].runningCount' /
     --output text)
 
 echo "New task count: $NEW_TASK_COUNT"
@@ -755,30 +750,30 @@ echo "New task count: $NEW_TASK_COUNT"
 
 ```bash
 # ECS 서비스 생성
-aws ecs create-service \
-    --cluster production-cluster \
-    --service-name production-service \
-    --task-definition production-app:1 \
-    --desired-count 2 \
-    --launch-type FARGATE \
-    --network-configuration "awsvpcConfiguration={subnets=[$PRIVATE_SUBNET_1,$PRIVATE_SUBNET_2],securityGroups=[$ECS_SG_ID],assignPublicIp=DISABLED}" \
+aws ecs create-service /
+    --cluster production-cluster /
+    --service-name production-service /
+    --task-definition production-app:1 /
+    --desired-count 2 /
+    --launch-type FARGATE /
+    --network-configuration "awsvpcConfiguration={subnets=[$PRIVATE_SUBNET_1,$PRIVATE_SUBNET_2],securityGroups=[$ECS_SG_ID],assignPublicIp=DISABLED}" /
     --load-balancers "targetGroupArn=$TARGET_GROUP_ARN,containerName=app,containerPort=3000"
 
 # Auto Scaling 정책 생성
-aws application-autoscaling register-scalable-target \
-    --service-namespace ecs \
-    --resource-id service/production-cluster/production-service \
-    --scalable-dimension ecs:service:DesiredCount \
-    --min-capacity 2 \
+aws application-autoscaling register-scalable-target /
+    --service-namespace ecs /
+    --resource-id service/production-cluster/production-service /
+    --scalable-dimension ecs:service:DesiredCount /
+    --min-capacity 2 /
     --max-capacity 10
 
 # CPU 기반 스케일링 정책
-aws application-autoscaling put-scaling-policy \
-    --service-namespace ecs \
-    --resource-id service/production-cluster/production-service \
-    --scalable-dimension ecs:service:DesiredCount \
-    --policy-name production-cpu-scaling \
-    --policy-type TargetTrackingScaling \
+aws application-autoscaling put-scaling-policy /
+    --service-namespace ecs /
+    --resource-id service/production-cluster/production-service /
+    --scalable-dimension ecs:service:DesiredCount /
+    --policy-name production-cpu-scaling /
+    --policy-type TargetTrackingScaling /
     --target-tracking-scaling-policy-configuration '{
         "TargetValue": 70.0,
         "PredefinedMetricSpecification": {
@@ -795,14 +790,14 @@ aws application-autoscaling put-scaling-policy \
 
 ```bash
 # Spot 인스턴스 사용을 위한 용량 공급자 추가
-aws ecs put-cluster-capacity-providers \
-    --cluster production-cluster \
-    --capacity-providers FARGATE FARGATE_SPOT \
+aws ecs put-cluster-capacity-providers /
+    --cluster production-cluster /
+    --capacity-providers FARGATE FARGATE_SPOT /
     --default-capacity-provider-strategy capacityProvider=FARGATE_SPOT,weight=1 capacityProvider=FARGATE,weight=1
 
 # 비용 알림 설정
-aws budgets create-budget \
-    --account-id ACCOUNT_ID \
+aws budgets create-budget /
+    --account-id ACCOUNT_ID /
     --budget '{
         "BudgetName": "Production Budget",
         "BudgetLimit": {
@@ -859,9 +854,9 @@ jobs:
     
     - name: Update ECS service
       run: |
-        aws ecs update-service \
-          --cluster production-cluster \
-          --service production-service \
+        aws ecs update-service /
+          --cluster production-cluster /
+          --service production-service /
           --force-new-deployment
 ```
 
@@ -875,8 +870,8 @@ jobs:
 
 ```bash
 # 종합 대시보드 생성
-aws cloudwatch put-dashboard \
-    --dashboard-name "Production-Overview" \
+aws cloudwatch put-dashboard /
+    --dashboard-name "Production-Overview" /
     --dashboard-body '{
         "widgets": [
             {
@@ -911,7 +906,7 @@ aws cloudwatch put-dashboard \
             {
                 "type": "log",
                 "properties": {
-                    "query": "SOURCE \"/ecs/production-app\" | fields @timestamp, @message\n| filter @message like /ERROR/\n| sort @timestamp desc\n| limit 20",
+                    "query": "SOURCE /"/ecs/production-app/" | fields @timestamp, @message/n| filter @message like /ERROR//n| sort @timestamp desc/n| limit 20",
                     "region": "ap-northeast-2",
                     "title": "Error Logs",
                     "view": "table"
@@ -966,16 +961,13 @@ aws cloudwatch put-dashboard \
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 2일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

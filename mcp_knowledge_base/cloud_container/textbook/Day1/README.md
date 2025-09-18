@@ -299,7 +299,7 @@ Git을 단일 진실 소스로 사용하여 인프라와 애플리케이션을 �
 [kubectl 설치 및 설정](#kubectl-설치-및-설정)
 ```bash
 # kubectl 설치
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https:///dl.k8s.io/release/$(curl -L -s https:///dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 
@@ -312,7 +312,7 @@ kubectl version --client
 [gcloud CLI 설정](#gcloud-cli-설정)
 ```bash
 # gcloud 설치
-curl https://sdk.cloud.google.com | bash
+curl https:///sdk.cloud.google.com | bash
 source ~/.bashrc
 
 # gcloud 초기화
@@ -327,7 +327,7 @@ gcloud container clusters get-credentials CLUSTER_NAME --zone ZONE
 [Helm 설치](#helm-설치)
 ```bash
 # Helm 설치
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl https:///raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 # Helm 버전 확인
 helm version
@@ -421,28 +421,28 @@ helm version
 [GKE 클러스터 생성](#gke-클러스터-생성)
 ```bash
 # Standard 클러스터 생성
-gcloud container clusters create my-cluster \
-    --zone=asia-northeast3-a \
-    --num-nodes=3 \
-    --machine-type=e2-medium \
-    --enable-autoscaling \
-    --min-nodes=1 \
-    --max-nodes=5 \
-    --enable-autorepair \
+gcloud container clusters create my-cluster /
+    --zone=asia-northeast3-a /
+    --num-nodes=3 /
+    --machine-type=e2-medium /
+    --enable-autoscaling /
+    --min-nodes=1 /
+    --max-nodes=5 /
+    --enable-autorepair /
     --enable-autoupgrade
 
 # Autopilot 클러스터 생성
-gcloud container clusters create-auto my-autopilot-cluster \
-    --region=asia-northeast3 \
+gcloud container clusters create-auto my-autopilot-cluster /
+    --region=asia-northeast3 /
     --release-channel=regular
 
 # Private 클러스터 생성
-gcloud container clusters create my-private-cluster \
-    --zone=asia-northeast3-a \
-    --num-nodes=3 \
-    --machine-type=e2-medium \
-    --enable-private-nodes \
-    --master-ipv4-cidr=172.16.0.0/28 \
+gcloud container clusters create my-private-cluster /
+    --zone=asia-northeast3-a /
+    --num-nodes=3 /
+    --machine-type=e2-medium /
+    --enable-private-nodes /
+    --master-ipv4-cidr=172.16.0.0/28 /
     --enable-ip-alias
 ```
 
@@ -459,14 +459,14 @@ gcloud container clusters create my-private-cluster \
 gcloud container clusters describe my-cluster --zone=asia-northeast3-a
 
 # 클러스터 업그레이드
-gcloud container clusters upgrade my-cluster \
-    --zone=asia-northeast3-a \
+gcloud container clusters upgrade my-cluster /
+    --zone=asia-northeast3-a /
     --cluster-version=1.28.0
 
 # Node Pool 업그레이드
-gcloud container node-pools upgrade my-node-pool \
-    --cluster=my-cluster \
-    --zone=asia-northeast3-a \
+gcloud container node-pools upgrade my-node-pool /
+    --cluster=my-cluster /
+    --zone=asia-northeast3-a /
     --node-version=1.28.0
 ```
 
@@ -808,9 +808,9 @@ spec:
 [ECS 클러스터 생성](#ecs-클러스터-생성)
 ```bash
 # ECS 클러스터 생성
-aws ecs create-cluster \
-    --cluster-name my-ecs-cluster \
-    --capacity-providers FARGATE FARGATE_SPOT \
+aws ecs create-cluster /
+    --cluster-name my-ecs-cluster /
+    --capacity-providers FARGATE FARGATE_SPOT /
     --default-capacity-provider-strategy capacityProvider=FARGATE,weight=1
 
 # 클러스터 상태 확인
@@ -881,19 +881,19 @@ aws ecs describe-clusters --clusters my-ecs-cluster
 [Fargate 서비스 생성](#fargate-서비스-생성)
 ```bash
 # Fargate 서비스 생성
-aws ecs create-service \
-    --cluster my-ecs-cluster \
-    --service-name my-app-service \
-    --task-definition my-app-task:1 \
-    --desired-count 3 \
-    --launch-type FARGATE \
-    --network-configuration "awsvpcConfiguration={subnets=[subnet-12345,subnet-67890],securityGroups=[sg-12345],assignPublicIp=ENABLED}" \
-    --load-balancers "targetGroupArn=arn:aws:elasticloadbalancing:region:account:targetgroup/my-app-tg/1234567890123456,containerName=my-app,containerPort=3000" \
+aws ecs create-service /
+    --cluster my-ecs-cluster /
+    --service-name my-app-service /
+    --task-definition my-app-task:1 /
+    --desired-count 3 /
+    --launch-type FARGATE /
+    --network-configuration "awsvpcConfiguration={subnets=[subnet-12345,subnet-67890],securityGroups=[sg-12345],assignPublicIp=ENABLED}" /
+    --load-balancers "targetGroupArn=arn:aws:elasticloadbalancing:region:account:targetgroup/my-app-tg/1234567890123456,containerName=my-app,containerPort=3000" /
     --enable-execute-command
 
 # 서비스 상태 확인
-aws ecs describe-services \
-    --cluster my-ecs-cluster \
+aws ecs describe-services /
+    --cluster my-ecs-cluster /
     --services my-app-service
 ```
 
@@ -902,20 +902,20 @@ aws ecs describe-services \
 [Auto Scaling 설정](#auto-scaling-설정)
 ```bash
 # Auto Scaling 정책 생성
-aws application-autoscaling register-scalable-target \
-    --service-namespace ecs \
-    --resource-id service/my-ecs-cluster/my-app-service \
-    --scalable-dimension ecs:service:DesiredCount \
-    --min-capacity 1 \
+aws application-autoscaling register-scalable-target /
+    --service-namespace ecs /
+    --resource-id service/my-ecs-cluster/my-app-service /
+    --scalable-dimension ecs:service:DesiredCount /
+    --min-capacity 1 /
     --max-capacity 10
 
 # CPU 기반 스케일링 정책
-aws application-autoscaling put-scaling-policy \
-    --service-namespace ecs \
-    --resource-id service/my-ecs-cluster/my-app-service \
-    --scalable-dimension ecs:service:DesiredCount \
-    --policy-name my-app-cpu-scaling \
-    --policy-type TargetTrackingScaling \
+aws application-autoscaling put-scaling-policy /
+    --service-namespace ecs /
+    --resource-id service/my-ecs-cluster/my-app-service /
+    --scalable-dimension ecs:service:DesiredCount /
+    --policy-name my-app-cpu-scaling /
+    --policy-type TargetTrackingScaling /
     --target-tracking-scaling-policy-configuration '{
         "TargetValue": 70.0,
         "PredefinedMetricSpecification": {
@@ -936,12 +936,12 @@ aws application-autoscaling put-scaling-policy \
 [CloudWatch 로그 설정](#cloudwatch-로그-설정)
 ```bash
 # 로그 그룹 생성
-aws logs create-log-group \
-    --log-group-name /ecs/my-app \
+aws logs create-log-group /
+    --log-group-name /ecs/my-app /
     --retention-in-days 30
 
 # 로그 스트림 확인
-aws logs describe-log-streams \
+aws logs describe-log-streams /
     --log-group-name /ecs/my-app
 ```
 
@@ -950,8 +950,8 @@ aws logs describe-log-streams \
 [CloudWatch 메트릭 설정](#cloudwatch-메트릭-설정)
 ```bash
 # 커스텀 메트릭 전송
-aws cloudwatch put-metric-data \
-    --namespace "MyApp/ECS" \
+aws cloudwatch put-metric-data /
+    --namespace "MyApp/ECS" /
     --metric-data MetricName=RequestCount,Value=100,Unit=Count
 ```
 
@@ -992,7 +992,7 @@ aws cloudwatch put-metric-data \
 kubectl create namespace argocd
 
 # ArgoCD 설치
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -n argocd -f https:///raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 # ArgoCD 서비스 확인
 kubectl get svc -n argocd
@@ -1010,11 +1010,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/username/my-app-k8s
+    repoURL: https:///github.com/username/my-app-k8s
     targetRevision: HEAD
     path: k8s
   destination:
-    server: https://kubernetes.default.svc
+    server: https:///kubernetes.default.svc
     namespace: production
   syncPolicy:
     automated:
@@ -1036,7 +1036,7 @@ spec:
 [Tekton 설치](#tekton-설치)
 ```bash
 # Tekton 설치
-kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
+kubectl apply --filename https:///storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
 
 # Tekton 설치 확인
 kubectl get pods --namespace tekton-pipelines
@@ -1176,23 +1176,23 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 ### 공식 문서
 
 [공식 문서](#공식-문서)
-- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
-- [GKE 공식 문서](https://cloud.google.com/kubernetes-engine/docs)
-- [ECS 공식 문서](https://docs.aws.amazon.com/ecs/)
-- [Fargate 공식 문서](https://docs.aws.amazon.com/fargate/)
+- [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
+- [GKE 공식 문서](https:///cloud.google.com/kubernetes-engine/docs)
+- [ECS 공식 문서](https:///docs.aws.amazon.com/ecs/)
+- [Fargate 공식 문서](https:///docs.aws.amazon.com/fargate/)
 
 ### 유용한 리소스
 
 [유용한 리소스](#유용한-리소스)
-- [Kubernetes 예제](https://github.com/kubernetes/examples)
-- [ArgoCD 공식 문서](https://argo-cd.readthedocs.io/)
-- [Tekton 공식 문서](https://tekton.dev/docs/)
+- [Kubernetes 예제](https:///github.com/kubernetes/examples)
+- [ArgoCD 공식 문서](https:///argo-cd.readthedocs.io/)
+- [Tekton 공식 문서](https:///tekton.dev/docs/)
 
 ### 관련 프로젝트
 
 [관련 프로젝트](#관련-프로젝트)
-- [Kubernetes 샘플 프로젝트](https://github.com/kubernetes/examples)
-- [ArgoCD 샘플](https://github.com/argoproj/argo-cd)
+- [Kubernetes 샘플 프로젝트](https:///github.com/kubernetes/examples)
+- [ArgoCD 샘플](https:///github.com/argoproj/argo-cd)
 
 </details>
 
@@ -1274,10 +1274,10 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 [💡 추가 학습 자료](#추가-학습-자료)
 
-- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
-- [GKE 공식 문서](https://cloud.google.com/kubernetes-engine/docs)
+- [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
+- [GKE 공식 문서](https:///cloud.google.com/kubernetes-engine/docs)
 - Cloud Container 2일차 실습
-- [피드백 제출](https://forms.gle/example)
+- [피드백 제출](https:///forms.gle/example)
 
 ---
 
@@ -1300,6 +1300,6 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 ## ⬅️ 이전/다음 네비게이션
 
 [⬅️ 이전/다음 네비게이션](#이전다음-네비게이션)
-← 이전: Cloud Container 메인 | [다음: Cloud Container 2일차 →](/mcp_knowledge_base/cloud_container/textbook/Day2/README.md)
+← 이전: Cloud Container 메인 | [다음: Cloud Container 2일차 →](/mcp_knowledge_base/README.md)
 
 </div>

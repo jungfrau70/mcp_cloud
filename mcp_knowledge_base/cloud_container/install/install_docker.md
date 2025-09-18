@@ -1,10 +1,5 @@
 # Docker 설치 가이드
 
-<div align="center">
-
-[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 Docker는 컨테이너 기반의 애플리케이션 배포 플랫폼입니다. 이 가이드는 다양한 운영체제에서 Docker를 설치하는 방법을 설명합니다.
 
@@ -23,7 +18,7 @@ Docker는 컨테이너 기반의 애플리케이션 배포 플랫폼입니다. �
 1. **Docker Desktop 다운로드**
    ```bash
    # 공식 웹사이트에서 다운로드
-   https://www.docker.com/products/docker-desktop/
+   https:///www.docker.com/products/docker-desktop/
    ```
 
 2. **시스템 요구사항 확인**
@@ -44,7 +39,7 @@ Docker는 컨테이너 기반의 애플리케이션 배포 플랫폼입니다. �
 
 ```cmd
 # Chocolatey 설치 (없는 경우)
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https:///community.chocolatey.org/install.ps1'))
 
 # Docker Desktop 설치
 choco install docker-desktop
@@ -82,7 +77,7 @@ winget install Docker.DockerDesktop
 1. **Docker Desktop 다운로드**
    ```bash
    # 공식 웹사이트에서 다운로드
-   https://www.docker.com/products/docker-desktop/
+   https:///www.docker.com/products/docker-desktop/
    ```
 
 2. **시스템 요구사항 확인**
@@ -133,23 +128,23 @@ arch -arm64 brew install --cask docker
 
 3. **필요한 패키지 설치**
    ```bash
-   sudo apt-get install -y \
-       ca-certificates \
-       curl \
-       gnupg \
+   sudo apt-get install -y /
+       ca-certificates /
+       curl /
+       gnupg /
        lsb-release
    ```
 
 4. **Docker 공식 GPG 키 추가**
    ```bash
    sudo mkdir -p /etc/apt/keyrings
-   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+   curl -fsSL https:///download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
    ```
 
 5. **Docker 리포지토리 설정**
    ```bash
-   echo \
-     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+   echo /
+     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https:///download.docker.com/linux/ubuntu /
      $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
    ```
 
@@ -184,7 +179,7 @@ arch -arm64 brew install --cask docker
 
 3. **Docker 리포지토리 추가**
    ```bash
-   sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+   sudo yum-config-manager --add-repo https:///download.docker.com/linux/centos/docker-ce.repo
    ```
 
 4. **Docker Engine 설치**
@@ -386,10 +381,10 @@ sudo systemctl restart docker
 
 ## 추가 리소스
 
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Docker Desktop 가이드](https://docs.docker.com/desktop/)
-- [Docker 명령어 참조](https://docs.docker.com/engine/reference/commandline/docker/)
-- [Docker Compose 가이드](https://docs.docker.com/compose/)
+- [Docker 공식 문서](https:///docs.docker.com/)
+- [Docker Desktop 가이드](https:///docs.docker.com/desktop/)
+- [Docker 명령어 참조](https:///docs.docker.com/engine/reference/commandline/docker/)
+- [Docker Compose 가이드](https:///docs.docker.com/compose/)
 
 ## 버전 관리
 
@@ -444,19 +439,19 @@ sudo apt-get remove -y docker docker-engine docker.io containerd runc || true
 sudo apt-get update
 
 # 필요한 패키지 설치
-sudo apt-get install -y \
-    ca-certificates \
-    curl \
-    gnupg \
+sudo apt-get install -y /
+    ca-certificates /
+    curl /
+    gnupg /
     lsb-release
 
 # Docker GPG 키 추가
 sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+curl -fsSL https:///download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
 # Docker 리포지토리 설정
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+echo /
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https:///download.docker.com/linux/ubuntu /
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 # Docker 설치
@@ -477,20 +472,17 @@ echo "재로그인 후 'docker run hello-world'로 테스트하세요."
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

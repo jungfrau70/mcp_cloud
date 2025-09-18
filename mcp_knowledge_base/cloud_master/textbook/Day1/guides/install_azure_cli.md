@@ -1,21 +1,16 @@
 # Azure CLI 설치 가이드
 
-<div align="center">
-
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 Azure CLI는 Microsoft Azure 클라우드 서비스와 상호작용하기 위한 명령줄 도구입니다. 이 가이드는 다양한 운영체제에서 Azure CLI를 설치하는 방법을 설명합니다.
 
 ## 목차
-- [Windows 설치](#-windows)
-- [macOS 설치](#-macos)
-- [Linux 설치](#-linux)
-- [Docker를 사용한 설치](#-docker)
-- [설치 확인](#-)
-- [기본 설정](#-)
-- [문제 해결](#-)
+- [Windows 설치](#windows-설치)
+- [macOS 설치](#macos-설치)
+- [Linux 설치](#linux-설치)
+- [Docker를 사용한 설치](#docker를-사용한-설치)
+- [설치 확인](#설치-확인)
+- [기본 설정](#기본-설정)
+- [문제 해결](#문제-해결)
 
 ## Windows 설치
 
@@ -24,13 +19,13 @@ Azure CLI는 Microsoft Azure 클라우드 서비스와 상호작용하기 위한
 1. **Azure CLI MSI 설치 프로그램 다운로드**
    ```bash
    # 최신 버전 다운로드
-   https://aka.ms/installazurecliwindows
+   https:///aka.ms/installazurecliwindows
    ```
 
 2. **설치 실행**
    - 다운로드한 MSI 파일을 더블클릭하여 실행
    - 설치 마법사의 지시를 따름
-   - 기본 설치 경로: `C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\`
+   - 기본 설치 경로: `C:/Program Files (x86)/Microsoft SDKs/Azure/CLI2/`
 
 3. **PATH 확인**
    - 설치 후 자동으로 PATH에 추가됨
@@ -40,7 +35,7 @@ Azure CLI는 Microsoft Azure 클라우드 서비스와 상호작용하기 위한
 
 ```powershell
 # PowerShell을 관리자 권한으로 실행
-Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi
+Invoke-WebRequest -Uri https:///aka.ms/installazurecliwindows -OutFile ./AzureCLI.msi
 Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'
 ```
 
@@ -91,7 +86,7 @@ winget install Microsoft.AzureCLI
 ### 방법 3: curl을 사용한 설치
 
 ```bash
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+curl -sL https:///aka.ms/InstallAzureCLIDeb | sudo bash
 ```
 
 ## Linux 설치
@@ -106,7 +101,7 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 2. **Azure CLI 설치**
    ```bash
    # Microsoft의 공식 리포지토리 추가
-   curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+   curl -sL https:///aka.ms/InstallAzureCLIDeb | sudo bash
    
    # 또는 직접 설치
    sudo apt install azure-cli
@@ -117,11 +112,11 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 1. **Microsoft 리포지토리 추가**
    ```bash
    # CentOS/RHEL 7
-   sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-   sudo sh -c 'echo -e "[azure-cli]\nname=Azure CLI\nbaseurl=https://packages.microsoft.com/yumrepos/azure-cli\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
+   sudo rpm --import https:///packages.microsoft.com/keys/microsoft.asc
+   sudo sh -c 'echo -e "[azure-cli]/nname=Azure CLI/nbaseurl=https:///packages.microsoft.com/yumrepos/azure-cli/nenabled=1/ngpgcheck=1/ngpgkey=https:///packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
    
    # CentOS/RHEL 8+
-   sudo dnf install -y https://packages.microsoft.com/config/rhel/8/packages-microsoft-prod.rpm
+   sudo dnf install -y https:///packages.microsoft.com/config/rhel/8/packages-microsoft-prod.rpm
    ```
 
 2. **Azure CLI 설치**
@@ -331,7 +326,7 @@ az <command> --debug
 az configure --defaults log_level=debug
 
 # 로그 파일 위치
-# Windows: %USERPROFILE%\.azure\logs\
+# Windows: %USERPROFILE%/.azure/logs/
 # macOS/Linux: ~/.azure/logs/
 ```
 
@@ -350,10 +345,10 @@ az configure --defaults collect_telemetry=false
 
 ## 추가 리소스
 
-- [Azure CLI 공식 문서](https://docs.microsoft.com/en-us/cli/azure/)
-- [Azure CLI 명령어 참조](https://docs.microsoft.com/en-us/cli/azure/reference-index)
-- [Azure CLI 확장](https://docs.microsoft.com/en-us/cli/azure/azure-cli-extensions-overview)
-- [Azure CLI 구성](https://docs.microsoft.com/en-us/cli/azure/azure-cli-configuration)
+- [Azure CLI 공식 문서](https:///docs.microsoft.com/en-us/cli/azure/)
+- [Azure CLI 명령어 참조](https:///docs.microsoft.com/en-us/cli/azure/reference-index)
+- [Azure CLI 확장](https:///docs.microsoft.com/en-us/cli/azure/azure-cli-extensions-overview)
+- [Azure CLI 구성](https:///docs.microsoft.com/en-us/cli/azure/azure-cli-configuration)
 
 ## 버전 관리
 
@@ -399,11 +394,11 @@ LOCATION="koreacentral"
 az group create --name $RESOURCE_GROUP --location $LOCATION
 
 # VM 생성
-az vm create \
-  --resource-group $RESOURCE_GROUP \
-  --name myVM \
-  --image UbuntuLTS \
-  --admin-username azureuser \
+az vm create /
+  --resource-group $RESOURCE_GROUP /
+  --name myVM /
+  --image UbuntuLTS /
+  --admin-username azureuser /
   --generate-ssh-keys
 ```
 
@@ -430,20 +425,17 @@ az vm create `
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

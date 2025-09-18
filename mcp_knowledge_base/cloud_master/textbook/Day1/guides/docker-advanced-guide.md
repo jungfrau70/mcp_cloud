@@ -5,12 +5,12 @@
 <details>
 <summary>📋 목차</summary>
 
-1. [🎯 학습 목표](#-)
-2. [📚 Docker 고급 개념](#-docker)
-3. [🔧 Dockerfile 최적화](#-dockerfile)
-4. [🐳 Docker Compose 고급 설정](#-docker-compose)
-5. [⚡ Docker 이미지 빌드 최적화](#-docker)
-6. [📚 문제 해결 및 참고 자료](#-)
+1. [🎯 학습 목표](#학습-목표)
+2. [📚 Docker 고급 개념](#docker-고급-개념)
+3. [🔧 Dockerfile 최적화](#dockerfile-최적화)
+4. [🐳 Docker Compose 고급 설정](#docker-compose-고급-설정)
+5. [⚡ Docker 이미지 빌드 최적화](#docker-이미지-빌드-최적화)
+6. [📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
 
 </details>
 
@@ -20,7 +20,7 @@
 
 ### 핵심 학습 목표
 
-[핵심 학습 목표](#-)
+[핵심 학습 목표](#핵심-학습-목표)
 - **Dockerfile 최적화** 멀티스테이지 빌드 및 레이어 최적화
 - **Docker Compose 고급 설정** 다중 서비스 관리 및 네트워킹
 - **Docker 이미지 빌드 최적화** BuildKit, 캐시 활용
@@ -28,7 +28,7 @@
 
 ### 실습 후 달성할 수 있는 능력
 
-[실습 후 달성할 수 있는 능력](#-)
+[실습 후 달성할 수 있는 능력](#실습-후-달성할-수-있는-능력)
 - ✅ 멀티스테이지 빌드로 최적화된 Dockerfile 작성
 - ✅ Docker Compose로 복잡한 애플리케이션 구성
 - ✅ BuildKit을 활용한 고급 빌드 최적화
@@ -36,7 +36,7 @@
 
 ### 예상 소요 시간
 
-[예상 소요 시간](#-)
+[예상 소요 시간](#예상-소요-시간)
 - **Dockerfile 최적화**: 60-90분
 - **Docker Compose 고급**: 45-60분
 - **빌드 최적화**: 30-45분
@@ -52,21 +52,21 @@
 
 ### 레이어 최적화
 
-[레이어 최적화](#-)
+[레이어 최적화](#레이어-최적화)
 - **레이어 통합**: RUN 명령어 통합으로 레이어 수 감소
 - **캐시 활용**: 자주 변경되지 않는 레이어를 위에 배치
 - **불필요한 파일 제거**: .git, node_modules 등 제거
 
 ### 멀티스테이지 빌드
 
-[멀티스테이지 빌드](#-)
+[멀티스테이지 빌드](#멀티스테이지-빌드)
 - **빌드 스테이지**: 빌드 도구 및 의존성 설치
 - **실행 스테이지**: 최종 실행 환경만 포함
 - **크기 최적화**: 빌드 도구 제거로 이미지 크기 대폭 감소
 
 ### 보안 최적화
 
-[보안 최적화](#-)
+[보안 최적화](#보안-최적화)
 - **비루트 사용자**: 컨테이너 내에서 비루트 사용자로 실행
 - **최소 권한**: 필요한 권한만 부여
 - **이미지 스캔**: 취약점 스캔 및 업데이트
@@ -78,7 +78,7 @@
 
 ### 최적화 기법 비교
 
-[최적화 기법 비교](#-)
+[최적화 기법 비교](#최적화-기법-비교)
 | 기법 | 설명 | 효과 | 적용 난이도 |
 |------|------|------|-------------|
 | **Alpine Linux** | 경량 리눅스 배포판 | 50-80% 크기 감소 | 쉬움 |
@@ -89,7 +89,7 @@
 
 ### 이미지 크기 분석
 
-[이미지 크기 분석](#-)
+[이미지 크기 분석](#이미지-크기-분석)
 ```bash
 # 이미지 크기 확인
 docker images
@@ -101,7 +101,7 @@ docker history my-app:latest
 docker inspect my-app:latest
 
 # 이미지 크기 비교
-docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}"
+docker images --format "table {{.Repository}}/t{{.Tag}}/t{{.Size}}"
 ```
 
 </details>
@@ -115,7 +115,7 @@ docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}"
 
 ### 문제점이 있는 Dockerfile
 
-[문제점이 있는 Dockerfile](#-dockerfile)
+[문제점이 있는 Dockerfile](#문제점이-있는-dockerfile)
 ```dockerfile
 FROM node:18
 WORKDIR /app
@@ -128,7 +128,7 @@ CMD ["npm", "start"]
 
 ### 문제점 분석
 
-[문제점 분석](#-)
+[문제점 분석](#문제점-분석)
 - **레이어 수 많음**: 각 명령어마다 레이어 생성
 - **캐시 활용 부족**: package.json 변경 시 전체 재빌드
 - **보안 문제**: 루트 사용자로 실행
@@ -141,7 +141,7 @@ CMD ["npm", "start"]
 
 ### 멀티스테이지 빌드 Dockerfile
 
-[멀티스테이지 빌드 Dockerfile](#-dockerfile)
+[멀티스테이지 빌드 Dockerfile](#멀티스테이지-빌드-dockerfile)
 ```dockerfile
 # 멀티스테이지 빌드
 FROM node:18-alpine AS builder
@@ -177,8 +177,8 @@ EXPOSE 3000
 USER nextjs
 
 # 헬스체크
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/health || exit 1
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 /
+  CMD curl -f http:/localhost:3000/health || exit 1
 
 # 애플리케이션 실행
 CMD ["npm", "start"]
@@ -186,7 +186,7 @@ CMD ["npm", "start"]
 
 ### 최적화 포인트
 
-[최적화 포인트](#-)
+[최적화 포인트](#최적화-포인트)
 - **멀티스테이지 빌드**: 빌드 도구와 실행 환경 분리
 - **캐시 활용**: package.json을 먼저 복사하여 의존성 캐시 활용
 - **보안 강화**: 비루트 사용자로 실행
@@ -199,23 +199,23 @@ CMD ["npm", "start"]
 
 ### 조건부 빌드
 
-[조건부 빌드](#-)
+[조건부 빌드](#조건부-빌드)
 ```dockerfile
 # 빌드 인수 사용
 ARG NODE_ENV=production
 ENV NODE_ENV=$NODE_ENV
 
 # 조건부 설치
-RUN if [ "$NODE_ENV" = "development" ]; then \
-        npm install --include=dev; \
-    else \
-        npm ci --only=production; \
+RUN if [ "$NODE_ENV" = "development" ]; then /
+        npm install --include=dev; /
+    else /
+        npm ci --only=production; /
     fi
 ```
 
 ### 다중 플랫폼 빌드
 
-[다중 플랫폼 빌드](#-)
+[다중 플랫폼 빌드](#다중-플랫폼-빌드)
 ```dockerfile
 # 플랫폼별 최적화
 FROM --platform=$BUILDPLATFORM node:18-alpine AS builder
@@ -226,7 +226,7 @@ RUN apk add --no-cache python3 make g++
 
 ### 보안 강화
 
-[보안 강화](#-)
+[보안 강화](#보안-강화)
 ```dockerfile
 # 보안 스캔 및 업데이트
 FROM node:18-alpine AS security-scan
@@ -246,7 +246,7 @@ RUN trivy fs --exit-code 1 --severity HIGH,CRITICAL /
 
 ### 고급 기능
 
-[고급 기능](#-)
+[고급 기능](#고급-기능)
 - **의존성 관리**: 서비스 간 의존성 및 시작 순서 제어
 - **네트워킹**: 사용자 정의 네트워크 및 서비스 간 통신
 - **볼륨 관리**: 데이터 영속성 및 공유
@@ -254,7 +254,7 @@ RUN trivy fs --exit-code 1 --severity HIGH,CRITICAL /
 
 ### 서비스 오케스트레이션
 
-[서비스 오케스트레이션](#-)
+[서비스 오케스트레이션](#서비스-오케스트레이션)
 - **헬스체크**: 서비스 상태 모니터링
 - **재시작 정책**: 장애 시 자동 재시작
 - **리소스 제한**: CPU, 메모리 사용량 제한
@@ -267,7 +267,7 @@ RUN trivy fs --exit-code 1 --severity HIGH,CRITICAL /
 
 ### 완전한 docker-compose.yml
 
-[완전한 docker-compose.yml](#-docker-compose.yml)
+[완전한 docker-compose.yml](#완전한-dockercomposeyml)
 ```yaml
 version: '3.8'
 
@@ -284,8 +284,8 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=postgresql://user:password@db:5432/myapp
-      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql:/user:password@db:5432/myapp
+      - REDIS_URL=redis:/redis:6379
     depends_on:
       db:
         condition: service_healthy
@@ -293,7 +293,7 @@ services:
         condition: service_started
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: ["CMD", "curl", "-f", "http:/localhost:3000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -419,7 +419,7 @@ networks:
 
 ### 개발 환경 (docker-compose.dev.yml)
 
-[개발 환경 (docker-compose.dev.yml)](#-(docker-compose.dev.yml)))
+[개발 환경 (docker-compose.dev.yml)](#개발-환경-dockercomposedevyml)))
 ```yaml
 version: '3.8'
 
@@ -457,7 +457,7 @@ volumes:
 
 ### 프로덕션 환경 (docker-compose.prod.yml)
 
-[프로덕션 환경 (docker-compose.prod.yml)](#-(docker-compose.prod.yml)))
+[프로덕션 환경 (docker-compose.prod.yml)](#프로덕션-환경-dockercomposeprodyml)))
 ```yaml
 version: '3.8'
 
@@ -509,7 +509,7 @@ secrets:
 
 ### BuildKit 활성화
 
-[BuildKit 활성화](#-buildkit)
+[BuildKit 활성화](#buildkit-활성화)
 ```bash
 # BuildKit 활성화
 export DOCKER_BUILDKIT=1
@@ -520,7 +520,7 @@ COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build
 
 ### 고급 빌드 명령어
 
-[고급 빌드 명령어](#-)
+[고급 빌드 명령어](#고급-빌드-명령어)
 ```bash
 # 멀티 플랫폼 빌드
 docker buildx build --platform linux/amd64,linux/arm64 -t my-app:latest .
@@ -542,7 +542,7 @@ docker buildx build --output type=image,name=my-app:latest .
 
 ### .dockerignore 파일
 
-[.dockerignore 파일](#-.dockerignore)
+[.dockerignore 파일](#dockerignore-파일)
 ```dockerignore
 # Git
 .git
@@ -653,7 +653,7 @@ temp/
 
 ### 병렬 빌드
 
-[병렬 빌드](#-)
+[병렬 빌드](#병렬-빌드)
 ```bash
 # 여러 이미지 동시 빌드
 docker buildx build --target web -t my-app:web .
@@ -663,7 +663,7 @@ docker buildx build --target worker -t my-app:worker .
 
 ### 캐시 전략
 
-[캐시 전략](#-)
+[캐시 전략](#캐시-전략)
 ```bash
 # 레지스트리 캐시 사용
 docker buildx build --cache-from type=registry,ref=my-registry/my-app:cache --cache-to type=registry,ref=my-registry/my-app:cache -t my-app:latest .
@@ -674,7 +674,7 @@ docker buildx build --cache-from type=local,src=/tmp/.buildx-cache --cache-to ty
 
 ### 빌드 시간 측정
 
-[빌드 시간 측정](#-)
+[빌드 시간 측정](#빌드-시간-측정)
 ```bash
 # 빌드 시간 측정
 time docker buildx build -t my-app:latest .
@@ -694,7 +694,7 @@ docker buildx build --progress=plain -t my-app:latest .
 
 ### Dockerfile 관련 문제
 
-[Dockerfile 관련 문제](#-dockerfile)
+[Dockerfile 관련 문제](#dockerfile-관련-문제)
 <details>
 <summary>❌ 멀티스테이지 빌드 실패</summary>
 
@@ -741,7 +741,7 @@ docker build --target runtime -t my-app:latest .
 
 ### Docker Compose 관련 문제
 
-[Docker Compose 관련 문제](#-docker-compose)
+[Docker Compose 관련 문제](#docker-compose-관련-문제)
 <details>
 <summary>❌ 서비스 시작 실패</summary>
 
@@ -794,23 +794,23 @@ docker-compose port service-name port
 
 ### 공식 문서
 
-[공식 문서](#-)
+[공식 문서](#공식-문서)
 - [Docker 공식 문서](https://docs.docker.com/)
-- [Docker Compose 공식 문서](https://docs.docker.com/compose/)
+- [Docker Compose 공식 문서](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_docker_compose.md)
 - [Dockerfile 참조](https://docs.docker.com/engine/reference/builder/)
 - [Docker Best Practices](https://docs.docker.com/develop/dev-best-practices/)
 
 ### 유용한 리소스
 
-[유용한 리소스](#-)
+[유용한 리소스](#유용한-리소스)
 - [Docker Hub](https://hub.docker.com/)
 - [Docker 샘플 프로젝트](https://github.com/docker/awesome-compose)
-- [Docker 보안 가이드](https://docs.docker.com/engine/security/)
+- [Docker 보안 가이드](/mcp_knowledge_base/cloud_basic/automation/day2/security_basics.sh)
 - [Docker 성능 최적화](https://docs.docker.com/config/containers/resource_constraints/)
 
 ### 관련 프로젝트
 
-[관련 프로젝트](#-)
+[관련 프로젝트](#관련-프로젝트)
 - [Docker Compose 예제](https://docs.docker.com/compose/gettingstarted/)
 - [멀티스테이지 빌드 예제](https://docs.docker.com/develop/dev-best-practices/dockerfile_best-practices/#use-multi-stage-builds)
 
@@ -821,7 +821,7 @@ docker-compose port service-name port
 
 ### 고급 Docker 기술
 
-[고급 Docker 기술](#-docker)
+[고급 Docker 기술](#고급-docker-기술)
 1. **Docker Swarm**: 컨테이너 오케스트레이션
 2. **Kubernetes**: 고급 오케스트레이션
 3. **Docker 보안**: 보안 스캔 및 하드닝
@@ -829,7 +829,7 @@ docker-compose port service-name port
 
 ### 실무 적용
 
-[실무 적용](#-)
+[실무 적용](#실무-적용)
 1. **CI/CD 파이프라인**: Docker를 활용한 자동화
 2. **마이크로서비스**: Docker Compose로 마이크로서비스 구성
 3. **모니터링**: 컨테이너 모니터링 및 로깅
@@ -841,13 +841,13 @@ docker-compose port service-name port
 
 ## 🎉 완료!
 
-[🎉 완료!](#-!)
+[🎉 완료!](#완료)
 
 축하합니다! Docker 고급 실습을 완료했습니다.
 
 ### 📚 학습 요약
 
-[📚 학습 요약](#-)
+[📚 학습 요약](#학습-요약)
 
 이번 실습을 통해 다음을 배웠습니다:
 
@@ -858,7 +858,7 @@ docker-compose port service-name port
 
 ### 🚀 다음 단계
 
-[🚀 다음 단계](#-)
+[🚀 다음 단계](#다음-단계)
 
 - **GitHub Actions 고급**: CI/CD 파이프라인 구축
 - **VM 배포**: AWS EC2, GCP Compute Engine 배포
@@ -866,11 +866,11 @@ docker-compose port service-name port
 
 ### 💡 추가 학습 자료
 
-[💡 추가 학습 자료](#-)
+[💡 추가 학습 자료](#추가-학습-자료)
 
 - [Docker 공식 문서](https://docs.docker.com/)
 - [Docker Best Practices](https://docs.docker.com/develop/dev-best-practices/)
-- [GitHub Actions 고급 실습](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day1\github-actions-advanced-guide)
+- [GitHub Actions 고급 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-complete-guide.md)
 
 ---
 
@@ -883,16 +883,13 @@ docker-compose port service-name port
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

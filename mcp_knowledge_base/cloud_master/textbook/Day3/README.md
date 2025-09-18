@@ -5,38 +5,16 @@
 
 ## 🎯 강의 시나리오 (표준 순서)
 
-1. [🎯 학습 목표](#🎯-학습-목표)
-2. [🔧 실습 환경 준비](#🔧-실습-환경-준비)
-3. [✅ 실습 환경 확인](#✅-실습-환경-확인)
-4. [📚 이론 학습](#📚-이론-학습)
-5. [🛠️ 실습 학습](#🛠️-실습-학습)
-6. [🧹 실습 정리](#🧹-실습-정리)
-
-## 🧹 실습 정리
-
-### 자동 정리 (권장)
-```bash
-# Day3 실습 자동 정리
-./mcp_knowledge_base/cloud_master/repos/automation/day3/monitoring-practice-automation.sh --cleanup
-
-# 또는 수동 정리
-kubectl delete namespace monitoring 2>/dev/null || true
-docker-compose down -v 2>/dev/null || true
-docker stop $(docker ps -aq) 2>/dev/null || true
-docker rm $(docker ps -aq) 2>/dev/null || true
-docker system prune -f
-```
-
-### 정리 확인
-- [ ] 모니터링 리소스 정리
-- [ ] Kubernetes 리소스 정리
-- [ ] 모든 컨테이너 중지 및 삭제
-- [ ] 사용하지 않는 이미지 정리
-- [ ] Docker 볼륨 정리
+1. [🎯 학습 목표](#-학습-목표)
+2. [🔧 실습 환경 준비](#-실습-환경-준비)
+3. [✅ 실습 환경 확인](#-실습-환경-확인)
+4. [📚 이론 학습](#-이론-학습)
+5. [🛠️ 실습 학습](#-실습-학습)
+6. [🧹 실습 정리](#-실습-정리)
 
 ## 📚 참고 자료
 
-1. [📚 문제 해결 및 참고 자료](#-)
+1. [📚 문제 해결 및 참고 자료](#-문제-해결-및-참고-자료)
 
 </details>
 
@@ -46,7 +24,7 @@ docker system prune -f
 
 ### 핵심 학습 목표
 
-[핵심 학습 목표](#-)
+[핵심 학습 목표](#핵심-학습-목표)
 - **로드 밸런싱** ELB, Cloud Load Balancing 구성
 - **Auto Scaling** Auto Scaling Group, Managed Instance Group
 - **모니터링** CloudWatch, Cloud Monitoring 설정
@@ -54,7 +32,7 @@ docker system prune -f
 
 ### 실습 후 달성할 수 있는 능력
 
-[실습 후 달성할 수 있는 능력](#-)
+[실습 후 달성할 수 있는 능력](#실습-후-달성할-수-있는-능력)
 - ✅ 로드 밸런서 구성 및 트래픽 분산
 - ✅ Auto Scaling 정책 설정 및 자동 확장
 - ✅ 모니터링 대시보드 구축
@@ -62,7 +40,7 @@ docker system prune -f
 
 ### 예상 소요 시간
 
-[예상 소요 시간](#-)
+[예상 소요 시간](#예상-소요-시간)
 - **로드 밸런싱**: 120-150분
 - **Auto Scaling**: 90-120분
 - **모니터링**: 90-120분
@@ -118,12 +96,12 @@ git config --global user.email "your.email@example.com"
 ### 클라우드 계정 설정
 
 #### AWS 계정 설정
-- [AWS 계정 생성 및 설정](/mcp_knowledge_base/cloud_master/accounts/AWS계정가입.md)
+- [AWS 계정 생성 및 설정](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md)
 - IAM 사용자 생성 및 권한 설정
 - EC2 키 페어 생성
 
 #### GCP 계정 설정
-- [GCP 계정 생성 및 설정](/mcp_knowledge_base/cloud_master/accounts/GCP_개인계정가입.md)
+- [GCP 계정 생성 및 설정](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md)
 - 프로젝트 생성 및 활성화
 - 서비스 계정 생성 및 키 다운로드
 
@@ -182,7 +160,7 @@ docker run hello-world
 git config --list
 
 # Git 연결 테스트
-git clone https://github.com/octocat/Hello-World.git
+git clone https:///github.com/octocat/Hello-World.git
 cd Hello-World
 rm -rf Hello-World
 ```
@@ -235,7 +213,7 @@ rm -rf Hello-World
 
 #### 로드 밸런싱 알고리즘
 
-![Load Balancing Algorithms](../images/day3/load-balancing-algorithms.jpg)
+!Load Balancing Algorithms
 
 - **Round Robin**: 순차적으로 서버 선택
 - **Least Connections**: 연결 수가 가장 적은 서버 선택
@@ -428,11 +406,11 @@ rm -rf Hello-World
 
 ### 📖 상세 실습 가이드
 
-[📖 상세 실습 가이드](#-)
-- 🔗 [로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/load-balancing-guide.md) - ELB, Cloud Load Balancing 구성
-- 🔗 [Auto Scaling 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/auto-scaling-guide.md) - ASG, MIG 자동 확장 설정
-- 🔗 [통합 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/integration-guide.md) - 로드 밸런서 + 오토스케일링 연동
-- 🔗 [장애 복구 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/disaster-recovery-guide.md) - 장애 시뮬레이션 및 복구
+[📖 상세 실습 가이드](#📖-상세-실습-가이드)
+- 🔗 [로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/load-balancing-guide.md) - ELB, Cloud Load Balancing 구성
+- 🔗 [Auto Scaling 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/auto-scaling-guide.md) - ASG, MIG 자동 확장 설정
+- 🔗 [통합 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/integration-guide.md) - 로드 밸런서 + 오토스케일링 연동
+- 🔗 [장애 복구 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/disaster-recovery-guide.md) - 장애 시뮬레이션 및 복구
 
 ### ⚠️ 실습 주의사항 및 문제 해결
 
@@ -466,24 +444,24 @@ rm -rf Hello-World
 
 ### 📚 데모 프로젝트
 
-[📚 데모 프로젝트](#-)
+[📚 데모 프로젝트](#📚-데모-프로젝트)
 - 🔗 Actions Demo 프로젝트 - GitHub Actions CI/CD 데모
 - 🔗 My App 프로젝트 - Docker 기반 웹 애플리케이션
 - 🔗 스크립트 모음 - AWS/GCP 자동화 스크립트
 
 ### 🛠️ 문제 해결 가이드
 
-[🛠️ 문제 해결 가이드](#-)
-- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/troubleshooting-guide.md) - 로드 밸런싱, 오토스케일링, 모니터링 문제 해결
+[🛠️ 문제 해결 가이드](#🛠️-문제-해결-가이드)
+- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md) - 로드 밸런싱, 오토스케일링, 모니터링 문제 해결
 
 ### 🔗 관련 과정 링크
 
-[🔗 관련 과정 링크](#-)
+[🔗 관련 과정 링크](#관련-과정-링크)
 - 🔗 Cloud Basic 과정 - AWS/GCP 기초 과정
 - 🔗 Cloud Container 과정 - Kubernetes 고급 과정
 - 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
 - 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/cloud_master/learning-path.md) - Cloud Master 학습 경로
+- 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/learning-path.md) - Cloud Master 학습 경로
 
 ---
 
@@ -556,7 +534,7 @@ docker-compose --version
 
 #### 실습 구성
 
-[실습 구성](#-)
+[실습 구성](#실습-구성)
 1. **로드 밸런싱 및 Auto Scaling** (150분)
 2. **컨테이너 모니터링 및 로깅** (120분)
 3. **장애 복구 및 운영 자동화** (90분)
@@ -583,32 +561,32 @@ docker-compose --version
 
 ### 📖 상세 실습 가이드
 
-[📖 상세 실습 가이드](#-)
-- 🔗 [로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/load-balancing-guide.md) - ELB, Cloud Load Balancing 구성
-- 🔗 [Auto Scaling 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/auto-scaling-guide.md) - ASG, MIG 자동 확장 설정
-- 🔗 [통합 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/integration-guide.md) - 로드 밸런서 + 오토스케일링 연동
-- 🔗 [장애 복구 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/disaster-recovery-guide.md) - 장애 시뮬레이션 및 복구
+[📖 상세 실습 가이드](#📖-상세-실습-가이드)
+- 🔗 [로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/load-balancing-guide.md) - ELB, Cloud Load Balancing 구성
+- 🔗 [Auto Scaling 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/auto-scaling-guide.md) - ASG, MIG 자동 확장 설정
+- 🔗 [통합 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/integration-guide.md) - 로드 밸런서 + 오토스케일링 연동
+- 🔗 [장애 복구 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/disaster-recovery-guide.md) - 장애 시뮬레이션 및 복구
 
 ### 📚 데모 프로젝트
 
-[📚 데모 프로젝트](#-)
+[📚 데모 프로젝트](#📚-데모-프로젝트)
 - 🔗 Actions Demo 프로젝트 - GitHub Actions CI/CD 데모
 - 🔗 My App 프로젝트 - Docker 기반 웹 애플리케이션
 - 🔗 스크립트 모음 - AWS/GCP 자동화 스크립트
 
 ### 🛠️ 문제 해결 가이드
 
-[🛠️ 문제 해결 가이드](#-)
-- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/troubleshooting-guide.md) - 로드 밸런싱, 오토스케일링, 모니터링 문제 해결
+[🛠️ 문제 해결 가이드](#🛠️-문제-해결-가이드)
+- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md) - 로드 밸런싱, 오토스케일링, 모니터링 문제 해결
 
 ### 🔗 관련 과정 링크
 
-[🔗 관련 과정 링크](#-)
+[🔗 관련 과정 링크](#관련-과정-링크)
 - 🔗 Cloud Basic 과정 - AWS/GCP 기초 과정
 - 🔗 Cloud Container 과정 - Kubernetes 고급 과정
 - 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
 - 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/cloud_master/learning-path.md) - Cloud Master 학습 경로
+- 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/learning-path.md) - Cloud Master 학습 경로
 
 ---
 
@@ -703,42 +681,42 @@ docker-compose --version
 
 ```bash
 # VPC ID 확인
-VPC_ID=$(aws ec2 describe-vpcs \
-    --filters "Name=is-default,Values=true" \
-    --query 'Vpcs[0].VpcId' \
+VPC_ID=$(aws ec2 describe-vpcs /
+    --filters "Name=is-default,Values=true" /
+    --query 'Vpcs[0].VpcId' /
     --output text)
 
 # 서브넷 ID 확인
-SUBNET_IDS=$(aws ec2 describe-subnets \
-    --filters "Name=vpc-id,Values=$VPC_ID" \
-    --query 'Subnets[0:2].SubnetId' \
+SUBNET_IDS=$(aws ec2 describe-subnets /
+    --filters "Name=vpc-id,Values=$VPC_ID" /
+    --query 'Subnets[0:2].SubnetId' /
     --output text)
 
 # 보안 그룹 생성
-aws ec2 create-security-group \
-    --group-name alb-sg \
-    --description "Security group for ALB" \
+aws ec2 create-security-group /
+    --group-name alb-sg /
+    --description "Security group for ALB" /
     --vpc-id $VPC_ID
 
 # HTTP/HTTPS 포트 열기
-aws ec2 authorize-security-group-ingress \
-    --group-name alb-sg \
-    --protocol tcp \
-    --port 80 \
+aws ec2 authorize-security-group-ingress /
+    --group-name alb-sg /
+    --protocol tcp /
+    --port 80 /
     --cidr 0.0.0.0/0
 
-aws ec2 authorize-security-group-ingress \
-    --group-name alb-sg \
-    --protocol tcp \
-    --port 443 \
+aws ec2 authorize-security-group-ingress /
+    --group-name alb-sg /
+    --protocol tcp /
+    --port 443 /
     --cidr 0.0.0.0/0
 
 # ALB 생성
-aws elbv2 create-load-balancer \
-    --name my-app-alb \
-    --subnets $SUBNET_IDS \
-    --security-groups $ALB_SG_ID \
-    --scheme internet-facing \
+aws elbv2 create-load-balancer /
+    --name my-app-alb /
+    --subnets $SUBNET_IDS /
+    --security-groups $ALB_SG_ID /
+    --scheme internet-facing /
     --type application
 ```
 
@@ -746,21 +724,21 @@ aws elbv2 create-load-balancer \
 
 ```bash
 # Target Group 생성
-aws elbv2 create-target-group \
-    --name my-app-targets \
-    --protocol HTTP \
-    --port 3000 \
-    --vpc-id $VPC_ID \
-    --target-type instance \
-    --health-check-path /health \
-    --health-check-interval-seconds 30 \
-    --health-check-timeout-seconds 5 \
-    --healthy-threshold-count 2 \
+aws elbv2 create-target-group /
+    --name my-app-targets /
+    --protocol HTTP /
+    --port 3000 /
+    --vpc-id $VPC_ID /
+    --target-type instance /
+    --health-check-path /health /
+    --health-check-interval-seconds 30 /
+    --health-check-timeout-seconds 5 /
+    --healthy-threshold-count 2 /
     --unhealthy-threshold-count 3
 
 # Target Group에 인스턴스 등록
-aws elbv2 register-targets \
-    --target-group-arn $TARGET_GROUP_ARN \
+aws elbv2 register-targets /
+    --target-group-arn $TARGET_GROUP_ARN /
     --targets Id=$INSTANCE_ID_1,Port=3000 Id=$INSTANCE_ID_2,Port=3000
 ```
 
@@ -771,42 +749,42 @@ aws elbv2 register-targets \
 
 #### HTTP(S) Load Balancer 생성
 
-[HTTP(S) Load Balancer 생성](#-http(s)-load-balancer)-load-balancer-생성)
+[HTTP(S) Load Balancer 생성](#https-load-balancer-생성)-load-balancer)-load-balancer-생성)
 ```bash
 # 백엔드 서비스 생성
-gcloud compute backend-services create my-app-backend \
-    --protocol=HTTP \
-    --port-name=http \
-    --health-checks=my-app-health-check \
+gcloud compute backend-services create my-app-backend /
+    --protocol=HTTP /
+    --port-name=http /
+    --health-checks=my-app-health-check /
     --global
 
 # 인스턴스 그룹 생성
-gcloud compute instance-groups unmanaged create my-app-group \
+gcloud compute instance-groups unmanaged create my-app-group /
     --zone=asia-northeast3-a
 
 # 인스턴스를 그룹에 추가
-gcloud compute instance-groups unmanaged add-instances my-app-group \
-    --instances=my-app-instance-1,my-app-instance-2 \
+gcloud compute instance-groups unmanaged add-instances my-app-group /
+    --instances=my-app-instance-1,my-app-instance-2 /
     --zone=asia-northeast3-a
 
 # 백엔드 서비스에 인스턴스 그룹 추가
-gcloud compute backend-services add-backend my-app-backend \
-    --instance-group=my-app-group \
-    --instance-group-zone=asia-northeast3-a \
+gcloud compute backend-services add-backend my-app-backend /
+    --instance-group=my-app-group /
+    --instance-group-zone=asia-northeast3-a /
     --global
 
 # URL 맵 생성
-gcloud compute url-maps create my-app-map \
+gcloud compute url-maps create my-app-map /
     --default-service=my-app-backend
 
 # HTTP 프록시 생성
-gcloud compute target-http-proxies create my-app-proxy \
+gcloud compute target-http-proxies create my-app-proxy /
     --url-map=my-app-map
 
 # 전역 포워딩 규칙 생성
-gcloud compute forwarding-rules create my-app-rule \
-    --global \
-    --target-http-proxy=my-app-proxy \
+gcloud compute forwarding-rules create my-app-rule /
+    --global /
+    --target-http-proxy=my-app-proxy /
     --ports=80
 ```
 
@@ -817,11 +795,11 @@ gcloud compute forwarding-rules create my-app-rule \
 
 ### AWS Auto Scaling Group
 
-[AWS Auto Scaling Group](#-aws-auto-scaling-group)
+[AWS Auto Scaling Group](#aws-auto-scaling-group)
 ```bash
 # Launch Template 생성
-aws ec2 create-launch-template \
-    --launch-template-name my-app-template \
+aws ec2 create-launch-template /
+    --launch-template-name my-app-template /
     --launch-template-data '{
         "ImageId": "ami-0ae2c887094315bed",
         "InstanceType": "t3.micro",
@@ -830,21 +808,21 @@ aws ec2 create-launch-template \
     }'
 
 # Auto Scaling Group 생성
-aws autoscaling create-auto-scaling-group \
-    --auto-scaling-group-name my-app-asg \
-    --launch-template LaunchTemplateName=my-app-template,Version=1 \
-    --min-size 1 \
-    --max-size 5 \
-    --desired-capacity 2 \
-    --target-group-arns $TARGET_GROUP_ARN \
-    --health-check-type ELB \
+aws autoscaling create-auto-scaling-group /
+    --auto-scaling-group-name my-app-asg /
+    --launch-template LaunchTemplateName=my-app-template,Version=1 /
+    --min-size 1 /
+    --max-size 5 /
+    --desired-capacity 2 /
+    --target-group-arns $TARGET_GROUP_ARN /
+    --health-check-type ELB /
     --health-check-grace-period 300
 
 # 스케일링 정책 생성
-aws autoscaling put-scaling-policy \
-    --auto-scaling-group-name my-app-asg \
-    --policy-name my-app-scale-out \
-    --policy-type TargetTrackingScaling \
+aws autoscaling put-scaling-policy /
+    --auto-scaling-group-name my-app-asg /
+    --policy-name my-app-scale-out /
+    --policy-type TargetTrackingScaling /
     --target-tracking-configuration '{
         "TargetValue": 70.0,
         "PredefinedMetricSpecification": {
@@ -855,28 +833,28 @@ aws autoscaling put-scaling-policy \
 
 ### GCP Managed Instance Group
 
-[GCP Managed Instance Group](#-gcp-managed-instance-group)
+[GCP Managed Instance Group](#gcp-managed-instance-group)
 ```bash
 # 인스턴스 템플릿 생성
-gcloud compute instance-templates create my-app-template \
-    --machine-type=e2-micro \
-    --image-family=ubuntu-2004-lts \
-    --image-project=ubuntu-os-cloud \
-    --boot-disk-size=10GB \
-    --tags=http-server \
+gcloud compute instance-templates create my-app-template /
+    --machine-type=e2-micro /
+    --image-family=ubuntu-2004-lts /
+    --image-project=ubuntu-os-cloud /
+    --boot-disk-size=10GB /
+    --tags=http-server /
     --metadata-from-file startup-script=startup-script.sh
 
 # Managed Instance Group 생성
-gcloud compute instance-groups managed create my-app-mig \
-    --template=my-app-template \
-    --size=2 \
+gcloud compute instance-groups managed create my-app-mig /
+    --template=my-app-template /
+    --size=2 /
     --zone=asia-northeast3-a
 
 # Auto Scaling 정책 설정
-gcloud compute instance-groups managed set-autoscaling my-app-mig \
-    --zone=asia-northeast3-a \
-    --max-num-replicas=5 \
-    --min-num-replicas=1 \
+gcloud compute instance-groups managed set-autoscaling my-app-mig /
+    --zone=asia-northeast3-a /
+    --max-num-replicas=5 /
+    --min-num-replicas=1 /
     --target-cpu-utilization=0.7
 ```
 
@@ -891,16 +869,16 @@ gcloud compute instance-groups managed set-autoscaling my-app-mig \
 
 ### 모니터링의 3가지 기둥
 
-![Monitoring Pillars](../images/day3/monitoring-architecture.png)
+!Monitoring Pillars
 
-[모니터링의 3가지 기둥](#-3)
+[모니터링의 3가지 기둥](#모니터링의-3가지-기둥)
 - **메트릭**: CPU, 메모리, 네트워크 사용량
 - **로그**: 애플리케이션 로그, 시스템 로그
 - **트레이스**: 요청 추적, 성능 분석
 
 ### 모니터링 도구 비교
 
-[모니터링 도구 비교](#-)
+[모니터링 도구 비교](#모니터링-도구-비교)
 | 구분 | AWS | GCP | 오픈소스 |
 |------|-----|-----|----------|
 | **메트릭** | CloudWatch | Cloud Monitoring | Prometheus |
@@ -929,16 +907,16 @@ aws cloudwatch list-metrics --namespace AWS/EC2
 #### 2단계: 커스텀 메트릭 전송
 ```bash
 # 커스텀 메트릭 전송
-aws cloudwatch put-metric-data \
-    --namespace "MyApp/ECS" \
+aws cloudwatch put-metric-data /
+    --namespace "MyApp/ECS" /
     --metric-data MetricName=RequestCount,Value=100,Unit=Count
 
 # 여러 메트릭 동시 전송
-aws cloudwatch put-metric-data \
-    --namespace "MyApp/ECS" \
-    --metric-data \
-        MetricName=RequestCount,Value=150,Unit=Count \
-        MetricName=ResponseTime,Value=250,Unit=Milliseconds \
+aws cloudwatch put-metric-data /
+    --namespace "MyApp/ECS" /
+    --metric-data /
+        MetricName=RequestCount,Value=150,Unit=Count /
+        MetricName=ResponseTime,Value=250,Unit=Milliseconds /
         MetricName=ErrorRate,Value=0.05,Unit=Percent
 ```
 
@@ -978,14 +956,14 @@ cat > dashboard.json << 'EOF'
 EOF
 
 # 대시보드 생성
-aws cloudwatch put-dashboard \
-    --dashboard-name "MyApp-Dashboard" \
+aws cloudwatch put-dashboard /
+    --dashboard-name "MyApp-Dashboard" /
     --dashboard-body file://dashboard.json
 ```
 
 #### 4단계: 대시보드 확인 및 관리
 
-![CloudWatch Dashboard](../images/day3/cloudwatch-dashboard.png)
+!CloudWatch Dashboard
 
 ```bash
 # 대시보드 목록 확인
@@ -1000,18 +978,18 @@ aws cloudwatch delete-dashboards --dashboard-names "MyApp-Dashboard"
 
 ### CloudWatch 알람 설정
 
-[CloudWatch 알람 설정](#-cloudwatch)
+[CloudWatch 알람 설정](#cloudwatch-알람-설정)
 ```bash
 # CPU 사용률 알람 생성
-aws cloudwatch put-metric-alarm \
-    --alarm-name "High CPU Utilization" \
-    --alarm-description "Alarm when CPU exceeds 80%" \
-    --metric-name CPUUtilization \
-    --namespace AWS/EC2 \
-    --statistic Average \
-    --period 300 \
-    --threshold 80.0 \
-    --comparison-operator GreaterThanThreshold \
+aws cloudwatch put-metric-alarm /
+    --alarm-name "High CPU Utilization" /
+    --alarm-description "Alarm when CPU exceeds 80%" /
+    --metric-name CPUUtilization /
+    --namespace AWS/EC2 /
+    --statistic Average /
+    --period 300 /
+    --threshold 80.0 /
+    --comparison-operator GreaterThanThreshold /
     --evaluation-periods 2
 ```
 
@@ -1022,23 +1000,23 @@ aws cloudwatch put-metric-alarm \
 
 ### Cloud Monitoring 설정
 
-[Cloud Monitoring 설정](#-cloud-monitoring)
+[Cloud Monitoring 설정](#cloud-monitoring-설정)
 ```bash
 # 커스텀 메트릭 생성
-gcloud monitoring metrics-descriptors create \
-    --display-name="Request Count" \
-    --type="custom.googleapis.com/myapp/request_count" \
-    --metric-kind="GAUGE" \
+gcloud monitoring metrics-descriptors create /
+    --display-name="Request Count" /
+    --type="custom.googleapis.com/myapp/request_count" /
+    --metric-kind="GAUGE" /
     --value-type="INT64"
 
 # 알림 정책 생성
-gcloud alpha monitoring policies create \
+gcloud alpha monitoring policies create /
     --policy-from-file=alert-policy.yaml
 ```
 
 ### Prometheus + Grafana 설정
 
-[Prometheus + Grafana 설정](#-prometheus-+-grafana)
+[Prometheus + Grafana 설정](#prometheus-grafana-설정)
 ```yaml
 # prometheus.yml
 global:
@@ -1100,7 +1078,7 @@ data:
             regex: (.+)
           - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
             action: replace
-            regex: ([^:]+)(?::\d+)?;(\d+)
+            regex: ([^:]+)(?::/d+)?;(/d+)
             replacement: $1:$2
             target_label: __address__
           - action: labelmap
@@ -1507,7 +1485,7 @@ metadata:
 data:
   slack-alerts.yml: |
     global:
-      slack_api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+      slack_api_url: 'https:///hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
     
     route:
       group_by: ['alertname', 'cluster', 'service']
@@ -1592,13 +1570,13 @@ data:
 **리소스 사용량 모니터링**
 ```bash
 # cAdvisor를 통한 컨테이너 메트릭 수집
-kubectl apply -f https://raw.githubusercontent.com/google/cadvisor/master/deploy/kubernetes/cadvisor-daemonset.yaml
+kubectl apply -f https:///raw.githubusercontent.com/google/cadvisor/master/deploy/kubernetes/cadvisor-daemonset.yaml
 
 # Node Exporter를 통한 노드 메트릭 수집
-kubectl apply -f https://raw.githubusercontent.com/prometheus/node_exporter/master/examples/k8s-daemonset.yaml
+kubectl apply -f https:///raw.githubusercontent.com/prometheus/node_exporter/master/examples/k8s-daemonset.yaml
 
 # kube-state-metrics를 통한 Kubernetes 메트릭 수집
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/kube-state-metrics/master/examples/standard/kube-state-metrics.yaml
+kubectl apply -f https:///raw.githubusercontent.com/kubernetes/kube-state-metrics/master/examples/standard/kube-state-metrics.yaml
 ```
 
 </details>
@@ -1612,14 +1590,14 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/kube-state-metrics
 
 ### Health Check 기반 복구
 
-[Health Check 기반 복구](#-health-check)
+[Health Check 기반 복구](#health-check-기반-복구)
 - **Health Check**: 애플리케이션 상태 확인
 - **자동 교체**: 장애 인스턴스 자동 교체
 - **롤링 업데이트**: 무중단 배포
 
 ### 복구 시간 목표 (RTO)
 
-[복구 시간 목표 (RTO)](#-(rto)))
+[복구 시간 목표 (RTO)](#복구-시간-목표-rto)))
 - **RTO**: Recovery Time Objective (복구 시간 목표)
 - **RPO**: Recovery Point Objective (복구 지점 목표)
 - **SLA**: Service Level Agreement (서비스 수준 협약)
@@ -1631,29 +1609,29 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/kube-state-metrics
 
 ### AWS ELB Health Check
 
-[AWS ELB Health Check](#-aws-elb-health-check)
+[AWS ELB Health Check](#aws-elb-health-check)
 ```bash
 # Target Group Health Check 설정
-aws elbv2 modify-target-group \
-    --target-group-arn $TARGET_GROUP_ARN \
-    --health-check-path /health \
-    --health-check-interval-seconds 30 \
-    --health-check-timeout-seconds 5 \
-    --healthy-threshold-count 2 \
+aws elbv2 modify-target-group /
+    --target-group-arn $TARGET_GROUP_ARN /
+    --health-check-path /health /
+    --health-check-interval-seconds 30 /
+    --health-check-timeout-seconds 5 /
+    --healthy-threshold-count 2 /
     --unhealthy-threshold-count 3
 ```
 
 ### GCP Health Check
 
-[GCP Health Check](#-gcp-health-check)
+[GCP Health Check](#gcp-health-check)
 ```bash
 # Health Check 생성
-gcloud compute health-checks create http my-app-health-check \
-    --port=3000 \
-    --request-path=/health \
-    --check-interval=30s \
-    --timeout=5s \
-    --unhealthy-threshold=3 \
+gcloud compute health-checks create http my-app-health-check /
+    --port=3000 /
+    --request-path=/health /
+    --check-interval=30s /
+    --timeout=5s /
+    --unhealthy-threshold=3 /
     --healthy-threshold=2
 ```
 
@@ -1664,35 +1642,35 @@ gcloud compute health-checks create http my-app-health-check \
 
 ### AWS Auto Recovery
 
-[AWS Auto Recovery](#-aws-auto-recovery)
+[AWS Auto Recovery](#aws-auto-recovery)
 ```bash
 # Auto Recovery 설정
-aws ec2 modify-instance-attribute \
-    --instance-id $INSTANCE_ID \
+aws ec2 modify-instance-attribute /
+    --instance-id $INSTANCE_ID /
     --source-dest-check Value=false
 
 # CloudWatch 알람으로 Auto Recovery
-aws cloudwatch put-metric-alarm \
-    --alarm-name "Instance Status Check Failed" \
-    --alarm-description "Alarm when instance status check fails" \
-    --metric-name StatusCheckFailed \
-    --namespace AWS/EC2 \
-    --statistic Maximum \
-    --period 60 \
-    --threshold 1.0 \
-    --comparison-operator GreaterThanOrEqualToThreshold \
-    --evaluation-periods 2 \
+aws cloudwatch put-metric-alarm /
+    --alarm-name "Instance Status Check Failed" /
+    --alarm-description "Alarm when instance status check fails" /
+    --metric-name StatusCheckFailed /
+    --namespace AWS/EC2 /
+    --statistic Maximum /
+    --period 60 /
+    --threshold 1.0 /
+    --comparison-operator GreaterThanOrEqualToThreshold /
+    --evaluation-periods 2 /
     --alarm-actions arn:aws:automate:region:ec2:recover
 ```
 
 ### GCP Auto Healing
 
-[GCP Auto Healing](#-gcp-auto-healing)
+[GCP Auto Healing](#gcp-auto-healing)
 ```bash
 # Auto Healing 설정
-gcloud compute instance-groups managed set-autohealing my-app-mig \
-    --zone=asia-northeast3-a \
-    --health-check=my-app-health-check \
+gcloud compute instance-groups managed set-autohealing my-app-mig /
+    --zone=asia-northeast3-a /
+    --health-check=my-app-health-check /
     --initial-delay=300s
 ```
 
@@ -1707,14 +1685,14 @@ gcloud compute instance-groups managed set-autohealing my-app-mig \
 
 ### AWS 비용 최적화
 
-[AWS 비용 최적화](#-aws)
+[AWS 비용 최적화](#aws-비용-최적화)
 - **Reserved Instances**: 1-3년 약정으로 최대 75% 할인
 - **Spot Instances**: 미사용 인스턴스 활용으로 최대 90% 할인
 - **Auto Scaling**: 필요에 따른 자동 확장/축소
 
 ### GCP 비용 최적화
 
-[GCP 비용 최적화](#-gcp)
+[GCP 비용 최적화](#gcp-비용-최적화)
 - **Committed Use Discounts**: 1-3년 약정으로 최대 70% 할인
 - **Preemptible Instances**: 단기 작업용으로 최대 80% 할인
 - **Sustained Use Discounts**: 장기 사용 시 자동 할인
@@ -1726,11 +1704,11 @@ gcloud compute instance-groups managed set-autohealing my-app-mig \
 
 ### AWS Cost Explorer
 
-[AWS Cost Explorer](#-aws-cost-explorer)
+[AWS Cost Explorer](#aws-cost-explorer)
 ```bash
 # 비용 및 사용량 보고서 활성화
-aws ce create-cost-category-definition \
-    --name "Environment" \
+aws ce create-cost-category-definition /
+    --name "Environment" /
     --rules '[
         {
             "Value": "Production",
@@ -1746,15 +1724,15 @@ aws ce create-cost-category-definition \
 
 ### GCP Billing 알림
 
-[GCP Billing 알림](#-gcp-billing)
+[GCP Billing 알림](#gcp-billing-알림)
 ```bash
 # 예산 알림 설정
-gcloud billing budgets create \
-    --billing-account=BILLING_ACCOUNT_ID \
-    --display-name="My App Budget" \
-    --budget-amount=100USD \
-    --threshold-rule=percent=50 \
-    --threshold-rule=percent=90 \
+gcloud billing budgets create /
+    --billing-account=BILLING_ACCOUNT_ID /
+    --display-name="My App Budget" /
+    --budget-amount=100USD /
+    --threshold-rule=percent=50 /
+    --threshold-rule=percent=90 /
     --threshold-rule=percent=100
 ```
 
@@ -1829,7 +1807,7 @@ gcloud billing budgets create \
 
 ### 로드 밸런싱 관련 문제
 
-[로드 밸런싱 관련 문제](#-)
+[로드 밸런싱 관련 문제](#로드-밸런싱-관련-문제)
 <details>
 <summary>❌ 로드 밸런서에서 502 오류</summary>
 
@@ -1869,13 +1847,13 @@ aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names my-app-a
 aws autoscaling describe-policies --auto-scaling-group-name my-app-asg
 
 # 3. CloudWatch 메트릭 확인
-aws cloudwatch get-metric-statistics \
-    --namespace AWS/EC2 \
-    --metric-name CPUUtilization \
-    --dimensions Name=AutoScalingGroupName,Value=my-app-asg \
-    --start-time 2023-01-01T00:00:00Z \
-    --end-time 2023-01-01T23:59:59Z \
-    --period 300 \
+aws cloudwatch get-metric-statistics /
+    --namespace AWS/EC2 /
+    --metric-name CPUUtilization /
+    --dimensions Name=AutoScalingGroupName,Value=my-app-asg /
+    --start-time 2023-01-01T00:00:00Z /
+    --end-time 2023-01-01T23:59:59Z /
+    --period 300 /
     --statistics Average
 ```
 
@@ -1888,25 +1866,25 @@ aws cloudwatch get-metric-statistics \
 
 ### 공식 문서
 
-[공식 문서](#-)
-- [AWS ELB 공식 문서](https://docs.aws.amazon.com/elasticloadbalancing/)
-- [GCP Cloud Load Balancing 공식 문서](https://cloud.google.com/load-balancing/docs)
-- [AWS Auto Scaling 공식 문서](https://docs.aws.amazon.com/autoscaling/)
-- [GCP Auto Scaling 공식 문서](https://cloud.google.com/compute/docs/autoscaler)
+[공식 문서](#공식-문서)
+- [AWS ELB 공식 문서](https:///docs.aws.amazon.com/elasticloadbalancing/)
+- [GCP Cloud Load Balancing 공식 문서](https:///cloud.google.com/load-balancing/docs)
+- [AWS Auto Scaling 공식 문서](https:///docs.aws.amazon.com/autoscaling/)
+- [GCP Auto Scaling 공식 문서](https:///cloud.google.com/compute/docs/autoscaler)
 
 ### 유용한 리소스
 
-[유용한 리소스](#-)
-- [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)
-- [GCP Architecture Center](https://cloud.google.com/architecture)
-- [Prometheus 공식 문서](https://prometheus.io/docs/)
-- [Grafana 공식 문서](https://grafana.com/docs/)
+[유용한 리소스](#유용한-리소스)
+- [AWS Well-Architected Framework](https:///aws.amazon.com/architecture/well-architected/)
+- [GCP Architecture Center](https:///cloud.google.com/architecture)
+- [Prometheus 공식 문서](https:///prometheus.io/docs/)
+- [Grafana 공식 문서](https:///grafana.com/docs/)
 
 ### 관련 프로젝트
 
-[관련 프로젝트](#-)
-- [AWS 샘플 프로젝트](https://github.com/aws-samples)
-- [GCP 샘플 프로젝트](https://github.com/GoogleCloudPlatform)
+[관련 프로젝트](#관련-프로젝트)
+- [AWS 샘플 프로젝트](https:///github.com/aws-samples)
+- [GCP 샘플 프로젝트](https:///github.com/GoogleCloudPlatform)
 
 </details>
 
@@ -1915,7 +1893,7 @@ aws cloudwatch get-metric-statistics \
 
 ### Cloud Container 과정 준비
 
-[Cloud Container 과정 준비](#-cloud-container)
+[Cloud Container 과정 준비](#cloud-container-과정-준비)
 1. **Kubernetes**: 컨테이너 오케스트레이션
 2. **GKE**: Google Kubernetes Engine
 3. **ECS/Fargate**: AWS 서버리스 컨테이너
@@ -1923,7 +1901,7 @@ aws cloudwatch get-metric-statistics \
 
 ### 실무 적용
 
-[실무 적용](#-)
+[실무 적용](#실무-적용)
 1. **실제 프로젝트**: 자신의 프로젝트에 고급 기능 적용
 2. **모니터링**: 종합적인 모니터링 시스템 구축
 3. **자동화**: 완전 자동화된 운영 환경
@@ -1933,15 +1911,40 @@ aws cloudwatch get-metric-statistics \
 
 ---
 
+
+## 🧹 실습 정리
+
+### 자동 정리 (권장)
+```bash
+# Day3 실습 자동 정리
+./mcp_knowledge_base/cloud_master/repos/automation/day3/monitoring-practice-automation.sh --cleanup
+
+# 또는 수동 정리
+kubectl delete namespace monitoring 2>/dev/null || true
+docker-compose down -v 2>/dev/null || true
+docker stop $(docker ps -aq) 2>/dev/null || true
+docker rm $(docker ps -aq) 2>/dev/null || true
+docker system prune -f
+```
+
+### 정리 확인
+- [ ] 모니터링 리소스 정리
+- [ ] Kubernetes 리소스 정리
+- [ ] 모든 컨테이너 중지 및 삭제
+- [ ] 사용하지 않는 이미지 정리
+- [ ] Docker 볼륨 정리
+
+---
+
 ## 🎉 완료!
 
-[🎉 완료!](#-!)
+[🎉 완료!](#🎉-완료)
 
 축하합니다! Cloud Master 2일차 실습을 완료했습니다.
 
 ### 📚 학습 요약
 
-[📚 학습 요약](#-)
+[📚 학습 요약](#📚-학습-요약)
 
 이번 실습을 통해 다음을 배웠습니다:
 
@@ -1952,7 +1955,7 @@ aws cloudwatch get-metric-statistics \
 
 ### 🚀 다음 단계
 
-[🚀 다음 단계](#-)
+[🚀 다음 단계](#🚀-다음-단계)
 
 - **Cloud Container 과정**: Kubernetes, ECS, Fargate
 - **실제 프로젝트 적용**: 자신의 프로젝트에 고급 기능 적용
@@ -1960,10 +1963,10 @@ aws cloudwatch get-metric-statistics \
 
 ### 💡 추가 학습 자료
 
-[💡 추가 학습 자료](#-)
+[💡 추가 학습 자료](#💡-추가-학습-자료)
 
-- [AWS ELB 공식 문서](https://docs.aws.amazon.com/elasticloadbalancing/)
-- [GCP Cloud Load Balancing 공식 문서](https://cloud.google.com/load-balancing/docs)
+- [AWS ELB 공식 문서](https:///docs.aws.amazon.com/elasticloadbalancing/)
+- [GCP Cloud Load Balancing 공식 문서](https:///cloud.google.com/load-balancing/docs)
 - Cloud Container 과정
 
 ---
@@ -1974,48 +1977,44 @@ aws cloudwatch get-metric-statistics \
 ## 📚 관련 가이드 문서
 
 ### 로드 밸런싱 및 Auto Scaling
-- 🔗 [로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/load-balancing-guide.md) - ELB, Cloud Load Balancing 구성
-- 🔗 [Auto Scaling 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/auto-scaling-guide.md) - ASG, MIG 자동 확장 설정
-- 🔗 [통합 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/integration-guide.md) - 로드 밸런서 + 오토스케일링 연동
+- 🔗 [로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/load-balancing-guide.md) - ELB, Cloud Load Balancing 구성
+- 🔗 [Auto Scaling 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/auto-scaling-guide.md) - ASG, MIG 자동 확장 설정
+- 🔗 [통합 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/integration-guide.md) - 로드 밸런서 + 오토스케일링 연동
 
 ### 컨테이너 모니터링 및 로깅
-- 🔗 [모니터링 설정 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/monitoring-setup-guide.md) - Prometheus, Grafana 고급 설정
-- 🔗 [고급 모니터링 설정](/mcp_knowledge_base/cloud_master/textbook/Day3/monitoring-advanced/) - YAML 설정 파일
-- 🔗 [ELK Stack 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/elk-stack-guide.md) - 로그 수집 및 분석
+- 🔗 [모니터링 설정 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/monitoring-setup-guide.md) - Prometheus, Grafana 고급 설정
+- 🔗 [고급 모니터링 설정](/mcp_knowledge_base/cloud_container/textbook/Day1/guides/monitoring-advanced/prometheus-config.yaml) - YAML 설정 파일
+- 🔗 [ELK Stack 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/monitoring-setup-guide.md) - 로그 수집 및 분석
 
 ### 장애 복구 및 운영 자동화
-- 🔗 [장애 복구 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/disaster-recovery-guide.md) - 장애 시뮬레이션 및 복구
-- 🔗 [운영 자동화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/operations-automation-guide.md) - 자동화 스크립트
+- 🔗 [장애 복구 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/disaster-recovery-guide.md) - 장애 시뮬레이션 및 복구
+- 🔗 [운영 자동화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/auto-scaling-guide.md) - 자동화 스크립트
 
 ### 비용 최적화 및 운영 전략
-- 🔗 [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/cost-optimization-guide.md) - 클라우드 비용 최적화
-- 🔗 [비용 최적화 상세 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/cost-optimization/) - 비용 분석 도구
+- 🔗 [비용 최적화 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/cost-optimization-guide.md) - 클라우드 비용 최적화
+- 🔗 [비용 최적화 상세 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/practices/cost-optimization.md) - 비용 분석 도구
 
 ### 실습 프로젝트
-- 🔗 [My App 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day3/my-app/) - 고가용성 웹 애플리케이션
-- 🔗 [Actions Demo 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day3/actions-demo/) - 고급 CI/CD 파이프라인
+- 🔗 [My App 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day1/my-app/.dockerignore) - 고가용성 웹 애플리케이션
+- 🔗 [Actions Demo 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day2/actions-demo/README.md) - 고급 CI/CD 파이프라인
 
 ### 자동화 스크립트
-- 🔗 [AWS 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/) - 고가용성 AWS 리소스 생성
-- 🔗 [GCP 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/) - 고가용성 GCP 리소스 생성
+- 🔗 [AWS 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/aws-ec2-create.sh) - 고가용성 AWS 리소스 생성
+- 🔗 [GCP 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/aws-ec2-create.sh) - 고가용성 GCP 리소스 생성
 - 🔗 [프로젝트 설정 가이드](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/PROJECT_SETUP.md) - 전체 환경 설정
 
 ### 문제 해결
-- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/troubleshooting-guide.md) - 운영 환경 문제 해결
+- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md) - 운영 환경 문제 해결
 
 ---
 
 ## 🧭 네비게이션
 
+
+
+
 <div align="center">
 
-[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | 
-[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
-[🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-[📅 Day1 시작하기](mcp_knowledge_base/cloud_master/textbook/Day1/README.md) |
-[📅 Day2 시작하기](mcp_knowledge_base/cloud_master/textbook/Day2/README.md) |
-[📅 Day3 시작하기](mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>
-

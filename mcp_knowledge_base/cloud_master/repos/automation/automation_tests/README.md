@@ -1,10 +1,21 @@
 # 마스터 과정 자동화 시스템
 
-<div align="center">
+## 🎯 학습 목표
 
-← 이전: Cloud Master 메인 | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+### 핵심 학습 목표
+- **Cloud Master 기초** 클라우드 서비스 이해 및 활용
+- **Cloud Master 실무** 실제 프로젝트 적용 능력 향상
 
-</div>
+### 실습 후 달성할 수 있는 능력
+- ✅ 클라우드 서비스 기본 개념 이해
+- ✅ 실제 환경에서 서비스 배포 및 관리
+- ✅ 문제 해결 및 최적화 능력
+
+### 예상 소요 시간
+- **기초 학습**: 90-120분
+- **실습 진행**: 60-90분
+- **전체 과정**: 3-4시간
+
 
 ## 개요
 클라우드 마스터 과정의 3일간 실습을 자동화하는 시스템입니다. Docker, Git/GitHub, CI/CD, 로드 밸런싱, 모니터링, 비용 최적화 등의 실습 스크립트를 자동으로 생성합니다.
@@ -150,16 +161,13 @@ chmod +x *.sh
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

@@ -17,7 +17,7 @@
 [🛠️ 실습 학습](#실습-학습)
 6. [🔧 실습 환경 준비](#실습-환경-준비)
 7. [🏗️ 고가용성 아키텍처 실습](#고가용성-아키텍처-실습)
-8. [📊 모니터링 및 로깅 시스템 실습](#모니터링-및-로깅-시스템)
+8. [📊 모니터링 및 로깅 시스템 실습](#모니터링-및-로깅-시스템-실습)
 9. [🔄 자동 복구 및 운영 자동화 실습](#자동-복구-및-운영-자동화-실습)
 10. [💰 비용 최적화 전략 실습](#비용-최적화-전략-실습)
 
@@ -98,7 +98,7 @@
 ### 📖 상세 실습 가이드
 
 [📖 상세 실습 가이드](#상세-실습-가이드)
-- 🔗 [고가용성 아키텍처 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/high-availability-architecture.md)
+- 🔗 [고가용성 아키텍처 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/high-availability-architecture.md)
 - 🔗 [고급 로드 밸런싱 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/advanced-load-balancing.md)
 - 🔗 [모니터링 시스템 구축](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/monitoring-system-setup.md)
 - 🔗 [종합 프로젝트 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/comprehensive-project.md)
@@ -247,7 +247,7 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 [📖 실습 파일](#실습-파일)
-- 🔗 [고가용성 아키텍처 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/high-availability-architecture.md)
+- 🔗 [고가용성 아키텍처 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/high-availability-architecture.md)
 
 ### 📚 개념 학습
 
@@ -350,12 +350,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 [📖 실습 파일](#실습-파일)
-- 🔗 [비용 최적화 전략 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/cost-optimization-guide.md)
+- 🔗 [비용 최적화 전략 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/cost-optimization-guide.md)
 
 ### 📚 개념 학습
 
 [📚 개념 학습](#개념-학습)
-- 🔗 [비용 최적화 전략 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/cost-optimization-guide.md)
+- 🔗 [비용 최적화 전략 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/cost-optimization-guide.md)
 
 </details>
 
@@ -399,12 +399,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 [📖 실습 파일](#실습-파일)
-- 🔗 [자동 복구 및 운영 자동화 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/auto-recovery-guide.md)
+- 🔗 [자동 복구 및 운영 자동화 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/auto-recovery-guide.md)
 
 ### 📚 개념 학습
 
 [📚 개념 학습](#개념-학습)
-- 🔗 [자동 복구 및 운영 자동화 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/auto-recovery-guide.md)
+- 🔗 [자동 복구 및 운영 자동화 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/auto-recovery-guide.md)
 
 </details>
 
@@ -451,12 +451,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 [📖 실습 파일](#실습-파일)
-- 🔗 [비용 최적화 전략 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/cost-optimization-guide.md)
+- 🔗 [비용 최적화 전략 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/cost-optimization-guide.md)
 
 ### 📚 개념 학습
 
 [📚 개념 학습](#개념-학습)
-- 🔗 [비용 최적화 전략 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/cost-optimization-guide.md)
+- 🔗 [비용 최적화 전략 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/cost-optimization-guide.md)
 
 </details>
 
@@ -500,12 +500,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 [📖 실습 파일](#실습-파일)
-- 🔗 [자동 복구 및 운영 자동화 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/auto-recovery-guide.md)
+- 🔗 [자동 복구 및 운영 자동화 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/auto-recovery-guide.md)
 
 ### 📚 개념 학습
 
 [📚 개념 학습](#개념-학습)
-- 🔗 [자동 복구 및 운영 자동화 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/auto-recovery-guide.md)
+- 🔗 [자동 복구 및 운영 자동화 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/auto-recovery-guide.md)
 
 </details>
 
@@ -595,12 +595,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 [📖 실습 파일](#실습-파일)
-- 🔗 [비용 최적화 전략 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/cost-optimization-guide.md)
+- 🔗 [비용 최적화 전략 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/cost-optimization-guide.md)
 
 ### 📚 개념 학습
 
 [📚 개념 학습](#개념-학습)
-- 🔗 [비용 최적화 전략 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/cost-optimization-guide.md)
+- 🔗 [비용 최적화 전략 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/cost-optimization-guide.md)
 
 </details>
 
@@ -634,12 +634,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 [📖 실습 파일](#실습-파일)
-- 🔗 [자동 복구 및 운영 자동화 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/auto-recovery-guide.md)
+- 🔗 [자동 복구 및 운영 자동화 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/auto-recovery-guide.md)
 
 ### 📚 개념 학습
 
 [📚 개념 학습](#개념-학습)
-- 🔗 [자동 복구 및 운영 자동화 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/auto-recovery-guide.md)
+- 🔗 [자동 복구 및 운영 자동화 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/auto-recovery-guide.md)
 
 </details>
 
@@ -712,12 +712,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 [📖 실습 파일](#실습-파일)
-- 🔗 [고가용성 아키텍처 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/high-availability-architecture.md)
+- 🔗 [고가용성 아키텍처 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/high-availability-architecture.md)
 
 ### 📚 개념 학습
 
 [📚 개념 학습](#개념-학습)
-- 🔗 [고가용성 아키텍처 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/high-availability-architecture.md)
+- 🔗 [고가용성 아키텍처 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/high-availability-architecture.md)
 
 </details>
 
@@ -759,12 +759,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 [📖 실습 파일](#실습-파일)
-- 🔗 [비용 최적화 전략 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/cost-optimization-guide.md)
+- 🔗 [비용 최적화 전략 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/cost-optimization-guide.md)
 
 ### 📚 개념 학습
 
 [📚 개념 학습](#개념-학습)
-- 🔗 [비용 최적화 전략 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/cost-optimization-guide.md)
+- 🔗 [비용 최적화 전략 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/cost-optimization-guide.md)
 
 </details>
 
@@ -798,12 +798,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 [📖 실습 파일](#실습-파일)
-- 🔗 [자동 복구 및 운영 자동화 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/auto-recovery-guide.md)
+- 🔗 [자동 복구 및 운영 자동화 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/auto-recovery-guide.md)
 
 ### 📚 개념 학습
 
 [📚 개념 학습](#개념-학습)
-- 🔗 [자동 복구 및 운영 자동화 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/auto-recovery-guide.md)
+- 🔗 [자동 복구 및 운영 자동화 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/auto-recovery-guide.md)
 
 </details>
 
@@ -876,12 +876,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 [📖 실습 파일](#실습-파일)
-- 🔗 [고가용성 아키텍처 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/high-availability-architecture.md)
+- 🔗 [고가용성 아키텍처 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/high-availability-architecture.md)
 
 ### 📚 개념 학습
 
 [📚 개념 학습](#개념-학습)
-- 🔗 [고가용성 아키텍처 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/high-availability-architecture.md)
+- 🔗 [고가용성 아키텍처 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/high-availability-architecture.md)
 
 </details>
 
@@ -961,19 +961,19 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 ### 공식 문서
 
 [공식 문서](#공식-문서)
-- [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)
-- [GCP Architecture Center](https://cloud.google.com/architecture)
-- [Kubernetes 고가용성](https://kubernetes.io/docs/setup/production-environment/)
-- [Prometheus 공식 문서](https://prometheus.io/docs/)
-- [Grafana 공식 문서](https://grafana.com/docs/)
+- [AWS Well-Architected Framework](https:///aws.amazon.com/architecture/well-architected/)
+- [GCP Architecture Center](https:///cloud.google.com/architecture)
+- [Kubernetes 고가용성](https:///kubernetes.io/docs/setup/production-environment/)
+- [Prometheus 공식 문서](https:///prometheus.io/docs/)
+- [Grafana 공식 문서](https:///grafana.com/docs/)
 
 ### 유용한 리소스
 
 [유용한 리소스](#유용한-리소스)
-- [AWS 샘플 프로젝트](https://github.com/aws-samples)
-- [GCP 샘플 프로젝트](https://github.com/GoogleCloudPlatform)
-- [Kubernetes 샘플 프로젝트](https://github.com/kubernetes/examples)
-- [ELK Stack 가이드](https://www.elastic.co/guide/)
+- [AWS 샘플 프로젝트](https:///github.com/aws-samples)
+- [GCP 샘플 프로젝트](https:///github.com/GoogleCloudPlatform)
+- [Kubernetes 샘플 프로젝트](https:///github.com/kubernetes/examples)
+- [ELK Stack 가이드](https:///www.elastic.co/guide/)
 
 </details>
 
@@ -1004,12 +1004,12 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 
 [🚀 시작하기](#시작하기)
 
-1일차 실습이 완료되었다면 [고가용성 아키텍처 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/high-availability-architecture.md)부터 시작하세요.
+1일차 실습이 완료되었다면 [고가용성 아키텍처 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/high-availability-architecture.md)부터 시작하세요.
 
 ### 문제가 있나요?
 
 [문제가 있나요?](#문제가-있나요)
-실습 중 문제가 발생하면 [트러블슈팅 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day2\troubleshooting)를 참고하세요.
+실습 중 문제가 발생하면 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md)를 참고하세요.
 
 ---
 
@@ -1029,6 +1029,6 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

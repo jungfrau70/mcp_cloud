@@ -1,10 +1,5 @@
 # 고가용성 아키텍처 실습
 
-<div align="center">
-
-[← 이전: Cloud Container 2일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 🎯 실습 목표
 
@@ -34,39 +29,39 @@
 
 ```bash
 # VPC 생성
-aws ec2 create-vpc \
-    --cidr-block 10.0.0.0/16 \
+aws ec2 create-vpc /
+    --cidr-block 10.0.0.0/16 /
     --tag-specifications 'ResourceType=vpc,Tags=[{Key=Name,Value=ha-vpc}]'
 
 # 가용 영역 확인
 aws ec2 describe-availability-zones --region ap-northeast-2
 
 # Public 서브넷 생성 (AZ-a)
-aws ec2 create-subnet \
-    --vpc-id $VPC_ID \
-    --cidr-block 10.0.1.0/24 \
-    --availability-zone ap-northeast-2a \
+aws ec2 create-subnet /
+    --vpc-id $VPC_ID /
+    --cidr-block 10.0.1.0/24 /
+    --availability-zone ap-northeast-2a /
     --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=public-subnet-1}]'
 
 # Public 서브넷 생성 (AZ-c)
-aws ec2 create-subnet \
-    --vpc-id $VPC_ID \
-    --cidr-block 10.0.2.0/24 \
-    --availability-zone ap-northeast-2c \
+aws ec2 create-subnet /
+    --vpc-id $VPC_ID /
+    --cidr-block 10.0.2.0/24 /
+    --availability-zone ap-northeast-2c /
     --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=public-subnet-2}]'
 
 # Private 서브넷 생성 (AZ-a)
-aws ec2 create-subnet \
-    --vpc-id $VPC_ID \
-    --cidr-block 10.0.10.0/24 \
-    --availability-zone ap-northeast-2a \
+aws ec2 create-subnet /
+    --vpc-id $VPC_ID /
+    --cidr-block 10.0.10.0/24 /
+    --availability-zone ap-northeast-2a /
     --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=private-subnet-1}]'
 
 # Private 서브넷 생성 (AZ-c)
-aws ec2 create-subnet \
-    --vpc-id $VPC_ID \
-    --cidr-block 10.0.20.0/24 \
-    --availability-zone ap-northeast-2c \
+aws ec2 create-subnet /
+    --vpc-id $VPC_ID /
+    --cidr-block 10.0.20.0/24 /
+    --availability-zone ap-northeast-2c /
     --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=private-subnet-2}]'
 ```
 
@@ -76,21 +71,21 @@ aws ec2 create-subnet \
 
 ```bash
 # 인터넷 게이트웨이 생성
-aws ec2 create-internet-gateway \
+aws ec2 create-internet-gateway /
     --tag-specifications 'ResourceType=internet-gateway,Tags=[{Key=Name,Value=ha-igw]}'
 
 # VPC에 인터넷 게이트웨이 연결
-aws ec2 attach-internet-gateway \
-    --vpc-id $VPC_ID \
+aws ec2 attach-internet-gateway /
+    --vpc-id $VPC_ID /
     --internet-gateway-id $IGW_ID
 
 # Elastic IP 생성 (NAT Gateway용)
 aws ec2 allocate-address --domain vpc
 
 # NAT Gateway 생성
-aws ec2 create-nat-gateway \
-    --subnet-id $PUBLIC_SUBNET_1 \
-    --allocation-id $EIP_ALLOCATION_ID \
+aws ec2 create-nat-gateway /
+    --subnet-id $PUBLIC_SUBNET_1 /
+    --allocation-id $EIP_ALLOCATION_ID /
     --tag-specifications 'ResourceType=nat-gateway,Tags=[{Key=Name,Value=ha-nat-gateway]}'
 ```
 
@@ -100,25 +95,25 @@ aws ec2 create-nat-gateway \
 
 ```bash
 # Public 라우팅 테이블 생성
-aws ec2 create-route-table \
-    --vpc-id $VPC_ID \
+aws ec2 create-route-table /
+    --vpc-id $VPC_ID /
     --tag-specifications 'ResourceType=route-table,Tags=[{Key=Name,Value=public-rt}]'
 
 # Private 라우팅 테이블 생성
-aws ec2 create-route-table \
-    --vpc-id $VPC_ID \
+aws ec2 create-route-table /
+    --vpc-id $VPC_ID /
     --tag-specifications 'ResourceType=route-table,Tags=[{Key=Name,Value=private-rt}]'
 
 # Public 서브넷에 인터넷 게이트웨이 라우트 추가
-aws ec2 create-route \
-    --route-table-id $PUBLIC_RT_ID \
-    --destination-cidr-block 0.0.0.0/0 \
+aws ec2 create-route /
+    --route-table-id $PUBLIC_RT_ID /
+    --destination-cidr-block 0.0.0.0/0 /
     --gateway-id $IGW_ID
 
 # Private 서브넷에 NAT 게이트웨이 라우트 추가
-aws ec2 create-route \
-    --route-table-id $PRIVATE_RT_ID \
-    --destination-cidr-block 0.0.0.0/0 \
+aws ec2 create-route /
+    --route-table-id $PRIVATE_RT_ID /
+    --destination-cidr-block 0.0.0.0/0 /
     --nat-gateway-id $NAT_GATEWAY_ID
 ```
 
@@ -132,20 +127,20 @@ aws ec2 create-route \
 
 ```bash
 # VPC 네트워크 생성
-gcloud compute networks create ha-vpc \
-    --subnet-mode custom \
+gcloud compute networks create ha-vpc /
+    --subnet-mode custom /
     --bgp-routing-mode global
 
 # 서울 리전 서브넷 생성
-gcloud compute networks subnets create seoul-subnet \
-    --network ha-vpc \
-    --range 10.0.1.0/24 \
+gcloud compute networks subnets create seoul-subnet /
+    --network ha-vpc /
+    --range 10.0.1.0/24 /
     --region asia-northeast3
 
 # 도쿄 리전 서브넷 생성
-gcloud compute networks subnets create tokyo-subnet \
-    --network ha-vpc \
-    --range 10.0.2.0/24 \
+gcloud compute networks subnets create tokyo-subnet /
+    --network ha-vpc /
+    --range 10.0.2.0/24 /
     --region asia-northeast1
 ```
 
@@ -155,17 +150,17 @@ gcloud compute networks subnets create tokyo-subnet \
 
 ```bash
 # HTTP/HTTPS 허용 규칙
-gcloud compute firewall-rules create allow-http-https \
-    --network ha-vpc \
-    --allow tcp:80,tcp:443 \
-    --source-ranges 0.0.0.0/0 \
+gcloud compute firewall-rules create allow-http-https /
+    --network ha-vpc /
+    --allow tcp:80,tcp:443 /
+    --source-ranges 0.0.0.0/0 /
     --target-tags web-server
 
 # SSH 허용 규칙
-gcloud compute firewall-rules create allow-ssh \
-    --network ha-vpc \
-    --allow tcp:22 \
-    --source-ranges 0.0.0.0/0 \
+gcloud compute firewall-rules create allow-ssh /
+    --network ha-vpc /
+    --allow tcp:22 /
+    --source-ranges 0.0.0.0/0 /
     --target-tags ssh-server
 ```
 
@@ -179,21 +174,21 @@ gcloud compute firewall-rules create allow-ssh \
 
 ```bash
 # 서울 리전에 인스턴스 생성
-gcloud compute instances create seoul-app-1 \
-    --zone=asia-northeast3-a \
-    --machine-type=e2-micro \
-    --image-family=ubuntu-2004-lts \
-    --image-project=ubuntu-os-cloud \
-    --subnet=seoul-subnet \
+gcloud compute instances create seoul-app-1 /
+    --zone=asia-northeast3-a /
+    --machine-type=e2-micro /
+    --image-family=ubuntu-2004-lts /
+    --image-project=ubuntu-os-cloud /
+    --subnet=seoul-subnet /
     --tags=web-server,ssh-server
 
 # 도쿄 리전에 인스턴스 생성
-gcloud compute instances create tokyo-app-1 \
-    --zone=asia-northeast1-a \
-    --machine-type=e2-micro \
-    --image-family=ubuntu-2004-lts \
-    --image-project=ubuntu-os-cloud \
-    --subnet=tokyo-subnet \
+gcloud compute instances create tokyo-app-1 /
+    --zone=asia-northeast1-a /
+    --machine-type=e2-micro /
+    --image-family=ubuntu-2004-lts /
+    --image-project=ubuntu-os-cloud /
+    --subnet=tokyo-subnet /
     --tags=web-server,ssh-server
 ```
 
@@ -203,27 +198,27 @@ gcloud compute instances create tokyo-app-1 \
 
 ```bash
 # 백엔드 서비스 생성
-gcloud compute backend-services create ha-backend \
-    --protocol=HTTP \
-    --port-name=http \
-    --health-checks=ha-health-check \
+gcloud compute backend-services create ha-backend /
+    --protocol=HTTP /
+    --port-name=http /
+    --health-checks=ha-health-check /
     --global
 
 # 인스턴스 그룹 생성 (서울)
-gcloud compute instance-groups unmanaged create seoul-group \
+gcloud compute instance-groups unmanaged create seoul-group /
     --zone=asia-northeast3-a
 
 # 인스턴스 그룹 생성 (도쿄)
-gcloud compute instance-groups unmanaged create tokyo-group \
+gcloud compute instance-groups unmanaged create tokyo-group /
     --zone=asia-northeast1-a
 
 # 인스턴스를 그룹에 추가
-gcloud compute instance-groups unmanaged add-instances seoul-group \
-    --instances=seoul-app-1 \
+gcloud compute instance-groups unmanaged add-instances seoul-group /
+    --instances=seoul-app-1 /
     --zone=asia-northeast3-a
 
-gcloud compute instance-groups unmanaged add-instances tokyo-group \
-    --instances=tokyo-app-1 \
+gcloud compute instance-groups unmanaged add-instances tokyo-group /
+    --instances=tokyo-app-1 /
     --zone=asia-northeast1-a
 ```
 
@@ -237,27 +232,27 @@ gcloud compute instance-groups unmanaged add-instances tokyo-group \
 
 ```bash
 # CPU 사용률 알람 생성
-aws cloudwatch put-metric-alarm \
-    --alarm-name "High CPU Utilization" \
-    --alarm-description "Alarm when CPU exceeds 80%" \
-    --metric-name CPUUtilization \
-    --namespace AWS/EC2 \
-    --statistic Average \
-    --period 300 \
-    --threshold 80.0 \
-    --comparison-operator GreaterThanThreshold \
+aws cloudwatch put-metric-alarm /
+    --alarm-name "High CPU Utilization" /
+    --alarm-description "Alarm when CPU exceeds 80%" /
+    --metric-name CPUUtilization /
+    --namespace AWS/EC2 /
+    --statistic Average /
+    --period 300 /
+    --threshold 80.0 /
+    --comparison-operator GreaterThanThreshold /
     --evaluation-periods 2
 
 # 상태 확인 실패 알람 생성
-aws cloudwatch put-metric-alarm \
-    --alarm-name "Status Check Failed" \
-    --alarm-description "Alarm when status check fails" \
-    --metric-name StatusCheckFailed \
-    --namespace AWS/EC2 \
-    --statistic Maximum \
-    --period 60 \
-    --threshold 1.0 \
-    --comparison-operator GreaterThanOrEqualToThreshold \
+aws cloudwatch put-metric-alarm /
+    --alarm-name "Status Check Failed" /
+    --alarm-description "Alarm when status check fails" /
+    --metric-name StatusCheckFailed /
+    --namespace AWS/EC2 /
+    --statistic Maximum /
+    --period 60 /
+    --threshold 1.0 /
+    --comparison-operator GreaterThanOrEqualToThreshold /
     --evaluation-periods 2
 ```
 
@@ -267,11 +262,11 @@ aws cloudwatch put-metric-alarm \
 
 ```bash
 # 알림 정책 생성
-gcloud alpha monitoring policies create \
+gcloud alpha monitoring policies create /
     --policy-from-file=alert-policy.yaml
 
 # 대시보드 생성
-gcloud alpha monitoring dashboards create \
+gcloud alpha monitoring dashboards create /
     --config-from-file=dashboard-config.yaml
 ```
 
@@ -349,28 +344,25 @@ curl -I http://LOAD_BALANCER_IP
 
 [📚 추가 학습 자료](#추가-학습-자료)
 
-- [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)
-- [GCP Architecture Center](https://cloud.google.com/architecture)
-- [고가용성 모범 사례](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/high-availability.html)
+- [AWS Well-Architected Framework](https:///aws.amazon.com/architecture/well-architected/)
+- [GCP Architecture Center](https:///cloud.google.com/architecture)
+- [고가용성 모범 사례](https:///docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/high-availability.html)
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 
 [📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 2일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-09-18T21:55:00",
+  "summary": {
+    "fixed_files": 1,
+    "fixed_links": 0,
+    "issues_addressed": [
+      "한글 파일명 링크 문제 (과정명.md, 과정상세.md)",
+      "URL 인코딩 누락 문제"
+    ]
+  },
+  "korean_filename_fixes": [
+    "/mcp_knowledge_base/cloud_basic과정명.md → /mcp_knowledge_base/cloud_basic/과정명.md",
+    "/mcp_knowledge_base/cloud_basic과정상세.md → /mcp_knowledge_base/cloud_basic/과정상세.md",
+    "/mcp_knowledge_base/cloud_container과정명.md → /mcp_knowledge_base/cloud_container/과정명.md",
+    "/mcp_knowledge_base/cloud_container과정상세.md → /mcp_knowledge_base/cloud_container/과정상세.md",
+    "/mcp_knowledge_base/cloud_master과정명.md → /mcp_knowledge_base/cloud_master/과정명.md",
+    "/mcp_knowledge_base/cloud_master과정상세.md → /mcp_knowledge_base/cloud_master/과정상세.md"
+  ]
+}

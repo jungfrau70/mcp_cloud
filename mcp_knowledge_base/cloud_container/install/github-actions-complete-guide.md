@@ -1,10 +1,5 @@
 # GitHub Actions 완전 가이드
 
-<div align="center">
-
-[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 📋 목차
 1. [GitHub Actions 소개](#github-actions-소개)
@@ -318,7 +313,7 @@ steps:
 ```yaml
 env:
   NODE_ENV: production
-  API_URL: https://api.example.com
+  API_URL: https:///api.example.com
 
 jobs:
   build:
@@ -755,9 +750,9 @@ jobs:
 
 ### 📚 추가 학습 자료
 
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [Actions 마켓플레이스](https://github.com/marketplace?type=actions)
-- [워크플로우 예제 모음](https://github.com/actions/starter-workflows)
+- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
+- [Actions 마켓플레이스](https:///github.com/marketplace?type=actions)
+- [워크플로우 예제 모음](https:///github.com/actions/starter-workflows)
 
 ---
 
@@ -770,16 +765,13 @@ GitHub Actions는 현대적인 소프트웨어 개발에서 필수적인 도구�
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

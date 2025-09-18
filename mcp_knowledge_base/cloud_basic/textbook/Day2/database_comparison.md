@@ -1,10 +1,5 @@
 # 데이터베이스 서비스 비교 (RDS vs Cloud SQL)
 
-<div align="center">
-
-[← 이전: Cloud Basic 2일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 학습 목표
 
@@ -110,16 +105,16 @@ GCP Cloud SQL:
 [1. 다중 AZ 배포](#1-다중-az-배포)
 ```bash
 # 다중 AZ 인스턴스 생성
-aws rds create-db-instance \
-    --db-instance-identifier mydb \
-    --db-instance-class db.t3.micro \
-    --engine mysql \
+aws rds create-db-instance /
+    --db-instance-identifier mydb /
+    --db-instance-class db.t3.micro /
+    --engine mysql /
     --multi-az
 
 # 다중 AZ 활성화
-aws rds modify-db-instance \
-    --db-instance-identifier mydb \
-    --multi-az \
+aws rds modify-db-instance /
+    --db-instance-identifier mydb /
+    --multi-az /
     --apply-immediately
 ```
 
@@ -128,14 +123,14 @@ aws rds modify-db-instance \
 [2. 백업 및 복구](#2-백업-및-복구)
 ```bash
 # 자동 백업 설정
-aws rds create-db-instance \
-    --db-instance-identifier mydb \
-    --backup-retention-period 7 \
+aws rds create-db-instance /
+    --db-instance-identifier mydb /
+    --backup-retention-period 7 /
     --preferred-backup-window "03:00-04:00"
 
 # 스냅샷 생성
-aws rds create-db-snapshot \
-    --db-instance-identifier mydb \
+aws rds create-db-snapshot /
+    --db-instance-identifier mydb /
     --db-snapshot-identifier mydb-snapshot-001
 ```
 
@@ -154,14 +149,14 @@ aws rds create-db-snapshot \
 [1. 고가용성 구성](#1-고가용성-구성)
 ```bash
 # 고가용성 인스턴스 생성
-gcloud sql instances create mydb \
-    --database-version=MYSQL_8_0 \
-    --tier=db-n1-standard-1 \
-    --region=asia-northeast3 \
+gcloud sql instances create mydb /
+    --database-version=MYSQL_8_0 /
+    --tier=db-n1-standard-1 /
+    --region=asia-northeast3 /
     --availability-type=REGIONAL
 
 # 고가용성 활성화
-gcloud sql instances patch mydb \
+gcloud sql instances patch mydb /
     --availability-type=REGIONAL
 ```
 
@@ -170,14 +165,14 @@ gcloud sql instances patch mydb \
 [2. 백업 및 복구](#2-백업-및-복구)
 ```bash
 # 백업 설정
-gcloud sql instances patch mydb \
-    --backup-start-time="03:00" \
-    --backup-retention-days=7 \
+gcloud sql instances patch mydb /
+    --backup-start-time="03:00" /
+    --backup-retention-days=7 /
     --enable-bin-log
 
 # 스냅샷 생성
-gcloud sql instances export mydb \
-    gs://my-backup-bucket/mydb-backup.sql \
+gcloud sql instances export mydb /
+    gs://my-backup-bucket/mydb-backup.sql /
     --database=myapp
 ```
 
@@ -196,16 +191,16 @@ gcloud sql instances export mydb \
 [1. 복제본 생성](#1-복제본-생성)
 ```bash
 # 읽기 전용 복제본 생성
-aws rds create-db-instance-read-replica \
-    --db-instance-identifier mydb-read-replica \
-    --source-db-instance-identifier mydb \
+aws rds create-db-instance-read-replica /
+    --db-instance-identifier mydb-read-replica /
+    --source-db-instance-identifier mydb /
     --db-instance-class db.t3.micro
 
 # 크로스 리전 복제본
-aws rds create-db-instance-read-replica \
-    --db-instance-identifier mydb-read-replica-us \
-    --source-db-instance-identifier mydb \
-    --db-instance-class db.t3.micro \
+aws rds create-db-instance-read-replica /
+    --db-instance-identifier mydb-read-replica-us /
+    --source-db-instance-identifier mydb /
+    --db-instance-class db.t3.micro /
     --availability-zone us-east-1a
 ```
 
@@ -214,11 +209,11 @@ aws rds create-db-instance-read-replica \
 [2. 복제본 관리](#2-복제본-관리)
 ```bash
 # 복제본 상태 확인
-aws rds describe-db-instances \
+aws rds describe-db-instances /
     --db-instance-identifier mydb-read-replica
 
 # 복제본을 독립 인스턴스로 승격
-aws rds promote-read-replica \
+aws rds promote-read-replica /
     --db-instance-identifier mydb-read-replica
 ```
 
@@ -237,15 +232,15 @@ aws rds promote-read-replica \
 [1. 복제본 생성](#1-복제본-생성)
 ```bash
 # 읽기 전용 복제본 생성
-gcloud sql instances create mydb-read-replica \
-    --master-instance-name=mydb \
-    --tier=db-n1-standard-1 \
+gcloud sql instances create mydb-read-replica /
+    --master-instance-name=mydb /
+    --tier=db-n1-standard-1 /
     --region=asia-northeast3
 
 # 크로스 리전 복제본
-gcloud sql instances create mydb-read-replica-us \
-    --master-instance-name=mydb \
-    --tier=db-n1-standard-1 \
+gcloud sql instances create mydb-read-replica-us /
+    --master-instance-name=mydb /
+    --tier=db-n1-standard-1 /
     --region=us-central1
 ```
 
@@ -275,14 +270,14 @@ gcloud sql instances promote-replica mydb-read-replica
 [1. 암호화](#1-암호화)
 ```bash
 # 저장 시 암호화 활성화
-aws rds create-db-instance \
-    --db-instance-identifier mydb \
-    --storage-encrypted \
+aws rds create-db-instance /
+    --db-instance-identifier mydb /
+    --storage-encrypted /
     --kms-key-id arn:aws:kms:region:account:key/key-id
 
 # 전송 시 암호화
-aws rds modify-db-instance \
-    --db-instance-identifier mydb \
+aws rds modify-db-instance /
+    --db-instance-identifier mydb /
     --ca-certificate-identifier rds-ca-2019
 ```
 
@@ -291,16 +286,16 @@ aws rds modify-db-instance \
 [2. 네트워크 보안](#2-네트워크-보안)
 ```bash
 # VPC 보안 그룹 생성
-aws ec2 create-security-group \
-    --group-name db-sg \
-    --description "Database security group" \
+aws ec2 create-security-group /
+    --group-name db-sg /
+    --description "Database security group" /
     --vpc-id vpc-12345678
 
 # 데이터베이스 포트 허용
-aws ec2 authorize-security-group-ingress \
-    --group-id sg-12345678 \
-    --protocol tcp \
-    --port 3306 \
+aws ec2 authorize-security-group-ingress /
+    --group-id sg-12345678 /
+    --protocol tcp /
+    --port 3306 /
     --cidr 10.0.1.0/24
 ```
 
@@ -319,14 +314,14 @@ aws ec2 authorize-security-group-ingress \
 [1. 암호화](#1-암호화)
 ```bash
 # 저장 시 암호화 (기본 활성화)
-gcloud sql instances create mydb \
-    --database-version=MYSQL_8_0 \
+gcloud sql instances create mydb /
+    --database-version=MYSQL_8_0 /
     --tier=db-n1-standard-1
 
 # 고객 관리 암호화 키
-gcloud sql instances create mydb \
-    --database-version=MYSQL_8_0 \
-    --tier=db-n1-standard-1 \
+gcloud sql instances create mydb /
+    --database-version=MYSQL_8_0 /
+    --tier=db-n1-standard-1 /
     --disk-encryption-key=projects/project/locations/location/keyRings/keyring/cryptoKeys/key
 ```
 
@@ -335,11 +330,11 @@ gcloud sql instances create mydb \
 [2. 네트워크 보안](#2-네트워크-보안)
 ```bash
 # 승인된 네트워크 설정
-gcloud sql instances patch mydb \
+gcloud sql instances patch mydb /
     --authorized-networks=203.0.113.0/24,198.51.100.0/24
 
 # 프라이빗 서비스 연결
-gcloud sql instances patch mydb \
+gcloud sql instances patch mydb /
     --network=projects/project/global/networks/network
 ```
 
@@ -358,13 +353,13 @@ gcloud sql instances patch mydb \
 [1. CloudWatch 메트릭](#1-cloudwatch-메트릭)
 ```bash
 # 메트릭 확인
-aws cloudwatch get-metric-statistics \
-    --namespace AWS/RDS \
-    --metric-name CPUUtilization \
-    --dimensions Name=DBInstanceIdentifier,Value=mydb \
-    --start-time 2023-01-01T00:00:00Z \
-    --end-time 2023-01-02T00:00:00Z \
-    --period 3600 \
+aws cloudwatch get-metric-statistics /
+    --namespace AWS/RDS /
+    --metric-name CPUUtilization /
+    --dimensions Name=DBInstanceIdentifier,Value=mydb /
+    --start-time 2023-01-01T00:00:00Z /
+    --end-time 2023-01-02T00:00:00Z /
+    --period 3600 /
     --statistics Average
 
 # 주요 메트릭
@@ -380,12 +375,12 @@ aws cloudwatch get-metric-statistics \
 [2. 로그 관리](#2-로그-관리)
 ```bash
 # 로그 내보내기 활성화
-aws rds modify-db-instance \
-    --db-instance-identifier mydb \
+aws rds modify-db-instance /
+    --db-instance-identifier mydb /
     --enable-cloudwatch-logs-exports error,general,slow-query
 
 # 로그 다운로드
-aws rds describe-db-log-files \
+aws rds describe-db-log-files /
     --db-instance-identifier mydb
 ```
 
@@ -404,7 +399,7 @@ aws rds describe-db-log-files \
 [1. Cloud Monitoring](#1-cloud-monitoring)
 ```bash
 # 메트릭 확인
-gcloud monitoring metrics list \
+gcloud monitoring metrics list /
     --filter="metric.type:cloudsql.googleapis.com"
 
 # 주요 메트릭
@@ -420,11 +415,11 @@ gcloud monitoring metrics list \
 [2. 로그 관리](#2-로그-관리)
 ```bash
 # 로그 내보내기 활성화
-gcloud sql instances patch mydb \
+gcloud sql instances patch mydb /
     --enable-bin-log
 
 # 로그 확인
-gcloud sql logs list \
+gcloud sql logs list /
     --instance=mydb
 ```
 
@@ -670,32 +665,29 @@ Phase 3: 전체 마이그레이션
 ## 참고 자료
 
 [참고 자료](#참고-자료)
-- [AWS RDS 사용자 가이드](https://docs.aws.amazon.com/rds/latest/userguide/)
-- [GCP Cloud SQL 문서](https://cloud.google.com/sql/docs)
-- [AWS RDS 가격](https://aws.amazon.com/rds/pricing/)
-- [GCP Cloud SQL 가격](https://cloud.google.com/sql/pricing)
-- [AWS Database Migration Service](https://docs.aws.amazon.com/dms/latest/userguide/)
-- [GCP Database Migration Service](https://cloud.google.com/database-migration)
+- [AWS RDS 사용자 가이드](https:///docs.aws.amazon.com/rds/latest/userguide/)
+- [GCP Cloud SQL 문서](https:///cloud.google.com/sql/docs)
+- [AWS RDS 가격](https:///aws.amazon.com/rds/pricing/)
+- [GCP Cloud SQL 가격](https:///cloud.google.com/sql/pricing)
+- [AWS Database Migration Service](https:///docs.aws.amazon.com/dms/latest/userguide/)
+- [GCP Database Migration Service](https:///cloud.google.com/database-migration)
 
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 
 [📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[← 이전: Cloud Basic 2일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

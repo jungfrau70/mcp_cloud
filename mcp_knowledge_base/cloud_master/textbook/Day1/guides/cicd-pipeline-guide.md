@@ -1,8 +1,3 @@
-<div align="center">
-
-[← 이전: Cloud Master 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [← 이전: AWS & GCP 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/aws-gcp-deployment-guide.md) | [다음: Cloud Master 2일차 →](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md)
-
-</div>
 
 # 4교시: 전체 자동 배포 파이프라인 구성 실습
 
@@ -10,15 +5,15 @@
 
 ## 📋 목차
 
-[📋 목차](#-)
-1. [전체 파이프라인 개념](#-)
-2. [파이프라인 아키텍처](#-)
-3. [GitHub Secrets 설정](#-github-secrets)
-4. [실습 목표](#-)
-5. [실습 절차](#-)
-6. [실습 코드 예시](#-)
-7. [예상 결과](#-)
-8. [혼자 해보기](#-)
+[📋 목차](#목차)
+1. [전체 파이프라인 개념](#전체-파이프라인-개념)
+2. [파이프라인 아키텍처](#파이프라인-아키텍처)
+3. [GitHub Secrets 설정](#github-secrets-설정)
+4. [실습 목표](#실습-목표)
+5. [실습 절차](#실습-절차)
+6. [실습 코드 예시](#실습-코드-예시)
+7. [예상 결과](#예상-결과)
+8. [혼자 해보기](#혼자-해보기)
 
 ---
 
@@ -26,13 +21,13 @@
 
 ### 전체 자동 배포 파이프라인이란?
 
-[전체 자동 배포 파이프라인이란?](#-?)
+[전체 자동 배포 파이프라인이란?](#전체-자동-배포-파이프라인이란)
 
 전체 자동 배포 파이프라인(CI/CD 파이프라인)은 **코드 커밋부터 빌드, 테스트, 컨테이너 이미지 배포, 실제 환경(클러스터) 배포까지 모든 단계를 자동화**한 흐름입니다.
 
 ### 파이프라인의 핵심 단계
 
-[파이프라인의 핵심 단계](#-)
+[파이프라인의 핵심 단계](#파이프라인의-핵심-단계)
 
 ```mermaid
 graph LR
@@ -51,7 +46,7 @@ graph LR
 
 ### 파이프라인의 장점
 
-[파이프라인의 장점](#-)
+[파이프라인의 장점](#파이프라인의-장점)
 
 | 장점 | 설명 |
 |------|------|
@@ -67,7 +62,7 @@ graph LR
 
 ### 전체 아키텍처 다이어그램
 
-[전체 아키텍처 다이어그램](#-)
+[전체 아키텍처 다이어그램](#전체-아키텍처-다이어그램)
 
 ```mermaid
 graph TB
@@ -107,39 +102,39 @@ graph TB
 
 ### 파이프라인 구성요소
 
-[파이프라인 구성요소](#-)
+[파이프라인 구성요소](#파이프라인-구성요소)
 
 #### 1. **소스 코드 관리**
 
-[1. **소스 코드 관리**](#-1.-**-**)
+[1. **소스 코드 관리**](#1-소스-코드-관리)
 - GitHub 저장소
 - 브랜치 전략 (main, develop, feature)
 - Pull Request 워크플로우
 
 #### 2. **CI/CD 엔진**
 
-[2. **CI/CD 엔진**](#-2.-**ci/cd-**)
+[2. **CI/CD 엔진**](#2-cicd-엔진)
 - GitHub Actions
 - 워크플로우 정의 (.github/workflows/)
 - 환경별 배포 전략
 
 #### 3. **컨테이너 레지스트리**
 
-[3. **컨테이너 레지스트리**](#-3.-**-**)
+[3. **컨테이너 레지스트리**](#3-컨테이너-레지스트리)
 - AWS ECR (Elastic Container Registry)
 - GCP GCR (Google Container Registry)
 - 이미지 태깅 및 버전 관리
 
 #### 4. **배포 대상**
 
-[4. **배포 대상**](#-4.-**-**)
+[4. **배포 대상**](#4-배포-대상)
 - AWS ECS (Elastic Container Service)
 - GCP GKE (Google Kubernetes Engine)
 - 환경별 설정 (staging, production)
 
 #### 5. **모니터링 및 알림**
 
-[5. **모니터링 및 알림**](#-5.-**-**)
+[5. **모니터링 및 알림**](#5-모니터링-및-알림)
 - CloudWatch (AWS)
 - Cloud Monitoring (GCP)
 - Slack/Email 알림
@@ -150,22 +145,22 @@ graph TB
 
 ### AWS 관련 Secrets
 
-[AWS 관련 Secrets](#-aws-secrets)
+[AWS 관련 Secrets](#aws-관련-secrets)
 
 #### 1. AWS 자격증명 설정
 
-[1. AWS 자격증명 설정](#-1.-aws)
+[1. AWS 자격증명 설정](#1-aws-자격증명-설정)
 ```bash
 # AWS IAM 사용자 생성
 aws iam create-user --user-name github-actions-user
 
 # 정책 연결
-aws iam attach-user-policy \
-  --user-name github-actions-user \
+aws iam attach-user-policy /
+  --user-name github-actions-user /
   --policy-arn arn:aws:iam::aws:policy/AmazonECS_FullAccess
 
-aws iam attach-user-policy \
-  --user-name github-actions-user \
+aws iam attach-user-policy /
+  --user-name github-actions-user /
   --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
 
 # 액세스 키 생성
@@ -174,7 +169,7 @@ aws iam create-access-key --user-name github-actions-user
 
 #### 2. GitHub Secrets 등록
 
-[2. GitHub Secrets 등록](#-2.-github-secrets)
+[2. GitHub Secrets 등록](#2-github-secrets-등록)
 GitHub 저장소 → Settings → Secrets and variables → Actions에서 다음 Secrets 추가:
 
 | Secret Name | Value | 설명 |
@@ -188,33 +183,33 @@ GitHub 저장소 → Settings → Secrets and variables → Actions에서 다음
 
 ### GCP 관련 Secrets
 
-[GCP 관련 Secrets](#-gcp-secrets)
+[GCP 관련 Secrets](#gcp-관련-secrets)
 
 #### 1. GCP 서비스 계정 생성
 
-[1. GCP 서비스 계정 생성](#-1.-gcp)
+[1. GCP 서비스 계정 생성](#1-gcp-서비스-계정-생성)
 ```bash
 # 서비스 계정 생성
-gcloud iam service-accounts create github-actions-sa \
+gcloud iam service-accounts create github-actions-sa /
   --display-name="GitHub Actions Service Account"
 
 # 권한 부여
-gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
-  --member="serviceAccount:github-actions-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID /
+  --member="serviceAccount:github-actions-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com" /
   --role="roles/container.developer"
 
-gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
-  --member="serviceAccount:github-actions-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID /
+  --member="serviceAccount:github-actions-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com" /
   --role="roles/storage.admin"
 
 # 키 파일 생성
-gcloud iam service-accounts keys create key.json \
+gcloud iam service-accounts keys create key.json /
   --iam-account=github-actions-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com
 ```
 
 #### 2. GitHub Secrets 등록
 
-[2. GitHub Secrets 등록](#-2.-github-secrets)
+[2. GitHub Secrets 등록](#2-github-secrets-등록)
 GitHub 저장소 → Settings → Secrets and variables → Actions에서 다음 Secrets 추가:
 
 | Secret Name | Value | 설명 |
@@ -226,12 +221,12 @@ GitHub 저장소 → Settings → Secrets and variables → Actions에서 다음
 
 ### 알림 관련 Secrets
 
-[알림 관련 Secrets](#-secrets)
+[알림 관련 Secrets](#알림-관련-secrets)
 
 | Secret Name | Value | 설명 |
 |-------------|-------|------|
-| `SLACK_WEBHOOK` | https://hooks.slack.com/... | Slack 웹훅 URL |
-| `DISCORD_WEBHOOK` | https://discord.com/api/webhooks/... | Discord 웹훅 URL |
+| `SLACK_WEBHOOK` | https:///hooks.slack.com/... | Slack 웹훅 URL |
+| `DISCORD_WEBHOOK` | https:///discord.com/api/webhooks/... | Discord 웹훅 URL |
 
 ---
 
@@ -253,29 +248,29 @@ GitHub 저장소 → Settings → Secrets and variables → Actions에서 다음
 
 ### 1단계: GitHub Secrets 설정
 
-[1단계: GitHub Secrets 설정](#-1:-github-secrets)
+[1단계: GitHub Secrets 설정](#1단계-github-secrets-설정)
 
 #### AWS Secrets 설정
 
-[AWS Secrets 설정](#-aws-secrets)
+[AWS Secrets 설정](#aws-secrets-설정)
 1. GitHub 저장소 → Settings → Secrets and variables → Actions
 2. "New repository secret" 클릭
 3. 위의 AWS 관련 Secrets 모두 추가
 
 #### GCP Secrets 설정
 
-[GCP Secrets 설정](#-gcp-secrets)
+[GCP Secrets 설정](#gcp-secrets-설정)
 1. GCP 서비스 계정 키 파일 내용을 복사
 2. GitHub Secrets에 `GCP_SA_KEY`로 추가
 3. 기타 GCP 관련 Secrets 추가
 
 ### 2단계: AWS ECS 배포 워크플로우 작성
 
-[2단계: AWS ECS 배포 워크플로우 작성](#-2:-aws-ecs)
+[2단계: AWS ECS 배포 워크플로우 작성](#2단계-aws-ecs-배포-워크플로우-작성)
 
 #### .github/workflows/deploy-aws.yml
 
-[.github/workflows/deploy-aws.yml](#-.github/workflows/deploy-aws.yml)
+[.github/workflows/deploy-aws.yml](#githubworkflowsdeployawsyml)
 ```yaml
 name: Deploy to AWS ECS
 
@@ -359,11 +354,11 @@ jobs:
 
 ### 3단계: GCP GKE 배포 워크플로우 작성
 
-[3단계: GCP GKE 배포 워크플로우 작성](#-3:-gcp-gke)
+[3단계: GCP GKE 배포 워크플로우 작성](#3단계-gcp-gke-배포-워크플로우-작성)
 
 #### .github/workflows/deploy-gcp.yml
 
-[.github/workflows/deploy-gcp.yml](#-.github/workflows/deploy-gcp.yml)
+[.github/workflows/deploy-gcp.yml](#githubworkflowsdeploygcpyml)
 ```yaml
 name: Deploy to GCP GKE
 
@@ -421,7 +416,7 @@ jobs:
       - name: Deploy to GKE
         run: |
           # Update deployment with new image
-          kubectl set image deployment/my-app-deployment \
+          kubectl set image deployment/my-app-deployment /
             my-app=gcr.io/${{ env.GCP_PROJECT_ID }}/my-app:${{ github.sha }}
           
           # Wait for rollout to complete
@@ -443,11 +438,11 @@ jobs:
 
 ### 4단계: 통합 워크플로우 작성
 
-[4단계: 통합 워크플로우 작성](#-4:)
+[4단계: 통합 워크플로우 작성](#4단계-통합-워크플로우-작성)
 
 #### .github/workflows/full-pipeline.yml
 
-[.github/workflows/full-pipeline.yml](#-.github/workflows/full-pipeline.yml)
+[.github/workflows/full-pipeline.yml](#githubworkflowsfullpipelineyml)
 ```yaml
 name: Full CI/CD Pipeline
 
@@ -528,9 +523,9 @@ jobs:
       - name: Deploy to ECS
         run: |
           # Update ECS service with new image
-          aws ecs update-service \
-            --cluster ${{ secrets.AWS_ECS_CLUSTER }} \
-            --service ${{ secrets.AWS_ECS_SERVICE }} \
+          aws ecs update-service /
+            --cluster ${{ secrets.AWS_ECS_CLUSTER }} /
+            --service ${{ secrets.AWS_ECS_SERVICE }} /
             --force-new-deployment
 
   # GCP 배포
@@ -585,7 +580,7 @@ jobs:
 
 ### 5단계: 워크플로우 파일 커밋 및 배포
 
-[5단계: 워크플로우 파일 커밋 및 배포](#-5:)
+[5단계: 워크플로우 파일 커밋 및 배포](#5단계-워크플로우-파일-커밋-및-배포)
 
 ```bash
 # 워크플로우 파일 추가
@@ -600,25 +595,25 @@ git push origin main
 
 ### 6단계: 배포 확인
 
-[6단계: 배포 확인](#-6:)
+[6단계: 배포 확인](#6단계-배포-확인)
 
 #### GitHub Actions 탭에서 확인
 
-[GitHub Actions 탭에서 확인](#-github-actions)
+[GitHub Actions 탭에서 확인](#github-actions-탭에서-확인)
 1. GitHub 저장소 → Actions 탭
 2. 워크플로우 실행 상태 확인
 3. 각 Job의 실행 로그 확인
 
 #### AWS ECS에서 확인
 
-[AWS ECS에서 확인](#-aws-ecs)
+[AWS ECS에서 확인](#aws-ecs에서-확인)
 1. AWS 콘솔 → ECS → Clusters
 2. 서비스 상태 확인
 3. 태스크 실행 상태 확인
 
 #### GCP GKE에서 확인
 
-[GCP GKE에서 확인](#-gcp-gke)
+[GCP GKE에서 확인](#gcp-gke에서-확인)
 1. GCP 콘솔 → Kubernetes Engine
 2. 워크로드 상태 확인
 3. 서비스 엔드포인트 확인
@@ -629,11 +624,11 @@ git push origin main
 
 ### 고급 워크플로우 예시
 
-[고급 워크플로우 예시](#-)
+[고급 워크플로우 예시](#고급-워크플로우-예시)
 
 #### 환경별 배포 전략
 
-[환경별 배포 전략](#-)
+[환경별 배포 전략](#환경별-배포-전략)
 ```yaml
 name: Environment-based Deployment
 
@@ -681,7 +676,7 @@ jobs:
 
 #### 롤백 워크플로우
 
-[롤백 워크플로우](#-)
+[롤백 워크플로우](#롤백-워크플로우)
 ```yaml
 name: Rollback Deployment
 
@@ -717,9 +712,9 @@ jobs:
       
       - name: Rollback ECS service
         run: |
-          aws ecs update-service \
-            --cluster ${{ secrets.AWS_ECS_CLUSTER }} \
-            --service ${{ secrets.AWS_ECS_SERVICE }} \
+          aws ecs update-service /
+            --cluster ${{ secrets.AWS_ECS_CLUSTER }} /
+            --service ${{ secrets.AWS_ECS_SERVICE }} /
             --task-definition my-app-task:${{ github.event.inputs.previous_version }}
 
   rollback-gcp:
@@ -747,21 +742,21 @@ jobs:
 
 ### 파이프라인 실행 결과
 
-[파이프라인 실행 결과](#-)
+[파이프라인 실행 결과](#파이프라인-실행-결과)
 - 코드 푸시 시 GitHub Actions에서 자동으로 워크플로우 시작
 - 코드 품질 검사, 테스트, 빌드, 배포 단계가 순차적으로 실행
 - AWS ECS와 GCP GKE에 동시 배포 완료
 
 ### 배포 확인
 
-[배포 확인](#-)
+[배포 확인](#배포-확인)
 - AWS ECS 콘솔에서 서비스가 새 이미지로 업데이트됨
 - GCP GKE 콘솔에서 Deployment가 새 이미지로 업데이트됨
 - 두 플랫폼 모두에서 애플리케이션이 정상 실행
 
 ### 알림
 
-[알림](#-)
+[알림](#알림)
 - 배포 성공/실패 시 Slack 알림 수신
 - 배포 상태와 관련 정보가 포함된 상세 알림
 
@@ -771,7 +766,7 @@ jobs:
 
 ### 기본 과제
 
-[기본 과제](#-)
+[기본 과제](#기본-과제)
 1. **환경별 배포**: staging과 production 환경을 분리하여 각각 다른 설정으로 배포해 보세요.
 
 2. **조건부 배포**: 특정 브랜치나 태그에만 배포되도록 조건을 추가해 보세요.
@@ -780,7 +775,7 @@ jobs:
 
 ### 고급 과제
 
-[고급 과제](#-)
+[고급 과제](#고급-과제)
 1. **Blue-Green 배포**: 무중단 배포를 위한 Blue-Green 배포 전략을 구현해 보세요.
 
 2. **Canary 배포**: 점진적 배포를 위한 Canary 배포를 구현해 보세요.
@@ -791,7 +786,7 @@ jobs:
 
 ## ❓ 퀴즈
 
-[❓ 퀴즈](#-)
+[❓ 퀴즈](#퀴즈)
 
 1. **GitHub Actions에서 Secret을 사용하는 이유는 무엇인가요?**
 
@@ -805,7 +800,7 @@ jobs:
 
 ## ✅ 체크리스트
 
-[✅ 체크리스트](#-)
+[✅ 체크리스트](#체크리스트)
 
 - [ ] GitHub Secrets에 AWS/GCP 자격증명이 올바르게 등록되었나요?
 - [ ] 워크플로우 파일이 .github/workflows에 저장되었나요?
@@ -819,31 +814,28 @@ jobs:
 
 ## 📚 추가 학습 자료
 
-[📚 추가 학습 자료](#-)
+[📚 추가 학습 자료](#추가-학습-자료)
 
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [AWS ECS 배포 가이드](https://docs.github.com/en/actions/how-tos/deploy/deploy-to-third-party-platforms/amazon-elastic-container-service)
-- [GCP GKE 배포 가이드](https://docs.github.com/ko/actions/how-tos/managing-workflow-runs-and-deployments/deploying-to-third-party-platforms/deploying-to-google-kubernetes-engine)
-- [CI/CD 모범 사례](https://docs.github.com/en/actions/learn-github-actions)
+- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
+- [AWS ECS 배포 가이드](https:///docs.github.com/en/actions/how-tos/deploy/deploy-to-third-party-platforms/amazon-elastic-container-service)
+- [GCP GKE 배포 가이드](https:///docs.github.com/ko/actions/how-tos/managing-workflow-runs-and-deployments/deploying-to-third-party-platforms/deploying-to-google-kubernetes-engine)
+- [CI/CD 모범 사례](https:///docs.github.com/en/actions/learn-github-actions)
 
-다음 단계: [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/troubleshooting-guide.md)
+다음 단계: [트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md)
+
+---
+
+
 
 ---
 
 
-
 ---
+
+
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
-
----
-
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[← 이전: Cloud Master 1일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md) | [← 이전: AWS & GCP 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/aws-gcp-deployment-guide.md)
 
 </div>

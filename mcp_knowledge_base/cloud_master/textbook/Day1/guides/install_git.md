@@ -1,20 +1,15 @@
 # Git 설치 가이드
 
-<div align="center">
-
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 Git은 분산 버전 관리 시스템으로, 소스 코드의 변경사항을 추적하고 협업을 지원합니다. 이 가이드는 다양한 운영체제에서 Git을 설치하는 방법을 설명합니다.
 
 ## 목차
-- [Windows 설치](#-windows)
-- [macOS 설치](#-macos)
-- [Linux 설치](#-linux)
-- [설치 확인](#-)
-- [기본 설정](#-)
-- [문제 해결](#-)
+- [Windows 설치](#windows-설치)
+- [macOS 설치](#macos-설치)
+- [Linux 설치](#linux-설치)
+- [설치 확인](#설치-확인)
+- [기본 설정](#기본-설정)
+- [문제 해결](#문제-해결)
 
 ## Windows 설치
 
@@ -23,7 +18,7 @@ Git은 분산 버전 관리 시스템으로, 소스 코드의 변경사항을 �
 1. **Git for Windows 다운로드**
    ```bash
    # 공식 웹사이트에서 다운로드
-   https://git-scm.com/download/win
+   https:///git-scm.com/download/win
    ```
 
 2. **설치 실행**
@@ -41,7 +36,7 @@ Git은 분산 버전 관리 시스템으로, 소스 코드의 변경사항을 �
 
 ```cmd
 # Chocolatey 설치 (없는 경우)
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https:///community.chocolatey.org/install.ps1'))
 
 # Git 설치
 choco install git
@@ -68,7 +63,7 @@ scoop install git
 
 ```bash
 # GitHub Desktop 다운로드
-https://desktop.github.com/
+https:///desktop.github.com/
 ```
 
 ## macOS 설치
@@ -110,14 +105,14 @@ sudo port install git
 
 ```bash
 # Git for macOS 다운로드
-https://git-scm.com/download/mac
+https:///git-scm.com/download/mac
 ```
 
 ### 방법 5: GitHub Desktop
 
 ```bash
 # GitHub Desktop 다운로드
-https://desktop.github.com/
+https:///desktop.github.com/
 ```
 
 ## Linux 설치
@@ -147,7 +142,7 @@ sudo apt install -y make libssl-dev libghc-zlib-dev libcurl4-gnutls-dev libexpat
 
 # Git 소스 다운로드
 cd /tmp
-wget https://github.com/git/git/archive/v2.42.0.tar.gz
+wget https:///github.com/git/git/archive/v2.42.0.tar.gz
 tar -xzf v2.42.0.tar.gz
 cd git-2.42.0
 
@@ -183,7 +178,7 @@ sudo yum install gettext-devel openssl-devel perl-CPAN perl-devel zlib-devel cur
 
 # Git 소스 다운로드 및 컴파일
 cd /tmp
-wget https://github.com/git/git/archive/v2.42.0.tar.gz
+wget https:///github.com/git/git/archive/v2.42.0.tar.gz
 tar -xzf v2.42.0.tar.gz
 cd git-2.42.0
 make configure
@@ -209,7 +204,7 @@ sudo dnf install git-core
 sudo zypper install git
 
 # 최신 버전 설치
-sudo zypper addrepo https://download.opensuse.org/repositories/devel:tools:scm/openSUSE_Leap_15.4/devel:tools:scm.repo
+sudo zypper addrepo https:///download.opensuse.org/repositories/devel:tools:scm/openSUSE_Leap_15.4/devel:tools:scm.repo
 sudo zypper refresh
 sudo zypper install git
 ```
@@ -271,7 +266,7 @@ git config --global user.name "Your Name"
 
 # 전역 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 ### 6. 자격 증명 관리
 
 ```bash
@@ -322,7 +317,7 @@ git config --global credential.helper osxkeychain
    ```bash
    # HTTP 프록시 설정
    git config --global http.proxy http://proxy.company.com:8080
-   git config --global https.proxy https://proxy.company.com:8080
+   git config --global https.proxy https:///proxy.company.com:8080
    
    # 프록시 제거
    git config --global --unset http.proxy
@@ -336,7 +331,7 @@ git config --global credential.helper osxkeychain
 GIT_TRACE=1 git status
 
 # 네트워크 추적
-GIT_CURL_VERBOSE=1 git clone https://github.com/user/repo.git
+GIT_CURL_VERBOSE=1 git clone https:///github.com/user/repo.git
 
 # SSH 디버깅
 ssh -T git@github.com -v
@@ -377,13 +372,13 @@ git lfs track "*.zip"
 
 ```bash
 # GitKraken (크로스 플랫폼)
-# https://www.gitkraken.com/
+# https:///www.gitkraken.com/
 
 # SourceTree (Windows/macOS)
-# https://www.sourcetreeapp.com/
+# https:///www.sourcetreeapp.com/
 
 # GitHub Desktop (Windows/macOS)
-# https://desktop.github.com/
+# https:///desktop.github.com/
 
 # Git Cola (Linux)
 sudo apt install git-cola
@@ -391,11 +386,11 @@ sudo apt install git-cola
 
 ## 추가 리소스
 
-- [Git 공식 문서](https://git-scm.com/doc)
-- [Pro Git 책](https://git-scm.com/book)
-- [GitHub Docs](https://docs.github.com/)
-- [GitLab Docs](https://docs.gitlab.com/)
-- [Atlassian Git 튜토리얼](https://www.atlassian.com/git/tutorials)
+- [Git 공식 문서](https:///git-scm.com/doc)
+- [Pro Git 책](https:///git-scm.com/book)
+- [GitHub Docs](https:///docs.github.com/)
+- [GitLab Docs](https:///docs.gitlab.com/)
+- [Atlassian Git 튜토리얼](https:///www.atlassian.com/git/tutorials)
 
 ## 버전 관리
 
@@ -463,8 +458,8 @@ echo "Git 설치 완료!"
 # 기본 설정 안내
 echo ""
 echo "💡 Git 기본 설정을 위해 다음 명령어를 실행하세요:"
-echo "git config --global user.name \"Your Name\""
-echo "git config --global user.email \"your.email@example.com\""
+echo "git config --global user.name /"Your Name/""
+echo "git config --global user.email /"your.email@example.com/""
 echo "git config --global init.defaultBranch main"
 ```
 
@@ -499,8 +494,8 @@ echo "Git 설치 완료!"
 # 기본 설정 안내
 echo ""
 echo "💡 Git 기본 설정을 위해 다음 명령어를 실행하세요:"
-echo "git config --global user.name \"Your Name\""
-echo "git config --global user.email \"your.email@example.com\""
+echo "git config --global user.name /"Your Name/""
+echo "git config --global user.email /"your.email@example.com/""
 echo "git config --global init.defaultBranch main"
 ```
 
@@ -618,16 +613,13 @@ EOF
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

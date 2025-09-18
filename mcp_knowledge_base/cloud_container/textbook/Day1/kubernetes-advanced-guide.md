@@ -1,10 +1,5 @@
 # Kubernetes 심화 실습 가이드
 
-<div align="center">
-
-[← 이전: Cloud Container 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_master/README.md)
-
-</div>
 
 ## 🎯 학습 목표
 
@@ -316,7 +311,7 @@ appVersion: "1.0.0"
 dependencies:
 - name: mysql
   version: 8.8.0
-  repository: https://charts.bitnami.com/bitnami
+  repository: https:///charts.bitnami.com/bitnami
   condition: mysql.enabled
 ```
 
@@ -451,11 +446,11 @@ cd helm/container-demo
 helm dependency update
 
 # Helm 차트 설치
-helm upgrade --install container-demo . \
-  --namespace container-demo \
-  --create-namespace \
-  --values values.yaml \
-  --set image.tag=$IMAGE_TAG \
+helm upgrade --install container-demo . /
+  --namespace container-demo /
+  --create-namespace /
+  --values values.yaml /
+  --set image.tag=$IMAGE_TAG /
   --set mysql.auth.password=$MYSQL_PASSWORD
 
 echo "✅ Helm 차트 배포 완료"
@@ -474,7 +469,7 @@ echo "✅ Helm 차트 배포 완료"
 [Istio 설치](#istio-설치)
 ```bash
 # Istio 다운로드 및 설치
-curl -L https://istio.io/downloadIstio | sh -
+curl -L https:///istio.io/downloadIstio | sh -
 cd istio-1.19.0
 export PATH=$PWD/bin:$PATH
 
@@ -654,7 +649,7 @@ data:
             "type": "graph",
             "targets": [
               {
-                "expr": "rate(http_requests_total{status=~\"5..\"}[5m])",
+                "expr": "rate(http_requests_total{status=~/"5../"}[5m])",
                 "legendFormat": "5xx errors"
               }
             ]
@@ -863,31 +858,28 @@ kubectl apply -f security/
 
 [📚 참고 자료](#참고-자료)
 
-- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
-- [Helm 공식 문서](https://helm.sh/docs/)
-- [Istio 공식 문서](https://istio.io/latest/docs/)
-- [Prometheus 공식 문서](https://prometheus.io/docs/)
-- [Grafana 공식 문서](https://grafana.com/docs/)
+- [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
+- [Helm 공식 문서](https:///helm.sh/docs/)
+- [Istio 공식 문서](https:///istio.io/latest/docs/)
+- [Prometheus 공식 문서](https:///prometheus.io/docs/)
+- [Grafana 공식 문서](https:///grafana.com/docs/)
 
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 
 [📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 1일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

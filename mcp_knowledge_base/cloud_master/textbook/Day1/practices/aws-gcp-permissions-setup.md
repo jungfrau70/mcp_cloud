@@ -4,12 +4,12 @@
 
 ## 📋 목차
 
-[📋 목차](#-)
-1. [AWS 권한 설정](#-aws)
-2. [GCP 권한 설정](#-gcp)
-3. [GitHub 시크릿 설정](#-github)
-4. [권한 테스트](#-)
-5. [문제 해결](#-)
+[📋 목차](#목차)
+1. [AWS 권한 설정](#aws-권한-설정)
+2. [GCP 권한 설정](#gcp-권한-설정)
+3. [GitHub 시크릿 설정](#github-시크릿-설정)
+4. [권한 테스트](#권한-테스트)
+5. [문제 해결](#문제-해결)
 
 ---
 
@@ -17,11 +17,11 @@
 
 ### 1. AWS IAM 사용자 생성
 
-[1. AWS IAM 사용자 생성](#-1.-aws-iam)
+[1. AWS IAM 사용자 생성](#1-aws-iam-사용자-생성)
 
 #### AWS CLI를 사용한 방법
 
-[AWS CLI를 사용한 방법](#-aws-cli)
+[AWS CLI를 사용한 방법](#aws-cli를-사용한-방법)
 ```bash
 # IAM 사용자 생성
 aws iam create-user --user-name github-actions-deploy
@@ -32,7 +32,7 @@ aws iam create-access-key --user-name github-actions-deploy
 
 #### AWS 콘솔을 사용한 방법
 
-[AWS 콘솔을 사용한 방법](#-aws)
+[AWS 콘솔을 사용한 방법](#aws-콘솔을-사용한-방법)
 1. AWS 콘솔 → IAM → 사용자 → 사용자 생성
 2. 사용자 이름: `github-actions-deploy`
 3. 액세스 유형: 프로그래밍 방식 액세스
@@ -40,11 +40,11 @@ aws iam create-access-key --user-name github-actions-deploy
 
 ### 2. 필요한 IAM 정책 생성
 
-[2. 필요한 IAM 정책 생성](#-2.-iam)
+[2. 필요한 IAM 정책 생성](#2-필요한-iam-정책-생성)
 
 #### ECS 배포를 위한 정책
 
-[ECS 배포를 위한 정책](#-ecs)
+[ECS 배포를 위한 정책](#ecs-배포를-위한-정책)
 ```json
 {
     "Version": "2012-10-17",
@@ -94,41 +94,41 @@ aws iam create-access-key --user-name github-actions-deploy
 
 #### 정책 생성 및 연결
 
-[정책 생성 및 연결](#-)
+[정책 생성 및 연결](#정책-생성-및-연결)
 ```bash
 # 정책 생성
-aws iam create-policy \
-    --policy-name GitHubActionsECSPolicy \
+aws iam create-policy /
+    --policy-name GitHubActionsECSPolicy /
     --policy-document file://ecs-policy.json
 
 # 사용자에게 정책 연결
-aws iam attach-user-policy \
-    --user-name github-actions-deploy \
+aws iam attach-user-policy /
+    --user-name github-actions-deploy /
     --policy-arn arn:aws:iam::ACCOUNT_ID:policy/GitHubActionsECSPolicy
 ```
 
 ### 3. ECS 리소스 생성
 
-[3. ECS 리소스 생성](#-3.-ecs)
+[3. ECS 리소스 생성](#3-ecs-리소스-생성)
 
 #### ECS 클러스터 생성
 
-[ECS 클러스터 생성](#-ecs)
+[ECS 클러스터 생성](#ecs-클러스터-생성)
 ```bash
 # Fargate 클러스터 생성
-aws ecs create-cluster \
-    --cluster-name actions-demo-cluster \
-    --capacity-providers FARGATE \
+aws ecs create-cluster /
+    --cluster-name actions-demo-cluster /
+    --capacity-providers FARGATE /
     --default-capacity-provider-strategy capacityProvider=FARGATE,weight=1
 ```
 
 #### 태스크 실행 역할 생성
 
-[태스크 실행 역할 생성](#-)
+[태스크 실행 역할 생성](#태스크-실행-역할-생성)
 ```bash
 # 태스크 실행 역할 생성
-aws iam create-role \
-    --role-name ecsTaskExecutionRole \
+aws iam create-role /
+    --role-name ecsTaskExecutionRole /
     --assume-role-policy-document '{
         "Version": "2012-10-17",
         "Statement": [
@@ -143,14 +143,14 @@ aws iam create-role \
     }'
 
 # AmazonECSTaskExecutionRolePolicy 연결
-aws iam attach-role-policy \
-    --role-name ecsTaskExecutionRole \
+aws iam attach-role-policy /
+    --role-name ecsTaskExecutionRole /
     --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
 ```
 
 #### 태스크 정의 생성
 
-[태스크 정의 생성](#-)
+[태스크 정의 생성](#태스크-정의-생성)
 ```json
 {
     "family": "actions-demo",
@@ -193,19 +193,19 @@ aws logs create-log-group --log-group-name /ecs/actions-demo
 
 #### ECS 서비스 생성
 
-[ECS 서비스 생성](#-ecs)
+[ECS 서비스 생성](#ecs-서비스-생성)
 ```bash
 # 서브넷과 보안 그룹 ID 확인
 aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-12345" --query 'Subnets[0].SubnetId'
 aws ec2 describe-security-groups --filters "Name=group-name,Values=default" --query 'SecurityGroups[0].GroupId'
 
 # ECS 서비스 생성
-aws ecs create-service \
-    --cluster actions-demo-cluster \
-    --service-name actions-demo-service \
-    --task-definition actions-demo:1 \
-    --desired-count 1 \
-    --launch-type FARGATE \
+aws ecs create-service /
+    --cluster actions-demo-cluster /
+    --service-name actions-demo-service /
+    --task-definition actions-demo:1 /
+    --desired-count 1 /
+    --launch-type FARGATE /
     --network-configuration "awsvpcConfiguration={subnets=[subnet-12345],securityGroups=[sg-12345],assignPublicIp=ENABLED}"
 ```
 
@@ -215,11 +215,11 @@ aws ecs create-service \
 
 ### 1. GCP 프로젝트 설정
 
-[1. GCP 프로젝트 설정](#-1.-gcp)
+[1. GCP 프로젝트 설정](#1-gcp-프로젝트-설정)
 
 #### 프로젝트 ID 확인
 
-[프로젝트 ID 확인](#-id)
+[프로젝트 ID 확인](#프로젝트-id-확인)
 ```bash
 # 현재 프로젝트 확인
 gcloud config get-value project
@@ -230,53 +230,53 @@ gcloud config set project YOUR_PROJECT_ID
 
 ### 2. 서비스 계정 생성
 
-[2. 서비스 계정 생성](#-2.)
+[2. 서비스 계정 생성](#2-서비스-계정-생성)
 
 #### 서비스 계정 생성
 
-[서비스 계정 생성](#-)
+[서비스 계정 생성](#서비스-계정-생성)
 ```bash
 # 서비스 계정 생성
-gcloud iam service-accounts create github-actions-deploy \
-    --display-name="GitHub Actions Deploy" \
+gcloud iam service-accounts create github-actions-deploy /
+    --display-name="GitHub Actions Deploy" /
     --description="Service account for GitHub Actions deployment"
 ```
 
 #### 필요한 권한 부여
 
-[필요한 권한 부여](#-)
+[필요한 권한 부여](#필요한-권한-부여)
 ```bash
 # Cloud Run Admin 권한
-gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
-    --member="serviceAccount:github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID /
+    --member="serviceAccount:github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com" /
     --role="roles/run.admin"
 
 # Storage Admin 권한 (Container Registry용)
-gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
-    --member="serviceAccount:github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID /
+    --member="serviceAccount:github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com" /
     --role="roles/storage.admin"
 
 # Service Account User 권한
-gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
-    --member="serviceAccount:github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID /
+    --member="serviceAccount:github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com" /
     --role="roles/iam.serviceAccountUser"
 
 # Cloud Build 권한 (이미지 빌드용)
-gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
-    --member="serviceAccount:github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID /
+    --member="serviceAccount:github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com" /
     --role="roles/cloudbuild.builds.builder"
 ```
 
 ### 3. 서비스 계정 키 생성
 
-[3. 서비스 계정 키 생성](#-3.)
+[3. 서비스 계정 키 생성](#3-서비스-계정-키-생성)
 
 #### JSON 키 파일 생성
 
-[JSON 키 파일 생성](#-json)
+[JSON 키 파일 생성](#json-키-파일-생성)
 ```bash
 # 서비스 계정 키 생성
-gcloud iam service-accounts keys create key.json \
+gcloud iam service-accounts keys create key.json /
     --iam-account=github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com
 
 # 키 파일 내용 확인
@@ -285,11 +285,11 @@ cat key.json
 
 ### 4. 필요한 API 활성화
 
-[4. 필요한 API 활성화](#-4.-api)
+[4. 필요한 API 활성화](#4-필요한-api-활성화)
 
 #### API 활성화
 
-[API 활성화](#-api)
+[API 활성화](#api-활성화)
 ```bash
 # Cloud Run API 활성화
 gcloud services enable run.googleapis.com
@@ -303,22 +303,22 @@ gcloud services enable cloudbuild.googleapis.com
 
 ### 5. Cloud Run 서비스 초기 생성
 
-[5. Cloud Run 서비스 초기 생성](#-5.-cloud-run)
+[5. Cloud Run 서비스 초기 생성](#5-cloud-run-서비스-초기-생성)
 
 #### 첫 번째 배포 (서비스 생성)
 
-[첫 번째 배포 (서비스 생성)](#-(-)))
+[첫 번째 배포 (서비스 생성)](#첫-번째-배포-서비스-생성)))
 ```bash
 # Cloud Run 서비스 생성
-gcloud run deploy actions-demo \
-    --image nginx:latest \
-    --region asia-northeast1 \
-    --platform managed \
-    --allow-unauthenticated \
-    --port 3000 \
-    --memory 512Mi \
-    --cpu 1 \
-    --min-instances 0 \
+gcloud run deploy actions-demo /
+    --image nginx:latest /
+    --region asia-northeast1 /
+    --platform managed /
+    --allow-unauthenticated /
+    --port 3000 /
+    --memory 512Mi /
+    --cpu 1 /
+    --min-instances 0 /
     --max-instances 10
 ```
 
@@ -328,18 +328,18 @@ gcloud run deploy actions-demo \
 
 ### 1. GitHub 시크릿 설정 방법
 
-[1. GitHub 시크릿 설정 방법](#-1.-github)
+[1. GitHub 시크릿 설정 방법](#1-github-시크릿-설정-방법)
 
 #### 저장소 시크릿 설정
 
-[저장소 시크릿 설정](#-)
+[저장소 시크릿 설정](#저장소-시크릿-설정)
 1. GitHub 저장소 → Settings → Secrets and variables → Actions
 2. "New repository secret" 클릭
 3. Name과 Value 입력 후 "Add secret" 클릭
 
 ### 2. AWS 관련 시크릿
 
-[2. AWS 관련 시크릿](#-2.-aws)
+[2. AWS 관련 시크릿](#2-aws-관련-시크릿)
 
 ```
 AWS_ACCESS_KEY_ID: AKIA...
@@ -352,7 +352,7 @@ AWS_ECS_TASK_DEFINITION: actions-demo
 
 ### 3. GCP 관련 시크릿
 
-[3. GCP 관련 시크릿](#-3.-gcp)
+[3. GCP 관련 시크릿](#3-gcp-관련-시크릿)
 
 ```
 GCP_PROJECT_ID: your-project-id
@@ -363,11 +363,11 @@ GCP_SERVICE_NAME: actions-demo
 
 ### 4. 공통 시크릿
 
-[4. 공통 시크릿](#-4.)
+[4. 공통 시크릿](#4-공통-시크릿)
 
 ```
 DOCKERHUB_TOKEN: your-dockerhub-token
-SLACK_WEBHOOK_URL: https://hooks.slack.com/... (선택사항)
+SLACK_WEBHOOK_URL: https:///hooks.slack.com/... (선택사항)
 ```
 
 ---
@@ -376,11 +376,11 @@ SLACK_WEBHOOK_URL: https://hooks.slack.com/... (선택사항)
 
 ### 1. AWS 권한 테스트
 
-[1. AWS 권한 테스트](#-1.-aws)
+[1. AWS 권한 테스트](#1-aws-권한-테스트)
 
 #### AWS CLI 테스트
 
-[AWS CLI 테스트](#-aws-cli)
+[AWS CLI 테스트](#aws-cli-테스트)
 ```bash
 # AWS 자격 증명 설정
 export AWS_ACCESS_KEY_ID=AKIA...
@@ -391,8 +391,8 @@ export AWS_DEFAULT_REGION=ap-northeast-2
 aws ecs describe-clusters --clusters actions-demo-cluster
 
 # ECS 서비스 확인
-aws ecs describe-services \
-    --cluster actions-demo-cluster \
+aws ecs describe-services /
+    --cluster actions-demo-cluster /
     --services actions-demo-service
 
 # ECR 로그인 테스트
@@ -401,15 +401,15 @@ aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS
 
 ### 2. GCP 권한 테스트
 
-[2. GCP 권한 테스트](#-2.-gcp)
+[2. GCP 권한 테스트](#2-gcp-권한-테스트)
 
 #### gcloud CLI 테스트
 
-[gcloud CLI 테스트](#-gcloud-cli)
+[gcloud CLI 테스트](#gcloud-cli-테스트)
 ```bash
 # 서비스 계정 인증
-gcloud auth activate-service-account \
-    --key-file=key.json \
+gcloud auth activate-service-account /
+    --key-file=key.json /
     --project=YOUR_PROJECT_ID
 
 # Cloud Run 서비스 확인
@@ -426,41 +426,41 @@ docker pull gcr.io/YOUR_PROJECT_ID/actions-demo:latest
 
 ### AWS 문제 해결
 
-[AWS 문제 해결](#-aws)
+[AWS 문제 해결](#aws-문제-해결)
 
 #### 1. ECS 서비스 업데이트 실패
 
-[1. ECS 서비스 업데이트 실패](#-1.-ecs)
+[1. ECS 서비스 업데이트 실패](#1-ecs-서비스-업데이트-실패)
 ```bash
 # 서비스 상태 확인
-aws ecs describe-services \
-    --cluster actions-demo-cluster \
-    --services actions-demo-service \
+aws ecs describe-services /
+    --cluster actions-demo-cluster /
+    --services actions-demo-service /
     --query 'services[0].{Status:status,RunningCount:runningCount,DesiredCount:desiredCount}'
 
 # 태스크 상태 확인
-aws ecs list-tasks \
-    --cluster actions-demo-cluster \
+aws ecs list-tasks /
+    --cluster actions-demo-cluster /
     --service-name actions-demo-service
 ```
 
 #### 2. IAM 권한 문제
 
-[2. IAM 권한 문제](#-2.-iam)
+[2. IAM 권한 문제](#2-iam-권한-문제)
 ```bash
 # 사용자 정책 확인
 aws iam list-attached-user-policies --user-name github-actions-deploy
 
 # 정책 내용 확인
 aws iam get-policy --policy-arn arn:aws:iam::ACCOUNT_ID:policy/GitHubActionsECSPolicy
-aws iam get-policy-version \
-    --policy-arn arn:aws:iam::ACCOUNT_ID:policy/GitHubActionsECSPolicy \
+aws iam get-policy-version /
+    --policy-arn arn:aws:iam::ACCOUNT_ID:policy/GitHubActionsECSPolicy /
     --version-id v1
 ```
 
 #### 3. ECR 접근 문제
 
-[3. ECR 접근 문제](#-3.-ecr)
+[3. ECR 접근 문제](#3-ecr-접근-문제)
 ```bash
 # ECR 리포지토리 확인
 aws ecr describe-repositories
@@ -471,37 +471,37 @@ aws ecr create-repository --repository-name actions-demo
 
 ### GCP 문제 해결
 
-[GCP 문제 해결](#-gcp)
+[GCP 문제 해결](#gcp-문제-해결)
 
 #### 1. Cloud Run 배포 실패
 
-[1. Cloud Run 배포 실패](#-1.-cloud-run)
+[1. Cloud Run 배포 실패](#1-cloud-run-배포-실패)
 ```bash
 # 서비스 상태 확인
-gcloud run services describe actions-demo \
-    --region asia-northeast1 \
+gcloud run services describe actions-demo /
+    --region asia-northeast1 /
     --format "value(status.conditions[0].status)"
 
 # 로그 확인
-gcloud logging read "resource.type=cloud_run_revision" \
-    --limit 50 \
+gcloud logging read "resource.type=cloud_run_revision" /
+    --limit 50 /
     --format json
 ```
 
 #### 2. 서비스 계정 권한 문제
 
-[2. 서비스 계정 권한 문제](#-2.)
+[2. 서비스 계정 권한 문제](#2-서비스-계정-권한-문제)
 ```bash
 # 서비스 계정 권한 확인
-gcloud projects get-iam-policy YOUR_PROJECT_ID \
-    --flatten="bindings[].members" \
-    --format="table(bindings.role)" \
+gcloud projects get-iam-policy YOUR_PROJECT_ID /
+    --flatten="bindings[].members" /
+    --format="table(bindings.role)" /
     --filter="bindings.members:github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com"
 ```
 
 #### 3. Container Registry 접근 문제
 
-[3. Container Registry 접근 문제](#-3.-container-registry)
+[3. Container Registry 접근 문제](#3-container-registry-접근-문제)
 ```bash
 # Container Registry 권한 확인
 gsutil iam get gs://artifacts.YOUR_PROJECT_ID.appspot.com
@@ -513,7 +513,7 @@ docker pull gcr.io/YOUR_PROJECT_ID/actions-demo:latest
 
 ### 일반적인 문제들
 
-[일반적인 문제들](#-)
+[일반적인 문제들](#일반적인-문제들)
 
 | 문제 | 원인 | 해결 방법 |
 |------|------|-----------|
@@ -526,29 +526,125 @@ docker pull gcr.io/YOUR_PROJECT_ID/actions-demo:latest
 
 ## 📚 추가 자료
 
-[📚 추가 자료](#-)
+[📚 추가 자료](#추가-자료)
 
-- [AWS ECS IAM 권한 가이드](https://docs.aws.amazon.com/ecs/latest/developerguide/security-iam.html)
-- [GCP Cloud Run IAM 가이드](https://cloud.google.com/run/docs/iam)
-- [GitHub Actions 시크릿 관리](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
-- [Docker Hub 액세스 토큰](https://docs.docker.com/docker-hub/access-tokens/)
+- [AWS ECS IAM 권한 가이드](https:///docs.aws.amazon.com/ecs/latest/developerguide/security-iam.html)
+- [GCP Cloud Run IAM 가이드](https:///cloud.google.com/run/docs/iam)
+- [GitHub Actions 시크릿 관리](https:///docs.github.com/en/actions/security-guides/encrypted-secrets)
+- [Docker Hub 액세스 토큰](https:///docs.docker.com/docker-hub/access-tokens/)
+
+---
+
+
 
 ---
 
 
-
 ---
+
+
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>
+
+## 💻 실습 가이드
+
+### 📁 실습 코드 및 자동화
+- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_master/repos/samples/day[숫자]/[주제]/`
+- **자동화 스크립트**: `/mcp_knowledge_base/cloud_master/repos/automation/day[숫자]/[주제]-practice-automation.sh`
+- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_master/repos/cloud-scripts/`
+
+<details>
+<summary>🚀 실습 환경 준비</summary>
+
+#### 필수 도구
+- **AWS CLI**: AWS 서비스 관리
+- **GCP CLI**: Google Cloud 서비스 관리
+- **Docker**: 컨테이너 관리
+- **Git**: 버전 관리
+
+#### 환경 설정
+```bash
+# AWS CLI 설치 확인
+aws --version
+
+# GCP CLI 설치 확인
+gcloud --version
+
+# Docker 설치 확인
+docker --version
+```
+
+</details>
+
+<details>
+<summary>🔧 1단계: 기본 실습</summary>
+
+#### 기본 설정
+```bash
+# 환경 변수 설정
+export AWS_REGION=us-west-2
+export GCP_PROJECT_ID=your-project-id
+
+# 설정 확인
+echo $AWS_REGION
+echo $GCP_PROJECT_ID
+```
+
+#### 기본 실습
+```bash
+# 기본 명령어 실행
+aws s3 ls
+gcloud auth list
+```
+
+</details>
 
 ---
 
-<div align="center">
+## 📚 참고 자료
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+### 유용한 명령어
+```bash
+# AWS 기본 명령어
+aws s3 ls
+aws ec2 describe-instances
 
-</div>
+# GCP 기본 명령어
+gcloud auth list
+gcloud config list
+```
+
+### 문제 해결
+1. **인증 오류**
+   - AWS 자격 증명 확인
+   - GCP 인증 상태 확인
+
+2. **권한 오류**
+   - IAM 권한 확인
+   - 서비스 계정 권한 확인
+
+---
+
+## 🧹 실습 정리
+
+### 자동 정리
+```bash
+# 실습 자동 정리
+./mcp_knowledge_base/cloud_master/repos/automation/day[숫자]/[주제]-practice-automation.sh --cleanup
+```
+
+### 수동 정리
+```bash
+# 리소스 정리
+aws s3 rm s3://your-bucket --recursive
+gcloud compute instances delete your-instance
+```
+
+### 정리 확인
+- [ ] 모든 리소스 정리 완료
+- [ ] 비용 발생 없음 확인
+- [ ] 로그 파일 정리

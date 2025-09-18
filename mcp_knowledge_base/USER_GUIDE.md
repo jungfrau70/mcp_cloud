@@ -8,27 +8,27 @@
 ### 📋 **필수 준비사항**
 
 #### 1. 계정 준비
-- **AWS 계정**: [AWS Free Tier](https://aws.amazon.com/free/) 가입
-- **GCP 계정**: [Google Cloud Platform](https://cloud.google.com/) 가입 ($300 크레딧)
-- **GitHub 계정**: [GitHub](https://github.com/) 가입
+- **AWS 계정**: [AWS Free Tier](https:///aws.amazon.com/free/) 가입
+- **GCP 계정**: [Google Cloud Platform](https:///cloud.google.com/) 가입 ($300 크레딧)
+- **GitHub 계정**: [GitHub](https:///github.com/) 가입
 
 #### 2. 도구 설치
 ```bash
 # AWS CLI 설치
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+curl "https:///awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
 
 # GCP CLI 설치
-curl https://sdk.cloud.google.com | bash
+curl https:///sdk.cloud.google.com | bash
 exec -l $SHELL
 
 # Docker 설치
-curl -fsSL https://get.docker.com -o get-docker.sh
+curl -fsSL https:///get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 
 # kubectl 설치
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https:///dl.k8s.io/release/$(curl -L -s https:///dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 ```
 
@@ -349,7 +349,7 @@ cat validation_results/integrated_validation_[날짜시간].json
 
 ## 📞 **지원 및 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 ### 2. 추가 자료
 - **교재**: `mcp_knowledge_base/cloud_*/textbook/`
 - **실습 가이드**: `mcp_knowledge_base/cloud_*/textbook/Day*/README.md`
@@ -379,17 +379,13 @@ git log --oneline -10
 
 ---
 
-<div align="center">
-
-## 🔗 관련 과정
-[Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[Cloud Basic 1일차](/mcp_knowledge_base/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/README.md) | [🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

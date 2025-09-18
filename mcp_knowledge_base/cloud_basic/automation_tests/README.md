@@ -1,10 +1,5 @@
 # Basic 과정 자동화 시스템
 
-<div align="center">
-
-← 이전: Cloud Basic 메인 | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 📌 개요
 
@@ -156,7 +151,7 @@ tail -f basic_course_automation.log
 
 ## 📞 지원
 
-- **문서**: [USER_GUIDE.md](/mcp_knowledge_base/cloud_basic/automation_tests/USER_GUIDE.md)
+- **문서**: [USER_GUIDE.md](/mcp_knowledge_base/USER_GUIDE.md)
 - **이슈**: GitHub Issues
 - **문의**: 프로젝트 관리자
 
@@ -167,16 +162,13 @@ tail -f basic_course_automation.log
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

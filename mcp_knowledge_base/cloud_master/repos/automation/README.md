@@ -223,11 +223,11 @@ docker-compose down -v 2>/dev/null || true
 
 ## 📚 추가 학습 자료
 
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
-- [Prometheus 공식 문서](https://prometheus.io/docs/)
-- [Grafana 공식 문서](https://grafana.com/docs/)
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
+- [Docker 공식 문서](https:///docs.docker.com/)
+- [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
+- [Prometheus 공식 문서](https:///prometheus.io/docs/)
+- [Grafana 공식 문서](https:///grafana.com/docs/)
+- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
 
 ## 🤝 기여하기
 

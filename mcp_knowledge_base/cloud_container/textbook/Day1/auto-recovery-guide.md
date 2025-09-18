@@ -1,10 +1,5 @@
 # 자동 복구 시나리오 가이드
 
-<div align="center">
-
-[← 이전: Cloud Container 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 🎯 학습 목표
 
@@ -860,11 +855,11 @@ async function handleAutoRecovery(alert) {
   try {
     // Discord 알림 전송
     await webhook.send({
-      content: `🚨 **자동 복구 알림**\n` +
-               `**알림**: ${annotations.summary}\n` +
-               `**설명**: ${annotations.description}\n` +
-               `**네임스페이스**: ${labels.namespace}\n` +
-               `**Pod**: ${labels.pod}\n` +
+      content: `🚨 **자동 복구 알림**/n` +
+               `**알림**: ${annotations.summary}/n` +
+               `**설명**: ${annotations.description}/n` +
+               `**네임스페이스**: ${labels.namespace}/n` +
+               `**Pod**: ${labels.pod}/n` +
                `**시간**: ${new Date().toISOString()}`
     });
     
@@ -1096,16 +1091,16 @@ kubectl logs -f deployment/auto-recovery-webhook -n container-demo
 ### 공식 문서
 
 [공식 문서](#공식-문서)
-- [Kubernetes 프로브 공식 문서](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
-- [Kubernetes HPA 공식 문서](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
-- [Prometheus 알림 규칙 공식 문서](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/)
+- [Kubernetes 프로브 공식 문서](https:///kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
+- [Kubernetes HPA 공식 문서](https:///kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
+- [Prometheus 알림 규칙 공식 문서](https:///prometheus.io/docs/prometheus/latest/configuration/alerting_rules/)
 
 ### 추가 학습 자료
 
 [추가 학습 자료](#추가-학습-자료)
 - [Kubernetes 고급 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/kubernetes-advanced-guide.md)
 - [종합 실습 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/comprehensive-practice-guide.md)
-- [모니터링 설정 가이드](/mcp_knowledge_base/mcp_knowledge_base\cloud_container\textbook\Day1\monitoring-setup)
+- [모니터링 설정 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/monitoring-setup.md)
 
 ---
 
@@ -1114,22 +1109,19 @@ kubectl logs -f deployment/auto-recovery-webhook -n container-demo
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 
 [📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 1일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

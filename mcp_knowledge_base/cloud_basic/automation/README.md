@@ -1,7 +1,23 @@
+## 🎯 학습 목표
+
+### 핵심 학습 목표
+- **Cloud Basic 기초** 클라우드 서비스 이해 및 활용
+- **Cloud Basic 실무** 실제 프로젝트 적용 능력 향상
+
+### 실습 후 달성할 수 있는 능력
+- ✅ 클라우드 서비스 기본 개념 이해
+- ✅ 실제 환경에서 서비스 배포 및 관리
+- ✅ 문제 해결 및 최적화 능력
+
+### 예상 소요 시간
+- **기초 학습**: 90-120분
+- **실습 진행**: 60-90분
+- **전체 과정**: 3-4시간
+
 Basic 과정의 실습 코드
 
 ```bash
-cd C:\Users\JIH\githubs\mcp_cloud\mcp_knowledge_base\cloud_basic\automation_tests && python basic_course_automation.py
+cd C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/cloud_basic/automation_tests && python basic_course_automation.py
 ```
 Basic 과정 자동화가 성공적으로 완료되었습니다! 이제 생성된 파일들을 확인해보겠습니다.
 
@@ -9,17 +25,12 @@ Ran tool
 좋습니다! Basic 과정의 스크립트들이 생성되었습니다. 이제 Basic 과정의 테스트를 실행해보겠습니다.
 
 ```bash
-cd C:\Users\JIH\githubs\mcp_cloud\mcp_knowledge_base\cloud_basic\automation_tests && python run_basic_course_tests.py
+cd C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/cloud_basic/automation_tests && python run_basic_course_tests.py
 ```
 🎉 **완벽합니다!** Basic 과정의 모든 테스트가 성공적으로 통과했습니다!
 
 ## Basic 과정 실습 코드 수행 및 테스트 결과
 
-<div align="center">
-
-← 이전: Cloud Basic 메인 | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ### ✅ 테스트 결과
 - **총 12개 테스트 모두 통과** ✅
@@ -116,16 +127,13 @@ chmod +x *.sh
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

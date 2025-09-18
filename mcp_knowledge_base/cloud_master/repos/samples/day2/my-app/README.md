@@ -302,7 +302,7 @@ kubectl run test-pod --image=busybox --rm -it --restart=Never -- wget -qO- http:
 
 ## 🔗 관련 자료
 
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
-- [Prometheus 공식 문서](https://prometheus.io/docs/)
-- [Grafana 공식 문서](https://grafana.com/docs/)
+- [Docker 공식 문서](https:///docs.docker.com/)
+- [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
+- [Prometheus 공식 문서](https:///prometheus.io/docs/)
+- [Grafana 공식 문서](https:///grafana.com/docs/)

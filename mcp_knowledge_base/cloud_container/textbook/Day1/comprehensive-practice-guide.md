@@ -1,10 +1,5 @@
 # Container 과정 종합 실습 가이드
 
-<div align="center">
-
-[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 🎯 실습 개요
 
@@ -174,7 +169,7 @@ docker images | grep container-demo
 [실습 1-2: 보안 강화](#실습-12-보안-강화)
 ```bash
 # 보안 스캔 실행
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock /
   aquasec/trivy image container-demo:optimized
 ```
 
@@ -248,11 +243,11 @@ jobs:
 aws ecr create-repository --repository-name container-demo
 
 # 이미지 푸시
-aws ecr get-login-password --region ap-northeast-2 | \
-  docker login --username AWS --password-stdin \
+aws ecr get-login-password --region ap-northeast-2 | /
+  docker login --username AWS --password-stdin /
   ACCOUNT_ID.dkr.ecr.ap-northeast-2.amazonaws.com
 
-docker tag container-demo:latest \
+docker tag container-demo:latest /
   ACCOUNT_ID.dkr.ecr.ap-northeast-2.amazonaws.com/container-demo:latest
 
 docker push ACCOUNT_ID.dkr.ecr.ap-northeast-2.amazonaws.com/container-demo:latest
@@ -260,7 +255,7 @@ docker push ACCOUNT_ID.dkr.ecr.ap-northeast-2.amazonaws.com/container-demo:lates
 # ECS 클러스터 생성 및 서비스 배포
 aws ecs create-cluster --cluster-name container-demo-cluster
 aws ecs register-task-definition --cli-input-json file://k8s/aws-ecs/task-definition.json
-aws ecs create-service --cluster container-demo-cluster --service-name container-demo-service \
+aws ecs create-service --cluster container-demo-cluster --service-name container-demo-service /
   --task-definition container-demo-task --desired-count 2
 ```
 
@@ -269,16 +264,16 @@ aws ecs create-service --cluster container-demo-cluster --service-name container
 [실습 3-2: GCP GKE 배포](#실습-32-gcp-gke-배포)
 ```bash
 # GKE 클러스터 생성
-gcloud container clusters create container-demo-cluster \
-  --zone asia-northeast3-a \
-  --num-nodes 3 \
-  --machine-type e2-medium \
-  --enable-autoscaling \
-  --min-nodes 1 \
+gcloud container clusters create container-demo-cluster /
+  --zone asia-northeast3-a /
+  --num-nodes 3 /
+  --machine-type e2-medium /
+  --enable-autoscaling /
+  --min-nodes 1 /
   --max-nodes 5
 
 # 클러스터 인증
-gcloud container clusters get-credentials container-demo-cluster \
+gcloud container clusters get-credentials container-demo-cluster /
   --zone asia-northeast3-a
 
 # 애플리케이션 배포
@@ -346,10 +341,10 @@ spec:
 [실습 1-1: Multi-AZ 구성](#실습-11-multiaz-구성)
 ```bash
 # GKE 클러스터를 여러 존에 배포
-gcloud container clusters create container-demo-ha \
-  --zone asia-northeast3-a \
-  --additional-zones asia-northeast3-b,asia-northeast3-c \
-  --num-nodes 2 \
+gcloud container clusters create container-demo-ha /
+  --zone asia-northeast3-a /
+  --additional-zones asia-northeast3-b,asia-northeast3-c /
+  --num-nodes 2 /
   --machine-type e2-medium
 
 # Pod를 여러 존에 분산 배포
@@ -396,24 +391,24 @@ EOF
 gcloud compute addresses create container-demo-ip --global
 
 # Backend Service 생성
-gcloud compute backend-services create container-demo-backend \
-  --protocol HTTP \
-  --health-checks container-demo-health-check \
+gcloud compute backend-services create container-demo-backend /
+  --protocol HTTP /
+  --health-checks container-demo-health-check /
   --global
 
 # URL Map 생성
-gcloud compute url-maps create container-demo-map \
+gcloud compute url-maps create container-demo-map /
   --default-service container-demo-backend
 
 # Target Proxy 생성
-gcloud compute target-http-proxies create container-demo-proxy \
+gcloud compute target-http-proxies create container-demo-proxy /
   --url-map container-demo-map
 
 # Forwarding Rule 생성
-gcloud compute forwarding-rules create container-demo-rule \
-  --global \
-  --target-http-proxy container-demo-proxy \
-  --address container-demo-ip \
+gcloud compute forwarding-rules create container-demo-rule /
+  --global /
+  --target-http-proxy container-demo-proxy /
+  --address container-demo-ip /
   --ports 80
 ```
 
@@ -703,11 +698,11 @@ curl http://localhost:8080/metrics
 ### 공식 문서
 
 [공식 문서](#공식-문서)
-- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
-- [Helm 공식 문서](https://helm.sh/docs/)
-- [Istio 공식 문서](https://istio.io/latest/docs/)
-- [Prometheus 공식 문서](https://prometheus.io/docs/)
-- [Grafana 공식 문서](https://grafana.com/docs/)
+- [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
+- [Helm 공식 문서](https:///helm.sh/docs/)
+- [Istio 공식 문서](https:///istio.io/latest/docs/)
+- [Prometheus 공식 문서](https:///prometheus.io/docs/)
+- [Grafana 공식 문서](https:///grafana.com/docs/)
 
 ### 추가 학습 자료
 
@@ -723,16 +718,13 @@ curl http://localhost:8080/metrics
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

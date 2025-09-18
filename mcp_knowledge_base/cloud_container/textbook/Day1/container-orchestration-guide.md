@@ -1,10 +1,5 @@
 # Advanced 3교시: AWS ECS / GCP GKE로 실제 배포 실습
 
-<div align="center">
-
-[← 이전: Cloud Container 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 📋 목차
 
@@ -394,12 +389,12 @@ aws ecs create-cluster --cluster-name my-cluster --capacity-providers EC2
 aws logs create-log-group --log-group-name /ecs/my-app
 
 # 서비스 생성
-aws ecs create-service \
-  --cluster my-cluster \
-  --service-name my-app-service \
-  --task-definition my-app-task \
-  --desired-count 2 \
-  --launch-type FARGATE \
+aws ecs create-service /
+  --cluster my-cluster /
+  --service-name my-app-service /
+  --task-definition my-app-task /
+  --desired-count 2 /
+  --launch-type FARGATE /
   --network-configuration "awsvpcConfiguration={subnets=[subnet-12345],securityGroups=[sg-12345],assignPublicIp=ENABLED}"
 ```
 
@@ -423,12 +418,12 @@ gcloud services enable container.googleapis.com
 [GKE 클러스터 생성](#gke-클러스터-생성)
 ```bash
 # GKE 클러스터 생성
-gcloud container clusters create my-cluster \
-  --zone us-central1-a \
-  --num-nodes 3 \
-  --machine-type e2-medium \
-  --enable-autoscaling \
-  --min-nodes 1 \
+gcloud container clusters create my-cluster /
+  --zone us-central1-a /
+  --num-nodes 3 /
+  --machine-type e2-medium /
+  --enable-autoscaling /
+  --min-nodes 1 /
   --max-nodes 5
 
 # 클러스터 인증
@@ -835,26 +830,23 @@ spec:
 
 [📚 추가 학습 자료](#추가-학습-자료)
 
-- [AWS ECS 공식 문서](https://docs.aws.amazon.com/ecs/)
-- [GCP GKE 공식 문서](https://cloud.google.com/kubernetes-engine/docs)
-- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
-- [컨테이너 오케스트레이션 가이드](https://www.redhat.com/en/topics/containers/what-is-container-orchestration)
+- [AWS ECS 공식 문서](https:///docs.aws.amazon.com/ecs/)
+- [GCP GKE 공식 문서](https:///cloud.google.com/kubernetes-engine/docs)
+- [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
+- [컨테이너 오케스트레이션 가이드](https:///www.redhat.com/en/topics/containers/what-is-container-orchestration)
 
-다음 단계: [4교시: 전체 자동 배포 파이프라인 구성](/mcp_knowledge_base/cloud_master/textbook/Day1/cicd-pipeline-guide.md)
+다음 단계: [4교시: 전체 자동 배포 파이프라인 구성](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/cicd-pipeline-guide.md)
+
+
+---
 
 
 ---
 
-<div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
-
----
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 1일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

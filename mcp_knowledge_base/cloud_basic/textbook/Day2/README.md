@@ -36,26 +36,26 @@
 #### 1단계: 컴퓨팅 서비스 비교 (1시간)
 
 - [EC2 vs Compute Engine 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md)
-- [인스턴스 유형 분석](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md#인스턴스-유형-분석)
-- [가격 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md#가격-비교)
+- [인스턴스 유형 분석](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md)
+- [가격 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md)
 
 #### 2단계: 스토리지 서비스 비교 (1시간)
 
 - [S3 vs Cloud Storage 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md)
-- [스토리지 클래스 분석](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md#스토리지-클래스-분석)
-- [성능 및 가격 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md#성능-및-가격-비교)
+- [스토리지 클래스 분석](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md)
+- [성능 및 가격 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md)
 
 #### 3단계: 데이터베이스 서비스 비교 (1시간)
 
 - [RDS vs Cloud SQL 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md)
-- [NoSQL 서비스 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md#nosql-서비스-비교)
-- [관리형 서비스 장단점](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md#관리형-서비스-장단점)
+- [NoSQL 서비스 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md)
+- [관리형 서비스 장단점](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md)
 
 #### 4단계: 네트워킹 서비스 비교 (1시간)
 
 - [VPC vs VPC 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/network_comparison.md)
-- [로드 밸런서 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/network_comparison.md#로드-밸런서-비교)
-- [CDN 서비스 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/network_comparison.md#cdn-서비스-비교)
+- [로드 밸런서 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/network_comparison.md)
+- [CDN 서비스 비교](/mcp_knowledge_base/cloud_basic/textbook/Day2/network_comparison.md)
 
 ### 🌆 오후 (4시간)
 
@@ -63,21 +63,21 @@
 
 #### 5단계: 비용 최적화 실습 (2시간)
 
-- [비용 분석 도구 사용](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md#비용-분석-도구)
-- [리소스 최적화](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md#리소스-최적화)
-- [예산 설정 및 모니터링](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md#예산-설정-및-모니터링)
+- [비용 분석 도구 사용](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md)
+- [리소스 최적화](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md)
+- [예산 설정 및 모니터링](/mcp_knowledge_base/cloud_basic/textbook/Day2/database_comparison.md)
 
 #### 6단계: 보안 및 모니터링 기초 (1시간)
 
-- [IAM 권한 관리](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md#고급-권한-관리)
-- [보안 그룹 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md#보안-그룹-설정)
-- [기본 모니터링 설정](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md#모니터링-설정)
+- [IAM 권한 관리](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md)
+- [보안 그룹 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md)
+- [기본 모니터링 설정](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md)
 
 #### 7단계: 종합 프로젝트 (1시간)
 
-- [프로젝트 요구사항 분석](/mcp_knowledge_base/cloud_basic/textbook/Day2/basic-to-master-bridge.md)
-- [서비스 선택 및 설계](/mcp_knowledge_base/cloud_basic/textbook/Day2/basic-to-master-bridge.md#서비스-선택-및-설계)
-- [비용 예상 및 최적화](/mcp_knowledge_base/cloud_basic/textbook/Day2/basic-to-master-bridge.md#비용-예상-및-최적화)
+- [프로젝트 요구사항 분석](/mcp_knowledge_base/cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
+- [서비스 선택 및 설계](/mcp_knowledge_base/cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
+- [비용 예상 및 최적화](/mcp_knowledge_base/cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
 
 ## 💻 실습 가이드
 
@@ -89,16 +89,16 @@
 실습을 위해 다음 도구들을 활용합니다:
 
 1. **AWS 비용 계산기**
-   - [AWS Pricing Calculator](https://calculator.aws/)
-   - [AWS Cost Explorer](https://console.aws.amazon.com/cost-management/home)
+   - [AWS Pricing Calculator](https:///calculator.aws/)
+   - [AWS Cost Explorer](https:///console.aws.amazon.com/cost-management/home)
 
 2. **GCP 비용 계산기**
-   - [GCP Pricing Calculator](https://cloud.google.com/products/calculator)
-   - [GCP Billing Console](https://console.cloud.google.com/billing)
+   - [GCP Pricing Calculator](https:///cloud.google.com/products/calculator)
+   - [GCP Billing Console](https:///console.cloud.google.com/billing)
 
 3. **비교 분석 템플릿**
-   - [서비스 비교 체크리스트](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md#비교-체크리스트)
-   - [비용 분석 템플릿](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md#비용-분석-템플릿)
+   - [서비스 비교 체크리스트](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md)
+   - [비용 분석 템플릿](/mcp_knowledge_base/cloud_basic/textbook/Day2/storage_comparison.md)
 
 ### 📝 실습 체크리스트
 
@@ -195,8 +195,8 @@
 
 [📞 추가 도움](#추가-도움)
 - [종합 문제해결 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md)
-- [비용 최적화 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md#비용-최적화-가이드)
-- [보안 모범 사례](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md#보안-모범-사례)
+- [비용 최적화 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day2/compute_comparison.md)
+- [보안 모범 사례](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md)
 
 ## ➡️ 다음 단계
 
@@ -214,7 +214,7 @@ Cloud Basic을 성공적으로 완료했다면, 다음 단계인 Cloud Master �
 
 [🔗 관련 자료](#관련-자료)
 - Cloud Basic 과정 전체
-- [학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+- [학습 경로](/mcp_knowledge_base/learning-path.md)
 - [전체 커리큘럼](/mcp_knowledge_base/curriculum.md)
 
 ### 🎯 다음 단계 학습 목표
@@ -245,6 +245,6 @@ Cloud Master 과정에서는 다음 내용을 학습하게 됩니다:
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

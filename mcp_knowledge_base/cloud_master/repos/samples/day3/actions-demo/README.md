@@ -69,13 +69,13 @@ KUBE_CONFIG_AWS=base64-encoded-aws-kubeconfig
 KUBE_CONFIG_GCP=base64-encoded-gcp-kubeconfig
 
 # 모니터링
-PROMETHEUS_URL=https://prometheus.example.com
-GRAFANA_URL=https://grafana.example.com
+PROMETHEUS_URL=https:///prometheus.example.com
+GRAFANA_URL=https:///grafana.example.com
 GRAFANA_API_KEY=your-grafana-api-key
 
 # 알림
-SLACK_WEBHOOK_URL=https://hooks.slack.com/services/...
-DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
+SLACK_WEBHOOK_URL=https:///hooks.slack.com/services/...
+DISCORD_WEBHOOK_URL=https:///discord.com/api/webhooks/...
 ```
 
 ## 📁 프로젝트 구조
@@ -294,8 +294,8 @@ jobs:
     
     - name: Send deployment notification
       run: |
-        curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"🚀 Deployment completed successfully! Monitoring is now active."}' \
+        curl -X POST -H 'Content-type: application/json' /
+          --data '{"text":"🚀 Deployment completed successfully! Monitoring is now active."}' /
           ${{ secrets.SLACK_WEBHOOK_URL }}
 ```
 
@@ -351,8 +351,8 @@ jobs:
     
     - name: Send recovery notification
       run: |
-        curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"🔄 Disaster recovery completed: ${{ github.event.inputs.recovery_type }}"}' \
+        curl -X POST -H 'Content-type: application/json' /
+          --data '{"text":"🔄 Disaster recovery completed: ${{ github.event.inputs.recovery_type }}"}' /
           ${{ secrets.SLACK_WEBHOOK_URL }}
 ```
 
@@ -513,7 +513,7 @@ groups:
         "type": "graph",
         "targets": [
           {
-            "expr": "rate(http_requests_total{status=~\"5..\"}[5m])",
+            "expr": "rate(http_requests_total{status=~/"5../"}[5m])",
             "legendFormat": "5xx Errors"
           }
         ]
@@ -545,9 +545,9 @@ groups:
 
 ## 🔗 관련 자료
 
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
-- [Istio 공식 문서](https://istio.io/latest/docs/)
-- [Prometheus 공식 문서](https://prometheus.io/docs/)
-- [Grafana 공식 문서](https://grafana.com/docs/)
-- [k6 성능 테스트](https://k6.io/)
+- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
+- [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
+- [Istio 공식 문서](https:///istio.io/latest/docs/)
+- [Prometheus 공식 문서](https:///prometheus.io/docs/)
+- [Grafana 공식 문서](https:///grafana.com/docs/)
+- [k6 성능 테스트](https:///k6.io/)

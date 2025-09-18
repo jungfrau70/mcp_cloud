@@ -1,13 +1,5 @@
 # Auto Scaling 가이드
 
-<div align="center">
-
-[← 이전: 로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/load-balancing-guide.md) | 
-[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
-[🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | 
-[다음: 통합 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day3/integration-guide.md)
-
-</div>
 
 ---
 
@@ -86,40 +78,40 @@ gcloud config set project $PROJECT_ID
 #### 1단계: Launch Template 생성
 ```bash
 # Launch Template 생성
-LAUNCH_TEMPLATE_ID=$(aws ec2 create-launch-template \
-    --launch-template-name web-server-template \
+LAUNCH_TEMPLATE_ID=$(aws ec2 create-launch-template /
+    --launch-template-name web-server-template /
     --launch-template-data '{
         "ImageId": "ami-0c76973fbe0ee100c",
         "InstanceType": "t2.micro",
         "KeyName": "load-balancer-key",
         "SecurityGroupIds": ["'$EC2_SG'"],
         "UserData": "'$(base64 -w 0 user-data.sh)'"
-    }' \
+    }' /
     --query 'LaunchTemplate.LaunchTemplateId' --output text)
 ```
 
 #### 2단계: Auto Scaling Group 생성
 ```bash
 # Auto Scaling Group 생성
-aws autoscaling create-auto-scaling-group \
-    --auto-scaling-group-name web-server-asg \
-    --launch-template LaunchTemplateId=$LAUNCH_TEMPLATE_ID,Version='$Latest' \
-    --min-size 1 \
-    --max-size 5 \
-    --desired-capacity 2 \
-    --target-group-arns $TARGET_GROUP_ARN \
-    --health-check-type ELB \
-    --health-check-grace-period 300 \
+aws autoscaling create-auto-scaling-group /
+    --auto-scaling-group-name web-server-asg /
+    --launch-template LaunchTemplateId=$LAUNCH_TEMPLATE_ID,Version='$Latest' /
+    --min-size 1 /
+    --max-size 5 /
+    --desired-capacity 2 /
+    --target-group-arns $TARGET_GROUP_ARN /
+    --health-check-type ELB /
+    --health-check-grace-period 300 /
     --vpc-zone-identifier "$SUBNET_1,$SUBNET_2"
 ```
 
 #### 3단계: 스케일링 정책 생성
 ```bash
 # Scale-out 정책 (CPU 사용률 70% 초과 시)
-aws autoscaling put-scaling-policy \
-    --auto-scaling-group-name web-server-asg \
-    --policy-name scale-out-policy \
-    --policy-type TargetTrackingScaling \
+aws autoscaling put-scaling-policy /
+    --auto-scaling-group-name web-server-asg /
+    --policy-name scale-out-policy /
+    --policy-type TargetTrackingScaling /
     --target-tracking-config '{
         "TargetValue": 70.0,
         "PredefinedMetricSpecification": {
@@ -128,10 +120,10 @@ aws autoscaling put-scaling-policy \
     }'
 
 # Scale-in 정책 (CPU 사용률 30% 미만 시)
-aws autoscaling put-scaling-policy \
-    --auto-scaling-group-name web-server-asg \
-    --policy-name scale-in-policy \
-    --policy-type TargetTrackingScaling \
+aws autoscaling put-scaling-policy /
+    --auto-scaling-group-name web-server-asg /
+    --policy-name scale-in-policy /
+    --policy-type TargetTrackingScaling /
     --target-tracking-config '{
         "TargetValue": 30.0,
         "PredefinedMetricType": "ASGAverageCPUUtilization"
@@ -141,16 +133,16 @@ aws autoscaling put-scaling-policy \
 #### 4단계: CloudWatch 알람 설정
 ```bash
 # CPU 사용률 알람 생성
-aws cloudwatch put-metric-alarm \
-    --alarm-name "High CPU Utilization" \
-    --alarm-description "Alarm when CPU exceeds 70%" \
-    --metric-name CPUUtilization \
-    --namespace AWS/EC2 \
-    --statistic Average \
-    --period 300 \
-    --threshold 70.0 \
-    --comparison-operator GreaterThanThreshold \
-    --evaluation-periods 2 \
+aws cloudwatch put-metric-alarm /
+    --alarm-name "High CPU Utilization" /
+    --alarm-description "Alarm when CPU exceeds 70%" /
+    --metric-name CPUUtilization /
+    --namespace AWS/EC2 /
+    --statistic Average /
+    --period 300 /
+    --threshold 70.0 /
+    --comparison-operator GreaterThanThreshold /
+    --evaluation-periods 2 /
     --alarm-actions arn:aws:autoscaling:ap-northeast-2:ACCOUNT_ID:scalingPolicy:POLICY_ID:autoScalingGroupName/web-server-asg:policyName/scale-out-policy
 ```
 
@@ -159,11 +151,11 @@ aws cloudwatch put-metric-alarm \
 #### 1단계: Instance Template 생성
 ```bash
 # Instance Template 생성
-gcloud compute instance-templates create web-server-template \
-    --image-family=ubuntu-2004-lts \
-    --image-project=ubuntu-os-cloud \
-    --machine-type=e2-micro \
-    --tags=web-server \
+gcloud compute instance-templates create web-server-template /
+    --image-family=ubuntu-2004-lts /
+    --image-project=ubuntu-os-cloud /
+    --machine-type=e2-micro /
+    --tags=web-server /
     --metadata=startup-script='#!/bin/bash
 apt-get update
 apt-get install -y nginx stress-ng
@@ -174,34 +166,34 @@ systemctl restart nginx'
 #### 2단계: Managed Instance Group 생성
 ```bash
 # Managed Instance Group 생성
-gcloud compute instance-groups managed create web-server-mig \
-    --template=web-server-template \
-    --size=2 \
+gcloud compute instance-groups managed create web-server-mig /
+    --template=web-server-template /
+    --size=2 /
     --zone=asia-northeast3-a
 ```
 
 #### 3단계: Auto Scaling 설정
 ```bash
 # Auto Scaling 설정
-gcloud compute instance-groups managed set-autoscaling web-server-mig \
-    --zone=asia-northeast3-a \
-    --max-num-replicas=5 \
-    --min-num-replicas=1 \
-    --target-cpu-utilization=0.7 \
+gcloud compute instance-groups managed set-autoscaling web-server-mig /
+    --zone=asia-northeast3-a /
+    --max-num-replicas=5 /
+    --min-num-replicas=1 /
+    --target-cpu-utilization=0.7 /
     --cool-down-period=60
 ```
 
 #### 4단계: Health Check 설정
 ```bash
 # Health Check 생성
-gcloud compute health-checks create http web-health-check \
-    --port=80 \
+gcloud compute health-checks create http web-health-check /
+    --port=80 /
     --request-path=/
 
 # Auto Healing 설정
-gcloud compute instance-groups managed set-autohealing web-server-mig \
-    --zone=asia-northeast3-a \
-    --health-check=web-health-check \
+gcloud compute instance-groups managed set-autohealing web-server-mig /
+    --zone=asia-northeast3-a /
+    --health-check=web-health-check /
     --initial-delay=300
 ```
 
@@ -214,15 +206,15 @@ gcloud compute instance-groups managed set-autohealing web-server-mig \
 #### AWS CloudWatch 커스텀 메트릭
 ```bash
 # 커스텀 메트릭 전송
-aws cloudwatch put-metric-data \
-    --namespace "Custom/WebServer" \
+aws cloudwatch put-metric-data /
+    --namespace "Custom/WebServer" /
     --metric-data MetricName=ActiveConnections,Value=150,Unit=Count
 
 # 커스텀 메트릭 기반 스케일링 정책
-aws autoscaling put-scaling-policy \
-    --auto-scaling-group-name web-server-asg \
-    --policy-name custom-metric-policy \
-    --policy-type TargetTrackingScaling \
+aws autoscaling put-scaling-policy /
+    --auto-scaling-group-name web-server-asg /
+    --policy-name custom-metric-policy /
+    --policy-type TargetTrackingScaling /
     --target-tracking-config '{
         "TargetValue": 100.0,
         "CustomizedMetricSpecification": {
@@ -236,15 +228,15 @@ aws autoscaling put-scaling-policy \
 #### GCP Cloud Monitoring 커스텀 메트릭
 ```bash
 # 커스텀 메트릭 생성
-gcloud monitoring metrics-descriptors create \
-    --display-name="Active Connections" \
-    --type="custom.googleapis.com/active_connections" \
-    --metric-kind="GAUGE" \
+gcloud monitoring metrics-descriptors create /
+    --display-name="Active Connections" /
+    --type="custom.googleapis.com/active_connections" /
+    --metric-kind="GAUGE" /
     --value-type="INT64"
 
 # 커스텀 메트릭 기반 스케일링
-gcloud compute instance-groups managed set-autoscaling web-server-mig \
-    --zone=asia-northeast3-a \
+gcloud compute instance-groups managed set-autoscaling web-server-mig /
+    --zone=asia-northeast3-a /
     --custom-metric-utilization metric=custom.googleapis.com/active_connections,utilization-target=0.8,utilization-target-type=GAUGE
 ```
 
@@ -252,10 +244,10 @@ gcloud compute instance-groups managed set-autoscaling web-server-mig \
 
 ```bash
 # 예측 스케일링 활성화
-aws autoscaling put-scaling-policy \
-    --auto-scaling-group-name web-server-asg \
-    --policy-name predictive-scaling-policy \
-    --policy-type PredictiveScaling \
+aws autoscaling put-scaling-policy /
+    --auto-scaling-group-name web-server-asg /
+    --policy-name predictive-scaling-policy /
+    --policy-type PredictiveScaling /
     --predictive-scaling-configuration '{
         "MetricSpecifications": [{
             "TargetValue": 70.0,
@@ -306,13 +298,13 @@ watch -n 5 'aws autoscaling describe-auto-scaling-groups --auto-scaling-group-na
 - **해결방법**:
   ```bash
   # CloudWatch 메트릭 확인
-  aws cloudwatch get-metric-statistics \
-      --namespace AWS/EC2 \
-      --metric-name CPUUtilization \
-      --dimensions Name=AutoScalingGroupName,Value=web-server-asg \
-      --start-time 2023-01-01T00:00:00Z \
-      --end-time 2023-01-01T23:59:59Z \
-      --period 300 \
+  aws cloudwatch get-metric-statistics /
+      --namespace AWS/EC2 /
+      --metric-name CPUUtilization /
+      --dimensions Name=AutoScalingGroupName,Value=web-server-asg /
+      --start-time 2023-01-01T00:00:00Z /
+      --end-time 2023-01-01T23:59:59Z /
+      --period 300 /
       --statistics Average
   ```
 
@@ -321,8 +313,8 @@ watch -n 5 'aws autoscaling describe-auto-scaling-groups --auto-scaling-group-na
 - **해결방법**:
   ```bash
   # Health Check 상태 확인
-  aws autoscaling describe-auto-scaling-groups \
-      --auto-scaling-group-names web-server-asg \
+  aws autoscaling describe-auto-scaling-groups /
+      --auto-scaling-group-names web-server-asg /
       --query "AutoScalingGroups[0].Instances[].{InstanceId:InstanceId,HealthStatus:HealthStatus,LifecycleState:LifecycleState}"
   ```
 
@@ -331,10 +323,10 @@ watch -n 5 'aws autoscaling describe-auto-scaling-groups --auto-scaling-group-na
 - **해결방법**:
   ```bash
   # 스케일링 정책 수정
-  aws autoscaling put-scaling-policy \
-      --auto-scaling-group-name web-server-asg \
-      --policy-name scale-out-policy \
-      --policy-type TargetTrackingScaling \
+  aws autoscaling put-scaling-policy /
+      --auto-scaling-group-name web-server-asg /
+      --policy-name scale-out-policy /
+      --policy-type TargetTrackingScaling /
       --target-tracking-config '{
           "TargetValue": 70.0,
           "PredefinedMetricSpecification": {
@@ -350,24 +342,23 @@ watch -n 5 'aws autoscaling describe-auto-scaling-groups --auto-scaling-group-na
 ## 📚 참고 자료
 
 ### AWS 공식 문서
-- [Auto Scaling Group 가이드](https://docs.aws.amazon.com/autoscaling/ec2/userguide/)
-- [Target Tracking Scaling 정책](https://docs.aws.amazon.com/autoscaling/ec2/userguide/target-tracking-scaling-policy.html)
+- [Auto Scaling Group 가이드](https:///docs.aws.amazon.com/autoscaling/ec2/userguide/)
+- [Target Tracking Scaling 정책](https:///docs.aws.amazon.com/autoscaling/ec2/userguide/target-tracking-scaling-policy.html)
 
 ### GCP 공식 문서
-- [Managed Instance Groups 가이드](https://cloud.google.com/compute/docs/instance-groups/)
-- [Auto Scaling 가이드](https://cloud.google.com/compute/docs/autoscaler/)
+- [Managed Instance Groups 가이드](https:///cloud.google.com/compute/docs/instance-groups/)
+- [Auto Scaling 가이드](https:///cloud.google.com/compute/docs/autoscaler/)
 
 ### 추가 학습 자료
-- [Auto Scaling 모범 사례](https://aws.amazon.com/autoscaling/faqs/)
-- [비용 최적화를 위한 스케일링 전략](https://cloud.google.com/compute/docs/autoscaler/optimizing-costs)
+- [Auto Scaling 모범 사례](https:///aws.amazon.com/autoscaling/faqs/)
+- [비용 최적화를 위한 스케일링 전략](https:///cloud.google.com/compute/docs/autoscaler/optimizing-costs)
 
 ---
 
+
+
 <div align="center">
 
-[← 이전: 로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/load-balancing-guide.md) | 
-[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
-[🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | 
-[다음: 통합 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day3/integration-guide.md)
+[← 이전: 로드 밸런싱 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/load-balancing-guide.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
 
 </div>

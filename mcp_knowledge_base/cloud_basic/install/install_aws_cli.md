@@ -1,10 +1,5 @@
 # AWS CLI 설치 가이드
 
-<div align="center">
-
-[← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 AWS CLI(Command Line Interface)는 AWS 서비스와 상호작용하기 위한 통합 도구입니다. 이 가이드는 다양한 운영체제에서 AWS CLI를 설치하는 방법을 설명합니다.
 
@@ -23,13 +18,13 @@ AWS CLI(Command Line Interface)는 AWS 서비스와 상호작용하기 위한 �
 1. **AWS CLI MSI 설치 프로그램 다운로드**
    ```bash
    # 최신 버전 다운로드 (64비트)
-   https://awscli.amazonaws.com/AWSCLIV2.msi
+   https:///awscli.amazonaws.com/AWSCLIV2.msi
    ```
 
 2. **설치 실행**
    - 다운로드한 MSI 파일을 더블클릭하여 실행
    - 설치 마법사의 지시를 따름
-   - 기본 설치 경로: `C:\Program Files\Amazon\AWSCLIV2\`
+   - 기본 설치 경로: `C:/Program Files/Amazon/AWSCLIV2/`
 
 3. **PATH 확인**
    - 설치 후 자동으로 PATH에 추가됨
@@ -92,7 +87,7 @@ choco install awscli
 ### 방법 3: 공식 설치 프로그램
 
 ```bash
-curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+curl "https:///awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
 sudo installer -pkg AWSCLIV2.pkg -target /
 ```
 
@@ -173,7 +168,7 @@ aws configure
 
 ### 2. 설정 파일 위치
 
-- **Windows**: `%USERPROFILE%\.aws\config`, `%USERPROFILE%\.aws\credentials`
+- **Windows**: `%USERPROFILE%/.aws/config`, `%USERPROFILE%/.aws/credentials`
 - **macOS/Linux**: `~/.aws/config`, `~/.aws/credentials`
 
 ### 3. 프로필 설정
@@ -229,16 +224,16 @@ export AWS_PROFILE=myprofile
 aws s3 ls --debug
 
 # 로그 파일 확인
-# Windows: %USERPROFILE%\.aws\logs\
+# Windows: %USERPROFILE%/.aws/logs/
 # macOS/Linux: ~/.aws/logs/
 ```
 
 ## 추가 리소스
 
-- [AWS CLI 공식 문서](https://docs.aws.amazon.com/cli/)
-- [AWS CLI 명령어 참조](https://docs.aws.amazon.com/cli/latest/reference/)
-- [AWS CLI 구성 파일](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
-- [AWS CLI 환경 변수](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html)
+- [AWS CLI 공식 문서](https:///docs.aws.amazon.com/cli/)
+- [AWS CLI 명령어 참조](https:///docs.aws.amazon.com/cli/latest/reference/)
+- [AWS CLI 구성 파일](https:///docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
+- [AWS CLI 환경 변수](https:///docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html)
 
 ## 버전 관리
 
@@ -269,20 +264,17 @@ aws sts get-session-token --serial-number arn:aws:iam::123456789012:mfa/user --t
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[← 이전: Cloud Basic 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

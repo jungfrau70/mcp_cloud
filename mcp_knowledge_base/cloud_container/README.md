@@ -98,18 +98,18 @@ Kubernetes, 고가용성 아키텍처, 고급 모니터링 등
 ### 2️⃣ 환경 설정
 ```bash
 # kubectl 설치
-# https://kubernetes.io/docs/tasks/tools/install-kubectl/
+# https:///kubernetes.io/docs/tasks/tools/install-kubectl/
 
 # Helm 설치
-# https://helm.sh/docs/intro/install/
+# https:///helm.sh/docs/intro/install/
 
 # GCP CLI 설치 (이미 설치되어 있다면 생략)
-# https://cloud.google.com/sdk/docs/install
+# https:///cloud.google.com/sdk/docs/install
 ```
 
 ### 3️⃣ 첫 번째 실습 시작
 1. Day 1 실습 가이드로 이동
-2. [Kubernetes 기초](/mcp_knowledge_base/cloud_container/textbook/Day1/kubernetes-basics.md) 따라하기
+2. [Kubernetes 기초](/mcp_knowledge_base/cloud_container/textbook/Day1/practice/kubernetes-basics.md) 따라하기
 3. [GKE 클러스터 생성](/mcp_knowledge_base/cloud_container/textbook/Day1/container-orchestration-guide.md) 따라하기
 
 ## 📚 학습 자료
@@ -119,16 +119,16 @@ Kubernetes, 고가용성 아키텍처, 고급 모니터링 등
 - Day 2: 고가용성 및 확장성 아키텍처
 
 ### 🔧 실습 가이드
-- [Kubernetes 기초](/mcp_knowledge_base/cloud_container/textbook/Day1/kubernetes-basics.md)
+- [Kubernetes 기초](/mcp_knowledge_base/cloud_container/textbook/Day1/practice/kubernetes-basics.md)
 - [컨테이너 오케스트레이션 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/container-orchestration-guide.md)
 - [보안 정책 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/security-policies-guide.md)
 - [고가용성 아키텍처](/mcp_knowledge_base/cloud_container/textbook/Day2/high-availability-architecture.md)
 - [고급 모니터링](/mcp_knowledge_base/cloud_container/textbook/Day2/monitoring-setup.md)
 
 ### 🛠️ 설치 가이드
-- [kubectl 설치](/mcp_knowledge_base/cloud_container/install/install_kubectl.md)
-- [Helm 설치](/mcp_knowledge_base/cloud_container/install/install_helm.md)
-- [GKE 클러스터 설정](/mcp_knowledge_base/cloud_container/install/gke-setup.md)
+- [kubectl 설치](/mcp_knowledge_base/cloud_container/automation_tests/get_helm.sh)
+- [Helm 설치](/mcp_knowledge_base/cloud_container/automation_tests/get_helm.sh)
+- [GKE 클러스터 설정](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_glcoud_cli.md)
 
 ## ✅ 학습 체크리스트
 
@@ -164,7 +164,7 @@ Kubernetes, 고가용성 아키텍처, 고급 모니터링 등
 
 ### 📚 전체 커리큘럼
 - [전체 커리큘럼 보기](/mcp_knowledge_base/curriculum.md)
-- [학습 경로 안내](/mcp_knowledge_base/cloud_container/learning-path.md)
+- [학습 경로 안내](/mcp_knowledge_base/learning-path.md)
 
 ### 🚀 이전 단계
 - Cloud Basic 과정 - 클라우드 기초
@@ -182,7 +182,7 @@ Kubernetes, 고가용성 아키텍처, 고급 모니터링 등
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 ## 🎉 Cloud Container 과정을 시작하세요!
 
 🚀 Day 1 실습 시작하기 |
@@ -195,13 +195,10 @@ Kubernetes, 고가용성 아키텍처, 고급 모니터링 등
 
 ## 🧭 네비게이션
 
+
+
 <div align="center">
 
-[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | 
-[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
-[🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-📅 Day1 시작하기 |
-📅 Day2 시작하기
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

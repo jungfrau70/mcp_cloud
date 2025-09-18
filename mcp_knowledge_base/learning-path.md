@@ -1,8 +1,3 @@
-<div align="center">
-
-[← 이전: Cloud Master 1일차 메인](../README.md) | [📚 전체 커리큘럼](/curriculum.md) | [🏠 학습 경로로 돌아가기](/index.md) | [← 이전: Cloud Basic 2일차](../../../cloud_basic/textbook/Day2/README) | [다음: GitHub Actions 가이드 →](./github-actions-guide)
-
-</div>
 
 # Docker 고급 실습 가이드
 
@@ -91,7 +86,7 @@ docker history my-app:latest
 docker inspect my-app:latest
 
 # 이미지 크기 비교
-docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}"
+docker images --format "table {{.Repository}}/t{{.Tag}}/t{{.Size}}"
 ```
 
 </details>
@@ -161,7 +156,7 @@ EXPOSE 3000
 USER nextjs
 
 # 헬스체크
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 /
   CMD curl -f http://localhost:3000/health || exit 1
 
 # 애플리케이션 실행
@@ -186,10 +181,10 @@ ARG NODE_ENV=production
 ENV NODE_ENV=$NODE_ENV
 
 # 조건부 설치
-RUN if [ "$NODE_ENV" = "development" ]; then \
-        npm install --include=dev; \
-    else \
-        npm ci --only=production; \
+RUN if [ "$NODE_ENV" = "development" ]; then /
+        npm install --include=dev; /
+    else /
+        npm ci --only=production; /
     fi
 ```
 
@@ -207,7 +202,7 @@ RUN apk add --no-cache python3 make g++
 # 보안 스캔 및 업데이트
 FROM node:18-alpine AS security-scan
 RUN apk add --no-cache curl
-RUN curl -sSfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+RUN curl -sSfL https:///raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 RUN trivy fs --exit-code 1 --severity HIGH,CRITICAL /
 ```
 
@@ -573,7 +568,7 @@ jspm_packages/
 # dotenv environment variables file
 .env
 
-# parcel-bundler cache (https://parceljs.org/)
+# parcel-bundler cache (https:///parceljs.org/)
 .cache
 .parcel-cache
 
@@ -743,20 +738,20 @@ docker-compose port service-name port
 <summary>📖 추가 학습 자료</summary>
 
 ### 공식 문서
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Docker Compose 공식 문서](https://docs.docker.com/compose/)
-- [Dockerfile 참조](https://docs.docker.com/engine/reference/builder/)
-- [Docker Best Practices](https://docs.docker.com/develop/dev-best-practices/)
+- [Docker 공식 문서](https:///docs.docker.com/)
+- [Docker Compose 공식 문서](https:///docs.docker.com/compose/)
+- [Dockerfile 참조](https:///docs.docker.com/engine/reference/builder/)
+- [Docker Best Practices](https:///docs.docker.com/develop/dev-best-practices/)
 
 ### 유용한 리소스
-- [Docker Hub](https://hub.docker.com/)
-- [Docker 샘플 프로젝트](https://github.com/docker/awesome-compose)
-- [Docker 보안 가이드](https://docs.docker.com/engine/security/)
-- [Docker 성능 최적화](https://docs.docker.com/config/containers/resource_constraints/)
+- [Docker Hub](https:///hub.docker.com/)
+- [Docker 샘플 프로젝트](https:///github.com/docker/awesome-compose)
+- [Docker 보안 가이드](https:///docs.docker.com/engine/security/)
+- [Docker 성능 최적화](https:///docs.docker.com/config/containers/resource_constraints/)
 
 ### 관련 프로젝트
-- [Docker Compose 예제](https://docs.docker.com/compose/gettingstarted/)
-- [멀티스테이지 빌드 예제](https://docs.docker.com/develop/dev-best-practices/dockerfile_best-practices/#use-multi-stage-builds)
+- [Docker Compose 예제](https:///docs.docker.com/compose/gettingstarted/)
+- [멀티스테이지 빌드 예제](https:///docs.docker.com/develop/dev-best-practices/dockerfile_best-practices/#use-multi-stage-builds)
 
 </details>
 
@@ -800,9 +795,9 @@ docker-compose port service-name port
 
 ### 💡 추가 학습 자료
 
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Docker Best Practices](https://docs.docker.com/develop/dev-best-practices/)
-- [GitHub Actions 고급 실습](./github-actions-advanced-guide)
+- [Docker 공식 문서](https:///docs.docker.com/)
+- [Docker Best Practices](https:///docs.docker.com/develop/dev-best-practices/)
+- [GitHub Actions 고급 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-guide.md)
 
 ---
 
@@ -811,3 +806,10 @@ docker-compose port service-name port
 ---
 
 
+
+
+<div align="center">
+
+[← 이전: Cloud Master 1일차 메인](/mcp_knowledge_base/index.md) | [← 이전: Cloud Basic 2일차](/mcp_knowledge_base/README.md) | [다음: GitHub Actions 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-guide.md)
+
+</div>

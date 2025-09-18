@@ -5,9 +5,9 @@
 
 [📚 이론 학습](#-)
 
-[🛠️ 실습 학습](#-)
+[🛠️ 실습 학습](#실습-학습)
 
-[📚 참고 자료](#-)
+[📚 참고 자료](#참고-자료)
 
 [📚 문제 해결 및 참고 자료](#-)
 
@@ -199,23 +199,23 @@ open http://localhost:3000
 
 ```bash
 # ALB 생성
-aws elbv2 create-load-balancer \
-    --name my-load-balancer \
-    --subnets subnet-12345 subnet-67890 \
+aws elbv2 create-load-balancer /
+    --name my-load-balancer /
+    --subnets subnet-12345 subnet-67890 /
     --security-groups sg-12345
 
 # 타겟 그룹 생성
-aws elbv2 create-target-group \
-    --name my-targets \
-    --protocol HTTP \
-    --port 80 \
+aws elbv2 create-target-group /
+    --name my-targets /
+    --protocol HTTP /
+    --port 80 /
     --vpc-id vpc-12345
 
 # 리스너 생성
-aws elbv2 create-listener \
-    --load-balancer-arn arn:aws:elasticloadbalancing:region:account:loadbalancer/app/my-load-balancer/1234567890123456 \
-    --protocol HTTP \
-    --port 80 \
+aws elbv2 create-listener /
+    --load-balancer-arn arn:aws:elasticloadbalancing:region:account:loadbalancer/app/my-load-balancer/1234567890123456 /
+    --protocol HTTP /
+    --port 80 /
     --default-actions Type=forward,TargetGroupArn=arn:aws:elasticloadbalancing:region:account:targetgroup/my-targets/1234567890123456
 ```
 
@@ -223,23 +223,23 @@ aws elbv2 create-listener \
 
 ```bash
 # 백엔드 서비스 생성
-gcloud compute backend-services create my-backend-service \
-    --global \
-    --protocol HTTP \
+gcloud compute backend-services create my-backend-service /
+    --global /
+    --protocol HTTP /
     --health-checks my-health-check
 
 # URL 맵 생성
-gcloud compute url-maps create my-url-map \
+gcloud compute url-maps create my-url-map /
     --default-service my-backend-service
 
 # 타겟 프록시 생성
-gcloud compute target-http-proxies create my-target-proxy \
+gcloud compute target-http-proxies create my-target-proxy /
     --url-map my-url-map
 
 # 글로벌 포워딩 규칙 생성
-gcloud compute forwarding-rules create my-forwarding-rule \
-    --global \
-    --target-http-proxy my-target-proxy \
+gcloud compute forwarding-rules create my-forwarding-rule /
+    --global /
+    --target-http-proxy my-target-proxy /
     --ports 80
 ```
 
@@ -252,21 +252,21 @@ gcloud compute forwarding-rules create my-forwarding-rule \
 
 ```bash
 # Launch Template 생성
-aws ec2 create-launch-template \
-    --launch-template-name my-template \
+aws ec2 create-launch-template /
+    --launch-template-name my-template /
     --launch-template-data '{
         "ImageId": "ami-12345",
         "InstanceType": "t2.micro",
-        "UserData": "#!/bin/bash\necho Hello World"
+        "UserData": "#!/bin/bash/necho Hello World"
     }'
 
 # Auto Scaling Group 생성
-aws autoscaling create-auto-scaling-group \
-    --auto-scaling-group-name my-asg \
-    --launch-template LaunchTemplateName=my-template \
-    --min-size 1 \
-    --max-size 10 \
-    --desired-capacity 2 \
+aws autoscaling create-auto-scaling-group /
+    --auto-scaling-group-name my-asg /
+    --launch-template LaunchTemplateName=my-template /
+    --min-size 1 /
+    --max-size 10 /
+    --desired-capacity 2 /
     --vpc-zone-identifier "subnet-12345,subnet-67890"
 ```
 
@@ -274,22 +274,22 @@ aws autoscaling create-auto-scaling-group \
 
 ```bash
 # 인스턴스 템플릿 생성
-gcloud compute instance-templates create my-template \
-    --machine-type e2-micro \
-    --image-family debian-9 \
+gcloud compute instance-templates create my-template /
+    --machine-type e2-micro /
+    --image-family debian-9 /
     --image-project debian-cloud
 
 # Managed Instance Group 생성
-gcloud compute instance-groups managed create my-mig \
-    --template my-template \
-    --size 2 \
+gcloud compute instance-groups managed create my-mig /
+    --template my-template /
+    --size 2 /
     --zone us-central1-a
 
 # Auto Scaling 정책 설정
-gcloud compute instance-groups managed set-autoscaling my-mig \
-    --max-num-replicas 10 \
-    --min-num-replicas 1 \
-    --target-cpu-utilization 0.6 \
+gcloud compute instance-groups managed set-autoscaling my-mig /
+    --max-num-replicas 10 /
+    --min-num-replicas 1 /
+    --target-cpu-utilization 0.6 /
     --zone us-central1-a
 ```
 

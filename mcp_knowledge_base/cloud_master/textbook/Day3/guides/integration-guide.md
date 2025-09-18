@@ -1,13 +1,5 @@
 # 통합 가이드 - 로드 밸런서 + 오토스케일링 연동
 
-<div align="center">
-
-[← 이전: Auto Scaling 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/auto-scaling-guide.md) | 
-[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
-[🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | 
-[다음: 장애 복구 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day3/disaster-recovery-guide.md)
-
-</div>
 
 ---
 
@@ -166,8 +158,8 @@ aws ec2 create-key-pair --key-name $PROJECT_NAME-key --query 'KeyMaterial' --out
 chmod 400 $PROJECT_NAME-key.pem
 
 # Launch Template 생성
-LAUNCH_TEMPLATE_ID=$(aws ec2 create-launch-template \
-    --launch-template-name $PROJECT_NAME-template \
+LAUNCH_TEMPLATE_ID=$(aws ec2 create-launch-template /
+    --launch-template-name $PROJECT_NAME-template /
     --launch-template-data '{
         "ImageId": "ami-0c76973fbe0ee100c",
         "InstanceType": "t2.micro",
@@ -178,30 +170,30 @@ LAUNCH_TEMPLATE_ID=$(aws ec2 create-launch-template \
             "ResourceType": "instance",
             "Tags": [{"Key": "Name", "Value": "'$PROJECT_NAME'-instance"}]
         }]
-    }' \
+    }' /
     --query 'LaunchTemplate.LaunchTemplateId' --output text)
 ```
 
 #### 4단계: Target Group 및 ALB 생성
 ```bash
 # Target Group 생성
-TARGET_GROUP_ARN=$(aws elbv2 create-target-group \
-    --name $PROJECT_NAME-targets \
-    --protocol HTTP \
-    --port 80 \
-    --vpc-id $VPC_ID \
-    --health-check-path / \
-    --health-check-interval-seconds 30 \
-    --health-check-timeout-seconds 5 \
-    --healthy-threshold-count 2 \
-    --unhealthy-threshold-count 3 \
+TARGET_GROUP_ARN=$(aws elbv2 create-target-group /
+    --name $PROJECT_NAME-targets /
+    --protocol HTTP /
+    --port 80 /
+    --vpc-id $VPC_ID /
+    --health-check-path / /
+    --health-check-interval-seconds 30 /
+    --health-check-timeout-seconds 5 /
+    --healthy-threshold-count 2 /
+    --unhealthy-threshold-count 3 /
     --query 'TargetGroups[0].TargetGroupArn' --output text)
 
 # ALB 생성
-ALB_ARN=$(aws elbv2 create-load-balancer \
-    --name $PROJECT_NAME-alb \
-    --subnets $SUBNET_1 $SUBNET_2 \
-    --security-groups $ALB_SG \
+ALB_ARN=$(aws elbv2 create-load-balancer /
+    --name $PROJECT_NAME-alb /
+    --subnets $SUBNET_1 $SUBNET_2 /
+    --security-groups $ALB_SG /
     --query 'LoadBalancers[0].LoadBalancerArn' --output text)
 
 # ALB DNS 이름 확인
@@ -209,36 +201,36 @@ ALB_DNS=$(aws elbv2 describe-load-balancers --load-balancer-arns $ALB_ARN --quer
 echo "ALB DNS: http://$ALB_DNS"
 
 # 리스너 생성
-aws elbv2 create-listener \
-    --load-balancer-arn $ALB_ARN \
-    --protocol HTTP \
-    --port 80 \
+aws elbv2 create-listener /
+    --load-balancer-arn $ALB_ARN /
+    --protocol HTTP /
+    --port 80 /
     --default-actions Type=forward,TargetGroupArn=$TARGET_GROUP_ARN
 ```
 
 #### 5단계: Auto Scaling Group 생성
 ```bash
 # Auto Scaling Group 생성
-aws autoscaling create-auto-scaling-group \
-    --auto-scaling-group-name $PROJECT_NAME-asg \
-    --launch-template LaunchTemplateId=$LAUNCH_TEMPLATE_ID,Version='$Latest' \
-    --min-size 2 \
-    --max-size 10 \
-    --desired-capacity 2 \
-    --target-group-arns $TARGET_GROUP_ARN \
-    --health-check-type ELB \
-    --health-check-grace-period 300 \
-    --vpc-zone-identifier "$SUBNET_1,$SUBNET_2" \
+aws autoscaling create-auto-scaling-group /
+    --auto-scaling-group-name $PROJECT_NAME-asg /
+    --launch-template LaunchTemplateId=$LAUNCH_TEMPLATE_ID,Version='$Latest' /
+    --min-size 2 /
+    --max-size 10 /
+    --desired-capacity 2 /
+    --target-group-arns $TARGET_GROUP_ARN /
+    --health-check-type ELB /
+    --health-check-grace-period 300 /
+    --vpc-zone-identifier "$SUBNET_1,$SUBNET_2" /
     --tags ResourceId=$PROJECT_NAME-asg,ResourceType=auto-scaling-group,Key=Name,Value=$PROJECT_NAME-asg
 ```
 
 #### 6단계: 스케일링 정책 설정
 ```bash
 # Target Tracking Scaling 정책 생성
-aws autoscaling put-scaling-policy \
-    --auto-scaling-group-name $PROJECT_NAME-asg \
-    --policy-name $PROJECT_NAME-target-tracking \
-    --policy-type TargetTrackingScaling \
+aws autoscaling put-scaling-policy /
+    --auto-scaling-group-name $PROJECT_NAME-asg /
+    --policy-name $PROJECT_NAME-target-tracking /
+    --policy-type TargetTrackingScaling /
     --target-tracking-config '{
         "TargetValue": 70.0,
         "PredefinedMetricSpecification": {
@@ -254,11 +246,11 @@ aws autoscaling put-scaling-policy \
 #### 1단계: Instance Template 생성
 ```bash
 # Instance Template 생성
-gcloud compute instance-templates create $PROJECT_NAME-template \
-    --image-family=ubuntu-2004-lts \
-    --image-project=ubuntu-os-cloud \
-    --machine-type=e2-micro \
-    --tags=web-server \
+gcloud compute instance-templates create $PROJECT_NAME-template /
+    --image-family=ubuntu-2004-lts /
+    --image-project=ubuntu-os-cloud /
+    --machine-type=e2-micro /
+    --tags=web-server /
     --metadata=startup-script='#!/bin/bash
 apt-get update
 apt-get install -y nginx stress-ng htop
@@ -296,55 +288,55 @@ systemctl enable nginx'
 #### 2단계: Managed Instance Group 생성
 ```bash
 # Managed Instance Group 생성
-gcloud compute instance-groups managed create $PROJECT_NAME-mig \
-    --template=$PROJECT_NAME-template \
-    --size=2 \
+gcloud compute instance-groups managed create $PROJECT_NAME-mig /
+    --template=$PROJECT_NAME-template /
+    --size=2 /
     --zone=$ZONE
 
 # Named Ports 설정
-gcloud compute instance-groups managed set-named-ports $PROJECT_NAME-mig \
-    --named-ports=http:80 \
+gcloud compute instance-groups managed set-named-ports $PROJECT_NAME-mig /
+    --named-ports=http:80 /
     --zone=$ZONE
 ```
 
 #### 3단계: Health Check 및 Backend Service 생성
 ```bash
 # Health Check 생성
-gcloud compute health-checks create http $PROJECT_NAME-health-check \
-    --port=80 \
-    --request-path=/ \
-    --check-interval=30s \
-    --timeout=5s \
-    --healthy-threshold=2 \
+gcloud compute health-checks create http $PROJECT_NAME-health-check /
+    --port=80 /
+    --request-path=/ /
+    --check-interval=30s /
+    --timeout=5s /
+    --healthy-threshold=2 /
     --unhealthy-threshold=3
 
 # Backend Service 생성
-gcloud compute backend-services create $PROJECT_NAME-backend \
-    --protocol=HTTP \
-    --health-checks=$PROJECT_NAME-health-check \
+gcloud compute backend-services create $PROJECT_NAME-backend /
+    --protocol=HTTP /
+    --health-checks=$PROJECT_NAME-health-check /
     --global
 
 # Backend Service에 MIG 추가
-gcloud compute backend-services add-backend $PROJECT_NAME-backend \
-    --instance-group=$PROJECT_NAME-mig \
-    --instance-group-zone=$ZONE \
+gcloud compute backend-services add-backend $PROJECT_NAME-backend /
+    --instance-group=$PROJECT_NAME-mig /
+    --instance-group-zone=$ZONE /
     --global
 ```
 
 #### 4단계: URL Map 및 Load Balancer 생성
 ```bash
 # URL Map 생성
-gcloud compute url-maps create $PROJECT_NAME-map \
+gcloud compute url-maps create $PROJECT_NAME-map /
     --default-service=$PROJECT_NAME-backend
 
 # Target HTTP Proxy 생성
-gcloud compute target-http-proxies create $PROJECT_NAME-proxy \
+gcloud compute target-http-proxies create $PROJECT_NAME-proxy /
     --url-map=$PROJECT_NAME-map
 
 # Forwarding Rule 생성
-gcloud compute forwarding-rules create $PROJECT_NAME-rule \
-    --global \
-    --target-http-proxy=$PROJECT_NAME-proxy \
+gcloud compute forwarding-rules create $PROJECT_NAME-rule /
+    --global /
+    --target-http-proxy=$PROJECT_NAME-proxy /
     --ports=80
 
 # Load Balancer IP 확인
@@ -355,17 +347,17 @@ echo "Load Balancer IP: http://$LB_IP"
 #### 5단계: Auto Scaling 설정
 ```bash
 # Auto Scaling 설정
-gcloud compute instance-groups managed set-autoscaling $PROJECT_NAME-mig \
-    --zone=$ZONE \
-    --max-num-replicas=10 \
-    --min-num-replicas=2 \
-    --target-cpu-utilization=0.7 \
+gcloud compute instance-groups managed set-autoscaling $PROJECT_NAME-mig /
+    --zone=$ZONE /
+    --max-num-replicas=10 /
+    --min-num-replicas=2 /
+    --target-cpu-utilization=0.7 /
     --cool-down-period=60
 
 # Auto Healing 설정
-gcloud compute instance-groups managed set-autohealing $PROJECT_NAME-mig \
-    --zone=$ZONE \
-    --health-check=$PROJECT_NAME-health-check \
+gcloud compute instance-groups managed set-autohealing $PROJECT_NAME-mig /
+    --zone=$ZONE /
+    --health-check=$PROJECT_NAME-health-check /
     --initial-delay=300
 ```
 
@@ -388,13 +380,13 @@ done &
 ### 모니터링 대시보드
 ```bash
 # AWS CloudWatch 메트릭 확인
-aws cloudwatch get-metric-statistics \
-    --namespace AWS/ApplicationELB \
-    --metric-name RequestCount \
-    --dimensions Name=LoadBalancer,Value=$ALB_ARN \
-    --start-time $(date -u -d '1 hour ago' +%Y-%m-%dT%H:%M:%S) \
-    --end-time $(date -u +%Y-%m-%dT%H:%M:%S) \
-    --period 300 \
+aws cloudwatch get-metric-statistics /
+    --namespace AWS/ApplicationELB /
+    --metric-name RequestCount /
+    --dimensions Name=LoadBalancer,Value=$ALB_ARN /
+    --start-time $(date -u -d '1 hour ago' +%Y-%m-%dT%H:%M:%S) /
+    --end-time $(date -u +%Y-%m-%dT%H:%M:%S) /
+    --period 300 /
     --statistics Sum
 
 # GCP Cloud Monitoring 메트릭 확인
@@ -416,9 +408,9 @@ if command -v aws &> /dev/null; then
     echo "--- AWS Status ---"
     echo "ALB DNS: $ALB_DNS"
     echo "ASG Instances:"
-    aws autoscaling describe-auto-scaling-groups \
-        --auto-scaling-group-names $PROJECT_NAME-asg \
-        --query "AutoScalingGroups[0].Instances[].{InstanceId:InstanceId,LifecycleState:LifecycleState,HealthStatus:HealthStatus}" \
+    aws autoscaling describe-auto-scaling-groups /
+        --auto-scaling-group-names $PROJECT_NAME-asg /
+        --query "AutoScalingGroups[0].Instances[].{InstanceId:InstanceId,LifecycleState:LifecycleState,HealthStatus:HealthStatus}" /
         --output table
     echo ""
 fi
@@ -428,8 +420,8 @@ if command -v gcloud &> /dev/null; then
     echo "--- GCP Status ---"
     echo "Load Balancer IP: $LB_IP"
     echo "MIG Instances:"
-    gcloud compute instance-groups managed list-instances $PROJECT_NAME-mig \
-        --zone=$ZONE \
+    gcloud compute instance-groups managed list-instances $PROJECT_NAME-mig /
+        --zone=$ZONE /
         --format="table(instance,status,healthState)"
     echo ""
 fi
@@ -483,10 +475,10 @@ chmod +x check-status.sh
 - **해결방법**:
   ```bash
   # 스케일링 정책 수정
-  aws autoscaling put-scaling-policy \
-      --auto-scaling-group-name $PROJECT_NAME-asg \
-      --policy-name $PROJECT_NAME-target-tracking \
-      --policy-type TargetTrackingScaling \
+  aws autoscaling put-scaling-policy /
+      --auto-scaling-group-name $PROJECT_NAME-asg /
+      --policy-name $PROJECT_NAME-target-tracking /
+      --policy-type TargetTrackingScaling /
       --target-tracking-config '{
           "TargetValue": 70.0,
           "PredefinedMetricSpecification": {
@@ -502,24 +494,23 @@ chmod +x check-status.sh
 ## 📚 참고 자료
 
 ### AWS 통합 아키텍처
-- [ELB + Auto Scaling 가이드](https://docs.aws.amazon.com/autoscaling/ec2/userguide/autoscaling-load-balancer.html)
-- [Target Tracking Scaling 정책](https://docs.aws.amazon.com/autoscaling/ec2/userguide/target-tracking-scaling-policy.html)
+- [ELB + Auto Scaling 가이드](https:///docs.aws.amazon.com/autoscaling/ec2/userguide/autoscaling-load-balancer.html)
+- [Target Tracking Scaling 정책](https:///docs.aws.amazon.com/autoscaling/ec2/userguide/target-tracking-scaling-policy.html)
 
 ### GCP 통합 아키텍처
-- [Cloud Load Balancing + MIG 가이드](https://cloud.google.com/compute/docs/load-balancing/http/backend-service)
-- [Auto Scaling 가이드](https://cloud.google.com/compute/docs/autoscaler/)
+- [Cloud Load Balancing + MIG 가이드](https:///cloud.google.com/compute/docs/load-balancing/http/backend-service)
+- [Auto Scaling 가이드](https:///cloud.google.com/compute/docs/autoscaler/)
 
 ### 모니터링 및 최적화
-- [CloudWatch 메트릭 가이드](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html)
-- [Cloud Monitoring 가이드](https://cloud.google.com/monitoring/docs)
+- [CloudWatch 메트릭 가이드](https:///docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html)
+- [Cloud Monitoring 가이드](https:///cloud.google.com/monitoring/docs)
 
 ---
 
+
+
 <div align="center">
 
-[← 이전: Auto Scaling 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/auto-scaling-guide.md) | 
-[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
-[🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | 
-[다음: 장애 복구 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day3/disaster-recovery-guide.md)
+[← 이전: Auto Scaling 가이드](/mcp_knowledge_base/cloud_master/textbook/Day3/guides/auto-scaling-guide.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md)
 
 </div>

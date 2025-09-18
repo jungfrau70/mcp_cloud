@@ -5,36 +5,16 @@
 
 ## 🎯 강의 시나리오 (표준 순서)
 
-1. [🎯 학습 목표](#🎯-학습-목표)
-2. [🔧 실습 환경 준비](#🔧-실습-환경-준비)
-3. [✅ 실습 환경 확인](#✅-실습-환경-확인)
-4. [📚 이론 학습](#📚-이론-학습)
-5. [🛠️ 실습 학습](#🛠️-실습-학습)
-6. [🧹 실습 정리](#🧹-실습-정리)
-
-## 🧹 실습 정리
-
-### 자동 정리 (권장)
-```bash
-# Day2 실습 자동 정리
-./mcp_knowledge_base/cloud_master/repos/automation/day2/kubernetes-practice-automation.sh --cleanup
-
-# 또는 수동 정리
-kubectl delete namespace k8s-practice 2>/dev/null || true
-docker stop $(docker ps -aq) 2>/dev/null || true
-docker rm $(docker ps -aq) 2>/dev/null || true
-docker system prune -f
-```
-
-### 정리 확인
-- [ ] Kubernetes 리소스 정리
-- [ ] 모든 컨테이너 중지 및 삭제
-- [ ] 사용하지 않는 이미지 정리
-- [ ] Docker 볼륨 정리
+1. [🎯 학습 목표](#-학습-목표)
+2. [🔧 실습 환경 준비](#-실습-환경-준비)
+3. [✅ 실습 환경 확인](#-실습-환경-확인)
+4. [📚 이론 학습](#-이론-학습)
+5. [🛠️ 실습 학습](#-실습-학습)
+6. [🧹 실습 정리](#-실습-정리)
 
 ## 📚 참고 자료
 
-1. [📚 문제 해결 및 참고 자료](#📚-문제-해결-및-참고-자료)
+1. [📚 문제 해결 및 참고 자료](#-문제-해결-및-참고-자료)
 
 </details>
 
@@ -118,19 +98,19 @@ git config --global user.email "your.email@example.com"
 kubectl version --client
 
 # kubectl 설치 (Linux)
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https:///dl.k8s.io/release/$(curl -L -s https:///dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 ```
 
 ### 클라우드 계정 설정
 
 #### AWS 계정 설정
-- [AWS 계정 생성 및 설정](/mcp_knowledge_base/cloud_master/accounts/AWS계정가입.md)
+- [AWS 계정 생성 및 설정](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md)
 - IAM 사용자 생성 및 권한 설정
 - EC2 키 페어 생성
 
 #### GCP 계정 설정
-- [GCP 계정 생성 및 설정](/mcp_knowledge_base/cloud_master/accounts/GCP_개인계정가입.md)
+- [GCP 계정 생성 및 설정](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md)
 - 프로젝트 생성 및 활성화
 - 서비스 계정 생성 및 키 다운로드
 
@@ -338,15 +318,15 @@ gcloud alpha billing budgets list --billing-account=YOUR_BILLING_ACCOUNT
 
 ```bash
 # Docker Compose 설치 (VM 기반 컨테이너 오케스트레이션용)
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https:///github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
 # kubectl 설치 (Kubernetes 클러스터 관리용)
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https:///dl.k8s.io/release/$(curl -L -s https:///dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 # eksctl 설치 (AWS EKS 클러스터 관리용)
-curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+curl --silent --location "https:///github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
 
 # Docker Swarm 초기화 (선택사항)
@@ -371,7 +351,7 @@ docker swarm init
 
 ### ✅ 실습 전 체크리스트
 
-### 실습 환경 확인
+### ✅ 실습 환경 확인
 
 #### 자동 환경 체크 (권장)
 ```bash
@@ -416,15 +396,15 @@ kubectl version --client
 
 ### 🚀 시작하기
 
-실습을 시작하기 전에 위의 체크리스트를 모두 확인하세요. 모든 준비가 완료되면 [1교시: 클라우드 비용 구조 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-structure-guide.md)부터 시작하세요.
+실습을 시작하기 전에 위의 체크리스트를 모두 확인하세요. 모든 준비가 완료되면 [1교시: 클라우드 비용 구조 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/guides/cost-structure-guide.md)부터 시작하세요.
 
 
 ### 📖 상세 실습 가이드
 
-- 🔗 [클라우드 비용 구조 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-structure-guide.md) - AWS/GCP 과금 모델 이해
-- 🔗 [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-optimization-guide.md) - 비용 예측 및 최적화
-- 🔗 [모니터링 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/monitoring-guide.md) - CloudWatch/Cloud Monitoring 설정
-- 🔗 [종합 실습 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/comprehensive-practice-guide.md) - EKS/GKE 컨테이너 오케스트레이션
+- 🔗 [클라우드 비용 구조 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/guides/cost-structure-guide.md) - AWS/GCP 과금 모델 이해
+- 🔗 [비용 최적화 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/cost-optimization-guide.md) - 비용 예측 및 최적화
+- 🔗 [모니터링 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/guides/monitoring-guide.md) - CloudWatch/Cloud Monitoring 설정
+- 🔗 [종합 실습 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/comprehensive-practice-guide.md) - EKS/GKE 컨테이너 오케스트레이션
 
 ### ⚠️ 실습 주의사항 및 문제 해결
 
@@ -458,35 +438,35 @@ kubectl version --client
 
 ### 🛠️ 문제 해결 가이드
 
-- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/troubleshooting-guide.md) - 비용 관리, 모니터링, Kubernetes 문제 해결
+- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md) - 비용 관리, 모니터링, Kubernetes 문제 해결
 
 ### 🔗 관련 과정 링크
 
-- 🔗 [Cloud Basic 과정](/mcp_knowledge_base/cloud_master/README.md) - AWS/GCP 기초 과정
-- 🔗 [Cloud Container 과정](/mcp_knowledge_base/cloud_master/README.md) - Kubernetes 고급 과정
+- 🔗 [Cloud Basic 과정](/mcp_knowledge_base/README.md) - AWS/GCP 기초 과정
+- 🔗 [Cloud Container 과정](/mcp_knowledge_base/README.md) - Kubernetes 고급 과정
 - 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
 - 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/cloud_master/learning-path.md) - Cloud Master 학습 경로
+- 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/learning-path.md) - Cloud Master 학습 경로
 
 ### 참고 문서
 
-- [AWS 비용 관리 공식 문서](https://docs.aws.amazon.com/cost-management/)
-- [AWS CloudWatch 공식 문서](https://docs.aws.amazon.com/cloudwatch/)
-- [GCP 비용 관리 공식 문서](https://cloud.google.com/cost-management/docs)
-- [GCP Cloud Monitoring 공식 문서](https://cloud.google.com/monitoring/docs)
+- [AWS 비용 관리 공식 문서](https:///docs.aws.amazon.com/cost-management/)
+- [AWS CloudWatch 공식 문서](https:///docs.aws.amazon.com/cloudwatch/)
+- [GCP 비용 관리 공식 문서](https:///cloud.google.com/cost-management/docs)
+- [GCP Cloud Monitoring 공식 문서](https:///cloud.google.com/monitoring/docs)
 
 ### 유용한 링크
 
-- [AWS Pricing Calculator](https://calculator.aws/)
-- [Google Cloud Pricing Calculator](https://cloud.google.com/products/calculator)
-- [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)
-- [Google Cloud Architecture Center](https://cloud.google.com/architecture)
+- [AWS Pricing Calculator](https:///calculator.aws/)
+- [Google Cloud Pricing Calculator](https:///cloud.google.com/products/calculator)
+- [AWS Well-Architected Framework](https:///aws.amazon.com/architecture/well-architected/)
+- [Google Cloud Architecture Center](https:///cloud.google.com/architecture)
 
 ---
 
 ### 문제가 있나요?
 
-실습 중 문제가 발생하면 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/troubleshooting-guide.md)를 참고하세요.
+실습 중 문제가 발생하면 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md)를 참고하세요.
 
 </details>
 
@@ -629,7 +609,7 @@ jobs:
 
 #### Kubernetes 기본 구성 요소
 
-![Kubernetes Architecture](../images/day2/kubernetes-architecture.svg)
+!Kubernetes Architecture
 
 - **Pod**: 가장 작은 배포 단위, 하나 이상의 컨테이너 그룹
 - **Deployment**: Pod의 선언적 관리 및 업데이트
@@ -641,7 +621,7 @@ jobs:
 #### 1단계: kubectl 설치 및 설정
 ```bash
 # kubectl 설치 (Linux)
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https:///dl.k8s.io/release/$(curl -L -s https:///dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 # kubectl 설치 확인
@@ -702,14 +682,14 @@ kubectl port-forward deployment/nginx 8080:80
 
 ```bash
 # EKS 클러스터 생성
-eksctl create cluster \
-  --name my-cluster \
-  --version 1.28 \
-  --region us-west-2 \
-  --nodegroup-name standard-workers \
-  --node-type t3.medium \
-  --nodes 3 \
-  --nodes-min 1 \
+eksctl create cluster /
+  --name my-cluster /
+  --version 1.28 /
+  --region us-west-2 /
+  --nodegroup-name standard-workers /
+  --node-type t3.medium /
+  --nodes 3 /
+  --nodes-min 1 /
   --nodes-max 4
 
 # kubeconfig 설정
@@ -720,12 +700,12 @@ aws eks update-kubeconfig --region us-west-2 --name my-cluster
 
 ```bash
 # GKE 클러스터 생성
-gcloud container clusters create my-cluster \
-  --zone us-central1-a \
-  --machine-type e2-medium \
-  --num-nodes 3 \
-  --enable-autoscaling \
-  --min-nodes 1 \
+gcloud container clusters create my-cluster /
+  --zone us-central1-a /
+  --machine-type e2-medium /
+  --num-nodes 3 /
+  --enable-autoscaling /
+  --min-nodes 1 /
   --max-nodes 5
 
 # kubeconfig 설정
@@ -734,7 +714,7 @@ gcloud container clusters get-credentials my-cluster --zone us-central1-a
 
 ### 기본 애플리케이션 배포
 
-![Kubernetes Resources](../images/day2/kubernetes-resources.svg)
+!Kubernetes Resources
 
 ```yaml
 # nginx-deployment.yaml
@@ -796,13 +776,13 @@ kubectl rollout undo deployment/nginx-deployment
 
 ```bash
 # ConfigMap 생성
-kubectl create configmap app-config \
-  --from-literal=database_url=mysql://localhost:3306/mydb \
+kubectl create configmap app-config /
+  --from-literal=database_url=mysql://localhost:3306/mydb /
   --from-literal=debug=true
 
 # Secret 생성
-kubectl create secret generic app-secret \
-  --from-literal=username=admin \
+kubectl create secret generic app-secret /
+  --from-literal=username=admin /
   --from-literal=password=secretpassword
 
 # ConfigMap과 Secret 확인
@@ -828,7 +808,7 @@ kubectl get secrets
 brew install minikube
 
 # Minikube 설치 (Linux)
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+curl -LO https:///storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
 # Minikube 시작
@@ -859,18 +839,18 @@ kubectl cluster-info --context kind-cloud-master-cluster
 **AWS EKS 클러스터 생성**
 ```bash
 # EKS CLI 설치
-curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+curl --silent --location "https:///github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
 
 # EKS 클러스터 생성
-eksctl create cluster \
-  --name cloud-master-eks \
-  --region ap-northeast-2 \
-  --nodegroup-name workers \
-  --node-type t3.medium \
-  --nodes 2 \
-  --nodes-min 1 \
-  --nodes-max 3 \
+eksctl create cluster /
+  --name cloud-master-eks /
+  --region ap-northeast-2 /
+  --nodegroup-name workers /
+  --node-type t3.medium /
+  --nodes 2 /
+  --nodes-min 1 /
+  --nodes-max 3 /
   --managed
 
 # 클러스터 연결 확인
@@ -881,12 +861,12 @@ kubectl get nodes
 **Google GKE 클러스터 생성**
 ```bash
 # GKE 클러스터 생성
-gcloud container clusters create cloud-master-gke \
-  --zone=asia-northeast3-a \
-  --num-nodes=2 \
-  --machine-type=e2-medium \
-  --enable-autoscaling \
-  --min-nodes=1 \
+gcloud container clusters create cloud-master-gke /
+  --zone=asia-northeast3-a /
+  --num-nodes=2 /
+  --machine-type=e2-medium /
+  --enable-autoscaling /
+  --min-nodes=1 /
   --max-nodes=3
 
 # 클러스터 연결
@@ -902,7 +882,7 @@ kubectl get nodes
 brew install kubectl
 
 # kubectl 설치 (Linux)
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https:///dl.k8s.io/release/$(curl -L -s https:///dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 # kubectl 버전 확인
@@ -912,13 +892,13 @@ kubectl version --client
 **Helm 설치**
 ```bash
 # Helm 설치
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl https:///raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 # Helm 버전 확인
 helm version
 
 # Helm 저장소 추가
-helm repo add stable https://charts.helm.sh/stable
+helm repo add stable https:///charts.helm.sh/stable
 helm repo update
 ```
 
@@ -928,7 +908,7 @@ helm repo update
 brew install k9s
 
 # k9s 설치 (Linux)
-wget https://github.com/derailed/k9s/releases/download/v0.27.4/k9s_Linux_amd64.tar.gz
+wget https:///github.com/derailed/k9s/releases/download/v0.27.4/k9s_Linux_amd64.tar.gz
 tar -xzf k9s_Linux_amd64.tar.gz
 sudo mv k9s /usr/local/bin/
 
@@ -984,13 +964,13 @@ kubectl describe quota dev-quota -n development
 **Prometheus 설치**
 ```bash
 # Prometheus Helm 차트 설치
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add prometheus-community https:///prometheus-community.github.io/helm-charts
 helm repo update
 
 # Prometheus 설치
-helm install prometheus prometheus-community/kube-prometheus-stack \
-  --namespace monitoring \
-  --create-namespace \
+helm install prometheus prometheus-community/kube-prometheus-stack /
+  --namespace monitoring /
+  --create-namespace /
   --set grafana.adminPassword=admin123
 
 # 설치 상태 확인
@@ -1146,34 +1126,34 @@ kubectl run -it --rm debug --image=busybox --restart=Never -- nslookup kubernete
 ```bash
 # AWS EC2 인스턴스 생성 - 고가용성 설계 원리 적용
 # 다중 가용 영역 배치를 위한 서브넷 지정
-aws ec2 run-instances \
-  --image-id ami-0c02fb55956c7d316 \
-  --instance-type t3.medium \
-  --key-name my-key \
-  --security-groups my-sg \
-  --subnet-id subnet-12345 \
-  --associate-public-ip-address \
+aws ec2 run-instances /
+  --image-id ami-0c02fb55956c7d316 /
+  --instance-type t3.medium /
+  --key-name my-key /
+  --security-groups my-sg /
+  --subnet-id subnet-12345 /
+  --associate-public-ip-address /
   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=web-server-1}]'
 
 # 로드 밸런서 생성을 위한 추가 인스턴스
-aws ec2 run-instances \
-  --image-id ami-0c02fb55956c7d316 \
-  --instance-type t3.medium \
-  --key-name my-key \
-  --security-groups my-sg \
-  --subnet-id subnet-67890 \
-  --associate-public-ip-address \
+aws ec2 run-instances /
+  --image-id ami-0c02fb55956c7d316 /
+  --instance-type t3.medium /
+  --key-name my-key /
+  --security-groups my-sg /
+  --subnet-id subnet-67890 /
+  --associate-public-ip-address /
   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=web-server-2}]'
 ```
 
 ### Docker 설치 및 설정 (컨테이너 오케스트레이션 구현)
 ```bash
 # Docker 설치 - 컨테이너 런타임 환경 구축
-curl -fsSL https://get.docker.com -o get-docker.sh
+curl -fsSL https:///get.docker.com -o get-docker.sh
 sh get-docker.sh
 
 # Docker Compose 설치 - 멀티 컨테이너 오케스트레이션
-sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https:///github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
 # Docker Swarm 초기화 - 클러스터 오케스트레이션
@@ -1430,10 +1410,10 @@ jobs:
 
 ### 추가 학습 자료
 
-- [Docker 공식 문서](https://docs.docker.com/)
-- [GitHub Actions 문서](https://docs.github.com/en/actions)
-- [AWS EC2 문서](https://docs.aws.amazon.com/ec2/)
-- [Google Compute Engine 문서](https://cloud.google.com/compute/docs)
+- [Docker 공식 문서](https:///docs.docker.com/)
+- [GitHub Actions 문서](https:///docs.github.com/en/actions)
+- [AWS EC2 문서](https:///docs.aws.amazon.com/ec2/)
+- [Google Compute Engine 문서](https:///cloud.google.com/compute/docs)
 
 ---
 
@@ -1466,56 +1446,75 @@ jobs:
 ## 📚 관련 가이드 문서
 
 ### Docker 고급 기법
-- 🔗 [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
-- 🔗 [Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/docker-compose-guide.md) - 다중 서비스 관리
+- 🔗 [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
+- 🔗 [Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-compose-guide.md) - 다중 서비스 관리
 
 ### GitHub Actions 고급 워크플로우
-- 🔗 [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/github-actions-guide.md) - CI/CD 파이프라인 구축
-- 🔗 [매트릭스 빌드 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/matrix-build-guide.md) - 다중 환경 빌드
+- 🔗 [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-guide.md) - CI/CD 파이프라인 구축
+- 🔗 [매트릭스 빌드 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/guides/comprehensive-practice-guide.md) - 다중 환경 빌드
 
 ### Kubernetes 및 컨테이너 오케스트레이션
-- 🔗 [Kubernetes 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/kubernetes-guide.md) - 컨테이너 오케스트레이션
-- 🔗 [Kubernetes 실습 환경 설정](/mcp_knowledge_base/cloud_master/textbook/Day2/kubernetes-setup-guide.md) - 클러스터 구축
+- 🔗 [Kubernetes 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/guides/comprehensive-practice-guide.md) - 컨테이너 오케스트레이션
+- 🔗 [Kubernetes 실습 환경 설정](/mcp_knowledge_base/cloud_master/textbook/Day2/guides/comprehensive-practice-guide.md) - 클러스터 구축
 
 ### 완전 자동화된 배포 파이프라인
-- 🔗 [자동화 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/automated-deployment-guide.md) - 완전 자동화된 배포
-- 🔗 [인프라 as 코드 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/infrastructure-as-code-guide.md) - Terraform, CloudFormation
+- 🔗 [자동화 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/guides/comprehensive-practice-guide.md) - 완전 자동화된 배포
+- 🔗 [인프라 as 코드 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/guides/comprehensive-practice-guide.md) - Terraform, CloudFormation
 
 ### 모니터링 및 비용 관리
-- 🔗 [모니터링 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/monitoring-guide.md) - Prometheus, Grafana 설정
-- 🔗 [비용 최적화 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-optimization-guide.md) - 클라우드 비용 관리
-- 🔗 [비용 구조 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/cost-structure-guide.md) - 비용 분석 및 예측
+- 🔗 [모니터링 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/guides/monitoring-guide.md) - Prometheus, Grafana 설정
+- 🔗 [비용 최적화 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/cost-optimization-guide.md) - 클라우드 비용 관리
+- 🔗 [비용 구조 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/guides/cost-structure-guide.md) - 비용 분석 및 예측
 
 ### 종합 실습
-- 🔗 [종합 실습 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/comprehensive-practice-guide.md) - 전체 과정 통합 실습
+- 🔗 [종합 실습 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/comprehensive-practice-guide.md) - 전체 과정 통합 실습
 
 ### 실습 프로젝트
-- 🔗 [My App 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day2/my-app/) - 고급 Docker 및 Kubernetes 애플리케이션
-- 🔗 [Actions Demo 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day2/actions-demo/) - 고급 CI/CD 파이프라인
+- 🔗 [My App 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day1/my-app/.dockerignore) - 고급 Docker 및 Kubernetes 애플리케이션
+- 🔗 [Actions Demo 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day2/actions-demo/README.md) - 고급 CI/CD 파이프라인
 
 ### 자동화 스크립트
-- 🔗 [AWS 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/) - 고급 AWS 리소스 자동 생성
-- 🔗 [GCP 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/) - 고급 GCP 리소스 자동 생성
+- 🔗 [AWS 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/aws-ec2-create.sh) - 고급 AWS 리소스 자동 생성
+- 🔗 [GCP 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/aws-ec2-create.sh) - 고급 GCP 리소스 자동 생성
 - 🔗 [프로젝트 설정 가이드](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/PROJECT_SETUP.md) - 전체 환경 설정
 
 ### 문제 해결
-- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day2/troubleshooting-guide.md) - 고급 문제 해결
+- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md) - 고급 문제 해결
+
+---
+
+
+## 🧹 실습 정리
+
+### 자동 정리 (권장)
+```bash
+# Day2 실습 자동 정리
+./mcp_knowledge_base/cloud_master/repos/automation/day2/kubernetes-practice-automation.sh --cleanup
+
+# 또는 수동 정리
+kubectl delete namespace k8s-practice 2>/dev/null || true
+docker stop $(docker ps -aq) 2>/dev/null || true
+docker rm $(docker ps -aq) 2>/dev/null || true
+docker system prune -f
+```
+
+### 정리 확인
+- [ ] Kubernetes 리소스 정리
+- [ ] 모든 컨테이너 중지 및 삭제
+- [ ] 사용하지 않는 이미지 정리
+- [ ] Docker 볼륨 정리
 
 ---
 
 ## 🧭 네비게이션
 
+
+
+
+
+
 <div align="center">
 
-[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | 
-[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
-[🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-[📅 Day1 시작하기](mcp_knowledge_base/cloud_master/textbook/Day1/README.md) |
-[📅 Day2 시작하기](mcp_knowledge_base/cloud_master/textbook/Day2/README.md) |
-[📅 Day3 시작하기](mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>
-
-
-

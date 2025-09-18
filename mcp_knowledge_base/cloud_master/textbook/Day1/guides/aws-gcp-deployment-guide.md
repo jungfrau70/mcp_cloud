@@ -1,8 +1,3 @@
-<div align="center">
-
-[← 이전: Cloud Master 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md) | [← 이전: GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/github-actions-guide.md) | [다음: CI/CD 파이프라인 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day1/cicd-pipeline-guide.md)
-
-</div>
 
 # AWS & GCP 멀티클라우드 배포 가이드
 
@@ -10,14 +5,14 @@
 
 ## 📋 목차
 
-[📋 목차](#-)
-1. [개요](#-)
-2. [AWS 배포 시나리오](#-aws)
-3. [GCP 배포 시나리오](#-gcp)
-4. [권한 설정](#-)
-5. [워크플로우 구성](#-)
-6. [실습 절차](#-)
-7. [문제 해결](#-)
+[📋 목차](#목차)
+1. [개요](#개요)
+2. [AWS 배포 시나리오](#aws-배포-시나리오)
+3. [GCP 배포 시나리오](#gcp-배포-시나리오)
+4. [권한 설정](#권한-설정)
+5. [워크플로우 구성](#워크플로우-구성)
+6. [실습 절차](#실습-절차)
+7. [문제 해결](#문제-해결)
 
 ---
 
@@ -27,7 +22,7 @@
 
 ### 배포 아키텍처
 
-[배포 아키텍처](#-)
+[배포 아키텍처](#배포-아키텍처)
 
 ```mermaid
 graph TB
@@ -58,18 +53,18 @@ graph TB
 
 ### AWS ECS (Elastic Container Service) 배포
 
-[AWS ECS (Elastic Container Service) 배포](#-aws-ecs-(elastic-container-service))-배포)
+[AWS ECS (Elastic Container Service) 배포](#aws-ecs-elastic-container-service-배포))-배포)
 
 #### 1. AWS ECS란?
 
-[1. AWS ECS란?](#-1.-aws-ecs?)
+[1. AWS ECS란?](#1-aws-ecs란)
 - **완전 관리형 컨테이너 오케스트레이션 서비스**
 - Docker 컨테이너를 AWS에서 쉽게 실행, 중지, 관리
 - 자동 스케일링, 로드 밸런싱, 서비스 디스커버리 제공
 
 #### 2. AWS ECS 배포 장점
 
-[2. AWS ECS 배포 장점](#-2.-aws-ecs)
+[2. AWS ECS 배포 장점](#2-aws-ecs-배포-장점)
 - **고가용성**: 여러 AZ에 컨테이너 배포
 - **자동 스케일링**: 트래픽에 따라 자동 확장/축소
 - **로드 밸런싱**: ALB/NLB와 통합
@@ -77,7 +72,7 @@ graph TB
 
 #### 3. AWS ECS 배포 흐름
 
-[3. AWS ECS 배포 흐름](#-3.-aws-ecs)
+[3. AWS ECS 배포 흐름](#3-aws-ecs-배포-흐름)
 ```mermaid
 graph LR
     A[Docker Image] --> B[ECR Push]
@@ -93,18 +88,18 @@ graph LR
 
 ### GCP Cloud Run 배포
 
-[GCP Cloud Run 배포](#-gcp-cloud-run)
+[GCP Cloud Run 배포](#gcp-cloud-run-배포)
 
 #### 1. GCP Cloud Run이란?
 
-[1. GCP Cloud Run이란?](#-1.-gcp-cloud-run?)
+[1. GCP Cloud Run이란?](#1-gcp-cloud-run이란)
 - **완전 관리형 서버리스 컨테이너 플랫폼**
 - HTTP 요청에 따라 자동으로 컨테이너 시작/중지
 - 사용한 만큼만 비용 지불 (Pay-per-use)
 
 #### 2. GCP Cloud Run 배포 장점
 
-[2. GCP Cloud Run 배포 장점](#-2.-gcp-cloud-run)
+[2. GCP Cloud Run 배포 장점](#2-gcp-cloud-run-배포-장점)
 - **서버리스**: 인프라 관리 불필요
 - **자동 스케일링**: 0에서 수천 인스턴스까지 자동 확장
 - **빠른 배포**: 몇 초 내에 새 버전 배포
@@ -112,7 +107,7 @@ graph LR
 
 #### 3. GCP Cloud Run 배포 흐름
 
-[3. GCP Cloud Run 배포 흐름](#-3.-gcp-cloud-run)
+[3. GCP Cloud Run 배포 흐름](#3-gcp-cloud-run-배포-흐름)
 ```mermaid
 graph LR
     A[Docker Image] --> B[Container Registry]
@@ -128,11 +123,11 @@ graph LR
 
 ### AWS 권한 설정
 
-[AWS 권한 설정](#-aws)
+[AWS 권한 설정](#aws-권한-설정)
 
 #### 1. AWS IAM 사용자 생성
 
-[1. AWS IAM 사용자 생성](#-1.-aws-iam)
+[1. AWS IAM 사용자 생성](#1-aws-iam-사용자-생성)
 ```bash
 # AWS CLI로 IAM 사용자 생성
 aws iam create-user --user-name github-actions-deploy
@@ -143,7 +138,7 @@ aws iam create-access-key --user-name github-actions-deploy
 
 #### 2. 필요한 IAM 정책
 
-[2. 필요한 IAM 정책](#-2.-iam)
+[2. 필요한 IAM 정책](#2-필요한-iam-정책)
 ```json
 {
     "Version": "2012-10-17",
@@ -168,7 +163,7 @@ aws iam create-access-key --user-name github-actions-deploy
 
 #### 3. GitHub 시크릿 설정
 
-[3. GitHub 시크릿 설정](#-3.-github)
+[3. GitHub 시크릿 설정](#3-github-시크릿-설정)
 ```
 AWS_ACCESS_KEY_ID: AKIA...
 AWS_SECRET_ACCESS_KEY: ...
@@ -179,38 +174,38 @@ AWS_ECS_SERVICE: my-service
 
 ### GCP 권한 설정
 
-[GCP 권한 설정](#-gcp)
+[GCP 권한 설정](#gcp-권한-설정)
 
 #### 1. GCP 서비스 계정 생성
 
-[1. GCP 서비스 계정 생성](#-1.-gcp)
+[1. GCP 서비스 계정 생성](#1-gcp-서비스-계정-생성)
 ```bash
 # 서비스 계정 생성
-gcloud iam service-accounts create github-actions-deploy \
+gcloud iam service-accounts create github-actions-deploy /
     --display-name="GitHub Actions Deploy"
 
 # 필요한 권한 부여
-gcloud projects add-iam-policy-binding PROJECT_ID \
-    --member="serviceAccount:github-actions-deploy@PROJECT_ID.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding PROJECT_ID /
+    --member="serviceAccount:github-actions-deploy@PROJECT_ID.iam.gserviceaccount.com" /
     --role="roles/run.admin"
 
-gcloud projects add-iam-policy-binding PROJECT_ID \
-    --member="serviceAccount:github-actions-deploy@PROJECT_ID.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding PROJECT_ID /
+    --member="serviceAccount:github-actions-deploy@PROJECT_ID.iam.gserviceaccount.com" /
     --role="roles/storage.admin"
 ```
 
 #### 2. 서비스 계정 키 생성
 
-[2. 서비스 계정 키 생성](#-2.)
+[2. 서비스 계정 키 생성](#2-서비스-계정-키-생성)
 ```bash
 # JSON 키 파일 생성
-gcloud iam service-accounts keys create key.json \
+gcloud iam service-accounts keys create key.json /
     --iam-account=github-actions-deploy@PROJECT_ID.iam.gserviceaccount.com
 ```
 
 #### 3. GitHub 시크릿 설정
 
-[3. GitHub 시크릿 설정](#-3.-github)
+[3. GitHub 시크릿 설정](#3-github-시크릿-설정)
 ```
 GCP_PROJECT_ID: your-project-id
 GCP_SA_KEY: {"type":"service_account",...}
@@ -224,7 +219,7 @@ GCP_SERVICE_NAME: actions-demo
 
 ### 멀티클라우드 배포 워크플로우
 
-[멀티클라우드 배포 워크플로우](#-)
+[멀티클라우드 배포 워크플로우](#멀티클라우드-배포-워크플로우)
 
 ```yaml
 name: Multi-Cloud Deployment
@@ -281,9 +276,9 @@ jobs:
       
       - name: Deploy to ECS
         run: |
-          aws ecs update-service \
-            --cluster ${{ secrets.AWS_ECS_CLUSTER }} \
-            --service ${{ secrets.AWS_ECS_SERVICE }} \
+          aws ecs update-service /
+            --cluster ${{ secrets.AWS_ECS_CLUSTER }} /
+            --service ${{ secrets.AWS_ECS_SERVICE }} /
             --force-new-deployment
           
           echo "AWS ECS deployment initiated"
@@ -308,10 +303,10 @@ jobs:
       
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy ${{ secrets.GCP_SERVICE_NAME }} \
-            --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
-            --region ${{ secrets.GCP_REGION }} \
-            --platform managed \
+          gcloud run deploy ${{ secrets.GCP_SERVICE_NAME }} /
+            --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} /
+            --region ${{ secrets.GCP_REGION }} /
+            --platform managed /
             --allow-unauthenticated
           
           echo "GCP Cloud Run deployment completed"
@@ -352,23 +347,23 @@ jobs:
 
 ### 1단계: AWS 환경 준비
 
-[1단계: AWS 환경 준비](#-1:-aws)
+[1단계: AWS 환경 준비](#1단계-aws-환경-준비)
 
 #### ECS 클러스터 생성
 
-[ECS 클러스터 생성](#-ecs)
+[ECS 클러스터 생성](#ecs-클러스터-생성)
 ```bash
 # ECS 클러스터 생성
 aws ecs create-cluster --cluster-name actions-demo-cluster
 
 # 태스크 정의 생성
-aws ecs register-task-definition \
-    --family actions-demo \
-    --network-mode awsvpc \
-    --requires-compatibilities FARGATE \
-    --cpu 256 \
-    --memory 512 \
-    --execution-role-arn arn:aws:iam::ACCOUNT:role/ecsTaskExecutionRole \
+aws ecs register-task-definition /
+    --family actions-demo /
+    --network-mode awsvpc /
+    --requires-compatibilities FARGATE /
+    --cpu 256 /
+    --memory 512 /
+    --execution-role-arn arn:aws:iam::ACCOUNT:role/ecsTaskExecutionRole /
     --container-definitions '[
         {
             "name": "actions-demo",
@@ -384,39 +379,39 @@ aws ecs register-task-definition \
     ]'
 
 # ECS 서비스 생성
-aws ecs create-service \
-    --cluster actions-demo-cluster \
-    --service-name actions-demo-service \
-    --task-definition actions-demo:1 \
-    --desired-count 1 \
-    --launch-type FARGATE \
+aws ecs create-service /
+    --cluster actions-demo-cluster /
+    --service-name actions-demo-service /
+    --task-definition actions-demo:1 /
+    --desired-count 1 /
+    --launch-type FARGATE /
     --network-configuration "awsvpcConfiguration={subnets=[subnet-12345],securityGroups=[sg-12345],assignPublicIp=ENABLED}"
 ```
 
 ### 2단계: GCP 환경 준비
 
-[2단계: GCP 환경 준비](#-2:-gcp)
+[2단계: GCP 환경 준비](#2단계-gcp-환경-준비)
 
 #### Cloud Run 서비스 생성
 
-[Cloud Run 서비스 생성](#-cloud-run)
+[Cloud Run 서비스 생성](#cloud-run-서비스-생성)
 ```bash
 # 첫 번째 배포 (초기 서비스 생성)
-gcloud run deploy actions-demo \
-    --image nginx:latest \
-    --region asia-northeast1 \
-    --platform managed \
-    --allow-unauthenticated \
+gcloud run deploy actions-demo /
+    --image nginx:latest /
+    --region asia-northeast1 /
+    --platform managed /
+    --allow-unauthenticated /
     --port 3000
 ```
 
 ### 3단계: GitHub 시크릿 설정
 
-[3단계: GitHub 시크릿 설정](#-3:-github)
+[3단계: GitHub 시크릿 설정](#3단계-github-시크릿-설정)
 
 #### AWS 시크릿
 
-[AWS 시크릿](#-aws)
+[AWS 시크릿](#aws-시크릿)
 ```
 AWS_ACCESS_KEY_ID: AKIA...
 AWS_SECRET_ACCESS_KEY: ...
@@ -427,7 +422,7 @@ AWS_ECS_SERVICE: actions-demo-service
 
 #### GCP 시크릿
 
-[GCP 시크릿](#-gcp)
+[GCP 시크릿](#gcp-시크릿)
 ```
 GCP_PROJECT_ID: your-project-id
 GCP_SA_KEY: {"type":"service_account",...}
@@ -437,20 +432,20 @@ GCP_SERVICE_NAME: actions-demo
 
 #### Docker Hub 시크릿
 
-[Docker Hub 시크릿](#-docker-hub)
+[Docker Hub 시크릿](#docker-hub-시크릿)
 ```
 DOCKERHUB_TOKEN: your-dockerhub-token
 ```
 
 ### 4단계: 워크플로우 파일 생성
 
-[4단계: 워크플로우 파일 생성](#-4:)
+[4단계: 워크플로우 파일 생성](#4단계-워크플로우-파일-생성)
 
 `.github/workflows/multi-cloud-deploy.yml` 파일을 생성하고 위의 워크플로우 코드를 복사합니다.
 
 ### 5단계: 배포 테스트
 
-[5단계: 배포 테스트](#-5:)
+[5단계: 배포 테스트](#5단계-배포-테스트)
 
 ```bash
 # main 브랜치에 푸시하여 배포 테스트
@@ -465,25 +460,25 @@ git push origin main
 
 ### AWS 배포 문제
 
-[AWS 배포 문제](#-aws)
+[AWS 배포 문제](#aws-배포-문제)
 
 #### 1. ECS 서비스 업데이트 실패
 
-[1. ECS 서비스 업데이트 실패](#-1.-ecs)
+[1. ECS 서비스 업데이트 실패](#1-ecs-서비스-업데이트-실패)
 ```bash
 # 서비스 상태 확인
-aws ecs describe-services \
-    --cluster actions-demo-cluster \
+aws ecs describe-services /
+    --cluster actions-demo-cluster /
     --services actions-demo-service
 
 # 태스크 정의 확인
-aws ecs describe-task-definition \
+aws ecs describe-task-definition /
     --task-definition actions-demo
 ```
 
 #### 2. 권한 문제
 
-[2. 권한 문제](#-2.)
+[2. 권한 문제](#2-권한-문제)
 ```bash
 # IAM 정책 확인
 aws iam list-attached-user-policies --user-name github-actions-deploy
@@ -492,35 +487,35 @@ aws iam get-policy --policy-arn arn:aws:iam::ACCOUNT:policy/ECSAccess
 
 ### GCP 배포 문제
 
-[GCP 배포 문제](#-gcp)
+[GCP 배포 문제](#gcp-배포-문제)
 
 #### 1. Cloud Run 배포 실패
 
-[1. Cloud Run 배포 실패](#-1.-cloud-run)
+[1. Cloud Run 배포 실패](#1-cloud-run-배포-실패)
 ```bash
 # 서비스 상태 확인
-gcloud run services describe actions-demo \
+gcloud run services describe actions-demo /
     --region asia-northeast1
 
 # 로그 확인
-gcloud logging read "resource.type=cloud_run_revision" \
+gcloud logging read "resource.type=cloud_run_revision" /
     --limit 50
 ```
 
 #### 2. 인증 문제
 
-[2. 인증 문제](#-2.)
+[2. 인증 문제](#2-인증-문제)
 ```bash
 # 서비스 계정 권한 확인
-gcloud projects get-iam-policy PROJECT_ID \
-    --flatten="bindings[].members" \
-    --format="table(bindings.role)" \
+gcloud projects get-iam-policy PROJECT_ID /
+    --flatten="bindings[].members" /
+    --format="table(bindings.role)" /
     --filter="bindings.members:github-actions-deploy@PROJECT_ID.iam.gserviceaccount.com"
 ```
 
 ### 일반적인 문제들
 
-[일반적인 문제들](#-)
+[일반적인 문제들](#일반적인-문제들)
 
 | 문제 | 원인 | 해결 방법 |
 |------|------|-----------|
@@ -533,11 +528,11 @@ gcloud projects get-iam-policy PROJECT_ID \
 
 ## 📊 모니터링 및 로그
 
-[📊 모니터링 및 로그](#-)
+[📊 모니터링 및 로그](#모니터링-및-로그)
 
 ### AWS CloudWatch
 
-[AWS CloudWatch](#-aws-cloudwatch)
+[AWS CloudWatch](#aws-cloudwatch)
 ```bash
 # ECS 서비스 로그 확인
 aws logs describe-log-groups --log-group-name-prefix /ecs/actions-demo
@@ -546,11 +541,11 @@ aws logs tail /ecs/actions-demo --follow
 
 ### GCP Cloud Logging
 
-[GCP Cloud Logging](#-gcp-cloud-logging)
+[GCP Cloud Logging](#gcp-cloud-logging)
 ```bash
 # Cloud Run 로그 확인
-gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=actions-demo" \
-    --limit 100 \
+gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=actions-demo" /
+    --limit 100 /
     --format json
 ```
 
@@ -558,7 +553,7 @@ gcloud logging read "resource.type=cloud_run_revision AND resource.labels.servic
 
 ## 🎯 다음 단계
 
-[🎯 다음 단계](#-)
+[🎯 다음 단계](#다음-단계)
 
 1. **고급 배포 전략**: Blue-Green, Canary 배포 구현
 2. **모니터링 강화**: Prometheus, Grafana 연동
@@ -569,29 +564,26 @@ gcloud logging read "resource.type=cloud_run_revision AND resource.labels.servic
 
 ## 📚 참고 자료
 
-[📚 참고 자료](#-)
+[📚 참고 자료](#참고-자료)
 
-- [AWS ECS 공식 문서](https://docs.aws.amazon.com/ecs/)
-- [GCP Cloud Run 공식 문서](https://cloud.google.com/run/docs)
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [Docker Hub 공식 문서](https://docs.docker.com/docker-hub/)
+- [AWS ECS 공식 문서](https:///docs.aws.amazon.com/ecs/)
+- [GCP Cloud Run 공식 문서](https:///cloud.google.com/run/docs)
+- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
+- [Docker Hub 공식 문서](https:///docs.docker.com/docker-hub/)
+
+---
+
+
 
 ---
 
 
-
 ---
+
+
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
-
----
-
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[← 이전: Cloud Master 1일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md) | [← 이전: GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-guide.md) | [다음: CI/CD 파이프라인 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/cicd-pipeline-guide.md)
 
 </div>

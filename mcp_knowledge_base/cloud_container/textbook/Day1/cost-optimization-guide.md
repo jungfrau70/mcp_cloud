@@ -1,10 +1,5 @@
 # 비용 최적화 전략 가이드
 
-<div align="center">
-
-[← 이전: Cloud Container 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 🎯 학습 목표
 
@@ -403,9 +398,9 @@ spec:
 [AWS Reserved Instance 설정](#aws-reserved-instance-설정)
 ```bash
 # Reserved Instance 구매 (CLI)
-aws ec2 purchase-reserved-instances-offering \
-  --reserved-instances-offering-id <offering-id> \
-  --instance-count 3 \
+aws ec2 purchase-reserved-instances-offering /
+  --reserved-instances-offering-id <offering-id> /
+  --instance-count 3 /
   --instance-type t3.medium
 ```
 
@@ -414,9 +409,9 @@ aws ec2 purchase-reserved-instances-offering \
 [GCP Committed Use Discount 설정](#gcp-committed-use-discount-설정)
 ```bash
 # Committed Use Discount 생성
-gcloud compute commitments create container-demo-commitment \
-  --plan 12-month \
-  --resources vcpu=6,memory=24 \
+gcloud compute commitments create container-demo-commitment /
+  --plan 12-month /
+  --resources vcpu=6,memory=24 /
   --region asia-northeast3
 ```
 
@@ -716,22 +711,22 @@ kubectl get vpa -n container-demo
 [1단계: 스팟 인스턴스 노드 그룹 생성](#1단계-스팟-인스턴스-노드-그룹-생성)
 ```bash
 # AWS EKS 스팟 인스턴스 노드 그룹 생성
-eksctl create nodegroup \
-  --cluster=container-demo-cluster \
-  --name=spot-nodes \
-  --node-type=t3.medium \
-  --nodes=3 \
-  --nodes-min=1 \
-  --nodes-max=10 \
-  --spot \
+eksctl create nodegroup /
+  --cluster=container-demo-cluster /
+  --name=spot-nodes /
+  --node-type=t3.medium /
+  --nodes=3 /
+  --nodes-min=1 /
+  --nodes-max=10 /
+  --spot /
   --asg-access
 
 # GCP GKE 스팟 인스턴스 노드 풀 생성
-gcloud container node-pools create spot-pool \
-  --cluster=container-demo-cluster \
-  --zone=asia-northeast3-a \
-  --num-nodes=3 \
-  --spot \
+gcloud container node-pools create spot-pool /
+  --cluster=container-demo-cluster /
+  --zone=asia-northeast3-a /
+  --num-nodes=3 /
+  --spot /
   --machine-type=e2-medium
 ```
 
@@ -766,8 +761,8 @@ kubectl apply -f cost-optimization-guide/gcp-optimized-storage.yaml
 [2단계: 스토리지 라이프사이클 설정](#2단계-스토리지-라이프사이클-설정)
 ```bash
 # AWS S3 라이프사이클 설정
-aws s3api put-bucket-lifecycle-configuration \
-  --bucket container-demo-bucket \
+aws s3api put-bucket-lifecycle-configuration /
+  --bucket container-demo-bucket /
   --lifecycle-configuration file://lifecycle.json
 
 # GCP Cloud Storage 라이프사이클 설정
@@ -884,9 +879,9 @@ data:
 ### 공식 문서
 
 [공식 문서](#공식-문서)
-- [AWS Cost Optimization 공식 문서](https://aws.amazon.com/pricing/cost-optimization/)
-- [GCP Cost Optimization 공식 문서](https://cloud.google.com/cost-optimization)
-- [Kubernetes Resource Management 공식 문서](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)
+- [AWS Cost Optimization 공식 문서](https:///aws.amazon.com/pricing/cost-optimization/)
+- [GCP Cost Optimization 공식 문서](https:///cloud.google.com/cost-optimization)
+- [Kubernetes Resource Management 공식 문서](https:///kubernetes.io/docs/concepts/configuration/manage-resources-containers/)
 
 ### 추가 학습 자료
 
@@ -902,22 +897,19 @@ data:
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 
 [📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 1일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

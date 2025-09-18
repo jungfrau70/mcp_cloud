@@ -1,10 +1,5 @@
 # 네트워크 서비스 비교 (VPC)
 
-<div align="center">
-
-[← 이전: Cloud Basic 2일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 학습 목표
 
@@ -73,20 +68,20 @@ GCP VPC:
 [1. VPC 및 서브넷](#1-vpc-및-서브넷)
 ```bash
 # VPC 생성
-aws ec2 create-vpc \
-    --cidr-block 10.0.0.0/16 \
+aws ec2 create-vpc /
+    --cidr-block 10.0.0.0/16 /
     --tag-specifications 'ResourceType=vpc,Tags=[{Key=Name,Value=BootcampVPC}]'
 
 # 서브넷 생성
-aws ec2 create-subnet \
-    --vpc-id vpc-12345678 \
-    --cidr-block 10.0.1.0/24 \
+aws ec2 create-subnet /
+    --vpc-id vpc-12345678 /
+    --cidr-block 10.0.1.0/24 /
     --availability-zone ap-northeast-2a
 
 # 인터넷 게이트웨이 연결
 aws ec2 create-internet-gateway
-aws ec2 attach-internet-gateway \
-    --vpc-id vpc-12345678 \
+aws ec2 attach-internet-gateway /
+    --vpc-id vpc-12345678 /
     --internet-gateway-id igw-12345678
 ```
 
@@ -98,14 +93,14 @@ aws ec2 attach-internet-gateway \
 aws ec2 create-route-table --vpc-id vpc-12345678
 
 # 인터넷 라우트 추가
-aws ec2 create-route \
-    --route-table-id rtb-12345678 \
-    --destination-cidr-block 0.0.0.0/0 \
+aws ec2 create-route /
+    --route-table-id rtb-12345678 /
+    --destination-cidr-block 0.0.0.0/0 /
     --gateway-id igw-12345678
 
 # 서브넷 연결
-aws ec2 associate-route-table \
-    --subnet-id subnet-12345678 \
+aws ec2 associate-route-table /
+    --subnet-id subnet-12345678 /
     --route-table-id rtb-12345678
 ```
 
@@ -124,20 +119,20 @@ aws ec2 associate-route-table \
 [1. VPC 및 서브넷](#1-vpc-및-서브넷)
 ```bash
 # VPC 생성
-gcloud compute networks create bootcamp-vpc \
-    --subnet-mode=custom \
+gcloud compute networks create bootcamp-vpc /
+    --subnet-mode=custom /
     --bgp-routing-mode=regional
 
 # 서브넷 생성
-gcloud compute networks subnets create subnet-asia-northeast3 \
-    --network=bootcamp-vpc \
-    --region=asia-northeast3 \
+gcloud compute networks subnets create subnet-asia-northeast3 /
+    --network=bootcamp-vpc /
+    --region=asia-northeast3 /
     --range=10.0.1.0/24
 
 # 방화벽 규칙 생성
-gcloud compute firewall-rules create allow-ssh \
-    --network=bootcamp-vpc \
-    --allow=tcp:22 \
+gcloud compute firewall-rules create allow-ssh /
+    --network=bootcamp-vpc /
+    --allow=tcp:22 /
     --source-ranges=0.0.0.0/0
 ```
 
@@ -146,16 +141,16 @@ gcloud compute firewall-rules create allow-ssh \
 [2. 방화벽 규칙](#2-방화벽-규칙)
 ```bash
 # HTTP 허용
-gcloud compute firewall-rules create allow-http \
-    --network=bootcamp-vpc \
-    --allow=tcp:80 \
-    --source-ranges=0.0.0.0/0 \
+gcloud compute firewall-rules create allow-http /
+    --network=bootcamp-vpc /
+    --allow=tcp:80 /
+    --source-ranges=0.0.0.0/0 /
     --target-tags=http-server
 
 # 내부 통신 허용
-gcloud compute firewall-rules create allow-internal \
-    --network=bootcamp-vpc \
-    --allow=tcp,udp,icmp \
+gcloud compute firewall-rules create allow-internal /
+    --network=bootcamp-vpc /
+    --allow=tcp,udp,icmp /
     --source-ranges=10.0.0.0/16
 ```
 
@@ -174,23 +169,23 @@ gcloud compute firewall-rules create allow-internal \
 [1. 보안 그룹 (Security Groups)](#1-보안-그룹-security-groups)
 ```bash
 # 보안 그룹 생성
-aws ec2 create-security-group \
-    --group-name web-sg \
-    --description "Web server security group" \
+aws ec2 create-security-group /
+    --group-name web-sg /
+    --description "Web server security group" /
     --vpc-id vpc-12345678
 
 # SSH 허용 규칙
-aws ec2 authorize-security-group-ingress \
-    --group-id sg-12345678 \
-    --protocol tcp \
-    --port 22 \
+aws ec2 authorize-security-group-ingress /
+    --group-id sg-12345678 /
+    --protocol tcp /
+    --port 22 /
     --cidr 0.0.0.0/0
 
 # HTTP 허용 규칙
-aws ec2 authorize-security-group-ingress \
-    --group-id sg-12345678 \
-    --protocol tcp \
-    --port 80 \
+aws ec2 authorize-security-group-ingress /
+    --group-id sg-12345678 /
+    --protocol tcp /
+    --port 80 /
     --cidr 0.0.0.0/0
 ```
 
@@ -202,22 +197,22 @@ aws ec2 authorize-security-group-ingress \
 aws ec2 create-network-acl --vpc-id vpc-12345678
 
 # 인바운드 규칙 (SSH)
-aws ec2 create-network-acl-entry \
-    --network-acl-id acl-12345678 \
-    --ingress \
-    --rule-number 100 \
-    --protocol tcp \
-    --port-range From=22,To=22 \
-    --cidr-block 0.0.0.0/0 \
+aws ec2 create-network-acl-entry /
+    --network-acl-id acl-12345678 /
+    --ingress /
+    --rule-number 100 /
+    --protocol tcp /
+    --port-range From=22,To=22 /
+    --cidr-block 0.0.0.0/0 /
     --rule-action allow
 
 # 아웃바운드 규칙
-aws ec2 create-network-acl-entry \
-    --network-acl-id acl-12345678 \
-    --egress \
-    --rule-number 100 \
-    --protocol -1 \
-    --cidr-block 0.0.0.0/0 \
+aws ec2 create-network-acl-entry /
+    --network-acl-id acl-12345678 /
+    --egress /
+    --rule-number 100 /
+    --protocol -1 /
+    --cidr-block 0.0.0.0/0 /
     --rule-action allow
 ```
 
@@ -236,23 +231,23 @@ aws ec2 create-network-acl-entry \
 [1. 기본 방화벽 규칙](#1-기본-방화벽-규칙)
 ```bash
 # 기본 SSH 규칙
-gcloud compute firewall-rules create default-allow-ssh \
-    --network=default \
-    --allow=tcp:22 \
+gcloud compute firewall-rules create default-allow-ssh /
+    --network=default /
+    --allow=tcp:22 /
     --source-ranges=0.0.0.0/0
 
 # 기본 HTTP 규칙
-gcloud compute firewall-rules create default-allow-http \
-    --network=default \
-    --allow=tcp:80 \
-    --source-ranges=0.0.0.0/0 \
+gcloud compute firewall-rules create default-allow-http /
+    --network=default /
+    --allow=tcp:80 /
+    --source-ranges=0.0.0.0/0 /
     --target-tags=http-server
 
 # 기본 HTTPS 규칙
-gcloud compute firewall-rules create default-allow-https \
-    --network=default \
-    --allow=tcp:443 \
-    --source-ranges=0.0.0.0/0 \
+gcloud compute firewall-rules create default-allow-https /
+    --network=default /
+    --allow=tcp:443 /
+    --source-ranges=0.0.0.0/0 /
     --target-tags=https-server
 ```
 
@@ -261,16 +256,16 @@ gcloud compute firewall-rules create default-allow-https \
 [2. 커스텀 방화벽 규칙](#2-커스텀-방화벽-규칙)
 ```bash
 # 특정 IP에서만 접근 허용
-gcloud compute firewall-rules create restricted-ssh \
-    --network=bootcamp-vpc \
-    --allow=tcp:22 \
+gcloud compute firewall-rules create restricted-ssh /
+    --network=bootcamp-vpc /
+    --allow=tcp:22 /
     --source-ranges=203.0.113.0/24
 
 # 특정 태그가 있는 인스턴스만 대상
-gcloud compute firewall-rules create app-server-access \
-    --network=bootcamp-vpc \
-    --allow=tcp:8080 \
-    --source-tags=web-server \
+gcloud compute firewall-rules create app-server-access /
+    --network=bootcamp-vpc /
+    --allow=tcp:8080 /
+    --source-tags=web-server /
     --target-tags=app-server
 ```
 
@@ -289,16 +284,16 @@ gcloud compute firewall-rules create app-server-access \
 [1. 라우팅 테이블 구성](#1-라우팅-테이블-구성)
 ```bash
 # 메인 라우팅 테이블
-aws ec2 describe-route-tables \
+aws ec2 describe-route-tables /
     --filters "Name=vpc-id,Values=vpc-12345678"
 
 # 커스텀 라우팅 테이블 생성
 aws ec2 create-route-table --vpc-id vpc-12345678
 
 # NAT 게이트웨이 라우트
-aws ec2 create-route \
-    --route-table-id rtb-12345678 \
-    --destination-cidr-block 0.0.0.0/0 \
+aws ec2 create-route /
+    --route-table-id rtb-12345678 /
+    --destination-cidr-block 0.0.0.0/0 /
     --nat-gateway-id nat-12345678
 ```
 
@@ -307,8 +302,8 @@ aws ec2 create-route \
 [2. NAT 게이트웨이](#2-nat-게이트웨이)
 ```bash
 # NAT 게이트웨이 생성
-aws ec2 create-nat-gateway \
-    --subnet-id subnet-12345678 \
+aws ec2 create-nat-gateway /
+    --subnet-id subnet-12345678 /
     --allocation-id eipalloc-12345678
 
 # Elastic IP 할당
@@ -330,14 +325,14 @@ aws ec2 allocate-address --domain vpc
 [1. 자동 라우팅](#1-자동-라우팅)
 ```bash
 # VPC 생성 시 라우팅 모드 설정
-gcloud compute networks create bootcamp-vpc \
-    --subnet-mode=custom \
+gcloud compute networks create bootcamp-vpc /
+    --subnet-mode=custom /
     --bgp-routing-mode=regional
 
 # 커스텀 라우팅 테이블
-gcloud compute routes create internet-route \
-    --network=bootcamp-vpc \
-    --destination-range=0.0.0.0/0 \
+gcloud compute routes create internet-route /
+    --network=bootcamp-vpc /
+    --destination-range=0.0.0.0/0 /
     --next-hop-gateway=default-internet-gateway
 ```
 
@@ -346,14 +341,14 @@ gcloud compute routes create internet-route \
 [2. Cloud NAT](#2-cloud-nat)
 ```bash
 # Cloud NAT 생성
-gcloud compute routers create nat-router \
-    --network=bootcamp-vpc \
+gcloud compute routers create nat-router /
+    --network=bootcamp-vpc /
     --region=asia-northeast3
 
-gcloud compute routers nats create nat-config \
-    --router=nat-router \
-    --region=asia-northeast3 \
-    --nat-all-subnet-ip-ranges \
+gcloud compute routers nats create nat-config /
+    --router=nat-router /
+    --region=asia-northeast3 /
+    --nat-all-subnet-ip-ranges /
     --source-subnetwork-ip-ranges-to-nat=ALL_SUBNETWORKS_ALL_IP_RANGES
 ```
 
@@ -372,19 +367,19 @@ gcloud compute routers nats create nat-config \
 [1. VPN Gateway](#1-vpn-gateway)
 ```bash
 # VPN Gateway 생성
-aws ec2 create-vpn-gateway \
-    --type ipsec.1 \
+aws ec2 create-vpn-gateway /
+    --type ipsec.1 /
     --tag-specifications 'ResourceType=vpn-gateway,Tags=[{Key=Name,Value=BootcampVPN}]'
 
 # VPN Gateway를 VPC에 연결
-aws ec2 attach-vpn-gateway \
-    --vpc-id vpc-12345678 \
+aws ec2 attach-vpn-gateway /
+    --vpc-id vpc-12345678 /
     --vpn-gateway-id vgw-12345678
 
 # Customer Gateway 생성
-aws ec2 create-customer-gateway \
-    --bgp-asn 65000 \
-    --public-ip 203.0.113.1 \
+aws ec2 create-customer-gateway /
+    --bgp-asn 65000 /
+    --public-ip 203.0.113.1 /
     --type ipsec.1
 ```
 
@@ -393,10 +388,10 @@ aws ec2 create-customer-gateway \
 [2. VPN 연결](#2-vpn-연결)
 ```bash
 # VPN 연결 생성
-aws ec2 create-vpn-connection \
-    --customer-gateway-id cgw-12345678 \
-    --vpn-gateway-id vgw-12345678 \
-    --type ipsec.1 \
+aws ec2 create-vpn-connection /
+    --customer-gateway-id cgw-12345678 /
+    --vpn-gateway-id vgw-12345678 /
+    --type ipsec.1 /
     --options '{"StaticRoutesOnly":true}'
 ```
 
@@ -415,12 +410,12 @@ aws ec2 create-vpn-connection \
 [1. VPN Gateway](#1-vpn-gateway)
 ```bash
 # VPN Gateway 생성
-gcloud compute vpn-gateways create bootcamp-vpn-gateway \
-    --network=bootcamp-vpc \
+gcloud compute vpn-gateways create bootcamp-vpn-gateway /
+    --network=bootcamp-vpc /
     --region=asia-northeast3
 
 # 외부 IP 주소 예약
-gcloud compute addresses create vpn-ip \
+gcloud compute addresses create vpn-ip /
     --region=asia-northeast3
 ```
 
@@ -429,12 +424,12 @@ gcloud compute addresses create vpn-ip \
 [2. VPN 터널](#2-vpn-터널)
 ```bash
 # VPN 터널 생성
-gcloud compute vpn-tunnels create bootcamp-tunnel \
-    --peer-address=203.0.113.1 \
-    --shared-secret=SECRET_KEY \
-    --local-traffic-selector=10.0.0.0/16 \
-    --remote-traffic-selector=192.168.0.0/16 \
-    --vpn-gateway=bootcamp-vpn-gateway \
+gcloud compute vpn-tunnels create bootcamp-tunnel /
+    --peer-address=203.0.113.1 /
+    --shared-secret=SECRET_KEY /
+    --local-traffic-selector=10.0.0.0/16 /
+    --remote-traffic-selector=192.168.0.0/16 /
+    --vpn-gateway=bootcamp-vpn-gateway /
     --region=asia-northeast3
 ```
 
@@ -669,32 +664,29 @@ Cloud SQL
 ## 참고 자료
 
 [참고 자료](#참고-자료)
-- [AWS VPC 사용자 가이드](https://docs.aws.amazon.com/vpc/latest/userguide/)
-- [GCP VPC 문서](https://cloud.google.com/vpc/docs)
-- [AWS VPC 가격](https://aws.amazon.com/vpc/pricing/)
-- [GCP VPC 가격](https://cloud.google.com/vpc/pricing)
-- [AWS VPC 모범 사례](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.html)
-- [GCP VPC 모범 사례](https://cloud.google.com/vpc/docs/vpc-best-practices)
+- [AWS VPC 사용자 가이드](https:///docs.aws.amazon.com/vpc/latest/userguide/)
+- [GCP VPC 문서](https:///cloud.google.com/vpc/docs)
+- [AWS VPC 가격](https:///aws.amazon.com/vpc/pricing/)
+- [GCP VPC 가격](https:///cloud.google.com/vpc/pricing)
+- [AWS VPC 모범 사례](https:///docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.html)
+- [GCP VPC 모범 사례](https:///cloud.google.com/vpc/docs/vpc-best-practices)
 
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 
 [📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[← 이전: Cloud Basic 2일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

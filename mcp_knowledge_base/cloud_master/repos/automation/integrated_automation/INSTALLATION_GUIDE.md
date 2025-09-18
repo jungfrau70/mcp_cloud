@@ -10,7 +10,7 @@
 winget install Amazon.AWSCLI
 
 # 또는 직접 다운로드
-# https://aws.amazon.com/cli/
+# https:///aws.amazon.com/cli/
 ```
 
 #### macOS
@@ -43,7 +43,7 @@ pip install awscli
 winget install Google.CloudSDK
 
 # 또는 직접 다운로드
-# https://cloud.google.com/sdk/docs/install
+# https:///cloud.google.com/sdk/docs/install
 ```
 
 #### macOS
@@ -52,13 +52,13 @@ winget install Google.CloudSDK
 brew install --cask google-cloud-sdk
 
 # 또는 직접 설치
-curl https://sdk.cloud.google.com | bash
+curl https:///sdk.cloud.google.com | bash
 ```
 
 #### Linux
 ```bash
 # Ubuntu/Debian
-curl https://sdk.cloud.google.com | bash
+curl https:///sdk.cloud.google.com | bash
 exec -l $SHELL
 
 # 또는 패키지 매니저 사용
@@ -69,7 +69,7 @@ sudo apt-get install google-cloud-cli
 
 #### Windows
 - Docker Desktop for Windows 다운로드 및 설치
-- https://www.docker.com/products/docker-desktop/
+- https:///www.docker.com/products/docker-desktop/
 
 #### macOS
 - Docker Desktop for Mac 다운로드 및 설치
@@ -102,7 +102,7 @@ sudo usermod -aG docker $USER
 choco install kubernetes-cli
 
 # 또는 직접 다운로드
-# https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/
+# https:///kubernetes.io/docs/tasks/tools/install-kubectl-windows/
 ```
 
 #### macOS
@@ -111,7 +111,7 @@ choco install kubernetes-cli
 brew install kubectl
 
 # 또는 직접 설치
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl"
+curl -LO "https:///dl.k8s.io/release/$(curl -L -s https:///dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl"
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 ```
@@ -119,7 +119,7 @@ sudo mv kubectl /usr/local/bin/
 #### Linux
 ```bash
 # Ubuntu/Debian
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https:///dl.k8s.io/release/$(curl -L -s https:///dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 
@@ -136,7 +136,7 @@ sudo apt-get install -y kubectl
 choco install kubernetes-helm
 
 # 또는 직접 다운로드
-# https://helm.sh/docs/intro/install/
+# https:///helm.sh/docs/intro/install/
 ```
 
 #### macOS
@@ -145,13 +145,13 @@ choco install kubernetes-helm
 brew install helm
 
 # 또는 직접 설치
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl https:///raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 ```
 
 #### Linux
 ```bash
 # 직접 설치
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl https:///raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 # 또는 패키지 매니저 사용
 sudo apt-get install helm
@@ -165,7 +165,7 @@ sudo apt-get install helm
 choco install terraform
 
 # 또는 직접 다운로드
-# https://www.terraform.io/downloads
+# https:///www.terraform.io/downloads
 ```
 
 #### macOS
@@ -174,13 +174,13 @@ choco install terraform
 brew install terraform
 
 # 또는 직접 설치
-# https://www.terraform.io/downloads
+# https:///www.terraform.io/downloads
 ```
 
 #### Linux
 ```bash
 # 직접 설치
-wget https://releases.hashicorp.com/terraform/1.6.0/terraform_1.6.0_linux_amd64.zip
+wget https:///releases.hashicorp.com/terraform/1.6.0/terraform_1.6.0_linux_amd64.zip
 unzip terraform_1.6.0_linux_amd64.zip
 sudo mv terraform /usr/local/bin/
 
@@ -356,18 +356,18 @@ pip install package_name
 ## 📚 추가 리소스
 
 ### 공식 문서
-- [AWS CLI 문서](https://docs.aws.amazon.com/cli/)
-- [Google Cloud CLI 문서](https://cloud.google.com/sdk/docs)
-- [Docker 문서](https://docs.docker.com/)
-- [Kubernetes 문서](https://kubernetes.io/docs/)
-- [Helm 문서](https://helm.sh/docs/)
-- [Terraform 문서](https://www.terraform.io/docs/)
+- [AWS CLI 문서](https:///docs.aws.amazon.com/cli/)
+- [Google Cloud CLI 문서](https:///cloud.google.com/sdk/docs)
+- [Docker 문서](https:///docs.docker.com/)
+- [Kubernetes 문서](https:///kubernetes.io/docs/)
+- [Helm 문서](https:///helm.sh/docs/)
+- [Terraform 문서](https:///www.terraform.io/docs/)
 
 ### 학습 자료
-- [AWS 학습 경로](https://aws.amazon.com/training/)
-- [Google Cloud 학습 경로](https://cloud.google.com/training)
-- [Kubernetes 학습 경로](https://kubernetes.io/docs/tutorials/)
-- [Docker 학습 경로](https://docs.docker.com/get-started/)
+- [AWS 학습 경로](https:///aws.amazon.com/training/)
+- [Google Cloud 학습 경로](https:///cloud.google.com/training)
+- [Kubernetes 학습 경로](https:///kubernetes.io/docs/tutorials/)
+- [Docker 학습 경로](https:///docs.docker.com/get-started/)
 
 ---
 
@@ -394,7 +394,7 @@ pip install package_name
 **통합 자동화**
 
 ## 🔗 관련 과정
-[Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+[Cloud Basic 1일차](/mcp_knowledge_base/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/README.md)
 
 </div>
 
@@ -402,6 +402,6 @@ pip install package_name
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

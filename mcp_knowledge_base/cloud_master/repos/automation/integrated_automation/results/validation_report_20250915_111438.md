@@ -9,17 +9,17 @@
 ### Directory Structure
 
 - **directories**:
-  - ✅ C:\Users\JIH\githubs\mcp_cloud\mcp_knowledge_base\integrated_automation
-  - ✅ C:\Users\JIH\githubs\mcp_cloud\mcp_knowledge_base\integrated_automation\results
-  - ✅ C:\Users\JIH\githubs\mcp_cloud\mcp_knowledge_base\integrated_automation\shared_resources
-  - ✅ C:\Users\JIH\githubs\mcp_cloud\mcp_knowledge_base\integrated_automation\bridge_scripts
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/results
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/shared_resources
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/bridge_scripts
 - **files**:
-  - ✅ C:\Users\JIH\githubs\mcp_cloud\mcp_knowledge_base\integrated_automation\integrated_course_automation.py
-  - ✅ C:\Users\JIH\githubs\mcp_cloud\mcp_knowledge_base\integrated_automation\shared_resource_manager.py
-  - ✅ C:\Users\JIH\githubs\mcp_cloud\mcp_knowledge_base\integrated_automation\integrated_config.json
-  - ✅ C:\Users\JIH\githubs\mcp_cloud\mcp_knowledge_base\integrated_automation\README.md
-  - ✅ C:\Users\JIH\githubs\mcp_cloud\mcp_knowledge_base\integrated_automation\bridge_scripts\basic_to_master_bridge.sh
-  - ✅ C:\Users\JIH\githubs\mcp_cloud\mcp_knowledge_base\integrated_automation\bridge_scripts\master_to_container_bridge.sh
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/integrated_course_automation.py
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/shared_resource_manager.py
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/integrated_config.json
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/README.md
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/bridge_scripts/basic_to_master_bridge.sh
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/bridge_scripts/master_to_container_bridge.sh
 
 ### Course Connections
 
@@ -58,7 +58,7 @@
   - docker: {'installed': True, 'version': 'Docker version 28.3.2, build 578ccf6'}
   - git: {'installed': True, 'version': 'git version 2.45.2.windows.1'}
   - gh: {'installed': True, 'version': 'gh version 2.60.1 (2024-10-25)'}
-  - kubectl: {'installed': False, 'error': "error: unknown flag: --version\nSee 'kubectl --help' for usage.\n"}
+  - kubectl: {'installed': False, 'error': "error: unknown flag: --version/nSee 'kubectl --help' for usage./n"}
   - helm: {'installed': False, 'error': '[WinError 2] 지정된 파일을 찾을 수 없습니다'}
   - terraform: {'installed': True, 'version': 'Terraform v1.10.5'}
 
@@ -100,7 +100,7 @@
 **통합 자동화**
 
 ## 🔗 관련 과정
-[Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+[Cloud Basic 1일차](/mcp_knowledge_base/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/README.md)
 
 </div>
 
@@ -108,6 +108,6 @@
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

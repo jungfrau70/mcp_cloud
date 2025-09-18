@@ -79,7 +79,7 @@
 <details>
 <summary>🌐 웹콘솔 방식</summary>
 
-1. [AWS 홈페이지](https://aws.amazon.com) 접속
+1. [AWS 홈페이지](https:///aws.amazon.com) 접속
 2. "AWS 계정 생성" 클릭
 3. 계정 정보 입력:
    - 이메일 주소
@@ -101,7 +101,7 @@
 brew install awscli
 
 # AWS CLI 설치 (Windows)
-# https://aws.amazon.com/cli/
+# https:///aws.amazon.com/cli/
 
 # 인증 설정
 aws configure
@@ -143,7 +143,7 @@ aws configure
 <details>
 <summary>🌐 웹콘솔 방식</summary>
 
-1. [GCP 홈페이지](https://cloud.google.com) 접속
+1. [GCP 홈페이지](https:///cloud.google.com) 접속
 2. "무료로 시작하기" 클릭
 3. 계정 정보 입력:
    - 이메일 주소
@@ -177,7 +177,7 @@ aws configure
 brew install google-cloud-sdk
 
 # gcloud CLI 설치 (Windows)
-# https://cloud.google.com/sdk/docs/install
+# https:///cloud.google.com/sdk/docs/install
 
 # 인증 설정
 gcloud auth login
@@ -323,10 +323,10 @@ gcloud projects list
 
 [참고 자료](#참고-자료)
 
-- [AWS 공식 문서](https://docs.aws.amazon.com/)
-- [GCP 공식 문서](https://cloud.google.com/docs)
-- [AWS CLI 사용법](https://docs.aws.amazon.com/cli/)
-- [gcloud CLI 사용법](https://cloud.google.com/sdk/docs)
+- [AWS 공식 문서](https:///docs.aws.amazon.com/)
+- [GCP 공식 문서](https:///cloud.google.com/docs)
+- [AWS CLI 사용법](https:///docs.aws.amazon.com/cli/)
+- [gcloud CLI 사용법](https:///cloud.google.com/sdk/docs)
 
 ---
 
@@ -359,8 +359,8 @@ gcloud projects list
 
 [💡 추가 학습 자료](#추가-학습-자료)
 
-- [AWS 공식 문서](https://docs.aws.amazon.com/)
-- [GCP 공식 문서](https://cloud.google.com/docs)
+- [AWS 공식 문서](https:///docs.aws.amazon.com/)
+- [GCP 공식 문서](https:///cloud.google.com/docs)
 - [IAM 사용자 및 권한 관리](/mcp_knowledge_base/cloud_basic/textbook/Day1/iam-basics-guide.md)
 
 ---
@@ -369,8 +369,9 @@ gcloud projects list
 
 ---
 
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

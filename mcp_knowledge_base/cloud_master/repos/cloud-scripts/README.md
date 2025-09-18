@@ -1,16 +1,27 @@
 # 가상머신 생성 스크립트
 
-<div align="center">
+## 🎯 학습 목표
 
-← 이전: Cloud Master 1일차 메인 | [다음: Cloud Master 2일차 →](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+### 핵심 학습 목표
+- **Cloud Master 기초** 클라우드 서비스 이해 및 활용
+- **Cloud Master 실무** 실제 프로젝트 적용 능력 향상
 
-</div>
+### 실습 후 달성할 수 있는 능력
+- ✅ 클라우드 서비스 기본 개념 이해
+- ✅ 실제 환경에서 서비스 배포 및 관리
+- ✅ 문제 해결 및 최적화 능력
+
+### 예상 소요 시간
+- **기초 학습**: 90-120분
+- **실습 진행**: 60-90분
+- **전체 과정**: 3-4시간
+
 
 이 디렉토리는 AWS와 GCP에서 가상머신을 자동으로 생성하는 스크립트들을 포함합니다.
 
 ## 📁 파일 구조
 
-[📁 파일 구조](#-)
+[📁 파일 구조](#파일-구조)
 
 ```
 scripts/
@@ -31,11 +42,11 @@ scripts/
 
 ## 🚀 사용법
 
-[🚀 사용법](#-)
+[🚀 사용법](#사용법)
 
 ### 1. 설정 도우미 사용 (권장)
 
-[1. 설정 도우미 사용 (권장)](#-1.-()))
+[1. 설정 도우미 사용 (권장)](#1-설정-도우미-사용-권장)))
 
 **AWS 설정:**
 ```bash
@@ -70,7 +81,7 @@ chmod +x scripts/gcp-project-cleanup.sh
 
 ### 2. 직접 실행
 
-[2. 직접 실행](#-2.)
+[2. 직접 실행](#2-직접-실행)
 
 **AWS EC2 인스턴스 생성:**
 ```bash
@@ -103,11 +114,11 @@ gcloud config get-value project
 
 ## ⚙️ 설정 변경
 
-[⚙️ 설정 변경](#-)
+[⚙️ 설정 변경](#설정-변경)
 
 ### AWS 스크립트 설정
 
-[AWS 스크립트 설정](#-aws)
+[AWS 스크립트 설정](#aws-스크립트-설정)
 
 `aws-ec2-create.sh` 파일의 상단 변수들을 수정하여 환경에 맞게 조정할 수 있습니다:
 
@@ -121,7 +132,7 @@ AMI_ID="ami-0c02fb55956c7d316"    # AMI ID
 
 ### GCP 스크립트 설정
 
-[GCP 스크립트 설정](#-gcp)
+[GCP 스크립트 설정](#gcp-스크립트-설정)
 
 `gcp-compute-create.sh` 파일의 상단 변수들을 수정하여 환경에 맞게 조정할 수 있습니다:
 
@@ -135,11 +146,11 @@ MACHINE_TYPE="e2-medium"          # 머신 타입
 
 ## 📋 사전 요구사항
 
-[📋 사전 요구사항](#-)
+[📋 사전 요구사항](#사전-요구사항)
 
 ### AWS 사용 시
 
-[AWS 사용 시](#-aws)
+[AWS 사용 시](#aws-사용-시)
 - [ ] AWS CLI 설치 및 설정
 - [ ] AWS 계정 및 적절한 IAM 권한
 - [ ] 기본 VPC 존재 확인
@@ -147,7 +158,7 @@ MACHINE_TYPE="e2-medium"          # 머신 타입
 
 ### GCP 사용 시
 
-[GCP 사용 시](#-gcp)
+[GCP 사용 시](#gcp-사용-시)
 - [ ] Google Cloud CLI 설치 및 설정
 - [ ] GCP 프로젝트 생성 및 설정
 - [ ] Compute Engine API 활성화
@@ -155,7 +166,7 @@ MACHINE_TYPE="e2-medium"          # 머신 타입
 
 #### GCP 프로젝트 설정 방법
 
-[GCP 프로젝트 설정 방법](#-gcp)
+[GCP 프로젝트 설정 방법](#gcp-프로젝트-설정-방법)
 ```bash
 # 1. 프로젝트 목록 확인
 gcloud projects list
@@ -173,11 +184,11 @@ gcloud config set compute/zone asia-northeast3-a
 
 ## 🔧 스크립트 기능
 
-[🔧 스크립트 기능](#-)
+[🔧 스크립트 기능](#스크립트-기능)
 
 ### 공통 기능
 
-[공통 기능](#-)
+[공통 기능](#공통-기능)
 - ✅ 자동 리소스 생성 (VPC, 서브넷, 방화벽 규칙 등)
 - ✅ 중복 생성 방지 (기존 리소스 확인)
 - ✅ **재시작 안전성**: 중단되어도 다시 시작 시 기존 리소스 재사용
@@ -188,7 +199,7 @@ gcloud config set compute/zone asia-northeast3-a
 
 ### AWS 특화 기능
 
-[AWS 특화 기능](#-aws)
+[AWS 특화 기능](#aws-특화-기능)
 - ✅ 보안 그룹 자동 생성 및 규칙 설정
 - ✅ 키 페어 자동 생성
 - ✅ Elastic IP 할당 옵션
@@ -197,7 +208,7 @@ gcloud config set compute/zone asia-northeast3-a
 
 ### GCP 특화 기능
 
-[GCP 특화 기능](#-gcp)
+[GCP 특화 기능](#gcp-특화-기능)
 - ✅ **SSH 키 사전 등록**: 인스턴스 생성 전에 SSH 키를 프로젝트 메타데이터에 등록
 - ✅ VPC 네트워크 및 서브넷 생성
 - ✅ 방화벽 규칙 자동 생성
@@ -208,11 +219,11 @@ gcloud config set compute/zone asia-northeast3-a
 
 ## 🗑️ 리소스 정리
 
-[🗑️ 리소스 정리](#-)
+[🗑️ 리소스 정리](#리소스-정리)
 
 ### 자동 정리 스크립트 (권장)
 
-[자동 정리 스크립트 (권장)](#-()))
+[자동 정리 스크립트 (권장)](#자동-정리-스크립트-권장)))
 
 **AWS 리소스 정리:**
 ```bash
@@ -223,7 +234,7 @@ chmod +x scripts/aws-resource-cleanup.sh
 
 #### AWS 정리 스크립트 기능
 
-[AWS 정리 스크립트 기능](#-aws)
+[AWS 정리 스크립트 기능](#aws-정리-스크립트-기능)
 - ✅ **EC2 인스턴스 삭제**: 실행 중인 모든 인스턴스 종료 및 삭제
 - ✅ **보안 그룹 삭제**: 프로젝트 관련 보안 그룹 삭제
 - ✅ **키 페어 삭제**: AWS 키 페어 및 로컬 키 파일 삭제
@@ -240,7 +251,7 @@ chmod +x scripts/gcp-project-cleanup.sh
 
 ### 수동 정리 (고급 사용자용)
 
-[수동 정리 (고급 사용자용)](#-(-)))
+[수동 정리 (고급 사용자용)](#수동-정리-고급-사용자용)))
 
 **AWS 리소스 삭제:**
 ```bash
@@ -277,11 +288,11 @@ gcloud compute networks delete cloud-deployment-vpc --quiet
 
 ## 🔄 재시작 기능
 
-[🔄 재시작 기능](#-)
+[🔄 재시작 기능](#재시작-기능)
 
 ### 스크립트 중단 시 대응
 
-[스크립트 중단 시 대응](#-)
+[스크립트 중단 시 대응](#스크립트-중단-시-대응)
 스크립트가 중간에 중단되어도 안전하게 다시 시작할 수 있습니다:
 
 ```bash
@@ -292,7 +303,7 @@ gcloud compute networks delete cloud-deployment-vpc --quiet
 
 ### 재시작 시 동작
 
-[재시작 시 동작](#-)
+[재시작 시 동작](#재시작-시-동작)
 1. **기존 리소스 확인**: 이미 생성된 리소스들을 자동으로 감지
 2. **리소스 재사용**: 기존 리소스를 그대로 사용하여 계속 진행
 3. **상태 복구**: 중지된 인스턴스는 자동으로 시작
@@ -300,7 +311,7 @@ gcloud compute networks delete cloud-deployment-vpc --quiet
 
 ### 지원되는 재시작 시나리오
 
-[지원되는 재시작 시나리오](#-)
+[지원되는 재시작 시나리오](#지원되는-재시작-시나리오)
 - ✅ 네트워크 리소스 생성 중 중단
 - ✅ 보안 그룹/방화벽 규칙 생성 중 중단
 - ✅ 인스턴스 생성 중 중단
@@ -309,19 +320,19 @@ gcloud compute networks delete cloud-deployment-vpc --quiet
 
 ## 🔑 SSH 키 관리
 
-[🔑 SSH 키 관리](#-ssh)
+[🔑 SSH 키 관리](#ssh-키-관리)
 
 ### GCP SSH 키 등록 방법
 
-[GCP SSH 키 등록 방법](#-gcp-ssh)
+[GCP SSH 키 등록 방법](#gcp-ssh-키-등록-방법)
 
 GCP VM에 SSH로 접속하려면 공개키를 메타데이터에 등록해야 합니다. 스크립트는 세 가지 방법으로 SSH 키를 등록합니다:
 
-> 📖 **상세 가이드**: [GCP_SSH_KEY_GUIDE.md](/mcp_knowledge_base/mcp_knowledge_base\cloud_master\textbook\Day1\scripts\GCP_SSH_KEY_GUIDE.md)에서 SSH 키 등록 방법과 우선순위에 대한 자세한 설명을 확인하세요.
+> 📖 **상세 가이드**: [GCP_SSH_KEY_GUIDE.md](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/aws-gcp-deployment-guide.md)에서 SSH 키 등록 방법과 우선순위에 대한 자세한 설명을 확인하세요.
 
 #### 1. 자동 등록 (권장)
 
-[1. 자동 등록 (권장)](#-1.-()))
+[1. 자동 등록 (권장)](#1-자동-등록-권장)))
 `gcp-compute-create.sh` 스크립트는 **인스턴스 생성 전에** SSH 키를 자동으로 등록합니다:
 - **OS Login 방식**: Google 계정으로 자동 인증
 - **프로젝트 메타데이터**: 프로젝트 전체 VM에서 사용 가능 (Prerequisite)
@@ -329,7 +340,7 @@ GCP VM에 SSH로 접속하려면 공개키를 메타데이터에 등록해야 �
 
 #### 2. 수동 등록 (문제 해결용)
 
-[2. 수동 등록 (문제 해결용)](#-2.-(-)))
+[2. 수동 등록 (문제 해결용)](#2-수동-등록-문제-해결용)))
 기존 VM에 SSH 키를 추가하려면 `gcp-ssh-key-add.sh` 스크립트를 사용하세요:
 
 ```bash
@@ -339,7 +350,7 @@ GCP VM에 SSH로 접속하려면 공개키를 메타데이터에 등록해야 �
 
 #### 3. SSH 연결 방법
 
-[3. SSH 연결 방법](#-3.-ssh)
+[3. SSH 연결 방법](#3-ssh-연결-방법)
 
 **방법 1: gcloud 명령어 (권장)**
 ```bash
@@ -353,7 +364,7 @@ ssh -i cloud-deployment-key ubuntu@VM_EXTERNAL_IP
 
 ### 키 파일 재사용 기능
 
-[키 파일 재사용 기능](#-)
+[키 파일 재사용 기능](#키-파일-재사용-기능)
 스크립트는 기존 키 파일을 자동으로 감지하고 재사용합니다:
 
 **AWS:**
@@ -369,7 +380,7 @@ ssh -i cloud-deployment-key ubuntu@VM_EXTERNAL_IP
 
 ### 키 파일 명명 규칙
 
-[키 파일 명명 규칙](#-)
+[키 파일 명명 규칙](#키-파일-명명-규칙)
 ```
 cloud-deployment-key       # 개인키 (SSH 연결용)
 cloud-deployment-key.pub   # 공개키 (GCP OS Login용)
@@ -378,7 +389,7 @@ cloud-deployment-key.pem   # 개인키 백업 (호환성)
 
 ### 키 파일 재사용 시나리오
 
-[키 파일 재사용 시나리오](#-)
+[키 파일 재사용 시나리오](#키-파일-재사용-시나리오)
 1. **첫 실행**: 키 파일 생성 및 클라우드에 등록
 2. **재실행**: 기존 키 파일 감지 → 재사용
 3. **손상된 키**: 유효성 검사 실패 → 자동 재생성
@@ -386,11 +397,11 @@ cloud-deployment-key.pem   # 개인키 백업 (호환성)
 
 ## 🐛 문제 해결
 
-[🐛 문제 해결](#-)
+[🐛 문제 해결](#문제-해결)
 
 ### 일반적인 문제
 
-[일반적인 문제](#-)
+[일반적인 문제](#일반적인-문제)
 1. **권한 오류**: CLI 인증 및 권한 확인
 2. **리소스 중복**: 기존 리소스 삭제 후 재실행
 3. **네트워크 오류**: VPC 및 서브넷 설정 확인
@@ -398,7 +409,7 @@ cloud-deployment-key.pem   # 개인키 백업 (호환성)
 
 ### SSH 연결 문제
 
-[SSH 연결 문제](#-ssh)
+[SSH 연결 문제](#ssh-연결-문제)
 1. **Permission denied (publickey)**: SSH 키가 VM에 등록되지 않음
    ```bash
    # 해결 방법: SSH 키 추가 스크립트 실행
@@ -434,13 +445,13 @@ cloud-deployment-key.pem   # 개인키 백업 (호환성)
 
 ### 로그 확인
 
-[로그 확인](#-)
+[로그 확인](#로그-확인)
 - AWS: CloudTrail 및 EC2 콘솔 로그
 - GCP: Cloud Logging 및 Compute Engine 로그
 
 ## 📞 지원
 
-[📞 지원](#-)
+[📞 지원](#지원)
 
 문제가 발생하면 다음을 확인하세요:
 1. CLI 설정 및 인증 상태
@@ -450,29 +461,26 @@ cloud-deployment-key.pem   # 개인키 백업 (호환성)
 
 ## 📝 라이선스
 
-[📝 라이선스](#-)
+[📝 라이선스](#라이선스)
 
 이 스크립트들은 MCP Cloud 프로젝트의 일부로 MIT 라이선스 하에 제공됩니다.
 
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 
-[📧 연락처](#-)
+[📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[다음: Cloud Master 2일차 →](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

@@ -94,10 +94,10 @@ AWS와 GCP의 기본 서비스들을 차근차근 배워보며, 실무에서 바
 ### 2️⃣ 환경 설정
 ```bash
 # AWS CLI 설치 (Windows)
-# https://aws.amazon.com/cli/ 에서 다운로드
+# https:///aws.amazon.com/cli/ 에서 다운로드
 
 # GCP CLI 설치 (Windows)
-# https://cloud.google.com/sdk/docs/install 에서 다운로드
+# https:///cloud.google.com/sdk/docs/install 에서 다운로드
 ```
 
 ### 3️⃣ 첫 번째 실습 시작
@@ -117,9 +117,9 @@ AWS와 GCP의 기본 서비스들을 차근차근 배워보며, 실무에서 바
 - [Azure 계정 생성](/mcp_knowledge_base/cloud_basic/accounts/Azure계정가입.md)
 
 ### 🛠️ 설치 가이드
-- [AWS CLI 설치](/mcp_knowledge_base/cloud_basic/install/install_aws_cli.md)
-- [GCP CLI 설치](/mcp_knowledge_base/cloud_basic/install/install_gcp_cli.md)
-- [Azure CLI 설치](/mcp_knowledge_base/cloud_basic/install/install_azure_cli.md)
+- [AWS CLI 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_aws_cli.md)
+- [GCP CLI 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_glcoud_cli.md)
+- [Azure CLI 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_azure_cli.md)
 
 ## ✅ 학습 체크리스트
 
@@ -155,12 +155,10 @@ AWS와 GCP의 기본 서비스들을 차근차근 배워보며, 실무에서 바
 
 ## 🧭 네비게이션
 
+
+
 <div align="center">
 
-[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | 
-[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
-[🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-[📅 Day1 시작하기](mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

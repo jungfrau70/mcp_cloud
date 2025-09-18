@@ -1,10 +1,5 @@
 # 보안 정책 및 네트워크 정책 가이드
 
-<div align="center">
-
-[← 이전: Cloud Container 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 🎯 학습 목표
 
@@ -231,10 +226,10 @@ spec:
 [PSP 활성화 (GKE)](#psp-활성화-gke)
 ```bash
 # GKE 클러스터에 PSP 활성화
-gcloud container clusters create secure-cluster \
-  --zone asia-northeast3-a \
-  --num-nodes 3 \
-  --machine-type e2-medium \
+gcloud container clusters create secure-cluster /
+  --zone asia-northeast3-a /
+  --num-nodes 3 /
+  --machine-type e2-medium /
   --enable-pod-security-policy
 ```
 
@@ -243,12 +238,12 @@ gcloud container clusters create secure-cluster \
 [PSP 활성화 (EKS)](#psp-활성화-eks)
 ```bash
 # EKS 클러스터에 PSP 활성화
-eksctl create cluster \
-  --name secure-cluster \
-  --region ap-northeast-2 \
-  --nodegroup-name workers \
-  --node-type t3.medium \
-  --nodes 3 \
+eksctl create cluster /
+  --name secure-cluster /
+  --region ap-northeast-2 /
+  --nodegroup-name workers /
+  --node-type t3.medium /
+  --nodes 3 /
   --enable-pod-security-policy
 ```
 
@@ -1003,9 +998,9 @@ kubectl auth can-i delete pods --as=system:serviceaccount:container-demo:contain
 ### 공식 문서
 
 [공식 문서](#공식-문서)
-- [Kubernetes 보안 공식 문서](https://kubernetes.io/docs/concepts/security/)
-- [Network Policy 공식 문서](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
-- [RBAC 공식 문서](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
+- [Kubernetes 보안 공식 문서](https:///kubernetes.io/docs/concepts/security/)
+- [Network Policy 공식 문서](https:///kubernetes.io/docs/concepts/services-networking/network-policies/)
+- [RBAC 공식 문서](https:///kubernetes.io/docs/reference/access-authn-authz/rbac/)
 
 ### 추가 학습 자료
 
@@ -1021,22 +1016,19 @@ kubectl auth can-i delete pods --as=system:serviceaccount:container-demo:contain
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 
 [📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 1일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

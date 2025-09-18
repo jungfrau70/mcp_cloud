@@ -1,21 +1,16 @@
 # Google Cloud CLI 설치 가이드
 
-<div align="center">
-
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 Google Cloud CLI(gcloud)는 Google Cloud Platform 서비스와 상호작용하기 위한 명령줄 도구입니다. 이 가이드는 다양한 운영체제에서 Google Cloud CLI를 설치하는 방법을 설명합니다.
 
 ## 목차
-- [Windows 설치](#-windows)
-- [macOS 설치](#-macos)
-- [Linux 설치](#-linux)
-- [Docker를 사용한 설치](#-docker)
-- [설치 확인](#-)
-- [기본 설정](#-)
-- [문제 해결](#-)
+- [Windows 설치](#windows-설치)
+- [macOS 설치](#macos-설치)
+- [Linux 설치](#linux-설치)
+- [Docker를 사용한 설치](#docker를-사용한-설치)
+- [설치 확인](#설치-확인)
+- [기본 설정](#기본-설정)
+- [문제 해결](#문제-해결)
 
 ## Windows 설치
 
@@ -24,13 +19,13 @@ Google Cloud CLI(gcloud)는 Google Cloud Platform 서비스와 상호작용하�
 1. **Google Cloud CLI 설치 프로그램 다운로드**
    ```bash
    # 최신 버전 다운로드
-   https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe
+   https:///dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe
    ```
 
 2. **설치 실행**
    - 다운로드한 설치 프로그램을 더블클릭하여 실행
    - 설치 마법사의 지시를 따름
-   - 기본 설치 경로: `C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\`
+   - 기본 설치 경로: `C:/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/`
 
 3. **PATH 확인**
    - 설치 후 자동으로 PATH에 추가됨
@@ -40,8 +35,8 @@ Google Cloud CLI(gcloud)는 Google Cloud Platform 서비스와 상호작용하�
 
 ```powershell
 # PowerShell을 관리자 권한으로 실행
-(New-Object Net.WebClient).DownloadFile("https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe", "$env:Temp\GoogleCloudSDKInstaller.exe")
-& "$env:Temp\GoogleCloudSDKInstaller.exe" /S
+(New-Object Net.WebClient).DownloadFile("https:///dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe", "$env:Temp/GoogleCloudSDKInstaller.exe")
+& "$env:Temp/GoogleCloudSDKInstaller.exe" /S
 ```
 
 ### 방법 3: Chocolatey 사용
@@ -61,14 +56,14 @@ winget install Google.CloudSDK
 1. **ZIP 파일 다운로드**
    ```bash
    # Windows용 ZIP 파일
-   https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-cli-<version>-windows-x86_64.zip
+   https:///dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-cli-<version>-windows-x86_64.zip
    ```
 
 2. **압축 해제 및 설치**
    ```cmd
-   # C:\google-cloud-sdk에 압축 해제
+   # C:/google-cloud-sdk에 압축 해제
    # 설치 스크립트 실행
-   C:\google-cloud-sdk\install.bat
+   C:/google-cloud-sdk/install.bat
    ```
 
 ## macOS 설치
@@ -89,7 +84,7 @@ winget install Google.CloudSDK
 
 1. **설치 스크립트 다운로드 및 실행**
    ```bash
-   curl https://sdk.cloud.google.com | bash
+   curl https:///sdk.cloud.google.com | bash
    ```
 
 2. **셸 재시작 또는 PATH 추가**
@@ -129,10 +124,10 @@ winget install Google.CloudSDK
 2. **Google Cloud CLI 설치**
    ```bash
    # Google Cloud 공식 리포지토리 추가
-   echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+   echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https:///packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
    
    # Google Cloud 공개 키 추가
-   curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+   curl https:///packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
    
    # 패키지 업데이트 및 설치
    sudo apt update
@@ -147,12 +142,12 @@ winget install Google.CloudSDK
    sudo tee -a /etc/yum.repos.d/google-cloud-sdk.repo << EOM
    [google-cloud-sdk]
    name=Google Cloud SDK
-   baseurl=https://packages.cloud.google.com/yum/repos/cloud-sdk-el7-x86_64
+   baseurl=https:///packages.cloud.google.com/yum/repos/cloud-sdk-el7-x86_64
    enabled=1
    gpgcheck=1
    repo_gpgcheck=1
-   gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
-          https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+   gpgkey=https:///packages.cloud.google.com/yum/doc/yum-key.gpg
+          https:///packages.cloud.google.com/yum/doc/rpm-package-key.gpg
    EOM
    
    sudo yum install google-cloud-cli
@@ -167,7 +162,7 @@ winget install Google.CloudSDK
 ### openSUSE
 
 ```bash
-sudo zypper addrepo https://packages.cloud.google.com/yum/repos/cloud-sdk-opensuse-leap-15.2-x86_64 google-cloud-sdk
+sudo zypper addrepo https:///packages.cloud.google.com/yum/repos/cloud-sdk-opensuse-leap-15.2-x86_64 google-cloud-sdk
 sudo zypper install google-cloud-cli
 ```
 
@@ -181,7 +176,7 @@ sudo pacman -S google-cloud-cli
 
 ```bash
 # 설치 스크립트 다운로드 및 실행
-curl https://sdk.cloud.google.com | bash
+curl https:///sdk.cloud.google.com | bash
 
 # 셸 재시작 또는 PATH 추가
 echo 'source ~/google-cloud-sdk/path.bash.inc' >> ~/.bashrc
@@ -380,7 +375,7 @@ gcloud <command> --verbosity=debug
 gcloud config set core/verbosity debug
 
 # 로그 파일 위치
-# Windows: %APPDATA%\gcloud\logs\
+# Windows: %APPDATA%/gcloud/logs/
 # macOS/Linux: ~/.config/gcloud/logs/
 ```
 
@@ -400,10 +395,10 @@ gcloud config set disable_usage_reporting true
 
 ## 추가 리소스
 
-- [Google Cloud CLI 공식 문서](https://cloud.google.com/sdk/docs)
-- [Google Cloud CLI 명령어 참조](https://cloud.google.com/sdk/gcloud/reference)
-- [Google Cloud CLI 구성](https://cloud.google.com/sdk/docs/configurations)
-- [Google Cloud CLI 컴포넌트](https://cloud.google.com/sdk/docs/components)
+- [Google Cloud CLI 공식 문서](https:///cloud.google.com/sdk/docs)
+- [Google Cloud CLI 명령어 참조](https:///cloud.google.com/sdk/gcloud/reference)
+- [Google Cloud CLI 구성](https:///cloud.google.com/sdk/docs/configurations)
+- [Google Cloud CLI 컴포넌트](https:///cloud.google.com/sdk/docs/components)
 
 ## 버전 관리
 
@@ -428,17 +423,17 @@ gcloud components update --version=VERSION
 
 ```bash
 # 서비스 계정 생성
-gcloud iam service-accounts create my-service-account \
-    --description="Service account for automation" \
+gcloud iam service-accounts create my-service-account /
+    --description="Service account for automation" /
     --display-name="My Service Account"
 
 # 서비스 계정 키 생성
-gcloud iam service-accounts keys create key.json \
+gcloud iam service-accounts keys create key.json /
     --iam-account=my-service-account@PROJECT_ID.iam.gserviceaccount.com
 
 # 서비스 계정에 권한 부여
-gcloud projects add-iam-policy-binding PROJECT_ID \
-    --member="serviceAccount:my-service-account@PROJECT_ID.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding PROJECT_ID /
+    --member="serviceAccount:my-service-account@PROJECT_ID.iam.gserviceaccount.com" /
     --role="roles/compute.instanceAdmin"
 ```
 
@@ -459,12 +454,12 @@ MACHINE_TYPE="e2-micro"
 gcloud config set project $PROJECT_ID
 
 # VM 인스턴스 생성
-gcloud compute instances create $INSTANCE_NAME \
-    --zone=$ZONE \
-    --machine-type=$MACHINE_TYPE \
-    --image-family=ubuntu-2004-lts \
-    --image-project=ubuntu-os-cloud \
-    --boot-disk-size=10GB \
+gcloud compute instances create $INSTANCE_NAME /
+    --zone=$ZONE /
+    --machine-type=$MACHINE_TYPE /
+    --image-family=ubuntu-2004-lts /
+    --image-project=ubuntu-os-cloud /
+    --boot-disk-size=10GB /
     --boot-disk-type=pd-standard
 ```
 
@@ -540,16 +535,13 @@ gcloud auth activate-service-account --key-file=path/to/service-account-key.json
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

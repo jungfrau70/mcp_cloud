@@ -1,10 +1,5 @@
 # 2교시: IAM 사용자 및 권한 관리
 
-<div align="center">
-
-[← 이전: Cloud Basic 1일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 <details>
 <summary>📋 목차</summary>
@@ -174,8 +169,8 @@ aws iam get-user --user-name cloud-student
 aws iam create-group --group-name CloudStudents
 
 # 사용자를 그룹에 추가
-aws iam add-user-to-group \
-  --group-name CloudStudents \
+aws iam add-user-to-group /
+  --group-name CloudStudents /
   --user-name cloud-student
 ```
 
@@ -185,13 +180,13 @@ aws iam add-user-to-group \
 <summary>📋 정책 연결</summary>
 ```bash
 # 기존 정책 연결
-aws iam attach-group-policy \
-  --group-name CloudStudents \
+aws iam attach-group-policy /
+  --group-name CloudStudents /
   --policy-arn arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
 
 # 커스텀 정책 생성
-aws iam create-policy \
-  --policy-name CloudStudentPolicy \
+aws iam create-policy /
+  --policy-name CloudStudentPolicy /
   --policy-document file://policy.json
 ```
 
@@ -290,7 +285,7 @@ aws iam create-policy \
 <summary>🔑 서비스 계정 생성</summary>
 ```bash
 # 서비스 계정 생성
-gcloud iam service-accounts create cloud-student-sa \
+gcloud iam service-accounts create cloud-student-sa /
   --display-name="Cloud Student Service Account"
 
 # 서비스 계정 목록 확인
@@ -303,14 +298,14 @@ gcloud iam service-accounts list
 <summary>🎭 역할 부여</summary>
 ```bash
 # 프로젝트 레벨 역할 부여
-gcloud projects add-iam-policy-binding PROJECT_ID \
-  --member="serviceAccount:cloud-student-sa@PROJECT_ID.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding PROJECT_ID /
+  --member="serviceAccount:cloud-student-sa@PROJECT_ID.iam.gserviceaccount.com" /
   --role="roles/compute.instanceAdmin"
 
 # 리소스 레벨 역할 부여
-gcloud compute instances add-iam-policy-binding INSTANCE_NAME \
-  --zone=ZONE \
-  --member="serviceAccount:cloud-student-sa@PROJECT_ID.iam.gserviceaccount.com" \
+gcloud compute instances add-iam-policy-binding INSTANCE_NAME /
+  --zone=ZONE /
+  --member="serviceAccount:cloud-student-sa@PROJECT_ID.iam.gserviceaccount.com" /
   --role="roles/compute.instanceAdmin"
 ```
 
@@ -320,11 +315,11 @@ gcloud compute instances add-iam-policy-binding INSTANCE_NAME \
 <summary>🔑 키 관리</summary>
 ```bash
 # 서비스 계정 키 생성
-gcloud iam service-accounts keys create key.json \
+gcloud iam service-accounts keys create key.json /
   --iam-account=cloud-student-sa@PROJECT_ID.iam.gserviceaccount.com
 
 # 서비스 계정 인증
-gcloud auth activate-service-account \
+gcloud auth activate-service-account /
   --key-file=key.json
 ```
 
@@ -549,24 +544,24 @@ gcloud projects get-iam-policy PROJECT_ID --flatten="bindings[].members"
 ### 공식 문서
 
 [공식 문서](#공식-문서)
-- [AWS IAM 공식 문서](https://docs.aws.amazon.com/iam/)
-- [GCP IAM 공식 문서](https://cloud.google.com/iam/docs)
-- [AWS IAM 정책 참조](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html)
-- [GCP IAM 역할 참조](https://cloud.google.com/iam/docs/understanding-roles)
+- [AWS IAM 공식 문서](https:///docs.aws.amazon.com/iam/)
+- [GCP IAM 공식 문서](https:///cloud.google.com/iam/docs)
+- [AWS IAM 정책 참조](https:///docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html)
+- [GCP IAM 역할 참조](https:///cloud.google.com/iam/docs/understanding-roles)
 
 ### 유용한 리소스
 
 [유용한 리소스](#유용한-리소스)
-- [AWS IAM 모범 사례](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
-- [GCP IAM 모범 사례](https://cloud.google.com/iam/docs/using-iam-securely)
-- [AWS IAM 정책 시뮬레이터](https://policysim.aws.amazon.com/)
-- [GCP IAM 정책 시뮬레이터](https://cloud.google.com/iam/docs/testing-iam-policies)
+- [AWS IAM 모범 사례](https:///docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
+- [GCP IAM 모범 사례](https:///cloud.google.com/iam/docs/using-iam-securely)
+- [AWS IAM 정책 시뮬레이터](https:///policysim.aws.amazon.com/)
+- [GCP IAM 정책 시뮬레이터](https:///cloud.google.com/iam/docs/testing-iam-policies)
 
 ### 관련 프로젝트
 
 [관련 프로젝트](#관련-프로젝트)
-- [AWS IAM 샘플 프로젝트](https://github.com/aws-samples/aws-iam-examples)
-- [GCP IAM 샘플 프로젝트](https://github.com/GoogleCloudPlatform/iam-examples)
+- [AWS IAM 샘플 프로젝트](https:///github.com/aws-samples/aws-iam-examples)
+- [GCP IAM 샘플 프로젝트](https:///github.com/GoogleCloudPlatform/iam-examples)
 
 </details>
 
@@ -620,8 +615,8 @@ gcloud projects get-iam-policy PROJECT_ID --flatten="bindings[].members"
 
 [💡 추가 학습 자료](#추가-학습-자료)
 
-- [AWS IAM 공식 문서](https://docs.aws.amazon.com/iam/)
-- [GCP IAM 공식 문서](https://cloud.google.com/iam/docs)
+- [AWS IAM 공식 문서](https:///docs.aws.amazon.com/iam/)
+- [GCP IAM 공식 문서](https:///cloud.google.com/iam/docs)
 - [가상머신 서비스 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/vm-services-guide.md)
 
 ---
@@ -631,16 +626,13 @@ gcloud projects get-iam-policy PROJECT_ID --flatten="bindings[].members"
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[← 이전: Cloud Basic 1일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

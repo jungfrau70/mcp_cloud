@@ -5,40 +5,18 @@
 
 ## 🎯 강의 시나리오 (표준 순서)
 
-1. [🎯 학습 목표](#🎯-학습-목표)
-2. [🔧 실습 환경 준비](#🔧-실습-환경-준비)
-3. [✅ 실습 환경 확인](#✅-실습-환경-확인)
-4. [📚 이론 학습](#📚-이론-학습)
-5. [🛠️ 실습 학습](#🛠️-실습-학습)
-6. [🧹 실습 정리](#🧹-실습-정리)
-
-## 🧹 실습 정리
-
-### 자동 정리 (권장)
-```bash
-# Day1 실습 자동 정리
-./mcp_knowledge_base/cloud_master/repos/automation/day1/docker-practice-automation.sh --cleanup
-
-# 또는 수동 정리
-docker stop $(docker ps -aq) 2>/dev/null || true
-docker rm $(docker ps -aq) 2>/dev/null || true
-docker system prune -f
-```
-
-### 정리 확인
-- [ ] 모든 컨테이너 중지 및 삭제
-- [ ] 사용하지 않는 이미지 정리
-- [ ] Docker 볼륨 정리
-- [ ] 네트워크 정리
+1. [🎯 학습 목표](#-학습-목표)
+2. [🔧 실습 환경 준비](#-실습-환경-준비)
+3. [✅ 실습 환경 확인](#-실습-환경-확인)
+4. [📚 이론 학습](#-이론-학습)
+5. [🛠️ 실습 학습](#-실습-학습)
+6. [🧹 실습 정리](#-실습-정리)
 
 ## 📚 참고 자료
 
-1. [📚 문제 해결 및 참고 자료](#📚-문제-해결-및-참고-자료)
-
+1. [📚 문제 해결 및 참고 자료](#-문제-해결-및-참고-자료)
 
 </details>
-
----
 
 ## 🎯 학습 목표
 
@@ -113,12 +91,12 @@ git config --global user.email "your.email@example.com"
 ### 클라우드 계정 설정
 
 #### AWS 계정 설정
-- [AWS 계정 생성 및 설정](/mcp_knowledge_base/cloud_master/accounts/AWS계정가입.md)
+- [AWS 계정 생성 및 설정](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md)
 - IAM 사용자 생성 및 권한 설정
 - EC2 키 페어 생성
 
 #### GCP 계정 설정
-- [GCP 계정 생성 및 설정](/mcp_knowledge_base/cloud_master/accounts/GCP_개인계정가입.md)
+- [GCP 계정 생성 및 설정](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md)
 - 프로젝트 생성 및 활성화
 - 서비스 계정 생성 및 키 다운로드
 
@@ -142,7 +120,7 @@ Docker는 애플리케이션을 컨테이너라는 경량화된, 이식 가능�
 
 #### 컨테이너 vs 가상머신
 
-![Container vs VM Architecture](../images/day1/container-vs-vm.svg)
+!Container vs VM Architecture
 
 | 특징 | 컨테이너 | 가상머신 |
 |------|----------|----------|
@@ -166,7 +144,7 @@ Docker는 애플리케이션을 컨테이너라는 경량화된, 이식 가능�
 
 #### Docker 아키텍처의 핵심 구성요소
 
-![Docker Architecture](../images/day1/docker-architecture.svg)
+!Docker Architecture
 
 - **Docker Engine**: 컨테이너를 실행하는 런타임
 - **Docker Daemon**: 백그라운드에서 실행되는 서비스
@@ -343,7 +321,7 @@ GitHub Actions는 GitHub 저장소에서 직접 CI/CD 워크플로우를 구축�
 - [ ] EC2/Compute Engine 인스턴스 생성 경험
 - [ ] S3/Cloud Storage 버킷 생성 경험
 
-### 실습 환경 확인
+### ✅ 실습 환경 확인
 
 #### 자동 환경 체크 (권장)
 ```bash
@@ -403,39 +381,39 @@ git --version
 
 ### 📖 상세 실습 가이드
 
-- 🔗 [Docker 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/docker-basics.md) - Docker 기본 개념 및 실습
-- 🔗 [Git/GitHub 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/git-github-basics.md) - 버전 관리 및 협업
-- 🔗 [GitHub Actions 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/github-actions-basics.md) - CI/CD 파이프라인 구축
-- 🔗 [VM 배포 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/vm-deployment.md) - AWS EC2, GCP Compute Engine 배포
+- 🔗 [Docker 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/docker-basics.md) - Docker 기본 개념 및 실습
+- 🔗 [Git/GitHub 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/git-github-basics.md) - 버전 관리 및 협업
+- 🔗 [GitHub Actions 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/github-actions-basics.md) - CI/CD 파이프라인 구축
+- 🔗 [VM 배포 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/vm-deployment.md) - AWS EC2, GCP Compute Engine 배포
 
 ### 📚 관련 가이드 문서
 
 #### Docker 관련 가이드
-- 🔗 [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-basic-guide.md) - Docker 기본 개념 및 명령어
-- 🔗 [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
-- 🔗 [Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-compose-guide.md) - 다중 서비스 관리
-- 🔗 [Docker Hub 설정 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-hub-setup-guide.md) - 이미지 저장소 설정
+- 🔗 [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-basic-guide.md) - Docker 기본 개념 및 명령어
+- 🔗 [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
+- 🔗 [Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-compose-guide.md) - 다중 서비스 관리
+- 🔗 [Docker Hub 설정 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-hub-setup-guide.md) - 이미지 저장소 설정
 
 #### GitHub Actions 관련 가이드
-- 🔗 [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/github-actions-guide.md) - CI/CD 파이프라인 구축
-- 🔗 [CI/CD 파이프라인 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/cicd-pipeline-guide.md) - 완전한 CI/CD 파이프라인
+- 🔗 [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-guide.md) - CI/CD 파이프라인 구축
+- 🔗 [CI/CD 파이프라인 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/cicd-pipeline-guide.md) - 완전한 CI/CD 파이프라인
 
 #### 클라우드 배포 가이드
-- 🔗 [AWS/GCP 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/aws-gcp-deployment-guide.md) - 클라우드 배포 전략
-- 🔗 [클라우드 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/cloud-deployment-guide.md) - 일반적인 클라우드 배포
-- 🔗 [AWS/GCP 권한 설정](/mcp_knowledge_base/cloud_master/textbook/Day1/aws-gcp-permissions-setup.md) - IAM 및 서비스 계정 설정
+- 🔗 [AWS/GCP 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/aws-gcp-deployment-guide.md) - 클라우드 배포 전략
+- 🔗 [클라우드 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/cloud-deployment-guide.md) - 일반적인 클라우드 배포
+- 🔗 [AWS/GCP 권한 설정](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/aws-gcp-permissions-setup.md) - IAM 및 서비스 계정 설정
 
 #### 실습 프로젝트
-- 🔗 [My App 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day1/my-app/) - Docker 기반 웹 애플리케이션
-- 🔗 [Actions Demo 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day1/actions-demo/) - GitHub Actions CI/CD 데모
+- 🔗 [My App 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day1/my-app/.dockerignore) - Docker 기반 웹 애플리케이션
+- 🔗 [Actions Demo 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day2/actions-demo/README.md) - GitHub Actions CI/CD 데모
 
 #### 자동화 스크립트
-- 🔗 [AWS 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/) - AWS 리소스 자동 생성
-- 🔗 [GCP 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/) - GCP 리소스 자동 생성
+- 🔗 [AWS 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/aws-ec2-create.sh) - AWS 리소스 자동 생성
+- 🔗 [GCP 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/aws-ec2-create.sh) - GCP 리소스 자동 생성
 - 🔗 [프로젝트 설정 가이드](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/PROJECT_SETUP.md) - 전체 환경 설정
 
 #### 문제 해결
-- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/troubleshooting-guide.md) - 자주 발생하는 문제 해결
+- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md) - 자주 발생하는 문제 해결
 
 ### ⚠️ 실습 주의사항 및 문제 해결
 
@@ -465,25 +443,25 @@ git --version
 
 ### 📚 개념 학습 가이드
 
-- 🔗 [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
-- 🔗 [Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-compose-guide.md) - 다중 서비스 관리
-- 🔗 [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/github-actions-guide.md) - CI/CD 파이프라인 구축
-- 🔗 [AWS & GCP 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/aws-gcp-deployment-guide.md) - 멀티클라우드 배포
+- 🔗 [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
+- 🔗 [Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-compose-guide.md) - 다중 서비스 관리
+- 🔗 [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-guide.md) - CI/CD 파이프라인 구축
+- 🔗 [AWS & GCP 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/aws-gcp-deployment-guide.md) - 멀티클라우드 배포
 
 ### 🛠️ 문제 해결 가이드
 
-- 🔗 [종합 트러블슈팅 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/troubleshooting-guide.md) - Docker, GitHub Actions, AWS/GCP 문제 해결
-- 🔗 [AWS & GCP 권한 설정](/mcp_knowledge_base/cloud_master/textbook/Day1/aws-gcp-permissions-setup.md) - IAM, 서비스 계정 설정
-- 🔗 [CI/CD 파이프라인 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/cicd-pipeline-guide.md) - 전체 자동 배포 파이프라인
-- 🔗 [클라우드 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/cloud-deployment-guide.md) - VM 기반 웹 애플리케이션 배포
+- 🔗 [종합 트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md) - Docker, GitHub Actions, AWS/GCP 문제 해결
+- 🔗 [AWS & GCP 권한 설정](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/aws-gcp-permissions-setup.md) - IAM, 서비스 계정 설정
+- 🔗 [CI/CD 파이프라인 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/cicd-pipeline-guide.md) - 전체 자동 배포 파이프라인
+- 🔗 [클라우드 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/cloud-deployment-guide.md) - VM 기반 웹 애플리케이션 배포
 
 ### 🔗 관련 과정 링크
 
-- 🔗 [Cloud Basic 과정](/mcp_knowledge_base/cloud_basic/README.md) - AWS/GCP 기초 과정
-- 🔗 [Cloud Container 과정](/mcp_knowledge_base/cloud_container/README.md) - Kubernetes 고급 과정
+- 🔗 [Cloud Basic 과정](/mcp_knowledge_base/README.md) - AWS/GCP 기초 과정
+- 🔗 [Cloud Container 과정](/mcp_knowledge_base/README.md) - Kubernetes 고급 과정
 - 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
 - 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/cloud_master/learning-path.md) - Cloud Master 학습 경로
+- 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/learning-path.md) - Cloud Master 학습 경로
 
 </details>
 
@@ -511,7 +489,7 @@ docker exec -it <container> /bin/bash  # 컨테이너 내부 접속
 
 #### Dockerfile 기본 구조
 
-![Dockerfile Structure](../images/day1/dockerfile-structure.svg)
+!Dockerfile Structure
 
 ```dockerfile
 # 베이스 이미지
@@ -582,10 +560,10 @@ sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
 
 # Docker 공식 GPG 키 추가
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+curl -fsSL https:///download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 # Docker 저장소 추가
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https:///download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 # Docker 설치
 sudo apt-get update
@@ -651,9 +629,9 @@ mkdir -p ~/nginx-html
 echo "<h1>Hello from Docker Volume!</h1>" > ~/nginx-html/index.html
 
 # 볼륨 마운트로 Nginx 실행
-docker run -d --name nginx-volume \
-  -p 8081:80 \
-  -v ~/nginx-html:/usr/share/nginx/html \
+docker run -d --name nginx-volume /
+  -p 8081:80 /
+  -v ~/nginx-html:/usr/share/nginx/html /
   nginx
 
 # 브라우저에서 http://localhost:8081 접속 확인
@@ -863,7 +841,7 @@ git branch -d feature/new-feature
 [GitHub 저장소 생성 및 연결](#github-저장소-생성-및-연결)
 ```bash
 # 원격 저장소 추가
-git remote add origin https://github.com/[username]/[repository_name].git
+git remote add origin https:///github.com/[username]/[repository_name].git
 
 # 원격 저장소 확인
 git remote -v
@@ -929,7 +907,7 @@ git push
 
 ### CI/CD 파이프라인
 
-![CI/CD Pipeline](../images/day1/cicd-pipeline.svg)
+!CI/CD Pipeline
 
 - **CI (Continuous Integration)**: 코드 변경사항을 자동으로 빌드하고 테스트
 - **CD (Continuous Deployment)**: 테스트 통과한 코드를 자동으로 배포
@@ -1458,13 +1436,13 @@ jobs:
 
 ```bash
 # AWS CLI로 EC2 인스턴스 생성
-aws ec2 run-instances \
-  --image-id ami-0ae2c887094315bed \
-  --count 1 \
-  --instance-type t3.micro \
-  --key-name my-key \
-  --security-group-ids sg-12345678 \
-  --subnet-id subnet-12345678 \
+aws ec2 run-instances /
+  --image-id ami-0ae2c887094315bed /
+  --count 1 /
+  --instance-type t3.micro /
+  --key-name my-key /
+  --security-group-ids sg-12345678 /
+  --subnet-id subnet-12345678 /
   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=my-web-app}]'
 ```
 
@@ -1482,7 +1460,7 @@ sudo systemctl enable docker
 sudo usermod -a -G docker ec2-user
 
 # 애플리케이션 클론
-git clone https://github.com/[username]/my-app.git
+git clone https:///github.com/[username]/my-app.git
 cd my-app
 
 # Docker Compose로 실행
@@ -1498,12 +1476,12 @@ docker-compose up -d
 
 ```bash
 # gcloud CLI로 인스턴스 생성
-gcloud compute instances create my-web-app \
-  --zone=asia-northeast3-a \
-  --machine-type=e2-micro \
-  --image-family=ubuntu-2004-lts \
-  --image-project=ubuntu-os-cloud \
-  --tags=http-server,https-server \
+gcloud compute instances create my-web-app /
+  --zone=asia-northeast3-a /
+  --machine-type=e2-micro /
+  --image-family=ubuntu-2004-lts /
+  --image-project=ubuntu-os-cloud /
+  --tags=http-server,https-server /
   --metadata-from-file startup-script=startup-script.sh
 ```
 
@@ -1512,15 +1490,15 @@ gcloud compute instances create my-web-app \
 [방화벽 규칙 설정](#방화벽-규칙-설정)
 ```bash
 # HTTP 트래픽 허용
-gcloud compute firewall-rules create allow-http \
-  --allow tcp:80 \
-  --source-ranges 0.0.0.0/0 \
+gcloud compute firewall-rules create allow-http /
+  --allow tcp:80 /
+  --source-ranges 0.0.0.0/0 /
   --target-tags http-server
 
 # HTTPS 트래픽 허용
-gcloud compute firewall-rules create allow-https \
-  --allow tcp:443 \
-  --source-ranges 0.0.0.0/0 \
+gcloud compute firewall-rules create allow-https /
+  --allow tcp:443 /
+  --source-ranges 0.0.0.0/0 /
   --target-tags https-server
 ```
 
@@ -1738,7 +1716,6 @@ ssh -T git@github.com
 ```
 
 </details>
-
 </details>
 
 <details>
@@ -1746,25 +1723,25 @@ ssh -T git@github.com
 
 ### 공식 문서
 
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Git 공식 문서](https://git-scm.com/doc)
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [AWS EC2 공식 문서](https://docs.aws.amazon.com/ec2/)
-- [GCP Compute Engine 공식 문서](https://cloud.google.com/compute/docs)
+- [Docker 공식 문서](https:///docs.docker.com/)
+- [Git 공식 문서](https:///git-scm.com/doc)
+- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
+- [AWS EC2 공식 문서](https:///docs.aws.amazon.com/ec2/)
+- [GCP Compute Engine 공식 문서](https:///cloud.google.com/compute/docs)
 
 ### 유용한 리소스
 
-- [Docker Hub](https://hub.docker.com/)
-- [GitHub Learning Lab](https://lab.github.com/)
-- [AWS Free Tier](https://aws.amazon.com/free/)
-- [GCP Free Tier](https://cloud.google.com/free)
+- [Docker Hub](https:///hub.docker.com/)
+- [GitHub Learning Lab](https:///lab.github.com/)
+- [AWS Free Tier](https:///aws.amazon.com/free/)
+- [GCP Free Tier](https:///cloud.google.com/free)
 
 ### 관련 프로젝트
 
-- [Docker 샘플 프로젝트](https://github.com/docker/awesome-compose)
-- [GitHub Actions 샘플](https://github.com/actions/starter-workflows)
-- [AWS 샘플 프로젝트](https://github.com/aws-samples)
-- [GCP 샘플 프로젝트](https://github.com/GoogleCloudPlatform)
+- [Docker 샘플 프로젝트](https:///github.com/docker/awesome-compose)
+- [GitHub Actions 샘플](https:///github.com/actions/starter-workflows)
+- [AWS 샘플 프로젝트](https:///github.com/aws-samples)
+- [GCP 샘플 프로젝트](https:///github.com/GoogleCloudPlatform)
 
 </details>
 
@@ -1786,6 +1763,26 @@ ssh -T git@github.com
 4. **모니터링**: 기본적인 로그 및 모니터링 설정
 
 </details>
+
+## 🧹 실습 정리
+
+### 자동 정리 (권장)
+```bash
+# Day1 실습 자동 정리
+./mcp_knowledge_base/cloud_master/repos/automation/day1/docker-practice-automation.sh --cleanup
+
+# 또는 수동 정리
+docker stop $(docker ps -aq) 2>/dev/null || true
+docker rm $(docker ps -aq) 2>/dev/null || true
+docker system prune -f
+```
+
+### 정리 확인
+- [ ] 모든 컨테이너 중지 및 삭제
+- [ ] 사용하지 않는 이미지 정리
+- [ ] Docker 볼륨 정리
+- [ ] 네트워크 정리
+
 
 ---
 
@@ -1834,11 +1831,11 @@ ssh -T git@github.com
 
 ### 💡 추가 학습 자료
 
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Git 공식 문서](https://git-scm.com/doc)
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
+- [Docker 공식 문서](https:///docs.docker.com/)
+- [Git 공식 문서](https:///git-scm.com/doc)
+- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
 - Cloud Master 2일차
-- [피드백 제출](https://forms.gle/example)
+- [피드백 제출](https:///forms.gle/example)
 
 ---
 
@@ -1847,20 +1844,16 @@ ssh -T git@github.com
 
 ## 🧭 네비게이션
 
+
+
+
+
+
+
+
+
 <div align="center">
 
-[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | 
-[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
-[🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-[📅 Day1 시작하기](mcp_knowledge_base/cloud_master/textbook/Day1/README.md) |
-[📅 Day2 시작하기](mcp_knowledge_base/cloud_master/textbook/Day2/README.md) |
-[📅 Day3 시작하기](mcp_knowledge_base/cloud_master/textbook/Day3/README.md)
+[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>
-
-
-
-
-
-

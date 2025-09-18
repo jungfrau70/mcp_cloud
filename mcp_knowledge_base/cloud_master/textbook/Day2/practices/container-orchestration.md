@@ -202,10 +202,10 @@ appVersion: "1.0.0"
 dependencies:
 - name: postgresql
   version: "11.6.12"
-  repository: "https://charts.bitnami.com/bitnami"
+  repository: "https:///charts.bitnami.com/bitnami"
 - name: redis
   version: "16.8.5"
-  repository: "https://charts.bitnami.com/bitnami"
+  repository: "https:///charts.bitnami.com/bitnami"
 ```
 
 #### values.yaml
@@ -324,7 +324,7 @@ helm uninstall my-app
 #### Istio 설치
 ```bash
 # Istio 설치
-curl -L https://istio.io/downloadIstio | sh -
+curl -L https:///istio.io/downloadIstio | sh -
 cd istio-*
 export PATH=$PWD/bin:$PATH
 
@@ -429,13 +429,13 @@ spec:
 #### Prometheus Operator 설치
 ```bash
 # Prometheus Operator 설치
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add prometheus-community https:///prometheus-community.github.io/helm-charts
 helm repo update
 
 # Prometheus 스택 설치
-helm install prometheus prometheus-community/kube-prometheus-stack \
-  --namespace monitoring \
-  --create-namespace \
+helm install prometheus prometheus-community/kube-prometheus-stack /
+  --namespace monitoring /
+  --create-namespace /
   --set grafana.adminPassword=admin
 ```
 
@@ -490,7 +490,7 @@ data:
             "type": "graph",
             "targets": [
               {
-                "expr": "rate(http_requests_total{status=~\"5..\"}[5m])",
+                "expr": "rate(http_requests_total{status=~/"5../"}[5m])",
                 "legendFormat": "{{instance}}"
               }
             ]

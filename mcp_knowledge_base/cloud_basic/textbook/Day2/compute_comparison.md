@@ -1,10 +1,5 @@
 # 컴퓨팅 서비스 비교 (EC2 vs Compute Engine, Lambda vs Cloud Functions)
 
-<div align="center">
-
-[← 이전: Cloud Basic 2일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 학습 목표
 
@@ -286,13 +281,13 @@ GCP Functions:
 [AWS EC2 최적화](#aws-ec2-최적화)
 ```bash
 # Spot 인스턴스 사용 (최대 90% 할인)
-aws ec2 run-instances \
-    --instance-type c5.large \
+aws ec2 run-instances /
+    --instance-type c5.large /
     --spot-price 0.05
 
 # Reserved Instance 구매 (1-3년 약정)
-aws ec2 describe-reserved-instances-offerings \
-    --instance-type c5.large \
+aws ec2 describe-reserved-instances-offerings /
+    --instance-type c5.large /
     --offering-type All Upfront
 
 # Savings Plans (유연한 약정)
@@ -304,16 +299,16 @@ aws ec2 describe-reserved-instances-offerings \
 [GCP Compute Engine 최적화](#gcp-compute-engine-최적화)
 ```bash
 # Preemptible 인스턴스 사용 (최대 80% 할인)
-gcloud compute instances create preemptible-instance \
-    --machine-type=e2-standard-2 \
+gcloud compute instances create preemptible-instance /
+    --machine-type=e2-standard-2 /
     --preemptible
 
 # Sustained Use Discounts (자동 할인)
 # 25% 이상 사용 시 자동 적용
 
 # Committed Use Discounts (1-3년 약정)
-gcloud compute commitments create \
-    --resources=machineType=e2-standard-2,count=1 \
+gcloud compute commitments create /
+    --resources=machineType=e2-standard-2,count=1 /
     --region=asia-northeast3
 ```
 
@@ -437,31 +432,28 @@ graph TD
 ## 참고 자료
 
 [참고 자료](#참고-자료)
-- [AWS EC2 사용자 가이드](https://docs.aws.amazon.com/ec2/latest/userguide/)
-- [GCP Compute Engine 문서](https://cloud.google.com/compute/docs)
-- [AWS Lambda 개발자 가이드](https://docs.aws.amazon.com/lambda/latest/dg/)
-- [GCP Cloud Functions 문서](https://cloud.google.com/functions/docs)
-- [AWS vs GCP 비용 비교](https://calculator.aws/)
-- [GCP 가격 계산기](https://cloud.google.com/products/calculator)
+- [AWS EC2 사용자 가이드](https:///docs.aws.amazon.com/ec2/latest/userguide/)
+- [GCP Compute Engine 문서](https:///cloud.google.com/compute/docs)
+- [AWS Lambda 개발자 가이드](https:///docs.aws.amazon.com/lambda/latest/dg/)
+- [GCP Cloud Functions 문서](https:///cloud.google.com/functions/docs)
+- [AWS vs GCP 비용 비교](https:///calculator.aws/)
+- [GCP 가격 계산기](https:///cloud.google.com/products/calculator)
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 
 [📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[← 이전: Cloud Basic 2일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

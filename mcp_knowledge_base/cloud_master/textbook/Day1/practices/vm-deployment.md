@@ -1,14 +1,9 @@
 # VM 기반 웹 애플리케이션 배포 실습 가이드
 
-<div align="center">
-
-[← 이전: GitHub Actions 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/github-actions-basics.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: Cloud Master 2일차 →](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md) | [← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 🎯 실습 목표
 
-[🎯 실습 목표](#-)
+[🎯 실습 목표](#실습-목표)
 - AWS EC2와 GCP Compute Engine을 활용한 VM 배포
 - Docker 컨테이너를 VM에 배포하는 방법 학습
 - 자동화된 배포 파이프라인 구축
@@ -16,11 +11,11 @@
 
 ## 📋 실습 환경 준비
 
-[📋 실습 환경 준비](#-)
+[📋 실습 환경 준비](#실습-환경-준비)
 
 ### 필수 계정 및 도구
 
-[필수 계정 및 도구](#-)
+[필수 계정 및 도구](#필수-계정-및-도구)
 - **AWS 계정**: Free Tier 계정 (Cloud Basic에서 생성)
 - **GCP 계정**: $300 크레딧 계정 (Cloud Basic에서 생성)
 - **GitHub 계정**: 코드 저장소 및 Actions 사용
@@ -28,7 +23,7 @@
 
 ### 필수 도구 설치
 
-[필수 도구 설치](#-)
+[필수 도구 설치](#필수-도구-설치)
 ```bash
 # AWS CLI 설치 확인
 aws --version
@@ -43,11 +38,11 @@ docker-compose --version
 
 ## ☁️ 실습 1: AWS EC2 배포
 
-[☁️ 실습 1: AWS EC2 배포](#-1:-aws-ec2)
+[☁️ 실습 1: AWS EC2 배포](#실습-1-aws-ec2-배포)
 
 ### 1. EC2 인스턴스 생성
 
-[1. EC2 인스턴스 생성](#-1.-ec2)
+[1. EC2 인스턴스 생성](#1-ec2-인스턴스-생성)
 
 **AWS CLI를 사용한 인스턴스 생성**
 ```bash
@@ -56,49 +51,49 @@ aws ec2 create-key-pair --key-name my-web-app-key --query 'KeyMaterial' --output
 chmod 400 my-web-app-key.pem
 
 # 보안 그룹 생성
-aws ec2 create-security-group \
-  --group-name my-web-app-sg \
+aws ec2 create-security-group /
+  --group-name my-web-app-sg /
   --description "Security group for web application"
 
 # 보안 그룹 규칙 추가
-aws ec2 authorize-security-group-ingress \
-  --group-name my-web-app-sg \
-  --protocol tcp \
-  --port 22 \
+aws ec2 authorize-security-group-ingress /
+  --group-name my-web-app-sg /
+  --protocol tcp /
+  --port 22 /
   --cidr 0.0.0.0/0
 
-aws ec2 authorize-security-group-ingress \
-  --group-name my-web-app-sg \
-  --protocol tcp \
-  --port 80 \
+aws ec2 authorize-security-group-ingress /
+  --group-name my-web-app-sg /
+  --protocol tcp /
+  --port 80 /
   --cidr 0.0.0.0/0
 
-aws ec2 authorize-security-group-ingress \
-  --group-name my-web-app-sg \
-  --protocol tcp \
-  --port 443 \
+aws ec2 authorize-security-group-ingress /
+  --group-name my-web-app-sg /
+  --protocol tcp /
+  --port 443 /
   --cidr 0.0.0.0/0
 
 # EC2 인스턴스 생성
-aws ec2 run-instances \
-  --image-id ami-0ae2c887094315bed \
-  --count 1 \
-  --instance-type t3.micro \
-  --key-name my-web-app-key \
-  --security-groups my-web-app-sg \
+aws ec2 run-instances /
+  --image-id ami-0ae2c887094315bed /
+  --count 1 /
+  --instance-type t3.micro /
+  --key-name my-web-app-key /
+  --security-groups my-web-app-sg /
   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=my-web-app}]'
 ```
 
 ### 2. EC2 인스턴스 설정
 
-[2. EC2 인스턴스 설정](#-2.-ec2)
+[2. EC2 인스턴스 설정](#2-ec2-인스턴스-설정)
 
 **SSH로 인스턴스 접속**
 ```bash
 # 인스턴스 IP 확인
-aws ec2 describe-instances \
-  --filters "Name=tag:Name,Values=my-web-app" \
-  --query 'Reservations[0].Instances[0].PublicIpAddress' \
+aws ec2 describe-instances /
+  --filters "Name=tag:Name,Values=my-web-app" /
+  --query 'Reservations[0].Instances[0].PublicIpAddress' /
   --output text
 
 # SSH 접속
@@ -115,7 +110,7 @@ sudo systemctl enable docker
 sudo usermod -a -G docker ec2-user
 
 # Docker Compose 설치
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https:///github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
 # Git 설치
@@ -124,12 +119,12 @@ sudo yum install -y git
 
 ### 3. 애플리케이션 배포
 
-[3. 애플리케이션 배포](#-3.)
+[3. 애플리케이션 배포](#3-애플리케이션-배포)
 
 **애플리케이션 클론 및 실행**
 ```bash
 # 애플리케이션 클론
-git clone https://github.com/username/github-actions-practice.git
+git clone https:///github.com/username/github-actions-practice.git
 cd github-actions-practice
 
 # Docker Compose로 실행
@@ -142,11 +137,11 @@ docker-compose logs
 
 ## ☁️ 실습 2: GCP Compute Engine 배포
 
-[☁️ 실습 2: GCP Compute Engine 배포](#-2:-gcp-compute-engine)
+[☁️ 실습 2: GCP Compute Engine 배포](#실습-2-gcp-compute-engine-배포)
 
 ### 1. Compute Engine 인스턴스 생성
 
-[1. Compute Engine 인스턴스 생성](#-1.-compute-engine)
+[1. Compute Engine 인스턴스 생성](#1-compute-engine-인스턴스-생성)
 
 **gcloud CLI를 사용한 인스턴스 생성**
 ```bash
@@ -154,28 +149,28 @@ docker-compose logs
 gcloud config set project YOUR_PROJECT_ID
 
 # 인스턴스 생성
-gcloud compute instances create my-web-app \
-  --zone=asia-northeast3-a \
-  --machine-type=e2-micro \
-  --image-family=ubuntu-2004-lts \
-  --image-project=ubuntu-os-cloud \
-  --tags=http-server,https-server \
+gcloud compute instances create my-web-app /
+  --zone=asia-northeast3-a /
+  --machine-type=e2-micro /
+  --image-family=ubuntu-2004-lts /
+  --image-project=ubuntu-os-cloud /
+  --tags=http-server,https-server /
   --metadata-from-file startup-script=startup-script.sh
 
 # 방화벽 규칙 생성
-gcloud compute firewall-rules create allow-http \
-  --allow tcp:80 \
-  --source-ranges 0.0.0.0/0 \
+gcloud compute firewall-rules create allow-http /
+  --allow tcp:80 /
+  --source-ranges 0.0.0.0/0 /
   --target-tags http-server
 
-gcloud compute firewall-rules create allow-https \
-  --allow tcp:443 \
-  --source-ranges 0.0.0.0/0 \
+gcloud compute firewall-rules create allow-https /
+  --allow tcp:443 /
+  --source-ranges 0.0.0.0/0 /
   --target-tags https-server
 
-gcloud compute firewall-rules create allow-ssh \
-  --allow tcp:22 \
-  --source-ranges 0.0.0.0/0 \
+gcloud compute firewall-rules create allow-ssh /
+  --allow tcp:22 /
+  --source-ranges 0.0.0.0/0 /
   --target-tags ssh-server
 ```
 
@@ -183,12 +178,12 @@ gcloud compute firewall-rules create allow-ssh \
 ```bash
 #!/bin/bash
 # Docker 설치
-curl -fsSL https://get.docker.com -o get-docker.sh
+curl -fsSL https:///get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 sudo usermod -aG docker ubuntu
 
 # Docker Compose 설치
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https:///github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
 # Git 설치
@@ -197,7 +192,7 @@ sudo apt-get install -y git
 
 # 애플리케이션 클론
 cd /home/ubuntu
-git clone https://github.com/username/github-actions-practice.git
+git clone https:///github.com/username/github-actions-practice.git
 cd github-actions-practice
 
 # Docker Compose로 실행
@@ -206,13 +201,13 @@ sudo docker-compose up -d
 
 ### 2. Compute Engine 인스턴스 설정
 
-[2. Compute Engine 인스턴스 설정](#-2.-compute-engine)
+[2. Compute Engine 인스턴스 설정](#2-compute-engine-인스턴스-설정)
 
 **SSH로 인스턴스 접속**
 ```bash
 # 인스턴스 IP 확인
-gcloud compute instances describe my-web-app \
-  --zone=asia-northeast3-a \
+gcloud compute instances describe my-web-app /
+  --zone=asia-northeast3-a /
   --format='get(networkInterfaces[0].accessConfigs[0].natIP)'
 
 # SSH 접속
@@ -221,11 +216,11 @@ gcloud compute ssh my-web-app --zone=asia-northeast3-a
 
 ## ☁️ 실습 3: 자동화된 배포 파이프라인
 
-[☁️ 실습 3: 자동화된 배포 파이프라인](#-3:)
+[☁️ 실습 3: 자동화된 배포 파이프라인](#실습-3-자동화된-배포-파이프라인)
 
 ### 1. GitHub Actions 워크플로우 생성
 
-[1. GitHub Actions 워크플로우 생성](#-1.-github-actions)
+[1. GitHub Actions 워크플로우 생성](#1-github-actions-워크플로우-생성)
 
 **.github/workflows/deploy-vm.yml**
 ```yaml
@@ -279,7 +274,7 @@ jobs:
 
 ### 2. GitHub Secrets 설정
 
-[2. GitHub Secrets 설정](#-2.-github-secrets)
+[2. GitHub Secrets 설정](#2-github-secrets-설정)
 
 **필요한 시크릿들:**
 - `AWS_HOST`: AWS EC2 퍼블릭 IP
@@ -291,22 +286,22 @@ jobs:
 
 ## ☁️ 실습 4: 도메인 연결 및 SSL 설정
 
-[☁️ 실습 4: 도메인 연결 및 SSL 설정](#-4:-ssl)
+[☁️ 실습 4: 도메인 연결 및 SSL 설정](#실습-4-도메인-연결-및-ssl-설정)
 
 ### 1. 도메인 연결
 
-[1. 도메인 연결](#-1.)
+[1. 도메인 연결](#1-도메인-연결)
 
 **AWS Route 53 설정**
 ```bash
 # 호스팅 영역 생성
-aws route53 create-hosted-zone \
-  --name example.com \
+aws route53 create-hosted-zone /
+  --name example.com /
   --caller-reference $(date +%s)
 
 # A 레코드 생성
-aws route53 change-resource-record-sets \
-  --hosted-zone-id Z123456789 \
+aws route53 change-resource-record-sets /
+  --hosted-zone-id Z123456789 /
   --change-batch file://dns-record.json
 ```
 
@@ -333,7 +328,7 @@ aws route53 change-resource-record-sets \
 
 ### 2. SSL 인증서 설정
 
-[2. SSL 인증서 설정](#-2.-ssl)
+[2. SSL 인증서 설정](#2-ssl-인증서-설정)
 
 **Let's Encrypt를 사용한 SSL 설정**
 ```bash
@@ -354,7 +349,7 @@ sudo systemctl enable nginx
 server {
     listen 80;
     server_name app.example.com;
-    return 301 https://$server_name$request_uri;
+    return 301 https:///$server_name$request_uri;
 }
 
 server {
@@ -376,11 +371,11 @@ server {
 
 ## ☁️ 실습 5: 기본 모니터링 설정
 
-[☁️ 실습 5: 기본 모니터링 설정](#-5:)
+[☁️ 실습 5: 기본 모니터링 설정](#실습-5-기본-모니터링-설정)
 
 ### 1. 로그 관리
 
-[1. 로그 관리](#-1.)
+[1. 로그 관리](#1-로그-관리)
 
 **Docker 로그 설정**
 ```yaml
@@ -421,7 +416,7 @@ sudo nano /etc/logrotate.d/docker
 
 ### 2. 헬스체크 설정
 
-[2. 헬스체크 설정](#-2.)
+[2. 헬스체크 설정](#2-헬스체크-설정)
 
 **애플리케이션 헬스체크**
 ```javascript
@@ -445,13 +440,13 @@ app.get('/health', (req, res) => {
 **Docker 헬스체크**
 ```dockerfile
 # Dockerfile에 추가
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 /
   CMD curl -f http://localhost:3000/health || exit 1
 ```
 
 ### 3. 기본 모니터링 스크립트
 
-[3. 기본 모니터링 스크립트](#-3.)
+[3. 기본 모니터링 스크립트](#3-기본-모니터링-스크립트)
 
 **monitor.sh**
 ```bash
@@ -512,11 +507,11 @@ echo "*/5 * * * * /home/ec2-user/monitor.sh >> /var/log/monitor.log 2>&1" | cron
 
 ## ☁️ 실습 6: 배포 자동화 고도화
 
-[☁️ 실습 6: 배포 자동화 고도화](#-6:)
+[☁️ 실습 6: 배포 자동화 고도화](#실습-6-배포-자동화-고도화)
 
 ### 1. Blue-Green 배포
 
-[1. Blue-Green 배포](#-1.-blue-green)
+[1. Blue-Green 배포](#1-bluegreen-배포)
 
 **blue-green-deploy.sh**
 ```bash
@@ -563,7 +558,7 @@ fi
 
 ### 2. 롤백 스크립트
 
-[2. 롤백 스크립트](#-2.)
+[2. 롤백 스크립트](#2-롤백-스크립트)
 
 **rollback.sh**
 ```bash
@@ -595,7 +590,7 @@ echo "Rollback completed"
 
 ## 🎯 실습 완료 체크리스트
 
-[🎯 실습 완료 체크리스트](#-)
+[🎯 실습 완료 체크리스트](#실습-완료-체크리스트)
 
 - [ ] AWS EC2 인스턴스 생성 및 설정
 - [ ] GCP Compute Engine 인스턴스 생성 및 설정
@@ -608,16 +603,16 @@ echo "Rollback completed"
 
 ## 📚 추가 학습 자료
 
-[📚 추가 학습 자료](#-)
+[📚 추가 학습 자료](#추가-학습-자료)
 
-- [AWS EC2 공식 문서](https://docs.aws.amazon.com/ec2/)
-- [GCP Compute Engine 공식 문서](https://cloud.google.com/compute/docs)
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Nginx 공식 문서](https://nginx.org/en/docs/)
+- [AWS EC2 공식 문서](https:///docs.aws.amazon.com/ec2/)
+- [GCP Compute Engine 공식 문서](https:///cloud.google.com/compute/docs)
+- [Docker 공식 문서](https:///docs.docker.com/)
+- [Nginx 공식 문서](https:///nginx.org/en/docs/)
 
 ## 🚀 다음 단계
 
-[🚀 다음 단계](#-)
+[🚀 다음 단계](#다음-단계)
 
 - **Cloud Master 2일차**: Docker 고급 기법, GitHub Actions 고급 워크플로우
 - **로드 밸런싱**: 여러 VM에 트래픽 분산
@@ -627,16 +622,13 @@ echo "Rollback completed"
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[← 이전: GitHub Actions 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/github-actions-basics.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: Cloud Master 2일차 →](/mcp_knowledge_base/README.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

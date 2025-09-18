@@ -292,7 +292,7 @@ scrape_configs:
         "type": "graph",
         "targets": [
           {
-            "expr": "rate(http_requests_total{status=~\"5..\"}[5m])",
+            "expr": "rate(http_requests_total{status=~/"5../"}[5m])",
             "legendFormat": "5xx Errors"
           }
         ]
@@ -317,40 +317,40 @@ scrape_configs:
 #### AWS CloudWatch 알람
 ```bash
 # CPU 사용률 알람
-aws cloudwatch put-metric-alarm \
-    --alarm-name "High CPU Utilization" \
-    --alarm-description "Alarm when CPU exceeds 70%" \
-    --metric-name CPUUtilization \
-    --namespace AWS/EC2 \
-    --statistic Average \
-    --period 300 \
-    --threshold 70.0 \
-    --comparison-operator GreaterThanThreshold \
-    --evaluation-periods 2 \
+aws cloudwatch put-metric-alarm /
+    --alarm-name "High CPU Utilization" /
+    --alarm-description "Alarm when CPU exceeds 70%" /
+    --metric-name CPUUtilization /
+    --namespace AWS/EC2 /
+    --statistic Average /
+    --period 300 /
+    --threshold 70.0 /
+    --comparison-operator GreaterThanThreshold /
+    --evaluation-periods 2 /
     --alarm-actions arn:aws:sns:ap-northeast-2:ACCOUNT_ID:my-app-alerts
 
 # 응답 시간 알람
-aws cloudwatch put-metric-alarm \
-    --alarm-name "High Response Time" \
-    --alarm-description "Alarm when response time exceeds 1 second" \
-    --metric-name ResponseTime \
-    --namespace MyApp \
-    --statistic Average \
-    --period 300 \
-    --threshold 1.0 \
-    --comparison-operator GreaterThanThreshold \
-    --evaluation-periods 2 \
+aws cloudwatch put-metric-alarm /
+    --alarm-name "High Response Time" /
+    --alarm-description "Alarm when response time exceeds 1 second" /
+    --metric-name ResponseTime /
+    --namespace MyApp /
+    --statistic Average /
+    --period 300 /
+    --threshold 1.0 /
+    --comparison-operator GreaterThanThreshold /
+    --evaluation-periods 2 /
     --alarm-actions arn:aws:sns:ap-northeast-2:ACCOUNT_ID:my-app-alerts
 ```
 
 #### GCP Cloud Monitoring 알람
 ```bash
 # CPU 사용률 알람
-gcloud alpha monitoring policies create \
+gcloud alpha monitoring policies create /
     --policy-from-file=monitoring/cpu-policy.yaml
 
 # 메모리 사용률 알람
-gcloud alpha monitoring policies create \
+gcloud alpha monitoring policies create /
     --policy-from-file=monitoring/memory-policy.yaml
 ```
 
@@ -413,15 +413,15 @@ resource "google_sql_database_instance" "main" {
 #### Cross-Region 복제
 ```bash
 # AWS Cross-Region 복제
-aws rds create-db-instance-read-replica \
-    --db-instance-identifier my-app-db-replica \
-    --source-db-instance-identifier my-app-db \
-    --db-instance-class db.t3.micro \
+aws rds create-db-instance-read-replica /
+    --db-instance-identifier my-app-db-replica /
+    --source-db-instance-identifier my-app-db /
+    --db-instance-class db.t3.micro /
     --availability-zone ap-northeast-1a
 
 # GCP Cross-Region 복제
-gcloud sql instances create my-app-db-replica \
-    --master-instance-name=my-app-db \
+gcloud sql instances create my-app-db-replica /
+    --master-instance-name=my-app-db /
     --region=asia-northeast1
 ```
 
@@ -502,8 +502,8 @@ echo "Recovery time: ${recovery_time} seconds"
 
 ## 🔗 관련 자료
 
-- [AWS ELB 공식 문서](https://docs.aws.amazon.com/elasticloadbalancing/)
-- [GCP Cloud Load Balancing 가이드](https://cloud.google.com/load-balancing/docs)
-- [Prometheus 공식 문서](https://prometheus.io/docs/)
-- [Grafana 공식 문서](https://grafana.com/docs/)
-- [Terraform 공식 문서](https://www.terraform.io/docs/)
+- [AWS ELB 공식 문서](https:///docs.aws.amazon.com/elasticloadbalancing/)
+- [GCP Cloud Load Balancing 가이드](https:///cloud.google.com/load-balancing/docs)
+- [Prometheus 공식 문서](https:///prometheus.io/docs/)
+- [Grafana 공식 문서](https:///grafana.com/docs/)
+- [Terraform 공식 문서](https:///www.terraform.io/docs/)

@@ -1,10 +1,5 @@
 # GCP 개인 계정 가입 및 관리 가이드
 
-<div align="center">
-
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 📋 개요
 
@@ -26,7 +21,7 @@
 - 신용카드 또는 결제 수단 준비
 
 ### 1.2 GCP 가입 과정
-1. [Google Cloud Console](https://console.cloud.google.com) 접속
+1. [Google Cloud Console](https:///console.cloud.google.com) 접속
 2. **무료로 시작하기** 클릭
 3. Google 계정으로 로그인
 4. 약관 동의 및 개인정보 처리방침 확인
@@ -161,7 +156,7 @@ API 호출이나 자동화를 위한 서비스 계정을 생성합니다.
 ### 8.1 gcloud CLI 설정
 ```bash
 # 1. gcloud CLI 설치 (Windows)
-# https://cloud.google.com/sdk/docs/install
+# https:///cloud.google.com/sdk/docs/install
 
 # 2. 인증 설정
 gcloud auth login
@@ -176,18 +171,18 @@ gcloud config set compute/region asia-northeast3
 ### 8.2 기본 리소스 생성 스크립트
 ```bash
 # 1. Compute Engine 인스턴스 생성
-gcloud compute instances create my-instance \
-  --zone=asia-northeast3-a \
-  --machine-type=e2-micro \
-  --image-family=ubuntu-2004-lts \
+gcloud compute instances create my-instance /
+  --zone=asia-northeast3-a /
+  --machine-type=e2-micro /
+  --image-family=ubuntu-2004-lts /
   --image-project=ubuntu-os-cloud
 
 # 2. Cloud Storage 버킷 생성
 gsutil mb gs://my-bucket-$(date +%s)
 
 # 3. 서비스 계정 생성
-gcloud iam service-accounts create my-service-account \
-  --display-name="My Service Account" \
+gcloud iam service-accounts create my-service-account /
+  --display-name="My Service Account" /
   --description="Personal service account"
 ```
 
@@ -238,9 +233,9 @@ gcloud iam service-accounts create my-service-account \
 ## 🚀 다음 단계
 
 ### 추가 학습
-- [GCP 개인 사용자 가이드](https://cloud.google.com/docs/overview)
-- [gcloud CLI 참조](https://cloud.google.com/sdk/docs)
-- [GCP 무료 서비스](https://cloud.google.com/free)
+- [GCP 개인 사용자 가이드](https:///cloud.google.com/docs/overview)
+- [gcloud CLI 참조](https:///cloud.google.com/sdk/docs)
+- [GCP 무료 서비스](https:///cloud.google.com/free)
 
 ### 고급 기능
 - **Terraform**을 이용한 인프라 자동화
@@ -257,23 +252,20 @@ gcloud iam service-accounts create my-service-account \
 3. **할당량 초과**: 할당량 증가 요청
 
 ### 지원 채널
-- [GCP 지원 센터](https://cloud.google.com/support/)
-- [GCP 커뮤니티](https://cloud.google.com/community/)
-- [Stack Overflow](https://stackoverflow.com/questions/tagged/google-cloud-platform)
+- [GCP 지원 센터](https:///cloud.google.com/support/)
+- [GCP 커뮤니티](https:///cloud.google.com/community/)
+- [Stack Overflow](https:///stackoverflow.com/questions/tagged/google-cloud-platform)
 
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

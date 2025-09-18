@@ -1,10 +1,5 @@
 # 모니터링 시스템 구축 실습
 
-<div align="center">
-
-[← 이전: Cloud Container 2일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 🎯 실습 목표
 
@@ -35,18 +30,18 @@
 
 ```bash
 # 커스텀 메트릭 전송
-aws cloudwatch put-metric-data \
-    --namespace "MyApp/WebServer" \
+aws cloudwatch put-metric-data /
+    --namespace "MyApp/WebServer" /
     --metric-data MetricName=RequestCount,Value=100,Unit=Count
 
 # 다차원 메트릭 전송
-aws cloudwatch put-metric-data \
-    --namespace "MyApp/WebServer" \
+aws cloudwatch put-metric-data /
+    --namespace "MyApp/WebServer" /
     --metric-data MetricName=ResponseTime,Value=250,Unit=Milliseconds,Dimensions=Environment=Production,Service=WebServer
 
 # 통계적 메트릭 전송
-aws cloudwatch put-metric-data \
-    --namespace "MyApp/WebServer" \
+aws cloudwatch put-metric-data /
+    --namespace "MyApp/WebServer" /
     --metric-data MetricName=ErrorRate,Value=0.05,Unit=Percent,StatisticValues='{Maximum=0.1,Minimum=0.0,SampleCount=100,Sum=5.0}'
 ```
 
@@ -56,8 +51,8 @@ aws cloudwatch put-metric-data \
 
 ```bash
 # 대시보드 생성
-aws cloudwatch put-dashboard \
-    --dashboard-name "MyApp-Dashboard" \
+aws cloudwatch put-dashboard /
+    --dashboard-name "MyApp-Dashboard" /
     --dashboard-body '{
         "widgets": [
             {
@@ -98,29 +93,29 @@ aws cloudwatch put-dashboard \
 
 ```bash
 # CPU 사용률 알람 생성
-aws cloudwatch put-metric-alarm \
-    --alarm-name "High CPU Utilization" \
-    --alarm-description "Alarm when CPU exceeds 80%" \
-    --metric-name CPUUtilization \
-    --namespace AWS/EC2 \
-    --statistic Average \
-    --period 300 \
-    --threshold 80.0 \
-    --comparison-operator GreaterThanThreshold \
-    --evaluation-periods 2 \
+aws cloudwatch put-metric-alarm /
+    --alarm-name "High CPU Utilization" /
+    --alarm-description "Alarm when CPU exceeds 80%" /
+    --metric-name CPUUtilization /
+    --namespace AWS/EC2 /
+    --statistic Average /
+    --period 300 /
+    --threshold 80.0 /
+    --comparison-operator GreaterThanThreshold /
+    --evaluation-periods 2 /
     --alarm-actions arn:aws:sns:ap-northeast-2:ACCOUNT:alerts
 
 # 응답 시간 알람 생성
-aws cloudwatch put-metric-alarm \
-    --alarm-name "High Response Time" \
-    --alarm-description "Alarm when response time exceeds 1 second" \
-    --metric-name ResponseTime \
-    --namespace MyApp/WebServer \
-    --statistic Average \
-    --period 300 \
-    --threshold 1000.0 \
-    --comparison-operator GreaterThanThreshold \
-    --evaluation-periods 2 \
+aws cloudwatch put-metric-alarm /
+    --alarm-name "High Response Time" /
+    --alarm-description "Alarm when response time exceeds 1 second" /
+    --metric-name ResponseTime /
+    --namespace MyApp/WebServer /
+    --statistic Average /
+    --period 300 /
+    --threshold 1000.0 /
+    --comparison-operator GreaterThanThreshold /
+    --evaluation-periods 2 /
     --alarm-actions arn:aws:sns:ap-northeast-2:ACCOUNT:alerts
 ```
 
@@ -134,17 +129,17 @@ aws cloudwatch put-metric-alarm \
 
 ```bash
 # 커스텀 메트릭 생성
-gcloud monitoring metrics-descriptors create \
-    --display-name="Request Count" \
-    --type="custom.googleapis.com/myapp/request_count" \
-    --metric-kind="GAUGE" \
+gcloud monitoring metrics-descriptors create /
+    --display-name="Request Count" /
+    --type="custom.googleapis.com/myapp/request_count" /
+    --metric-kind="GAUGE" /
     --value-type="INT64"
 
 # 메트릭 데이터 전송
-gcloud monitoring time-series create \
-    --metric-type="custom.googleapis.com/myapp/request_count" \
-    --resource-type="gce_instance" \
-    --resource-labels="instance_id=INSTANCE_ID,zone=asia-northeast3-a" \
+gcloud monitoring time-series create /
+    --metric-type="custom.googleapis.com/myapp/request_count" /
+    --resource-type="gce_instance" /
+    --resource-labels="instance_id=INSTANCE_ID,zone=asia-northeast3-a" /
     --points="interval.endTime=2023-01-01T12:00:00Z,value.int64Value=100"
 ```
 
@@ -171,7 +166,7 @@ notificationChannels:
 
 ```bash
 # 알림 정책 생성
-gcloud alpha monitoring policies create \
+gcloud alpha monitoring policies create /
     --policy-from-file=alert-policy.yaml
 ```
 
@@ -181,7 +176,7 @@ gcloud alpha monitoring policies create \
 
 ```bash
 # 대시보드 생성
-gcloud alpha monitoring dashboards create \
+gcloud alpha monitoring dashboards create /
     --config-from-file=dashboard-config.yaml
 ```
 
@@ -308,7 +303,7 @@ scrape_configs:
         "type": "graph",
         "targets": [
           {
-            "expr": "100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
+            "expr": "100 - (avg(rate(node_cpu_seconds_total{mode=/"idle/"}[5m])) * 100)",
             "legendFormat": "CPU Usage %"
           }
         ],
@@ -494,14 +489,14 @@ output.logstash:
 while true; do
     # CPU 사용률 시뮬레이션
     cpu_usage=$(shuf -i 10-90 -n 1)
-    aws cloudwatch put-metric-data \
-        --namespace "MyApp/Test" \
+    aws cloudwatch put-metric-data /
+        --namespace "MyApp/Test" /
         --metric-data MetricName=CPUUsage,Value=$cpu_usage,Unit=Percent
     
     # 메모리 사용률 시뮬레이션
     memory_usage=$(shuf -i 20-80 -n 1)
-    aws cloudwatch put-metric-data \
-        --namespace "MyApp/Test" \
+    aws cloudwatch put-metric-data /
+        --namespace "MyApp/Test" /
         --metric-data MetricName=MemoryUsage,Value=$memory_usage,Unit=Percent
     
     sleep 60
@@ -528,12 +523,12 @@ done
 
 ```bash
 # CPU 사용률을 90%로 설정하여 알람 트리거
-aws cloudwatch put-metric-data \
-    --namespace "MyApp/Test" \
+aws cloudwatch put-metric-data /
+    --namespace "MyApp/Test" /
     --metric-data MetricName=CPUUsage,Value=90,Unit=Percent
 
 # 알람 상태 확인
-aws cloudwatch describe-alarms \
+aws cloudwatch describe-alarms /
     --alarm-names "High CPU Utilization"
 ```
 
@@ -547,8 +542,8 @@ aws cloudwatch describe-alarms \
 
 ```bash
 # 종합 대시보드 생성
-aws cloudwatch put-dashboard \
-    --dashboard-name "Production-Dashboard" \
+aws cloudwatch put-dashboard /
+    --dashboard-name "Production-Dashboard" /
     --dashboard-body '{
         "widgets": [
             {
@@ -568,7 +563,7 @@ aws cloudwatch put-dashboard \
             {
                 "type": "log",
                 "properties": {
-                    "query": "SOURCE \"/aws/ec2/myapp\" | fields @timestamp, @message\n| filter @message like /ERROR/\n| sort @timestamp desc\n| limit 20",
+                    "query": "SOURCE /"/aws/ec2/myapp/" | fields @timestamp, @message/n| filter @message like /ERROR//n| sort @timestamp desc/n| limit 20",
                     "region": "ap-northeast-2",
                     "title": "Error Logs",
                     "view": "table"
@@ -584,10 +579,10 @@ aws cloudwatch put-dashboard \
 
 ```bash
 # Grafana 대시보드 가져오기
-curl -X POST \
-  http://localhost:3000/api/dashboards/db \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer YOUR_API_KEY' \
+curl -X POST /
+  http://localhost:3000/api/dashboards/db /
+  -H 'Content-Type: application/json' /
+  -H 'Authorization: Bearer YOUR_API_KEY' /
   -d @dashboard.json
 ```
 
@@ -648,30 +643,27 @@ curl -X POST \
 
 [📚 추가 학습 자료](#추가-학습-자료)
 
-- [AWS CloudWatch 공식 문서](https://docs.aws.amazon.com/cloudwatch/)
-- [GCP Cloud Monitoring 공식 문서](https://cloud.google.com/monitoring/docs)
-- [Prometheus 공식 문서](https://prometheus.io/docs/)
-- [Grafana 공식 문서](https://grafana.com/docs/)
-- [ELK Stack 공식 문서](https://www.elastic.co/guide/)
+- [AWS CloudWatch 공식 문서](https:///docs.aws.amazon.com/cloudwatch/)
+- [GCP Cloud Monitoring 공식 문서](https:///cloud.google.com/monitoring/docs)
+- [Prometheus 공식 문서](https:///prometheus.io/docs/)
+- [Grafana 공식 문서](https:///grafana.com/docs/)
+- [ELK Stack 공식 문서](https:///www.elastic.co/guide/)
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 
 [📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 2일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

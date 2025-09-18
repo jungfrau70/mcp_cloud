@@ -1,10 +1,5 @@
 # AWS 계정 가입 및 권한 위임 가이드
 
-<div align="center">
-
-[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 📋 개요
 
@@ -32,7 +27,7 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 ## 2️⃣ itadmin 계정 생성
 
 ### 단계별 진행
-1. `hong.gildong@<domain-name>.com` 계정으로 [AWS Management Console](https://console.aws.amazon.com) 로그인
+1. `hong.gildong@<domain-name>.com` 계정으로 [AWS Management Console](https:///console.aws.amazon.com) 로그인
 2. **IAM (Identity and Access Management)** 서비스 이동
 3. **사용자(Users)** → **사용자 생성(Create user)** 클릭
 4. 계정 정보 입력:
@@ -59,7 +54,7 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 **해결 방법:**
 1. **루트 계정으로 로그인**
 2. **계정 설정(Account Settings)** → **IAM 사용자 및 역할에 결제 정보 접근 허용(Activate IAM Access for Billing)** 체크
-3. **화면 위치**: https://console.aws.amazon.com/billing/home?#/account → "IAM 사용자 및 역할이 결제 정보에 접근할 수 있도록 활성화"
+3. **화면 위치**: https:///console.aws.amazon.com/billing/home?#/account → "IAM 사용자 및 역할이 결제 정보에 접근할 수 있도록 활성화"
 4. **활성화 후** IAM 사용자에 Billing 관련 정책 할당
 
 ---
@@ -73,7 +68,7 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 
 #### 1단계: Root 계정에서 IAM Billing 접근 활성화
 1. **Root 계정으로 로그인** (hong.gildong@<domain-name>.com)
-2. **Billing 콘솔** 이동: https://console.aws.amazon.com/billing/home
+2. **Billing 콘솔** 이동: https:///console.aws.amazon.com/billing/home
 3. **계정 설정(Account Settings)** 클릭
 4. **"IAM 사용자 및 역할이 결제 정보에 접근할 수 있도록 활성화"** 체크박스 선택
 5. **업데이트** 클릭
@@ -176,23 +171,23 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 aws iam create-user --user-name itadmin
 
 # 2. AdministratorAccess 정책 연결
-aws iam attach-user-policy \
-  --user-name itadmin \
+aws iam attach-user-policy /
+  --user-name itadmin /
   --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
 
 # 3. 비용 관리 권한 추가
-aws iam attach-user-policy \
-  --user-name itadmin \
+aws iam attach-user-policy /
+  --user-name itadmin /
   --policy-arn arn:aws:iam::aws:policy/Billing
 
-aws iam attach-user-policy \
-  --user-name itadmin \
+aws iam attach-user-policy /
+  --user-name itadmin /
   --policy-arn arn:aws:iam::aws:policy/CostExplorerServiceFullAccess
 
 # 4. 콘솔 로그인 프로필 생성
-aws iam create-login-profile \
-  --user-name itadmin \
-  --password 'YourSecurePassword123!' \
+aws iam create-login-profile /
+  --user-name itadmin /
+  --password 'YourSecurePassword123!' /
   --password-reset-required
 
 # 5. 액세스 키 생성 (선택사항)
@@ -297,9 +292,9 @@ Register-IAMUserPolicy -UserName itadmin -PolicyArn "arn:aws:iam::aws:policy/Cos
 ## 🚀 다음 단계
 
 ### 추가 학습 자료
-- [AWS IAM 공식 문서](https://docs.aws.amazon.com/iam/)
-- [AWS 비용 관리 가이드](https://docs.aws.amazon.com/cost-management/)
-- [AWS CLI 사용법](https://docs.aws.amazon.com/cli/latest/userguide/)
+- [AWS IAM 공식 문서](https:///docs.aws.amazon.com/iam/)
+- [AWS 비용 관리 가이드](https:///docs.aws.amazon.com/cost-management/)
+- [AWS CLI 사용법](https:///docs.aws.amazon.com/cli/latest/userguide/)
 
 ### 자동화 확장
 - CloudFormation을 이용한 IAM 정책 자동화
@@ -316,27 +311,24 @@ Register-IAMUserPolicy -UserName itadmin -PolicyArn "arn:aws:iam::aws:policy/Cos
 3. **리전 오류**: 서비스가 지원하는 리전 확인
 
 ### 지원 채널
-- [AWS 지원 센터](https://console.aws.amazon.com/support/)
-- [AWS 커뮤니티 포럼](https://forums.aws.amazon.com/)
-- [AWS 기술 문서](https://docs.aws.amazon.com/)
+- [AWS 지원 센터](https:///console.aws.amazon.com/support/)
+- [AWS 커뮤니티 포럼](https:///forums.aws.amazon.com/)
+- [AWS 기술 문서](https:///docs.aws.amazon.com/)
 
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

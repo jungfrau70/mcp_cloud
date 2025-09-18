@@ -1,14 +1,9 @@
 # Git/GitHub 기초 실습 가이드
 
-<div align="center">
-
-[← 이전: Docker 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/docker-basics.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: GitHub Actions 기초 실습 →](/mcp_knowledge_base/cloud_master/textbook/Day1/practice/github-actions-basics.md) | [← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 🎯 실습 목표
 
-[🎯 실습 목표](#-)
+[🎯 실습 목표](#실습-목표)
 - Git의 기본 개념과 워크플로우 이해
 - GitHub을 활용한 협업 워크플로우 학습
 - 브랜치 전략 및 Pull Request 활용
@@ -16,11 +11,11 @@
 
 ## 📋 실습 환경 준비
 
-[📋 실습 환경 준비](#-)
+[📋 실습 환경 준비](#실습-환경-준비)
 
 ### 필수 도구 설치
 
-[필수 도구 설치](#-)
+[필수 도구 설치](#필수-도구-설치)
 ```bash
 # Git 설치 확인
 git --version
@@ -35,11 +30,11 @@ git config --list
 
 ## 📝 실습 1: Git 기본 명령어
 
-[📝 실습 1: Git 기본 명령어](#-1:-git)
+[📝 실습 1: Git 기본 명령어](#실습-1-git-기본-명령어)
 
 ### 1. 저장소 초기화 및 기본 워크플로우
 
-[1. 저장소 초기화 및 기본 워크플로우](#-1.)
+[1. 저장소 초기화 및 기본 워크플로우](#1-저장소-초기화-및-기본-워크플로우)
 ```bash
 # 새 디렉토리 생성
 mkdir git-practice
@@ -67,7 +62,7 @@ git log --oneline
 
 ### 2. 파일 수정 및 커밋
 
-[2. 파일 수정 및 커밋](#-2.)
+[2. 파일 수정 및 커밋](#2-파일-수정-및-커밋)
 ```bash
 # 파일 수정
 echo "This is a Git practice file." >> hello.txt
@@ -85,11 +80,11 @@ git log --oneline
 
 ## 📝 실습 2: 브랜치 관리
 
-[📝 실습 2: 브랜치 관리](#-2:)
+[📝 실습 2: 브랜치 관리](#실습-2-브랜치-관리)
 
 ### 1. 브랜치 생성 및 전환
 
-[1. 브랜치 생성 및 전환](#-1.)
+[1. 브랜치 생성 및 전환](#1-브랜치-생성-및-전환)
 ```bash
 # 현재 브랜치 확인
 git branch
@@ -111,7 +106,7 @@ git switch main
 
 ### 2. 브랜치 머지
 
-[2. 브랜치 머지](#-2.)
+[2. 브랜치 머지](#2-브랜치-머지)
 ```bash
 # 브랜치 목록 확인
 git branch
@@ -128,15 +123,15 @@ git log --oneline --graph
 
 ## 📝 실습 3: GitHub 협업
 
-[📝 실습 3: GitHub 협업](#-3:-github)
+[📝 실습 3: GitHub 협업](#실습-3-github-협업)
 
 ### 1. GitHub 저장소 생성 및 연결
 
-[1. GitHub 저장소 생성 및 연결](#-1.-github)
+[1. GitHub 저장소 생성 및 연결](#1-github-저장소-생성-및-연결)
 ```bash
 # GitHub에서 새 저장소 생성 후
 # 원격 저장소 추가
-git remote add origin https://github.com/username/git-practice.git
+git remote add origin https:///github.com/username/git-practice.git
 
 # 원격 저장소 확인
 git remote -v
@@ -150,11 +145,11 @@ git push
 
 ### 2. 다른 개발자 시뮬레이션
 
-[2. 다른 개발자 시뮬레이션](#-2.)
+[2. 다른 개발자 시뮬레이션](#2-다른-개발자-시뮬레이션)
 ```bash
 # 다른 디렉토리에서 클론
 cd ..
-git clone https://github.com/username/git-practice.git git-practice-clone
+git clone https:///github.com/username/git-practice.git git-practice-clone
 cd git-practice-clone
 
 # 다른 개발자로서 작업
@@ -166,7 +161,7 @@ git push origin main
 
 ### 3. 원격 변경사항 가져오기
 
-[3. 원격 변경사항 가져오기](#-3.)
+[3. 원격 변경사항 가져오기](#3-원격-변경사항-가져오기)
 ```bash
 # 원래 디렉토리로 돌아가기
 cd ../git-practice
@@ -181,11 +176,11 @@ git pull origin main
 
 ## 📝 실습 4: Pull Request 워크플로우
 
-[📝 실습 4: Pull Request 워크플로우](#-4:-pull-request)
+[📝 실습 4: Pull Request 워크플로우](#실습-4-pull-request-워크플로우)
 
 ### 1. Feature 브랜치에서 작업
 
-[1. Feature 브랜치에서 작업](#-1.-feature)
+[1. Feature 브랜치에서 작업](#1-feature-브랜치에서-작업)
 ```bash
 # 새 feature 브랜치 생성
 git checkout -b feature/awesome-feature
@@ -201,7 +196,7 @@ git push origin feature/awesome-feature
 
 ### 2. GitHub에서 Pull Request 생성
 
-[2. GitHub에서 Pull Request 생성](#-2.-github-pull-request)
+[2. GitHub에서 Pull Request 생성](#2-github에서-pull-request-생성)
 1. GitHub 저장소 페이지에서 "Compare & pull request" 클릭
 2. PR 제목과 설명 작성
 3. 리뷰어 지정
@@ -209,7 +204,7 @@ git push origin feature/awesome-feature
 
 ### 3. PR 리뷰 및 머지
 
-[3. PR 리뷰 및 머지](#-3.-pr)
+[3. PR 리뷰 및 머지](#3-pr-리뷰-및-머지)
 1. 리뷰어가 코드 리뷰 수행
 2. 필요시 수정사항 요청
 3. 모든 리뷰 통과 후 머지
@@ -231,11 +226,11 @@ git push origin --delete feature/awesome-feature
 
 ## 📝 실습 5: 충돌 해결
 
-[📝 실습 5: 충돌 해결](#-5:)
+[📝 실습 5: 충돌 해결](#실습-5-충돌-해결)
 
 ### 1. 충돌 상황 만들기
 
-[1. 충돌 상황 만들기](#-1.)
+[1. 충돌 상황 만들기](#1-충돌-상황-만들기)
 ```bash
 # main 브랜치에서 파일 수정
 echo "Modified by main branch" > conflict.txt
@@ -253,7 +248,7 @@ git push origin feature/conflict-test
 
 ### 2. 충돌 해결
 
-[2. 충돌 해결](#-2.)
+[2. 충돌 해결](#2-충돌-해결)
 ```bash
 # main 브랜치로 돌아가서 머지 시도
 git checkout main
@@ -276,11 +271,11 @@ git commit -m "Resolve merge conflict"
 
 ## 📝 실습 6: 고급 Git 기능
 
-[📝 실습 6: 고급 Git 기능](#-6:-git)
+[📝 실습 6: 고급 Git 기능](#실습-6-고급-git-기능)
 
 ### 1. 커밋 수정
 
-[1. 커밋 수정](#-1.)
+[1. 커밋 수정](#1-커밋-수정)
 ```bash
 # 마지막 커밋 메시지 수정
 git commit --amend -m "Updated commit message"
@@ -293,7 +288,7 @@ git commit --amend --no-edit
 
 ### 2. 커밋 되돌리기
 
-[2. 커밋 되돌리기](#-2.)
+[2. 커밋 되돌리기](#2-커밋-되돌리기)
 ```bash
 # 특정 커밋으로 되돌리기 (새 커밋 생성)
 git revert <commit-hash>
@@ -304,7 +299,7 @@ git reset --hard <commit-hash>
 
 ### 3. Stash 사용
 
-[3. Stash 사용](#-3.-stash)
+[3. Stash 사용](#3-stash-사용)
 ```bash
 # 작업 중인 변경사항 임시 저장
 git stash
@@ -321,11 +316,11 @@ git stash drop
 
 ## 📝 실습 7: 협업 시나리오
 
-[📝 실습 7: 협업 시나리오](#-7:)
+[📝 실습 7: 협업 시나리오](#실습-7-협업-시나리오)
 
 ### 1. 팀 프로젝트 시뮬레이션
 
-[1. 팀 프로젝트 시뮬레이션](#-1.)
+[1. 팀 프로젝트 시뮬레이션](#1-팀-프로젝트-시뮬레이션)
 ```bash
 # 프로젝트 디렉토리 생성
 mkdir team-project
@@ -338,13 +333,13 @@ git add README.md
 git commit -m "Initial project setup"
 
 # GitHub에 푸시
-git remote add origin https://github.com/username/team-project.git
+git remote add origin https:///github.com/username/team-project.git
 git push -u origin main
 ```
 
 ### 2. 각자 브랜치에서 작업
 
-[2. 각자 브랜치에서 작업](#-2.)
+[2. 각자 브랜치에서 작업](#2-각자-브랜치에서-작업)
 ```bash
 # 개발자 A: 기능 개발
 git checkout -b feature/user-authentication
@@ -363,7 +358,7 @@ git push origin bugfix/login-error
 
 ### 3. 코드 리뷰 및 머지
 
-[3. 코드 리뷰 및 머지](#-3.)
+[3. 코드 리뷰 및 머지](#3-코드-리뷰-및-머지)
 1. 각각 Pull Request 생성
 2. 코드 리뷰 수행
 3. 수정사항 반영
@@ -371,7 +366,7 @@ git push origin bugfix/login-error
 
 ## 🎯 실습 완료 체크리스트
 
-[🎯 실습 완료 체크리스트](#-)
+[🎯 실습 완료 체크리스트](#실습-완료-체크리스트)
 
 - [ ] Git 기본 명령어 사용
 - [ ] 브랜치 생성, 전환, 머지
@@ -383,16 +378,16 @@ git push origin bugfix/login-error
 
 ## 📚 추가 학습 자료
 
-[📚 추가 학습 자료](#-)
+[📚 추가 학습 자료](#추가-학습-자료)
 
-- [Git 공식 문서](https://git-scm.com/doc)
-- [GitHub Learning Lab](https://lab.github.com/)
-- [Atlassian Git 튜토리얼](https://www.atlassian.com/git/tutorials)
-- [GitHub Flow](https://guides.github.com/introduction/flow/)
+- [Git 공식 문서](https:///git-scm.com/doc)
+- [GitHub Learning Lab](https:///lab.github.com/)
+- [Atlassian Git 튜토리얼](https:///www.atlassian.com/git/tutorials)
+- [GitHub Flow](https:///guides.github.com/introduction/flow/)
 
 ## 🚀 다음 단계
 
-[🚀 다음 단계](#-)
+[🚀 다음 단계](#다음-단계)
 
 - **GitHub Actions**: CI/CD 파이프라인 구축
 - **VM 배포**: 클라우드 환경에 애플리케이션 배포
@@ -401,16 +396,13 @@ git push origin bugfix/login-error
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[← 이전: Docker 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/docker-basics.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: GitHub Actions 기초 실습 →](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/github-actions-basics.md) | [← 이전: Cloud Master 메인](/mcp_knowledge_base/README.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

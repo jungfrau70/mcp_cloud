@@ -62,8 +62,8 @@ terraform version
 #### Launch Template 생성
 ```bash
 # Launch Template 생성
-aws ec2 create-launch-template \
-  --launch-template-name web-template \
+aws ec2 create-launch-template /
+  --launch-template-name web-template /
   --launch-template-data '{
     "ImageId": "ami-0c02fb55956c7d316",
     "InstanceType": "t3.micro",
@@ -77,9 +77,9 @@ aws ec2 create-launch-template \
   }'
 
 # Launch Template 버전 생성
-aws ec2 create-launch-template-version \
-  --launch-template-name web-template \
-  --source-version 1 \
+aws ec2 create-launch-template-version /
+  --launch-template-name web-template /
+  --source-version 1 /
   --launch-template-data '{
     "InstanceType": "t3.small",
     "ImageId": "ami-0c02fb55956c7d316"
@@ -89,15 +89,15 @@ aws ec2 create-launch-template-version \
 #### Auto Scaling Group 생성
 ```bash
 # Auto Scaling Group 생성
-aws autoscaling create-auto-scaling-group \
-  --auto-scaling-group-name web-asg \
-  --launch-template LaunchTemplateName=web-template,Version='$Latest' \
-  --min-size 2 \
-  --max-size 10 \
-  --desired-capacity 2 \
-  --vpc-zone-identifier "subnet-12345,subnet-67890" \
-  --target-group-arns "arn:aws:elasticloadbalancing:us-west-2:123456789012:targetgroup/web-targets/1234567890123456" \
-  --health-check-type ELB \
+aws autoscaling create-auto-scaling-group /
+  --auto-scaling-group-name web-asg /
+  --launch-template LaunchTemplateName=web-template,Version='$Latest' /
+  --min-size 2 /
+  --max-size 10 /
+  --desired-capacity 2 /
+  --vpc-zone-identifier "subnet-12345,subnet-67890" /
+  --target-group-arns "arn:aws:elasticloadbalancing:us-west-2:123456789012:targetgroup/web-targets/1234567890123456" /
+  --health-check-type ELB /
   --health-check-grace-period 300
 
 # Auto Scaling Group 설정 확인
@@ -107,10 +107,10 @@ aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names web-asg
 #### 스케일링 정책 설정
 ```bash
 # CPU 기반 스케일 아웃 정책
-aws autoscaling put-scaling-policy \
-  --auto-scaling-group-name web-asg \
-  --policy-name scale-out-cpu \
-  --policy-type TargetTrackingScaling \
+aws autoscaling put-scaling-policy /
+  --auto-scaling-group-name web-asg /
+  --policy-name scale-out-cpu /
+  --policy-type TargetTrackingScaling /
   --target-tracking-configuration '{
     "TargetValue": 70.0,
     "PredefinedMetricSpecification": {
@@ -121,10 +121,10 @@ aws autoscaling put-scaling-policy \
   }'
 
 # 커스텀 메트릭 기반 스케일링 정책
-aws autoscaling put-scaling-policy \
-  --auto-scaling-group-name web-asg \
-  --policy-name scale-out-requests \
-  --policy-type TargetTrackingScaling \
+aws autoscaling put-scaling-policy /
+  --auto-scaling-group-name web-asg /
+  --policy-name scale-out-requests /
+  --policy-type TargetTrackingScaling /
   --target-tracking-configuration '{
     "TargetValue": 1000.0,
     "CustomizedMetricSpecification": {
@@ -147,13 +147,13 @@ aws autoscaling describe-scaling-activities --auto-scaling-group-name web-asg
 aws autoscaling describe-policies --auto-scaling-group-name web-asg
 
 # CloudWatch 메트릭 확인
-aws cloudwatch get-metric-statistics \
-  --namespace AWS/AutoScaling \
-  --metric-name GroupDesiredCapacity \
-  --dimensions Name=AutoScalingGroupName,Value=web-asg \
-  --start-time 2023-01-01T00:00:00Z \
-  --end-time 2023-01-01T23:59:59Z \
-  --period 3600 \
+aws cloudwatch get-metric-statistics /
+  --namespace AWS/AutoScaling /
+  --metric-name GroupDesiredCapacity /
+  --dimensions Name=AutoScalingGroupName,Value=web-asg /
+  --start-time 2023-01-01T00:00:00Z /
+  --end-time 2023-01-01T23:59:59Z /
+  --period 3600 /
   --statistics Average
 ```
 
@@ -165,14 +165,14 @@ aws cloudwatch get-metric-statistics \
 #### 인스턴스 템플릿 생성
 ```bash
 # 인스턴스 템플릿 생성
-gcloud compute instance-templates create web-template \
-  --machine-type e2-micro \
-  --network my-vpc \
-  --subnet web-subnet \
-  --tags http-server \
-  --image-family ubuntu-2004-lts \
-  --image-project ubuntu-os-cloud \
-  --metadata-from-file startup-script=startup-script.sh \
+gcloud compute instance-templates create web-template /
+  --machine-type e2-micro /
+  --network my-vpc /
+  --subnet web-subnet /
+  --tags http-server /
+  --image-family ubuntu-2004-lts /
+  --image-project ubuntu-os-cloud /
+  --metadata-from-file startup-script=startup-script.sh /
   --service-account=web-service-account@my-project.iam.gserviceaccount.com
 
 # 템플릿 확인
@@ -182,17 +182,17 @@ gcloud compute instance-templates list
 #### Managed Instance Group 생성
 ```bash
 # Managed Instance Group 생성
-gcloud compute instance-groups managed create web-group \
-  --template web-template \
-  --size 2 \
+gcloud compute instance-groups managed create web-group /
+  --template web-template /
+  --size 2 /
   --zone us-central1-a
 
 # 자동 스케일링 설정
-gcloud compute instance-groups managed set-autoscaling web-group \
-  --max-num-replicas 10 \
-  --min-num-replicas 2 \
-  --target-cpu-utilization 0.7 \
-  --zone us-central1-a \
+gcloud compute instance-groups managed set-autoscaling web-group /
+  --max-num-replicas 10 /
+  --min-num-replicas 2 /
+  --target-cpu-utilization 0.7 /
+  --zone us-central1-a /
   --cool-down-period 60
 
 # 스케일링 정책 확인
@@ -202,21 +202,21 @@ gcloud compute instance-groups managed describe web-group --zone us-central1-a
 #### 고급 스케일링 정책
 ```bash
 # 커스텀 메트릭 기반 스케일링
-gcloud compute instance-groups managed set-autoscaling web-group \
-  --max-num-replicas 10 \
-  --min-num-replicas 2 \
-  --custom-metric-utilization metric-type=custom.googleapis.com/myapp/requests-per-second,target=1000 \
+gcloud compute instance-groups managed set-autoscaling web-group /
+  --max-num-replicas 10 /
+  --min-num-replicas 2 /
+  --custom-metric-utilization metric-type=custom.googleapis.com/myapp/requests-per-second,target=1000 /
   --zone us-central1-a
 
 # 로드 밸런싱 설정
-gcloud compute instance-groups managed set-named-ports web-group \
-  --named-ports http:80 \
+gcloud compute instance-groups managed set-named-ports web-group /
+  --named-ports http:80 /
   --zone us-central1-a
 
 # 백엔드 서비스에 MIG 추가
-gcloud compute backend-services add-backend web-backend \
-  --instance-group web-group \
-  --instance-group-zone us-central1-a \
+gcloud compute backend-services add-backend web-backend /
+  --instance-group web-group /
+  --instance-group-zone us-central1-a /
   --global
 ```
 

@@ -95,7 +95,7 @@ Day3 README
 **작업 문서**
 
 ## 🔗 관련 과정
-[Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+[Cloud Basic 1일차](/mcp_knowledge_base/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/README.md)
 
 </div>
 
@@ -103,6 +103,6 @@ Day3 README
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

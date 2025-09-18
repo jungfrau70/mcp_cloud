@@ -14,11 +14,6 @@
 
 # GCP 기초 실습 가이드
 
-<div align="center">
-
-[← 이전: AWS 기초 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/aws_basic_practice.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: 통합 실습 →](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md) | [← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 📋 개요
 
@@ -45,7 +40,7 @@
 
 [🌐 웹콘솔 방식](#웹콘솔-방식)
 ```markdown
-1. [Google Cloud Platform](https://cloud.google.com) 접속
+1. [Google Cloud Platform](https:///cloud.google.com) 접속
 2. "무료로 시작하기" 클릭
 3. Google 계정으로 로그인
 4. 국가/지역: "대한민국" 선택
@@ -66,7 +61,7 @@ winget install Google.CloudSDK
 brew install google-cloud-sdk
 
 # Google Cloud SDK 설치 (Ubuntu)
-curl https://sdk.cloud.google.com | bash
+curl https:///sdk.cloud.google.com | bash
 exec -l $SHELL
 
 # gcloud 초기화
@@ -87,7 +82,7 @@ gcloud auth list
 
 [🌐 웹콘솔 방식](#웹콘솔-방식)
 ```markdown
-1. [Google Cloud Console](https://console.cloud.google.com) 접속
+1. [Google Cloud Console](https:///console.cloud.google.com) 접속
 2. 주요 서비스 탐색:
    - Compute Engine (가상머신)
    - Cloud Storage (스토리지)
@@ -129,29 +124,29 @@ gcloud auth list
 [💻 CLI 방식](#cli-방식)
 ```bash
 # 서비스 계정 생성
-gcloud iam service-accounts create cloud-student-sa \
-  --display-name="Cloud Student Service Account" \
+gcloud iam service-accounts create cloud-student-sa /
+  --display-name="Cloud Student Service Account" /
   --description="Service account for cloud student practice"
 
 # 서비스 계정에 역할 부여
-gcloud projects add-iam-policy-binding cloud-student-project \
-  --member="serviceAccount:cloud-student-sa@cloud-student-project.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding cloud-student-project /
+  --member="serviceAccount:cloud-student-sa@cloud-student-project.iam.gserviceaccount.com" /
   --role="roles/compute.instanceAdmin"
 
-gcloud projects add-iam-policy-binding cloud-student-project \
-  --member="serviceAccount:cloud-student-sa@cloud-student-project.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding cloud-student-project /
+  --member="serviceAccount:cloud-student-sa@cloud-student-project.iam.gserviceaccount.com" /
   --role="roles/storage.admin"
 
-gcloud projects add-iam-policy-binding cloud-student-project \
-  --member="serviceAccount:cloud-student-sa@cloud-student-project.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding cloud-student-project /
+  --member="serviceAccount:cloud-student-sa@cloud-student-project.iam.gserviceaccount.com" /
   --role="roles/cloudsql.admin"
 
 # 서비스 계정 키 생성
-gcloud iam service-accounts keys create cloud-student-key.json \
+gcloud iam service-accounts keys create cloud-student-key.json /
   --iam-account=cloud-student-sa@cloud-student-project.iam.gserviceaccount.com
 
 # 서비스 계정 인증
-gcloud auth activate-service-account \
+gcloud auth activate-service-account /
   --key-file=cloud-student-key.json
 
 # 서비스 계정 확인
@@ -170,15 +165,15 @@ gcloud iam service-accounts list
 gcloud projects get-iam-policy cloud-student-project
 
 # 사용자에게 역할 부여 (예시)
-gcloud projects add-iam-policy-binding cloud-student-project \
-  --member="user:student@example.com" \
+gcloud projects add-iam-policy-binding cloud-student-project /
+  --member="user:student@example.com" /
   --role="roles/viewer"
 
 # 커스텀 역할 생성
-gcloud iam roles create cloudStudentRole \
-  --project=cloud-student-project \
-  --title="Cloud Student Role" \
-  --description="Custom role for cloud student practice" \
+gcloud iam roles create cloudStudentRole /
+  --project=cloud-student-project /
+  --title="Cloud Student Role" /
+  --description="Custom role for cloud student practice" /
   --permissions="compute.instances.create,compute.instances.delete,storage.buckets.create"
 ```
 
@@ -212,25 +207,25 @@ gcloud iam roles create cloudStudentRole \
 [💻 CLI 방식](#cli-방식)
 ```bash
 # 방화벽 규칙 생성
-gcloud compute firewall-rules create allow-http-https \
-  --allow tcp:80,tcp:443 \
-  --source-ranges 0.0.0.0/0 \
+gcloud compute firewall-rules create allow-http-https /
+  --allow tcp:80,tcp:443 /
+  --source-ranges 0.0.0.0/0 /
   --description "Allow HTTP and HTTPS traffic"
 
 # SSH 키 생성 (이미 있는 경우 생략)
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/gcp-student-key
 
 # SSH 키를 GCP에 등록
-gcloud compute os-login ssh-keys add \
+gcloud compute os-login ssh-keys add /
   --key-file=~/.ssh/gcp-student-key.pub
 
 # Compute Engine 인스턴스 생성
-gcloud compute instances create cloud-student-server \
-  --zone=asia-northeast3-a \
-  --machine-type=e2-micro \
-  --image-family=ubuntu-2204-lts \
-  --image-project=ubuntu-os-cloud \
-  --tags=web-server \
+gcloud compute instances create cloud-student-server /
+  --zone=asia-northeast3-a /
+  --machine-type=e2-micro /
+  --image-family=ubuntu-2204-lts /
+  --image-project=ubuntu-os-cloud /
+  --tags=web-server /
   --metadata=startup-script='#!/bin/bash
     apt-get update
     apt-get install -y apache2
@@ -248,8 +243,8 @@ gcloud compute instances create cloud-student-server \
 [💻 SSH 접속](#ssh-접속)
 ```bash
 # 인스턴스 IP 확인
-gcloud compute instances describe cloud-student-server \
-  --zone=asia-northeast3-a \
+gcloud compute instances describe cloud-student-server /
+  --zone=asia-northeast3-a /
   --format='get(networkInterfaces[0].accessConfigs[0].natIP)'
 
 # SSH 접속
@@ -337,7 +332,7 @@ gsutil cp index.html gs://cloud-student-bucket-[버킷명]/
 gsutil web set -m index.html -e index.html gs://cloud-student-bucket-[버킷명]
 
 # 웹사이트 URL 확인
-echo "Website URL: https://storage.googleapis.com/cloud-student-bucket-[버킷명]/index.html"
+echo "Website URL: https:///storage.googleapis.com/cloud-student-bucket-[버킷명]/index.html"
 ```
 
 ---
@@ -352,8 +347,8 @@ echo "Website URL: https://storage.googleapis.com/cloud-student-bucket-[버킷�
 
 ```bash
 # Compute Engine 인스턴스 IP 확인
-INSTANCE_IP=$(gcloud compute instances describe cloud-student-server \
-  --zone=asia-northeast3-a \
+INSTANCE_IP=$(gcloud compute instances describe cloud-student-server /
+  --zone=asia-northeast3-a /
   --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
 
 # 웹서버 접속 테스트
@@ -366,7 +361,7 @@ curl http://$INSTANCE_IP
 
 ```bash
 # Cloud Storage 웹사이트 URL로 접속 테스트
-curl https://storage.googleapis.com/cloud-student-bucket-[버킷명]/index.html
+curl https:///storage.googleapis.com/cloud-student-bucket-[버킷명]/index.html
 ```
 
 ---
@@ -381,8 +376,8 @@ curl https://storage.googleapis.com/cloud-student-bucket-[버킷명]/index.html
 
 ```bash
 # Compute Engine 인스턴스 삭제
-gcloud compute instances delete cloud-student-server \
-  --zone=asia-northeast3-a \
+gcloud compute instances delete cloud-student-server /
+  --zone=asia-northeast3-a /
   --quiet
 
 # 방화벽 규칙 삭제
@@ -413,8 +408,8 @@ gsutil rb gs://cloud-student-bucket-[버킷명]
 rm cloud-student-key.json
 
 # 서비스 계정 삭제
-gcloud iam service-accounts delete \
-  cloud-student-sa@cloud-student-project.iam.gserviceaccount.com \
+gcloud iam service-accounts delete /
+  cloud-student-sa@cloud-student-project.iam.gserviceaccount.com /
   --quiet
 ```
 
@@ -483,22 +478,19 @@ gcloud iam service-accounts delete \
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 
 [📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[← 이전: AWS 기초 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/aws_basic_practice.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: 통합 실습 →](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md) | [← 이전: Cloud Basic 메인](/mcp_knowledge_base/README.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

@@ -14,11 +14,6 @@
 
 # 🎯 AWS & GCP 기초 실습 통합 가이드
 
-<div align="center">
-
-[← 이전: GCP 기초 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/gcp_basic_practice.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: Cloud Basic 2일차 →](/mcp_knowledge_base/cloud_basic/textbook/Day2/README.md) | [← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 📋 개요
 
@@ -46,7 +41,7 @@
 
 [🌐 웹콘솔 방식](#웹콘솔-방식)
 ```markdown
-1. [AWS 홈페이지](https://aws.amazon.com) 접속
+1. [AWS 홈페이지](https:///aws.amazon.com) 접속
 2. "AWS 계정 생성" 클릭
 3. 이메일 주소, 비밀번호, 계정 이름 입력
 4. 계정 유형: "개인" 선택
@@ -81,7 +76,7 @@ aws configure
 
 [🌐 웹콘솔 방식](#웹콘솔-방식)
 ```markdown
-1. [Google Cloud Platform](https://cloud.google.com) 접속
+1. [Google Cloud Platform](https:///cloud.google.com) 접속
 2. "무료로 시작하기" 클릭
 3. Google 계정으로 로그인
 4. 국가/지역: "대한민국" 선택
@@ -98,7 +93,7 @@ aws configure
 # Google Cloud SDK 설치
 winget install Google.CloudSDK  # Windows
 brew install google-cloud-sdk   # macOS
-curl https://sdk.cloud.google.com | bash  # Ubuntu
+curl https:///sdk.cloud.google.com | bash  # Ubuntu
 
 # gcloud 초기화
 gcloud init
@@ -143,12 +138,12 @@ gcloud config set project cloud-student-project
 aws iam create-user --user-name cloud-student
 
 # 사용자에게 정책 연결
-aws iam attach-user-policy \
-  --user-name cloud-student \
+aws iam attach-user-policy /
+  --user-name cloud-student /
   --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess
 
-aws iam attach-user-policy \
-  --user-name cloud-student \
+aws iam attach-user-policy /
+  --user-name cloud-student /
   --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
 
 # 액세스 키 생성
@@ -181,16 +176,16 @@ aws iam create-access-key --user-name cloud-student
 [💻 CLI 방식](#cli-방식)
 ```bash
 # 서비스 계정 생성
-gcloud iam service-accounts create cloud-student-sa \
+gcloud iam service-accounts create cloud-student-sa /
   --display-name="Cloud Student Service Account"
 
 # 서비스 계정에 역할 부여
-gcloud projects add-iam-policy-binding cloud-student-project \
-  --member="serviceAccount:cloud-student-sa@cloud-student-project.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding cloud-student-project /
+  --member="serviceAccount:cloud-student-sa@cloud-student-project.iam.gserviceaccount.com" /
   --role="roles/compute.instanceAdmin"
 
 # 서비스 계정 키 생성
-gcloud iam service-accounts keys create cloud-student-key.json \
+gcloud iam service-accounts keys create cloud-student-key.json /
   --iam-account=cloud-student-sa@cloud-student-project.iam.gserviceaccount.com
 ```
 
@@ -232,29 +227,29 @@ gcloud iam service-accounts keys create cloud-student-key.json \
 [💻 CLI 방식](#cli-방식)
 ```bash
 # 키 페어 생성
-aws ec2 create-key-pair \
-  --key-name cloud-student-key \
-  --query 'KeyMaterial' \
+aws ec2 create-key-pair /
+  --key-name cloud-student-key /
+  --query 'KeyMaterial' /
   --output text > cloud-student-key.pem
 
 # 보안 그룹 생성
-aws ec2 create-security-group \
-  --group-name web-server-sg \
+aws ec2 create-security-group /
+  --group-name web-server-sg /
   --description "Security group for web server"
 
 # 보안 그룹 규칙 추가
-aws ec2 authorize-security-group-ingress \
-  --group-name web-server-sg \
-  --protocol tcp \
-  --port 22 \
+aws ec2 authorize-security-group-ingress /
+  --group-name web-server-sg /
+  --protocol tcp /
+  --port 22 /
   --cidr 0.0.0.0/0
 
 # EC2 인스턴스 시작
-aws ec2 run-instances \
-  --image-id ami-0c76973fbe0ee100c \
-  --count 1 \
-  --instance-type t2.micro \
-  --key-name cloud-student-key \
+aws ec2 run-instances /
+  --image-id ami-0c76973fbe0ee100c /
+  --count 1 /
+  --instance-type t2.micro /
+  --key-name cloud-student-key /
   --security-groups web-server-sg
 ```
 
@@ -282,16 +277,16 @@ aws ec2 run-instances \
 [💻 CLI 방식](#cli-방식)
 ```bash
 # 방화벽 규칙 생성
-gcloud compute firewall-rules create allow-http-https \
-  --allow tcp:80,tcp:443 \
+gcloud compute firewall-rules create allow-http-https /
+  --allow tcp:80,tcp:443 /
   --source-ranges 0.0.0.0/0
 
 # Compute Engine 인스턴스 생성
-gcloud compute instances create cloud-student-server \
-  --zone=asia-northeast3-a \
-  --machine-type=e2-micro \
-  --image-family=ubuntu-2204-lts \
-  --image-project=ubuntu-os-cloud \
+gcloud compute instances create cloud-student-server /
+  --zone=asia-northeast3-a /
+  --machine-type=e2-micro /
+  --image-family=ubuntu-2204-lts /
+  --image-project=ubuntu-os-cloud /
   --tags=web-server
 ```
 
@@ -385,9 +380,9 @@ gsutil cp gs://cloud-student-bucket-[버킷명]/hello.txt downloaded-hello.txt
 [AWS EC2 테스트](#aws-ec2-테스트)
 ```bash
 # EC2 인스턴스 IP 확인
-INSTANCE_IP=$(aws ec2 describe-instances \
-  --filters "Name=tag:Name,Values=cloud-student-server" \
-  --query 'Reservations[*].Instances[*].PublicIpAddress' \
+INSTANCE_IP=$(aws ec2 describe-instances /
+  --filters "Name=tag:Name,Values=cloud-student-server" /
+  --query 'Reservations[*].Instances[*].PublicIpAddress' /
   --output text)
 
 # 웹서버 접속 테스트
@@ -399,8 +394,8 @@ curl http://$INSTANCE_IP
 [GCP Compute Engine 테스트](#gcp-compute-engine-테스트)
 ```bash
 # Compute Engine 인스턴스 IP 확인
-INSTANCE_IP=$(gcloud compute instances describe cloud-student-server \
-  --zone=asia-northeast3-a \
+INSTANCE_IP=$(gcloud compute instances describe cloud-student-server /
+  --zone=asia-northeast3-a /
   --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
 
 # 웹서버 접속 테스트
@@ -454,7 +449,7 @@ aws s3 rb s3://cloud-student-bucket-[버킷명] --force
 
 ```bash
 # Compute Engine 인스턴스 삭제
-gcloud compute instances delete cloud-student-server \
+gcloud compute instances delete cloud-student-server /
   --zone=asia-northeast3-a --quiet
 
 # 방화벽 규칙 삭제
@@ -519,22 +514,19 @@ gsutil rb gs://cloud-student-bucket-[버킷명]
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 
 [📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[← 이전: GCP 기초 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/gcp_basic_practice.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: Cloud Basic 2일차 →](/mcp_knowledge_base/README.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

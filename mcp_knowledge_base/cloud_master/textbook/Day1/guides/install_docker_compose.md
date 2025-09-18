@@ -1,21 +1,16 @@
 # Docker Compose 설치 가이드
 
-<div align="center">
-
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 Docker Compose는 다중 컨테이너 Docker 애플리케이션을 정의하고 실행하기 위한 도구입니다. 이 가이드는 다양한 운영체제에서 Docker Compose를 설치하는 방법을 설명합니다.
 
 ## 목차
-- [Docker Compose란?](#-docker-compose?)
-- [Windows 설치](#-windows)
-- [macOS 설치](#-macos)
-- [Linux 설치](#-linux)
-- [설치 확인](#-)
-- [기본 사용법](#-)
-- [문제 해결](#-)
+- [Docker Compose란?](#docker-compose란)
+- [Windows 설치](#windows-설치)
+- [macOS 설치](#macos-설치)
+- [Linux 설치](#linux-설치)
+- [설치 확인](#설치-확인)
+- [기본 사용법](#기본-사용법)
+- [문제 해결](#문제-해결)
 
 ## Docker Compose란?
 
@@ -42,20 +37,20 @@ docker compose version
 1. **Docker Compose 바이너리 다운로드**
    ```powershell
    # PowerShell에서 실행
-   $latest = (Invoke-RestMethod -Uri "https://api.github.com/repos/docker/compose/releases/latest").tag_name
-   Invoke-WebRequest -Uri "https://github.com/docker/compose/releases/download/$latest/docker-compose-Windows-x86_64.exe" -OutFile "docker-compose.exe"
+   $latest = (Invoke-RestMethod -Uri "https:///api.github.com/repos/docker/compose/releases/latest").tag_name
+   Invoke-WebRequest -Uri "https:///github.com/docker/compose/releases/download/$latest/docker-compose-Windows-x86_64.exe" -OutFile "docker-compose.exe"
    ```
 
 2. **PATH에 추가**
    ```powershell
-   # C:\bin 디렉토리 생성 (없는 경우)
-   New-Item -ItemType Directory -Path "C:\bin" -Force
+   # C:/bin 디렉토리 생성 (없는 경우)
+   New-Item -ItemType Directory -Path "C:/bin" -Force
    
-   # docker-compose.exe를 C:\bin으로 이동
-   Move-Item docker-compose.exe C:\bin\
+   # docker-compose.exe를 C:/bin으로 이동
+   Move-Item docker-compose.exe C:/bin/
    
-   # PATH에 C:\bin 추가
-   [Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\bin", [EnvironmentVariableTarget]::User)
+   # PATH에 C:/bin 추가
+   [Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:/bin", [EnvironmentVariableTarget]::User)
    ```
 
 ### 방법 3: Chocolatey 사용
@@ -95,7 +90,7 @@ brew install docker-compose
 
 ```bash
 # 최신 버전 다운로드
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https:///github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
 # 실행 권한 부여
 sudo chmod +x /usr/local/bin/docker-compose
@@ -134,10 +129,10 @@ docker compose version
 
 ```bash
 # 최신 버전 확인
-COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
+COMPOSE_VERSION=$(curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
 
 # Docker Compose 다운로드
-sudo curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https:///github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
 # 실행 권한 부여
 sudo chmod +x /usr/local/bin/docker-compose
@@ -172,9 +167,9 @@ docker compose version
 
 ```bash
 # 최신 버전 다운로드
-COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
+COMPOSE_VERSION=$(curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
 
-sudo curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https:///github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
 sudo chmod +x /usr/local/bin/docker-compose
 ```
@@ -186,8 +181,8 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo dnf install -y docker-compose
 
 # 또는 최신 버전 바이너리 설치
-COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
-sudo curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+COMPOSE_VERSION=$(curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
+sudo curl -L "https:///github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
@@ -198,8 +193,8 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo zypper install docker-compose
 
 # 또는 바이너리 설치
-COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
-sudo curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+COMPOSE_VERSION=$(curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
+sudo curl -L "https:///github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
@@ -482,10 +477,10 @@ volumes:
 
 ## 추가 리소스
 
-- [Docker Compose 공식 문서](https://docs.docker.com/compose/)
-- [Docker Compose 명령어 참조](https://docs.docker.com/compose/reference/)
-- [Docker Compose 파일 참조](https://docs.docker.com/compose/compose-file/)
-- [Docker Compose 환경 변수](https://docs.docker.com/compose/environment-variables/)
+- [Docker Compose 공식 문서](https:///docs.docker.com/compose/)
+- [Docker Compose 명령어 참조](https:///docs.docker.com/compose/reference/)
+- [Docker Compose 파일 참조](https:///docs.docker.com/compose/compose-file/)
+- [Docker Compose 환경 변수](https:///docs.docker.com/compose/environment-variables/)
 
 ## 버전 관리
 
@@ -498,7 +493,7 @@ docker compose version
 # 독립 바이너리: 수동 다운로드 및 교체
 
 # 최신 버전 확인
-curl -s https://api.github.com/repos/docker/compose/releases/latest | grep tag_name
+curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name
 ```
 
 ## 보안 모범 사례
@@ -541,12 +536,12 @@ set -e
 echo "Docker Compose 설치 시작..."
 
 # 최신 버전 확인
-COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
+COMPOSE_VERSION=$(curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
 
 echo "Docker Compose 버전: $COMPOSE_VERSION"
 
 # Docker Compose 다운로드
-sudo curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https:///github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
 # 실행 권한 부여
 sudo chmod +x /usr/local/bin/docker-compose
@@ -590,16 +585,13 @@ echo "테스트 완료!"
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

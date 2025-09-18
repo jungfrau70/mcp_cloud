@@ -1,10 +1,5 @@
 # Multi-AZ 구성 실패 트러블슈팅
 
-<div align="center">
-
-[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 <details>
 <summary>📋 목차</summary>
@@ -69,12 +64,12 @@ aws sts get-caller-identity
 [가용 영역 확인](#가용-영역-확인)
 ```bash
 # 가용 영역 목록 확인
-aws ec2 describe-availability-zones \
+aws ec2 describe-availability-zones /
     --query 'AvailabilityZones[].{ZoneName:ZoneName,State:State}'
 
 # 특정 리전의 가용 영역 확인
-aws ec2 describe-availability-zones \
-    --region ap-northeast-2 \
+aws ec2 describe-availability-zones /
+    --region ap-northeast-2 /
     --query 'AvailabilityZones[].ZoneName'
 ```
 
@@ -83,12 +78,12 @@ aws ec2 describe-availability-zones \
 [VPC 및 서브넷 확인](#vpc-및-서브넷-확인)
 ```bash
 # VPC 목록 확인
-aws ec2 describe-vpcs \
+aws ec2 describe-vpcs /
     --query 'Vpcs[].{VpcId:VpcId,CidrBlock:CidrBlock,State:State}'
 
 # 서브넷 확인
-aws ec2 describe-subnets \
-    --filters "Name=vpc-id,Values=vpc-12345" \
+aws ec2 describe-subnets /
+    --filters "Name=vpc-id,Values=vpc-12345" /
     --query 'Subnets[].{SubnetId:SubnetId,AvailabilityZone:AvailabilityZone,CidrBlock:CidrBlock}'
 ```
 
@@ -102,14 +97,14 @@ aws ec2 describe-subnets \
 [RDS Multi-AZ 상태 확인](#rds-multiaz-상태-확인)
 ```bash
 # RDS 인스턴스 상태 확인
-aws rds describe-db-instances \
-    --db-instance-identifier my-app-db \
+aws rds describe-db-instances /
+    --db-instance-identifier my-app-db /
     --query 'DBInstances[0].{Status:DBInstanceStatus,MultiAZ:MultiAZ,AvailabilityZone:AvailabilityZone,SecondaryAvailabilityZone:SecondaryAvailabilityZone}'
 
 # RDS 이벤트 확인
-aws rds describe-events \
-    --source-identifier my-app-db \
-    --source-type db-instance \
+aws rds describe-events /
+    --source-identifier my-app-db /
+    --source-type db-instance /
     --max-items 10
 ```
 
@@ -118,13 +113,13 @@ aws rds describe-events \
 [Auto Scaling Group 상태 확인](#auto-scaling-group-상태-확인)
 ```bash
 # Auto Scaling Group 상태 확인
-aws autoscaling describe-auto-scaling-groups \
-    --auto-scaling-group-names my-app-asg \
+aws autoscaling describe-auto-scaling-groups /
+    --auto-scaling-group-names my-app-asg /
     --query 'AutoScalingGroups[0].{DesiredCapacity:DesiredCapacity,MinSize:MinSize,MaxSize:MaxSize,AvailabilityZones:AvailabilityZones}'
 
 # 인스턴스 상태 확인
-aws autoscaling describe-auto-scaling-groups \
-    --auto-scaling-group-names my-app-asg \
+aws autoscaling describe-auto-scaling-groups /
+    --auto-scaling-group-names my-app-asg /
     --query 'AutoScalingGroups[0].Instances[].{InstanceId:InstanceId,AvailabilityZone:AvailabilityZone,HealthStatus:HealthStatus,LifecycleState:LifecycleState}'
 ```
 
@@ -133,12 +128,12 @@ aws autoscaling describe-auto-scaling-groups \
 [로드 밸런서 상태 확인](#로드-밸런서-상태-확인)
 ```bash
 # Application Load Balancer 상태 확인
-aws elbv2 describe-load-balancers \
-    --load-balancer-arns arn:aws:elasticloadbalancing:region:account:loadbalancer/app/my-app-alb/1234567890123456 \
+aws elbv2 describe-load-balancers /
+    --load-balancer-arns arn:aws:elasticloadbalancing:region:account:loadbalancer/app/my-app-alb/1234567890123456 /
     --query 'LoadBalancers[0].{State:State,Type:Type,Scheme:Scheme}'
 
 # Target Group 상태 확인
-aws elbv2 describe-target-health \
+aws elbv2 describe-target-health /
     --target-group-arn arn:aws:elasticloadbalancing:region:account:targetgroup/my-app-targets/1234567890123456
 ```
 
@@ -159,23 +154,23 @@ aws elbv2 describe-target-health \
 **해결방법**:
 ```bash
 # 1. 가용 영역 확인
-aws ec2 describe-availability-zones \
+aws ec2 describe-availability-zones /
     --query 'AvailabilityZones[?State==`available`].ZoneName'
 
 # 2. 서브넷 그룹 확인
-aws rds describe-db-subnet-groups \
+aws rds describe-db-subnet-groups /
     --db-subnet-group-name my-app-db-subnet-group
 
 # 3. 서브넷 그룹 재생성 (필요시)
-aws rds create-db-subnet-group \
-    --db-subnet-group-name my-app-db-subnet-group-new \
-    --db-subnet-group-description "New subnet group for RDS Multi-AZ" \
+aws rds create-db-subnet-group /
+    --db-subnet-group-name my-app-db-subnet-group-new /
+    --db-subnet-group-description "New subnet group for RDS Multi-AZ" /
     --subnet-ids subnet-12345 subnet-67890
 
 # 4. RDS 인스턴스 수정
-aws rds modify-db-instance \
-    --db-instance-identifier my-app-db \
-    --db-subnet-group-name my-app-db-subnet-group-new \
+aws rds modify-db-instance /
+    --db-instance-identifier my-app-db /
+    --db-subnet-group-name my-app-db-subnet-group-new /
     --apply-immediately
 ```
 
@@ -187,19 +182,19 @@ aws rds modify-db-instance \
 **해결방법**:
 ```bash
 # 1. 보안 그룹 확인
-aws ec2 describe-security-groups \
+aws ec2 describe-security-groups /
     --group-ids sg-12345
 
 # 2. 보안 그룹 규칙 추가
-aws ec2 authorize-security-group-ingress \
-    --group-id sg-12345 \
-    --protocol tcp \
-    --port 3306 \
+aws ec2 authorize-security-group-ingress /
+    --group-id sg-12345 /
+    --protocol tcp /
+    --port 3306 /
     --cidr 10.0.0.0/16
 
 # 3. RDS 인스턴스 재시작
-aws rds reboot-db-instance \
-    --db-instance-identifier my-app-db \
+aws rds reboot-db-instance /
+    --db-instance-identifier my-app-db /
     --force-failover
 ```
 
@@ -216,24 +211,24 @@ aws rds reboot-db-instance \
 **해결방법**:
 ```bash
 # 1. 서브넷 가용 영역 확인
-aws ec2 describe-subnets \
-    --subnet-ids subnet-12345 subnet-67890 \
+aws ec2 describe-subnets /
+    --subnet-ids subnet-12345 subnet-67890 /
     --query 'Subnets[].{SubnetId:SubnetId,AvailabilityZone:AvailabilityZone}'
 
 # 2. 인스턴스 타입 가용성 확인
-aws ec2 describe-instance-type-offerings \
-    --location-type availability-zone \
-    --filters Name=instance-type,Values=t3.micro \
+aws ec2 describe-instance-type-offerings /
+    --location-type availability-zone /
+    --filters Name=instance-type,Values=t3.micro /
     --query 'InstanceTypeOfferings[].{InstanceType:InstanceType,Location:Location}'
 
 # 3. Auto Scaling Group 수정
-aws autoscaling update-auto-scaling-group \
-    --auto-scaling-group-name my-app-asg \
+aws autoscaling update-auto-scaling-group /
+    --auto-scaling-group-name my-app-asg /
     --vpc-zone-identifier "subnet-12345,subnet-67890,subnet-abcdef"
 
 # 4. 인스턴스 타입 변경 (필요시)
-aws autoscaling update-auto-scaling-group \
-    --auto-scaling-group-name my-app-asg \
+aws autoscaling update-auto-scaling-group /
+    --auto-scaling-group-name my-app-asg /
     --launch-template LaunchTemplateName=my-app-template,Version=1
 ```
 
@@ -245,20 +240,20 @@ aws autoscaling update-auto-scaling-group \
 **해결방법**:
 ```bash
 # 1. 보안 그룹 규칙 확인
-aws ec2 describe-security-groups \
-    --group-ids sg-12345 \
+aws ec2 describe-security-groups /
+    --group-ids sg-12345 /
     --query 'SecurityGroups[0].IpPermissions'
 
 # 2. Health Check 엔드포인트 테스트
 curl -I http://instance-ip/health
 
 # 3. Target Group Health Check 설정 수정
-aws elbv2 modify-target-group \
-    --target-group-arn arn:aws:elasticloadbalancing:region:account:targetgroup/my-app-targets/1234567890123456 \
-    --health-check-path /health \
-    --health-check-interval-seconds 30 \
-    --health-check-timeout-seconds 5 \
-    --healthy-threshold-count 2 \
+aws elbv2 modify-target-group /
+    --target-group-arn arn:aws:elasticloadbalancing:region:account:targetgroup/my-app-targets/1234567890123456 /
+    --health-check-path /health /
+    --health-check-interval-seconds 30 /
+    --health-check-timeout-seconds 5 /
+    --healthy-threshold-count 2 /
     --unhealthy-threshold-count 3
 ```
 
@@ -275,22 +270,22 @@ aws elbv2 modify-target-group \
 **해결방법**:
 ```bash
 # 1. 로드 밸런서 서브넷 확인
-aws elbv2 describe-load-balancers \
-    --load-balancer-arns arn:aws:elasticloadbalancing:region:account:loadbalancer/app/my-app-alb/1234567890123456 \
+aws elbv2 describe-load-balancers /
+    --load-balancer-arns arn:aws:elasticloadbalancing:region:account:loadbalancer/app/my-app-alb/1234567890123456 /
     --query 'LoadBalancers[0].AvailabilityZones[].{ZoneName:ZoneName,SubnetId:SubnetId}'
 
 # 2. 서브넷 추가
-aws elbv2 set-subnets \
-    --load-balancer-arn arn:aws:elasticloadbalancing:region:account:loadbalancer/app/my-app-alb/1234567890123456 \
+aws elbv2 set-subnets /
+    --load-balancer-arn arn:aws:elasticloadbalancing:region:account:loadbalancer/app/my-app-alb/1234567890123456 /
     --subnets subnet-12345 subnet-67890 subnet-abcdef
 
 # 3. 보안 그룹 확인 및 수정
-aws ec2 describe-security-groups \
+aws ec2 describe-security-groups /
     --group-ids sg-12345
 
 # 4. 로드 밸런서 상태 확인
-aws elbv2 describe-load-balancers \
-    --load-balancer-arns arn:aws:elasticloadbalancing:region:account:loadbalancer/app/my-app-alb/1234567890123456 \
+aws elbv2 describe-load-balancers /
+    --load-balancer-arns arn:aws:elasticloadbalancing:region:account:loadbalancer/app/my-app-alb/1234567890123456 /
     --query 'LoadBalancers[0].State'
 ```
 
@@ -311,21 +306,21 @@ aws elbv2 describe-load-balancers \
 #!/bin/bash
 
 echo "=== 가용 영역 검증 ==="
-aws ec2 describe-availability-zones \
-    --query 'AvailabilityZones[?State==`available`].ZoneName' \
+aws ec2 describe-availability-zones /
+    --query 'AvailabilityZones[?State==`available`].ZoneName' /
     --output table
 
 echo "=== 서브넷 검증 ==="
-aws ec2 describe-subnets \
-    --filters "Name=vpc-id,Values=$VPC_ID" \
-    --query 'Subnets[].{SubnetId:SubnetId,AvailabilityZone:AvailabilityZone,CidrBlock:CidrBlock}' \
+aws ec2 describe-subnets /
+    --filters "Name=vpc-id,Values=$VPC_ID" /
+    --query 'Subnets[].{SubnetId:SubnetId,AvailabilityZone:AvailabilityZone,CidrBlock:CidrBlock}' /
     --output table
 
 echo "=== 인스턴스 타입 가용성 검증 ==="
-aws ec2 describe-instance-type-offerings \
-    --location-type availability-zone \
-    --filters Name=instance-type,Values=t3.micro \
-    --query 'InstanceTypeOfferings[].{InstanceType:InstanceType,Location:Location}' \
+aws ec2 describe-instance-type-offerings /
+    --location-type availability-zone /
+    --filters Name=instance-type,Values=t3.micro /
+    --query 'InstanceTypeOfferings[].{InstanceType:InstanceType,Location:Location}' /
     --output table
 ```
 
@@ -337,15 +332,15 @@ aws ec2 describe-instance-type-offerings \
 #!/bin/bash
 
 echo "=== RDS 제한 검증 ==="
-aws rds describe-account-attributes \
+aws rds describe-account-attributes /
     --query 'AccountQuotas[?AccountQuotaName==`DBInstances`].{Name:AccountQuotaName,Used:Used,Max:Max}'
 
 echo "=== EC2 제한 검증 ==="
-aws ec2 describe-account-attributes \
+aws ec2 describe-account-attributes /
     --attribute-names supported-platforms
 
 echo "=== ELB 제한 검증 ==="
-aws elbv2 describe-account-limits \
+aws elbv2 describe-account-limits /
     --query 'Limits[].{Name:Name,Max:Max}'
 ```
 
@@ -359,27 +354,27 @@ aws elbv2 describe-account-limits \
 [CloudWatch 알람 설정](#cloudwatch-알람-설정)
 ```bash
 # Multi-AZ 상태 모니터링 알람
-aws cloudwatch put-metric-alarm \
-    --alarm-name "RDS Multi-AZ Status" \
-    --alarm-description "Monitor RDS Multi-AZ status" \
-    --metric-name DatabaseConnections \
-    --namespace AWS/RDS \
-    --statistic Average \
-    --period 300 \
-    --threshold 0 \
-    --comparison-operator GreaterThanThreshold \
+aws cloudwatch put-metric-alarm /
+    --alarm-name "RDS Multi-AZ Status" /
+    --alarm-description "Monitor RDS Multi-AZ status" /
+    --metric-name DatabaseConnections /
+    --namespace AWS/RDS /
+    --statistic Average /
+    --period 300 /
+    --threshold 0 /
+    --comparison-operator GreaterThanThreshold /
     --evaluation-periods 1
 
 # Auto Scaling Group 상태 모니터링
-aws cloudwatch put-metric-alarm \
-    --alarm-name "ASG Multi-AZ Distribution" \
-    --alarm-description "Monitor ASG instance distribution" \
-    --metric-name GroupInServiceInstances \
-    --namespace AWS/AutoScaling \
-    --statistic Average \
-    --period 300 \
-    --threshold 2 \
-    --comparison-operator LessThanThreshold \
+aws cloudwatch put-metric-alarm /
+    --alarm-name "ASG Multi-AZ Distribution" /
+    --alarm-description "Monitor ASG instance distribution" /
+    --metric-name GroupInServiceInstances /
+    --namespace AWS/AutoScaling /
+    --statistic Average /
+    --period 300 /
+    --threshold 2 /
+    --comparison-operator LessThanThreshold /
     --evaluation-periods 2
 ```
 
@@ -388,12 +383,12 @@ aws cloudwatch put-metric-alarm \
 [로그 모니터링](#로그-모니터링)
 ```bash
 # CloudWatch Logs 그룹 생성
-aws logs create-log-group \
+aws logs create-log-group /
     --log-group-name /aws/ec2/multi-az-monitoring
 
 # 로그 스트림 생성
-aws logs create-log-stream \
-    --log-group-name /aws/ec2/multi-az-monitoring \
+aws logs create-log-stream /
+    --log-group-name /aws/ec2/multi-az-monitoring /
     --log-stream-name multi-az-status
 ```
 
@@ -409,16 +404,16 @@ aws logs create-log-stream \
 ### 공식 문서
 
 [공식 문서](#공식-문서)
-- [AWS RDS Multi-AZ](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html)
-- [AWS Auto Scaling Multi-AZ](https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto-scaling-benefits.html)
-- [AWS ELB Multi-AZ](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html)
+- [AWS RDS Multi-AZ](https:///docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html)
+- [AWS Auto Scaling Multi-AZ](https:///docs.aws.amazon.com/autoscaling/ec2/userguide/auto-scaling-benefits.html)
+- [AWS ELB Multi-AZ](https:///docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html)
 
 ### 유용한 리소스
 
 [유용한 리소스](#유용한-리소스)
-- [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)
-- [AWS 샘플 프로젝트](https://github.com/aws-samples)
-- [AWS 트러블슈팅 가이드](https://docs.aws.amazon.com/general/latest/gr/aws_troubleshooting.html)
+- [AWS Well-Architected Framework](https:///aws.amazon.com/architecture/well-architected/)
+- [AWS 샘플 프로젝트](https:///github.com/aws-samples)
+- [AWS 트러블슈팅 가이드](https:///docs.aws.amazon.com/general/latest/gr/aws_troubleshooting.html)
 
 </details>
 
@@ -453,7 +448,7 @@ Multi-AZ 구성 실패 트러블슈팅 가이드를 완료했습니다.
 
 [💡 추가 학습 자료](#추가-학습-자료)
 
-- [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)
+- [AWS Well-Architected Framework](https:///aws.amazon.com/architecture/well-architected/)
 - [전체 커리큘럼](/mcp_knowledge_base/curriculum.md)
 
 ---
@@ -463,16 +458,13 @@ Multi-AZ 구성 실패 트러블슈팅 가이드를 완료했습니다.
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

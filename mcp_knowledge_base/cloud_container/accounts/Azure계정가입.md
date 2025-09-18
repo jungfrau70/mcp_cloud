@@ -1,10 +1,5 @@
 # Azure 계정 가입 및 권한 위임 가이드
 
-<div align="center">
-
-[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 📋 개요
 
@@ -44,7 +39,7 @@ Azure에서는 **이중 권한 구조**를 가지고 있습니다:
 ## 2️⃣ itadmin 계정 생성
 
 ### 단계별 진행
-1. `hong.gildong@<domain-name>.com` 계정으로 [Azure Portal](https://portal.azure.com) 로그인
+1. `hong.gildong@<domain-name>.com` 계정으로 [Azure Portal](https:///portal.azure.com) 로그인
 2. **Microsoft Entra ID** → **사용자(User)** → **새 사용자(New user)**
 3. 계정 정보 입력:
    - 사용자 이름: `itadmin@<tenant>.onmicrosoft.com`
@@ -168,25 +163,25 @@ Azure는 Role-Based Access Control (RBAC) 방식으로 권한을 부여합니다
 ```bash
 # 1. itadmin 계정에 Global Administrator 역할 할당
 az ad user show --id "itadmin@<tenant>.onmicrosoft.com" --query objectId -o tsv
-az rest --method POST --uri "https://graph.microsoft.com/v1.0/directoryRoles/roleTemplateId=<GlobalAdminRoleTemplateId>/members/$ref" --body '{"@odata.id":"https://graph.microsoft.com/v1.0/users/<itadminObjectId>"}'
+az rest --method POST --uri "https:///graph.microsoft.com/v1.0/directoryRoles/roleTemplateId=<GlobalAdminRoleTemplateId>/members/$ref" --body '{"@odata.id":"https:///graph.microsoft.com/v1.0/users/<itadminObjectId>"}'
 
 # 2. 구독 Owner 역할 할당
-az role assignment create \
-  --assignee "itadmin@<tenant>.onmicrosoft.com" \
-  --role "Owner" \
+az role assignment create /
+  --assignee "itadmin@<tenant>.onmicrosoft.com" /
+  --role "Owner" /
   --scope "/subscriptions/<subscriptionId>"
 
 # 3. 비용 관리 권한 할당
 # Billing Administrator 역할 할당
-az role assignment create \
-  --assignee "itadmin@<tenant>.onmicrosoft.com" \
-  --role "Billing Administrator" \
+az role assignment create /
+  --assignee "itadmin@<tenant>.onmicrosoft.com" /
+  --role "Billing Administrator" /
   --scope "/subscriptions/<subscriptionId>"
 
 # Cost Management Contributor 역할 할당 (선택사항)
-az role assignment create \
-  --assignee "itadmin@<tenant>.onmicrosoft.com" \
-  --role "Cost Management Contributor" \
+az role assignment create /
+  --assignee "itadmin@<tenant>.onmicrosoft.com" /
+  --role "Cost Management Contributor" /
   --scope "/subscriptions/<subscriptionId>"
 ```
 
@@ -306,9 +301,9 @@ New-AzRoleAssignment -SignInName "itadmin@<tenant>.onmicrosoft.com" -RoleDefinit
 ## 🚀 다음 단계
 
 ### 추가 학습 자료
-- [Azure RBAC 공식 문서](https://docs.microsoft.com/ko-kr/azure/role-based-access-control/)
-- [Microsoft Entra ID 관리자 역할](https://docs.microsoft.com/ko-kr/azure/active-directory/roles/permissions-reference)
-- [Azure CLI를 이용한 역할 관리](https://docs.microsoft.com/ko-kr/azure/role-based-access-control/role-assignments-cli)
+- [Azure RBAC 공식 문서](https:///docs.microsoft.com/ko-kr/azure/role-based-access-control/)
+- [Microsoft Entra ID 관리자 역할](https:///docs.microsoft.com/ko-kr/azure/active-directory/roles/permissions-reference)
+- [Azure CLI를 이용한 역할 관리](https:///docs.microsoft.com/ko-kr/azure/role-based-access-control/role-assignments-cli)
 
 ### 자동화 확장
 - PowerShell 스크립트를 이용한 대량 사용자 권한 관리
@@ -325,27 +320,24 @@ New-AzRoleAssignment -SignInName "itadmin@<tenant>.onmicrosoft.com" -RoleDefinit
 3. **역할 할당 실패**: 구독 범위와 역할 정의 확인
 
 ### 지원 채널
-- [Azure 지원 센터](https://azure.microsoft.com/ko-kr/support/)
-- [Microsoft 커뮤니티 포럼](https://docs.microsoft.com/ko-kr/answers/topics/azure-active-directory.html)
+- [Azure 지원 센터](https:///azure.microsoft.com/ko-kr/support/)
+- [Microsoft 커뮤니티 포럼](https:///docs.microsoft.com/ko-kr/answers/topics/azure-active-directory.html)
 
 
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

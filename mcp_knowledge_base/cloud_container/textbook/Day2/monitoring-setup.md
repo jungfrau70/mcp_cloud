@@ -1,10 +1,5 @@
 # 모니터링 및 로깅 시스템 구축 가이드
 
-<div align="center">
-
-[← 이전: Cloud Container 2일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 🎯 학습 목표
 
@@ -222,20 +217,20 @@ data:
 # cloudwatch-logs-setup.sh
 
 # 로그 그룹 생성
-aws logs create-log-group \
-  --log-group-name /aws/ecs/container-demo \
+aws logs create-log-group /
+  --log-group-name /aws/ecs/container-demo /
   --region ap-northeast-2
 
 # 로그 스트림 생성
-aws logs create-log-stream \
-  --log-group-name /aws/ecs/container-demo \
-  --log-stream-name container-demo-app \
+aws logs create-log-stream /
+  --log-group-name /aws/ecs/container-demo /
+  --log-stream-name container-demo-app /
   --region ap-northeast-2
 
 # 로그 보존 정책 설정
-aws logs put-retention-policy \
-  --log-group-name /aws/ecs/container-demo \
-  --retention-in-days 30 \
+aws logs put-retention-policy /
+  --log-group-name /aws/ecs/container-demo /
+  --retention-in-days 30 /
   --region ap-northeast-2
 ```
 
@@ -246,7 +241,7 @@ aws logs put-retention-policy \
 {
   "filterName": "container-demo-error-filter",
   "logGroupName": "/aws/ecs/container-demo",
-  "filterPattern": "[timestamp, request_id, level=\"ERROR\", ...]",
+  "filterPattern": "[timestamp, request_id, level=/"ERROR/", ...]",
   "destinationArn": "arn:aws:lambda:ap-northeast-2:123456789012:function:container-demo-error-handler"
 }
 ```
@@ -352,7 +347,7 @@ data:
         {
           "displayName": "CPU utilization is above 80%",
           "conditionThreshold": {
-            "filter": "resource.type=\"gce_instance\" AND metric.type=\"compute.googleapis.com/instance/cpu/utilization\"",
+            "filter": "resource.type=/"gce_instance/" AND metric.type=/"compute.googleapis.com/instance/cpu/utilization/"",
             "comparison": "COMPARISON_GREATER_THAN",
             "thresholdValue": 0.8,
             "duration": "300s"
@@ -440,7 +435,7 @@ scrape_configs:
       regex: (.+)
     - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
       action: replace
-      regex: ([^:]+)(?::\d+)?;(\d+)
+      regex: ([^:]+)(?::/d+)?;(/d+)
       replacement: $1:$2
       target_label: __address__
     - action: labelmap
@@ -597,11 +592,11 @@ groups:
         "type": "graph",
         "targets": [
           {
-            "expr": "rate(http_requests_total{status=~\"5..\"}[5m])",
+            "expr": "rate(http_requests_total{status=~/"5../"}[5m])",
             "legendFormat": "5xx errors"
           },
           {
-            "expr": "rate(http_requests_total{status=~\"4..\"}[5m])",
+            "expr": "rate(http_requests_total{status=~/"4../"}[5m])",
             "legendFormat": "4xx errors"
           }
         ],
@@ -740,7 +735,7 @@ output {
       "type": "dashboard",
       "attributes": {
         "title": "Container Demo Logs Dashboard",
-        "panelsJSON": "[{\"id\":\"1\",\"type\":\"visualization\",\"gridData\":{\"x\":0,\"y\":0,\"w\":12,\"h\":8}},{\"id\":\"2\",\"type\":\"visualization\",\"gridData\":{\"x\":12,\"y\":0,\"w\":12,\"h\":8}}]"
+        "panelsJSON": "[{/"id/":/"1/",/"type/":/"visualization/",/"gridData/":{/"x/":0,/"y/":0,/"w/":12,/"h/":8}},{/"id/":/"2/",/"type/":/"visualization/",/"gridData/":{/"x/":12,/"y/":0,/"w/":12,/"h/":8}}]"
       }
     }
   ]
@@ -832,7 +827,7 @@ async function sendPagerDutyEvent(alert) {
   };
 
   try {
-    await axios.post('https://events.pagerduty.com/v2/enqueue', event);
+    await axios.post('https:///events.pagerduty.com/v2/enqueue', event);
     console.log('PagerDuty 이벤트 전송 성공');
   } catch (error) {
     console.error('PagerDuty 이벤트 전송 실패:', error);
@@ -855,21 +850,21 @@ module.exports = { sendPagerDutyEvent };
 [1단계: CloudWatch 메트릭 설정](#1단계-cloudwatch-메트릭-설정)
 ```bash
 # CloudWatch 로그 그룹 생성
-aws logs create-log-group \
-  --log-group-name /aws/ecs/container-demo \
+aws logs create-log-group /
+  --log-group-name /aws/ecs/container-demo /
   --region ap-northeast-2
 
 # CloudWatch 알림 설정
-aws cloudwatch put-metric-alarm \
-  --alarm-name container-demo-high-cpu \
-  --alarm-description "High CPU utilization detected" \
-  --metric-name CPUUtilization \
-  --namespace AWS/EC2 \
-  --statistic Average \
-  --period 300 \
-  --threshold 80.0 \
-  --comparison-operator GreaterThanThreshold \
-  --evaluation-periods 2 \
+aws cloudwatch put-metric-alarm /
+  --alarm-name container-demo-high-cpu /
+  --alarm-description "High CPU utilization detected" /
+  --metric-name CPUUtilization /
+  --namespace AWS/EC2 /
+  --statistic Average /
+  --period 300 /
+  --threshold 80.0 /
+  --comparison-operator GreaterThanThreshold /
+  --evaluation-periods 2 /
   --alarm-actions arn:aws:sns:ap-northeast-2:123456789012:container-demo-alerts
 ```
 
@@ -1073,10 +1068,10 @@ EOF
 ### 공식 문서
 
 [공식 문서](#공식-문서)
-- [AWS CloudWatch 공식 문서](https://docs.aws.amazon.com/cloudwatch/)
-- [GCP Cloud Monitoring 공식 문서](https://cloud.google.com/monitoring/docs)
-- [Prometheus 공식 문서](https://prometheus.io/docs/)
-- [Grafana 공식 문서](https://grafana.com/docs/)
+- [AWS CloudWatch 공식 문서](https:///docs.aws.amazon.com/cloudwatch/)
+- [GCP Cloud Monitoring 공식 문서](https:///cloud.google.com/monitoring/docs)
+- [Prometheus 공식 문서](https:///prometheus.io/docs/)
+- [Grafana 공식 문서](https:///grafana.com/docs/)
 
 ### 추가 학습 자료
 
@@ -1091,22 +1086,19 @@ EOF
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ### 📧 연락처
 
 [📧 연락처](#연락처)
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https://github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 2일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

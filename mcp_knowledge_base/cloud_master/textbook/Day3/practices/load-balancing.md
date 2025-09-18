@@ -79,49 +79,49 @@ aws ec2 authorize-security-group-ingress --group-id sg-12345 --protocol tcp --po
 #### ALB 생성
 ```bash
 # ALB 생성
-aws elbv2 create-load-balancer \
-  --name my-alb \
-  --subnets subnet-12345 subnet-67890 \
-  --security-groups sg-12345 \
-  --scheme internet-facing \
-  --type application \
+aws elbv2 create-load-balancer /
+  --name my-alb /
+  --subnets subnet-12345 subnet-67890 /
+  --security-groups sg-12345 /
+  --scheme internet-facing /
+  --type application /
   --ip-address-type ipv4
 
 # 타겟 그룹 생성
-aws elbv2 create-target-group \
-  --name web-targets \
-  --protocol HTTP \
-  --port 80 \
-  --vpc-id vpc-12345 \
-  --health-check-path /health \
-  --health-check-interval-seconds 30 \
-  --health-check-timeout-seconds 5 \
-  --healthy-threshold-count 2 \
+aws elbv2 create-target-group /
+  --name web-targets /
+  --protocol HTTP /
+  --port 80 /
+  --vpc-id vpc-12345 /
+  --health-check-path /health /
+  --health-check-interval-seconds 30 /
+  --health-check-timeout-seconds 5 /
+  --healthy-threshold-count 2 /
   --unhealthy-threshold-count 3
 
 # 리스너 생성
-aws elbv2 create-listener \
-  --load-balancer-arn arn:aws:elasticloadbalancing:us-west-2:123456789012:loadbalancer/app/my-alb/1234567890123456 \
-  --protocol HTTP \
-  --port 80 \
+aws elbv2 create-listener /
+  --load-balancer-arn arn:aws:elasticloadbalancing:us-west-2:123456789012:loadbalancer/app/my-alb/1234567890123456 /
+  --protocol HTTP /
+  --port 80 /
   --default-actions Type=forward,TargetGroupArn=arn:aws:elasticloadbalancing:us-west-2:123456789012:targetgroup/web-targets/1234567890123456
 ```
 
 #### EC2 인스턴스 생성 및 등록
 ```bash
 # EC2 인스턴스 생성
-aws ec2 run-instances \
-  --image-id ami-0c02fb55956c7d316 \
-  --count 2 \
-  --instance-type t2.micro \
-  --key-name my-key \
-  --security-group-ids sg-12345 \
-  --subnet-id subnet-12345 \
+aws ec2 run-instances /
+  --image-id ami-0c02fb55956c7d316 /
+  --count 2 /
+  --instance-type t2.micro /
+  --key-name my-key /
+  --security-group-ids sg-12345 /
+  --subnet-id subnet-12345 /
   --user-data file://user-data.sh
 
 # 타겟 그룹에 인스턴스 등록
-aws elbv2 register-targets \
-  --target-group-arn arn:aws:elasticloadbalancing:us-west-2:123456789012:targetgroup/web-targets/1234567890123456 \
+aws elbv2 register-targets /
+  --target-group-arn arn:aws:elasticloadbalancing:us-west-2:123456789012:targetgroup/web-targets/1234567890123456 /
   --targets Id=i-1234567890abcdef0,Port=80 Id=i-0987654321fedcba0,Port=80
 ```
 
@@ -134,13 +134,13 @@ aws elbv2 describe-load-balancers --names my-alb
 aws elbv2 describe-target-health --target-group-arn arn:aws:elasticloadbalancing:us-west-2:123456789012:targetgroup/web-targets/1234567890123456
 
 # ALB 메트릭 확인
-aws cloudwatch get-metric-statistics \
-  --namespace AWS/ApplicationELB \
-  --metric-name RequestCount \
-  --dimensions Name=LoadBalancer,Value=app/my-alb/1234567890123456 \
-  --start-time 2023-01-01T00:00:00Z \
-  --end-time 2023-01-01T23:59:59Z \
-  --period 3600 \
+aws cloudwatch get-metric-statistics /
+  --namespace AWS/ApplicationELB /
+  --metric-name RequestCount /
+  --dimensions Name=LoadBalancer,Value=app/my-alb/1234567890123456 /
+  --start-time 2023-01-01T00:00:00Z /
+  --end-time 2023-01-01T23:59:59Z /
+  --period 3600 /
   --statistics Sum
 ```
 
@@ -155,98 +155,98 @@ aws cloudwatch get-metric-statistics \
 gcloud compute networks create my-vpc --subnet-mode custom
 
 # 서브넷 생성
-gcloud compute networks subnets create web-subnet \
-  --network my-vpc \
-  --range 10.0.1.0/24 \
+gcloud compute networks subnets create web-subnet /
+  --network my-vpc /
+  --range 10.0.1.0/24 /
   --region us-central1
 
 # 방화벽 규칙 생성
-gcloud compute firewall-rules create allow-http \
-  --network my-vpc \
-  --allow tcp:80 \
-  --source-ranges 0.0.0.0/0 \
+gcloud compute firewall-rules create allow-http /
+  --network my-vpc /
+  --allow tcp:80 /
+  --source-ranges 0.0.0.0/0 /
   --target-tags http-server
 
-gcloud compute firewall-rules create allow-https \
-  --network my-vpc \
-  --allow tcp:443 \
-  --source-ranges 0.0.0.0/0 \
+gcloud compute firewall-rules create allow-https /
+  --network my-vpc /
+  --allow tcp:443 /
+  --source-ranges 0.0.0.0/0 /
   --target-tags https-server
 ```
 
 #### 인스턴스 템플릿 생성
 ```bash
 # 인스턴스 템플릿 생성
-gcloud compute instance-templates create web-template \
-  --machine-type e2-micro \
-  --network my-vpc \
-  --subnet web-subnet \
-  --tags http-server,https-server \
-  --image-family ubuntu-2004-lts \
-  --image-project ubuntu-os-cloud \
+gcloud compute instance-templates create web-template /
+  --machine-type e2-micro /
+  --network my-vpc /
+  --subnet web-subnet /
+  --tags http-server,https-server /
+  --image-family ubuntu-2004-lts /
+  --image-project ubuntu-os-cloud /
   --metadata-from-file startup-script=startup-script.sh
 
 # 관리형 인스턴스 그룹 생성
-gcloud compute instance-groups managed create web-group \
-  --template web-template \
-  --size 2 \
+gcloud compute instance-groups managed create web-group /
+  --template web-template /
+  --size 2 /
   --zone us-central1-a
 
 # 자동 스케일링 설정
-gcloud compute instance-groups managed set-autoscaling web-group \
-  --max-num-replicas 5 \
-  --min-num-replicas 2 \
-  --target-cpu-utilization 0.6 \
+gcloud compute instance-groups managed set-autoscaling web-group /
+  --max-num-replicas 5 /
+  --min-num-replicas 2 /
+  --target-cpu-utilization 0.6 /
   --zone us-central1-a
 ```
 
 #### HTTP(S) 로드 밸런서 생성
 ```bash
 # 백엔드 서비스 생성
-gcloud compute backend-services create web-backend \
-  --protocol HTTP \
-  --health-checks web-health-check \
+gcloud compute backend-services create web-backend /
+  --protocol HTTP /
+  --health-checks web-health-check /
   --global
 
 # 백엔드에 인스턴스 그룹 추가
-gcloud compute backend-services add-backend web-backend \
-  --instance-group web-group \
-  --instance-group-zone us-central1-a \
+gcloud compute backend-services add-backend web-backend /
+  --instance-group web-group /
+  --instance-group-zone us-central1-a /
   --global
 
 # URL 맵 생성
-gcloud compute url-maps create web-map \
+gcloud compute url-maps create web-map /
   --default-service web-backend
 
 # HTTP 프록시 생성
-gcloud compute target-http-proxies create web-proxy \
+gcloud compute target-http-proxies create web-proxy /
   --url-map web-map
 
 # 전역 포워딩 규칙 생성
-gcloud compute forwarding-rules create web-rule \
-  --global \
-  --target-http-proxy web-proxy \
+gcloud compute forwarding-rules create web-rule /
+  --global /
+  --target-http-proxy web-proxy /
   --ports 80
 ```
 
 #### 헬스 체크 설정
 ```bash
 # HTTP 헬스 체크 생성
-gcloud compute health-checks create http web-health-check \
-  --request-path /health \
-  --port 80 \
-  --check-interval 30s \
-  --timeout 5s \
-  --healthy-threshold 2 \
+gcloud compute health-checks create http web-health-check /
+  --request-path /health /
+  --port 80 /
+  --check-interval 30s /
+  --timeout 5s /
+  --healthy-threshold 2 /
   --unhealthy-threshold 3
 
 # HTTPS 헬스 체크 생성
-gcloud compute health-checks create https web-health-check-https \
-  --request-path /health \
-  --port 443 \
-  --check-interval 30s \
-  --timeout 5s \
-  --healthy-threshold 2 \
+gcloud compute health-checks create https web-health-check-https /
+  --request-path /health /
+  --port 443 /
+  --check-interval 30s /
+  --timeout 5s /
+  --healthy-threshold 2 /
   --unhealthy-threshold 3
 ```
 
@@ -418,24 +418,24 @@ aws cloudwatch put-dashboard --dashboard-name "ALB-Dashboard" --dashboard-body '
 }'
 
 # CloudWatch 알람 생성
-aws cloudwatch put-metric-alarm \
-  --alarm-name "High-Response-Time" \
-  --alarm-description "ALB response time is too high" \
-  --metric-name TargetResponseTime \
-  --namespace AWS/ApplicationELB \
-  --statistic Average \
-  --period 300 \
-  --threshold 2.0 \
-  --comparison-operator GreaterThanThreshold \
-  --evaluation-periods 2 \
+aws cloudwatch put-metric-alarm /
+  --alarm-name "High-Response-Time" /
+  --alarm-description "ALB response time is too high" /
+  --metric-name TargetResponseTime /
+  --namespace AWS/ApplicationELB /
+  --statistic Average /
+  --period 300 /
+  --threshold 2.0 /
+  --comparison-operator GreaterThanThreshold /
+  --evaluation-periods 2 /
   --alarm-actions arn:aws:sns:us-west-2:123456789012:my-topic
 ```
 
 #### GCP 모니터링 설정
 ```bash
 # 로그 기반 메트릭 생성
-gcloud logging metrics create alb_request_count \
-  --description="ALB request count" \
+gcloud logging metrics create alb_request_count /
+  --description="ALB request count" /
   --log-filter='resource.type="http_load_balancer"'
 
 # 알림 정책 생성

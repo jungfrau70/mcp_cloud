@@ -4,14 +4,14 @@
 <details>
 <summary>📋 목차</summary>
 
-1. [🎯 학습 목표](#-)
-2. [📚 실습 가이드](#-)
-3. [🔧 실습 환경 준비](#-)
-4. [🐳 Docker 기초 및 컨테이너 기술](#-docker)
-5. [📝 Git/GitHub 기초 및 협업](#-git/github)
-6. [🚀 GitHub Actions CI/CD 파이프라인](#-github-actions-ci/cd)
+1. [🎯 학습 목표](#학습-목표)
+2. [📚 실습 가이드](#실습-가이드)
+3. [🔧 실습 환경 준비](#실습-환경-준비)
+4. [🐳 Docker 기초 및 컨테이너 기술](#docker-기초-및-컨테이너-기술)
+5. [📝 Git/GitHub 기초 및 협업](#gitgithub-기초-및-협업)
+6. [🚀 GitHub Actions CI/CD 파이프라인](#github-actions-cicd-파이프라인)
 7. [🚀 웹 애플리케이션 배포](#-)
-8. [📚 문제 해결 및 참고 자료](#-)
+8. [📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
 
 </details>
 
@@ -66,31 +66,31 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [Docker 기초 실습](practice/docker-basics.md) - Docker 기본 개념 및 실습
-- 🔗 [Git/GitHub 기초 실습](practice/git-github-basics.md) - 버전 관리 및 협업
-- 🔗 [GitHub Actions 기초 실습](practice/github-actions-basics.md) - CI/CD 파이프라인 구축
-- 🔗 [VM 배포 실습](practice/vm-deployment.md) - AWS EC2, GCP Compute Engine 배포
-- 🔗 [K8s 배포 실습](practice/vm-deployment.md) - AWS EC2, GCP Compute Engine 배포
+- 🔗 [Docker 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/docker-basics.md) - Docker 기본 개념 및 실습
+- 🔗 [Git/GitHub 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/git-github-basics.md) - 버전 관리 및 협업
+- 🔗 [GitHub Actions 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/github-actions-basics.md) - CI/CD 파이프라인 구축
+- 🔗 [VM 배포 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/vm-deployment.md) - AWS EC2, GCP Compute Engine 배포
+- 🔗 [K8s 배포 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/vm-deployment.md) - AWS EC2, GCP Compute Engine 배포
 
 ### 📚 개념 학습 가이드
-- 🔗 [Docker 기초 가이드](./docker-basic-guide.md) - ?
-- 🔗 [Docker 고급 가이드](./docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
-- 🔗 [Docker Compose 가이드](./docker-compose-guide.md) - 다중 서비스 관리
-- 🔗 [GitHub Actions 가이드](./github-actions-guide.md) - CI/CD 파이프라인 구축
-- 🔗 [AWS & GCP 배포 가이드](./aws-gcp-deployment-guide.md) - 멀티클라우드 배포
+- 🔗 [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-basic-guide.md) - ?
+- 🔗 [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
+- 🔗 [Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-compose-guide.md) - 다중 서비스 관리
+- 🔗 [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-guide.md) - CI/CD 파이프라인 구축
+- 🔗 [AWS & GCP 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/aws-gcp-deployment-guide.md) - 멀티클라우드 배포
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [종합 트러블슈팅 가이드](./troubleshooting-guide.md) - Docker, GitHub Actions, AWS/GCP 문제 해결
-- 🔗 [AWS & GCP 권한 설정](./aws-gcp-permissions-setup.md) - IAM, 서비스 계정 설정
-- 🔗 [CI/CD 파이프라인 가이드](./cicd-pipeline-guide.md) - 전체 자동 배포 파이프라인
-- 🔗 [클라우드 배포 가이드](./cloud-deployment-guide.md) - VM 기반 웹 애플리케이션 배포
+- 🔗 [종합 트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md) - Docker, GitHub Actions, AWS/GCP 문제 해결
+- 🔗 [AWS & GCP 권한 설정](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/aws-gcp-permissions-setup.md) - IAM, 서비스 계정 설정
+- 🔗 [CI/CD 파이프라인 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/cicd-pipeline-guide.md) - 전체 자동 배포 파이프라인
+- 🔗 [클라우드 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/cloud-deployment-guide.md) - VM 기반 웹 애플리케이션 배포
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Basic 과정](../../../cloud_basic/textbook/Day1/README.md) - AWS/GCP 기초 과정
-- 🔗 [Cloud Container 과정](../../../cloud_container/textbook/Day1/README.md) - Kubernetes 고급 과정
-- 🔗 [전체 커리큘럼](/curriculum.md) - 전체 과정 구조 및 학습 경로
-- 🔗 [통합 인덱스](/index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](../learning-path.md) - Cloud Master 학습 경로
+- 🔗 [Cloud Basic 과정](/mcp_knowledge_base/README.md) - AWS/GCP 기초 과정
+- 🔗 [Cloud Container 과정](/mcp_knowledge_base/README.md) - Kubernetes 고급 과정
+- 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
+- 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
+- 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/learning-path.md) - Cloud Master 학습 경로
 
 ---
 
@@ -413,7 +413,7 @@ git branch -d feature/new-feature
 ### GitHub 저장소 생성 및 연결
 ```bash
 # 원격 저장소 추가
-git remote add origin https://github.com/username/repository.git
+git remote add origin https:///github.com/username/repository.git
 
 # 원격 저장소 확인
 git remote -v
@@ -636,13 +636,13 @@ jobs:
 ### EC2 인스턴스 생성
 ```bash
 # AWS CLI로 EC2 인스턴스 생성
-aws ec2 run-instances \
-  --image-id ami-0ae2c887094315bed \
-  --count 1 \
-  --instance-type t3.micro \
-  --key-name my-key \
-  --security-group-ids sg-12345678 \
-  --subnet-id subnet-12345678 \
+aws ec2 run-instances /
+  --image-id ami-0ae2c887094315bed /
+  --count 1 /
+  --instance-type t3.micro /
+  --key-name my-key /
+  --security-group-ids sg-12345678 /
+  --subnet-id subnet-12345678 /
   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=my-web-app}]'
 ```
 
@@ -659,7 +659,7 @@ sudo systemctl enable docker
 sudo usermod -a -G docker ec2-user
 
 # 애플리케이션 클론
-git clone https://github.com/username/my-app.git
+git clone https:///github.com/username/my-app.git
 cd my-app
 
 # Docker Compose로 실행
@@ -674,27 +674,27 @@ docker-compose up -d
 ### Compute Engine 인스턴스 생성
 ```bash
 # gcloud CLI로 인스턴스 생성
-gcloud compute instances create my-web-app \
-  --zone=asia-northeast3-a \
-  --machine-type=e2-micro \
-  --image-family=ubuntu-2004-lts \
-  --image-project=ubuntu-os-cloud \
-  --tags=http-server,https-server \
+gcloud compute instances create my-web-app /
+  --zone=asia-northeast3-a /
+  --machine-type=e2-micro /
+  --image-family=ubuntu-2004-lts /
+  --image-project=ubuntu-os-cloud /
+  --tags=http-server,https-server /
   --metadata-from-file startup-script=startup-script.sh
 ```
 
 ### 방화벽 규칙 설정
 ```bash
 # HTTP 트래픽 허용
-gcloud compute firewall-rules create allow-http \
-  --allow tcp:80 \
-  --source-ranges 0.0.0.0/0 \
+gcloud compute firewall-rules create allow-http /
+  --allow tcp:80 /
+  --source-ranges 0.0.0.0/0 /
   --target-tags http-server
 
 # HTTPS 트래픽 허용
-gcloud compute firewall-rules create allow-https \
-  --allow tcp:443 \
-  --source-ranges 0.0.0.0/0 \
+gcloud compute firewall-rules create allow-https /
+  --allow tcp:443 /
+  --source-ranges 0.0.0.0/0 /
   --target-tags https-server
 ```
 
@@ -853,23 +853,23 @@ ssh -T git@github.com
 <summary>📖 추가 학습 자료</summary>
 
 ### 공식 문서
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Git 공식 문서](https://git-scm.com/doc)
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [AWS EC2 공식 문서](https://docs.aws.amazon.com/ec2/)
-- [GCP Compute Engine 공식 문서](https://cloud.google.com/compute/docs)
+- [Docker 공식 문서](https:///docs.docker.com/)
+- [Git 공식 문서](https:///git-scm.com/doc)
+- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
+- [AWS EC2 공식 문서](https:///docs.aws.amazon.com/ec2/)
+- [GCP Compute Engine 공식 문서](https:///cloud.google.com/compute/docs)
 
 ### 유용한 리소스
-- [Docker Hub](https://hub.docker.com/)
-- [GitHub Learning Lab](https://lab.github.com/)
-- [AWS Free Tier](https://aws.amazon.com/free/)
-- [GCP Free Tier](https://cloud.google.com/free)
+- [Docker Hub](https:///hub.docker.com/)
+- [GitHub Learning Lab](https:///lab.github.com/)
+- [AWS Free Tier](https:///aws.amazon.com/free/)
+- [GCP Free Tier](https:///cloud.google.com/free)
 
 ### 관련 프로젝트
-- [Docker 샘플 프로젝트](https://github.com/docker/awesome-compose)
-- [GitHub Actions 샘플](https://github.com/actions/starter-workflows)
-- [AWS 샘플 프로젝트](https://github.com/aws-samples)
-- [GCP 샘플 프로젝트](https://github.com/GoogleCloudPlatform)
+- [Docker 샘플 프로젝트](https:///github.com/docker/awesome-compose)
+- [GitHub Actions 샘플](https:///github.com/actions/starter-workflows)
+- [AWS 샘플 프로젝트](https:///github.com/aws-samples)
+- [GCP 샘플 프로젝트](https:///github.com/GoogleCloudPlatform)
 
 </details>
 
@@ -913,14 +913,15 @@ ssh -T git@github.com
 
 ### 💡 추가 학습 자료
 
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Git 공식 문서](https://git-scm.com/doc)
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [Cloud Master 2일차](../Day2/README)
+- [Docker 공식 문서](https:///docs.docker.com/)
+- [Git 공식 문서](https:///git-scm.com/doc)
+- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
+- [Cloud Master 2일차](/mcp_knowledge_base/README.md)
 
 ---
+
 <div align="center">
 
-[← 이전: Cloud Master](../README.md) | [다음: Cloud Master 3일차 →](../Day3/README.md)
+[← 이전: Cloud Master](/mcp_knowledge_base/README.md)
 
 </div>

@@ -405,8 +405,8 @@ jobs:
 
 ## 🔗 관련 자료
 
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [CodeQL 공식 문서](https://codeql.github.com/)
-- [Trivy 보안 스캐너](https://trivy.dev/)
-- [k6 성능 테스트](https://k6.io/)
-- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
+- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
+- [CodeQL 공식 문서](https:///codeql.github.com/)
+- [Trivy 보안 스캐너](https:///trivy.dev/)
+- [k6 성능 테스트](https:///k6.io/)
+- [Kubernetes 공식 문서](https:///kubernetes.io/docs/)

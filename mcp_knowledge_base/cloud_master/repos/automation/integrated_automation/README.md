@@ -1,18 +1,18 @@
 # 통합 클라우드 과정 자동화 시스템
 
 ## 📋 목차
-- [🎯 개요](#-)
-- [🏗️ 시스템 아키텍처](#-)
-- [🚀 주요 기능](#-)
-- [📋 사용 방법](#-)
-- [⚙️ 설정](#-)
-- [🔧 과정별 연계 흐름](#-)
-- [📊 모니터링 및 보고서](#-)
-- [🛠️ 문제 해결](#-)
-- [🔄 업데이트 및 유지보수](#-)
-- [📈 성능 최적화](#-)
-- [🤝 기여하기](#-🤝)
-- [📞 지원](#-)
+- [🎯 개요](#개요)
+- [🏗️ 시스템 아키텍처](#시스템-아키텍처)
+- [🚀 주요 기능](#주요-기능)
+- [📋 사용 방법](#사용-방법)
+- [⚙️ 설정](#설정)
+- [🔧 과정별 연계 흐름](#과정별-연계-흐름)
+- [📊 모니터링 및 보고서](#모니터링-및-보고서)
+- [🛠️ 문제 해결](#문제-해결)
+- [🔄 업데이트 및 유지보수](#업데이트-및-유지보수)
+- [📈 성능 최적화](#성능-최적화)
+- [🤝 기여하기](#기여하기)
+- [📞 지원](#지원)
 
 ## 🎯 개요
 
@@ -261,7 +261,7 @@ python run_integrated_automation.py --start-from basic
 **통합 자동화**
 
 ## 🔗 관련 과정
-Cloud Basic 1일차 | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+Cloud Basic 1일차 | [Cloud Master 1일차](/mcp_knowledge_base/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/README.md)
 
 </div>
 
@@ -269,6 +269,6 @@ Cloud Basic 1일차 | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/te
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

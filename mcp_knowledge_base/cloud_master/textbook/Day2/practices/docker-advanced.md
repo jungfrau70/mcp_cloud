@@ -167,7 +167,7 @@ docker-compose up -d --scale web=3
 FROM node:16-alpine AS builder
 
 # 비루트 사용자 생성
-RUN addgroup -g 1001 -S nodejs && \
+RUN addgroup -g 1001 -S nodejs && /
     adduser -S nextjs -u 1001
 
 WORKDIR /app
@@ -186,15 +186,15 @@ CMD ["npm", "start"]
 #### 컨테이너 보안 검사
 ```bash
 # Docker Bench Security 실행
-docker run --rm --net host --pid host --userns host --cap-add audit_control \
-  -e DOCKER_CONTENT_TRUST=$DOCKER_CONTENT_TRUST \
-  -v /etc:/etc:ro \
-  -v /usr/bin/containerd:/usr/bin/containerd:ro \
-  -v /usr/bin/runc:/usr/bin/runc:ro \
-  -v /usr/lib/systemd:/usr/lib/systemd:ro \
-  -v /var/lib:/var/lib:ro \
-  -v /var/run/docker.sock:/var/run/docker.sock:ro \
-  --label docker_bench_security \
+docker run --rm --net host --pid host --userns host --cap-add audit_control /
+  -e DOCKER_CONTENT_TRUST=$DOCKER_CONTENT_TRUST /
+  -v /etc:/etc:ro /
+  -v /usr/bin/containerd:/usr/bin/containerd:ro /
+  -v /usr/bin/runc:/usr/bin/runc:ro /
+  -v /usr/lib/systemd:/usr/lib/systemd:ro /
+  -v /var/lib:/var/lib:ro /
+  -v /var/run/docker.sock:/var/run/docker.sock:ro /
+  --label docker_bench_security /
   docker/docker-bench-security
 ```
 

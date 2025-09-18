@@ -14,11 +14,6 @@
 
 # Cloud Basic → Cloud Master 연계 가이드
 
-<div align="center">
-
-[← 이전: Cloud Basic 2일차 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [다음: Cloud Master 1일차 →](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [← 이전: Cloud Basic 메인](/mcp_knowledge_base/cloud_master/README.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 📋 개요
 
@@ -172,7 +167,7 @@ git commit -m "Initial commit: Basic web app with Docker"
 
 ```bash
 # GitHub 저장소 연결
-git remote add origin https://github.com/yourusername/docker-basic-app.git
+git remote add origin https:///github.com/yourusername/docker-basic-app.git
 
 # 브랜치 설정
 git branch -M main
@@ -413,24 +408,21 @@ docker-compose down
 
 [💡 추가 학습 자료](#추가-학습-자료)
 
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Git 공식 문서](https://git-scm.com/doc)
-- [Node.js 공식 문서](https://nodejs.org/docs/)
-- [Express.js 공식 문서](https://expressjs.com/)
+- [Docker 공식 문서](https:///docs.docker.com/)
+- [Git 공식 문서](https:///git-scm.com/doc)
+- [Node.js 공식 문서](https:///nodejs.org/docs/)
+- [Express.js 공식 문서](https:///expressjs.com/)
 
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[← 이전: Cloud Basic 2일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

@@ -1,10 +1,5 @@
 # GCP 조직 계정 가입 및 관리 가이드
 
-<div align="center">
-
-[← 이전: Cloud Container 메인](/mcp_knowledge_base/cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/cloud_master/learning-path.md)
-
-</div>
 
 ## 📋 개요
 
@@ -55,7 +50,7 @@
 3. **도메인 등록** (예: `mycompany.com`)
 
 ### 2.2 Google Workspace 가입
-1. [Google Workspace](https://workspace.google.com) 접속
+1. [Google Workspace](https:///workspace.google.com) 접속
 2. **무료로 시작하기** 클릭
 3. 도메인 입력: `mycompany.com`
 4. 계정 정보 입력:
@@ -84,7 +79,7 @@
 ## 3️⃣ Cloud Identity 설정 (무료 옵션)
 
 ### 3.1 Cloud Identity 가입
-1. [Cloud Identity](https://identity.google.com) 접속
+1. [Cloud Identity](https:///identity.google.com) 접속
 2. **무료로 시작하기** 클릭
 3. 도메인 입력: `mycompany.com`
 4. 관리자 계정 생성:
@@ -109,7 +104,7 @@
 ## 4️⃣ GCP 조직 생성
 
 ### 4.1 조직 생성
-1. [Google Cloud Console](https://console.cloud.google.com) 접속
+1. [Google Cloud Console](https:///console.cloud.google.com) 접속
 2. **조직** → **조직 만들기**
 3. 조직 정보 입력:
    - 조직 이름: `My Company`
@@ -273,34 +268,34 @@ listPolicy:
 gcloud organizations list
 
 # 2. 폴더 생성
-gcloud resource-manager folders create \
-  --display-name="Production" \
+gcloud resource-manager folders create /
+  --display-name="Production" /
   --parent="organizations/ORGANIZATION_ID"
 
 # 3. 프로젝트 생성
-gcloud projects create my-production-project \
+gcloud projects create my-production-project /
   --folder="folders/FOLDER_ID"
 
 # 4. 결제 계정 연결
-gcloud billing projects link my-production-project \
+gcloud billing projects link my-production-project /
   --billing-account=BILLING_ACCOUNT_ID
 ```
 
 ### 10.2 IAM 정책 자동화
 ```bash
 # 1. 조직 레벨 IAM 설정
-gcloud organizations add-iam-policy-binding ORGANIZATION_ID \
-  --member="group:developers@mycompany.com" \
+gcloud organizations add-iam-policy-binding ORGANIZATION_ID /
+  --member="group:developers@mycompany.com" /
   --role="roles/resourcemanager.projectCreator"
 
 # 2. 프로젝트 레벨 IAM 설정
-gcloud projects add-iam-policy-binding PROJECT_ID \
-  --member="group:developers@mycompany.com" \
+gcloud projects add-iam-policy-binding PROJECT_ID /
+  --member="group:developers@mycompany.com" /
   --role="roles/editor"
 
 # 3. 서비스 계정 생성
-gcloud iam service-accounts create my-service-account \
-  --display-name="My Service Account" \
+gcloud iam service-accounts create my-service-account /
+  --display-name="My Service Account" /
   --description="Service account for automation"
 ```
 
@@ -402,23 +397,20 @@ resource "google_project_iam_member" "developers" {
 3. **정책 충돌**: 조직 정책 우선순위 확인
 
 ### 지원 채널
-- [GCP 지원 센터](https://cloud.google.com/support/)
-- [Google Workspace 지원](https://support.google.com/a/)
-- [Cloud Identity 지원](https://support.google.com/cloudidentity/)
+- [GCP 지원 센터](https:///cloud.google.com/support/)
+- [Google Workspace 지원](https:///support.google.com/a/)
+- [Cloud Identity 지원](https:///support.google.com/cloudidentity/)
 
 
 ---
 
-<div align="center">
-
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
-
-</div>
 
 ---
 
+
+
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_container/learning-path.md)
+[← 이전: Cloud Container 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

@@ -145,7 +145,7 @@ cat shared_resources/shared_resources.json
 pip install awscli
 
 # GCP CLI 설치
-curl https://sdk.cloud.google.com | bash
+curl https:///sdk.cloud.google.com | bash
 
 # Docker 설치
 # Windows: Docker Desktop
@@ -153,7 +153,7 @@ curl https://sdk.cloud.google.com | bash
 # Linux: docker.io 패키지
 
 # kubectl 설치
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https:///dl.k8s.io/release/$(curl -L -s https:///dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 ```
 
 #### 2. 권한 문제
@@ -300,7 +300,7 @@ python run_integrated_automation.py --cache-resources
 **통합 자동화**
 
 ## 🔗 관련 과정
-[Cloud Basic 1일차](/mcp_knowledge_base/cloud_basic/textbook/Day1/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/cloud_container/textbook/Day1/README.md)
+[Cloud Basic 1일차](/mcp_knowledge_base/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/README.md)
 
 </div>
 
@@ -308,6 +308,6 @@ python run_integrated_automation.py --cache-resources
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/cloud_basic/learning-path.md)
+[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>
