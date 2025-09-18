@@ -89,6 +89,8 @@
 
 #### 로드 밸런싱 알고리즘
 
+![Load Balancing Algorithms](../images/day3/load-balancing-algorithms.svg)
+
 - **Round Robin**: 순차적으로 서버 선택
 - **Least Connections**: 연결 수가 가장 적은 서버 선택
 - **IP Hash**: 클라이언트 IP 기반 서버 선택
@@ -727,6 +729,8 @@ gcloud compute instance-groups managed set-autoscaling my-app-mig \
 
 ### 모니터링의 3가지 기둥
 
+![Monitoring Pillars](../images/day3/monitoring-architecture.svg)
+
 [모니터링의 3가지 기둥](#모니터링의-3가지-기둥)
 - **메트릭**: CPU, 메모리, 네트워크 사용량
 - **로그**: 애플리케이션 로그, 시스템 로그
@@ -818,6 +822,9 @@ aws cloudwatch put-dashboard \
 ```
 
 #### 4단계: 대시보드 확인 및 관리
+
+![CloudWatch Dashboard](../images/day3/cloudwatch-dashboard.svg)
+
 ```bash
 # 대시보드 목록 확인
 aws cloudwatch list-dashboards

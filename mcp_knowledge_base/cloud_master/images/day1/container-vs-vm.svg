@@ -1,0 +1,129 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1e293b">
+    Container vs Virtual Machine
+  </text>
+  
+  <!-- Virtual Machine Section -->
+  <text x="200" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#dc2626">
+    Virtual Machine
+  </text>
+  
+  <!-- Host OS -->
+  <rect x="50" y="80" width="300" height="40" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+  <text x="200" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#374151">
+    Host Operating System
+  </text>
+  
+  <!-- Hypervisor -->
+  <rect x="70" y="130" width="260" height="30" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"/>
+  <text x="200" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#92400e">
+    Hypervisor (VMware, VirtualBox)
+  </text>
+  
+  <!-- VM 1 -->
+  <rect x="80" y="170" width="120" height="80" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="140" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1e40af">
+    Guest OS
+  </text>
+  <text x="140" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">
+    (Windows/Linux)
+  </text>
+  <rect x="90" y="210" width="100" height="30" fill="#3b82f6" stroke="#1e40af" stroke-width="1"/>
+  <text x="140" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    App A
+  </text>
+  
+  <!-- VM 2 -->
+  <rect x="210" y="170" width="120" height="80" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="270" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1e40af">
+    Guest OS
+  </text>
+  <text x="270" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1e40af">
+    (Windows/Linux)
+  </text>
+  <rect x="220" y="210" width="100" height="30" fill="#3b82f6" stroke="#1e40af" stroke-width="1"/>
+  <text x="270" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    App B
+  </text>
+  
+  <!-- Container Section -->
+  <text x="600" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#059669">
+    Container
+  </text>
+  
+  <!-- Host OS for Container -->
+  <rect x="450" y="80" width="300" height="40" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+  <text x="600" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#374151">
+    Host Operating System
+  </text>
+  
+  <!-- Container Engine -->
+  <rect x="470" y="130" width="260" height="30" fill="#10b981" stroke="#059669" stroke-width="2"/>
+  <text x="600" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    Container Engine (Docker)
+  </text>
+  
+  <!-- Container 1 -->
+  <rect x="480" y="170" width="100" height="80" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <rect x="490" y="180" width="80" height="25" fill="#16a34a" stroke="#15803d" stroke-width="1"/>
+  <text x="530" y="197" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    App A
+  </text>
+  <text x="530" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#15803d">
+    Container
+  </text>
+  
+  <!-- Container 2 -->
+  <rect x="590" y="170" width="100" height="80" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <rect x="600" y="180" width="80" height="25" fill="#16a34a" stroke="#15803d" stroke-width="1"/>
+  <text x="640" y="197" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    App B
+  </text>
+  <text x="640" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#15803d">
+    Container
+  </text>
+  
+  <!-- Container 3 -->
+  <rect x="700" y="170" width="100" height="80" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <rect x="710" y="180" width="80" height="25" fill="#16a34a" stroke="#15803d" stroke-width="1"/>
+  <text x="750" y="197" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+    App C
+  </text>
+  <text x="750" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#15803d">
+    Container
+  </text>
+  
+  <!-- Comparison Table -->
+  <rect x="50" y="280" width="700" height="100" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" rx="8"/>
+  
+  <!-- Table Header -->
+  <rect x="60" y="290" width="680" height="25" fill="#3b82f6" stroke="#1e40af" stroke-width="1"/>
+  <text x="100" y="307" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">Feature</text>
+  <text x="300" y="307" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">Virtual Machine</text>
+  <text x="500" y="307" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">Container</text>
+  
+  <!-- Table Rows -->
+  <rect x="60" y="315" width="680" height="20" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="100" y="328" font-family="Arial, sans-serif" font-size="11" fill="#374151">Resource Usage</text>
+  <text x="300" y="328" font-family="Arial, sans-serif" font-size="11" fill="#dc2626">High (Full OS per VM)</text>
+  <text x="500" y="328" font-family="Arial, sans-serif" font-size="11" fill="#059669">Low (Shared OS kernel)</text>
+  
+  <rect x="60" y="335" width="680" height="20" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="100" y="348" font-family="Arial, sans-serif" font-size="11" fill="#374151">Startup Time</text>
+  <text x="300" y="348" font-family="Arial, sans-serif" font-size="11" fill="#dc2626">Minutes</text>
+  <text x="500" y="348" font-family="Arial, sans-serif" font-size="11" fill="#059669">Seconds</text>
+  
+  <rect x="60" y="355" width="680" height="20" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="100" y="368" font-family="Arial, sans-serif" font-size="11" fill="#374151">Isolation</text>
+  <text x="300" y="368" font-family="Arial, sans-serif" font-size="11" fill="#dc2626">Hardware Level</text>
+  <text x="500" y="368" font-family="Arial, sans-serif" font-size="11" fill="#059669">Process Level</text>
+  
+  <rect x="60" y="375" width="680" height="20" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="100" y="388" font-family="Arial, sans-serif" font-size="11" fill="#374151">Portability</text>
+  <text x="300" y="388" font-family="Arial, sans-serif" font-size="11" fill="#dc2626">Medium</text>
+  <text x="500" y="388" font-family="Arial, sans-serif" font-size="11" fill="#059669">High</text>
+</svg>

@@ -1,0 +1,119 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1e293b">
+    Dockerfile Build Process
+  </text>
+  
+  <!-- Dockerfile Content -->
+  <rect x="50" y="60" width="700" height="400" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" rx="8"/>
+  
+  <!-- Step 1: FROM -->
+  <rect x="70" y="80" width="660" height="50" fill="#3b82f6" stroke="#1e40af" stroke-width="2" rx="6"/>
+  <text x="100" y="105" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+    FROM node:18-alpine
+  </text>
+  <text x="100" y="120" font-family="Arial, sans-serif" font-size="12" fill="white">
+    # 베이스 이미지 선택
+  </text>
+  
+  <!-- Step 2: WORKDIR -->
+  <rect x="70" y="140" width="660" height="50" fill="#059669" stroke="#047857" stroke-width="2" rx="6"/>
+  <text x="100" y="165" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+    WORKDIR /app
+  </text>
+  <text x="100" y="180" font-family="Arial, sans-serif" font-size="12" fill="white">
+    # 작업 디렉토리 설정
+  </text>
+  
+  <!-- Step 3: COPY -->
+  <rect x="70" y="200" width="660" height="50" fill="#7c3aed" stroke="#6d28d9" stroke-width="2" rx="6"/>
+  <text x="100" y="225" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+    COPY package*.json ./
+  </text>
+  <text x="100" y="240" font-family="Arial, sans-serif" font-size="12" fill="white">
+    # 의존성 파일 복사 (캐시 최적화)
+  </text>
+  
+  <!-- Step 4: RUN -->
+  <rect x="70" y="260" width="660" height="50" fill="#dc2626" stroke="#b91c1c" stroke-width="2" rx="6"/>
+  <text x="100" y="285" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+    RUN npm install
+  </text>
+  <text x="100" y="300" font-family="Arial, sans-serif" font-size="12" fill="white">
+    # 의존성 설치 (캐시된 레이어)
+  </text>
+  
+  <!-- Step 5: COPY -->
+  <rect x="70" y="320" width="660" height="50" fill="#f59e0b" stroke="#d97706" stroke-width="2" rx="6"/>
+  <text x="100" y="345" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+    COPY . .
+  </text>
+  <text x="100" y="360" font-family="Arial, sans-serif" font-size="12" fill="white">
+    # 애플리케이션 코드 복사
+  </text>
+  
+  <!-- Step 6: EXPOSE -->
+  <rect x="70" y="380" width="660" height="50" fill="#ec4899" stroke="#be185d" stroke-width="2" rx="6"/>
+  <text x="100" y="405" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+    EXPOSE 3000
+  </text>
+  <text x="100" y="420" font-family="Arial, sans-serif" font-size="12" fill="white">
+    # 포트 노출 (문서화 목적)
+  </text>
+  
+  <!-- Step 7: CMD -->
+  <rect x="70" y="440" width="660" height="50" fill="#10b981" stroke="#059669" stroke-width="2" rx="6"/>
+  <text x="100" y="465" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+    CMD ["npm", "start"]
+  </text>
+  <text x="100" y="480" font-family="Arial, sans-serif" font-size="12" fill="white">
+    # 애플리케이션 실행 명령
+  </text>
+  
+  <!-- Build Process Flow -->
+  <text x="400" y="520" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1e293b">
+    Docker Build Process Flow
+  </text>
+  
+  <!-- Build Steps -->
+  <rect x="50" y="540" width="100" height="40" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="6"/>
+  <text x="100" y="565" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e40af">
+    1. Base Image
+  </text>
+  
+  <rect x="170" y="540" width="100" height="40" fill="#dcfce7" stroke="#16a34a" stroke-width="2" rx="6"/>
+  <text x="220" y="565" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#15803d">
+    2. Dependencies
+  </text>
+  
+  <rect x="290" y="540" width="100" height="40" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="6"/>
+  <text x="340" y="565" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#92400e">
+    3. App Code
+  </text>
+  
+  <rect x="410" y="540" width="100" height="40" fill="#fce7f3" stroke="#ec4899" stroke-width="2" rx="6"/>
+  <text x="460" y="565" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#be185d">
+    4. Configuration
+  </text>
+  
+  <rect x="530" y="540" width="100" height="40" fill="#e0e7ff" stroke="#6366f1" stroke-width="2" rx="6"/>
+  <text x="580" y="565" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#4338ca">
+    5. Final Image
+  </text>
+  
+  <!-- Arrows -->
+  <path d="M 150 560 L 170 560" stroke="#374151" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 270 560 L 290 560" stroke="#374151" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 390 560 L 410 560" stroke="#374151" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 510 560 L 530 560" stroke="#374151" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

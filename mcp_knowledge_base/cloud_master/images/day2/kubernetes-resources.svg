@@ -1,0 +1,161 @@
+<svg width="800" height="500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="500" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1e293b">
+    Kubernetes Resources Relationship
+  </text>
+  
+  <!-- Namespace -->
+  <rect x="50" y="60" width="700" height="50" fill="#e0e7ff" stroke="#6366f1" stroke-width="2" rx="8"/>
+  <text x="400" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#4338ca">
+    Namespace: default
+  </text>
+  
+  <!-- Deployment -->
+  <rect x="100" y="130" width="200" height="80" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="8"/>
+  <text x="200" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1e40af">
+    Deployment
+  </text>
+  <text x="200" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#1e40af">
+    nginx-deployment
+  </text>
+  <text x="200" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1e40af">
+    replicas: 3
+  </text>
+  
+  <!-- Service -->
+  <rect x="350" y="130" width="200" height="80" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+  <text x="450" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#92400e">
+    Service
+  </text>
+  <text x="450" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#92400e">
+    nginx-service
+  </text>
+  <text x="450" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#92400e">
+    type: LoadBalancer
+  </text>
+  
+  <!-- ConfigMap -->
+  <rect x="600" y="130" width="150" height="80" fill="#fce7f3" stroke="#ec4899" stroke-width="2" rx="8"/>
+  <text x="675" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#be185d">
+    ConfigMap
+  </text>
+  <text x="675" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#be185d">
+    nginx-config
+  </text>
+  <text x="675" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#be185d">
+    configuration data
+  </text>
+  
+  <!-- Pods -->
+  <rect x="50" y="250" width="120" height="60" fill="#dcfce7" stroke="#16a34a" stroke-width="2" rx="6"/>
+  <text x="110" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#15803d">
+    Pod 1
+  </text>
+  <text x="110" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#15803d">
+    nginx-xxx-1
+  </text>
+  
+  <rect x="200" y="250" width="120" height="60" fill="#dcfce7" stroke="#16a34a" stroke-width="2" rx="6"/>
+  <text x="260" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#15803d">
+    Pod 2
+  </text>
+  <text x="260" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#15803d">
+    nginx-xxx-2
+  </text>
+  
+  <rect x="350" y="250" width="120" height="60" fill="#dcfce7" stroke="#16a34a" stroke-width="2" rx="6"/>
+  <text x="410" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#15803d">
+    Pod 3
+  </text>
+  <text x="410" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#15803d">
+    nginx-xxx-3
+  </text>
+  
+  <!-- Containers -->
+  <rect x="70" y="330" width="80" height="40" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="4"/>
+  <text x="110" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#374151">
+    nginx:1.21
+  </text>
+  
+  <rect x="220" y="330" width="80" height="40" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="4"/>
+  <text x="260" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#374151">
+    nginx:1.21
+  </text>
+  
+  <rect x="370" y="330" width="80" height="40" fill="#f3f4f6" stroke="#6b7280" stroke-width="1" rx="4"/>
+  <text x="410" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#374151">
+    nginx:1.21
+  </text>
+  
+  <!-- Relationships -->
+  <!-- Deployment to Pods -->
+  <path d="M 200 210 L 110 250" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 200 210 L 260 250" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 200 210 L 410 250" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Service to Pods -->
+  <path d="M 450 210 L 110 250" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 450 210 L 260 250" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 450 210 L 410 250" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- ConfigMap to Pods -->
+  <path d="M 675 210 L 110 250" stroke="#ec4899" stroke-width="1" fill="none" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <path d="M 675 210 L 260 250" stroke="#ec4899" stroke-width="1" fill="none" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <path d="M 675 210 L 410 250" stroke="#ec4899" stroke-width="1" fill="none" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Pods to Containers -->
+  <path d="M 110 310 L 110 330" stroke="#16a34a" stroke-width="1" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 260 310 L 260 330" stroke="#16a34a" stroke-width="1" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 410 310 L 410 330" stroke="#16a34a" stroke-width="1" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Labels -->
+  <text x="155" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3b82f6">
+    manages
+  </text>
+  <text x="280" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3b82f6">
+    manages
+  </text>
+  <text x="405" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3b82f6">
+    manages
+  </text>
+  
+  <text x="280" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f59e0b">
+    exposes
+  </text>
+  <text x="405" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f59e0b">
+    exposes
+  </text>
+  <text x="530" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f59e0b">
+    exposes
+  </text>
+  
+  <text x="530" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ec4899">
+    configures
+  </text>
+  <text x="655" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ec4899">
+    configures
+  </text>
+  <text x="780" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ec4899">
+    configures
+  </text>
+  
+  <!-- Resource Details -->
+  <rect x="50" y="400" width="700" height="80" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" rx="8"/>
+  <text x="400" y="425" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e293b">
+    Resource Details
+  </text>
+  
+  <text x="100" y="450" font-family="Arial, sans-serif" font-size="12" fill="#374151">• Deployment: Manages Pod replicas, rolling updates</text>
+  <text x="100" y="465" font-family="Arial, sans-serif" font-size="12" fill="#374151">• Service: Provides stable network endpoint for Pods</text>
+  <text x="100" y="480" font-family="Arial, sans-serif" font-size="12" fill="#374151">• ConfigMap: Stores configuration data as key-value pairs</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+</svg>

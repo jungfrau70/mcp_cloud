@@ -531,6 +531,8 @@ jobs:
 
 #### Kubernetes 기본 구성 요소
 
+![Kubernetes Architecture](../images/day2/kubernetes-architecture.svg)
+
 - **Pod**: 가장 작은 배포 단위, 하나 이상의 컨테이너 그룹
 - **Deployment**: Pod의 선언적 관리 및 업데이트
 - **Service**: Pod들에 대한 안정적인 네트워크 엔드포인트
@@ -633,6 +635,8 @@ gcloud container clusters get-credentials my-cluster --zone us-central1-a
 ```
 
 ### 기본 애플리케이션 배포
+
+![Kubernetes Resources](../images/day2/kubernetes-resources.svg)
 
 ```yaml
 # nginx-deployment.yaml

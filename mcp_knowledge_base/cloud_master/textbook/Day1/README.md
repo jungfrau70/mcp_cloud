@@ -73,6 +73,8 @@ Docker는 애플리케이션을 컨테이너라는 경량화된, 이식 가능�
 
 #### 컨테이너 vs 가상머신
 
+![Container vs VM Architecture](../images/day1/container-vs-vm.svg)
+
 | 특징 | 컨테이너 | 가상머신 |
 |------|----------|----------|
 | **오버헤드** | 낮음 | 높음 |
@@ -94,6 +96,8 @@ Docker는 애플리케이션을 컨테이너라는 경량화된, 이식 가능�
 - **레지스트리 (Registry)**: Docker 이미지를 저장하고 공유하는 서비스
 
 #### Docker 아키텍처의 핵심 구성요소
+
+![Docker Architecture](../images/day1/docker-architecture.svg)
 
 - **Docker Engine**: 컨테이너를 실행하는 런타임
 - **Docker Daemon**: 백그라운드에서 실행되는 서비스
@@ -418,6 +422,8 @@ docker exec -it <container> /bin/bash  # 컨테이너 내부 접속
 ```
 
 #### Dockerfile 기본 구조
+
+![Dockerfile Structure](../images/day1/dockerfile-structure.svg)
 
 ```dockerfile
 # 베이스 이미지
@@ -834,6 +840,8 @@ git push
 - **핵심 개념**: Workflow, Job, Step, Action
 
 ### CI/CD 파이프라인
+
+![CI/CD Pipeline](../images/day1/cicd-pipeline.svg)
 
 - **CI (Continuous Integration)**: 코드 변경사항을 자동으로 빌드하고 테스트
 - **CD (Continuous Deployment)**: 테스트 통과한 코드를 자동으로 배포
