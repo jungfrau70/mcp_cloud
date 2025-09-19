@@ -1,3 +1,47 @@
+# Cloud Master - 마스터 과정 학습 경로
+
+> 📋 **전체 개요**: [README.md](/mcp_knowledge_base/README.md) | [통합 커리큘럼](/mcp_knowledge_base/curriculum.md) | [통합 인덱스](/mcp_knowledge_base/index.md)에서 전체 과정 구조를 확인하세요.
+
+<div align="center">
+</div>
+
+---
+
+## 🎯 학습 목표
+
+이 문서는 **Cloud Master 과정**의 모든 문서를 **누락 없이** 체계적으로 정리한 완전한 학습 경로입니다. Docker 컨테이너화부터 CI/CD 파이프라인, VM 기반 배포 자동화까지 실무 중심의 고급 기술을 단계별로 학습할 수 있도록 구성되어 있습니다.
+
+## 📚 과정 개요
+
+### Cloud Master - 마스터 과정 (3일)
+- **교육명**: 클라우드 실무력 강화! AWS & GCP 활용법(마스터)
+- **교육일정**: 9/22(월) ~ 9/24(수)
+- **교육시간**: 9:00 ~ 17:00 (7시간/일)
+
+- [**Day 1**](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md): Docker, Git/GitHub, GitHub Actions 기초
+- [**Day 2**](/mcp_knowledge_base/cloud_master/textbook/Day2/README.md): 고급 CI/CD 및 VM 기반 컨테이너 배포
+- [**Day 3**](/mcp_knowledge_base/cloud_master/textbook/Day3/README.md): 로드 밸런싱, 모니터링, 비용 최적화 
+
+- [**과정 상세**](/mcp_knowledge_base/cloud_master/과정상세.md)
+
+### 🏗️ 학습 자료 구조
+
+- **📖 교재 (textbook/)**: 이론 학습 및 실습 가이드
+  - `README.md`: 각 Day별 메인 교재
+  - `practices/`: 상세 실습 가이드 (마크다운)
+  - `guides/`: 설치 및 설정 가이드
+- **💻 실습 코드 (repos/)**: 실제 실행 가능한 코드
+  - `samples/`: 실습용 샘플 코드
+  - `automation/`: 실습 자동화 스크립트
+  - `cloud-scripts/`: 클라우드 리소스 관리 도구
+
+### 학습 목표
+- Docker 및 GitHub Actions 기반 **완전 자동화된 배포 파이프라인** 구축
+- AWS/GCP 환경에서 **컨테이너 서비스(ECS, GKE)** 운영
+- **고가용성 및 Auto Scaling 아키텍처** 설계와 장애 복구 시뮬레이션
+- 클라우드 비용 분석 도구(AWS Cost Explorer, GCP Billing Reports) 활용
+- **팀 프로젝트 수행**을 통한 실전 아키텍처 설계 및 비용 최적화 전략 수립
+
 
 ## 🛤️ 학습 순서
 
@@ -28,50 +72,6 @@
 - 통합 시스템 구축
 
 **💡 팁**: 각 Day의 내용을 순차적으로 학습하시면 체계적인 이해가 가능합니다!
-
-# Cloud Master - 마스터 과정 학습 경로
-
-> 📋 **전체 개요**: [README.md](/mcp_knowledge_base/README.md) | [통합 커리큘럼](/mcp_knowledge_base/curriculum.md) | [통합 인덱스](/mcp_knowledge_base/index.md)에서 전체 과정 구조를 확인하세요.
-
-<div align="center">
-</div>
-
----
-
-## 🎯 학습 목표
-
-이 문서는 **Cloud Master 과정**의 모든 문서를 **누락 없이** 체계적으로 정리한 완전한 학습 경로입니다. Docker 컨테이너화부터 CI/CD 파이프라인, VM 기반 배포 자동화까지 실무 중심의 고급 기술을 단계별로 학습할 수 있도록 구성되어 있습니다.
-
-## 📚 과정 개요
-
-### Cloud Master - 마스터 과정 (3일)
-- **교육명**: 클라우드 실무력 강화! AWS & GCP 활용법(마스터)
-- **교육일정**: 9/22(월) ~ 9/24(수)
-- **교육시간**: 9:00 ~ 17:00 (7시간/일)
-
-### 🏗️ 학습 자료 구조
-
-- **📖 교재 (textbook/)**: 이론 학습 및 실습 가이드
-  - `README.md`: 각 Day별 메인 교재
-  - `practices/`: 상세 실습 가이드 (마크다운)
-  - `guides/`: 설치 및 설정 가이드
-- **💻 실습 코드 (repos/)**: 실제 실행 가능한 코드
-  - `samples/`: 실습용 샘플 코드
-  - `automation/`: 실습 자동화 스크립트
-  - `cloud-scripts/`: 클라우드 리소스 관리 도구
-- **교육방식**: 온라인
-- **실습 환경**: AWS Free Tier + GCP Free Tier ($300 크레딧) + GitHub Free
-
-### 과정 상세 정보
-- [과정명 상세](/mcp_knowledge_base/cloud_master/과정명.md)
-- [과정 상세 정보](/mcp_knowledge_base/cloud_master/과정상세.md)
-
-### 학습 목표
-- Docker 및 GitHub Actions 기반 **완전 자동화된 배포 파이프라인** 구축
-- AWS/GCP 환경에서 **컨테이너 서비스(ECS, GKE)** 운영
-- **고가용성 및 Auto Scaling 아키텍처** 설계와 장애 복구 시뮬레이션
-- 클라우드 비용 분석 도구(AWS Cost Explorer, GCP Billing Reports) 활용
-- **팀 프로젝트 수행**을 통한 실전 아키텍처 설계 및 비용 최적화 전략 수립
 
 ---
 
