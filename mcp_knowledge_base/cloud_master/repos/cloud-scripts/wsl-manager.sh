@@ -80,16 +80,18 @@ select_wsl_distro() {
     echo "  1. Ubuntu (Running)"
     echo ""
     echo -n "선택 (1): "
-    read -r choice || {
-        log_error "입력 읽기 실패"
-        return 1
-    }
     
-    if [[ "$choice" == "1" ]]; then
-        echo "Ubuntu"
-        return 0
+    # 타임아웃을 설정하여 무한 대기 방지
+    if read -t 30 -r choice; then
+        if [[ "$choice" == "1" ]]; then
+            echo "Ubuntu"
+            return 0
+        else
+            log_error "잘못된 선택입니다. Ubuntu만 사용 가능합니다."
+            return 1
+        fi
     else
-        log_error "잘못된 선택입니다. Ubuntu만 사용 가능합니다."
+        log_error "입력 시간 초과 또는 읽기 실패"
         return 1
     fi
 }
@@ -397,10 +399,10 @@ main_menu() {
         echo "11. 종료"
         echo ""
         echo -n "선택 (1-11): "
-        read -r choice || {
-            log_error "입력 읽기 실패"
+        if ! read -t 30 -r choice; then
+            log_error "입력 시간 초과 또는 읽기 실패"
             continue
-        }
+        fi
         
         case $choice in
             1)
