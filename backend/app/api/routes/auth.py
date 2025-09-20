@@ -153,6 +153,11 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
     return TokenResponse(access_token=token)
 
 
+@router.options("/login")
+def login_options():
+    """Handle CORS preflight request for login"""
+    return {"message": "OK"}
+
 @router.post("/login", response_model=TokenResponse)
 def login(payload: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == str(payload.email)).first()

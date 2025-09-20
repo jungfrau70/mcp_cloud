@@ -34,8 +34,11 @@ function connect(){
   // @ts-ignore Nuxt runtime
   const { public: pub } = useRuntimeConfig()
   const configuredWs: string = (pub?.wsBaseUrl as string) || ''
+  const apiKey: string = (pub?.apiKey as string) || 'my_mcp_eagle_tiger'
+  
+  let wsUrl: string
   if(configuredWs){
-    socket = new WebSocket(`${configuredWs.replace(/\/$/,'')}/v1/knowledge-base/tasks/ws`)
+    wsUrl = `${configuredWs.replace(/\/$/,'')}/v1/knowledge-base/tasks/ws?api_key=${apiKey}`
   } else {
     const httpBase = resolveApiBase()
     const absolute = httpBase.startsWith('/') && typeof window !== 'undefined'
@@ -47,8 +50,10 @@ function connect(){
       const u = new URL(absolute)
       if(!/\/api\/?$/.test(u.pathname)) join = '/api'
     } catch {}
-    socket = new WebSocket(`${wsBase}${join}/v1/knowledge-base/tasks/ws`)
+    wsUrl = `${wsBase}${join}/v1/knowledge-base/tasks/ws?api_key=${apiKey}`
   }
+  
+  socket = new WebSocket(wsUrl)
   socket.onopen = () => {
     reconnectAttempts = 0
     scheduleHeartbeat()

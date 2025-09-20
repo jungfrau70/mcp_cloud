@@ -51,7 +51,7 @@ async def kb_tasks_ws(websocket: WebSocket):
         if not DISABLE_AUTH:
             token = websocket.query_params.get('api_key')
             if not token or token != (MCP_API_KEY or ""):
-                await websocket.close(code=1008)
+                await websocket.close(code=1008, reason="Authentication failed")
                 return
         # Minimal keep-alive loop
         import asyncio

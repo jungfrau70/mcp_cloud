@@ -40,7 +40,9 @@ if ENV == "production":
     ALLOWED_ORIGINS = [
         "https://goldencircle.us",
         "https://www.goldencircle.us",
-        "https://api.goldencircle.us"
+        "https://api.goldencircle.us",
+        "http://localhost:3000",  # 개발 환경 호환성
+        "http://127.0.0.1:3000"   # 로컬 개발 환경
     ]
 else:
     ALLOWED_ORIGINS = ["*"]  # 개발 환경에서는 모든 origin 허용

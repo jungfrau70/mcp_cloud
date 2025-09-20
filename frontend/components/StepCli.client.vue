@@ -41,7 +41,7 @@ onMounted(async () => {
 
   // 동적으로 API URL 가져오기
   const config = useRuntimeConfig();
-  const apiBase = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000';
+  const apiBase = config.public.apiBaseUrl?.replace('/api', '') || (process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000');
   const wsUrl = apiBase.replace('http://', 'ws://').replace('https://', 'wss://') + '/ws/v1/cli/interactive';
   
   ws = new WebSocket(wsUrl);
@@ -49,7 +49,7 @@ onMounted(async () => {
   ws.onopen = () => {
     term.writeln('Connected to interactive shell...');
     // API 키를 첫 번째 메시지로 전송 (보안 강화)
-    const apiKey = process.env.MCP_API_KEY || 'my_mcp_eagle_tiger';
+    const apiKey = config.public.apiKey || 'my_mcp_eagle_tiger';
     ws.send(JSON.stringify({ type: 'auth', api_key: apiKey }));
     ws.send('PS1="mcp-user@cloud-shell:~$ "\n');
   };
