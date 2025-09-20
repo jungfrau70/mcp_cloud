@@ -10,9 +10,25 @@ import os
 from cryptography.fernet import Fernet
 
 # --- Encryption Utility ---
-ENCRYPTION_KEY = os.getenv("CREDENTIAL_ENCRYPTION_KEY", "placeholder_must_be_32_byte_secret_key")
-if len(ENCRYPTION_KEY.encode()) < 32:
-    ENCRYPTION_KEY = ENCRYPTION_KEY.ljust(32, '=')
+ENCRYPTION_KEY = os.getenv("CREDENTIAL_ENCRYPTION_KEY")
+
+if not ENCRYPTION_KEY:
+    # 환경변수가 없으면 새 키 생성
+    from cryptography.fernet import Fernet
+    ENCRYPTION_KEY = Fernet.generate_key().decode()
+    print(f"⚠️  새로운 암호화 키가 생성되었습니다. 다음 환경변수를 설정하세요:")
+    print(f"CREDENTIAL_ENCRYPTION_KEY={ENCRYPTION_KEY}")
+else:
+    # 기존 키가 있으면 유효성 검사
+    try:
+        # Fernet 키 유효성 검사
+        Fernet(ENCRYPTION_KEY.encode())
+    except Exception as e:
+        print(f"❌ 잘못된 암호화 키: {e}")
+        print("올바른 Fernet 키를 생성합니다...")
+        from cryptography.fernet import Fernet
+        ENCRYPTION_KEY = Fernet.generate_key().decode()
+        print(f"새로운 키: CREDENTIAL_ENCRYPTION_KEY={ENCRYPTION_KEY}")
 
 fernet = Fernet(ENCRYPTION_KEY.encode())
 

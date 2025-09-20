@@ -220,6 +220,9 @@ gh run cancel <run-id>
 ```bash
 # WSL 자동 설정 스크립트 실행
 ./wsl-auto-setup.sh
+
+# WSL 관리 도구 사용
+./wsl-manager.sh
 ```
 
 ##### 기존 WSL 환경 체크
@@ -229,6 +232,41 @@ gh run cancel <run-id>
 
 # 또는 특정 Day 체크
 ./environment-check-wsl.sh day2
+```
+
+##### WSL 관리 도구 사용
+```bash
+# WSL 관리 도구 실행
+./wsl-manager.sh
+
+# WSL 배포판 목록 보기
+wsl --list --verbose
+
+# WSL 배포판 중지
+wsl --terminate Ubuntu-22.04
+
+# WSL 배포판 삭제
+wsl --unregister Ubuntu-22.04
+
+# WSL 배포판 생성
+wsl --install -d Ubuntu-22.04
+```
+
+##### WSL 관리 도구 빠른 시작
+```bash
+# 1. WSL 관리 도구 실행
+./wsl-manager.sh
+
+# 2. 메뉴에서 원하는 기능 선택
+#    - 1: 배포판 목록 보기
+#    - 5: 새 배포판 생성
+#    - 7: 배포판 백업
+#    - 4: 배포판 삭제
+
+# 3. 상세한 사용법은 가이드 문서 참조
+#    - wsl-manager-guide.md: 사용법 및 예제
+#    - wsl-manager-api.md: 기술 문서
+#    - wsl-manager-examples.md: 실제 시나리오
 ```
 
 ##### WSL 수동 설정
@@ -1176,6 +1214,10 @@ aws ce get-cost-and-usage --time-period Start=2024-01-01,End=2024-01-31
 - [WSL 환경 설치 가이드](cloud_master/repos/install/README-wsl.md)
 - [WSL 추가 생성 가이드](wsl-setup-guide.md) - 상세한 WSL 환경 구축 가이드
 - [WSL 자동 설정 스크립트](wsl-auto-setup.sh) - 원클릭 WSL 환경 구축
+- [WSL 관리 도구](wsl-manager.sh) - WSL 배포판 생성/삭제/관리
+- [WSL 관리 도구 가이드](wsl-manager-guide.md) - 상세한 사용법 및 예제
+- [WSL 관리 도구 API 문서](wsl-manager-api.md) - 기술 문서 및 함수 참조
+- [WSL 관리 도구 사용 예제](wsl-manager-examples.md) - 실제 사용 시나리오
 - [전체 설치 스크립트](cloud_master/repos/install/install-all-wsl.sh)
 
 ### kubectl Context 관리

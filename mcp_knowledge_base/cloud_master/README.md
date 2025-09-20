@@ -70,20 +70,32 @@
 - [Day 3 실습](textbook/Day3/README.md) - 로드밸런싱 & 모니터링 & 비용 최적화
 
 ### 🔧 환경 설정 가이드
+- [WSL 자동 설정](repos/cloud-scripts/wsl-auto-setup.sh) - WSL 환경 원클릭 구축
+- [WSL 추가 생성 가이드](repos/cloud-scripts/wsl-setup-guide.md) - 상세한 WSL 환경 구축 가이드
+- [환경 체크 도구](repos/cloud-scripts/environment-check-wsl.sh) - 실습 환경 자동 검증
 - [Docker 설치 가이드](cloud_basic/textbook/Day1/guides/install_docker.md)
 - [Git 설정 가이드](cloud_basic/textbook/Day1/guides/install_git.md)
 - [AWS CLI 설정 가이드](cloud_basic/textbook/Day1/guides/install_aws_cli.md)
 - [GCP CLI 설정 가이드](cloud_basic/textbook/Day1/guides/install_gcp_cli.md)
 
+### 🧹 정리 도구
+- [통합 클러스터 정리](repos/cloud-scripts/cluster-cleanup-interactive.sh) - EKS/GKE 클러스터 선택적 정리
+- [통합 VM 정리](repos/cloud-scripts/vm-cleanup-interactive.sh) - GCP/AWS VM 인스턴스 선택적 정리
+- [VPC 정리 스크립트](repos/cloud-scripts/cleanup-vpcs.sh) - AWS VPC 선택적 삭제
+- [VPC 진단 스크립트](repos/cloud-scripts/diagnose-vpc.sh) - VPC 종속성 진단
+- [리소스 정리 가이드](repos/cloud-scripts/README.md) - 전체 정리 도구 사용법
+
 ## ✅ 학습 체크리스트
 
 ### 사전 준비
+- [ ] WSL 환경 구축 (Windows 사용자)
 - [ ] AWS Free Tier 계정 생성
 - [ ] GCP Free Tier 계정 생성
 - [ ] Docker 설치 및 설정
 - [ ] Git 설치 및 GitHub 계정 연동
 - [ ] AWS CLI 설치 및 설정
 - [ ] GCP CLI 설치 및 설정
+- [ ] 환경 체크 도구 실행 및 검증
 
 ### Day별 학습
 - [ ] **Day 1**: Docker & Git/GitHub & GitHub Actions 실습 완료
@@ -92,6 +104,8 @@
 
 ### 최종 평가
 - [ ] **실습 완료율**: 80% 이상
+- [ ] **리소스 정리**: 생성된 모든 리소스 정리 완료
+- [ ] **환경 정리**: 로컬 환경 및 클라우드 리소스 정리 완료
 - [ ] **최종 프로젝트**: 개인별 클라우드 인프라 구축
 - [ ] **평가**: 실습 결과물 및 최종 프로젝트 평가
 

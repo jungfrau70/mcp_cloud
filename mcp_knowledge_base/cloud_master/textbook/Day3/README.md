@@ -149,11 +149,13 @@ docker --version
 > - [비용 최적화 실습](cloud_master/textbook/Day3/practices/cost-optimization.md)
 
 > 🚀 **자동화 스크립트**: 실습을 더 쉽게 하려면 다음 자동화 스크립트를 사용하세요.
-> - [AWS 설정 도우미](cloud_master/repos/cloud-scripts/aws-setup-helper.sh) - AWS 환경 자동 설정
-> - [GCP 설정 도우미](cloud_master/repos/cloud-scripts/gcp-setup-helper.sh) - GCP 환경 자동 설정
+> - [WSL 자동 설정](cloud_master/repos/cloud-scripts/wsl-auto-setup.sh) - WSL 환경 원클릭 구축
+> - [환경 체크 도구](cloud_master/repos/cloud-scripts/environment-check-wsl.sh) - 실습 환경 자동 검증
 > - [모니터링 스택 자동 배포](cloud_master/repos/cloud-scripts/monitoring-stack-deploy.sh) - Prometheus/Grafana 자동 배포
 > - [로드밸런서 자동 설정](cloud_master/repos/cloud-scripts/load-balancer-setup.sh) - 로드밸런서 자동 설정
 > - [비용 최적화 스크립트](cloud_master/repos/cloud-scripts/cost-optimization.sh) - 비용 최적화 자동화
+> - [통합 클러스터 정리](cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh) - 클러스터 선택적 정리
+> - [통합 VM 정리](cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh) - VM 인스턴스 선택적 정리
 > - [리소스 정리 스크립트](cloud_master/repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
 
 <details>
@@ -484,6 +486,23 @@ aws ec2 describe-spot-price-history \
 ## 🧹 실습 정리
 
 ### 자동 정리
+
+**방법 1: 통합 정리 스크립트 사용 (권장)**
+```bash
+# 통합 클러스터 정리 스크립트 실행
+chmod +x cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh
+./cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh
+
+# 통합 VM 정리 스크립트 실행
+chmod +x cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh
+./cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh
+
+# 환경 체크 도구에서 정리 메뉴 사용
+chmod +x cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+./cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+```
+
+**방법 2: 개별 정리 명령어**
 ```bash
 # AWS 리소스 정리
 aws elbv2 delete-load-balancer --load-balancer-arn arn:aws:elasticloadbalancing:region:account:loadbalancer/app/my-alb/1234567890123456
@@ -500,13 +519,15 @@ docker stop prometheus grafana node-exporter alertmanager
 docker rm prometheus grafana node-exporter alertmanager
 ```
 
-### 수동 정리
+### 수동 정리 체크리스트
 - [ ] AWS 로드밸런서 삭제
 - [ ] AWS Auto Scaling Group 삭제
 - [ ] GCP 로드밸런서 삭제
 - [ ] GCP Managed Instance Group 삭제
 - [ ] 모니터링 컨테이너 정리
 - [ ] 사용하지 않는 리소스 정리
+- [ ] 생성된 SSH 키 정리
+- [ ] 로컬 프로젝트 파일 정리
 
 ---
 

@@ -37,6 +37,19 @@
 - **GCP CLI**: GCP 서비스 관리
 
 ### 환경 설정
+
+#### 방법 1: WSL 자동 설정 (권장)
+```bash
+# WSL 자동 설정 스크립트 실행
+chmod +x cloud_master/repos/cloud-scripts/wsl-auto-setup.sh
+./cloud_master/repos/cloud-scripts/wsl-auto-setup.sh
+
+# 환경 체크 실행
+chmod +x cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+./cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+```
+
+#### 방법 2: 수동 환경 설정
 ```bash
 # Docker 설치 확인
 docker --version
@@ -49,6 +62,16 @@ aws --version
 
 # GCP CLI 설치 확인
 gcloud --version
+```
+
+#### 방법 3: 환경 체크 도구 사용
+```bash
+# 실습 환경 자동 검증
+chmod +x cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+./cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+
+# 특정 Day 환경 체크
+./cloud_master/repos/cloud-scripts/environment-check-wsl.sh day1
 ```
 
 ---
@@ -210,10 +233,12 @@ gcloud compute ssh my-vm --zone=us-central1-a
 > - [VM 배포 실습](cloud_master/textbook/Day1/practices/vm-deployment.md)
 
 > 🚀 **자동화 스크립트**: 실습을 더 쉽게 하려면 다음 자동화 스크립트를 사용하세요.
-> - [AWS 설정 도우미](cloud_master/repos/cloud-scripts/aws-setup-helper.sh) - AWS 환경 자동 설정
-> - [GCP 설정 도우미](cloud_master/repos/cloud-scripts/gcp-setup-helper.sh) - GCP 환경 자동 설정
+> - [WSL 자동 설정](cloud_master/repos/cloud-scripts/wsl-auto-setup.sh) - WSL 환경 원클릭 구축
+> - [환경 체크 도구](cloud_master/repos/cloud-scripts/environment-check-wsl.sh) - 실습 환경 자동 검증
 > - [AWS EC2 자동 생성](cloud_master/repos/cloud-scripts/aws-ec2-create.sh) - EC2 인스턴스 자동 생성
 > - [GCP VM 자동 생성](cloud_master/repos/cloud-scripts/gcp-compute-create.sh) - Compute Engine 자동 생성
+> - [통합 VM 정리](cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh) - VM 인스턴스 선택적 정리
+> - [통합 클러스터 정리](cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh) - 클러스터 선택적 정리
 > - [리소스 정리 스크립트](cloud_master/repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
 
 <details>
@@ -454,7 +479,22 @@ EOF
 
 ### 자동 정리
 
-**방법 1: 자동화 스크립트 사용 (권장)**
+**방법 1: 통합 정리 스크립트 사용 (권장)**
+```bash
+# 통합 VM 정리 스크립트 실행
+chmod +x cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh
+./cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh
+
+# 통합 클러스터 정리 스크립트 실행
+chmod +x cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh
+./cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh
+
+# 환경 체크 도구에서 정리 메뉴 사용
+chmod +x cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+./cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+```
+
+**방법 2: 개별 정리 스크립트 사용**
 ```bash
 # AWS 리소스 자동 정리
 chmod +x cloud_master/repos/cloud-scripts/aws-resource-cleanup.sh
@@ -465,7 +505,7 @@ chmod +x cloud_master/repos/cloud-scripts/gcp-project-cleanup.sh
 ./cloud_master/repos/cloud-scripts/gcp-project-cleanup.sh
 ```
 
-**방법 2: 수동 정리**
+**방법 3: 수동 정리**
 ```bash
 # Docker 컨테이너 정리
 docker stop $(docker ps -aq)
@@ -479,11 +519,13 @@ aws ec2 terminate-instances --instance-ids i-1234567890abcdef0
 gcloud compute instances delete my-vm --zone=us-central1-a
 ```
 
-### 수동 정리
+### 수동 정리 체크리스트
 - [ ] Docker 컨테이너 중지 및 삭제
 - [ ] AWS EC2 인스턴스 종료
 - [ ] GCP Compute Engine 인스턴스 삭제
 - [ ] GitHub Actions 워크플로우 정리
+- [ ] 생성된 SSH 키 정리
+- [ ] 로컬 프로젝트 파일 정리
 
 ---
 

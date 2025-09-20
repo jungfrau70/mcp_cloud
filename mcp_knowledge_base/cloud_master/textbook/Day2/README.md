@@ -222,10 +222,12 @@ jobs:
 > - [컨테이너 오케스트레이션 실습](cloud_master/textbook/Day2/practices/container-orchestration.md)
 
 > 🚀 **자동화 스크립트**: 실습을 더 쉽게 하려면 다음 자동화 스크립트를 사용하세요.
-> - [AWS 설정 도우미](cloud_master/repos/cloud-scripts/aws-setup-helper.sh) - AWS 환경 자동 설정
-> - [GCP 설정 도우미](cloud_master/repos/cloud-scripts/gcp-setup-helper.sh) - GCP 환경 자동 설정
-> - [Kubernetes 클러스터 자동 생성](cloud_master/repos/cloud-scripts/k8s-cluster-create.sh) - K8s 클러스터 자동 생성
-> - [Kubernetes 애플리케이션 자동 배포](cloud_master/repos/cloud-scripts/k8s-app-deploy.sh) - K8s 앱 자동 배포
+> - [WSL 자동 설정](cloud_master/repos/cloud-scripts/wsl-auto-setup.sh) - WSL 환경 원클릭 구축
+> - [환경 체크 도구](cloud_master/repos/cloud-scripts/environment-check-wsl.sh) - 실습 환경 자동 검증
+> - [GKE 클러스터 자동 생성](cloud_master/repos/cloud-scripts/k8s-cluster-create.sh) - GKE 클러스터 자동 생성
+> - [EKS 클러스터 자동 생성](cloud_master/repos/cloud-scripts/eks-cluster-create.sh) - EKS 클러스터 자동 생성
+> - [통합 클러스터 정리](cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh) - 클러스터 선택적 정리
+> - [통합 VM 정리](cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh) - VM 인스턴스 선택적 정리
 > - [리소스 정리 스크립트](cloud_master/repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
 
 <details>
@@ -360,9 +362,13 @@ EOF
 
 **방법 1: 자동화 스크립트 사용 (권장)**
 ```bash
-# Kubernetes 클러스터 자동 생성
+# GKE 클러스터 자동 생성
 chmod +x cloud_master/repos/cloud-scripts/k8s-cluster-create.sh
 ./cloud_master/repos/cloud-scripts/k8s-cluster-create.sh
+
+# EKS 클러스터 자동 생성
+chmod +x cloud_master/repos/cloud-scripts/eks-cluster-create.sh
+./cloud_master/repos/cloud-scripts/eks-cluster-create.sh
 ```
 
 **방법 2: 수동 명령어 실행**
@@ -375,6 +381,9 @@ gcloud container clusters create my-cluster \
 
 # 클러스터 연결
 gcloud container clusters get-credentials my-cluster --zone=us-central1-a
+
+# EKS 클러스터 생성 (eksctl 사용)
+eksctl create cluster --name my-eks-cluster --region ap-northeast-2 --nodegroup-name workers --node-type t3.medium --nodes 2
 ```
 
 ### 2단계: 애플리케이션 배포
@@ -519,6 +528,23 @@ EOF
 ## 🧹 실습 정리
 
 ### 자동 정리
+
+**방법 1: 통합 정리 스크립트 사용 (권장)**
+```bash
+# 통합 클러스터 정리 스크립트 실행
+chmod +x cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh
+./cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh
+
+# 통합 VM 정리 스크립트 실행
+chmod +x cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh
+./cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh
+
+# 환경 체크 도구에서 정리 메뉴 사용
+chmod +x cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+./cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+```
+
+**방법 2: 개별 정리 명령어**
 ```bash
 # Docker 리소스 정리
 docker-compose down
@@ -530,18 +556,21 @@ kubectl delete service my-app-service
 
 # AWS 리소스 정리
 aws ec2 terminate-instances --instance-ids i-1234567890abcdef0
+eksctl delete cluster --name my-eks-cluster --region ap-northeast-2
 
 # GCP 리소스 정리
 gcloud container clusters delete my-cluster --zone=us-central1-a
 gcloud compute instances delete my-vm --zone=us-central1-a
 ```
 
-### 수동 정리
+### 수동 정리 체크리스트
 - [ ] Docker 컨테이너 및 이미지 정리
-- [ ] Kubernetes 클러스터 삭제
+- [ ] Kubernetes 클러스터 삭제 (GKE/EKS)
 - [ ] AWS EC2 인스턴스 종료
 - [ ] GCP Compute Engine 인스턴스 삭제
 - [ ] GitHub Actions 워크플로우 정리
+- [ ] 생성된 SSH 키 정리
+- [ ] 로컬 프로젝트 파일 정리
 
 ---
 
