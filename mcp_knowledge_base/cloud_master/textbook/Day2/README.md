@@ -216,17 +216,17 @@ jobs:
 ## 🛠️ 실습 학습
 
 > 📚 **상세 실습 가이드**: 각 주제별 상세한 실습은 다음 파일들을 참조하세요.
-> - [고급 Docker 실습](practices/docker-advanced.md)
-> - [고급 CI/CD 실습](practices/cicd-advanced.md)
-> - [Kubernetes 기초 실습](practices/kubernetes-basics.md)
-> - [컨테이너 오케스트레이션 실습](practices/container-orchestration.md)
+> - [고급 Docker 실습](cloud_master/textbook/Day2/practices/docker-advanced.md)
+> - [고급 CI/CD 실습](cloud_master/textbook/Day2/practices/cicd-advanced.md)
+> - [Kubernetes 기초 실습](cloud_master/textbook/Day2/practices/kubernetes-basics.md)
+> - [컨테이너 오케스트레이션 실습](cloud_master/textbook/Day2/practices/container-orchestration.md)
 
 > 🚀 **자동화 스크립트**: 실습을 더 쉽게 하려면 다음 자동화 스크립트를 사용하세요.
-> - [AWS 설정 도우미](../../repos/cloud-scripts/aws-setup-helper.sh) - AWS 환경 자동 설정
-> - [GCP 설정 도우미](../../repos/cloud-scripts/gcp-setup-helper.sh) - GCP 환경 자동 설정
-> - [Kubernetes 클러스터 자동 생성](../../repos/cloud-scripts/k8s-cluster-create.sh) - K8s 클러스터 자동 생성
-> - [Kubernetes 애플리케이션 자동 배포](../../repos/cloud-scripts/k8s-app-deploy.sh) - K8s 앱 자동 배포
-> - [리소스 정리 스크립트](../../repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
+> - [AWS 설정 도우미](cloud_master/repos/cloud-scripts/aws-setup-helper.sh) - AWS 환경 자동 설정
+> - [GCP 설정 도우미](cloud_master/repos/cloud-scripts/gcp-setup-helper.sh) - GCP 환경 자동 설정
+> - [Kubernetes 클러스터 자동 생성](cloud_master/repos/cloud-scripts/k8s-cluster-create.sh) - K8s 클러스터 자동 생성
+> - [Kubernetes 애플리케이션 자동 배포](cloud_master/repos/cloud-scripts/k8s-app-deploy.sh) - K8s 앱 자동 배포
+> - [리소스 정리 스크립트](cloud_master/repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
 
 <details>
 <summary>🐳 고급 Docker 실습</summary>
@@ -361,8 +361,8 @@ EOF
 **방법 1: 자동화 스크립트 사용 (권장)**
 ```bash
 # Kubernetes 클러스터 자동 생성
-chmod +x ../../repos/cloud-scripts/k8s-cluster-create.sh
-./../../repos/cloud-scripts/k8s-cluster-create.sh
+chmod +x cloud_master/repos/cloud-scripts/k8s-cluster-create.sh
+./cloud_master/repos/cloud-scripts/k8s-cluster-create.sh
 ```
 
 **방법 2: 수동 명령어 실행**
@@ -382,8 +382,8 @@ gcloud container clusters get-credentials my-cluster --zone=us-central1-a
 **방법 1: 자동화 스크립트 사용 (권장)**
 ```bash
 # Kubernetes 애플리케이션 자동 배포
-chmod +x ../../repos/cloud-scripts/k8s-app-deploy.sh
-./../../repos/cloud-scripts/k8s-app-deploy.sh
+chmod +x cloud_master/repos/cloud-scripts/k8s-app-deploy.sh
+./cloud_master/repos/cloud-scripts/k8s-app-deploy.sh
 ```
 
 **방법 2: 수동 명령어 실행**
@@ -548,10 +548,10 @@ gcloud compute instances delete my-vm --zone=us-central1-a
 ## 📚 참고 자료
 
 ### 상세 가이드
-- [종합 실습 가이드](guides/comprehensive-practice-guide.md) - 전체 과정 통합 실습
-- [모니터링 가이드](guides/monitoring-guide.md) - 클라우드 모니터링 설정
-- [비용 최적화 가이드](guides/cost-optimization-guide.md) - 클라우드 비용 관리
-- [트러블슈팅 가이드](guides/troubleshooting-guide.md) - 문제 해결 및 디버깅
+- [종합 실습 가이드](cloud_master/textbook/Day2/guides/comprehensive-practice-guide.md) - 전체 과정 통합 실습
+- [모니터링 가이드](cloud_master/textbook/Day2/guides/monitoring-guide.md) - 클라우드 모니터링 설정
+- [비용 최적화 가이드](cloud_master/textbook/Day2/guides/cost-optimization-guide.md) - 클라우드 비용 관리
+- [트러블슈팅 가이드](cloud_master/textbook/Day2/guides/troubleshooting-guide.md) - 문제 해결 및 디버깅
 
 ### 공식 문서
 - [Docker 멀티스테이지 빌드](https://docs.docker.com/develop/dev-best-practices/dockerfile_best-practices/#use-multi-stage-builds)
@@ -570,9 +570,9 @@ gcloud compute instances delete my-vm --zone=us-central1-a
 
 <div align="center">
 
-[← 이전: Day 1](../Day1/README.md) | 
-[📚 전체 커리큘럼](../../../curriculum.md) | 
-[🏠 학습 경로로 돌아가기](../../../index.md) | 
-[다음: Day 3 →](../Day3/README.md)
+[← 이전: Day 1](cloud_master/textbook/Day1/README.md) | 
+[📚 전체 커리큘럼](curriculum.md) | 
+[🏠 학습 경로로 돌아가기](index.md) | 
+[다음: Day 3 →](cloud_master/textbook/Day3/README.md)
 
 </div>

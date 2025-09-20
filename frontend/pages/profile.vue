@@ -238,9 +238,10 @@ async function addKey() {
     newKey.value = { name: '', platform: 'aws', secret_value: '' }; // Reset form
     await fetchKeys(); // Refresh list
     toast.push('success', 'API 키가 성공적으로 추가되었습니다.');
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to add API key:", error);
-    toast.push('error', 'API 키 추가에 실패했습니다.');
+    const errorMessage = error.response?._data?.detail || error.message || 'API 키 추가에 실패했습니다.';
+    toast.push('error', `API 키 추가 실패: ${errorMessage}`);
   }
 }
 
@@ -303,7 +304,7 @@ function onApiKeyInput() {
 async function updateProfile() {
   // API 키가 입력된 경우 유효성 검사
   if (profileData.value.gemini_api_key && !apiKeyValidation.value.isValid) {
-    alert('유효한 API 키를 입력해주세요. API 키는 "AIzaSy"로 시작하고 20자 이상이어야 합니다.');
+    toast.push('error', '유효한 API 키를 입력해주세요. API 키는 "AIzaSy"로 시작하고 20자 이상이어야 합니다.');
     return;
   }
 
@@ -318,11 +319,11 @@ async function updateProfile() {
         ...(token ? { 'Authorization': `Bearer ${token}` } : {})
       }
     });
-    alert('프로필이 성공적으로 업데이트되었습니다.');
+    toast.push('success', '프로필이 성공적으로 업데이트되었습니다.');
   } catch (error: any) {
     console.error("Failed to update profile:", error);
-    const errorMessage = error.response?.data?.detail || '프로필 업데이트에 실패했습니다.';
-    alert(`프로필 업데이트 실패: ${errorMessage}`);
+    const errorMessage = error.response?._data?.detail || error.message || '프로필 업데이트에 실패했습니다.';
+    toast.push('error', `프로필 업데이트 실패: ${errorMessage}`);
   } finally {
     isUpdating.value = false;
   }
@@ -351,9 +352,10 @@ async function deleteKey(keyId: number) {
     });
     await fetchKeys(); // Refresh list
     toast.push('success', 'API 키가 성공적으로 삭제되었습니다.');
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to delete API key:", error);
-    toast.push('error', 'API 키 삭제에 실패했습니다.');
+    const errorMessage = error.response?._data?.detail || error.message || 'API 키 삭제에 실패했습니다.';
+    toast.push('error', `API 키 삭제 실패: ${errorMessage}`);
   }
 }
 

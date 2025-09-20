@@ -102,8 +102,8 @@ AWS와 GCP의 기본 서비스들을 차근차근 배워보며, 실무에서 바
 
 ### 3️⃣ 첫 번째 실습 시작
 1. Day 1 실습 가이드로 이동
-2. [AWS 계정 생성 가이드](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md) 따라하기
-3. [GCP 계정 생성 가이드](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md) 따라하기
+2. [AWS 계정 생성 가이드](cloud_basic/accounts/AWS계정가입.md) 따라하기
+3. [GCP 계정 생성 가이드](cloud_basic/accounts/GCP_개인계정가입.md) 따라하기
 
 ## 📚 학습 자료
 
@@ -112,14 +112,14 @@ AWS와 GCP의 기본 서비스들을 차근차근 배워보며, 실무에서 바
 - Day 2: 서비스 비교 및 최적화
 
 ### 🔧 실습 가이드
-- [AWS 계정 생성](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md)
-- [GCP 계정 생성](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md)
-- [Azure 계정 생성](/mcp_knowledge_base/cloud_basic/accounts/Azure계정가입.md)
+- [AWS 계정 생성](cloud_basic/accounts/AWS계정가입.md)
+- [GCP 계정 생성](cloud_basic/accounts/GCP_개인계정가입.md)
+- [Azure 계정 생성](cloud_basic/accounts/Azure계정가입.md)
 
 ### 🛠️ 설치 가이드
-- [AWS CLI 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_aws_cli.md)
-- [GCP CLI 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_glcoud_cli.md)
-- [Azure CLI 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_azure_cli.md)
+- [AWS CLI 설치](cloud_basic/textbook/Day1/guides/install_aws_cli.md)
+- [GCP CLI 설치](cloud_basic/textbook/Day1/guides/install_glcoud_cli.md)
+- [Azure CLI 설치](cloud_basic/textbook/Day1/guides/install_azure_cli.md)
 
 ## ✅ 학습 체크리스트
 
@@ -147,7 +147,7 @@ AWS와 GCP의 기본 서비스들을 차근차근 배워보며, 실무에서 바
 **A**: AWS와 GCP 모두 무료 크레딧을 제공합니다. 실습 과정에서 발생하는 비용은 월 $5-10 정도이며, 무료 크레딧으로 대부분 커버됩니다.
 
 ### Q3: 실습 중 문제가 발생하면 어떻게 하나요?
-**A**: 각 실습 가이드에 문제해결 섹션이 있으며, [종합 문제해결 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md)도 제공됩니다.
+**A**: 각 실습 가이드에 문제해결 섹션이 있으며, [종합 문제해결 가이드](cloud_basic/textbook/Day1/troubleshooting-guide.md)도 제공됩니다.
 
 ### Q4: 다음 단계는 무엇인가요?
 **A**: Cloud Basic 완료 후 Cloud Master 과정을 추천합니다. Docker, CI/CD, 고급 배포 기술을 학습할 수 있습니다.
@@ -159,6 +159,6 @@ AWS와 GCP의 기본 서비스들을 차근차근 배워보며, 실무에서 바
 
 <div align="center">
 
-[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
+[🏠 홈으로 돌아가기](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
 
 </div>

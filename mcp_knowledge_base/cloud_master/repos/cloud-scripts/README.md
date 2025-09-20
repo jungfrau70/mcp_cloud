@@ -340,7 +340,7 @@ docker logs container-name
 ## 📊 모니터링 및 상태 확인
 
 ### 리소스 상태 확인
-```bash
+   ```bash
 # AWS 리소스 확인
 aws ec2 describe-instances
 aws elbv2 describe-load-balancers
@@ -355,7 +355,7 @@ kubectl get nodes
 ```
 
 ### 비용 모니터링
-```bash
+   ```bash
 # GCP 비용 확인
 gcloud billing budgets list
 
@@ -387,14 +387,14 @@ aws ce get-cost-and-usage --time-period Start=2024-01-01,End=2024-01-31
 - [Kubernetes 공식 문서](https://kubernetes.io/docs/)
 
 ### Cloud Master 과정
-- [Day1: Docker & VM 배포](../../textbook/Day1/README.md)
-- [Day2: Kubernetes & 고급 CI/CD](../../textbook/Day2/README.md)
-- [Day3: 모니터링 & 비용 최적화](../../textbook/Day3/README.md)
+- [Day1: Docker & VM 배포](cloud_master/textbook/Day1/README.md)
+- [Day2: Kubernetes & 고급 CI/CD](cloud_master/textbook/Day2/README.md)
+- [Day3: 모니터링 & 비용 최적화](cloud_master/textbook/Day3/README.md)
 
 ### 실습 샘플
-- [Day1 실습 샘플](../../samples/day1/my-app/README.md)
-- [Day2 실습 샘플](../../samples/day2/my-app/README.md)
-- [Day3 실습 샘플](../../samples/day3/my-app/README.md)
+- [Day1 실습 샘플](cloud_master/repos/samples/day1/my-app/README.md)
+- [Day2 실습 샘플](cloud_master/repos/samples/day2/my-app/README.md)
+- [Day3 실습 샘플](cloud_master/repos/samples/day3/my-app/README.md)
 
 ## 🤝 기여하기
 

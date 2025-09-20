@@ -835,7 +835,7 @@ spec:
 - [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
 - [컨테이너 오케스트레이션 가이드](https:///www.redhat.com/en/topics/containers/what-is-container-orchestration)
 
-다음 단계: [4교시: 전체 자동 배포 파이프라인 구성](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/cicd-pipeline-guide.md)
+다음 단계: [4교시: 전체 자동 배포 파이프라인 구성](cloud_master/textbook/Day1/guides/cicd-pipeline-guide.md)
 
 
 ---
@@ -847,6 +847,6 @@ spec:
 
 <div align="center">
 
-[← 이전: Cloud Container 1일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
+[← 이전: Cloud Container 1일차 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
 
 </div>

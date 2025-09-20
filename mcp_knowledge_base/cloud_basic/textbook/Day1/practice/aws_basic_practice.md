@@ -112,8 +112,8 @@
 ### Cloud Basic 과정 계속
 
 [Cloud Basic 과정 계속](#cloud-basic-과정-계속)
-1. **GCP 기초 실습**: [GCP 기초 실습 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
-2. **통합 실습**: [AWS & GCP 통합 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md)
+1. **GCP 기초 실습**: [GCP 기초 실습 가이드](cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
+2. **통합 실습**: [AWS & GCP 통합 실습](cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md)
 3. **2일차 실습**: 네트워킹, 보안, 데이터베이스
 
 ### Cloud Intermediate 과정 준비
@@ -148,8 +148,8 @@
 
 [🚀 다음 단계](#다음-단계)
 
-- **GCP 기초 실습**: [GCP 기초 실습 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
-- **통합 실습**: [AWS & GCP 통합 실습](/mcp_knowledge_base/cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md)
+- **GCP 기초 실습**: [GCP 기초 실습 가이드](cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
+- **통합 실습**: [AWS & GCP 통합 실습](cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md)
 - **2일차 실습**: 네트워킹, 보안, 데이터베이스
 
 ### 💡 추가 학습 아이디어
@@ -296,6 +296,6 @@
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
+[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
 
 </div>

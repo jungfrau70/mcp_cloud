@@ -530,26 +530,9 @@ const savingProfile = ref(false)
 const profileModalAllowed = ref(false)
 
 async function openProfileModal(){
+  debugger;
   console.log('openProfileModal called', new Error().stack)
   console.log('openProfileModal called from:', new Error().stack?.split('\n')[2])
-  
-  // 이중 자동 호출 방지 - 사용자가 직접 클릭한 경우만 허용
-  if (typeof window !== 'undefined' && !window.profileModalClicked) {
-    console.log('Profile modal auto-called, preventing...')
-    return
-  }
-  
-  // 추가 방지 로직: profileModalAllowed 플래그 확인
-  if (!profileModalAllowed.value) {
-    console.log('Profile modal not allowed, preventing...')
-    return
-  }
-  
-  // 플래그 리셋
-  if (typeof window !== 'undefined') {
-    window.profileModalClicked = false
-  }
-  profileModalAllowed.value = false
   
   try{
     const base = (config.public?.apiBaseUrl) || '/api'
@@ -564,11 +547,8 @@ async function openProfileModal(){
   }catch{
     // fallback to auth store first, then user state
     profile.value = { email: auth.email || user.value?.email || '', full_name: user.value?.full_name || '', role: auth.role || user.value?.role || '' }
-    // 자동 호출 방지: catch 블록에서도 모달을 열지 않음
-    // showProfile.value = true
   }
 }
-
 async function saveProfile(){
   try{
     savingProfile.value = true

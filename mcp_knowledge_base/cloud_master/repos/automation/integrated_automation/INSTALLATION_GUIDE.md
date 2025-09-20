@@ -394,7 +394,7 @@ pip install package_name
 **통합 자동화**
 
 ## 🔗 관련 과정
-[Cloud Basic 1일차](/mcp_knowledge_base/README.md) | [Cloud Master 1일차](/mcp_knowledge_base/README.md) | [Cloud Container 1일차](/mcp_knowledge_base/README.md)
+[Cloud Basic 1일차](README.md) | [Cloud Master 1일차](README.md) | [Cloud Container 1일차](README.md)
 
 </div>
 
@@ -402,6 +402,6 @@ pip install package_name
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
+[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
 
 </div>

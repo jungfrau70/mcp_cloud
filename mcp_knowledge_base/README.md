@@ -1,6 +1,6 @@
 # 클라우드 실무력 강화! AWS & GCP 활용법
 
-> 📋 **전체 커리큘럼**: [curriculum.md](/mcp_knowledge_base/curriculum.md) | [통합 인덱스](/mcp_knowledge_base/index.md)에서 전체 과정 구조를 확인하세요.
+> 📋 **전체 커리큘럼**: [curriculum.md](curriculum.md) | [통합 인덱스](index.md)에서 전체 과정 구조를 확인하세요.
 
 ## 📚 과정 개요
 
@@ -18,17 +18,17 @@
 ## 🚀 시작하기
 
 ### 1. Cloud Basic (기초 과정)
-- **과정 개요**: [과정명.md](/mcp_knowledge_base/cloud_basic/과정명.md) | [과정상세.md](/mcp_knowledge_base/cloud_basic/과정상세.md)
+- **과정 개요**: [과정명.md](cloud_basic/과정명.md) | [과정상세.md](cloud_basic/과정상세.md)
 - **실습 가이드**: README.md
 - **학습 목표**: 클라우드 기본 개념 이해, AWS/GCP 계정 생성, 핵심 서비스 실습
 
 ### 2. Cloud Master (마스터 과정)
-- **과정 개요**: [과정명.md](/mcp_knowledge_base/cloud_basic/과정명.md) | [과정상세.md](/mcp_knowledge_base/cloud_basic/과정상세.md)
+- **과정 개요**: [과정명.md](cloud_basic/과정명.md) | [과정상세.md](cloud_basic/과정상세.md)
 - **실습 가이드**: README.md
 - **학습 목표**: Docker 컨테이너화, CI/CD 파이프라인, VM 기반 배포 자동화
 
 ### 3. Cloud Container (컨테이너 심화)
-- **과정 개요**: [과정명.md](/mcp_knowledge_base/cloud_basic/과정명.md) | [과정상세.md](/mcp_knowledge_base/cloud_basic/과정상세.md)
+- **과정 개요**: [과정명.md](cloud_basic/과정명.md) | [과정상세.md](cloud_basic/과정상세.md)
 - **실습 가이드**: README.md
 - **학습 목표**: Kubernetes 오케스트레이션, 고가용성 아키텍처, 엔터프라이즈급 운영
 
@@ -58,10 +58,10 @@ Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일)
 - **모니터링**: Prometheus, Grafana, CloudWatch, Cloud Monitoring
 
 ### 자동화 스크립트
-- [AWS 자동화 스크립트](/mcp_knowledge_base/cloud_basic/automation_tests/basic_course_day2_scripts.py)
-- [GCP 자동화 스크립트](/mcp_knowledge_base/cloud_basic/automation_tests/basic_course_day2_scripts.py)
-- [Docker 자동화 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/aws-ec2-create.sh)
-- [Kubernetes 자동화 스크립트](/mcp_knowledge_base/cloud_basic/automation_tests/basic_course_day2_scripts.py)
+- [AWS 자동화 스크립트](cloud_basic/automation_tests/basic_course_day2_scripts.py)
+- [GCP 자동화 스크립트](cloud_basic/automation_tests/basic_course_day2_scripts.py)
+- [Docker 자동화 스크립트](cloud_master/repos/cloud-scripts/aws-ec2-create.sh)
+- [Kubernetes 자동화 스크립트](cloud_basic/automation_tests/basic_course_day2_scripts.py)
 
 ---
 
@@ -95,6 +95,6 @@ Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일)
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
+[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
 
 </div>

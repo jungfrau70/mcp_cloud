@@ -993,7 +993,7 @@ echo "=== GCP 커스텀 메트릭 전송 완료 ==="
 - [모니터링 모범 사례](https:///aws.amazon.com/architecture/well-architected/)
 - [알림 및 대시보드 가이드](https:///cloud.google.com/monitoring/alerts)
 
-다음 단계: [4교시: 종합 실습 - 컨테이너 자동 배포 + 로드밸런싱 + 오토스케일링](/mcp_knowledge_base/cloud_container/textbook/Day1/comprehensive-practice-guide.md)
+다음 단계: [4교시: 종합 실습 - 컨테이너 자동 배포 + 로드밸런싱 + 오토스케일링](cloud_container/textbook/Day1/comprehensive-practice-guide.md)
 
 ---
 
@@ -1014,6 +1014,6 @@ echo "=== GCP 커스텀 메트릭 전송 완료 ==="
 
 <div align="center">
 
-[← 이전: Cloud Master 2일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md) | [다음: 종합 실습 가이드 →](/mcp_knowledge_base/cloud_container/textbook/Day1/comprehensive-practice-guide.md)
+[← 이전: Cloud Master 2일차 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md) | [다음: 종합 실습 가이드 →](cloud_container/textbook/Day1/comprehensive-practice-guide.md)
 
 </div>

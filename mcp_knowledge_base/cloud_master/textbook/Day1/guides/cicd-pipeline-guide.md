@@ -821,7 +821,7 @@ jobs:
 - [GCP GKE 배포 가이드](https:///docs.github.com/ko/actions/how-tos/managing-workflow-runs-and-deployments/deploying-to-third-party-platforms/deploying-to-google-kubernetes-engine)
 - [CI/CD 모범 사례](https:///docs.github.com/en/actions/learn-github-actions)
 
-다음 단계: [트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md)
+다음 단계: [트러블슈팅 가이드](cloud_basic/textbook/Day1/troubleshooting-guide.md)
 
 ---
 
@@ -836,6 +836,6 @@ jobs:
 
 <div align="center">
 
-[← 이전: Cloud Master 1일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md) | [← 이전: AWS & GCP 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/aws-gcp-deployment-guide.md)
+[← 이전: Cloud Master 1일차 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md) | [← 이전: AWS & GCP 배포 가이드](cloud_master/textbook/Day1/guides/aws-gcp-deployment-guide.md)
 
 </div>

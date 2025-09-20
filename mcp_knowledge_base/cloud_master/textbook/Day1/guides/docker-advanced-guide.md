@@ -796,7 +796,7 @@ docker-compose port service-name port
 
 [공식 문서](#공식-문서)
 - [Docker 공식 문서](https://docs.docker.com/)
-- [Docker Compose 공식 문서](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_docker_compose.md)
+- [Docker Compose 공식 문서](cloud_basic/textbook/Day1/guides/install_docker_compose.md)
 - [Dockerfile 참조](https://docs.docker.com/engine/reference/builder/)
 - [Docker Best Practices](https://docs.docker.com/develop/dev-best-practices/)
 
@@ -805,7 +805,7 @@ docker-compose port service-name port
 [유용한 리소스](#유용한-리소스)
 - [Docker Hub](https://hub.docker.com/)
 - [Docker 샘플 프로젝트](https://github.com/docker/awesome-compose)
-- [Docker 보안 가이드](/mcp_knowledge_base/cloud_basic/automation/day2/security_basics.sh)
+- [Docker 보안 가이드](cloud_basic/automation/day2/security_basics.sh)
 - [Docker 성능 최적화](https://docs.docker.com/config/containers/resource_constraints/)
 
 ### 관련 프로젝트
@@ -870,7 +870,7 @@ docker-compose port service-name port
 
 - [Docker 공식 문서](https://docs.docker.com/)
 - [Docker Best Practices](https://docs.docker.com/develop/dev-best-practices/)
-- [GitHub Actions 고급 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-complete-guide.md)
+- [GitHub Actions 고급 실습](cloud_master/textbook/Day1/guides/github-actions-complete-guide.md)
 
 ---
 
@@ -890,6 +890,6 @@ docker-compose port service-name port
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
+[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
 
 </div>

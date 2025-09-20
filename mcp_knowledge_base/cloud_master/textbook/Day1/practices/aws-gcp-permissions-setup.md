@@ -546,16 +546,16 @@ docker pull gcr.io/YOUR_PROJECT_ID/actions-demo:latest
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
+[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
 
 </div>
 
 ## 💻 실습 가이드
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_master/repos/samples/day[숫자]/[주제]/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_master/repos/automation/day[숫자]/[주제]-practice-automation.sh`
-- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_master/repos/cloud-scripts/`
+- **실습 샘플 코드**: `cloud_master/repos/samples/day[숫자]/[주제]/`
+- **자동화 스크립트**: `cloud_master/repos/automation/day[숫자]/[주제]-practice-automation.sh`
+- **클라우드 스크립트**: `cloud_master/repos/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -634,7 +634,7 @@ gcloud config list
 ### 자동 정리
 ```bash
 # 실습 자동 정리
-./mcp_knowledge_base/cloud_master/repos/automation/day[숫자]/[주제]-practice-automation.sh --cleanup
+./cloud_master/repos/automation/day[숫자]/[주제]-practice-automation.sh --cleanup
 ```
 
 ### 수동 정리

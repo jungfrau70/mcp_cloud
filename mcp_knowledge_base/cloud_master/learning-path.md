@@ -18,10 +18,10 @@
 ### 1단계: 환경 설정
 - [AWS Free Tier 계정](https://aws.amazon.com/free/) 생성
 - [GCP Free Tier 계정](https://cloud.google.com/free) 생성
-- [Docker 설치](../cloud_basic/textbook/Day1/guides/install_docker.md)
-- [Git 설정](../cloud_basic/textbook/Day1/guides/install_git.md)
-- [AWS CLI 설정](../cloud_basic/textbook/Day1/guides/install_aws_cli.md)
-- [GCP CLI 설정](../cloud_basic/textbook/Day1/guides/install_gcp_cli.md)
+- [Docker 설치](cloud_basic/textbook/Day1/guides/install_docker.md)
+- [Git 설정](cloud_basic/textbook/Day1/guides/install_git.md)
+- [AWS CLI 설정](cloud_basic/textbook/Day1/guides/install_aws_cli.md)
+- [GCP CLI 설정](cloud_basic/textbook/Day1/guides/install_gcp_cli.md)
 
 ### 2단계: Day별 학습
 
@@ -159,12 +159,12 @@
 ## 🚀 다음 단계
 
 ### Cloud Container 과정 준비
-- [Cloud Container 과정 상세](../cloud_container/과정상세.md)
-- [Cloud Container 1일차 실습 가이드](../cloud_container/README.md)
+- [Cloud Container 과정 상세](cloud_container/과정상세.md)
+- [Cloud Container 1일차 실습 가이드](cloud_container/README.md)
 
 ### 통합 학습 경로
-- [전체 커리큘럼](../../curriculum.md)
-- [통합 인덱스](../../index.md)
+- [전체 커리큘럼](curriculum.md)
+- [통합 인덱스](index.md)
 
 ## 💡 추가 학습 자료
 
@@ -196,9 +196,9 @@
 
 <div align="center">
 
-[← 이전: Cloud Container 과정](../cloud_container/README.md) | 
-[📚 전체 커리큘럼](../../curriculum.md) | 
-[🏠 학습 경로로 돌아가기](../../index.md) | 
+[← 이전: Cloud Container 과정](cloud_container/README.md) | 
+[📚 전체 커리큘럼](curriculum.md) | 
+[🏠 학습 경로로 돌아가기](index.md) | 
 [다음: 과정 상세 정보 →](과정상세.md)
 
 </div>

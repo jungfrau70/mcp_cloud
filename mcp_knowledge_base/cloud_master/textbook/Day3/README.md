@@ -143,18 +143,18 @@ docker --version
 ## 🛠️ 실습 학습
 
 > 📚 **상세 실습 가이드**: 각 주제별 상세한 실습은 다음 파일들을 참조하세요.
-> - [로드 밸런싱 실습](practices/load-balancing.md)
-> - [오토스케일링 실습](practices/auto-scaling.md)
-> - [모니터링 기초 실습](practices/monitoring-basics.md)
-> - [비용 최적화 실습](practices/cost-optimization.md)
+> - [로드 밸런싱 실습](cloud_master/textbook/Day3/practices/load-balancing.md)
+> - [오토스케일링 실습](cloud_master/textbook/Day3/practices/auto-scaling.md)
+> - [모니터링 기초 실습](cloud_master/textbook/Day3/practices/monitoring-basics.md)
+> - [비용 최적화 실습](cloud_master/textbook/Day3/practices/cost-optimization.md)
 
 > 🚀 **자동화 스크립트**: 실습을 더 쉽게 하려면 다음 자동화 스크립트를 사용하세요.
-> - [AWS 설정 도우미](../../repos/cloud-scripts/aws-setup-helper.sh) - AWS 환경 자동 설정
-> - [GCP 설정 도우미](../../repos/cloud-scripts/gcp-setup-helper.sh) - GCP 환경 자동 설정
-> - [모니터링 스택 자동 배포](../../repos/cloud-scripts/monitoring-stack-deploy.sh) - Prometheus/Grafana 자동 배포
-> - [로드밸런서 자동 설정](../../repos/cloud-scripts/load-balancer-setup.sh) - 로드밸런서 자동 설정
-> - [비용 최적화 스크립트](../../repos/cloud-scripts/cost-optimization.sh) - 비용 최적화 자동화
-> - [리소스 정리 스크립트](../../repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
+> - [AWS 설정 도우미](cloud_master/repos/cloud-scripts/aws-setup-helper.sh) - AWS 환경 자동 설정
+> - [GCP 설정 도우미](cloud_master/repos/cloud-scripts/gcp-setup-helper.sh) - GCP 환경 자동 설정
+> - [모니터링 스택 자동 배포](cloud_master/repos/cloud-scripts/monitoring-stack-deploy.sh) - Prometheus/Grafana 자동 배포
+> - [로드밸런서 자동 설정](cloud_master/repos/cloud-scripts/load-balancer-setup.sh) - 로드밸런서 자동 설정
+> - [비용 최적화 스크립트](cloud_master/repos/cloud-scripts/cost-optimization.sh) - 비용 최적화 자동화
+> - [리소스 정리 스크립트](cloud_master/repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
 
 <details>
 <summary>⚖️ 로드밸런싱 실습</summary>
@@ -513,13 +513,13 @@ docker rm prometheus grafana node-exporter alertmanager
 ## 📚 참고 자료
 
 ### 상세 가이드
-- [로드 밸런싱 가이드](guides/load-balancing-guide.md) - 고급 로드 밸런싱 설정
-- [오토스케일링 가이드](guides/auto-scaling-guide.md) - 자동 스케일링 정책 설정
-- [모니터링 설정 가이드](guides/monitoring-setup-guide.md) - Prometheus & Grafana 설정
-- [비용 최적화 가이드](guides/cost-optimization-guide.md) - 클라우드 비용 관리
-- [통합 가이드](guides/integration-guide.md) - 전체 시스템 통합
-- [재해 복구 가이드](guides/disaster-recovery-guide.md) - 고가용성 아키텍처
-- [트러블슈팅 가이드](guides/troubleshooting-guide.md) - 문제 해결 및 디버깅
+- [로드 밸런싱 가이드](cloud_master/textbook/Day3/guides/load-balancing-guide.md) - 고급 로드 밸런싱 설정
+- [오토스케일링 가이드](cloud_master/textbook/Day3/guides/auto-scaling-guide.md) - 자동 스케일링 정책 설정
+- [모니터링 설정 가이드](cloud_master/textbook/Day3/guides/monitoring-setup-guide.md) - Prometheus & Grafana 설정
+- [비용 최적화 가이드](cloud_master/textbook/Day3/guides/cost-optimization-guide.md) - 클라우드 비용 관리
+- [통합 가이드](cloud_master/textbook/Day3/guides/integration-guide.md) - 전체 시스템 통합
+- [재해 복구 가이드](cloud_master/textbook/Day3/guides/disaster-recovery-guide.md) - 고가용성 아키텍처
+- [트러블슈팅 가이드](cloud_master/textbook/Day3/guides/troubleshooting-guide.md) - 문제 해결 및 디버깅
 
 ### 공식 문서
 - [AWS ELB 공식 문서](https://docs.aws.amazon.com/elasticloadbalancing/)
@@ -538,9 +538,9 @@ docker rm prometheus grafana node-exporter alertmanager
 
 <div align="center">
 
-[← 이전: Day 2](../Day2/README.md) | 
-[📚 전체 커리큘럼](../../../curriculum.md) | 
-[🏠 학습 경로로 돌아가기](../../../index.md) | 
-[다음: Cloud Container 과정 →](../../../cloud_container/README.md)
+[← 이전: Day 2](cloud_master/textbook/Day2/README.md) | 
+[📚 전체 커리큘럼](curriculum.md) | 
+[🏠 학습 경로로 돌아가기](index.md) | 
+[다음: Cloud Container 과정 →](cloud_container/README.md)
 
 </div>

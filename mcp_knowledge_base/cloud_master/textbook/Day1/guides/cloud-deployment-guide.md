@@ -720,6 +720,6 @@ aws ec2 describe-instances --instance-ids i-xxxxxxxx
 
 <div align="center">
 
-[← 이전: Cloud Master 1일차 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md) | [← 이전: GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-guide.md) | [다음: AWS & GCP 배포 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/aws-gcp-deployment-guide.md)
+[← 이전: Cloud Master 1일차 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md) | [← 이전: GitHub Actions 가이드](cloud_master/textbook/Day1/guides/github-actions-guide.md) | [다음: AWS & GCP 배포 가이드 →](cloud_master/textbook/Day1/guides/aws-gcp-deployment-guide.md)
 
 </div>

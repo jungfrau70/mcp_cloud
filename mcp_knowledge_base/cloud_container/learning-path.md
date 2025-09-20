@@ -26,7 +26,7 @@
 
 # Cloud Container - 컨테이너 심화 학습 경로
 
-> 📋 **전체 개요**: [README.md](/mcp_knowledge_base/README.md) | [통합 커리큘럼](/mcp_knowledge_base/curriculum.md) | [통합 인덱스](/mcp_knowledge_base/index.md)에서 전체 과정 구조를 확인하세요.
+> 📋 **전체 개요**: [README.md](README.md) | [통합 커리큘럼](curriculum.md) | [통합 인덱스](index.md)에서 전체 과정 구조를 확인하세요.
 
 <div align="center">
 </div>
@@ -47,8 +47,8 @@
 - **실습 환경**: AWS Free Tier + GCP Free Tier ($300 크레딧) + GitHub Free
 
 ### 과정 상세 정보
-- [과정명 상세](/mcp_knowledge_base/cloud_container/과정명.md)
-- [과정 상세 정보](/mcp_knowledge_base/cloud_container/과정상세.md)
+- [과정명 상세](cloud_container/과정명.md)
+- [과정 상세 정보](cloud_container/과정상세.md)
 
 ### 학습 목표
 - Docker 컨테이너 기술의 심화 활용 및 최적화
@@ -66,8 +66,8 @@
 #### 1. Kubernetes 고급 아키텍처 이론 (60분)
 
 **📖 이론 학습 자료**
-- [Kubernetes 고급 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/kubernetes-advanced-guide.md)
-- [컨테이너 오케스트레이션 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/container-orchestration-guide.md)
+- [Kubernetes 고급 가이드](cloud_container/textbook/Day1/kubernetes-advanced-guide.md)
+- [컨테이너 오케스트레이션 가이드](cloud_container/textbook/Day1/container-orchestration-guide.md)
 
 **🎯 이론 학습 내용**
 - Kubernetes 클러스터 아키텍처 및 컴포넌트
@@ -78,8 +78,8 @@
 #### 2. 컨테이너 오케스트레이션 고급 기법 이론 (60분)
 
 **📖 이론 학습 자료**
-- [Deployment, Service, Ingress 설정](/mcp_knowledge_base/README.md)
-- [ConfigMap, Secret, PersistentVolume 관리](/mcp_knowledge_base/README.md)
+- [Deployment, Service, Ingress 설정](README.md)
+- [ConfigMap, Secret, PersistentVolume 관리](README.md)
 
 **🎯 이론 학습 내용**
 - Deployment, Service, Ingress 고급 설정
@@ -92,8 +92,8 @@
 #### 1. Kubernetes 고급 아키텍처 실습 (120분)
 
 **🔧 실습 가이드**
-- [Kubernetes 기본 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/practice/kubernetes-basics.md)
-- [1일차 실습 가이드](/mcp_knowledge_base/README.md)
+- [Kubernetes 기본 실습](cloud_container/textbook/Day1/practice/kubernetes-basics.md)
+- [1일차 실습 가이드](README.md)
 
 **🎯 실습 내용**
 - GKE 클러스터 생성 및 애플리케이션 배포
@@ -104,7 +104,7 @@
 #### 2. 컨테이너 오케스트레이션 고급 기법 실습 (90분)
 
 **🔧 실습 가이드**
-- [1일차 실습 가이드](/mcp_knowledge_base/README.md)
+- [1일차 실습 가이드](README.md)
 
 **🎯 실습 내용**
 - 마이크로서비스 아키텍처 구성
@@ -115,8 +115,8 @@
 #### 3. AWS ECS 및 Fargate 심화 실습 (90분)
 
 **🔧 실습 가이드**
-- [ECS 클러스터 구성 및 태스크 정의](/mcp_knowledge_base/README.md)
-- [Fargate 서버리스 컨테이너 실행](/mcp_knowledge_base/README.md)
+- [ECS 클러스터 구성 및 태스크 정의](README.md)
+- [Fargate 서버리스 컨테이너 실행](README.md)
 
 **🎯 실습 내용**
 - ECS 클러스터 구성 및 태스크 정의
@@ -129,7 +129,7 @@
 #### 📚 이론 학습 (30분)
 
 **📖 이론 학습 자료**
-- [GitOps 기반 배포 자동화](/mcp_knowledge_base/README.md)
+- [GitOps 기반 배포 자동화](README.md)
 
 **🎯 이론 학습 내용**
 - Multi-stage 배포 파이프라인
@@ -140,7 +140,7 @@
 #### 🛠️ 실습 학습 (60분)
 
 **🔧 실습 가이드**
-- [1일차 실습 가이드](/mcp_knowledge_base/README.md)
+- [1일차 실습 가이드](README.md)
 
 **🎯 실습 내용**
 - GitOps 기반 배포 자동화
@@ -151,38 +151,38 @@
 ### 📚 1일차 실습 자료
 
 #### 실습 가이드
-- [1일차 실습 가이드](/mcp_knowledge_base/README.md)
-- [컨테이너 기본 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/practice/container-basics.md)
-- [Kubernetes 기본 실습](/mcp_knowledge_base/cloud_container/textbook/Day1/practice/kubernetes-basics.md)
-- [종합 실습 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/comprehensive-practice-guide.md)
-- [Master 연계 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/master-integration-guide.md)
+- [1일차 실습 가이드](README.md)
+- [컨테이너 기본 실습](cloud_container/textbook/Day1/practice/container-basics.md)
+- [Kubernetes 기본 실습](cloud_container/textbook/Day1/practice/kubernetes-basics.md)
+- [종합 실습 가이드](cloud_container/textbook/Day1/comprehensive-practice-guide.md)
+- [Master 연계 가이드](cloud_container/textbook/Day1/master-integration-guide.md)
 
 #### 고급 가이드 문서
-- [Kubernetes 고급 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/kubernetes-advanced-guide.md)
-- [컨테이너 오케스트레이션 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/container-orchestration-guide.md)
-- [자동 복구 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/auto-recovery-guide.md)
-- [비용 최적화 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/cost-optimization-guide.md)
-- [보안 정책 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/security-policies-guide.md)
+- [Kubernetes 고급 가이드](cloud_container/textbook/Day1/kubernetes-advanced-guide.md)
+- [컨테이너 오케스트레이션 가이드](cloud_container/textbook/Day1/container-orchestration-guide.md)
+- [자동 복구 가이드](cloud_container/textbook/Day1/auto-recovery-guide.md)
+- [비용 최적화 가이드](cloud_container/textbook/Day1/cost-optimization-guide.md)
+- [보안 정책 가이드](cloud_container/textbook/Day1/security-policies-guide.md)
 
 
 #### 고급 설정 파일
-- [Docker Compose 설정](/mcp_knowledge_base/cloud_container/textbook/Day1/guides/docker-compose.yml)
-- [컨테이너 데모 설정](/mcp_knowledge_base/cloud_container/textbook/Day1/guides/container-demo-setup.sh)
-- [Helm 차트 템플릿](/mcp_knowledge_base/cloud_container/textbook/Day1/guides/helm-chart-templates/Chart.yaml)
-- [Istio 설정](/mcp_knowledge_base/cloud_container/textbook/Day1/guides/istio-config/gateway.yaml)
-- [Nginx 설정](/mcp_knowledge_base/cloud_container/textbook/Day1/guides/nginx/nginx.conf)
-- [Prometheus 설정](/mcp_knowledge_base/cloud_container/textbook/Day1/guides/monitoring-advanced/prometheus-config.yaml)
+- [Docker Compose 설정](cloud_container/textbook/Day1/guides/docker-compose.yml)
+- [컨테이너 데모 설정](cloud_container/textbook/Day1/guides/container-demo-setup.sh)
+- [Helm 차트 템플릿](cloud_container/textbook/Day1/guides/helm-chart-templates/Chart.yaml)
+- [Istio 설정](cloud_container/textbook/Day1/guides/istio-config/gateway.yaml)
+- [Nginx 설정](cloud_container/textbook/Day1/guides/nginx/nginx.conf)
+- [Prometheus 설정](cloud_container/textbook/Day1/guides/monitoring-advanced/prometheus-config.yaml)
 
 #### 자동화 스크립트
-- [AWS 설정 도우미](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/aws-setup-helper.sh)
-- [GCP 설정 도우미](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/gcp-setup-helper.sh)
-- [컨테이너 종합 배포](/mcp_knowledge_base/cloud_container/textbook/Day1/guides/container-comprehensive-deploy.sh)
-- [고급 배포](/mcp_knowledge_base/cloud_container/textbook/Day1/guides/deploy-advanced.sh)
+- [AWS 설정 도우미](cloud_basic/textbook/Day1/guides/aws-setup-helper.sh)
+- [GCP 설정 도우미](cloud_basic/textbook/Day1/guides/gcp-setup-helper.sh)
+- [컨테이너 종합 배포](cloud_container/textbook/Day1/guides/container-comprehensive-deploy.sh)
+- [고급 배포](cloud_container/textbook/Day1/guides/deploy-advanced.sh)
 
 #### 고급 가이드
-- [자동 복구 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/auto-recovery-guide.md)
-- [비용 최적화 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/cost-optimization-guide.md)
-- [보안 정책 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/security-policies-guide.md)
+- [자동 복구 가이드](cloud_container/textbook/Day1/auto-recovery-guide.md)
+- [비용 최적화 가이드](cloud_container/textbook/Day1/cost-optimization-guide.md)
+- [보안 정책 가이드](cloud_container/textbook/Day1/security-policies-guide.md)
 
 ---
 
@@ -193,7 +193,7 @@
 #### 1. 고가용성 아키텍처 설계 이론 (60분)
 
 **📖 이론 학습 자료**
-- [고가용성 아키텍처 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/high-availability-architecture.md)
+- [고가용성 아키텍처 가이드](cloud_container/textbook/Day2/high-availability-architecture.md)
 
 **🎯 이론 학습 내용**
 - AWS Multi-AZ / GCP Multi-Region
@@ -204,7 +204,7 @@
 #### 2. 로드 밸런싱 및 Auto Scaling 이론 (60분)
 
 **📖 이론 학습 자료**
-- [고급 로드 밸런싱 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/advanced-load-balancing.md)
+- [고급 로드 밸런싱 실습](cloud_container/textbook/Day2/practice/advanced-load-balancing.md)
 
 **🎯 이론 학습 내용**
 - AWS ELB 심화 / GCP Cloud Load Balancing
@@ -217,7 +217,7 @@
 #### 1. 고가용성 아키텍처 실습 (120분)
 
 **🔧 실습 가이드**
-- [고가용성 아키텍처 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/high-availability-architecture.md)
+- [고가용성 아키텍처 실습](cloud_container/textbook/Day2/high-availability-architecture.md)
 
 **🎯 실습 내용**
 - Multi-AZ RDS 및 EC2 구성
@@ -228,7 +228,7 @@
 #### 2. 로드 밸런싱 및 Auto Scaling 실습 (90분)
 
 **🔧 실습 가이드**
-- [고급 로드 밸런싱 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/advanced-load-balancing.md)
+- [고급 로드 밸런싱 실습](cloud_container/textbook/Day2/practice/advanced-load-balancing.md)
 
 **🎯 실습 내용**
 - Auto Scaling + Load Balancer 연동
@@ -241,7 +241,7 @@
 **📚 이론 학습 (30분)**
 
 **📖 이론 학습 자료**
-- [모니터링 설정 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/monitoring-setup.md)
+- [모니터링 설정 가이드](cloud_container/textbook/Day2/monitoring-setup.md)
 
 **🎯 이론 학습 내용**
 - AWS CloudWatch / GCP Monitoring & Logging
@@ -252,7 +252,7 @@
 **🛠️ 실습 학습 (60분)**
 
 **🔧 실습 가이드**
-- [모니터링 시스템 설정 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/monitoring-system-setup.md)
+- [모니터링 시스템 설정 실습](cloud_container/textbook/Day2/practice/monitoring-system-setup.md)
 
 **🎯 실습 내용**
 - 커스텀 메트릭 대시보드 구축
@@ -265,7 +265,7 @@
 #### 📚 이론 학습 (30분)
 
 **📖 이론 학습 자료**
-- [종합 프로젝트 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/comprehensive-project.md)
+- [종합 프로젝트 실습](cloud_container/textbook/Day2/practice/comprehensive-project.md)
 
 **🎯 이론 학습 내용**
 - 고가용성 웹 서비스 아키텍처 설계
@@ -276,7 +276,7 @@
 #### 🛠️ 실습 학습 (60분)
 
 **🔧 실습 가이드**
-- [종합 프로젝트 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/comprehensive-project.md)
+- [종합 프로젝트 실습](cloud_container/textbook/Day2/practice/comprehensive-project.md)
 
 **🎯 실습 내용**
 - 실제 서비스 시나리오 아키텍처 구현
@@ -287,74 +287,74 @@
 ### 📚 2일차 실습 자료
 
 #### 실습 가이드
-- [2일차 실습 가이드](/mcp_knowledge_base/README.md)
-- [고가용성 아키텍처 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/high-availability-architecture.md)
-- [고급 로드 밸런싱 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/advanced-load-balancing.md)
-- [모니터링 시스템 설정 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/monitoring-system-setup.md)
-- [종합 프로젝트 실습](/mcp_knowledge_base/cloud_container/textbook/Day2/practice/comprehensive-project.md)
+- [2일차 실습 가이드](README.md)
+- [고가용성 아키텍처 실습](cloud_container/textbook/Day2/high-availability-architecture.md)
+- [고급 로드 밸런싱 실습](cloud_container/textbook/Day2/practice/advanced-load-balancing.md)
+- [모니터링 시스템 설정 실습](cloud_container/textbook/Day2/practice/monitoring-system-setup.md)
+- [종합 프로젝트 실습](cloud_container/textbook/Day2/practice/comprehensive-project.md)
 
 #### 고급 가이드 문서
-- [고가용성 아키텍처 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/high-availability-architecture.md)
-- [모니터링 설정 가이드](/mcp_knowledge_base/cloud_container/textbook/Day2/monitoring-setup.md)
-- [Multi-AZ 문제 해결](/mcp_knowledge_base/cloud_container/textbook/Day2/troubleshooting/multi-az-issues.md)
+- [고가용성 아키텍처 가이드](cloud_container/textbook/Day2/high-availability-architecture.md)
+- [모니터링 설정 가이드](cloud_container/textbook/Day2/monitoring-setup.md)
+- [Multi-AZ 문제 해결](cloud_container/textbook/Day2/troubleshooting/multi-az-issues.md)
 
 
 #### 자동화 스크립트
-- [AWS 설정 도우미](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/aws-setup-helper.sh)
-- [GCP 설정 도우미](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/gcp-setup-helper.sh)
+- [AWS 설정 도우미](cloud_basic/textbook/Day1/guides/aws-setup-helper.sh)
+- [GCP 설정 도우미](cloud_basic/textbook/Day1/guides/gcp-setup-helper.sh)
 
 #### 문제 해결
-- [Multi-AZ 문제 해결](/mcp_knowledge_base/cloud_container/textbook/Day2/troubleshooting/multi-az-issues.md)
+- [Multi-AZ 문제 해결](cloud_container/textbook/Day2/troubleshooting/multi-az-issues.md)
 
 ---
 
 ## 🛠️ 설치 및 도구 가이드
 
 ### 필수 도구 설치
-- [AWS CLI 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_aws_cli.md)
-- [Azure CLI 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_azure_cli.md)
-- [GCP CLI 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_glcoud_cli.md)
-- [Docker 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_docker.md)
-- [Docker Compose 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_docker_compose.md)
-- [Git 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_git.md)
-- [GitHub Actions 완전 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/github-actions-complete-guide.md)
-- [Helm 설치](/mcp_knowledge_base/cloud_container/automation_tests/get_helm.sh)
+- [AWS CLI 설치](cloud_basic/textbook/Day1/guides/install_aws_cli.md)
+- [Azure CLI 설치](cloud_basic/textbook/Day1/guides/install_azure_cli.md)
+- [GCP CLI 설치](cloud_basic/textbook/Day1/guides/install_glcoud_cli.md)
+- [Docker 설치](cloud_basic/textbook/Day1/guides/install_docker.md)
+- [Docker Compose 설치](cloud_basic/textbook/Day1/guides/install_docker_compose.md)
+- [Git 설치](cloud_basic/textbook/Day1/guides/install_git.md)
+- [GitHub Actions 완전 가이드](cloud_basic/textbook/Day1/guides/github-actions-complete-guide.md)
+- [Helm 설치](cloud_container/automation_tests/get_helm.sh)
 
 ### 클라우드별 설치 스크립트
-- [AWS Docker Compose 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_docker_compose_aws.sh)
-- [Azure Docker Compose 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_docker_compose_azure.sh)
-- [GCP Docker Compose 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_docker_compose_gcp.sh)
-- [AWS Git 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_git_aws.sh)
-- [Azure Git 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_git_azure.sh)
-- [GCP Git 설치](/mcp_knowledge_base/cloud_basic/textbook/Day1/guides/install_git_gcp.sh)
+- [AWS Docker Compose 설치](cloud_basic/textbook/Day1/guides/install_docker_compose_aws.sh)
+- [Azure Docker Compose 설치](cloud_basic/textbook/Day1/guides/install_docker_compose_azure.sh)
+- [GCP Docker Compose 설치](cloud_basic/textbook/Day1/guides/install_docker_compose_gcp.sh)
+- [AWS Git 설치](cloud_basic/textbook/Day1/guides/install_git_aws.sh)
+- [Azure Git 설치](cloud_basic/textbook/Day1/guides/install_git_azure.sh)
+- [GCP Git 설치](cloud_basic/textbook/Day1/guides/install_git_gcp.sh)
 
 ### 컨테이너 과정 특화 도구
-- [GitHub Actions 가이드](/mcp_knowledge_base/cloud_container/github-actions.md)
+- [GitHub Actions 가이드](cloud_container/github-actions.md)
 
 ---
 
 ## 🤖 자동화 및 테스트
 
 ### 자동화 가이드
-- [자동화 README](/mcp_knowledge_base/README.md)
-- [자동화 테스트 README](/mcp_knowledge_base/README.md)
+- [자동화 README](README.md)
+- [자동화 테스트 README](README.md)
 
 ### 자동화 스크립트
-- [1일차 자동화 스크립트](/mcp_knowledge_base/cloud_basic/automation/day1/cloud_basics.sh)
-- [2일차 자동화 스크립트](/mcp_knowledge_base/cloud_basic/automation_tests/basic_course_day2_scripts.py)
-- [자동화 결과](/mcp_knowledge_base/cloud_basic/automation/results/automation_results.json)
+- [1일차 자동화 스크립트](cloud_basic/automation/day1/cloud_basics.sh)
+- [2일차 자동화 스크립트](cloud_basic/automation_tests/basic_course_day2_scripts.py)
+- [자동화 결과](cloud_basic/automation/results/automation_results.json)
 
 ### 자동화 테스트
-- [컨테이너 과정 자동화](/mcp_knowledge_base/cloud_container/automation_tests/cloud_container_course_automation.py)
-- [2일차 스크립트 자동화](/mcp_knowledge_base/cloud_container/automation_tests/container_course_day2_scripts.py)
-- [자동화 테스트 실행](/mcp_knowledge_base/cloud_container/automation_tests/run_container_course_tests.py)
-- [자동화 테스트 검증](/mcp_knowledge_base/cloud_container/automation_tests/test_container_course_automation.py)
-- [사용자 가이드](/mcp_knowledge_base/USER_GUIDE.md)
+- [컨테이너 과정 자동화](cloud_container/automation_tests/cloud_container_course_automation.py)
+- [2일차 스크립트 자동화](cloud_container/automation_tests/container_course_day2_scripts.py)
+- [자동화 테스트 실행](cloud_container/automation_tests/run_container_course_tests.py)
+- [자동화 테스트 검증](cloud_container/automation_tests/test_container_course_automation.py)
+- [사용자 가이드](USER_GUIDE.md)
 
 ### 도구 설치 스크립트
-- [Helm 설치](/mcp_knowledge_base/cloud_container/automation_tests/get_helm.sh)
-- [도구 설치 (Windows)](/mcp_knowledge_base/cloud_container/automation_tests/install_tools_simple.ps1)
-- [도구 설치 (Linux/Mac)](/mcp_knowledge_base/cloud_container/automation_tests/install_tools.sh)
+- [Helm 설치](cloud_container/automation_tests/get_helm.sh)
+- [도구 설치 (Windows)](cloud_container/automation_tests/install_tools_simple.ps1)
+- [도구 설치 (Linux/Mac)](cloud_container/automation_tests/install_tools.sh)
 
 ---
 
@@ -389,9 +389,9 @@
 ## 🚀 다음 단계
 
 ### 실무 적용
-- [통합 자동화 시스템](/mcp_knowledge_base/README.md)
-- [전체 커리큘럼](/mcp_knowledge_base/curriculum.md)
-- [통합 인덱스](/mcp_knowledge_base/index.md)
+- [통합 자동화 시스템](README.md)
+- [전체 커리큘럼](curriculum.md)
+- [통합 인덱스](index.md)
 
 ### 고급 학습
 - [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
@@ -435,22 +435,22 @@
 - **이메일**: inhwan.jung@gmail.com
 - **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
 #### 계정 관련 문서
-- [AWS계정가입](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md)
-- [Azure계정가입](/mcp_knowledge_base/cloud_basic/accounts/Azure계정가입.md)
-- [GCP_개인계정가입](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md)
-- [GCP_계정유형비교](/mcp_knowledge_base/cloud_container/accounts/GCP_계정유형비교.md)
-- [GCP_조직계정가입](/mcp_knowledge_base/cloud_container/accounts/GCP_조직계정가입.md)
-- [클라우드계정관리비교](/mcp_knowledge_base/cloud_container/accounts/클라우드계정관리비교.md)
+- [AWS계정가입](cloud_basic/accounts/AWS계정가입.md)
+- [Azure계정가입](cloud_basic/accounts/Azure계정가입.md)
+- [GCP_개인계정가입](cloud_basic/accounts/GCP_개인계정가입.md)
+- [GCP_계정유형비교](cloud_container/accounts/GCP_계정유형비교.md)
+- [GCP_조직계정가입](cloud_container/accounts/GCP_조직계정가입.md)
+- [클라우드계정관리비교](cloud_container/accounts/클라우드계정관리비교.md)
 
 
 ---
 
 <div align="center">
 
-[← 이전: Cloud Container 메인](/mcp_knowledge_base/README.md) | 
-[📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 
-[🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | 
-[다음: Cloud Container 1일차 →](/mcp_knowledge_base/README.md)
+[← 이전: Cloud Container 메인](README.md) | 
+[📚 전체 커리큘럼](curriculum.md) | 
+[🏠 학습 경로로 돌아가기](index.md) | 
+[다음: Cloud Container 1일차 →](README.md)
 
 </div>
 
@@ -458,6 +458,6 @@
 
 <div align="center">
 
-[🏠 홈](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | 🔗 학습 경로
+[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | 🔗 학습 경로
 
 </div>

@@ -204,17 +204,17 @@ gcloud compute ssh my-vm --zone=us-central1-a
 ## 🛠️ 실습 학습
 
 > 📚 **상세 실습 가이드**: 각 주제별 상세한 실습은 다음 파일들을 참조하세요.
-> - [Docker 기초 실습](practices/docker-basics.md)
-> - [Git/GitHub 기초 실습](practices/git-github-basics.md)
-> - [GitHub Actions 기초 실습](practices/github-actions-basics.md)
-> - [VM 배포 실습](practices/vm-deployment.md)
+> - [Docker 기초 실습](cloud_master/textbook/Day1/practices/docker-basics.md)
+> - [Git/GitHub 기초 실습](cloud_master/textbook/Day1/practices/git-github-basics.md)
+> - [GitHub Actions 기초 실습](cloud_master/textbook/Day1/practices/github-actions-basics.md)
+> - [VM 배포 실습](cloud_master/textbook/Day1/practices/vm-deployment.md)
 
 > 🚀 **자동화 스크립트**: 실습을 더 쉽게 하려면 다음 자동화 스크립트를 사용하세요.
-> - [AWS 설정 도우미](../../repos/cloud-scripts/aws-setup-helper.sh) - AWS 환경 자동 설정
-> - [GCP 설정 도우미](../../repos/cloud-scripts/gcp-setup-helper.sh) - GCP 환경 자동 설정
-> - [AWS EC2 자동 생성](../../repos/cloud-scripts/aws-ec2-create.sh) - EC2 인스턴스 자동 생성
-> - [GCP VM 자동 생성](../../repos/cloud-scripts/gcp-compute-create.sh) - Compute Engine 자동 생성
-> - [리소스 정리 스크립트](../../repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
+> - [AWS 설정 도우미](cloud_master/repos/cloud-scripts/aws-setup-helper.sh) - AWS 환경 자동 설정
+> - [GCP 설정 도우미](cloud_master/repos/cloud-scripts/gcp-setup-helper.sh) - GCP 환경 자동 설정
+> - [AWS EC2 자동 생성](cloud_master/repos/cloud-scripts/aws-ec2-create.sh) - EC2 인스턴스 자동 생성
+> - [GCP VM 자동 생성](cloud_master/repos/cloud-scripts/gcp-compute-create.sh) - Compute Engine 자동 생성
+> - [리소스 정리 스크립트](cloud_master/repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
 
 <details>
 <summary>🐳 Docker 실습</summary>
@@ -383,12 +383,12 @@ git push origin main
 **방법 1: 자동화 스크립트 사용 (권장)**
 ```bash
 # AWS 설정 도우미 실행
-chmod +x ../../repos/cloud-scripts/aws-setup-helper.sh
-./../../repos/cloud-scripts/aws-setup-helper.sh
+chmod +x cloud_master/repos/cloud-scripts/aws-setup-helper.sh
+./cloud_master/repos/cloud-scripts/aws-setup-helper.sh
 
 # EC2 인스턴스 자동 생성
-chmod +x ../../repos/cloud-scripts/aws-ec2-create.sh
-./../../repos/cloud-scripts/aws-ec2-create.sh
+chmod +x cloud_master/repos/cloud-scripts/aws-ec2-create.sh
+./cloud_master/repos/cloud-scripts/aws-ec2-create.sh
 ```
 
 **방법 2: 수동 명령어 실행**
@@ -417,12 +417,12 @@ EOF
 **방법 1: 자동화 스크립트 사용 (권장)**
 ```bash
 # GCP 설정 도우미 실행
-chmod +x ../../repos/cloud-scripts/gcp-setup-helper.sh
-./../../repos/cloud-scripts/gcp-setup-helper.sh
+chmod +x cloud_master/repos/cloud-scripts/gcp-setup-helper.sh
+./cloud_master/repos/cloud-scripts/gcp-setup-helper.sh
 
 # Compute Engine 인스턴스 자동 생성
-chmod +x ../../repos/cloud-scripts/gcp-compute-create.sh
-./../../repos/cloud-scripts/gcp-compute-create.sh
+chmod +x cloud_master/repos/cloud-scripts/gcp-compute-create.sh
+./cloud_master/repos/cloud-scripts/gcp-compute-create.sh
 ```
 
 **방법 2: 수동 명령어 실행**
@@ -457,12 +457,12 @@ EOF
 **방법 1: 자동화 스크립트 사용 (권장)**
 ```bash
 # AWS 리소스 자동 정리
-chmod +x ../../repos/cloud-scripts/aws-resource-cleanup.sh
-./../../repos/cloud-scripts/aws-resource-cleanup.sh
+chmod +x cloud_master/repos/cloud-scripts/aws-resource-cleanup.sh
+./cloud_master/repos/cloud-scripts/aws-resource-cleanup.sh
 
 # GCP 리소스 자동 정리
-chmod +x ../../repos/cloud-scripts/gcp-project-cleanup.sh
-./../../repos/cloud-scripts/gcp-project-cleanup.sh
+chmod +x cloud_master/repos/cloud-scripts/gcp-project-cleanup.sh
+./cloud_master/repos/cloud-scripts/gcp-project-cleanup.sh
 ```
 
 **방법 2: 수동 정리**
@@ -490,11 +490,11 @@ gcloud compute instances delete my-vm --zone=us-central1-a
 ## 📚 참고 자료
 
 ### 상세 가이드
-- [Docker 고급 가이드](guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
-- [Docker Compose 가이드](guides/docker-compose-guide.md) - 다중 서비스 관리
-- [GitHub Actions 가이드](guides/github-actions-guide.md) - CI/CD 파이프라인 구축
-- [AWS & GCP 배포 가이드](guides/aws-gcp-deployment-guide.md) - 멀티클라우드 배포
-- [트러블슈팅 가이드](guides/troubleshooting-guide.md) - 문제 해결 및 디버깅
+- [Docker 고급 가이드](cloud_master/textbook/Day1/guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
+- [Docker Compose 가이드](cloud_master/textbook/Day1/guides/docker-compose-guide.md) - 다중 서비스 관리
+- [GitHub Actions 가이드](cloud_master/textbook/Day1/guides/github-actions-guide.md) - CI/CD 파이프라인 구축
+- [AWS & GCP 배포 가이드](cloud_master/textbook/Day1/guides/aws-gcp-deployment-guide.md) - 멀티클라우드 배포
+- [트러블슈팅 가이드](cloud_master/textbook/Day1/guides/troubleshooting-guide.md) - 문제 해결 및 디버깅
 
 ### 공식 문서
 - [Docker 공식 문서](https://docs.docker.com/)
@@ -513,9 +513,9 @@ gcloud compute instances delete my-vm --zone=us-central1-a
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | 
-[📚 전체 커리큘럼](../../../curriculum.md) | 
-[🏠 학습 경로로 돌아가기](../../../index.md) | 
-[다음: Day 2 →](../Day2/README.md)
+[← 이전: Cloud Master 메인](cloud_master/README.md) | 
+[📚 전체 커리큘럼](curriculum.md) | 
+[🏠 학습 경로로 돌아가기](index.md) | 
+[다음: Day 2 →](cloud_master/textbook/Day2/README.md)
 
 </div>

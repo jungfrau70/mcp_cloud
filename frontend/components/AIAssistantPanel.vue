@@ -77,6 +77,7 @@
 
 <script setup>
 import { ref, computed, nextTick, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useRuntimeConfig } from '#app'
 import { resolveApiBase } from '~/composables/useKbApi'
 import { useGeminiApiKey } from '~/composables/useGeminiApiKey'
@@ -331,24 +332,10 @@ if (typeof window !== 'undefined') {
   })
 }
 
+const router = useRouter()
+
 // 프로필 페이지로 이동
 function goToProfile() {
-  if (typeof window !== 'undefined') {
-    try {
-      // 로그인 상태 확인 - localStorage에서 직접 확인
-      const token = localStorage.getItem('auth_token')
-      if (!token) {
-        // 로그인하지 않은 경우 로그인 페이지로 이동
-        window.location.href = '/login'
-      } else {
-        // 로그인한 경우 프로필 페이지로 이동
-        window.location.href = '/profile'
-      }
-    } catch (error) {
-      console.error('프로필 페이지 이동 중 오류:', error)
-      // 오류 발생 시 기본적으로 프로필 페이지로 이동 시도
-      window.location.href = '/profile'
-    }
-  }
+  router.push('/profile')
 }
 </script>

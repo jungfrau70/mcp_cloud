@@ -310,25 +310,25 @@ git --version
 
 ### 📚 개념 학습 가이드
 
-- 🔗 [Docker 고급 가이드](../guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
-- 🔗 [Docker Compose 가이드](../guides/docker-compose-guide.md) - 다중 서비스 관리
-- 🔗 [GitHub Actions 가이드](../guides/github-actions-guide.md) - CI/CD 파이프라인 구축
-- 🔗 [AWS & GCP 배포 가이드](../guides/aws-gcp-deployment-guide.md) - 멀티클라우드 배포
+- 🔗 [Docker 고급 가이드](cloud_master/textbook/Day1/guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
+- 🔗 [Docker Compose 가이드](cloud_master/textbook/Day1/guides/docker-compose-guide.md) - 다중 서비스 관리
+- 🔗 [GitHub Actions 가이드](cloud_master/textbook/Day1/guides/github-actions-guide.md) - CI/CD 파이프라인 구축
+- 🔗 [AWS & GCP 배포 가이드](cloud_master/textbook/Day1/guides/aws-gcp-deployment-guide.md) - 멀티클라우드 배포
 
 ### 🛠️ 문제 해결 가이드
 
-- 🔗 [종합 트러블슈팅 가이드](../../../cloud_basic/textbook/Day1/troubleshooting-guide.md) - Docker, GitHub Actions, AWS/GCP 문제 해결
+- 🔗 [종합 트러블슈팅 가이드](cloud_basic/textbook/Day1/troubleshooting-guide.md) - Docker, GitHub Actions, AWS/GCP 문제 해결
 - 🔗 [AWS & GCP 권한 설정](aws-gcp-permissions-setup.md) - IAM, 서비스 계정 설정
-- 🔗 [CI/CD 파이프라인 가이드](../guides/cicd-pipeline-guide.md) - 전체 자동 배포 파이프라인
-- 🔗 [클라우드 배포 가이드](../guides/cloud-deployment-guide.md) - VM 기반 웹 애플리케이션 배포
+- 🔗 [CI/CD 파이프라인 가이드](cloud_master/textbook/Day1/guides/cicd-pipeline-guide.md) - 전체 자동 배포 파이프라인
+- 🔗 [클라우드 배포 가이드](cloud_master/textbook/Day1/guides/cloud-deployment-guide.md) - VM 기반 웹 애플리케이션 배포
 
 ### 🔗 관련 과정 링크
 
-- 🔗 [Cloud Basic 과정](../../../cloud_basic/README.md) - AWS/GCP 기초 과정
-- 🔗 [Cloud Container 과정](../../../cloud_container/README.md) - Kubernetes 고급 과정
-- 🔗 [전체 커리큘럼](../../../curriculum.md) - 전체 과정 구조 및 학습 경로
-- 🔗 [통합 인덱스](../../../index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](../../../learning-path.md) - Cloud Master 학습 경로
+- 🔗 [Cloud Basic 과정](cloud_basic/README.md) - AWS/GCP 기초 과정
+- 🔗 [Cloud Container 과정](cloud_container/README.md) - Kubernetes 고급 과정
+- 🔗 [전체 커리큘럼](curriculum.md) - 전체 과정 구조 및 학습 경로
+- 🔗 [통합 인덱스](index.md) - 전체 과정 인덱스
+- 🔗 [학습 경로로 돌아가기](learning-path.md) - Cloud Master 학습 경로
 
 </details>
 
@@ -1222,6 +1222,6 @@ ssh -T git@github.com
 
 <div align="center">
 
-[🏠 홈으로 돌아가기](../../../index.md) | [📚 전체 커리큘럼](../../../curriculum.md) | [🔗 학습 경로](../../../learning-path.md)
+[🏠 홈으로 돌아가기](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
 
 </div>

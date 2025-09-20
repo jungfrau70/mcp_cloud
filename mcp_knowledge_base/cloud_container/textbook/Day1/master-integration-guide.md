@@ -181,10 +181,10 @@ mv .github/workflows/multi-cloud-deploy.yml.disabled .github/workflows/multi-clo
 
 [📚 참고 자료](#참고-자료)
 
-- [Master 과정: Docker 기초](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-compose-guide.md)
-- [Master 과정: GitHub Actions](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-guide.md)
-- [Master 과정: 클라우드 배포](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/cloud-deployment-guide.md)
-- [Container 과정: 오케스트레이션 가이드](/mcp_knowledge_base/cloud_container/textbook/Day1/container-orchestration-guide.md)
+- [Master 과정: Docker 기초](cloud_master/textbook/Day1/guides/docker-compose-guide.md)
+- [Master 과정: GitHub Actions](cloud_master/textbook/Day1/guides/github-actions-guide.md)
+- [Master 과정: 클라우드 배포](cloud_master/textbook/Day1/guides/cloud-deployment-guide.md)
+- [Container 과정: 오케스트레이션 가이드](cloud_container/textbook/Day1/container-orchestration-guide.md)
 
 
 ---
@@ -196,6 +196,6 @@ mv .github/workflows/multi-cloud-deploy.yml.disabled .github/workflows/multi-clo
 
 <div align="center">
 
-[← 이전: Cloud Container 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
+[← 이전: Cloud Container 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
 
 </div>

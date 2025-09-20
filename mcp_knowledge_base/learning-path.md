@@ -797,7 +797,7 @@ docker-compose port service-name port
 
 - [Docker 공식 문서](https:///docs.docker.com/)
 - [Docker Best Practices](https:///docs.docker.com/develop/dev-best-practices/)
-- [GitHub Actions 고급 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-guide.md)
+- [GitHub Actions 고급 실습](cloud_master/textbook/Day1/guides/github-actions-guide.md)
 
 ---
 
@@ -810,6 +810,6 @@ docker-compose port service-name port
 
 <div align="center">
 
-[← 이전: Cloud Master 1일차 메인](/mcp_knowledge_base/index.md) | [← 이전: Cloud Basic 2일차](/mcp_knowledge_base/README.md) | [다음: GitHub Actions 가이드 →](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-guide.md)
+[← 이전: Cloud Master 1일차 메인](index.md) | [← 이전: Cloud Basic 2일차](README.md) | [다음: GitHub Actions 가이드 →](cloud_master/textbook/Day1/guides/github-actions-guide.md)
 
 </div>

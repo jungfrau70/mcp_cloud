@@ -78,6 +78,7 @@ services:
       - JWT_SECRET=${JWT_SECRET:-change_me}
       - FRONTEND_BASE_URL=${FRONTEND_BASE_URL:-https://app.goldencircle.us}
       - ALLOW_FORWARDED_AUTH=false
+      - CREDENTIAL_ENCRYPTION_KEY=dJHoQWeq7456UN3vLje499b4KhPemdFfNamO_YpxE_M=
       # HF offline-friendly defaults
       - EMBEDDING_BACKEND=${EMBEDDING_BACKEND:-local}
       - EMBEDDING_MODEL=${EMBEDDING_MODEL:-jhgan/ko-sroberta-multitask}

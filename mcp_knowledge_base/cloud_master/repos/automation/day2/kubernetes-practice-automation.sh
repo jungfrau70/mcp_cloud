@@ -35,9 +35,9 @@ check_prerequisites() {
     log_info "실습 환경 확인 중..."
     
     # 통합 환경 체크 스크립트 실행
-    if [ -f "../../cloud-scripts/environment-check.sh" ]; then
+    if [ -f "cloud_master/repos/cloud-scripts/environment-check.sh" ]; then
         log_info "통합 환경 체크 실행 중..."
-        if bash ../../cloud-scripts/environment-check.sh day2; then
+        if bash cloud_master/repos/cloud-scripts/environment-check.sh day2; then
             log_success "환경 체크 완료"
         else
             log_warning "환경 체크에서 일부 문제가 발견되었습니다."
