@@ -203,7 +203,7 @@ async function deleteCurrent(){
     const p = props.path
     const ts = new Date().toISOString().replace(/[-:T.Z]/g,'').slice(0,14)
     const trashPath = `.trash/${ts}/${p}`
-    await fetch(`${resolveApiBase()}/api/v1/knowledge-base/move`, { method:'POST', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path: p, new_path: trashPath }) })
+    await fetch(`${resolveApiBase()}/v1/knowledge-base/move`, { method:'POST', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path: p, new_path: trashPath }) })
     try{ window.dispatchEvent(new CustomEvent('kb:deleted', { detail:{ path: p, trashPath } })) }catch{}
   }catch{ alert('삭제 실패') }
 }
@@ -441,7 +441,7 @@ function navigateToLink(href: string) {
   console.log('navigateToLink called with href:', href, 'current path:', props.path)
   
   // mcp_knowledge_base 기준 경로 처리
-  let targetPath = resolveKnowledgeBasePath(props.path, href);
+  let targetPath = resolveKnowledgeBasePath(props.path || '', href);
   
   console.log('targetPath before .md check:', targetPath)
   

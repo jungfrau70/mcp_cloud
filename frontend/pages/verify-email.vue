@@ -12,7 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute, useRuntimeConfig } from '#app'
+import { useRuntimeConfig } from '#app'
+import { useRoute } from 'vue-router'
 import { onMounted, ref } from 'vue'
 
 const route = useRoute()
@@ -24,7 +25,7 @@ onMounted(async () => {
     const token = String((route.query?.token as string) || '')
     if(!token){ status.value = 'error'; return }
     const base = (config.public?.apiBaseUrl) || '/api'
-    const res = await $fetch(`${base}/v1/auth/verify-email`, {
+    const res = await $fetch(`${base}/api/v1/auth/verify-email`, {
       method: 'POST',
       body: { token }
     }) as any

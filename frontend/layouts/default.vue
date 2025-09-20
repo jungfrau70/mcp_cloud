@@ -26,12 +26,18 @@
             >
               커리큘럼
             </NuxtLink>
+        <NuxtLink
+          v-if="isTutorOrAdmin"
+          to="/knowledge-base"
+          :class="['px-3 py-2 rounded-md text-sm', route.path.startsWith('/knowledge-base') ? 'font-bold text-gray-900' : 'text-gray-700 hover:text-gray-900']"
+        >
+          지식베이스
+        </NuxtLink>
             <NuxtLink
-              v-if="isAdmin"
-              to="/knowledge-base"
-              :class="['px-3 py-2 rounded-md text-sm', route.path.startsWith('/knowledge-base') ? 'font-bold text-gray-900' : 'text-gray-700 hover:text-gray-900']"
+              to="/faq"
+              :class="['px-3 py-2 rounded-md text-sm', route.path.startsWith('/faq') ? 'font-bold text-gray-900' : 'text-gray-700 hover:text-gray-900']"
             >
-              지식베이스
+              FAQ
             </NuxtLink>
             <!-- Auth Status -->
             <div v-if="isLoggedIn" class="relative" ref="userMenuRef">
@@ -54,7 +60,7 @@
     </nav>
 
     <!-- Main IDE Layout -->
-    <div class="flex flex-grow overflow-hidden bg-gray-100 relative">
+    <div class="flex flex-grow overflow-hidden bg-gray-100 relative" style="height: calc(100vh - 64px);">
       <!-- Left Panel: hidden entirely on knowledge-base when Markdown tab active, or for guest users -->
       <aside
         v-if="!isKnowledgeBase && isLoggedIn"
@@ -119,7 +125,7 @@
               </div>
             </div>
           </div>
-          <div v-else-if="isHome || isAuthRoute" class="h-full">
+          <div v-else-if="isHome || isAuthRoute || isFaqRoute" class="h-full">
             <slot />
           </div>
           <template v-else>
@@ -140,7 +146,7 @@
 
       <!-- Right Panel: AI Assistant -->
       <!-- Chat reveal handle -->
-      <div v-if="!isKnowledgeBase && (!isCurriculumRoute || isTutorOrAdmin) && isLoggedIn"
+      <div v-if="!isKnowledgeBase && (!isCurriculumRoute || canUseChat) && isLoggedIn"
            class="absolute top-1/2 -translate-y-1/2 right-0 z-20">
         <button @click="chatVisible = !chatVisible"
                 class="chat-handle"
@@ -152,13 +158,13 @@
       </div>
 
       <!-- Chat resizer (visible only when chat is open and user is logged in) -->
-      <div v-if="!isKnowledgeBase && chatVisible && (!isCurriculumRoute || isTutorOrAdmin) && isLoggedIn"
+      <div v-if="!isKnowledgeBase && chatVisible && (!isCurriculumRoute || canUseChat) && isLoggedIn"
            class="chat-resizer"
            @mousedown="startChatResize"
            :style="{ right: (chatWidth + 'px') }"></div>
 
       <transition name="fade" mode="out-in">
-        <aside v-if="!isKnowledgeBase && chatVisible && (!isCurriculumRoute || isTutorOrAdmin) && isLoggedIn" class="bg-white border-l border-gray-200 flex-shrink-0 overflow-y-auto shadow-md"
+        <aside v-if="!isKnowledgeBase && chatVisible && (!isCurriculumRoute || canUseChat) && isLoggedIn" class="bg-white border-l border-gray-200 flex-shrink-0 overflow-y-auto shadow-md"
                :style="{ width: chatWidth + 'px' }">
           <AIAssistantPanel />
         </aside>
@@ -205,6 +211,7 @@ import ToastStack from '~/components/ToastStack.vue'
 import { useToastStore } from '~/stores/toast'
 import { useAuthStore } from '~/stores/auth'
 import { useProgressStore } from '~/stores/progress'
+import { useGeminiApiKey } from '~/composables/useGeminiApiKey'
 import { cleanApiPath, deepCleanApiPath, preventPathDuplication, prepareApiPath, prepareSafeApiPath, makeUriDisplayFriendly } from '~/utils/path'
 const toast = useToastStore()
 
@@ -213,6 +220,9 @@ const user = ref(null)
 const auth = useAuthStore()
 const progressStore = useProgressStore()
 const userMenuOpen = ref(false)
+
+// Gemini API 키 상태
+const { canUseChat, fetchUserProfile, userProfile } = useGeminiApiKey()
 
 // 디버깅: userMenuOpen 상태 모니터링
 watch(userMenuOpen, (newVal) => {
@@ -241,13 +251,15 @@ async function fetchCurrentUser(){
     }
 
     console.log('Fetching user with token:', auth.token);
+    console.log('Current auth state before fetch:', { email: auth.email, role: auth.role });
 
     const headers = {
       'X-API-Key': apiKey,
       'Authorization': `Bearer ${auth.token}`
     }
 
-    const { data: fetchedUser, error } = await useFetch('/api/v1/users/me', {
+    const base = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000'
+    const { data: fetchedUser, error } = await useFetch(`${base}/api/v1/profile/me`, {
       key: auth.token,
       lazy: false,
       headers: headers,
@@ -260,9 +272,16 @@ async function fetchCurrentUser(){
       return; 
     }
     if (fetchedUser.value){
+      console.log('Fetched user data:', fetchedUser.value)
       user.value = fetchedUser.value
       // auth 스토어도 함께 업데이트하여 동기화
       auth.setUser(fetchedUser.value.email || null, fetchedUser.value.role || null)
+      console.log('Updated auth store:', { email: auth.email, role: auth.role })
+      console.log('isAdmin will be:', fetchedUser.value.role === 'admin')
+      console.log('Display name will be:', fetchedUser.value.full_name || fetchedUser.value.email || '사용자')
+      
+      // Gemini API 키 정보도 함께 업데이트
+      await fetchUserProfile()
     }
   } catch { 
     user.value = null; 
@@ -283,7 +302,7 @@ function redirectToLogin() {
 async function onLogout(){
   try{
     const base = (config.public?.apiBaseUrl) || '/api'
-    await $fetch(`${base}/v1/auth/logout`, { method: 'POST' })
+    await $fetch(`${base}/api/v1/auth/logout`, { method: 'POST' })
   }catch{}
   // Ensure local token/email/role are fully cleared and in-memory user reset
   try { auth.clear() } catch {}
@@ -340,7 +359,7 @@ watch(() => auth.token, async (newToken, oldToken) => {
 }, { immediate: true })
 // Guard KB when user role changes
 watch(() => user.value?.role, async () => {
-  if (route.path.startsWith('/knowledge-base') && !isAdmin.value) {
+  if (route.path.startsWith('/knowledge-base') && !isTutorOrAdmin.value) {
     try { await router.replace('/curriculum') } catch {}
   }
 })
@@ -447,15 +466,47 @@ const apiBase = resolveApiBase()
 const apiKey = (config.public?.apiKey) || 'my_mcp_eagle_tiger';
 
 const displayName = computed(() => {
-  // auth 스토어를 우선으로 사용하여 일관성 보장
-  const nm = (auth.email ? (user.value?.full_name || '').trim() : '') || auth.email || '사용자'
-  return nm ? nm : (auth.email || '사용자')
+  // 사용자 정보가 로드된 경우 full_name 우선 사용
+  if (user.value?.full_name) {
+    const name = user.value.full_name.trim()
+    if (process.client) {
+      console.log('Display name from full_name:', name)
+    }
+    return name
+  }
+  // auth 스토어의 이메일 사용
+  if (auth.email) {
+    if (process.client) {
+      console.log('Display name from email:', auth.email)
+    }
+    return auth.email
+  }
+  // 기본값
+  if (process.client) {
+    console.log('Display name fallback: 사용자')
+  }
+  return '사용자'
 })
 
 const isAdmin = computed(() => {
   // auth 스토어를 우선으로 사용하여 일관성 보장
-  const r = String(auth.role || user.value?.role || '').toLowerCase()
-  return r === 'admin' || r === 'administrator'
+  const authRole = auth.role || ''
+  const userRole = user.value?.role || ''
+  const r = String(authRole || userRole || '').toLowerCase()
+  const isAdminResult = r === 'admin' || r === 'administrator'
+  
+  if (process.client) {
+    console.log('isAdmin check:', { 
+      authRole, 
+      userRole, 
+      finalRole: r, 
+      isAdmin: isAdminResult,
+      userValue: user.value,
+      authStore: { email: auth.email, role: auth.role }
+    })
+  }
+  
+  return isAdminResult
 })
 const isTutor = computed(() => String(auth.role || user.value?.role || '').toLowerCase() === 'tutor')
 const isTutorOrAdmin = computed(() => isTutor.value || isAdmin.value)
@@ -492,7 +543,7 @@ async function openProfileModal(){
   
   try{
     const base = (config.public?.apiBaseUrl) || '/api'
-    const data = await $fetch(`${base}/v1/profile/me`, {
+    const data = await $fetch(`${base}/api/v1/profile/me`, {
       headers: {
         'X-API-Key': apiKey,
         ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
@@ -512,7 +563,7 @@ async function saveProfile(){
   try{
     savingProfile.value = true
     const base = (config.public?.apiBaseUrl) || '/api'
-    const res = await $fetch(`${base}/v1/profile`, {
+    const res = await $fetch(`${base}/api/v1/profile`, {
       method: 'PATCH',
       body: { full_name: profile.value.full_name },
       headers: {
@@ -562,6 +613,10 @@ const isAuthRoute = computed(() => {
   if (!isClient) return false;
   return route.path.startsWith('/login') || route.path.startsWith('/register') || route.path.startsWith('/verify-email');
 })
+const isFaqRoute = computed(() => {
+  if (!isClient) return false;
+  return route.path.startsWith('/faq');
+})
 
 // 상단 메뉴 안정성을 위한 추가 상태
 const isLayoutStable = ref(true)
@@ -579,7 +634,7 @@ onMounted(async () => {
   }
   
   if (isKnowledgeBase.value) {
-    if (!isAdmin.value) {
+    if (!isTutorOrAdmin.value) {
       try { await router.replace('/curriculum') } catch {}
       return
     }
@@ -815,7 +870,7 @@ watch(() => route.path, async (p) => {
 async function showCurriculumIndex(){
   // 1) Try curriculum.md first, then fallback to index.md
   try {
-    const s = await fetch(`${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent(cleanApiPath('curriculum'))}`, { headers: { 'X-API-Key': apiKey } })
+    const s = await fetch(`${apiBase}/api/v1/curriculum?curriculum_path=${encodeURIComponent(cleanApiPath('curriculum'))}`, { headers: { 'X-API-Key': apiKey } })
     if (s.ok) {
       const ct = (s.headers.get('content-type')||'').toLowerCase()
       if (ct.includes('application/pdf')){
@@ -833,7 +888,7 @@ async function showCurriculumIndex(){
   
   // 2) Fallback to index.md
   try {
-    const s = await fetch(`${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent(cleanApiPath('index'))}`, { headers: { 'X-API-Key': apiKey } })
+    const s = await fetch(`${apiBase}/api/v1/curriculum?curriculum_path=${encodeURIComponent(cleanApiPath('index'))}`, { headers: { 'X-API-Key': apiKey } })
     if (s.ok) {
       const ct = (s.headers.get('content-type')||'').toLowerCase()
       if (ct.includes('application/pdf')){
@@ -921,7 +976,7 @@ const handleFileClick = async (path) => {
     if(ext === 'md' || ['txt','log','json','yaml','yml','csv'].includes(ext) || ext === ''){
       console.log('Making API call to curriculum endpoint with path:', cleanPath)
       console.log('apiBase:', apiBase, 'apiKey:', apiKey)
-      const apiUrl = `${apiBase}/v1/curriculum?curriculum_path=${encodeURIComponent(cleanPath)}`
+      const apiUrl = `${apiBase}/api/v1/curriculum?curriculum_path=${encodeURIComponent(cleanPath)}`
       console.log('API URL:', apiUrl)
       
       const s = await fetch(apiUrl, { headers: { 'X-API-Key': apiKey } })
@@ -1062,6 +1117,9 @@ const handleKbFileSelect = async (path) => {
     decodedPath = path
   }
   
+  // Windows 경로 구분자(\\)를 Unix 경로 구분자(/)로 정규화
+  decodedPath = decodedPath.replace(/\\/g, '/')
+  
   console.log('handleKbFileSelect - original path:', path, 'decoded path:', decodedPath)
   
   await docStore.open(decodedPath)
@@ -1100,8 +1158,8 @@ const handleKbSave = async ({ path, content, message, force }) => {
     // force bypass optimistic (call API directly)
     try {
       const config = useRuntimeConfig();
-      const apiBase = config.public.apiBaseUrl || '/api';
-      await fetch(`${apiBase}/v1/knowledge-base/item`, { method:'PATCH', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path, content, message }) })
+      const apiBase = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000';
+      await fetch(`${apiBase}/api/v1/knowledge-base/item`, { method:'PATCH', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path, content, message }) })
       toast.push('success','강제 저장 완료')
     } catch(e){ toast.push('error','강제 저장 실패') }
     return
@@ -1149,7 +1207,7 @@ function getExt(p){
 
 async function openKbBinary(path){
   try{
-    const r = await fetch(`${apiBase}/v1/knowledge-base/file?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey } })
+    const r = await fetch(`${apiBase}/api/v1/knowledge-base/file?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey } })
     if(!r.ok){ toast.push('error', '파일 열기 실패: ' + r.status); return }
     const blob = await r.blob()
     const url = URL.createObjectURL(blob)
@@ -1160,7 +1218,7 @@ async function openKbBinary(path){
 
 async function downloadKbFile(path){
   try{
-    const r = await fetch(`${apiBase}/v1/knowledge-base/file?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey } })
+    const r = await fetch(`${apiBase}/api/v1/knowledge-base/file?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey } })
     if(!r.ok){ toast.push('error', '다운로드 실패: ' + r.status); return }
     const blob = await r.blob()
     const url = URL.createObjectURL(blob)
@@ -1185,6 +1243,9 @@ async function onTreeSelect(p){
     console.warn('Failed to decode path in onTreeSelect:', p, e)
     decodedPath = p
   }
+  
+  // Windows 경로 구분자(\\)를 Unix 경로 구분자(/)로 정규화
+  decodedPath = decodedPath.replace(/\\/g, '/')
   
   const ext = getExt(decodedPath)
   // md: 편집기로 열기, 텍스트 계열: 읽기 뷰(마크다운 탭)로 열기
@@ -1215,7 +1276,7 @@ async function ensureKbIndex(){
     kbTab.value = 'markdown'
   }catch{
     try{
-      await fetch(`${apiBase}/v1/knowledge-base/item`, {
+      await fetch(`${apiBase}/api/v1/knowledge-base/item`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
         body: JSON.stringify({ path: 'index.md', type: 'file', content: '# Knowledge Base\n\n시작 문서입니다.' })

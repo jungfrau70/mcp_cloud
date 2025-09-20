@@ -12,7 +12,24 @@
         </div>
       </template>
       <template v-else>
-        <div class="h-full flex flex-col items-center justify-center text-center text-gray-500 select-none">
+        <div v-if="!canUseChat" class="h-full flex flex-col items-center justify-center text-center text-gray-500 select-none p-4">
+          <div class="text-2xl font-semibold mb-2 text-orange-600">AI 채팅을 사용하려면</div>
+          <div class="text-sm mb-4">Gemini API 키가 필요합니다.</div>
+          <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4 max-w-sm">
+            <div class="text-sm text-orange-800 mb-2">
+              <strong>API 키 설정 방법:</strong>
+            </div>
+            <ol class="text-xs text-orange-700 text-left space-y-1">
+              <li>1. 프로필 페이지로 이동</li>
+              <li>2. "Gemini API 키 설정" 섹션에서 키 입력</li>
+              <li>3. <a href="https://makersuite.google.com/app/apikey" target="_blank" class="text-blue-600 underline">Google AI Studio</a>에서 무료 발급</li>
+            </ol>
+          </div>
+          <button @click="goToProfile" class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 text-sm">
+            프로필로 이동
+          </button>
+        </div>
+        <div v-else class="h-full flex flex-col items-center justify-center text-center text-gray-500 select-none">
           <div class="text-2xl font-semibold mb-2">준비되면 얘기해 주세요.</div>
           <div class="text-sm mb-4">/cli 로 시작하면 시스템 명령을 실행합니다.</div>
           <div class="flex gap-2">
@@ -25,7 +42,7 @@
     </div>
 
     <!-- 입력 영역 -->
-    <div class="border-t border-gray-200 p-5 flex-shrink-0">
+    <div v-if="canUseChat" class="border-t border-gray-200 p-5 flex-shrink-0">
       <form @submit.prevent="send" class="flex items-center gap-2">
         <div class="flex-1 relative">
           <input
@@ -53,12 +70,16 @@
 import { ref, computed, nextTick, onMounted, watch } from 'vue'
 import { useRuntimeConfig } from '#app'
 import { resolveApiBase } from '~/composables/useKbApi'
+import { useGeminiApiKey } from '~/composables/useGeminiApiKey'
 
 const config = useRuntimeConfig()
 const apiBase = resolveApiBase()
 const apiKey = process.env.MCP_API_KEY || 'my_mcp_eagle_tiger'
 const userKey = 'guest' // TODO: 인증 연동 시 사용자 ID로 치환
 const storageKey = `mcp_terminal_topics_${userKey}`
+
+// Gemini API 키 상태 확인
+const { canUseChat } = useGeminiApiKey()
 
 const input = ref('')
 const inputEl = ref(null)
@@ -299,5 +320,20 @@ if (typeof window !== 'undefined') {
       if (Array.isArray(parsed)) topics.value = parsed
     } catch {}
   })
+}
+
+// 프로필 페이지로 이동
+function goToProfile() {
+  if (typeof window !== 'undefined') {
+    // 로그인 상태 확인
+    const auth = useAuthStore()
+    if (!auth.token) {
+      // 로그인하지 않은 경우 로그인 페이지로 이동
+      window.location.href = '/login'
+    } else {
+      // 로그인한 경우 프로필 페이지로 이동
+      window.location.href = '/profile'
+    }
+  }
 }
 </script>

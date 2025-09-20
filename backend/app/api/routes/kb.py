@@ -68,8 +68,39 @@ except Exception:
 
 def _safe_path(rel: str) -> Path:
     rel = (rel or '').strip().lstrip('/\\')
+    
+    # 경로 중복 제거 로직 추가
+    if rel:
+        # 중복된 경로 세그먼트 제거
+        segments = rel.split('/')
+        cleaned_segments = []
+        last_segment = ''
+        
+        for segment in segments:
+            if segment and segment != last_segment:
+                cleaned_segments.append(segment)
+                last_segment = segment
+        
+        # 중복된 패턴 제거 (예: cloud_master/cloud_master/cloud_master/)
+        course_patterns = ['cloud_basic', 'cloud_master', 'cloud_container']
+        for pattern in course_patterns:
+            pattern_regex = f'/{pattern}/'
+            while pattern_regex + pattern_regex in '/'.join(cleaned_segments):
+                cleaned_segments = '/'.join(cleaned_segments).replace(pattern_regex + pattern_regex, pattern_regex).split('/')
+        
+        # textbook/DayX 패턴 중복 제거
+        import re
+        textbook_pattern = r'/(textbook/Day\d+)/'
+        text_path = '/'.join(cleaned_segments)
+        while re.search(textbook_pattern + r'\1', text_path):
+            text_path = re.sub(textbook_pattern + r'\1', r'\1', text_path)
+        cleaned_segments = text_path.split('/')
+        
+        rel = '/'.join(cleaned_segments)
+    
     p = (KB_ROOT / rel).resolve()
-    print(f"DEBUG: _safe_path - rel: {rel}")
+    print(f"DEBUG: _safe_path - original rel: {rel}")
+    print(f"DEBUG: _safe_path - cleaned rel: {rel}")
     print(f"DEBUG: _safe_path - KB_ROOT: {KB_ROOT}")
     print(f"DEBUG: _safe_path - p: {p}")
     print(f"DEBUG: _safe_path - str(p): {str(p)}")
@@ -88,7 +119,10 @@ def kb_tree(path: str = "") -> Dict[str, Any]:
         tree: Dict[str, Any] = {}
         files = []
         for child in sorted(d.iterdir()):
+            # Windows 경로 구분자를 Unix 스타일로 정규화
             child_rel = f"{rel}/{child.name}" if rel else child.name
+            # Windows 경로 구분자(\\)를 Unix 경로 구분자(/)로 변환
+            child_rel = child_rel.replace("\\", "/")
             if child.is_dir():
                 tree[child.name] = build(child, child_rel)
             else:

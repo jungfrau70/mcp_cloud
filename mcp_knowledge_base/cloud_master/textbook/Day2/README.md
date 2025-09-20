@@ -18,8 +18,8 @@
 
 </details>
 
-
-## 🎯 학습 목표
+<details>
+<summary>🎯 학습 목표</summary>
 
 ### 핵심 학습 목표
 
@@ -46,9 +46,10 @@
 - **완전 자동화**: 90-120분
 - **전체 과정**: 7-9시간
 
----
+</details>
 
-## 🔧 실습 환경 준비
+<details>
+<summary>🔧 실습 환경 준비</summary>
 
 ### 필수 도구 설치
 
@@ -114,9 +115,10 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 - 프로젝트 생성 및 활성화
 - 서비스 계정 생성 및 키 다운로드
 
----
+</details>
 
-## 📚 이론 학습
+<details>
+<summary>📚 이론 학습</summary>
 
 <details>
 <summary>🐳 Docker 고급 기법 및 최적화</summary>
@@ -272,9 +274,10 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 </details>
 
----
+</details>
 
-## 🛠️ 실습 학습
+<details>
+<summary>🛠️ 실습 학습</summary>
 
 ### 📁 실습 자료 구조
 - **실습 가이드**: `practices/` - 이론적 실습 가이드 (마크다운)
@@ -1303,9 +1306,10 @@ jobs:
 
 </details>
 
----
+</details>
 
-## 📚 문제 해결 및 참고 자료
+<details>
+<summary>📚 문제 해결 및 참고 자료</summary>
 
 ### 📊 학습 평가 기준
 
@@ -1415,9 +1419,10 @@ jobs:
 - [AWS EC2 문서](https:///docs.aws.amazon.com/ec2/)
 - [Google Compute Engine 문서](https:///cloud.google.com/compute/docs)
 
----
+</details>
 
-## 💡 핵심 개념 미리보기
+<details>
+<summary>💡 핵심 개념 미리보기</summary>
 
 ### 클라우드 비용 구조
 
@@ -1443,7 +1448,10 @@ jobs:
 - **로드 밸런싱**: 트래픽 분산 및 고가용성
 - **자동 복구**: 장애 발생 시 자동 복구 시스템
 
-## 📚 관련 가이드 문서
+</details>
+
+<details>
+<summary>📚 관련 가이드 문서</summary>
 
 ### Docker 고급 기법
 - 🔗 [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
@@ -1481,10 +1489,10 @@ jobs:
 ### 문제 해결
 - 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md) - 고급 문제 해결
 
----
+</details>
 
-
-## 🧹 실습 정리
+<details>
+<summary>🧹 실습 정리</summary>
 
 ### 자동 정리 (권장)
 ```bash
@@ -1504,17 +1512,25 @@ docker system prune -f
 - [ ] 사용하지 않는 이미지 정리
 - [ ] Docker 볼륨 정리
 
+</details>
+
+
+## 🎉 완료!
+
+축하합니다! Cloud Master 2일차 실습을 완료했습니다.
+
+*🎯 이제 Docker 고급 기법, GitHub Actions 고급 워크플로우를 갖추었습니다! Cloud Master 3일차로 진행하세요.**
+
+### 🚀 다음 단계
+
+- [**Cloud Master 3일차**](cloud_master/textbook/Day3/README.md): Docker 고급 기법, GitHub Actions 고급 워크플로우
+- **실제 프로젝트 적용**: 자신의 프로젝트에 학습한 기술 적용
+- **고급 기능 학습**: 모니터링, 로드 밸런싱, 자동 스케일링
+
 ---
-
-## 🧭 네비게이션
-
-
-
-
-
 
 <div align="center">
 
-[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
+[← 이전: Cloud Master 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

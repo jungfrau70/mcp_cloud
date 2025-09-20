@@ -114,6 +114,7 @@
 import { ref, onMounted, computed, watch } from 'vue';
 import { useRoute } from 'vue-router'
 import { useAuthStore } from '~/stores/auth'
+import { useGeminiApiKey } from '~/composables/useGeminiApiKey'
 import FileTreePanel from './FileTreePanel.vue';
 import { useRuntimeConfig } from '#app'
 import { 
@@ -177,7 +178,11 @@ const isTutorOrAdmin = computed(() => {
   const r = String(auth.role || '').toLowerCase()
   return r === 'tutor' || r === 'admin' || r === 'administrator'
 })
-const showChatSection = computed(() => !isCurriculum.value || isTutorOrAdmin.value)
+
+// Gemini API 키 상태 확인
+const { canUseChat } = useGeminiApiKey()
+
+const showChatSection = computed(() => !isCurriculum.value || canUseChat.value)
 
 function loadTopics() {
   try {
@@ -267,7 +272,7 @@ function openCurriculumSettings() {
 async function loadSelectedCurriculumDirs() {
   curriculumDirsLoading.value = true
   try {
-    const response = await fetch(`${apiBase}/v1/curriculum/selection`, {
+    const response = await fetch(`${apiBase}/api/v1/curriculum/selection`, {
       headers: { 'X-API-Key': apiKey }
     })
     if (response.ok) {
@@ -477,7 +482,7 @@ const onFileClick = (path) => {
 //   loading.value = true;
 //   try {
 //     // KB 전체 트리 다시 로드
-//     const r1 = await fetch(`${apiBase}/v1/curriculum/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
+//     const r1 = await fetch(`${apiBase}/api/v1/curriculum/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
 //     if (r1.ok) {
 //       kbTree.value = await r1.json();
 //     }
@@ -501,13 +506,13 @@ async function loadcurriculumTreeIfCurriculum(){
     console.log('🔍 커리큘럼 트리 로드 시작...')
     
     // 선택 디렉토리
-    const r2 = await fetch(`${apiBase}/v1/curriculum/selection`, { headers: { 'X-API-Key': apiKey } });
+    const r2 = await fetch(`${apiBase}/api/v1/curriculum/selection`, { headers: { 'X-API-Key': apiKey } });
     const sel = await r2.json();
     selectedDirs.value = Array.isArray(sel?.selected_dirs) ? sel.selected_dirs : []
     console.log('📁 선택된 디렉토리:', selectedDirs.value)
     
     // 선택 디렉토리를 기준으로 서버가 머지한 트리 가져오기 (중첩 경로 지원)
-    const r3 = await fetch(`${apiBase}/v1/curriculum/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
+    const r3 = await fetch(`${apiBase}/api/v1/curriculum/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
     if (r3.ok) {
       curriculumTree.value = await r3.json();
       console.log('🌳 커리큘럼 트리 로드 완료:', curriculumTree.value)
@@ -532,7 +537,7 @@ onMounted(async () => {
     } catch {}
 
     // KB 전체 트리
-    const r1 = await fetch(`${apiBase}/v1/curriculum/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
+    const r1 = await fetch(`${apiBase}/api/v1/curriculum/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
     if (!r1.ok) throw new Error('Failed to fetch KB tree');
     kbTree.value = await r1.json();
 

@@ -63,14 +63,38 @@ async function onSubmit(){
     error.value = '비밀번호는 6자 이상이어야 합니다.'
     return
   }
-  const base = (config.public?.apiBaseUrl) || '/api'
-  const res = await $fetch(`${base}/v1/auth/register`, {
-    method: 'POST',
-    body: { email: email.value, password: password.value, full_name: fullName.value || null },
-  }) as { access_token: string }
-  // 회원가입 직후에는 토큰을 저장하지 않고, 이메일 인증을 안내합니다.
-  try{ auth.clear() }catch{}
-  done.value = true
+  
+  try {
+    const base = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000'
+    const res = await $fetch(`${base}/api/v1/auth/register`, {
+      method: 'POST',
+      body: { email: email.value, password: password.value, full_name: fullName.value || null },
+    }) as { access_token: string }
+    
+    // 회원가입 성공
+    try{ auth.clear() }catch{}
+    done.value = true
+  } catch (e: any) {
+    console.error('회원가입 오류:', e)
+    
+    const detail = e?.data?.detail || e?.data || {}
+    
+    if (detail?.code === 'EMAIL_ALREADY_EXISTS') {
+      error.value = detail.message || '이미 등록된 이메일입니다. 로그인을 시도해보세요.'
+      // 로그인 페이지로 리다이렉트 제안
+      setTimeout(() => {
+        if (confirm('로그인 페이지로 이동하시겠습니까?')) {
+          router.push('/login')
+        }
+      }, 2000)
+    } else if (detail?.message) {
+      error.value = detail.message
+    } else if (e?.message) {
+      error.value = e.message
+    } else {
+      error.value = '회원가입에 실패했습니다. 다시 시도해주세요.'
+    }
+  }
 }
 </script>
 

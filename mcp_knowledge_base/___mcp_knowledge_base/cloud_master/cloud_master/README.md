@@ -2007,7 +2007,7 @@ docker system prune -f
 
 ### 🚀 다음 단계
 
-- [**Cloud Container 과정**](cloud_master/README.md): Kubernetes, ECS, Fargate
+- [**Cloud Container 과정**](cloud_container/README.md): Kubernetes, ECS, Fargate
 - **실제 프로젝트 적용**: 자신의 프로젝트에 고급 기능 적용
 - **고급 기능 학습**: 서비스 메시, 보안, 성능 최적화
 
@@ -2023,6 +2023,6 @@ docker system prune -f
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](/mcp_knowledge_base/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
+[← 이전: Cloud Master 메인](cloud_master/README.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🏠 학습 경로로 돌아가기](/mcp_knowledge_base/index.md) | [📋 학습 경로](/mcp_knowledge_base/learning-path.md)
 
 </div>

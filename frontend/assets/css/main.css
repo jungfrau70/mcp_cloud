@@ -31,11 +31,36 @@
   .text-balance {
     text-wrap: balance;
   }
+  
+  /* 빈 공간 제거를 위한 강력한 스타일 */
+  .content-view-container {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+  
+  .content-view-container .prose {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+  
+  /* 모바일 반응형 레이아웃 */
+  @media (max-width: 768px) {
+    .content-view-container {
+      padding-top: 0 !important;
+    }
+    
+    .prose {
+      padding-top: 0 !important;
+      margin-top: 0 !important;
+    }
+  }
 }
 
 /* 프로즈 스타일링 */
 .prose {
   @apply text-gray-900;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 .prose h1 {

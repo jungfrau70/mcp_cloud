@@ -17,7 +17,10 @@ class User(Base):
     is_active = Column(Boolean, nullable=False, default=False)
     email_verification_token = Column(String, nullable=True, index=True)
     email_verified_at = Column(DateTime, nullable=True)
+    password_reset_token = Column(String, nullable=True, index=True)
+    password_reset_expires = Column(DateTime, nullable=True)
     last_login_at = Column(DateTime, default=datetime.utcnow)
+    gemini_api_key = Column(String, nullable=True)  # 사용자별 Gemini API 키
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

@@ -163,7 +163,7 @@ const statusMessage = ref('');
 // Methods
 const loadKnowledgeBaseStructure = async () => {
   try {
-    const response = await fetch(`${apiBase}/v1/knowledge-base/tree?show_hidden=${showHiddenFiles.value}`, {
+    const response = await fetch(`${apiBase}/api/v1/knowledge-base/tree?show_hidden=${showHiddenFiles.value}`, {
       headers: { 'X-API-Key': apiKey }
     });
     
@@ -210,13 +210,17 @@ function taskStatusClass(st){
 }
 
 const handleFileSelect = (path) => {
-  const p = stripBasePath(path)
+  // Windows 경로 구분자(\\)를 Unix 경로 구분자(/)로 정규화
+  const normalizedPath = path.replace(/\\/g, '/');
+  const p = stripBasePath(normalizedPath)
   emit('file-select', p);
 };
 
 // 더블클릭으로 파일 열기 → 전체 화면에 문서 표시 요청
 const handleFileOpen = (path) => {
-  const p = stripBasePath(path)
+  // Windows 경로 구분자(\\)를 Unix 경로 구분자(/)로 정규화
+  const normalizedPath = path.replace(/\\/g, '/');
+  const p = stripBasePath(normalizedPath)
   emit('file-select', p)
 };
 
@@ -230,7 +234,7 @@ const handleDirectoryCreate = async (data) => {
   try {
     console.log('Creating item:', data);
     
-    const response = await fetch(`${apiBase}/v1/knowledge-base/item`, {
+    const response = await fetch(`${apiBase}/api/v1/knowledge-base/item`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -265,7 +269,7 @@ const handleDirectoryRename = async (data) => {
   try {
     console.log('Renaming item:', data);
     
-    const response = await fetch(`${apiBase}/v1/knowledge-base/item`, {
+    const response = await fetch(`${apiBase}/api/v1/knowledge-base/item`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -301,7 +305,7 @@ const handleDirectoryDelete = async (data) => {
     
     if (data.type === 'file') {
       // Delete file
-      const response = await fetch(`${apiBase}/v1/knowledge-base/item?path=${encodeURIComponent(stripBasePath(data.path))}`, {
+      const response = await fetch(`${apiBase}/api/v1/knowledge-base/item?path=${encodeURIComponent(stripBasePath(data.path))}`, {
         method: 'DELETE',
         headers: { 'X-API-Key': apiKey }
       });
@@ -314,7 +318,7 @@ const handleDirectoryDelete = async (data) => {
       statusMessage.value = '파일 삭제 완료';
     } else {
       // Delete directory
-      const response = await fetch(`${apiBase}/v1/knowledge-base/directory?path=${encodeURIComponent(stripBasePath(data.path))}&recursive=true`, {
+      const response = await fetch(`${apiBase}/api/v1/knowledge-base/directory?path=${encodeURIComponent(stripBasePath(data.path))}&recursive=true`, {
         method: 'DELETE',
         headers: { 'X-API-Key': apiKey }
       });
@@ -349,7 +353,7 @@ const handleFileMove = async (data) => {
       new_path: newPath
     };
     
-    const response = await fetch(`${apiBase}/v1/knowledge-base/move`, {
+      const response = await fetch(`${apiBase}/api/v1/knowledge-base/move`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -424,7 +428,7 @@ async function loadAdminPanel(){
 async function loadAllKbDirs(){
   allDirsLoading.value = true
   try{
-    const r = await fetch(`${apiBase}/v1/knowledge-base/tree`, { headers: { 'X-API-Key': apiKey }})
+    const r = await fetch(`${apiBase}/api/v1/knowledge-base/tree`, { headers: { 'X-API-Key': apiKey }})
     const data = await r.json()
     // 재귀적으로 모든 하위 디렉토리 경로 수집 (files 키 제외, 디렉토리만)
     const collected = []

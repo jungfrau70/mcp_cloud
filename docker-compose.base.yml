@@ -1,0 +1,69 @@
+# 공통 데이터베이스 및 인프라 서비스
+# 개발/운영 환경에서 공통으로 사용하는 서비스들
+
+services:
+  
+  # Neo4j Graph Database for RAG
+  mcp_neo4j:
+    image: neo4j:5
+    container_name: mcp_neo4j
+    env_file: ./backend/env/.neo4j.env
+    ports:
+      - "7474:7474" # Neo4j Browser UI
+      - "7687:7687" # Bolt protocol for application access
+    volumes:
+      - neo4j_data:/data
+    networks:
+      - mcp_cloud_network
+    healthcheck:
+      test: ["CMD-SHELL", "USER=$(echo \"$${NEO4J_AUTH}\" | cut -d'/' -f1); PASS=$(echo \"$${NEO4J_AUTH}\" | cut -d'/' -f2); cypher-shell -a bolt://localhost:7687 -u \"$$USER\" -p \"$$PASS\" 'RETURN 1' > /dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # PostgreSQL Database (공통 사용)
+  mcp_postgres:
+    image: postgres:14
+    container_name: mcp_postgres
+    env_file: ./backend/env/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mcp_cloud_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mcpuser -d mcp_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  
+  # Redis for caching (공통 사용)
+  mcp_redis:
+    image: redis:7-alpine
+    container_name: mcp_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - mcp_cloud_network
+
+  # OpenTelemetry Collector
+  otel-collector:
+    image: otel/opentelemetry-collector:0.104.0
+    container_name: otel_collector
+    command: ["--config=/etc/otelcol/config.yaml", "--set=service.telemetry.logs.level=warn"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol/config.yaml:ro
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+    networks:
+      - mcp_cloud_network
+
+volumes:
+  postgres_data:
+  neo4j_data:
+
+networks:
+  mcp_cloud_network:
+    driver: bridge

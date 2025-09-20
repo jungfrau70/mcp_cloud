@@ -430,7 +430,9 @@ const isOpen = (name) => {
 };
 
 const constructPath = (fileName) => {
-  return props.basePath ? `${props.basePath}/${fileName}` : fileName;
+  const result = props.basePath ? `${props.basePath}/${fileName}` : fileName;
+  // Windows 경로 구분자(\\)를 Unix 경로 구분자(/)로 정규화
+  return result.replace(/\\/g, '/');
 };
 
 // Drag and drop functions
@@ -508,17 +510,24 @@ const handleDrop = (event, name, item) => {
 };
 
 const emitFileClick = (path) => {
+    let finalPath = '';
+    
     // path가 이미 전체 경로인 경우 그대로 사용
     if (typeof path === 'string' && path.includes('/')) {
-        emit('file-click', path);
+        finalPath = path;
     } else if (typeof path === 'object' && path.path) {
         // file 객체에서 path 속성을 사용
-        emit('file-click', path.path);
+        finalPath = path.path;
     } else {
         // fallback: 현재 basePath와 결합
         const fullPath = props.basePath ? `${props.basePath}/${path}` : path;
-        emit('file-click', fullPath);
+        finalPath = fullPath;
     }
+    
+    // Windows 경로 구분자(\\)를 Unix 경로 구분자(/)로 정규화
+    finalPath = finalPath.replace(/\\/g, '/');
+    
+    emit('file-click', finalPath);
 }
 
 // Context menu handlers

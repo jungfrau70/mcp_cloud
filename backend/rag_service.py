@@ -35,7 +35,8 @@ load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if not GEMINI_API_KEY:
-    raise ValueError("GEMINI_API_KEY가 설정되지 않았습니다. .env 파일을 확인하세요.")
+    logger.warning("GEMINI_API_KEY가 설정되지 않았습니다. AI 기능이 제한됩니다.")
+    GEMINI_API_KEY = "dummy_key_for_development"
 
 # Paths
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
@@ -173,6 +174,11 @@ class LLMProvider:
     def create(self) -> ChatGoogleGenerativeAI:
         # Allow disabling internal retries so our outer logic controls fallback (reduces log spam on 429)
         max_retries = int(os.getenv("RAG_LLM_MAX_RETRIES", "0"))
+        
+        # API 키가 유효하지 않을 때 예외 발생
+        if self.api_key == "dummy_key_for_development" or not self.api_key:
+            raise ValueError("Gemini API 키가 설정되지 않았습니다. 프로필에서 API 키를 설정해주세요.")
+        
         return ChatGoogleGenerativeAI(
             model=self.model,
             google_api_key=self.api_key,
@@ -870,6 +876,37 @@ def get_rag_service() -> Optional[RAGService]:  # convenience accessor
     if rag_service_instance is None:
         rag_service_instance = _init_rag_service()
     return rag_service_instance
+
+def get_rag_service_with_user_key(user_api_key: Optional[str] = None) -> Optional[RAGService]:
+    """사용자별 API 키를 사용하는 RAG 서비스 인스턴스 생성"""
+    try:
+        if user_api_key:
+            # 사용자 API 키로 LLM 생성
+            provider = LLMProvider(api_key=user_api_key)
+            llm = provider.create()
+            
+            # 기본 RAG 서비스 인스턴스 가져오기
+            service = get_rag_service()
+            if service:
+                # 사용자 API 키로 LLM 교체
+                service.llm = llm
+                service.terraform_generator.llm = llm
+                service.cost_optimizer.llm = llm
+                service.security_auditor.llm = llm
+                
+                # 체인 재구성
+                service.rag_chain = (
+                    {"context": service.retriever, "question": RunnablePassthrough()}
+                    | service.prompt
+                    | llm
+                    | StrOutputParser()
+                )
+            return service
+        else:
+            return get_rag_service()
+    except Exception as e:
+        logger.exception("사용자 API 키로 RAG 서비스 생성 실패: %s", e)
+        return None
 
 
 # ----------------------------------------------------------------------------

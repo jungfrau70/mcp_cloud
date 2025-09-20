@@ -29,9 +29,11 @@ class ProfileResponse(BaseModel):
     full_name: Optional[str] = None
     role: Optional[str] = None
     is_active: Optional[bool] = None
+    gemini_api_key: Optional[str] = None
 
 class ProfileUpdate(BaseModel):
     full_name: Optional[str] = None
+    gemini_api_key: Optional[str] = None
 
 @router.post("/keys", response_model=UserKeyResponse)
 def create_api_key(key_in: UserKeyCreate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -57,6 +59,7 @@ def get_profile(current_user: User = Depends(get_current_user)):
         full_name=current_user.full_name,
         role=current_user.role,
         is_active=current_user.is_active,
+        gemini_api_key=current_user.gemini_api_key,
     )
 
 @router.patch("", response_model=ProfileResponse)
@@ -64,6 +67,9 @@ def update_profile(payload: ProfileUpdate, current_user: User = Depends(get_curr
     changed = False
     if payload.full_name is not None and payload.full_name != current_user.full_name:
         current_user.full_name = payload.full_name
+        changed = True
+    if payload.gemini_api_key is not None and payload.gemini_api_key != current_user.gemini_api_key:
+        current_user.gemini_api_key = payload.gemini_api_key
         changed = True
     if changed:
         db.add(current_user)
@@ -74,4 +80,5 @@ def update_profile(payload: ProfileUpdate, current_user: User = Depends(get_curr
         full_name=current_user.full_name,
         role=current_user.role,
         is_active=current_user.is_active,
+        gemini_api_key=current_user.gemini_api_key,
     )

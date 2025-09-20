@@ -17,7 +17,9 @@ export interface KbStructuredDiff { diff_format: string; hunks: KbStructuredDiff
 
 export function resolveApiBase(): string {
   const config = useRuntimeConfig() as any
-  return (config?.public?.apiBaseUrl as string) || '/api'
+  const baseUrl = (config?.public?.apiBaseUrl as string) || '/api'
+  // 이미 /api가 포함되어 있으면 그대로 사용, 아니면 추가
+  return baseUrl.includes('/api') ? baseUrl : `${baseUrl}/api`
 }
 
 export function useKbApi(){

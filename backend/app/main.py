@@ -22,10 +22,11 @@ from config import engine
 
 app = FastAPI(title="MCP Cloud API", version="1.0.0", docs_url="/docs", redoc_url="/redoc")
 
-# CORS
+# CORS - 환경별 설정 적용
+from config import ALLOWED_ORIGINS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

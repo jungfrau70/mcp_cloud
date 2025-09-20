@@ -360,7 +360,7 @@ function convertImagePaths(content, currentPath) {
     }
     
     // API 엔드포인트로 변환
-    const apiPath = `/api/v1/curriculum/file?path=${encodeURIComponent(fullImagePath)}`;
+    const apiPath = `/v1/curriculum/file?path=${encodeURIComponent(fullImagePath)}`;
     return `![${alt}](${apiPath})`;
   });
 }
@@ -588,7 +588,7 @@ async function deleteCurrent(){
     
     if (deleteOption) {
       // 완전 삭제
-      response = await fetch(`${apiBase}/api/v1/knowledge-base/item?path=${encodeURIComponent(p)}`, { 
+      response = await fetch(`${apiBase}/v1/knowledge-base/item?path=${encodeURIComponent(p)}`, { 
         method:'DELETE', 
         headers:{ 
           'X-API-Key':'my_mcp_eagle_tiger' 
@@ -601,7 +601,7 @@ async function deleteCurrent(){
       
       console.log('휴지통으로 이동:', { originalPath: p, trashPath })
       
-      response = await fetch(`${apiBase}/api/v1/knowledge-base/move`, { 
+      response = await fetch(`${apiBase}/v1/knowledge-base/move`, { 
         method:'POST', 
         headers:{ 
           'Content-Type':'application/json',
@@ -703,7 +703,7 @@ function navigateToLink(href) {
   }
   
   // mcp_knowledge_base 기준 경로 처리
-  let targetPath = resolveKnowledgeBasePath(props.path, href);
+  let targetPath = resolveKnowledgeBasePath(props.path || '', href);
   
   console.log('targetPath before .md check:', targetPath)
   

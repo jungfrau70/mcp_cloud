@@ -102,7 +102,7 @@ const retryCount = ref(0)
 async function onSubmit(){
   if (isLoading.value) return // 중복 요청 방지
   
-  const base = (config.public?.apiBaseUrl) || '/api'
+  const base = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000'
   showVerifyNotice.value = false
   loginError.value = '' // 이전 오류 메시지 초기화
   isLoading.value = true
@@ -113,7 +113,7 @@ async function onSubmit(){
   try{
     console.log('로그인 시도:', { email: email.value, base, retryCount: retryCount.value })
     
-    const res = await $fetch(`${base}/v1/auth/login`, {
+    const res = await $fetch(`${base}/api/v1/auth/login`, {
       method: 'POST',
       body: { email: email.value, password: password.value },
       headers: {
@@ -187,14 +187,14 @@ function clearError() {
 
 // 비밀번호 재설정 안내
 function showPasswordReset() {
-  alert('비밀번호 재설정 기능은 준비 중입니다. 관리자에게 문의해주세요.')
+  router.push('/forgot-password')
 }
 
 async function resendVerification(){
   try{
     sending.value = true
-    const base = (config.public?.apiBaseUrl) || '/api'
-    await $fetch(`${base}/v1/auth/resend-verification`, {
+    const base = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000'
+    await $fetch(`${base}/api/v1/auth/resend-verification`, {
       method: 'POST',
       body: { email: email.value }
     })

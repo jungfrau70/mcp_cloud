@@ -1004,17 +1004,24 @@ export function processPathSafely(path: string, mode: 'encode' | 'decode' | 'aut
 /**
  * mcp_knowledge_base를 root로 하는 경로 처리 함수
  * 모든 내부 문서 링크가 mcp_knowledge_base를 기준으로 동작하도록 함
+ * URL 중복 문제를 방지하는 강화된 버전
  */
 export function resolveKnowledgeBasePath(currentPath: string, relativePath: string): string {
   if (!relativePath) return relativePath;
   
-  // 절대 경로인 경우 mcp_knowledge_base 기준으로 처리
-  if (relativePath.startsWith('/')) {
-    // /로 시작하는 경우 mcp_knowledge_base를 prefix로 추가
-    return `/mcp_knowledge_base${relativePath}`;
+  // 1. 상대 경로가 이미 mcp_knowledge_base로 시작하는 경우 정리
+  let cleanRelativePath = relativePath;
+  if (cleanRelativePath.startsWith('mcp_knowledge_base/')) {
+    cleanRelativePath = cleanRelativePath.substring('mcp_knowledge_base/'.length);
   }
   
-  // 현재 경로에서 mcp_knowledge_base 기준 디렉토리 추출
+  // 2. 절대 경로인 경우 mcp_knowledge_base 기준으로 처리
+  if (cleanRelativePath.startsWith('/')) {
+    // /로 시작하는 경우 mcp_knowledge_base를 prefix로 추가
+    return `/mcp_knowledge_base${cleanRelativePath}`;
+  }
+  
+  // 3. 현재 경로에서 mcp_knowledge_base 기준 디렉토리 추출
   let baseDir = '';
   if (currentPath) {
     // mcp_knowledge_base 이후의 경로 추출
@@ -1031,8 +1038,8 @@ export function resolveKnowledgeBasePath(currentPath: string, relativePath: stri
     }
   }
   
-  // 상대 경로 해석
-  const parts = relativePath.split('/');
+  // 4. 상대 경로 해석
+  const parts = cleanRelativePath.split('/').filter(part => part !== '');
   let result = baseDir;
   
   for (const part of parts) {
@@ -1053,6 +1060,54 @@ export function resolveKnowledgeBasePath(currentPath: string, relativePath: stri
     }
   }
   
-  // mcp_knowledge_base prefix 추가
-  return `/mcp_knowledge_base/${result}`;
+  // 5. mcp_knowledge_base prefix 추가
+  const finalPath = result ? `/mcp_knowledge_base/${result}` : '/mcp_knowledge_base';
+  
+  // 6. 강화된 중복 제거 로직
+  let cleanedPath = finalPath;
+  
+  // 6-1. 중복된 mcp_knowledge_base 제거
+  cleanedPath = cleanedPath.replace(/\/mcp_knowledge_base\/mcp_knowledge_base/g, '/mcp_knowledge_base');
+  
+  // 6-2. 중복된 경로 패턴 제거 (예: cloud_master/cloud_master/cloud_master/)
+  const coursePatterns = ['cloud_basic', 'cloud_master', 'cloud_container'];
+  for (const pattern of coursePatterns) {
+    const regex = new RegExp(`(\\/${pattern}\\/)(\\1)+`, 'g');
+    cleanedPath = cleanedPath.replace(regex, '$1');
+  }
+  
+  // 6-3. 중복된 textbook/DayX 패턴 제거
+  const textbookPattern = /(\/textbook\/Day\d+\/)(\1)+/g;
+  cleanedPath = cleanedPath.replace(textbookPattern, '$1');
+  
+  // 6-4. 일반적인 중복 세그먼트 제거
+  const segments = cleanedPath.split('/').filter(segment => segment !== '');
+  const uniqueSegments: string[] = [];
+  let lastSegment = '';
+  
+  for (const segment of segments) {
+    if (segment !== lastSegment) {
+      uniqueSegments.push(segment);
+      lastSegment = segment;
+    }
+  }
+  
+  // 6-5. 최종 경로 구성
+  const finalResult = '/' + uniqueSegments.join('/');
+  
+  // 7. 디버깅을 위한 로그 (개발 환경에서만)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('resolveKnowledgeBasePath:', {
+      currentPath,
+      relativePath,
+      cleanRelativePath,
+      baseDir,
+      result,
+      finalPath,
+      cleanedPath,
+      finalResult
+    });
+  }
+  
+  return finalResult;
 }

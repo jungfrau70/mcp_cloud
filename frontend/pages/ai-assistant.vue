@@ -375,7 +375,7 @@ const API_KEY = process.env.MCP_API_KEY || 'my_mcp_eagle_tiger'
 
 // Nuxt 런타임 설정을 사용하여 API 기본 URL 가져오기
 const config = useRuntimeConfig()
-const API_BASE_URL = config.public.apiBaseUrl
+const API_BASE_URL = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000'
 
 // 메시지 전송
 const sendMessage = async () => {

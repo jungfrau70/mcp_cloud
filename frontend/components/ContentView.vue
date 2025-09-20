@@ -1,7 +1,7 @@
 <template>
-  <div v-if="content || slide" class="h-full overflow-y-auto bg-white content-view-container" ref="contentContainer">
+  <div v-if="content || slide" class="h-full overflow-y-auto bg-white content-view-container" ref="contentContainer" style="height: 100%;">
     <!-- Header with path navigation and actions -->
-    <div class="flex items-center justify-between px-4 pt-6 pb-2 border-b border-gray-200" v-if="path">
+    <div class="flex items-center justify-between px-4 py-2 border-b border-gray-200" v-if="path">
       <!-- Path breadcrumb -->
       <div class="flex items-center space-x-2 text-sm text-gray-600">
         <button
@@ -46,10 +46,10 @@
 
     <!-- Fade between content and slides in-place -->
     <transition name="fade" mode="out-in">
-      <div v-if="!isSlideView && !isLoading" key="content-view" class="prose max-w-none p-4 pt-6">
+      <div v-if="!isSlideView && !isLoading" key="content-view" class="prose max-w-none p-4">
         <div v-html="renderedContent"></div>
       </div>
-      <div v-else-if="isSlideView && !isLoading" key="slides-view" class="pt-6">
+      <div v-else-if="isSlideView && !isLoading" key="slides-view" class="p-4">
         <div v-if="slidePdfUrl" class="w-full">
           <iframe :src="slidePdfUrl" class="w-full min-h-[60vh]"></iframe>
         </div>
@@ -457,23 +457,45 @@ const setupCodeBlockHandlers = () => {
 const getDisplayPath = (filePath) => {
   if (!filePath) return 'Unknown'
   
+  // 디버깅을 위한 로그 추가
+  console.log('ContentView getDisplayPath input:', filePath)
+  
+  // Windows 경로 구분자(\\)를 Unix 경로 구분자(/)로 변환
+  let normalizedPath = filePath.replace(/\\/g, '/')
+  
+  // cloud_masterepos 같은 문제를 수정 (Windows 경로 구분자로 인한 문제)
+  if (normalizedPath.includes('masterepos')) {
+    normalizedPath = normalizedPath.replace(/masterepos/g, 'master/repos')
+    console.log('ContentView getDisplayPath: fixed masterepos from', filePath, 'to', normalizedPath)
+  }
+  
+  // 다른 유사한 패턴들도 수정
+  if (normalizedPath.includes('containerepos')) {
+    normalizedPath = normalizedPath.replace(/containerepos/g, 'container/repos')
+    console.log('ContentView getDisplayPath: fixed containerepos from', filePath, 'to', normalizedPath)
+  }
+  
   // 이미 디코딩된 경로인지 확인 (한글이 포함되어 있으면 이미 디코딩됨)
-  if (/[가-힣]/.test(filePath)) {
-    return filePath
+  if (/[가-힣]/.test(normalizedPath)) {
+    console.log('ContentView getDisplayPath: Korean detected, returning normalized path')
+    return normalizedPath
   }
   
   // URL 인코딩된 문자가 있는 경우에만 디코딩 시도
-  if (/%[0-9A-Fa-f]{2}/.test(filePath)) {
+  if (/%[0-9A-Fa-f]{2}/.test(normalizedPath)) {
     try {
-      return decodeURIComponent(filePath)
+      const decoded = decodeURIComponent(normalizedPath)
+      console.log('ContentView getDisplayPath: decoded from', normalizedPath, 'to', decoded)
+      return decoded
     } catch (error) {
-      console.warn('Failed to decode display path:', filePath, error)
-      return filePath
+      console.warn('Failed to decode display path:', normalizedPath, error)
+      return normalizedPath
     }
   }
   
-  // 인코딩된 문자가 없으면 원본 반환
-  return filePath
+  // 인코딩된 문자가 없으면 정규화된 경로 반환
+  console.log('ContentView getDisplayPath: returning normalized path:', normalizedPath)
+  return normalizedPath
 }
 
 const navigateToFileTree = () => {

@@ -1,0 +1,210 @@
+# 운영 환경용 Docker Compose 설정
+# 공통 데이터베이스는 docker-compose.base.yml에서 상속
+
+services:
+  
+  # Backend (운영 환경)
+  mcp_backend_prod:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.app
+    container_name: mcp_backend_prod
+    env_file: ./backend/env/.env
+    environment:
+      - ENV=production
+      - DEBUG=false
+      - DATABASE_URL=postgresql://mcpuser:mcppassword@mcp_postgres:5432/mcp_db
+      - REDIS_URL=redis://mcp_redis:6379
+      - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-sa-key.json
+      - CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=/app/gcp-sa-key.json
+      - MCP_API_KEY=${MCP_API_KEY:-my_mcp_eagle_tiger}
+      - JWT_SECRET=${JWT_SECRET:-change_me}
+      - FRONTEND_BASE_URL=${FRONTEND_BASE_URL:-https://app.goldencircle.us}
+      - ALLOW_FORWARDED_AUTH=false
+      # HF offline-friendly defaults
+      - EMBEDDING_BACKEND=${EMBEDDING_BACKEND:-local}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-jhgan/ko-sroberta-multitask}
+      - HF_HUB_OFFLINE=${HF_HUB_OFFLINE:-1}
+      - HF_LOCAL_FILES_ONLY=${HF_LOCAL_FILES_ONLY:-1}
+      - HF_HOME=/cache/hf
+      # 파일 감시 설정 개선
+      - WATCHFILES_FORCE_POLLING=true
+      - WATCHFILES_IGNORE_PATTERNS=*.db,*.db-journal,*.sqlite,*.sqlite-journal
+      # Neo4j 연동 환경 변수
+      - NEO4J_URI=bolt://mcp_neo4j:7687
+      - TEST_MODE=false
+    expose:
+      - "8000"
+    volumes:
+      - ./backend:/app
+      - ./backend/tests:/app/tests
+      - terraform_modules_data:/app/terraform_modules
+      - ./backend/env/alpha-ktixap-43e9bf90eb00.json:/app/gcp-sa-key.json
+      - ./mcp_knowledge_base:/mcp_knowledge_base
+      - ./.slides_selection.json:/.slides_selection.json
+      - hf_cache:/cache/hf
+      - azure_config:/root/.azure
+      - aws_config:/root/.aws
+      - gcloud_config:/root/.config/gcloud
+    depends_on:
+      mcp_postgres:
+        condition: service_healthy
+      mcp_redis:
+        condition: service_started
+      mcp_neo4j:
+        condition: service_healthy
+    networks:
+      - mcp_cloud_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    command: ["sh", "-lc", "python -m uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+
+  # Celery worker (운영 환경)
+  mcp_celery_prod:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.app
+    container_name: mcp_celery_prod
+    env_file: ./backend/env/.env
+    environment:
+      - ENV=production
+      - DEBUG=false
+      - CELERY_BROKER_URL=redis://mcp_redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://mcp_redis:6379/0
+      - OTEL_SERVICE_NAME=mcp-backend-prod
+      - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
+    volumes:
+      - ./backend:/app
+      - terraform_modules_data:/app/terraform_modules
+      - azure_config:/root/.azure
+      - aws_config:/root/.aws
+      - gcloud_config:/root/.config/gcloud
+    depends_on:
+      mcp_redis:
+        condition: service_started
+      otel-collector:
+        condition: service_started
+    command: ["sh", "-lc", "python -m celery -A worker.celery_app worker -Q plan,apply,test -c 4 -l warning"]
+    healthcheck:
+      disable: true
+    networks:
+      - mcp_cloud_network
+
+  # Celery beat (운영 환경)
+  mcp_celery_beat_prod:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.app
+    container_name: mcp_celery_beat_prod
+    env_file: ./backend/env/.env
+    environment:
+      - ENV=production
+      - DEBUG=false
+      - CELERY_BROKER_URL=redis://mcp_redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://mcp_redis:6379/0
+      - OTEL_SERVICE_NAME=mcp-backend-prod
+      - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
+    volumes:
+      - ./backend:/app
+    depends_on:
+      mcp_redis:
+        condition: service_started
+    command: ["sh", "-lc", "python -m celery -A worker.celery_app beat -l warning"]
+    healthcheck:
+      disable: true
+    networks:
+      - mcp_cloud_network
+
+  # Frontend (운영 환경)
+  mcp_frontend_prod:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.app
+    container_name: mcp_frontend_prod
+    environment:
+      - NUXT_PUBLIC_API_BASE_URL=https://api.goldencircle.us
+      - NUXT_PUBLIC_WS_BASE_URL=wss://api.goldencircle.us/api
+      - NUXT_PUBLIC_API_KEY=${MCP_API_KEY:-my_mcp_eagle_tiger}
+      - NODE_ENV=production
+      - NUXT_PUBLIC_ENV=production
+      - NUXT_PUBLIC_DEBUG=false
+      - YARN_PRODUCTION=false
+      - NPM_CONFIG_PRODUCTION=false
+      - NITRO_HOST=0.0.0.0
+      - NITRO_PORT=3000
+      - CHOKIDAR_USEPOLLING=true
+      - NUXT_TELEMETRY_DISABLED=1
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: ["sh", "-lc", "rm -rf .nuxt .output && yarn install --frozen-lockfile --production=false || yarn install --production=false && yarn build && node .output/server/index.mjs"]
+    depends_on:
+      - mcp_backend_prod
+    networks:
+      - mcp_cloud_network
+
+  # Nginx Proxy Manager (내부 프록시, 외부 포트 미개방)
+  npm:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: mcp_npm
+    env_file:
+      - ./.env
+    expose:
+      - "80"   # HTTP (내부에서만 노출)
+      - "81"   # Admin UI (내부에서만 노출)
+      - "443"  # HTTPS (내부에서만 노출)
+    volumes:
+      - npm_data:/data
+      - npm_letsencrypt:/etc/letsencrypt
+    depends_on:
+      - mcp_frontend_prod
+    networks:
+      - mcp_cloud_network
+
+  # Authelia (SSO/2FA 게이트웨이)
+  authelia:
+    image: authelia/authelia:latest
+    container_name: mcp_authelia
+    env_file:
+      - ./.env
+    expose:
+      - "9091"
+    volumes:
+      - ./authelia/config:/config
+    command: ["--config", "/config/configuration.yml"]
+    networks:
+      - mcp_cloud_network
+
+  # Cloudflare Tunnel (외부 → NPM 프록시, 호스트 포트 불필요)
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    command: ["--config", "/etc/cloudflared/config.yml", "--no-autoupdate", "tunnel", "run"]
+    volumes:
+      - ./cloudflared/config/config.yml:/etc/cloudflared/config.yml:ro
+      - ./cloudflared/config/config.yml:/home/nonroot/.cloudflared/config.yml:ro
+      - ./cloudflared/data:/home/nonroot/.cloudflared
+    depends_on:
+      - npm
+    networks:
+      - mcp_cloud_network
+
+volumes:
+  terraform_modules_data:
+  hf_cache:
+  azure_config:
+  aws_config:
+  gcloud_config:
+  npm_data:
+  npm_letsencrypt:

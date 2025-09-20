@@ -31,7 +31,7 @@ async function search(){
   searched.value = true
   results.value = []
   try {
-    const resp = await fetch(`${props.apiBase}/v1/knowledge/search-enhanced`, {
+    const resp = await fetch(`${props.apiBase}/api/v1/knowledge/search-enhanced`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-API-Key': props.apiKey },
       body: JSON.stringify({ query: query.value, category: null, limit: 20, search_type: 'both' })

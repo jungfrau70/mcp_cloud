@@ -1,41 +1,20 @@
-# Cloud Master - 1일차: Docker, Git/GitHub, GitHub Actions 이론 및 실습
-
-<details>
-<summary>📋 목차</summary>
-
-## 🎯 강의 시나리오 (표준 순서)
-
-1. [🎯 학습 목표](#-학습-목표)
-2. [🔧 실습 환경 준비](#-실습-환경-준비)
-3. [✅ 실습 환경 확인](#-실습-환경-확인)
-4. [📚 이론 학습](#-이론-학습)
-5. [🛠️ 실습 학습](#-실습-학습)
-6. [🧹 실습 정리](#-실습-정리)
-
-## 📚 참고 자료
-
-1. [📚 문제 해결 및 참고 자료](#-문제-해결-및-참고-자료)
-
-</details>
+# Cloud Master - 1일차: Docker & Git/GitHub & GitHub Actions & VM 배포
 
 ## 🎯 학습 목표
 
 ### 핵심 학습 목표
-
-- **Docker 기초** 컨테이너 개념 및 Dockerfile 작성
-- **Git/GitHub 기초** 버전 관리 및 협업 도구 사용법
-- **GitHub Actions 기초** CI/CD 파이프라인 구축
-- **VM 배포** AWS EC2, GCP Compute Engine 웹 애플리케이션 배포
+- **Docker 컨테이너화**: 애플리케이션 컨테이너화 및 최적화
+- **Git/GitHub 협업**: 버전 관리 및 협업 워크플로우
+- **GitHub Actions CI/CD**: 자동화 파이프라인 구축
+- **VM 배포**: AWS EC2, GCP Compute Engine을 활용한 애플리케이션 배포
 
 ### 실습 후 달성할 수 있는 능력
-
 - ✅ Docker를 활용한 웹 애플리케이션 컨테이너화
 - ✅ Git/GitHub을 통한 버전 관리 및 협업
 - ✅ GitHub Actions로 기본 CI/CD 파이프라인 구축
 - ✅ VM 기반 웹 애플리케이션 배포 및 기본 운영
 
 ### 예상 소요 시간
-
 - **Docker 기초**: 90-120분
 - **Git/GitHub 기초**: 60-90분
 - **GitHub Actions 기초**: 90-120분
@@ -46,240 +25,177 @@
 
 ## 🔧 실습 환경 준비
 
-### 필수 도구 설치
+### 필수 계정
+- **AWS 계정**: Free Tier 계정
+- **GCP 계정**: Free Tier 계정 ($300 크레딧)
+- **GitHub 계정**: 코드 저장소 및 CI/CD
 
-#### AWS CLI 설치 및 설정
-```bash
-# AWS CLI 설치 확인
-aws --version
+### 필수 도구
+- **Docker**: 컨테이너 실행 환경
+- **Git**: 버전 관리
+- **AWS CLI**: AWS 서비스 관리
+- **GCP CLI**: GCP 서비스 관리
 
-# AWS CLI 설정
-aws configure
-```
-
-#### gcloud CLI 설치 및 설정
-```bash
-# gcloud CLI 설치 확인
-gcloud --version
-
-# gcloud CLI 설정
-gcloud auth login
-gcloud config set project YOUR_PROJECT_ID
-```
-
-#### Docker 및 Docker Compose 설치
+### 환경 설정
 ```bash
 # Docker 설치 확인
 docker --version
-docker-compose --version
 
-# Docker 서비스 시작
-sudo systemctl start docker
-sudo systemctl enable docker
-```
-
-#### Git 설치 및 설정
-```bash
 # Git 설치 확인
 git --version
 
-# Git 설정
-git config --global user.name "Your Name"
-git config --global user.email "your.email@example.com"
+# AWS CLI 설치 확인
+aws --version
+
+# GCP CLI 설치 확인
+gcloud --version
 ```
-
-### 클라우드 계정 설정
-
-#### AWS 계정 설정
-- [AWS 계정 생성 및 설정](/mcp_knowledge_base/cloud_basic/accounts/AWS계정가입.md)
-- IAM 사용자 생성 및 권한 설정
-- EC2 키 페어 생성
-
-#### GCP 계정 설정
-- [GCP 계정 생성 및 설정](/mcp_knowledge_base/cloud_basic/accounts/GCP_개인계정가입.md)
-- 프로젝트 생성 및 활성화
-- 서비스 계정 생성 및 키 다운로드
 
 ---
 
 ## 📚 이론 학습
 
 <details>
-<summary>🐳 Docker 기본 개념</summary>
+<summary>🐳 Docker 기초</summary>
 
-#### Docker란?
-
-Docker는 애플리케이션을 컨테이너라는 경량화된, 이식 가능한 패키지로 패키징하여 어디서나 일관된 환경에서 실행할 수 있게 해주는 플랫폼입니다.
-
-#### 컨테이너 기술의 역사와 발전
-
-- **LXC (Linux Containers)**: 2008년 처음 등장한 리눅스 컨테이너 기술
-- **Docker의 등장**: 2013년 컨테이너 기술을 대중화시킨 플랫폼
-- **Kubernetes**: 2014년 구글이 개발한 컨테이너 오케스트레이션 도구
-- **현재**: 클라우드 네이티브 애플리케이션의 표준 기술
-
-#### 컨테이너 vs 가상머신
-
-!Container vs VM Architecture
-
-| 특징 | 컨테이너 | 가상머신 |
-|------|----------|----------|
-| **오버헤드** | 낮음 | 높음 |
-| **시작 시간** | 빠름 (초 단위) | 느림 (분 단위) |
-| **리소스 사용량** | 적음 | 많음 |
-| **격리 수준** | 프로세스 레벨 | 하드웨어 레벨 |
-| **이식성** | 높음 | 중간 |
-
-- **가상머신**: 하이퍼바이저 + 게스트 OS + 애플리케이션
-- **컨테이너**: 컨테이너 엔진 + 애플리케이션 (OS 커널 공유)
-- **리소스 효율성**: 컨테이너가 VM보다 3-5배 가볍고 빠름
-- **격리 수준**: VM이 더 강하지만 컨테이너도 충분한 격리 제공
-
-#### Docker 핵심 개념
-
-- **이미지 (Image)**: 애플리케이션과 실행 환경을 포함한 읽기 전용 템플릿
-- **컨테이너 (Container)**: 이미지를 실행한 인스턴스
+### Docker 개념
+- **컨테이너**: 애플리케이션과 의존성을 패키징한 실행 단위
+- **이미지**: 컨테이너를 생성하는 템플릿
 - **Dockerfile**: 이미지를 빌드하기 위한 명령어 집합
-- **레지스트리 (Registry)**: Docker 이미지를 저장하고 공유하는 서비스
 
-#### Docker 아키텍처의 핵심 구성요소
+### Docker 명령어
+```bash
+# 이미지 빌드
+docker build -t my-app .
 
-!Docker Architecture
+# 컨테이너 실행
+docker run -d -p 3000:3000 my-app
 
-- **Docker Engine**: 컨테이너를 실행하는 런타임
-- **Docker Daemon**: 백그라운드에서 실행되는 서비스
-- **Docker Client**: 사용자와 데몬 간의 인터페이스
-- **Docker Registry**: 이미지 저장소 (Docker Hub, AWS ECR, GCP GCR)
+# 컨테이너 목록 확인
+docker ps
 
-#### Docker 모범 사례
+# 컨테이너 중지
+docker stop <container_id>
+```
 
-- **멀티스테이지 빌드**: 최종 이미지 크기 최적화
-- **레이어 캐싱**: 빌드 속도 향상을 위한 의존성 우선 설치
-- **보안**: root 사용자 사용 금지, 최소 권한 원칙
-- **이미지 최적화**: 불필요한 파일 제거, .dockerignore 사용
-
-#### Docker 네트워킹
-
-- **Bridge 네트워크**: 기본 네트워크, 컨테이너 간 통신
-- **Host 네트워크**: 호스트 네트워크 직접 사용
-- **Overlay 네트워크**: 여러 호스트 간 컨테이너 통신
-- **Custom 네트워크**: 사용자 정의 네트워크 생성
-
-#### Docker 볼륨 관리
-
-- **Named Volume**: Docker가 관리하는 영구 스토리지
-- **Bind Mount**: 호스트 디렉토리를 컨테이너에 마운트
-- **tmpfs Mount**: 메모리 기반 임시 파일시스템
-- **Volume Driver**: 외부 스토리지 시스템 연동
-
+### Dockerfile 예시
+```dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]
+```
 
 </details>
 
 <details>
-<summary>📝 Git/GitHub 기초 이론</summary>
+<summary>📝 Git/GitHub 기초</summary>
 
-#### Git이란?
+### Git 워크플로우
+- **Clone**: 원격 저장소 복사
+- **Add**: 변경사항 스테이징
+- **Commit**: 변경사항 커밋
+- **Push**: 원격 저장소에 업로드
+- **Pull**: 원격 저장소에서 다운로드
 
-Git은 분산 버전 관리 시스템으로, 소스 코드의 변경사항을 추적하고 관리하는 도구입니다.
+### 기본 명령어
+```bash
+# 저장소 클론
+git clone https://github.com/username/repo.git
 
-#### Git 핵심 개념
+# 변경사항 추가
+git add .
 
-- **저장소 (Repository)**: 프로젝트의 모든 파일과 변경 이력이 저장되는 공간
-- **커밋 (Commit)**: 특정 시점의 파일 상태를 저장하는 스냅샷
-- **브랜치 (Branch)**: 독립적인 개발 라인
-- **머지 (Merge)**: 브랜치를 다른 브랜치와 합치는 작업
+# 커밋
+git commit -m "Initial commit"
 
-#### GitHub이란?
+# 푸시
+git push origin main
 
-GitHub은 Git 저장소를 호스팅하고 협업을 지원하는 웹 기반 플랫폼입니다.
+# 풀
+git pull origin main
+```
 
-#### GitHub 핵심 기능
+### 브랜치 관리
+```bash
+# 브랜치 생성
+git checkout -b feature/new-feature
 
-- **Pull Request**: 코드 리뷰 및 협업
-- **Issues**: 버그 추적 및 기능 요청
-- **Actions**: CI/CD 자동화
-- **Wiki**: 프로젝트 문서화
+# 브랜치 전환
+git checkout main
 
-#### Git 워크플로우
-
-1. **Feature Branch**: 새로운 기능 개발을 위한 브랜치 생성
-2. **Commit**: 변경사항을 로컬에 커밋
-3. **Push**: 원격 저장소에 변경사항 업로드
-4. **Pull Request**: 코드 리뷰 요청
-5. **Merge**: 승인 후 메인 브랜치에 병합
-
-</details>
-
-<details>
-<summary>🚀 GitHub Actions CI/CD 이론</summary>
-
-#### CI/CD란?
-
-- **CI (Continuous Integration)**: 지속적 통합 - 코드 변경사항을 자주 통합하고 테스트
-- **CD (Continuous Deployment)**: 지속적 배포 - 자동화된 배포 파이프라인
-
-#### GitHub Actions란?
-
-GitHub Actions는 GitHub 저장소에서 직접 CI/CD 워크플로우를 구축할 수 있는 자동화 플랫폼입니다.
-
-#### GitHub Actions 핵심 개념
-
-- **워크플로우 (Workflow)**: 자동화된 프로세스 정의
-- **이벤트 (Event)**: 워크플로우를 트리거하는 활동
-- **작업 (Job)**: 워크플로우 내의 실행 단위
-- **스텝 (Step)**: 작업 내의 개별 작업 단위
-- **액션 (Action)**: 재사용 가능한 작업 단위
-
-#### CI/CD 파이프라인 단계
-
-1. **코드 빌드**: 소스 코드 컴파일 및 패키징
-2. **테스트 실행**: 단위 테스트, 통합 테스트, E2E 테스트
-3. **코드 품질 검사**: 정적 분석, 보안 스캔
-4. **이미지 빌드**: Docker 이미지 생성
-5. **배포**: 스테이징/프로덕션 환경에 배포
-
-#### GitHub Actions 장점
-
-- **무료**: 퍼블릭 저장소는 무료 사용
-- **통합성**: GitHub과 완벽 통합
-- **확장성**: 다양한 액션과 커뮤니티 지원
-- **유연성**: 복잡한 워크플로우 구성 가능
+# 브랜치 병합
+git merge feature/new-feature
+```
 
 </details>
 
 <details>
-<summary>🚀 VM 기반 웹 애플리케이션 배포 이론</summary>
+<summary>⚡ GitHub Actions 기초</summary>
 
-#### VM 배포란?
+### CI/CD 개념
+- **CI (Continuous Integration)**: 코드 통합 및 테스트 자동화
+- **CD (Continuous Deployment)**: 자동 배포
 
-가상머신(VM)에 웹 애플리케이션을 배포하여 인터넷을 통해 접근 가능하게 하는 과정입니다.
+### 워크플로우 파일 구조
+```yaml
+name: CI/CD Pipeline
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-#### AWS EC2 배포
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    - name: Install dependencies
+      run: npm install
+    - name: Run tests
+      run: npm test
+    - name: Build
+      run: npm run build
+```
 
-- **인스턴스 생성**: 적절한 인스턴스 타입 선택
-- **보안 그룹 설정**: 네트워크 접근 제어
-- **키 페어 설정**: SSH 접근을 위한 키 관리
-- **사용자 데이터**: 인스턴스 시작 시 실행할 스크립트
+</details>
 
-#### GCP Compute Engine 배포
+<details>
+<summary>☁️ VM 배포</summary>
 
-- **VM 인스턴스 생성**: 머신 타입 및 이미지 선택
-- **방화벽 규칙 설정**: 네트워크 트래픽 제어
-- **SSH 키 설정**: 인스턴스 접근을 위한 키 관리
-- **시작 스크립트**: VM 시작 시 실행할 명령어
+### AWS EC2 배포
+```bash
+# EC2 인스턴스 생성
+aws ec2 run-instances \
+  --image-id ami-0abcdef1234567890 \
+  --instance-type t2.micro \
+  --key-name my-key \
+  --security-group-ids sg-12345678
 
-#### 배포 전략
+# SSH 연결
+ssh -i my-key.pem ec2-user@<public-ip>
+```
 
-- **Blue-Green 배포**: 두 환경을 번갈아가며 배포
-- **Rolling 배포**: 점진적으로 인스턴스 교체
-- **Canary 배포**: 소규모 트래픽으로 테스트 후 전체 배포
+### GCP Compute Engine 배포
+```bash
+# VM 인스턴스 생성
+gcloud compute instances create my-vm \
+  --zone=us-central1-a \
+  --machine-type=e2-micro \
+  --image-family=ubuntu-2004-lts \
+  --image-project=ubuntu-os-cloud
 
-#### 모니터링 및 로깅
-
-- **CloudWatch (AWS)**: 메트릭, 로그, 알람
-- **Cloud Monitoring (GCP)**: 성능 모니터링, 로그 분석
-- **헬스 체크**: 애플리케이션 상태 모니터링
-- **자동 스케일링**: 트래픽에 따른 인스턴스 자동 조정
+# SSH 연결
+gcloud compute ssh my-vm --zone=us-central1-a
+```
 
 </details>
 
@@ -287,1573 +203,260 @@ GitHub Actions는 GitHub 저장소에서 직접 CI/CD 워크플로우를 구축�
 
 ## 🛠️ 실습 학습
 
-### 📁 실습 자료 구조
-- **실습 가이드**: `practices/` - 이론적 실습 가이드 (마크다운)
-- **실습 코드**: `repos/samples/day1/` - 실제 실행 가능한 코드
-- **자동화 스크립트**: `repos/automation/day1/` - 실습 자동화 도구
-- **클라우드 스크립트**: `repos/cloud-scripts/` - 클라우드 리소스 관리
-
 <details>
-<summary>🚀 실습 환경 준비</summary>
+<summary>🐳 Docker 실습</summary>
 
-#### 필수 계정
-
-- **AWS 계정**: Free Tier 계정 (Cloud Basic에서 생성)
-- **GCP 계정**: $300 크레딧 계정 (Cloud Basic에서 생성)
-- **GitHub 계정**: 코드 저장소 및 Actions 사용
-- **Docker Hub 계정**: 컨테이너 이미지 저장소 (선택사항)
-
-#### 필수 도구
-
-- **Docker Desktop**: 컨테이너 실행 환경
-- **Git**: 버전 관리 도구
-- **VS Code**: 코드 편집기 (권장)
-- **AWS CLI**: AWS 서비스 관리 (Cloud Basic에서 설치)
-- **gcloud CLI**: Google Cloud 서비스 관리 (Cloud Basic에서 설치)
-
-
-#### 필수 완료 사항
-
-- [ ] AWS Free Tier 계정 생성 및 설정
-- [ ] GCP $300 크레딧 계정 생성 및 설정
-- [ ] AWS CLI 및 gcloud CLI 설치 및 인증
-- [ ] IAM 사용자/서비스 계정 생성
-- [ ] EC2/Compute Engine 인스턴스 생성 경험
-- [ ] S3/Cloud Storage 버킷 생성 경험
-
-### ✅ 실습 환경 확인
-
-#### 자동 환경 체크 (권장)
+### 1단계: Docker 이미지 생성
 ```bash
-# 통합 환경 체크 스크립트 실행
-./mcp_knowledge_base/cloud_master/repos/cloud-scripts/environment-check.sh
+# 프로젝트 디렉토리 생성
+mkdir docker-practice
+cd docker-practice
 
-# Day2, Day3용 (Kubernetes 포함)
-./mcp_knowledge_base/cloud_master/repos/cloud-scripts/environment-check.sh day2
-```
+# Node.js 애플리케이션 생성
+npm init -y
+npm install express
 
-#### 수동 환경 확인
-```bash
-# AWS CLI 설정 확인
-aws sts get-caller-identity
+# app.js 생성
+cat > app.js << EOF
+const express = require('express');
+const app = express();
+const port = 3000;
 
-# gcloud 설정 확인
-gcloud auth list
+app.get('/', (req, res) => {
+  res.send('Hello Docker!');
+});
 
-# Docker 설치 확인
-docker --version
-docker-compose --version
+app.listen(port, () => {
+  console.log(\`App running on port \${port}\`);
+});
+EOF
 
-# Git 설치 확인
-git --version
-```
-
-#### 환경 체크 결과 해석
-- **90% 이상**: 실습 준비 완료 ✅
-- **70-89%**: 일부 실습 제한 가능 ⚠️
-- **70% 미만**: 환경 설정 필요 ❌
-
-</details>
-
-<details>
-<summary>🔗 실습 가이드</summary>
-
-### 실습 구성
-
-1. **Docker 기초 및 컨테이너 기술** (120분)
-2. **Git/GitHub 기초 및 협업** (90분)
-3. **GitHub Actions CI/CD 파이프라인** (120분)
-4. **VM 기반 웹 애플리케이션 배포** (120분)
-
-### 실습 방식
-
-- **Docker 기초**: 컨테이너 개념, Dockerfile 작성, Docker Compose
-- **Git/GitHub 기초**: 버전 관리, 브랜치 전략, Pull Request
-- **GitHub Actions 기초**: 워크플로우 작성, 자동 빌드/배포
-- **VM 배포**: AWS EC2, GCP Compute Engine 웹 애플리케이션 배포
-
-### 실습 결과물
-
-- 컨테이너화된 웹 애플리케이션
-- Git/GitHub 저장소 및 협업 환경
-- GitHub Actions CI/CD 파이프라인
-- VM에 배포된 웹 애플리케이션
-
-### 📖 상세 실습 가이드
-
-- 🔗 [Docker 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/docker-basics.md) - Docker 기본 개념 및 실습
-- 🔗 [Git/GitHub 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/git-github-basics.md) - 버전 관리 및 협업
-- 🔗 [GitHub Actions 기초 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/github-actions-basics.md) - CI/CD 파이프라인 구축
-- 🔗 [VM 배포 실습](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/vm-deployment.md) - AWS EC2, GCP Compute Engine 배포
-
-### 📚 관련 가이드 문서
-
-#### Docker 관련 가이드
-- 🔗 [Docker 기초 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-basic-guide.md) - Docker 기본 개념 및 명령어
-- 🔗 [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
-- 🔗 [Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-compose-guide.md) - 다중 서비스 관리
-- 🔗 [Docker Hub 설정 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-hub-setup-guide.md) - 이미지 저장소 설정
-
-#### GitHub Actions 관련 가이드
-- 🔗 [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-guide.md) - CI/CD 파이프라인 구축
-- 🔗 [CI/CD 파이프라인 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/cicd-pipeline-guide.md) - 완전한 CI/CD 파이프라인
-
-#### 클라우드 배포 가이드
-- 🔗 [AWS/GCP 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/aws-gcp-deployment-guide.md) - 클라우드 배포 전략
-- 🔗 [클라우드 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/cloud-deployment-guide.md) - 일반적인 클라우드 배포
-- 🔗 [AWS/GCP 권한 설정](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/aws-gcp-permissions-setup.md) - IAM 및 서비스 계정 설정
-
-#### 실습 프로젝트
-- 🔗 [My App 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day1/my-app/.dockerignore) - Docker 기반 웹 애플리케이션
-- 🔗 [Actions Demo 프로젝트](/mcp_knowledge_base/cloud_master/repos/samples/day2/actions-demo/README.md) - GitHub Actions CI/CD 데모
-
-#### 자동화 스크립트
-- 🔗 [AWS 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/aws-ec2-create.sh) - AWS 리소스 자동 생성
-- 🔗 [GCP 설정 스크립트](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/aws-ec2-create.sh) - GCP 리소스 자동 생성
-- 🔗 [프로젝트 설정 가이드](/mcp_knowledge_base/cloud_master/repos/cloud-scripts/PROJECT_SETUP.md) - 전체 환경 설정
-
-#### 문제 해결
-- 🔗 [트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md) - 자주 발생하는 문제 해결
-
-### ⚠️ 실습 주의사항 및 문제 해결
-
-#### 환경 요구사항
-- **최소 사양**: 8GB RAM, 50GB 디스크 공간, 4코어 CPU
-- **네트워크**: 안정적인 인터넷 연결 (Docker 이미지 다운로드용)
-- **OS**: Windows 10/11, macOS 10.15+, Ubuntu 18.04+
-
-#### 자주 발생하는 문제
-1. **Docker 설치 오류**
-   - 해결방법: Docker Desktop 재시작, WSL2 활성화 확인
-   - 명령어: `docker --version`으로 설치 확인
-
-2. **GitHub Actions 실행 실패**
-   - 해결방법: 저장소 권한 확인, 워크플로우 파일 문법 검사
-   - 확인: Actions 탭에서 로그 확인
-
-3. **VM 접속 불가**
-   - 해결방법: 보안 그룹/방화벽 규칙 확인, SSH 키 권한 확인
-   - 명령어: `ssh -i key.pem user@ip`로 접속 테스트
-
-#### 실습 검증 방법
-- **Docker**: `docker ps`, `docker images` 명령어로 컨테이너/이미지 확인
-- **Git**: `git status`, `git log` 명령어로 상태 확인
-- **GitHub Actions**: Actions 탭에서 워크플로우 실행 상태 확인
-- **VM 배포**: 브라우저에서 `http://VM_IP:포트` 접속 확인
-
-### 📚 개념 학습 가이드
-
-- 🔗 [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
-- 🔗 [Docker Compose 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/docker-compose-guide.md) - 다중 서비스 관리
-- 🔗 [GitHub Actions 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/github-actions-guide.md) - CI/CD 파이프라인 구축
-- 🔗 [AWS & GCP 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/aws-gcp-deployment-guide.md) - 멀티클라우드 배포
-
-### 🛠️ 문제 해결 가이드
-
-- 🔗 [종합 트러블슈팅 가이드](/mcp_knowledge_base/cloud_basic/textbook/Day1/troubleshooting-guide.md) - Docker, GitHub Actions, AWS/GCP 문제 해결
-- 🔗 [AWS & GCP 권한 설정](/mcp_knowledge_base/cloud_master/textbook/Day1/practices/aws-gcp-permissions-setup.md) - IAM, 서비스 계정 설정
-- 🔗 [CI/CD 파이프라인 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/cicd-pipeline-guide.md) - 전체 자동 배포 파이프라인
-- 🔗 [클라우드 배포 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/guides/cloud-deployment-guide.md) - VM 기반 웹 애플리케이션 배포
-
-### 🔗 관련 과정 링크
-
-- 🔗 [Cloud Basic 과정](/mcp_knowledge_base/README.md) - AWS/GCP 기초 과정
-- 🔗 [Cloud Container 과정](/mcp_knowledge_base/README.md) - Kubernetes 고급 과정
-- 🔗 [전체 커리큘럼](/mcp_knowledge_base/curriculum.md) - 전체 과정 구조 및 학습 경로
-- 🔗 [통합 인덱스](/mcp_knowledge_base/index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](/mcp_knowledge_base/learning-path.md) - Cloud Master 학습 경로
-
-</details>
-
-<details>
-<summary>🚀 Docker 기초 실습</summary>
-
-#### Docker 기본 명령어
-
-```bash
-# 이미지 관리
-docker pull <image>          # 이미지 다운로드
-docker images               # 이미지 목록 확인
-docker rmi <image>          # 이미지 삭제
-
-# 컨테이너 관리
-docker run <image>          # 컨테이너 실행
-docker ps                   # 실행 중인 컨테이너 확인
-docker stop <container>     # 컨테이너 중지
-docker rm <container>       # 컨테이너 삭제
-
-# 빌드 및 실행
-docker build -t <name> .    # Dockerfile로 이미지 빌드
-docker exec -it <container> /bin/bash  # 컨테이너 내부 접속
-```
-
-#### Dockerfile 기본 구조
-
-!Dockerfile Structure
-
-```dockerfile
-# 베이스 이미지
+# Dockerfile 생성
+cat > Dockerfile << EOF
 FROM node:18-alpine
-
-# 작업 디렉토리 설정
 WORKDIR /app
-
-# 의존성 파일 복사
 COPY package*.json ./
-
-# 의존성 설치
 RUN npm install
-
-# 애플리케이션 코드 복사
 COPY . .
-
-# 포트 노출
 EXPOSE 3000
+CMD ["node", "app.js"]
+EOF
 
-# 애플리케이션 실행
-CMD ["npm", "start"]
+# 이미지 빌드
+docker build -t my-node-app .
 ```
 
-#### Docker Compose 기본 구조
-
-```yaml
-version: '3.8'
-services:
-  web:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=production
-    depends_on:
-      - db
-  
-  db:
-    image: postgres:13
-    environment:
-      - POSTGRES_DB=myapp
-      - POSTGRES_PASSWORD=password
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:
-```
-
-### Docker 설치 확인
-
+### 2단계: 컨테이너 실행
 ```bash
-# Docker 버전 확인
-docker --version
-docker-compose --version
-
-# Docker 실행 상태 확인
-docker info
-```
-
-### 기본 명령어 실습
-
-#### 1단계: Docker 설치 및 확인
-```bash
-# Docker 설치 (Ubuntu/Debian)
-sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
-
-# Docker 공식 GPG 키 추가
-curl -fsSL https:///download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-
-# Docker 저장소 추가
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https:///download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-# Docker 설치
-sudo apt-get update
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-
-# Docker 서비스 시작 및 자동 시작 설정
-sudo systemctl start docker
-sudo systemctl enable docker
-
-# Docker 설치 확인
-docker --version
-docker run hello-world
-```
-
-#### 2단계: 기본 명령어 실습
-```bash
-# Hello World 컨테이너 실행
-docker run hello-world
-
-# 실행 중인 컨테이너 확인
-docker ps
-
-# 모든 컨테이너 확인 (중지된 것 포함)
-docker ps -a
-
-# 이미지 목록 확인
-docker images
-
-# 컨테이너 중지
-docker stop <container_id>
-
-# 컨테이너 제거
-docker rm <container_id>
-
-# 이미지 제거
-docker rmi <image_id>
-```
-
-#### 3단계: 웹 서버 컨테이너 실습
-```bash
-# Nginx 이미지 다운로드
-docker pull nginx:latest
-
-# Nginx 컨테이너 실행 (포트 매핑)
-docker run -d --name my-nginx -p 8080:80 nginx
+# 컨테이너 실행
+docker run -d -p 3000:3000 --name my-app my-node-app
 
 # 컨테이너 상태 확인
 docker ps
-docker logs my-nginx
 
-# 컨테이너 내부 접속
-docker exec -it my-nginx /bin/bash
-
-# 컨테이너 중지 및 제거
-docker stop my-nginx
-docker rm my-nginx
+# 애플리케이션 테스트
+curl http://localhost:3000
 ```
 
-#### 4단계: 볼륨 마운트 실습
+### 3단계: 컨테이너 관리
 ```bash
-# 호스트 디렉토리와 컨테이너 디렉토리 연결
-mkdir -p ~/nginx-html
-echo "<h1>Hello from Docker Volume!</h1>" > ~/nginx-html/index.html
-
-# 볼륨 마운트로 Nginx 실행
-docker run -d --name nginx-volume /
-  -p 8081:80 /
-  -v ~/nginx-html:/usr/share/nginx/html /
-  nginx
-
-# 브라우저에서 http://localhost:8081 접속 확인
-```
+# 컨테이너 중지
+docker stop my-app
 
 # 컨테이너 삭제
-docker rm <container_id>
+docker rm my-app
 
 # 이미지 삭제
-docker rmi <image_id>
-```
-
-## 🔗 Dockerfile 작성 실습</summary>
-
-### 간단한 Node.js 애플리케이션 Dockerfile
-
-```dockerfile
-# Node.js 18 버전을 베이스 이미지로 사용
-FROM node:18
-
-# 작업 디렉토리 설정
-WORKDIR /app
-
-# 패키지 파일 복사 (캐시 최적화를 위해 의존성 설치를 먼저)
-COPY package*.json ./
-
-# 의존성 설치
-RUN npm install
-
-# 소스 코드 복사
-COPY . .
-
-# 포트 3000 노출
-EXPOSE 3000
-
-# 애플리케이션 시작
-CMD ["npm", "start"]
-```
-
-### Dockerfile 빌드 및 실행
-
-```bash
-# 이미지 빌드
-docker build -t my-node-app .
-
-# 컨테이너 실행
-docker run -p 3000:3000 my-node-app
-
-# 백그라운드 실행
-docker run -d -p 3000:3000 --name my-app my-node-app
-
-# 컨테이너 로그 확인
-docker logs my-app
-
-# 컨테이너 내부 접속
-docker exec -it my-app /bin/bash
-```
-
-## 🔗 Docker Compose 실습</summary>
-
-### docker-compose.yml 작성
-
-```yaml
-version: '3.8'
-
-services:
-  # 웹 애플리케이션 서비스
-  web:
-    build: .
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-    depends_on:
-      - db
-    restart: unless-stopped
-
-  # MongoDB 데이터베이스 서비스
-  db:
-    image: mongo:6.0
-    ports:
-      - "27017:27017"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=secret
-    volumes:
-      - mongodb_data:/data/db
-    restart: unless-stopped
-
-# 볼륨 정의
-volumes:
-  mongodb_data:
-```
-
-### Docker Compose 명령어
-
-```bash
-# 서비스 시작
-docker-compose up
-
-# 백그라운드에서 시작
-docker-compose up -d
-
-# 서비스 중지
-docker-compose down
-
-# 볼륨까지 삭제
-docker-compose down -v
-
-# 로그 확인
-docker-compose logs
-
-# 특정 서비스 로그 확인
-docker-compose logs web
+docker rmi my-node-app
 ```
 
 </details>
 
-
 <details>
-<summary>🚀 Git/GitHub 기초 및 협업</summary>
+<summary>📝 Git/GitHub 실습</summary>
 
-<details>
-<summary>📖 Git 개념 이해</summary>
+### 1단계: GitHub 저장소 생성
+1. GitHub에서 새 저장소 생성
+2. 저장소 URL 복사
 
-### Git이란?
-
-- **정의**: 분산 버전 관리 시스템
-- **장점**: 오프라인 작업 가능, 브랜치 관리 용이, 협업 효율성
-- **핵심 개념**: 커밋, 브랜치, 머지, 리모트 저장소
-
-### Git 워크플로우
-
-1. **Working Directory**: 작업 중인 파일들
-2. **Staging Area**: 커밋할 준비가 된 파일들
-3. **Repository**: 커밋된 파일들의 히스토리
-
-</details>
-
-<details>
-<summary>🔗 Git 기본 명령어 실습</summary>
-
-### Git 설정
-
+### 2단계: 로컬 저장소 설정
 ```bash
-# 사용자 정보 설정
-git config --global user.name "Your Name"
-git config --global user.email "your.email@example.com"
-
-# 설정 확인
-git config --list
-```
-
-### 기본 워크플로우
-
-```bash
-# 저장소 초기화
+# Git 초기화
 git init
 
-# 파일 상태 확인
-git status
+# 원격 저장소 추가
+git remote add origin https://github.com/username/repo.git
 
-# 파일 추가 (Staging Area에)
-git add filename.txt
-git add .  # 모든 파일 추가
+# 파일 추가
+git add .
 
-# 커밋 생성
+# 첫 커밋
 git commit -m "Initial commit"
 
-# 커밋 히스토리 확인
-git log
-git log --oneline  # 한 줄로 표시
-```
-
-### 브랜치 관리
-
-```bash
-# 브랜치 목록 확인
-git branch
-
-# 새 브랜치 생성 및 이동
-git checkout -b feature/new-feature
-git switch -c feature/new-feature  # Git 2.23+
-
-# 브랜치 이동
-git checkout main
-git switch main
-
-# 브랜치 머지
-git checkout main
-git merge feature/new-feature
-
-# 브랜치 삭제
-git branch -d feature/new-feature
-```
-
-</details>
-
-<details>
-<summary>🔗 GitHub 협업 실습</summary>
-
-### GitHub 저장소 생성 및 연결
-
-[GitHub 저장소 생성 및 연결](#github-저장소-생성-및-연결)
-```bash
-# 원격 저장소 추가
-git remote add origin https:///github.com/[username]/[repository_name].git
-
-# 원격 저장소 확인
-git remote -v
-
-# 첫 푸시
+# 메인 브랜치로 푸시
+git branch -M main
 git push -u origin main
-
-# 이후 푸시
-git push
 ```
 
-### Pull Request 워크플로우
-
+### 3단계: 브랜치 작업
 ```bash
-# 1. 새 브랜치에서 작업
-git checkout -b feature/awesome-feature
+# 새 브랜치 생성
+git checkout -b feature/docker-setup
 
-# 2. 변경사항 커밋
+# 변경사항 커밋
 git add .
-git commit -m "Add awesome feature"
+git commit -m "Add Docker configuration"
 
-# 3. 브랜치 푸시
-git push origin feature/awesome-feature
-
-# 4. GitHub에서 Pull Request 생성
-# 5. 리뷰 후 머지
-# 6. 로컬에서 브랜치 정리
-git checkout main
-git pull origin main
-git branch -d feature/awesome-feature
-```
-
-### 협업 시나리오
-
-```bash
-# 다른 사람의 변경사항 가져오기
-git fetch origin
-git merge origin/main
-
-# 또는 한 번에
-git pull origin main
-
-# 충돌 해결 후
-git add .
-git commit -m "Resolve merge conflict"
-git push
+# 브랜치 푸시
+git push origin feature/docker-setup
 ```
 
 </details>
-</details>
 
 <details>
-<summary>🚀 GitHub Actions CI/CD 파이프라인</summary>
+<summary>⚡ GitHub Actions 실습</summary>
 
-<details>
-<summary>📖 GitHub Actions 개념</summary>
-
-### GitHub Actions란?
-
-- **정의**: GitHub에서 제공하는 CI/CD 플랫폼
-- **장점**: GitHub과 완벽 통합, 무료 사용량 제공, 다양한 액션 활용
-- **핵심 개념**: Workflow, Job, Step, Action
-
-### CI/CD 파이프라인
-
-!CI/CD Pipeline
-
-- **CI (Continuous Integration)**: 코드 변경사항을 자동으로 빌드하고 테스트
-- **CD (Continuous Deployment)**: 테스트 통과한 코드를 자동으로 배포
-
-</details>
-
-
-<details>
-<summary>🔗 기본 워크플로우 작성</summary>
-
-### .github/workflows/ci.yml
-
-```yaml
-name: CI Pipeline
-
-on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main ]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Run tests
-      run: npm test
-      
-    - name: Run linting
-      run: npm run lint
-      
-    - name: Build application
-      run: npm run build
-      
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-files
-        path: dist/
-```
-
-### GitHub Actions 실습 단계
-
-#### 1단계: 워크플로우 파일 생성
+### 1단계: 워크플로우 파일 생성
 ```bash
 # .github/workflows 디렉토리 생성
 mkdir -p .github/workflows
 
-# 워크플로우 파일 생성
-cat > .github/workflows/ci.yml << 'EOF'
-name: CI Pipeline
-
+# ci.yml 파일 생성
+cat > .github/workflows/ci.yml << EOF
+name: CI/CD Pipeline
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
+    - uses: actions/checkout@v3
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '18'
-        cache: 'npm'
-        
     - name: Install dependencies
-      run: npm ci
-      
+      run: npm install
     - name: Run tests
       run: npm test
-      
-    - name: Run linting
-      run: npm run lint
+    - name: Build
+      run: npm run build
 EOF
 ```
 
-#### 2단계: package.json 설정 확인
-```json
-{
-  "name": "my-web-app",
-  "version": "1.0.0",
-  "scripts": {
-    "test": "jest",
-    "lint": "eslint .",
-    "build": "webpack --mode production",
-    "start": "node server.js"
-  },
-  "devDependencies": {
-    "jest": "^29.0.0",
-    "eslint": "^8.0.0",
-    "webpack": "^5.0.0"
-  }
-}
-```
-
-#### 3단계: 워크플로우 실행 및 확인
+### 2단계: 워크플로우 테스트
 ```bash
 # 변경사항 커밋 및 푸시
 git add .
-git commit -m "Add GitHub Actions CI workflow"
+git commit -m "Add GitHub Actions workflow"
 git push origin main
-
-# GitHub에서 Actions 탭 확인
-# 1. GitHub 저장소 페이지에서 "Actions" 탭 클릭
-# 2. "CI Pipeline" 워크플로우 클릭
-# 3. 실행 상태 및 로그 확인
 ```
 
-#### 4단계: 워크플로우 디버깅
+### 3단계: Actions 탭에서 실행 확인
+1. GitHub 저장소의 Actions 탭 이동
+2. 워크플로우 실행 상태 확인
+
+</details>
+
+<details>
+<summary>☁️ VM 배포 실습</summary>
+
+### AWS EC2 배포
 ```bash
-# 워크플로우 실행 실패 시 로그 확인
-# 1. Actions 탭에서 실패한 워크플로우 클릭
-# 2. 실패한 Job 클릭
-# 3. 실패한 Step 클릭하여 상세 로그 확인
+# EC2 인스턴스 생성
+aws ec2 run-instances \
+  --image-id ami-0abcdef1234567890 \
+  --instance-type t2.micro \
+  --key-name my-key \
+  --security-group-ids sg-12345678 \
+  --user-data file://user-data.sh
 
-# 일반적인 문제 해결
-# - Node.js 버전 불일치: package.json의 engines 필드 확인
-# - 의존성 설치 실패: package-lock.json 파일 확인
-# - 테스트 실패: 로컬에서 npm test 실행하여 확인
+# user-data.sh 생성
+cat > user-data.sh << EOF
+#!/bin/bash
+yum update -y
+yum install -y docker
+systemctl start docker
+systemctl enable docker
+usermod -a -G docker ec2-user
+EOF
 ```
 
-### .github/workflows/deploy.yml
-
-```yaml
-name: Deploy to VM
-
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Build application
-      run: npm run build
-      
-    - name: Deploy to VM
-      uses: appleboy/ssh-action@v0.1.5
-      with:
-        host: ${{ secrets.VM_HOST }}
-        username: ${{ secrets.VM_USERNAME }}
-        key: ${{ secrets.VM_SSH_KEY }}
-        script: |
-          cd /home/ubuntu/app
-          git pull origin main
-          docker-compose down
-          docker-compose up -d --build
-```
-
-</details>
-
-<details>
-<summary>🔗 Docker 이미지 자동 빌드</summary>
-
-### Docker 이미지 빌드 워크플로우
-
-```yaml
-name: Build and Push Docker Image
-
-on:
-  push:
-    branches: [ main ]
-    tags: [ 'v*' ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-      
-    - name: Login to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        
-    - name: Extract metadata
-      id: meta
-      uses: docker/metadata-action@v4
-      with:
-        images: ${{ secrets.DOCKER_USERNAME }}/my-app
-        tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          
-    - name: Build and push
-      uses: docker/build-push-action@v4
-      with:
-        context: .
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-```
-
-</details>
-
-</details>
-
-<details>
-<summary>🚀 GitHub Actions 고급 워크플로우 예시</summary>
-
-### 멀티 환경 배포 워크플로우
-
-```yaml
-name: Multi-Environment Deployment
-
-on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main ]
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-
-jobs:
-  # 코드 품질 검사
-  quality-check:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Run linting
-      run: npm run lint
-    
-    - name: Run tests
-      run: npm test
-    
-    - name: Run security audit
-      run: npm audit --audit-level moderate
-
-  # 개발 환경 배포
-  deploy-dev:
-    needs: quality-check
-    if: github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-latest
-    environment: development
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Deploy to Development
-      run: |
-        echo "Deploying to development environment"
-        # 개발 환경 배포 스크립트
-        ./scripts/deploy-dev.sh
-
-  # 스테이징 환경 배포
-  deploy-staging:
-    needs: quality-check
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment: staging
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Deploy to Staging
-      run: |
-        echo "Deploying to staging environment"
-        # 스테이징 환경 배포 스크립트
-        ./scripts/deploy-staging.sh
-
-  # 프로덕션 환경 배포
-  deploy-production:
-    needs: [quality-check, deploy-staging]
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment: production
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Deploy to Production
-      run: |
-        echo "Deploying to production environment"
-        # 프로덕션 환경 배포 스크립트
-        ./scripts/deploy-production.sh
-```
-
-### 컨테이너 보안 스캔 워크플로우
-
-```yaml
-name: Container Security Scan
-
-on:
-  push:
-    branches: [ main ]
-  schedule:
-    - cron: '0 2 * * 1'  # 매주 월요일 오전 2시
-
-jobs:
-  security-scan:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Build Docker image
-      run: docker build -t ${{ env.IMAGE_NAME }} .
-    
-    - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@master
-      with:
-        image-ref: ${{ env.IMAGE_NAME }}
-        format: 'sarif'
-        output: 'trivy-results.sarif'
-    
-    - name: Upload Trivy scan results
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: 'trivy-results.sarif'
-    
-    - name: Run Snyk security scan
-      uses: snyk/actions/node@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        args: --severity-threshold=high
-```
-
-### 자동화된 테스트 및 성능 측정
-
-```yaml
-name: Automated Testing and Performance
-
-on:
-  pull_request:
-    branches: [ main ]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        node-version: [16, 18, 20]
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Run unit tests
-      run: npm run test:unit
-    
-    - name: Run integration tests
-      run: npm run test:integration
-    
-    - name: Run E2E tests
-      run: npm run test:e2e
-    
-    - name: Performance testing
-      run: |
-        npm run test:performance
-        # Lighthouse CI 실행
-        npx @lhci/cli autorun
-
-  # 성능 벤치마크
-  performance-benchmark:
-    runs-on: ubuntu-latest
-    needs: test
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Build application
-      run: npm run build
-    
-    - name: Start application
-      run: |
-        npm start &
-        sleep 10
-    
-    - name: Run performance tests
-      run: |
-        # Artillery를 사용한 부하 테스트
-        npx artillery run performance-test.yml
-    
-    - name: Generate performance report
-      run: |
-        # 성능 리포트 생성
-        npx lighthouse-ci autorun --upload.target=temporary-public-storage
-```
-
-### 자동화된 문서 생성 및 배포
-
-```yaml
-name: Documentation Generation
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-jobs:
-  docs:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Generate API documentation
-      run: |
-        npm run docs:generate
-        # JSDoc을 사용한 API 문서 생성
-    
-    - name: Generate code coverage report
-      run: |
-        npm run test:coverage
-        # Codecov에 커버리지 리포트 업로드
-    
-    - name: Deploy documentation
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs
-        cname: docs.yourdomain.com
-```
-
-</details>
-
----
-
-<details>
-<summary>🚀 VM 기반 웹 애플리케이션 배포</summary>
-
-<details>
-<summary>📖 VM 배포 개념</summary>
-
-### VM 배포의 장점
-
-- **간단함**: 복잡한 오케스트레이션 없이 직접 배포
-- **제어**: 완전한 서버 제어권
-- **비용**: 소규모 애플리케이션에 경제적
-- **학습**: 클라우드 기본 개념 이해에 유용
-
-### 배포 전략
-
-- **Blue-Green**: 무중단 배포
-- **Rolling**: 점진적 배포
-- **Canary**: 일부 트래픽으로 테스트
-
-</details>
-
-<details>
-<summary>🔗 AWS EC2 배포 실습</summary>
-
-### EC2 인스턴스 생성
-
+### GCP Compute Engine 배포
 ```bash
-# AWS CLI로 EC2 인스턴스 생성
-aws ec2 run-instances /
-  --image-id ami-0ae2c887094315bed /
-  --count 1 /
-  --instance-type t3.micro /
-  --key-name my-key /
-  --security-group-ids sg-12345678 /
-  --subnet-id subnet-12345678 /
-  --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=my-web-app}]'
-```
-
-### 애플리케이션 배포
-
-```bash
-# SSH로 인스턴스 접속
-ssh -i my-key.pem ec2-user@<public-ip>
-
-# Docker 설치
-sudo yum update -y
-sudo yum install -y docker
-sudo systemctl start docker
-sudo systemctl enable docker
-sudo usermod -a -G docker ec2-user
-
-# 애플리케이션 클론
-git clone https:///github.com/[username]/my-app.git
-cd my-app
-
-# Docker Compose로 실행
-docker-compose up -d
-```
-
-</details>
-
-<details>
-<summary>🔗 GCP Compute Engine 배포 실습</summary>
-
-### Compute Engine 인스턴스 생성
-
-```bash
-# gcloud CLI로 인스턴스 생성
-gcloud compute instances create my-web-app /
-  --zone=asia-northeast3-a /
-  --machine-type=e2-micro /
-  --image-family=ubuntu-2004-lts /
-  --image-project=ubuntu-os-cloud /
-  --tags=http-server,https-server /
+# VM 인스턴스 생성
+gcloud compute instances create my-vm \
+  --zone=us-central1-a \
+  --machine-type=e2-micro \
+  --image-family=ubuntu-2004-lts \
+  --image-project=ubuntu-os-cloud \
   --metadata-from-file startup-script=startup-script.sh
+
+# startup-script.sh 생성
+cat > startup-script.sh << EOF
+#!/bin/bash
+apt-get update
+apt-get install -y docker.io
+systemctl start docker
+systemctl enable docker
+usermod -a -G docker $USER
+EOF
 ```
 
-### 방화벽 규칙 설정
-
-[방화벽 규칙 설정](#방화벽-규칙-설정)
-```bash
-# HTTP 트래픽 허용
-gcloud compute firewall-rules create allow-http /
-  --allow tcp:80 /
-  --source-ranges 0.0.0.0/0 /
-  --target-tags http-server
-
-# HTTPS 트래픽 허용
-gcloud compute firewall-rules create allow-https /
-  --allow tcp:443 /
-  --source-ranges 0.0.0.0/0 /
-  --target-tags https-server
-```
-
-</details>
-
-<details>
-<summary>🔗 자동화된 배포 파이프라인</summary>
-
-### 완전 자동화된 배포
-
-```yaml
-name: Deploy to VM
-
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Deploy to AWS EC2
-      uses: appleboy/ssh-action@v0.1.5
-      with:
-        host: ${{ secrets.AWS_HOST }}
-        username: ${{ secrets.AWS_USERNAME }}
-        key: ${{ secrets.AWS_SSH_KEY }}
-        script: |
-          cd /home/ec2-user/my-app
-          git pull origin main
-          docker-compose down
-          docker-compose up -d --build
-          
-    - name: Deploy to GCP Compute Engine
-      uses: appleboy/ssh-action@v0.1.5
-      with:
-        host: ${{ secrets.GCP_HOST }}
-        username: ${{ secrets.GCP_USERNAME }}
-        key: ${{ secrets.GCP_SSH_KEY }}
-        script: |
-          cd /home/ubuntu/my-app
-          git pull origin main
-          docker-compose down
-          docker-compose up -d --build
-```
-
-</details>
 </details>
 
 ---
-
-## 📚 문제 해결 및 참고 자료
-
-### 📊 학습 평가 기준
-
-#### 실습 완료 기준
-1. **Docker 실습 (30점)**
-   - ✅ Docker 이미지 빌드 성공 (10점)
-   - ✅ 컨테이너 실행 및 접속 확인 (10점)
-   - ✅ Docker Compose로 다중 서비스 구성 (10점)
-
-2. **Git/GitHub 실습 (25점)**
-   - ✅ Git 저장소 초기화 및 커밋 (10점)
-   - ✅ 브랜치 생성 및 머지 (10점)
-   - ✅ GitHub에 푸시 및 Pull Request 생성 (5점)
-
-3. **GitHub Actions 실습 (25점)**
-   - ✅ 워크플로우 파일 작성 (10점)
-   - ✅ 자동 빌드 및 테스트 실행 (10점)
-   - ✅ 아티팩트 생성 및 저장 (5점)
-
-4. **VM 배포 실습 (20점)**
-   - ✅ AWS EC2 또는 GCP Compute Engine 인스턴스 생성 (10점)
-   - ✅ 웹 애플리케이션 배포 및 접속 확인 (10점)
-
-#### 학습 목표 달성 평가
-- **90점 이상**: 모든 학습 목표 달성, 고급 주제 학습 권장
-- **80-89점**: 기본 학습 목표 달성, 추가 실습 권장
-- **70-79점**: 부분적 학습 목표 달성, 복습 필요
-- **70점 미만**: 기초 개념 재학습 필요
-
-#### 실습 결과물 제출
-1. **Docker 이미지**: Docker Hub 또는 GitHub Container Registry 업로드
-2. **GitHub 저장소**: 실습 코드 및 문서 포함
-3. **GitHub Actions**: 성공적으로 실행된 워크플로우 스크린샷
-4. **배포 URL**: VM에 배포된 웹 애플리케이션 접속 링크
-
-### 📖 용어 사전
-
-#### Docker 관련 용어
-- **컨테이너(Container)**: 애플리케이션과 의존성을 패키징한 가벼운 실행 환경
-- **이미지(Image)**: 컨테이너를 생성하는 템플릿
-- **Dockerfile**: 이미지를 빌드하기 위한 명령어 집합
-- **Docker Compose**: 다중 컨테이너 애플리케이션을 정의하고 실행하는 도구
-- **레지스트리(Registry)**: Docker 이미지를 저장하고 공유하는 서비스
-
-#### Git/GitHub 관련 용어
-- **저장소(Repository)**: 프로젝트의 모든 파일과 변경 이력이 저장되는 공간
-- **커밋(Commit)**: 파일 변경사항을 저장소에 기록하는 행위
-- **브랜치(Branch)**: 독립적인 개발 라인
-- **머지(Merge)**: 브랜치의 변경사항을 다른 브랜치에 통합
-- **Pull Request**: 코드 변경사항을 검토하고 머지하기 위한 요청
-
-#### CI/CD 관련 용어
-- **CI (Continuous Integration)**: 코드 변경사항을 자동으로 통합하고 테스트
-- **CD (Continuous Deployment)**: 테스트된 코드를 자동으로 배포
-- **워크플로우(Workflow)**: 자동화된 작업의 순서와 조건을 정의
-- **액션(Action)**: 워크플로우에서 실행되는 개별 작업
-- **아티팩트(Artifact)**: 빌드 과정에서 생성되는 파일
-
-#### 클라우드 관련 용어
-- **VM (Virtual Machine)**: 물리적 서버를 가상화한 컴퓨팅 환경
-- **인스턴스(Instance)**: 클라우드에서 실행되는 VM
-- **보안 그룹(Security Group)**: 네트워크 접근을 제어하는 방화벽 규칙
-- **키 페어(Key Pair)**: SSH 접속을 위한 공개/개인 키 쌍
-- **로드 밸런서(Load Balancer)**: 트래픽을 여러 인스턴스에 분산
-
-<details>
-<summary>🐛 자주 발생하는 문제</summary>
-
-### Docker 관련 문제
-
-<details>
-<summary>❌ Docker 이미지 빌드 실패</summary>
-
-**원인**: 
-- Dockerfile 문법 오류
-- 의존성 설치 실패
-- 컨텍스트 경로 문제
-
-**해결방법**:
-```bash
-# 1. Dockerfile 문법 확인
-docker build --no-cache -t my-app .
-
-# 2. 빌드 로그 자세히 보기
-docker build --progress=plain -t my-app .
-
-# 3. 중간 단계에서 디버깅
-docker run -it <intermediate_image_id> /bin/bash
-```
-
-</details>
-
-<details>
-<summary>❌ 컨테이너 실행 실패</summary>
-
-**원인**:
-- 포트 충돌
-- 볼륨 마운트 실패
-- 환경변수 설정 오류
-
-**해결방법**:
-```bash
-# 1. 포트 사용 확인
-netstat -tulpn | grep :3000
-
-# 2. 컨테이너 로그 확인
-docker logs <container_id>
-
-# 3. 컨테이너 내부 접속
-docker exec -it <container_id> /bin/bash
-```
-
-</details>
-
-### Git/GitHub 관련 문제
-
-<details>
-<summary>❌ Push 실패</summary>
-
-**원인**:
-- 인증 문제
-- 권한 부족
-- 원격 저장소 URL 오류
-
-**해결방법**:
-```bash
-# 1. 원격 저장소 URL 확인
-git remote -v
-
-# 2. 인증 정보 확인
-git config --list | grep credential
-
-# 3. SSH 키 확인
-ssh -T git@github.com
-```
-
-</details>
-
-### GitHub Actions 관련 문제
-
-<details>
-<summary>❌ 워크플로우 실행 실패</summary>
-
-**원인**:
-- YAML 문법 오류
-- 시크릿 설정 누락
-- 권한 부족
-
-**해결방법**:
-```bash
-# 1. YAML 문법 검사
-# 온라인 YAML 검사기 사용
-
-# 2. 시크릿 확인
-# GitHub 저장소 > Settings > Secrets and variables > Actions
-
-# 3. 워크플로우 로그 확인
-# Actions 탭에서 상세 로그 확인
-```
-
-</details>
-</details>
-
-<details>
-<summary>📖 추가 학습 자료</summary>
-
-### 공식 문서
-
-- [Docker 공식 문서](https:///docs.docker.com/)
-- [Git 공식 문서](https:///git-scm.com/doc)
-- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
-- [AWS EC2 공식 문서](https:///docs.aws.amazon.com/ec2/)
-- [GCP Compute Engine 공식 문서](https:///cloud.google.com/compute/docs)
-
-### 유용한 리소스
-
-- [Docker Hub](https:///hub.docker.com/)
-- [GitHub Learning Lab](https:///lab.github.com/)
-- [AWS Free Tier](https:///aws.amazon.com/free/)
-- [GCP Free Tier](https:///cloud.google.com/free)
-
-### 관련 프로젝트
-
-- [Docker 샘플 프로젝트](https:///github.com/docker/awesome-compose)
-- [GitHub Actions 샘플](https:///github.com/actions/starter-workflows)
-- [AWS 샘플 프로젝트](https:///github.com/aws-samples)
-- [GCP 샘플 프로젝트](https:///github.com/GoogleCloudPlatform)
-
-</details>
-
-<details>
-<summary>🚀 다음 단계</summary>
-
-### Cloud Master 2일차 준비
-
-1. **Docker 고급 기법**: 멀티스테이지 빌드, 최적화
-2. **GitHub Actions 고급**: 매트릭스 빌드, 환경별 배포
-3. **VM 기반 컨테이너 배포**: 고가용성 구성
-4. **완전 자동화**: CI/CD 파이프라인 고도화
-
-### 실무 적용
-
-1. **실제 프로젝트**: 자신의 프로젝트에 Docker 적용
-2. **협업 환경**: 팀과 Git/GitHub 협업 워크플로우 구축
-3. **자동화**: GitHub Actions로 배포 자동화
-4. **모니터링**: 기본적인 로그 및 모니터링 설정
-
-</details>
 
 ## 🧹 실습 정리
 
-### 자동 정리 (권장)
+### 자동 정리
 ```bash
-# Day1 실습 자동 정리
-./mcp_knowledge_base/cloud_master/repos/automation/day1/docker-practice-automation.sh --cleanup
+# Docker 컨테이너 정리
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker rmi $(docker images -q)
 
-# 또는 수동 정리
-docker stop $(docker ps -aq) 2>/dev/null || true
-docker rm $(docker ps -aq) 2>/dev/null || true
-docker system prune -f
+# AWS 리소스 정리
+aws ec2 terminate-instances --instance-ids i-1234567890abcdef0
+
+# GCP 리소스 정리
+gcloud compute instances delete my-vm --zone=us-central1-a
 ```
 
-### 정리 확인
-- [ ] 모든 컨테이너 중지 및 삭제
-- [ ] 사용하지 않는 이미지 정리
-- [ ] Docker 볼륨 정리
-- [ ] 네트워크 정리
-
-
----
-
-## 🎉 완료!
-
-축하합니다! Cloud Master 1일차 실습을 완료했습니다.
-
-### 📚 학습 요약
-
-이번 실습을 통해 다음을 배웠습니다:
-
-1. **🐳 Docker**: 컨테이너 개념, Dockerfile 작성, Docker Compose
-2. **📝 Git/GitHub**: 버전 관리, 브랜치 전략, 협업 워크플로우
-3. **🚀 GitHub Actions**: CI/CD 파이프라인 구축, 자동 배포
-4. **☁️ VM 배포**: AWS EC2, GCP Compute Engine 웹 애플리케이션 배포
-
-### 📝 학습 피드백 수집
-
-#### 실습 완료 체크리스트
-
-- [ ] Docker 컨테이너 생성 및 실행 완료
-- [ ] Dockerfile 작성 및 이미지 빌드 완료
-- [ ] Git 저장소 생성 및 기본 명령어 실습 완료
-- [ ] GitHub Actions 워크플로우 작성 및 실행 완료
-- [ ] VM에 웹 애플리케이션 배포 완료
-
-#### 학습 난이도 평가
-
-- **매우 쉬움** ⭐
-- **쉬움** ⭐⭐
-- **보통** ⭐⭐⭐
-- **어려움** ⭐⭐⭐⭐
-- **매우 어려움** ⭐⭐⭐⭐⭐
-
-#### 개선 제안
-
-- 실습 중 어려웠던 부분: ________________
-- 추가로 배우고 싶은 내용: ________________
-- 실습 시간이 충분했는지: □ 충분함 □ 부족함 □ 과도함
-
-### 🚀 다음 단계
-
-- **Cloud Master 2일차**: Docker 고급 기법, GitHub Actions 고급 워크플로우
-- **실제 프로젝트 적용**: 자신의 프로젝트에 학습한 기술 적용
-- **고급 기능 학습**: 모니터링, 로드 밸런싱, 자동 스케일링
-
-### 💡 추가 학습 자료
-
-- [Docker 공식 문서](https:///docs.docker.com/)
-- [Git 공식 문서](https:///git-scm.com/doc)
-- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
-- Cloud Master 2일차
-- [피드백 제출](https:///forms.gle/example)
+### 수동 정리
+- [ ] Docker 컨테이너 중지 및 삭제
+- [ ] AWS EC2 인스턴스 종료
+- [ ] GCP Compute Engine 인스턴스 삭제
+- [ ] GitHub Actions 워크플로우 정리
 
 ---
 
-*🎯 이제 Docker, Git/GitHub, GitHub Actions의 기본기를 갖추었습니다! Cloud Master 2일차로 진행하세요.**
+## 📚 참고 자료
 
+### 공식 문서
+- [Docker 공식 문서](https://docs.docker.com/)
+- [Git 공식 문서](https://git-scm.com/doc)
+- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
+- [AWS EC2 공식 문서](https://docs.aws.amazon.com/ec2/)
+- [GCP Compute Engine 공식 문서](https://cloud.google.com/compute/docs)
 
-## 🧭 네비게이션
+### 문제 해결
+1. **Docker 이미지 빌드 실패**: Dockerfile 문법 및 의존성 확인
+2. **Git 푸시 실패**: 인증 정보 및 권한 확인
+3. **GitHub Actions 실패**: 워크플로우 파일 문법 확인
+4. **VM 연결 실패**: 보안 그룹 및 네트워크 설정 확인
 
-
-
-
-
-
-
-
+---
 
 <div align="center">
 
-[🏠 홈으로 돌아가기](/mcp_knowledge_base/index.md) | [📚 전체 커리큘럼](/mcp_knowledge_base/curriculum.md) | [🔗 학습 경로](/mcp_knowledge_base/learning-path.md)
+[← 이전: Cloud Master 메인](../README.md) | 
+[📚 전체 커리큘럼](../../../curriculum.md) | 
+[🏠 학습 경로로 돌아가기](../../../index.md) | 
+[다음: Day 2 →](../Day2/README.md)
 
 </div>

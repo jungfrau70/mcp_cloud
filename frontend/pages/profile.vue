@@ -4,6 +4,72 @@
       <h1 class="text-2xl font-bold text-gray-900 mb-2">내 프로필</h1>
       <p class="mb-6 text-sm text-gray-600">사용자 유형: <span class="font-semibold" :class="roleLabelClass">{{ roleLabel }}</span></p>
 
+      <!-- Gemini API Key Section -->
+      <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Gemini API 키 설정</h2>
+        <p class="text-sm text-gray-600 mb-4">AI 채팅 기능을 사용하려면 Google Gemini API 키가 필요합니다.</p>
+        
+        <div class="space-y-4">
+          <div>
+            <label for="geminiApiKey" class="block text-sm font-medium text-gray-700">Gemini API 키</label>
+            <div class="mt-1 flex rounded-md shadow-sm">
+              <input 
+                type="password" 
+                id="geminiApiKey" 
+                v-model="profileData.gemini_api_key" 
+                @input="onApiKeyInput"
+                :class="[
+                  'flex-1 min-w-0 block w-full px-3 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-offset-0',
+                  apiKeyValidation.isValid ? 'border-green-300 focus:ring-green-500 focus:border-green-500' : 
+                  apiKeyValidation.message && !apiKeyValidation.isValid ? 'border-red-300 focus:ring-red-500 focus:border-red-500' :
+                  'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500'
+                ]"
+                placeholder="AIzaSy..."
+              />
+              <button 
+                @click="toggleApiKeyVisibility" 
+                type="button" 
+                class="inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 rounded-r-md bg-gray-50 text-gray-500 hover:bg-gray-100"
+              >
+                {{ showApiKey ? '숨기기' : '보기' }}
+              </button>
+            </div>
+            
+            <!-- 유효성 검사 메시지 -->
+            <div v-if="apiKeyValidation.message" class="mt-2">
+              <div v-if="apiKeyValidation.isValid" class="flex items-center text-sm text-green-600">
+                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                {{ apiKeyValidation.message }}
+              </div>
+              <div v-else class="flex items-center text-sm text-red-600">
+                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                </svg>
+                {{ apiKeyValidation.message }}
+              </div>
+            </div>
+            
+            <p class="text-xs text-gray-500 mt-1">
+              <a href="https://makersuite.google.com/app/apikey" target="_blank" class="text-indigo-600 hover:text-indigo-500">
+                Google AI Studio에서 API 키 발급받기
+              </a>
+            </p>
+          </div>
+          
+          <div class="flex justify-end">
+            <button 
+              @click="updateProfile" 
+              :disabled="isUpdating || (!!profileData.gemini_api_key && !apiKeyValidation.isValid)"
+              class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+            >
+              {{ isUpdating ? '저장 중...' : '저장' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- API Keys Section -->
       <div class="bg-white shadow-md rounded-lg p-6">
         <div class="flex justify-between items-center mb-4">
@@ -85,6 +151,37 @@ const newKey = ref({
   secret_value: ''
 });
 
+// 프로필 데이터
+const profileData = ref({
+  full_name: '',
+  gemini_api_key: ''
+});
+const isUpdating = ref(false);
+const showApiKey = ref(false);
+
+// API 키 유효성 검사
+const apiKeyValidation = ref({
+  isValid: false,
+  message: '',
+  isChecking: false
+});
+
+async function fetchProfile() {
+  try {
+    const data = await $fetch('/api/v1/profile/me', {
+      headers: {
+        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
+      }
+    });
+    profileData.value = {
+      full_name: data.full_name || '',
+      gemini_api_key: data.gemini_api_key || ''
+    };
+  } catch (error) {
+    console.error("Failed to fetch profile:", error);
+  }
+}
+
 async function fetchKeys() {
   try {
     isLoading.value = true;
@@ -119,6 +216,95 @@ async function addKey() {
   }
 }
 
+// API 키 유효성 검사 함수
+function validateApiKey(apiKey: string) {
+  if (!apiKey || apiKey.trim() === '') {
+    return {
+      isValid: false,
+      message: 'API 키를 입력해주세요.'
+    };
+  }
+
+  const trimmedKey = apiKey.trim();
+  
+  // Gemini API 키 형식 검사
+  if (!trimmedKey.startsWith('AIzaSy')) {
+    return {
+      isValid: false,
+      message: '올바른 Gemini API 키 형식이 아닙니다. (AIzaSy...로 시작해야 함)'
+    };
+  }
+
+  if (trimmedKey.length < 20) {
+    return {
+      isValid: false,
+      message: 'API 키가 너무 짧습니다. (최소 20자 이상)'
+    };
+  }
+
+  if (trimmedKey.length > 100) {
+    return {
+      isValid: false,
+      message: 'API 키가 너무 깁니다. (최대 100자)'
+    };
+  }
+
+  // 특수문자나 공백 검사
+  if (!/^[A-Za-z0-9_-]+$/.test(trimmedKey)) {
+    return {
+      isValid: false,
+      message: 'API 키에 허용되지 않는 문자가 포함되어 있습니다.'
+    };
+  }
+
+  return {
+    isValid: true,
+    message: '유효한 API 키입니다.'
+  };
+}
+
+// API 키 입력 시 실시간 검사
+function onApiKeyInput() {
+  const validation = validateApiKey(profileData.value.gemini_api_key);
+  apiKeyValidation.value = {
+    ...validation,
+    isChecking: false
+  };
+}
+
+async function updateProfile() {
+  // API 키가 입력된 경우 유효성 검사
+  if (profileData.value.gemini_api_key && !apiKeyValidation.value.isValid) {
+    alert('유효한 API 키를 입력해주세요.');
+    return;
+  }
+
+  try {
+    isUpdating.value = true;
+    await $fetch('/api/v1/profile', {
+      method: 'PATCH',
+      body: profileData.value,
+      headers: {
+        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
+      }
+    });
+    alert('프로필이 성공적으로 업데이트되었습니다.');
+  } catch (error) {
+    console.error("Failed to update profile:", error);
+    alert('프로필 업데이트에 실패했습니다.');
+  } finally {
+    isUpdating.value = false;
+  }
+}
+
+function toggleApiKeyVisibility() {
+  showApiKey.value = !showApiKey.value;
+  const input = document.getElementById('geminiApiKey') as HTMLInputElement;
+  if (input) {
+    input.type = showApiKey.value ? 'text' : 'password';
+  }
+}
+
 async function deleteKey(keyId: number) {
   if (!confirm("정말로 이 키를 삭제하시겠습니까?")) return;
 
@@ -137,6 +323,7 @@ async function deleteKey(keyId: number) {
 }
 
 onMounted(() => {
+  fetchProfile();
   fetchKeys();
 });
 
