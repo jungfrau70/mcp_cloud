@@ -46,12 +46,7 @@ function connect(){
       ? `${window.location.protocol}//${window.location.host}${httpBase}`
       : httpBase
     const wsBase = absolute.replace(/^http/,'ws')
-    let join = ''
-    try {
-      const u = new URL(absolute)
-      if(!/\/api\/?$/.test(u.pathname)) join = '/api'
-    } catch {}
-    wsUrl = `${wsBase}${join}/v1/knowledge-base/tasks/ws?api_key=${apiKey}`
+    wsUrl = `${wsBase}/v1/knowledge-base/tasks/ws?api_key=${apiKey}`
   }
   
   socket = new WebSocket(wsUrl)
