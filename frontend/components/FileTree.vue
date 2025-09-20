@@ -61,7 +61,7 @@
       </li>
       <li v-for="file in files" :key="file.name || file">
         <div 
-          @click="emitFileClick(file.path || constructPath(file))" 
+          @click="handleFileClick(file)" 
           @dblclick="emit('file-open', (file.path || constructPath(file)))"
           @contextmenu="showFileMenu($event, file)"
           @dragstart="handleDragStart($event, file)"
@@ -528,6 +528,42 @@ const emitFileClick = (path) => {
     finalPath = finalPath.replace(/\\/g, '/');
     
     emit('file-click', finalPath);
+}
+
+// 파일 클릭 처리 함수 (파일 확장자에 따른 동작)
+const handleFileClick = (file) => {
+    const filePath = file.path || constructPath(file);
+    const fileName = file.name || file;
+    const ext = getFileExtension(fileName);
+    
+    console.log('File clicked:', { filePath, fileName, ext });
+    
+    // markdown 파일은 편집기로 열기
+    if (ext === 'md') {
+        emit('file-click', filePath);
+        return;
+    }
+    
+    // 텍스트 파일들은 읽기 전용으로 열기
+    if (['txt', 'log', 'json', 'yaml', 'yml', 'csv'].includes(ext)) {
+        emit('file-click', filePath);
+        return;
+    }
+    
+    // 미디어/문서 파일들은 새 탭에서 열기
+    if (['pdf', 'ppt', 'pptx', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'mp4', 'webm', 'mp3', 'wav'].includes(ext)) {
+        emit('file-open', filePath);
+        return;
+    }
+    
+    // 나머지 파일들은 다운로드
+    emit('file-open', filePath);
+}
+
+// 파일 확장자 추출 함수
+const getFileExtension = (filename) => {
+    const lastDot = filename.lastIndexOf('.');
+    return lastDot !== -1 ? filename.substring(lastDot + 1).toLowerCase() : '';
 }
 
 // Context menu handlers

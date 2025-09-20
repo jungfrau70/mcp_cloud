@@ -632,10 +632,8 @@ onMounted(async () => {
       try { await router.replace('/curriculum') } catch {}
       return
     }
-    try{
-      const lastTab = typeof window !== 'undefined' ? localStorage.getItem('kb_last_tab') : null
-      if(lastTab && ['tree','tiptap','markdown'].includes(lastTab)) kbTab.value = lastTab
-    }catch{}
+    // 지식베이스로 이동할 때 항상 markdown 탭으로 시작 (SplitEditor 사용)
+    kbTab.value = 'markdown'
     // 지식베이스 초기 화면: 파일 자동 열기 없이 FileTree 전체 화면 유지
   } else if (route.path.startsWith('/curriculum') || route.path.startsWith('/textbook')) {
     // Guard: curriculum/textbook require login
@@ -1227,6 +1225,8 @@ async function downloadKbFile(path){
 }
 
 async function onTreeSelect(p){
+  console.log('onTreeSelect called with path:', p)
+  
   // 한글 파일명 처리: 이미 인코딩된 경로인 경우 디코딩
   let decodedPath = p
   try {
@@ -1242,23 +1242,33 @@ async function onTreeSelect(p){
   decodedPath = decodedPath.replace(/\\/g, '/')
   
   const ext = getExt(decodedPath)
-  // md: 편집기로 열기, 텍스트 계열: 읽기 뷰(마크다운 탭)로 열기
+  console.log('File extension detected:', ext, 'for path:', decodedPath)
+  
+  // md: SplitEditor로 열기 (편집 가능한 형태)
   if(ext === 'md'){
+    console.log('Opening markdown file with SplitEditor')
     await handleKbFileSelect(decodedPath)
-    kbTab.value = 'tiptap'
+    kbTab.value = 'markdown' // SplitEditor가 있는 markdown 탭으로 설정
     return
   }
+  
+  // 텍스트 계열: 읽기 전용 마크다운 뷰로 열기
   if(['txt','log','json','yaml','yml','csv'].includes(ext)){
+    console.log('Opening text file with markdown view')
     await handleKbFileSelect(decodedPath)
     kbTab.value = 'markdown'
     return
   }
+  
   // 미디어/문서: 바이너리로 열기 또는 다운로드
   if(['pdf','ppt','pptx','png','jpg','jpeg','gif','svg','webp','mp4','webm','mp3','wav'].includes(ext)){
+    console.log('Opening binary file')
     await openKbBinary(decodedPath)
     return
   }
+  
   // 나머지는 다운로드만
+  console.log('Downloading file:', decodedPath)
   await downloadKbFile(decodedPath)
 }
 // KB 인덱스 문서 보장: index.md 우선 시도, 없으면 생성
