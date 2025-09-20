@@ -41,7 +41,7 @@ onMounted(async () => {
 
   // 동적으로 API URL 가져오기
   const config = useRuntimeConfig();
-  const apiBase = config.public.apiBaseUrl?.replace('/api', '') || (process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000');
+  const apiBase = config.public.apiBaseUrl || (process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000/api');
   const wsUrl = apiBase.replace('http://', 'ws://').replace('https://', 'wss://') + '/ws/v1/cli/interactive';
   
   ws = new WebSocket(wsUrl);
