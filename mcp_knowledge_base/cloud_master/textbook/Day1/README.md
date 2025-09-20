@@ -209,6 +209,13 @@ gcloud compute ssh my-vm --zone=us-central1-a
 > - [GitHub Actions 기초 실습](practices/github-actions-basics.md)
 > - [VM 배포 실습](practices/vm-deployment.md)
 
+> 🚀 **자동화 스크립트**: 실습을 더 쉽게 하려면 다음 자동화 스크립트를 사용하세요.
+> - [AWS 설정 도우미](../../repos/cloud-scripts/aws-setup-helper.sh) - AWS 환경 자동 설정
+> - [GCP 설정 도우미](../../repos/cloud-scripts/gcp-setup-helper.sh) - GCP 환경 자동 설정
+> - [AWS EC2 자동 생성](../../repos/cloud-scripts/aws-ec2-create.sh) - EC2 인스턴스 자동 생성
+> - [GCP VM 자동 생성](../../repos/cloud-scripts/gcp-compute-create.sh) - Compute Engine 자동 생성
+> - [리소스 정리 스크립트](../../repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
+
 <details>
 <summary>🐳 Docker 실습</summary>
 
@@ -372,6 +379,19 @@ git push origin main
 <summary>☁️ VM 배포 실습</summary>
 
 ### AWS EC2 배포
+
+**방법 1: 자동화 스크립트 사용 (권장)**
+```bash
+# AWS 설정 도우미 실행
+chmod +x ../../repos/cloud-scripts/aws-setup-helper.sh
+./../../repos/cloud-scripts/aws-setup-helper.sh
+
+# EC2 인스턴스 자동 생성
+chmod +x ../../repos/cloud-scripts/aws-ec2-create.sh
+./../../repos/cloud-scripts/aws-ec2-create.sh
+```
+
+**방법 2: 수동 명령어 실행**
 ```bash
 # EC2 인스턴스 생성
 aws ec2 run-instances \
@@ -393,6 +413,19 @@ EOF
 ```
 
 ### GCP Compute Engine 배포
+
+**방법 1: 자동화 스크립트 사용 (권장)**
+```bash
+# GCP 설정 도우미 실행
+chmod +x ../../repos/cloud-scripts/gcp-setup-helper.sh
+./../../repos/cloud-scripts/gcp-setup-helper.sh
+
+# Compute Engine 인스턴스 자동 생성
+chmod +x ../../repos/cloud-scripts/gcp-compute-create.sh
+./../../repos/cloud-scripts/gcp-compute-create.sh
+```
+
+**방법 2: 수동 명령어 실행**
 ```bash
 # VM 인스턴스 생성
 gcloud compute instances create my-vm \
@@ -420,6 +453,19 @@ EOF
 ## 🧹 실습 정리
 
 ### 자동 정리
+
+**방법 1: 자동화 스크립트 사용 (권장)**
+```bash
+# AWS 리소스 자동 정리
+chmod +x ../../repos/cloud-scripts/aws-resource-cleanup.sh
+./../../repos/cloud-scripts/aws-resource-cleanup.sh
+
+# GCP 리소스 자동 정리
+chmod +x ../../repos/cloud-scripts/gcp-project-cleanup.sh
+./../../repos/cloud-scripts/gcp-project-cleanup.sh
+```
+
+**방법 2: 수동 정리**
 ```bash
 # Docker 컨테이너 정리
 docker stop $(docker ps -aq)

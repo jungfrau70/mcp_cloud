@@ -46,7 +46,7 @@
                 <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.188l3.71-3.957a.75.75 0 111.08 1.04l-4.25 4.53a.75.75 0 01-1.08 0l-4.25-4.53a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
               </button>
               <div v-if="userMenuOpen" class="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-30" role="menu">
-                <button @click="() => { window.profileModalClicked = true; profileModalAllowed.value = true; openProfileModal(); }" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">프로파일</button>
+                <button @click="goToProfilePage" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">프로파일</button>
                 <button @click="onLogout" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">로그아웃</button>
               </div>
             </div>
@@ -228,10 +228,14 @@ const { canUseChat, fetchUserProfile, userProfile } = useGeminiApiKey()
 watch(userMenuOpen, (newVal) => {
   console.log('userMenuOpen changed:', newVal)
 }, { immediate: true })
-// 중복 토큰 로드 방지: auth.loadFromStorage() 제거
 
 // Hydration 불일치 방지를 위한 클라이언트 사이드 체크
 const isClient = process.client && typeof window !== 'undefined'
+
+// 클라이언트 사이드에서 auth store 초기화
+if (isClient) {
+  auth.loadFromStorage()
+}
 
 async function fetchCurrentUser(){
   // 클라이언트 사이드에서만 실행
@@ -296,6 +300,14 @@ function redirectToLogin() {
     window.location.href = `/login?rd=${encodeURIComponent(dest)}`
   } catch {
     window.location.href = '/knowledge-base'
+  }
+}
+
+// 프로필 페이지로 이동
+function goToProfilePage() {
+  userMenuOpen.value = false // 메뉴 닫기
+  if (typeof window !== 'undefined') {
+    window.location.href = '/profile'
   }
 }
 

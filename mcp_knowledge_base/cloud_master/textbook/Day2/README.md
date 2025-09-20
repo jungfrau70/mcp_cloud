@@ -221,6 +221,11 @@ jobs:
 > - [Kubernetes 기초 실습](practices/kubernetes-basics.md)
 > - [컨테이너 오케스트레이션 실습](practices/container-orchestration.md)
 
+> 🚀 **자동화 스크립트**: VM 환경 구성을 더 쉽게 하려면 다음 스크립트를 사용하세요.
+> - [AWS 설정 도우미](../../repos/cloud-scripts/aws-setup-helper.sh) - AWS 환경 자동 설정
+> - [GCP 설정 도우미](../../repos/cloud-scripts/gcp-setup-helper.sh) - GCP 환경 자동 설정
+> - [리소스 정리 스크립트](../../repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
+
 <details>
 <summary>🐳 고급 Docker 실습</summary>
 

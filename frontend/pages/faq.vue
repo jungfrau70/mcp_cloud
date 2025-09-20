@@ -82,14 +82,22 @@
             <div class="border-l-4 border-orange-500 pl-4">
               <h3 class="font-semibold text-gray-800 mb-2">Q. API 키를 입력했는데도 채팅이 안 됩니다.</h3>
               <div class="text-gray-600 space-y-2">
-                <p><strong>A. 다음 사항을 확인해주세요:</strong></p>
-                <ul class="list-disc list-inside space-y-1 ml-4">
-                  <li><strong>API 키 형식:</strong> "AIzaSy"로 시작하는지 확인</li>
-                  <li><strong>API 키 길이:</strong> 최소 20자 이상인지 확인</li>
-                  <li><strong>저장 완료:</strong> 프로필에서 "저장" 버튼을 클릭했는지 확인</li>
+                <p><strong>A. 다음 사항을 단계별로 확인해주세요:</strong></p>
+                <ol class="list-decimal list-inside space-y-1 ml-4">
+                  <li><strong>API 키 형식 확인:</strong> "AIzaSy"로 시작하는지 확인</li>
+                  <li><strong>API 키 길이 확인:</strong> 최소 20자 이상인지 확인</li>
+                  <li><strong>저장 완료 확인:</strong> 프로필에서 "저장" 버튼을 클릭했는지 확인</li>
+                  <li><strong>유효성 검사 통과:</strong> 입력란 아래에 "유효한 API 키입니다" 메시지가 표시되는지 확인</li>
                   <li><strong>페이지 새로고침:</strong> 저장 후 페이지를 새로고침해보세요</li>
                   <li><strong>Google 계정 상태:</strong> Google AI Studio에서 API 키가 활성화되어 있는지 확인</li>
-                </ul>
+                  <li><strong>네트워크 연결:</strong> 안정적인 인터넷 연결 상태인지 확인</li>
+                </ol>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-md p-3 mt-3">
+                  <p class="text-sm text-yellow-800">
+                    <strong>🔧 문제 해결:</strong> 위 단계를 모두 확인했는데도 문제가 지속되면, 
+                    <a href="mailto:support@goldencircle.us" class="text-blue-600 underline">support@goldencircle.us</a>로 문의해주세요.
+                  </p>
+                </div>
                 <div class="bg-red-50 border border-red-200 rounded-md p-3 mt-3">
                   <p class="text-sm text-red-800">
                     <strong>⚠️ 주의:</strong> API 키는 개인정보이므로 다른 사람과 공유하지 마세요.
@@ -108,6 +116,26 @@
                   <li><strong>추가 요금:</strong> 무료 할당량 초과 시에만 요금 발생</li>
                   <li><strong>사용량 확인:</strong> Google AI Studio에서 사용량을 확인할 수 있습니다</li>
                 </ul>
+              </div>
+            </div>
+
+            <div class="border-l-4 border-red-500 pl-4">
+              <h3 class="font-semibold text-gray-800 mb-2">Q. "API 키가 설정되지 않았습니다" 오류가 나타납니다.</h3>
+              <div class="text-gray-600 space-y-2">
+                <p><strong>A. 이 오류는 다음과 같은 경우에 발생합니다:</strong></p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                  <li><strong>API 키 미입력:</strong> 프로필에서 Gemini API 키를 입력하지 않았을 때</li>
+                  <li><strong>API 키 미저장:</strong> 입력했지만 "저장" 버튼을 클릭하지 않았을 때</li>
+                  <li><strong>잘못된 형식:</strong> API 키가 "AIzaSy"로 시작하지 않을 때</li>
+                  <li><strong>길이 부족:</strong> API 키가 20자 미만일 때</li>
+                </ul>
+                <div class="bg-green-50 border border-green-200 rounded-md p-3 mt-3">
+                  <p class="text-sm text-green-800">
+                    <strong>✅ 해결 방법:</strong> 
+                    <NuxtLink to="/profile" class="text-blue-600 underline">프로필 페이지</NuxtLink>에서 
+                    올바른 형식의 API 키를 입력하고 저장해주세요.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

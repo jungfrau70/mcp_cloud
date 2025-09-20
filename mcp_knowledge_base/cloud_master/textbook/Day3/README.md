@@ -148,6 +148,11 @@ docker --version
 > - [모니터링 기초 실습](practices/monitoring-basics.md)
 > - [비용 최적화 실습](practices/cost-optimization.md)
 
+> 🚀 **자동화 스크립트**: VM 환경 구성을 더 쉽게 하려면 다음 스크립트를 사용하세요.
+> - [AWS 설정 도우미](../../repos/cloud-scripts/aws-setup-helper.sh) - AWS 환경 자동 설정
+> - [GCP 설정 도우미](../../repos/cloud-scripts/gcp-setup-helper.sh) - GCP 환경 자동 설정
+> - [리소스 정리 스크립트](../../repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
+
 <details>
 <summary>⚖️ 로드밸런싱 실습</summary>
 

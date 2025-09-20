@@ -20,14 +20,23 @@
               <strong>API 키 설정 방법:</strong>
             </div>
             <ol class="text-xs text-orange-700 text-left space-y-1">
-              <li>1. 프로필 페이지로 이동</li>
-              <li>2. "Gemini API 키 설정" 섹션에서 키 입력</li>
-              <li>3. <a href="https://makersuite.google.com/app/apikey" target="_blank" class="text-blue-600 underline">Google AI Studio</a>에서 무료 발급</li>
+              <li>1. <a href="https://makersuite.google.com/app/apikey" target="_blank" class="text-blue-600 underline font-medium">Google AI Studio</a>에서 무료 발급</li>
+              <li>2. 프로필 페이지로 이동</li>
+              <li>3. "Gemini API 키 설정" 섹션에서 키 입력</li>
+              <li>4. "저장" 버튼 클릭</li>
             </ol>
+            <div class="mt-3 p-2 bg-yellow-100 border border-yellow-300 rounded text-xs text-yellow-800">
+              <strong>💡 팁:</strong> API 키는 "AIzaSy"로 시작하며 20자 이상이어야 합니다.
+            </div>
           </div>
-          <button @click="goToProfile" class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 text-sm">
-            프로필로 이동
-          </button>
+          <div class="flex gap-2">
+            <button @click="goToProfile" class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 text-sm">
+              프로필로 이동
+            </button>
+            <NuxtLink to="/faq" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 text-sm">
+              FAQ 보기
+            </NuxtLink>
+          </div>
         </div>
         <div v-else class="h-full flex flex-col items-center justify-center text-center text-gray-500 select-none">
           <div class="text-2xl font-semibold mb-2">준비되면 얘기해 주세요.</div>
@@ -325,13 +334,19 @@ if (typeof window !== 'undefined') {
 // 프로필 페이지로 이동
 function goToProfile() {
   if (typeof window !== 'undefined') {
-    // 로그인 상태 확인
-    const auth = useAuthStore()
-    if (!auth.token) {
-      // 로그인하지 않은 경우 로그인 페이지로 이동
-      window.location.href = '/login'
-    } else {
-      // 로그인한 경우 프로필 페이지로 이동
+    try {
+      // 로그인 상태 확인 - localStorage에서 직접 확인
+      const token = localStorage.getItem('auth_token')
+      if (!token) {
+        // 로그인하지 않은 경우 로그인 페이지로 이동
+        window.location.href = '/login'
+      } else {
+        // 로그인한 경우 프로필 페이지로 이동
+        window.location.href = '/profile'
+      }
+    } catch (error) {
+      console.error('프로필 페이지 이동 중 오류:', error)
+      // 오류 발생 시 기본적으로 프로필 페이지로 이동 시도
       window.location.href = '/profile'
     }
   }

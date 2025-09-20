@@ -9,6 +9,21 @@
         <h2 class="text-lg font-semibold text-gray-800 mb-4">Gemini API 키 설정</h2>
         <p class="text-sm text-gray-600 mb-4">AI 채팅 기능을 사용하려면 Google Gemini API 키가 필요합니다.</p>
         
+        <!-- API 키 발급 안내 -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+          <h3 class="text-sm font-semibold text-blue-800 mb-2">📋 API 키 발급 방법</h3>
+          <ol class="text-xs text-blue-700 space-y-1">
+            <li>1. <a href="https://makersuite.google.com/app/apikey" target="_blank" class="text-blue-600 underline font-medium">Google AI Studio</a>에 방문</li>
+            <li>2. Google 계정으로 로그인</li>
+            <li>3. "Create API Key" 버튼 클릭</li>
+            <li>4. 생성된 API 키 복사 (AIzaSy...로 시작)</li>
+            <li>5. 아래 입력란에 붙여넣기</li>
+          </ol>
+          <p class="text-xs text-blue-600 mt-2">
+            <strong>💡 팁:</strong> API 키는 무료로 제공되며, 월 1,500회까지 무료로 사용할 수 있습니다.
+          </p>
+        </div>
+        
         <div class="space-y-4">
           <div>
             <label for="geminiApiKey" class="block text-sm font-medium text-gray-700">Gemini API 키</label>
@@ -168,15 +183,20 @@ const apiKeyValidation = ref({
 
 async function fetchProfile() {
   try {
+    // localStorage에서 직접 토큰 확인
+    const token = process.client ? localStorage.getItem('auth_token') : null;
+    
     const data = await $fetch('/api/v1/profile/me', {
       headers: {
-        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
       }
     });
     profileData.value = {
       full_name: data.full_name || '',
       gemini_api_key: data.gemini_api_key || ''
     };
+    // 프로필 로드 후 API 키 유효성 검사 초기화
+    onApiKeyInput();
   } catch (error) {
     console.error("Failed to fetch profile:", error);
   }
@@ -185,9 +205,11 @@ async function fetchProfile() {
 async function fetchKeys() {
   try {
     isLoading.value = true;
+    const token = process.client ? localStorage.getItem('auth_token') : null;
+    
     const data = await $fetch<ApiKey[]>('/api/v1/profile/keys', {
       headers: {
-        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
       }
     });
     keys.value = (data || []) as ApiKey[];
@@ -201,11 +223,13 @@ async function fetchKeys() {
 
 async function addKey() {
   try {
+    const token = process.client ? localStorage.getItem('auth_token') : null;
+    
     await $fetch('/api/v1/profile/keys', {
       method: 'POST',
       body: newKey.value,
       headers: {
-        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
       }
     });
     showAddKeyModal.value = false;
@@ -275,23 +299,26 @@ function onApiKeyInput() {
 async function updateProfile() {
   // API 키가 입력된 경우 유효성 검사
   if (profileData.value.gemini_api_key && !apiKeyValidation.value.isValid) {
-    alert('유효한 API 키를 입력해주세요.');
+    alert('유효한 API 키를 입력해주세요. API 키는 "AIzaSy"로 시작하고 20자 이상이어야 합니다.');
     return;
   }
 
   try {
     isUpdating.value = true;
+    const token = process.client ? localStorage.getItem('auth_token') : null;
+    
     await $fetch('/api/v1/profile', {
       method: 'PATCH',
       body: profileData.value,
       headers: {
-        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
       }
     });
     alert('프로필이 성공적으로 업데이트되었습니다.');
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to update profile:", error);
-    alert('프로필 업데이트에 실패했습니다.');
+    const errorMessage = error.response?.data?.detail || '프로필 업데이트에 실패했습니다.';
+    alert(`프로필 업데이트 실패: ${errorMessage}`);
   } finally {
     isUpdating.value = false;
   }
@@ -309,11 +336,13 @@ async function deleteKey(keyId: number) {
   if (!confirm("정말로 이 키를 삭제하시겠습니까?")) return;
 
   try {
+    const token = process.client ? localStorage.getItem('auth_token') : null;
+    
     await $fetch(`/api/v1/profile/keys/${keyId}`,
     {
       method: 'DELETE',
       headers: {
-        ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
       }
     });
     await fetchKeys(); // Refresh list
@@ -322,7 +351,20 @@ async function deleteKey(keyId: number) {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
+  // 로그인 상태 확인
+  const token = process.client ? localStorage.getItem('auth_token') : null;
+  if (!token) {
+    // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
+    if (process.client) {
+      window.location.href = '/login';
+    }
+    return;
+  }
+  
+  // auth store 초기화
+  auth.loadFromStorage();
+  
   fetchProfile();
   fetchKeys();
 });
