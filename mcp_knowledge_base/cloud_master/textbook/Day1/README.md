@@ -203,6 +203,12 @@ gcloud compute ssh my-vm --zone=us-central1-a
 
 ## 🛠️ 실습 학습
 
+> 📚 **상세 실습 가이드**: 각 주제별 상세한 실습은 다음 파일들을 참조하세요.
+> - [Docker 기초 실습](practices/docker-basics.md)
+> - [Git/GitHub 기초 실습](practices/git-github-basics.md)
+> - [GitHub Actions 기초 실습](practices/github-actions-basics.md)
+> - [VM 배포 실습](practices/vm-deployment.md)
+
 <details>
 <summary>🐳 Docker 실습</summary>
 
@@ -436,6 +442,13 @@ gcloud compute instances delete my-vm --zone=us-central1-a
 ---
 
 ## 📚 참고 자료
+
+### 상세 가이드
+- [Docker 고급 가이드](guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
+- [Docker Compose 가이드](guides/docker-compose-guide.md) - 다중 서비스 관리
+- [GitHub Actions 가이드](guides/github-actions-guide.md) - CI/CD 파이프라인 구축
+- [AWS & GCP 배포 가이드](guides/aws-gcp-deployment-guide.md) - 멀티클라우드 배포
+- [트러블슈팅 가이드](guides/troubleshooting-guide.md) - 문제 해결 및 디버깅
 
 ### 공식 문서
 - [Docker 공식 문서](https://docs.docker.com/)

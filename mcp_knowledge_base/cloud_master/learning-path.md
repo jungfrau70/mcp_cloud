@@ -18,10 +18,10 @@
 ### 1단계: 환경 설정
 - [AWS Free Tier 계정](https://aws.amazon.com/free/) 생성
 - [GCP Free Tier 계정](https://cloud.google.com/free) 생성
-- [Docker 설치](guides/install_docker.md)
-- [Git 설정](guides/install_git.md)
-- [AWS CLI 설정](guides/install_aws_cli.md)
-- [GCP CLI 설정](guides/install_gcp_cli.md)
+- [Docker 설치](../cloud_basic/textbook/Day1/guides/install_docker.md)
+- [Git 설정](../cloud_basic/textbook/Day1/guides/install_git.md)
+- [AWS CLI 설정](../cloud_basic/textbook/Day1/guides/install_aws_cli.md)
+- [GCP CLI 설정](../cloud_basic/textbook/Day1/guides/install_gcp_cli.md)
 
 ### 2단계: Day별 학습
 
@@ -41,10 +41,10 @@
 - [VM 배포 전략](textbook/Day1/README.md#vm-배포)
 
 #### 🛠️ 실습 가이드
-- [Docker 실습](textbook/Day1/practices/docker-basics.md)
-- [Git/GitHub 실습](textbook/Day1/practices/git-github-basics.md)
-- [GitHub Actions 실습](textbook/Day1/practices/github-actions-basics.md)
-- [VM 배포 실습](textbook/Day1/practices/vm-deployment.md)
+- [Docker 실습](textbook/Day1/README.md#docker-기초-실습)
+- [Git/GitHub 실습](textbook/Day1/README.md#gitgithub-협업-실습)
+- [GitHub Actions 실습](textbook/Day1/README.md#github-actions-cicd-실습)
+- [VM 배포 실습](textbook/Day1/README.md#vm-배포-자동화-실습)
 
 #### 💻 실습 코드
 - [Docker 샘플 코드](repos/samples/day1/docker/)
@@ -74,10 +74,10 @@
 - [자동화된 배포](textbook/Day2/README.md#자동화된-배포)
 
 #### 🛠️ 실습 가이드
-- [고급 Docker 실습](textbook/Day2/practices/advanced-docker.md)
-- [고급 GitHub Actions 실습](textbook/Day2/practices/advanced-github-actions.md)
-- [Kubernetes 실습](textbook/Day2/practices/kubernetes-basics.md)
-- [자동화된 배포 실습](textbook/Day2/practices/automated-deployment.md)
+- [고급 Docker 실습](textbook/Day2/README.md#고급-docker-실습)
+- [고급 GitHub Actions 실습](textbook/Day2/README.md#고급-github-actions-실습)
+- [Kubernetes 실습](textbook/Day2/README.md#kubernetes-실습)
+- [자동화된 배포 실습](textbook/Day2/README.md#자동화된-배포-실습)
 
 #### 💻 실습 코드
 - [고급 Docker 샘플](repos/samples/day2/advanced-docker/)
@@ -107,10 +107,10 @@
 - [비용 최적화](textbook/Day3/README.md#비용-최적화)
 
 #### 🛠️ 실습 가이드
-- [로드밸런싱 실습](textbook/Day3/practices/load-balancing.md)
-- [오토스케일링 실습](textbook/Day3/practices/auto-scaling.md)
-- [모니터링 실습](textbook/Day3/practices/monitoring.md)
-- [비용 최적화 실습](textbook/Day3/practices/cost-optimization.md)
+- [로드밸런싱 실습](textbook/Day3/README.md#로드-밸런싱-실습)
+- [오토스케일링 실습](textbook/Day3/README.md#오토스케일링-실습)
+- [모니터링 실습](textbook/Day3/README.md#모니터링-실습)
+- [비용 최적화 실습](textbook/Day3/README.md#비용-최적화-실습)
 
 #### 💻 실습 코드
 - [로드밸런싱 설정](repos/samples/day3/load-balancing/)
