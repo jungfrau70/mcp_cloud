@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict LRRe1v3bRhtY2091XQwBDbfhmjHFsrOwS2PUz77iJYV7kIhgBmkIUpOcvg2xGAq
+\restrict gCr1gxta1AFK2f2DHKw9OYYeOaa6qmzQ4RBAfmPWYaa576wubeaJ3fCfO6OPH7W
 
 -- Dumped from database version 14.19 (Debian 14.19-1.pgdg13+1)
 -- Dumped by pg_dump version 14.19 (Debian 14.19-1.pgdg13+1)
@@ -432,7 +432,10 @@ CREATE TABLE public.users (
     email_verified_at timestamp without time zone,
     last_login_at timestamp without time zone,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    gemini_api_key character varying,
+    password_reset_token character varying,
+    password_reset_expires timestamp without time zone
 );
 
 
@@ -614,30 +617,32 @@ COPY public.user_subscriptions (id, user_id, stripe_customer_id, stripe_subscrip
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: mcpuser
 --
 
-COPY public.users (id, email, full_name, role, picture_url, password_hash, is_active, email_verification_token, email_verified_at, last_login_at, created_at, updated_at) FROM stdin;
-14	swspcompany@gmail.com	jhong	student	\N	$2b$12$nRo2ZGUgoMikutwPd1vKCuYK1vH2Uwtj94etbu8mH72MhtBaj6NUi	t	\N	2025-09-02 04:13:56.085627	2025-09-02 04:14:07.12447	2025-09-02 04:12:23.288269	2025-09-02 04:14:07.125349
-11	sdgkadfja2@gmail.com	GBSA	student	\N	$2b$12$DdWym3qQAKPkoSc1klSNDuxhIcQdmTX8ZVFqs0Dpk.BiMw3LV/Kky	t	\N	2025-09-02 04:13:17.20115	2025-09-02 04:14:13.102242	2025-09-02 04:11:44.926211	2025-09-02 04:14:13.104595
-5	malibu7777@gmail.com	\N	student	\N	$2b$12$IDntwsfdywpwj8UvA.Fk2OWWlEgOowC7qWTvdmW1HnCuOVDGjJ5mu	f	PeUWWnVCZW-p2dG2wD1dHIgWZuUxhoDwXV0_CC7_Y4Y	\N	2025-09-02 04:05:34.677982	2025-09-02 04:05:34.678538	2025-09-02 04:05:34.678541
-12	edenism79@gmail.com	\N	student	\N	$2b$12$NI.NOYHTBhvKSlPNWGZVnuMOYVBEjmAdYs42BDIlIizTmEXTE7B1G	t	\N	2025-09-02 04:14:06.910424	2025-09-02 04:14:21.111119	2025-09-02 04:11:50.751588	2025-09-02 04:14:21.112083
-1	inhwan.jung@gmail.com	관리자	admin	\N	$2b$12$vY3h8u61cJ3k4n.h962ao.scTEbX196taIBatnz6M03AGmwO1mgze	t	\N	2025-09-02 03:29:07.665002	2025-09-02 04:06:55.775811	2025-09-02 03:27:50.96081	2025-09-02 04:06:55.776321
-8	hslyu@woodlov3r.com	류화실	student	\N	$2b$12$VnPst8SLABKbZRpMaiD/Vem2SgsVp6nOckEv5NuwMkunnncrP6Mxm	t	\N	2025-09-02 04:23:20.907823	2025-09-02 04:23:51.806653	2025-09-02 04:06:31.510582	2025-09-02 04:23:51.807206
-6	norbert@norbertmobility.com	Norbert 	student	\N	$2b$12$mNuOkG4TIWCHJ/ksG6TzVejjICcQcYC.No9JH/HcSfaI1p8BgLFhm	t	\N	2025-09-02 04:07:16.681704	2025-09-02 04:07:41.020686	2025-09-02 04:05:46.84968	2025-09-02 04:07:41.021185
-4	stormrider.park@gmail.com	John	student	\N	$2b$12$jqeGJMmyMEL1UpfeTDrsv.DtnsAVewRP3IMMu2x0HbvhJhRQlt.RO	t	\N	2025-09-02 04:07:53.284355	2025-09-02 04:09:31.590678	2025-09-02 04:05:31.060561	2025-09-02 04:09:31.591272
-7	chloe.green0508@gmail.com	이초록	student	\N	$2b$12$QPgulZZ59KniR94tPSdEoOM99jl4Eu9ZpaLUjnrctMHW6WmeKt0R2	t	\N	2025-09-02 04:09:34.776477	2025-09-02 04:09:47.776242	2025-09-02 04:06:13.605159	2025-09-02 04:09:47.776963
-13	ljh791126@gmail.com	\N	student	\N	$2b$12$jZodLcHFJ3s77.OY2fOiV.yMmGW2VaTUTnR9W3Hc4RyXfYcOzI6DS	t	\N	2025-09-02 04:13:21.06961	2025-09-02 04:13:25.422534	2025-09-02 04:12:06.397625	2025-09-02 04:13:25.423058
-15	hancin01@gmail.com	김한신	student	\N	$2b$12$DwTLqB5i0mejXw20YhY6ru0ZjPzVRfFenW9tD2tKBcRunEJyPUbPy	f	ul0fOEcvoBPSh_papx4S2uKD1jvox71Kejysy-AFRmY	\N	2025-09-02 04:13:28.469481	2025-09-02 04:13:28.470271	2025-09-02 04:13:28.470275
-18	keymantiger@gmail.com	keyman	student	\N	$2b$12$zzLuHBio7xBSX1qDP3FB0.RJKWh5peSk.mHHZbHc2TDGjbF8p3p52	t	\N	2025-09-02 04:15:34.274435	2025-09-02 04:15:52.736039	2025-09-02 04:14:29.000565	2025-09-02 04:15:52.736745
-16	ginakimth@gmail.com	김태현	student	\N	$2b$12$j6p43k7q.4wwHUeJdNLi9OJi5kkHHy799CWnK3SqQwmyWdc7NrhdK	t	\N	2025-09-02 04:16:57.385605	2025-09-02 04:17:08.340096	2025-09-02 04:14:15.188275	2025-09-02 04:17:08.340792
-19	hyeonmo9@gmail.com	구현모	student	\N	$2b$12$nhQlnJKeY.uCyXcV3zgzRuFTeHUlkEDO6cirqvs83lJpnVh/RO05m	t	\N	2025-09-02 04:19:43.875429	2025-09-02 04:19:51.463306	2025-09-02 04:19:07.110969	2025-09-02 04:19:51.463917
-9	hancin011@gmail.com	김한신	student	\N	$2b$12$PFkxjuapnhQxHXmHC3zgA.QyDs4XvehxrHknmY9q/RdQAXHAYKAfq	t	\N	2025-09-02 04:14:41.445541	2025-09-02 04:20:34.417033	2025-09-02 04:06:54.714974	2025-09-02 04:20:34.417671
-20	h_y@naver.com	김희영	student	\N	$2b$12$H/xDHZGbg.kDh9CuFYC9deqwnf9rgr0sdBoS6U0EoxkH8CUXpoYFO	t	\N	2025-09-02 04:21:30.187468	2025-09-02 04:21:02.153402	2025-09-02 04:21:02.15423	2025-09-02 04:21:30.188013
-10	yunissoft25@gmail.com	yunis	student	\N	$2b$12$kBHQD4wBYMZ5qzI/kwP2xOUGDpfapF5DEiH2lD0nYO3UEj2xMj4tO	t	\N	2025-09-02 04:14:24.945612	2025-09-02 04:21:32.65004	2025-09-02 04:07:11.84577	2025-09-02 04:21:32.650892
-22	stephen4@naver.com	\N	student	\N	$2b$12$3sihkBw4u5YFGW5WWF4PRelAySCt9JbaxApUIeqeVFI3YezJb26mi	t	\N	2025-09-02 04:37:06.808546	2025-09-02 04:37:29.755889	2025-09-02 04:36:40.366809	2025-09-02 04:37:29.756622
-2	chlgudals65@gmail.com	최형민	student	\N	$2b$12$FADGIhVcyHvIXT8j5/40ZOyMLEFcyFZYmu7XJ9RDYKgeQYpgornRG	t	\N	2025-09-02 04:13:36.799155	2025-09-02 05:01:26.239172	2025-09-02 04:03:42.070322	2025-09-02 05:01:26.24009
-23	leejihyun935@gmail.com	irich	student	\N	$2b$12$P8kYroaNMlpHwQudAkWG9e/nOzig7HFIX2/Ceelo.drOifYGFJ9UC	t	\N	2025-09-02 05:55:46.823704	2025-09-02 05:54:27.656171	2025-09-02 05:54:27.657277	2025-09-02 05:55:46.82491
-17	leejihyun93535@gmail.com	jihyun lee	student	\N	$2b$12$GN19HaH1p1ONu.uoVy.DOew8UC/IFx6PqM6ImwUzrpCsNipmRZ/p2	t	\N	2025-09-02 05:57:22.279831	2025-09-02 05:57:35.453953	2025-09-02 04:14:26.423203	2025-09-02 05:57:35.454517
-3	wdbswo@outlook.com	YJ	student	\N	$2b$12$azBpDN5elOwNVYzAreRJK.gOQFA7irkweWnQujTaNfeUk6if47pxK	t	\N	2025-09-02 04:04:54.205978	2025-09-02 06:44:45.37828	2025-09-02 04:04:27.540528	2025-09-02 06:44:45.378718
-21	kmalibu@outlook.kr	malibu	student	\N	$2b$12$snvr27BoLIHudpPkJAwi0.8w9ig5EnHfbsP.Xt5bB/g6x3so1duTC	t	\N	2025-09-02 04:26:11.977618	2025-09-02 07:05:06.288154	2025-09-02 04:25:53.644799	2025-09-02 07:05:06.289194
+COPY public.users (id, email, full_name, role, picture_url, password_hash, is_active, email_verification_token, email_verified_at, last_login_at, created_at, updated_at, gemini_api_key, password_reset_token, password_reset_expires) FROM stdin;
+14	swspcompany@gmail.com	jhong	student	\N	$2b$12$nRo2ZGUgoMikutwPd1vKCuYK1vH2Uwtj94etbu8mH72MhtBaj6NUi	t	\N	2025-09-02 04:13:56.085627	2025-09-02 04:14:07.12447	2025-09-02 04:12:23.288269	2025-09-02 04:14:07.125349	\N	\N	\N
+11	sdgkadfja2@gmail.com	GBSA	student	\N	$2b$12$DdWym3qQAKPkoSc1klSNDuxhIcQdmTX8ZVFqs0Dpk.BiMw3LV/Kky	t	\N	2025-09-02 04:13:17.20115	2025-09-02 04:14:13.102242	2025-09-02 04:11:44.926211	2025-09-02 04:14:13.104595	\N	\N	\N
+5	malibu7777@gmail.com	\N	student	\N	$2b$12$IDntwsfdywpwj8UvA.Fk2OWWlEgOowC7qWTvdmW1HnCuOVDGjJ5mu	f	PeUWWnVCZW-p2dG2wD1dHIgWZuUxhoDwXV0_CC7_Y4Y	\N	2025-09-02 04:05:34.677982	2025-09-02 04:05:34.678538	2025-09-02 04:05:34.678541	\N	\N	\N
+12	edenism79@gmail.com	\N	student	\N	$2b$12$NI.NOYHTBhvKSlPNWGZVnuMOYVBEjmAdYs42BDIlIizTmEXTE7B1G	t	\N	2025-09-02 04:14:06.910424	2025-09-02 04:14:21.111119	2025-09-02 04:11:50.751588	2025-09-02 04:14:21.112083	\N	\N	\N
+8	hslyu@woodlov3r.com	류화실	student	\N	$2b$12$VnPst8SLABKbZRpMaiD/Vem2SgsVp6nOckEv5NuwMkunnncrP6Mxm	t	\N	2025-09-02 04:23:20.907823	2025-09-02 04:23:51.806653	2025-09-02 04:06:31.510582	2025-09-02 04:23:51.807206	\N	\N	\N
+6	norbert@norbertmobility.com	Norbert 	student	\N	$2b$12$mNuOkG4TIWCHJ/ksG6TzVejjICcQcYC.No9JH/HcSfaI1p8BgLFhm	t	\N	2025-09-02 04:07:16.681704	2025-09-02 04:07:41.020686	2025-09-02 04:05:46.84968	2025-09-02 04:07:41.021185	\N	\N	\N
+4	stormrider.park@gmail.com	John	student	\N	$2b$12$jqeGJMmyMEL1UpfeTDrsv.DtnsAVewRP3IMMu2x0HbvhJhRQlt.RO	t	\N	2025-09-02 04:07:53.284355	2025-09-02 04:09:31.590678	2025-09-02 04:05:31.060561	2025-09-02 04:09:31.591272	\N	\N	\N
+7	chloe.green0508@gmail.com	이초록	student	\N	$2b$12$QPgulZZ59KniR94tPSdEoOM99jl4Eu9ZpaLUjnrctMHW6WmeKt0R2	t	\N	2025-09-02 04:09:34.776477	2025-09-02 04:09:47.776242	2025-09-02 04:06:13.605159	2025-09-02 04:09:47.776963	\N	\N	\N
+13	ljh791126@gmail.com	\N	student	\N	$2b$12$jZodLcHFJ3s77.OY2fOiV.yMmGW2VaTUTnR9W3Hc4RyXfYcOzI6DS	t	\N	2025-09-02 04:13:21.06961	2025-09-02 04:13:25.422534	2025-09-02 04:12:06.397625	2025-09-02 04:13:25.423058	\N	\N	\N
+15	hancin01@gmail.com	김한신	student	\N	$2b$12$DwTLqB5i0mejXw20YhY6ru0ZjPzVRfFenW9tD2tKBcRunEJyPUbPy	f	ul0fOEcvoBPSh_papx4S2uKD1jvox71Kejysy-AFRmY	\N	2025-09-02 04:13:28.469481	2025-09-02 04:13:28.470271	2025-09-02 04:13:28.470275	\N	\N	\N
+18	keymantiger@gmail.com	keyman	student	\N	$2b$12$zzLuHBio7xBSX1qDP3FB0.RJKWh5peSk.mHHZbHc2TDGjbF8p3p52	t	\N	2025-09-02 04:15:34.274435	2025-09-02 04:15:52.736039	2025-09-02 04:14:29.000565	2025-09-02 04:15:52.736745	\N	\N	\N
+16	ginakimth@gmail.com	김태현	student	\N	$2b$12$j6p43k7q.4wwHUeJdNLi9OJi5kkHHy799CWnK3SqQwmyWdc7NrhdK	t	\N	2025-09-02 04:16:57.385605	2025-09-02 04:17:08.340096	2025-09-02 04:14:15.188275	2025-09-02 04:17:08.340792	\N	\N	\N
+19	hyeonmo9@gmail.com	구현모	student	\N	$2b$12$nhQlnJKeY.uCyXcV3zgzRuFTeHUlkEDO6cirqvs83lJpnVh/RO05m	t	\N	2025-09-02 04:19:43.875429	2025-09-02 04:19:51.463306	2025-09-02 04:19:07.110969	2025-09-02 04:19:51.463917	\N	\N	\N
+9	hancin011@gmail.com	김한신	student	\N	$2b$12$PFkxjuapnhQxHXmHC3zgA.QyDs4XvehxrHknmY9q/RdQAXHAYKAfq	t	\N	2025-09-02 04:14:41.445541	2025-09-02 04:20:34.417033	2025-09-02 04:06:54.714974	2025-09-02 04:20:34.417671	\N	\N	\N
+20	h_y@naver.com	김희영	student	\N	$2b$12$H/xDHZGbg.kDh9CuFYC9deqwnf9rgr0sdBoS6U0EoxkH8CUXpoYFO	t	\N	2025-09-02 04:21:30.187468	2025-09-02 04:21:02.153402	2025-09-02 04:21:02.15423	2025-09-02 04:21:30.188013	\N	\N	\N
+10	yunissoft25@gmail.com	yunis	student	\N	$2b$12$kBHQD4wBYMZ5qzI/kwP2xOUGDpfapF5DEiH2lD0nYO3UEj2xMj4tO	t	\N	2025-09-02 04:14:24.945612	2025-09-02 04:21:32.65004	2025-09-02 04:07:11.84577	2025-09-02 04:21:32.650892	\N	\N	\N
+22	stephen4@naver.com	\N	student	\N	$2b$12$3sihkBw4u5YFGW5WWF4PRelAySCt9JbaxApUIeqeVFI3YezJb26mi	t	\N	2025-09-02 04:37:06.808546	2025-09-02 04:37:29.755889	2025-09-02 04:36:40.366809	2025-09-02 04:37:29.756622	\N	\N	\N
+2	chlgudals65@gmail.com	최형민	student	\N	$2b$12$FADGIhVcyHvIXT8j5/40ZOyMLEFcyFZYmu7XJ9RDYKgeQYpgornRG	t	\N	2025-09-02 04:13:36.799155	2025-09-02 05:01:26.239172	2025-09-02 04:03:42.070322	2025-09-02 05:01:26.24009	\N	\N	\N
+23	leejihyun935@gmail.com	irich	student	\N	$2b$12$P8kYroaNMlpHwQudAkWG9e/nOzig7HFIX2/Ceelo.drOifYGFJ9UC	t	\N	2025-09-02 05:55:46.823704	2025-09-02 05:54:27.656171	2025-09-02 05:54:27.657277	2025-09-02 05:55:46.82491	\N	\N	\N
+17	leejihyun93535@gmail.com	jihyun lee	student	\N	$2b$12$GN19HaH1p1ONu.uoVy.DOew8UC/IFx6PqM6ImwUzrpCsNipmRZ/p2	t	\N	2025-09-02 05:57:22.279831	2025-09-02 05:57:35.453953	2025-09-02 04:14:26.423203	2025-09-02 05:57:35.454517	\N	\N	\N
+3	wdbswo@outlook.com	YJ	student	\N	$2b$12$azBpDN5elOwNVYzAreRJK.gOQFA7irkweWnQujTaNfeUk6if47pxK	t	\N	2025-09-02 04:04:54.205978	2025-09-02 06:44:45.37828	2025-09-02 04:04:27.540528	2025-09-02 06:44:45.378718	\N	\N	\N
+21	kmalibu@outlook.kr	malibu	student	\N	$2b$12$snvr27BoLIHudpPkJAwi0.8w9ig5EnHfbsP.Xt5bB/g6x3so1duTC	t	\N	2025-09-02 04:26:11.977618	2025-09-02 07:05:06.288154	2025-09-02 04:25:53.644799	2025-09-02 07:05:06.289194	\N	\N	\N
+24	test@example.com	Test User	student	\N	$2b$12$dyQNPwJu8FFlWLrAeSumUe8atfJ9m2lbY2oG.UQJr559Nt2fIfj8y	f	BuMb14qgUWDA1sUKpCkaLHkihHUCrFA1iGpJg9eKizI	\N	2025-09-11 13:00:10.510414	2025-09-11 13:00:10.513163	2025-09-11 13:00:10.51317	\N	\N	\N
+25	test2@example.com	Test User 2	student	\N	$2b$12$tHM9B03XHuAjdSSGtPcIeuP1gDk/RdOInQgSQ7eOeSa6Q3GgJ.s8i	f	MibKohJdTxjZ9kFjSqYx-n66IUzSsiMpdmy64Z9siVI	\N	2025-09-11 13:00:37.464742	2025-09-11 13:00:37.465712	2025-09-11 13:00:37.465717	\N	\N	\N
+1	inhwan.jung@gmail.com	관리자	admin	\N	$2b$12$vY3h8u61cJ3k4n.h962ao.scTEbX196taIBatnz6M03AGmwO1mgze	t	\N	2025-09-02 03:29:07.665002	2025-09-20 05:29:03.577294	2025-09-02 03:27:50.96081	2025-09-20 05:29:03.577754	\N	\N	\N
 \.
 
 
@@ -708,7 +713,7 @@ SELECT pg_catalog.setval('public.user_subscriptions_id_seq', 1, false);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mcpuser
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 23, true);
+SELECT pg_catalog.setval('public.users_id_seq', 25, true);
 
 
 --
@@ -984,5 +989,5 @@ ALTER TABLE ONLY public.user_subscriptions
 -- PostgreSQL database dump complete
 --
 
-\unrestrict LRRe1v3bRhtY2091XQwBDbfhmjHFsrOwS2PUz77iJYV7kIhgBmkIUpOcvg2xGAq
+\unrestrict gCr1gxta1AFK2f2DHKw9OYYeOaa6qmzQ4RBAfmPWYaa576wubeaJ3fCfO6OPH7W
 
