@@ -32,8 +32,8 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 MCP_API_KEY = os.getenv("MCP_API_KEY")
 
 # Security settings
-DISABLE_AUTH = os.getenv("DISABLE_AUTH", "false").lower() == "true"
-KB_PUBLIC_READ = os.getenv("KB_PUBLIC_READ", "false").lower() == "true"
+DISABLE_AUTH = os.getenv("DISABLE_AUTH", "true" if ENV == "production" else "false").lower() == "true"
+KB_PUBLIC_READ = os.getenv("KB_PUBLIC_READ", "true" if ENV == "production" else "false").lower() == "true"
 
 # CORS settings
 if ENV == "production":

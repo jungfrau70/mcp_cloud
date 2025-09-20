@@ -50,9 +50,15 @@ async def kb_tasks_ws(websocket: WebSocket):
     try:
         if not DISABLE_AUTH:
             token = websocket.query_params.get('api_key')
-            if not token or token != (MCP_API_KEY or ""):
+            expected_key = MCP_API_KEY or ""
+            print(f"DEBUG: WebSocket auth - DISABLE_AUTH: {DISABLE_AUTH}")
+            print(f"DEBUG: WebSocket auth - MCP_API_KEY from env: {MCP_API_KEY}")
+            print(f"DEBUG: WebSocket auth - token: {token}, expected: {expected_key}, match: {token == expected_key}")
+            if not token or token != expected_key:
+                print(f"DEBUG: WebSocket auth failed - token: '{token}', expected: '{expected_key}'")
                 await websocket.close(code=1008, reason="Authentication failed")
                 return
+        print("DEBUG: WebSocket auth successful")
         # Minimal keep-alive loop
         import asyncio
         while True:
