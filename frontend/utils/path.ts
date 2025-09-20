@@ -293,8 +293,30 @@ export function prepareApiPath(path: string): string {
   // 먼저 경로 정리
   const cleaned = cleanApiPath(path)
   
+  // 절대경로로 변환 (cloud_master 기준)
+  const absolutePath = convertToAbsolutePath(cleaned)
+  
   // 한글 파일명 인코딩
-  return encodeKoreanPath(cleaned)
+  return encodeKoreanPath(absolutePath)
+}
+
+// 상대경로를 절대경로로 변환하는 함수
+export function convertToAbsolutePath(path: string): string {
+  if (!path) return ''
+  
+  // 이미 절대경로인 경우 (mcp_knowledge_base/로 시작)
+  if (path.startsWith('mcp_knowledge_base/')) {
+    return path
+  }
+  
+  // cloud_*로 시작하는 경우 mcp_knowledge_base/ prefix 추가
+  if (path.startsWith('cloud_')) {
+    return `mcp_knowledge_base/${path}`
+  }
+  
+  // 상대경로인 경우 cloud_master를 기준으로 절대경로 생성
+  // textbook/Day1/README.md -> mcp_knowledge_base/cloud_master/textbook/Day1/README.md
+  return `mcp_knowledge_base/cloud_master/${path.replace(/^\/+/, '')}`
 }
 
 // 읽을 수 있는 파일명인지 체크하는 함수
