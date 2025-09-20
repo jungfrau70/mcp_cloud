@@ -147,7 +147,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { $fetch } from 'ofetch'
+import { useToastStore } from '~/stores/toast';
+
+const toast = useToastStore();
 import { useAuthStore } from '~/stores/auth';
 
 type ApiKey = {
@@ -235,8 +237,10 @@ async function addKey() {
     showAddKeyModal.value = false;
     newKey.value = { name: '', platform: 'aws', secret_value: '' }; // Reset form
     await fetchKeys(); // Refresh list
+    toast.push('success', 'API 키가 성공적으로 추가되었습니다.');
   } catch (error) {
     console.error("Failed to add API key:", error);
+    toast.push('error', 'API 키 추가에 실패했습니다.');
   }
 }
 
@@ -346,25 +350,14 @@ async function deleteKey(keyId: number) {
       }
     });
     await fetchKeys(); // Refresh list
+    toast.push('success', 'API 키가 성공적으로 삭제되었습니다.');
   } catch (error) {
     console.error("Failed to delete API key:", error);
+    toast.push('error', 'API 키 삭제에 실패했습니다.');
   }
 }
 
-onMounted(async () => {
-  // 로그인 상태 확인
-  const token = process.client ? localStorage.getItem('auth_token') : null;
-  if (!token) {
-    // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
-    if (process.client) {
-      window.location.href = '/login';
-    }
-    return;
-  }
-  
-  // auth store 초기화
-  auth.loadFromStorage();
-  
+onMounted(() => {
   fetchProfile();
   fetchKeys();
 });

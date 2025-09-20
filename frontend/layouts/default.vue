@@ -125,7 +125,7 @@
               </div>
             </div>
           </div>
-          <div v-else-if="isHome || isAuthRoute || isFaqRoute" class="h-full">
+          <div v-else-if="isHome || isAuthRoute || isFaqRoute || isProfileRoute" class="h-full">
             <slot />
           </div>
           <template v-else>
@@ -306,9 +306,7 @@ function redirectToLogin() {
 // 프로필 페이지로 이동
 function goToProfilePage() {
   userMenuOpen.value = false // 메뉴 닫기
-  if (typeof window !== 'undefined') {
-    window.location.href = '/profile'
-  }
+  router.push('/profile')
 }
 
 async function onLogout(){
@@ -628,6 +626,10 @@ const isAuthRoute = computed(() => {
 const isFaqRoute = computed(() => {
   if (!isClient) return false;
   return route.path.startsWith('/faq');
+})
+const isProfileRoute = computed(() => {
+  if (!isClient) return false;
+  return route.path.startsWith('/profile');
 })
 
 // 상단 메뉴 안정성을 위한 추가 상태

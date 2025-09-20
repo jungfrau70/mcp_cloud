@@ -221,9 +221,11 @@ jobs:
 > - [Kubernetes 기초 실습](practices/kubernetes-basics.md)
 > - [컨테이너 오케스트레이션 실습](practices/container-orchestration.md)
 
-> 🚀 **자동화 스크립트**: VM 환경 구성을 더 쉽게 하려면 다음 스크립트를 사용하세요.
+> 🚀 **자동화 스크립트**: 실습을 더 쉽게 하려면 다음 자동화 스크립트를 사용하세요.
 > - [AWS 설정 도우미](../../repos/cloud-scripts/aws-setup-helper.sh) - AWS 환경 자동 설정
 > - [GCP 설정 도우미](../../repos/cloud-scripts/gcp-setup-helper.sh) - GCP 환경 자동 설정
+> - [Kubernetes 클러스터 자동 생성](../../repos/cloud-scripts/k8s-cluster-create.sh) - K8s 클러스터 자동 생성
+> - [Kubernetes 애플리케이션 자동 배포](../../repos/cloud-scripts/k8s-app-deploy.sh) - K8s 앱 자동 배포
 > - [리소스 정리 스크립트](../../repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
 
 <details>
@@ -355,6 +357,15 @@ EOF
 <summary>☸️ Kubernetes 실습</summary>
 
 ### 1단계: 클러스터 설정
+
+**방법 1: 자동화 스크립트 사용 (권장)**
+```bash
+# Kubernetes 클러스터 자동 생성
+chmod +x ../../repos/cloud-scripts/k8s-cluster-create.sh
+./../../repos/cloud-scripts/k8s-cluster-create.sh
+```
+
+**방법 2: 수동 명령어 실행**
 ```bash
 # GKE 클러스터 생성
 gcloud container clusters create my-cluster \
@@ -367,6 +378,15 @@ gcloud container clusters get-credentials my-cluster --zone=us-central1-a
 ```
 
 ### 2단계: 애플리케이션 배포
+
+**방법 1: 자동화 스크립트 사용 (권장)**
+```bash
+# Kubernetes 애플리케이션 자동 배포
+chmod +x ../../repos/cloud-scripts/k8s-app-deploy.sh
+./../../repos/cloud-scripts/k8s-app-deploy.sh
+```
+
+**방법 2: 수동 명령어 실행**
 ```bash
 # Deployment 생성
 cat > deployment.yaml << EOF

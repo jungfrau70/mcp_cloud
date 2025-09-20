@@ -148,15 +148,27 @@ docker --version
 > - [모니터링 기초 실습](practices/monitoring-basics.md)
 > - [비용 최적화 실습](practices/cost-optimization.md)
 
-> 🚀 **자동화 스크립트**: VM 환경 구성을 더 쉽게 하려면 다음 스크립트를 사용하세요.
+> 🚀 **자동화 스크립트**: 실습을 더 쉽게 하려면 다음 자동화 스크립트를 사용하세요.
 > - [AWS 설정 도우미](../../repos/cloud-scripts/aws-setup-helper.sh) - AWS 환경 자동 설정
 > - [GCP 설정 도우미](../../repos/cloud-scripts/gcp-setup-helper.sh) - GCP 환경 자동 설정
+> - [모니터링 스택 자동 배포](../../repos/cloud-scripts/monitoring-stack-deploy.sh) - Prometheus/Grafana 자동 배포
+> - [로드밸런서 자동 설정](../../repos/cloud-scripts/load-balancer-setup.sh) - 로드밸런서 자동 설정
+> - [비용 최적화 스크립트](../../repos/cloud-scripts/cost-optimization.sh) - 비용 최적화 자동화
 > - [리소스 정리 스크립트](../../repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
 
 <details>
 <summary>⚖️ 로드밸런싱 실습</summary>
 
 ### 1단계: AWS ALB 생성
+
+**방법 1: 자동화 스크립트 사용 (권장)**
+```bash
+# 로드밸런서 자동 설정
+chmod +x ../../repos/cloud-scripts/load-balancer-setup.sh
+./../../repos/cloud-scripts/load-balancer-setup.sh aws
+```
+
+**방법 2: 수동 명령어 실행**
 ```bash
 # 보안 그룹 생성
 aws ec2 create-security-group \
@@ -311,6 +323,15 @@ gcloud compute instance-groups managed list-instances my-mig --zone=us-central1-
 <summary>📊 모니터링 실습</summary>
 
 ### 1단계: Prometheus 설치
+
+**방법 1: 자동화 스크립트 사용 (권장)**
+```bash
+# 모니터링 스택 자동 배포
+chmod +x ../../repos/cloud-scripts/monitoring-stack-deploy.sh
+./../../repos/cloud-scripts/monitoring-stack-deploy.sh
+```
+
+**방법 2: 수동 명령어 실행**
 ```bash
 # Prometheus 설정 파일 생성
 cat > prometheus.yml << EOF
@@ -399,6 +420,15 @@ docker run -d \
 <summary>💰 비용 최적화 실습</summary>
 
 ### 1단계: AWS 비용 분석
+
+**방법 1: 자동화 스크립트 사용 (권장)**
+```bash
+# 비용 최적화 스크립트 실행
+chmod +x ../../repos/cloud-scripts/cost-optimization.sh
+./../../repos/cloud-scripts/cost-optimization.sh aws
+```
+
+**방법 2: 수동 명령어 실행**
 ```bash
 # Cost Explorer API 사용
 aws ce get-cost-and-usage \
