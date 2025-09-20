@@ -49,20 +49,20 @@ app.add_middleware(
 def health():
     return {"ok": True}
 
-# Routers with /api prefix
-app.include_router(kb_router, prefix="/api")
-app.include_router(kb_ws_router, prefix="/api")
-app.include_router(profile_router, prefix="/api")
-app.include_router(curriculum_router, prefix="/api")
-app.include_router(users_router, prefix="/api")
-app.include_router(auth_router, prefix="/api")
-app.include_router(email_router, prefix="/api")
-app.include_router(trending_router, prefix="/api")
-app.include_router(datasources_router, prefix="/api")
-app.include_router(deployments_router, prefix="/api")
-app.include_router(knowledge_router, prefix="/api")
-app.include_router(terminal_router, prefix="/api")
-app.include_router(cli_router, prefix="/api")
+# Routers (already have /api prefix in their definitions)
+app.include_router(kb_router)
+app.include_router(kb_ws_router)
+app.include_router(profile_router)
+app.include_router(curriculum_router)
+app.include_router(users_router)
+app.include_router(auth_router)
+app.include_router(email_router)
+app.include_router(trending_router)
+app.include_router(datasources_router)
+app.include_router(deployments_router)
+app.include_router(knowledge_router)
+app.include_router(terminal_router)
+app.include_router(cli_router)
 
 # Create tables on startup (idempotent)
 try:
