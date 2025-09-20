@@ -38,7 +38,7 @@ function connect(){
   
   let wsUrl: string
   if(configuredWs){
-    // configuredWs는 이미 /api를 포함하고 있으므로 그대로 사용
+    // configuredWs는 이미 올바른 경로를 포함하고 있으므로 그대로 사용
     wsUrl = `${configuredWs.replace(/\/$/,'')}/v1/knowledge-base/tasks/ws?api_key=${apiKey}`
   } else {
     const httpBase = resolveApiBase()

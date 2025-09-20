@@ -18,7 +18,7 @@ export interface KbStructuredDiff { diff_format: string; hunks: KbStructuredDiff
 export function resolveApiBase(): string {
   const config = useRuntimeConfig() as any
   const baseUrl = (config?.public?.apiBaseUrl as string) || 'http://localhost:8000/api'
-  // baseUrl이 이미 /api를 포함하고 있으므로 그대로 사용
+  // baseUrl이 이미 올바른 경로를 포함하고 있으므로 그대로 사용
   return baseUrl
 }
 
