@@ -1,276 +1,318 @@
 name: Cloud Master CI/CD Pipeline
 
 on:
-  push:
-    branches: [ main, develop ]
-    paths:
-      - 'mcp_knowledge_base/cloud_master/repos/samples/day1/my-app/**'
-      - 'mcp_knowledge_base/cloud_master/repos/cloud-scripts/**'
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
     inputs:
-      environment:
-        description: 'Deployment environment'
+      cloud_provider:
+        description: '클라우드 프로바이더 선택'
         required: true
         default: 'aws'
         type: choice
         options:
         - aws
         - gcp
-      action:
-        description: 'Action to perform'
+        - both
+      skill_level:
+        description: '실습 난이도'
         required: true
-        default: 'deploy'
+        default: '중급'
         type: choice
         options:
-        - deploy
-        - build-only
-        - cleanup
+        - 초급
+        - 중급
+        - 고급
+      budget_limit:
+        description: '예산 한도 (USD)'
+        required: false
+        default: '50'
+        type: string
+  schedule:
+    # 매일 오전 9시에 정기 정리 실행
+    - cron: '0 9 * * *'
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'mcp_knowledge_base/cloud_master/repos/cloud-scripts/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'mcp_knowledge_base/cloud_master/repos/cloud-scripts/**'
 
 env:
-  DOCKER_REGISTRY: docker.io
-  DOCKER_IMAGE_NAME: mcp-cloud-master
-  DOCKER_TAG: ${{ github.sha }}
+  AWS_REGION: us-west-2
+  GCP_REGION: us-central1
+  GCP_ZONE: us-central1-a
+  BUDGET_LIMIT: ${{ github.event.inputs.budget_limit || '50' }}
+  SKILL_LEVEL: ${{ github.event.inputs.skill_level || '중급' }}
 
 jobs:
-  # 1. 환경 체크 및 준비
+  # 1. 환경 검증
   environment-check:
-    name: Environment Check
+    name: 환경 검증
     runs-on: ubuntu-latest
     outputs:
-      aws-vm-ip: ${{ steps.get-aws-vm.outputs.ip }}
-      gcp-vm-ip: ${{ steps.get-gcp-vm.outputs.ip }}
+      environment-ok: ${{ steps.check.outputs.environment-ok }}
     steps:
-      - name: Checkout code
+      - name: 코드 체크아웃
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-
-      - name: Install dependencies
+      - name: WSL 환경 시뮬레이션
         run: |
-          pip install boto3 google-cloud-compute
+          echo "WSL 환경 시뮬레이션 시작"
+          # WSL 환경에서 실행되는 것처럼 시뮬레이션
+          export WSL_DISTRO_NAME="Ubuntu"
+          export WSLENV="PATH"
 
-      - name: Get AWS VM IP
-        id: get-aws-vm
-        if: github.event.inputs.environment == 'aws' || github.event_name == 'push'
+      - name: 필수 도구 설치
         run: |
-          python -c "
-          import boto3
-          import json
-          ec2 = boto3.client('ec2', region_name='ap-northeast-2')
-          response = ec2.describe_instances(
-              Filters=[
-                  {'Name': 'tag:Name', 'Values': ['mcp-cloud-master-aws']},
-                  {'Name': 'instance-state-name', 'Values': ['running']}
-              ]
-          )
-          if response['Reservations']:
-              instance = response['Reservations'][0]['Instances'][0]
-              public_ip = instance.get('PublicIpAddress', '')
-              print(f'::set-output name=ip::{public_ip}')
-          else:
-              print('::set-output name=ip::')
-          "
+          sudo apt-get update
+          sudo apt-get install -y \
+            curl \
+            wget \
+            git \
+            unzip \
+            jq \
+            awscli \
+            google-cloud-cli \
+            docker.io \
+            kubectl \
+            helm \
+            terraform
 
-      - name: Get GCP VM IP
-        id: get-gcp-vm
-        if: github.event.inputs.environment == 'gcp' || github.event_name == 'push'
+      - name: 환경 체크 스크립트 실행
+        id: check
         run: |
-          python -c "
-          from google.cloud import compute_v1
-          import json
-          client = compute_v1.InstancesClient()
-          project = '${{ secrets.GCP_PROJECT_ID }}'
-          zone = 'asia-northeast3-a'
-          instance_name = 'mcp-cloud-master-gcp'
-          
-          try:
-              instance = client.get(project=project, zone=zone, instance=instance_name)
-              external_ip = instance.network_interfaces[0].access_configs[0].nat_i_p
-              print(f'::set-output name=ip::{external_ip}')
-          except:
-              print('::set-output name=ip::')
-          "
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x environment-check-wsl.sh
+          if ./environment-check-wsl.sh; then
+            echo "environment-ok=true" >> $GITHUB_OUTPUT
+          else
+            echo "environment-ok=false" >> $GITHUB_OUTPUT
+          fi
 
-  # 2. Docker 이미지 빌드 및 푸시
-  build-and-push:
-    name: Build and Push Docker Image
+  # 2. AWS 인프라 자동화
+  aws-infrastructure:
+    name: AWS 인프라 자동화
     runs-on: ubuntu-latest
     needs: environment-check
-    if: github.event.inputs.action != 'cleanup'
+    if: ${{ needs.environment-check.outputs.environment-ok == 'true' && (github.event.inputs.cloud_provider == 'aws' || github.event.inputs.cloud_provider == 'both') }}
+    environment: aws-production
     steps:
-      - name: Checkout code
+      - name: 코드 체크아웃
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
+      - name: AWS 자격증명 설정
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./mcp_knowledge_base/cloud_master/repos/samples/day1/my-app
-          push: true
-          tags: |
-            ${{ env.DOCKER_REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
-            ${{ env.DOCKER_REGISTRY }}/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_TAG }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Image digest
-        run: echo ${{ steps.build.outputs.digest }}
-
-  # 3. AWS VM에 배포
-  deploy-aws:
-    name: Deploy to AWS VM
-    runs-on: ubuntu-latest
-    needs: [environment-check, build-and-push]
-    if: (github.event.inputs.environment == 'aws' || github.event_name == 'push') && github.event.inputs.action != 'cleanup'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Deploy to AWS VM
-        if: needs.environment-check.outputs.aws-vm-ip != ''
+      - name: AWS 환경 설정
         run: |
-          # SSH 키 설정
-          echo "${{ secrets.AWS_SSH_PRIVATE_KEY }}" > aws-key.pem
-          chmod 600 aws-key.pem
-          
-          # VM에 Docker 이미지 배포
-          ssh -i aws-key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.environment-check.outputs.aws-vm-ip }} << 'EOF'
-            # 기존 컨테이너 정리
-            docker stop mcp-app || true
-            docker rm mcp-app || true
-            
-            # 새 이미지 풀 및 실행
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
-            docker run -d \
-              --name mcp-app \
-              --restart unless-stopped \
-              -p 80:8080 \
-              ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
-            
-            # 배포 상태 확인
-            docker ps
-            curl -f http://localhost:8080/health || echo "Health check failed"
-          EOF
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x aws-setup-helper.sh
+          ./aws-setup-helper.sh
 
-      - name: Cleanup SSH key
-        if: always()
-        run: rm -f aws-key.pem
+      - name: AWS EC2 인스턴스 생성
+        run: |
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x aws-ec2-create.sh
+          ./aws-ec2-create.sh --skill-level ${{ env.SKILL_LEVEL }} --budget ${{ env.BUDGET_LIMIT }}
 
-  # 4. GCP VM에 배포
-  deploy-gcp:
-    name: Deploy to GCP VM
+      - name: AWS 리소스 상태 확인
+        run: |
+          aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,State.Name,PublicIpAddress]' --output table
+
+  # 3. GCP 인프라 자동화
+  gcp-infrastructure:
+    name: GCP 인프라 자동화
     runs-on: ubuntu-latest
-    needs: [environment-check, build-and-push]
-    if: (github.event.inputs.environment == 'gcp' || github.event_name == 'push') && github.event.inputs.action != 'cleanup'
+    needs: environment-check
+    if: ${{ needs.environment-check.outputs.environment-ok == 'true' && (github.event.inputs.cloud_provider == 'gcp' || github.event.inputs.cloud_provider == 'both') }}
+    environment: gcp-production
     steps:
-      - name: Checkout code
+      - name: 코드 체크아웃
         uses: actions/checkout@v4
 
-      - name: Authenticate to Google Cloud
+      - name: GCP 자격증명 설정
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
-      - name: Deploy to GCP VM
-        if: needs.environment-check.outputs.gcp-vm-ip != ''
+      - name: GCP 환경 설정
         run: |
-          # SSH 키 설정
-          echo "${{ secrets.GCP_SSH_PRIVATE_KEY }}" > gcp-key.pem
-          chmod 600 gcp-key.pem
-          
-          # VM에 Docker 이미지 배포
-          ssh -i gcp-key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.environment-check.outputs.gcp-vm-ip }} << 'EOF'
-            # 기존 컨테이너 정리
-            docker stop mcp-app || true
-            docker rm mcp-app || true
-            
-            # 새 이미지 풀 및 실행
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
-            docker run -d \
-              --name mcp-app \
-              --restart unless-stopped \
-              -p 80:8080 \
-              ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
-            
-            # 배포 상태 확인
-            docker ps
-            curl -f http://localhost:8080/health || echo "Health check failed"
-          EOF
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x gcp-setup-helper.sh
+          ./gcp-setup-helper.sh
 
-      - name: Cleanup SSH key
-        if: always()
-        run: rm -f gcp-key.pem
+      - name: GCP Compute Engine 인스턴스 생성
+        run: |
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x gcp-compute-create.sh
+          ./gcp-compute-create.sh --skill-level ${{ env.SKILL_LEVEL }} --budget ${{ env.BUDGET_LIMIT }}
 
-  # 5. 배포 후 테스트
-  post-deployment-test:
-    name: Post Deployment Test
+      - name: GCP 리소스 상태 확인
+        run: |
+          gcloud compute instances list --format="table(name,zone,machineType,status)"
+
+  # 4. Kubernetes 클러스터 자동화
+  kubernetes-deployment:
+    name: Kubernetes 클러스터 자동화
     runs-on: ubuntu-latest
-    needs: [deploy-aws, deploy-gcp]
-    if: github.event.inputs.action != 'cleanup'
+    needs: [aws-infrastructure, gcp-infrastructure]
+    if: always() && (needs.aws-infrastructure.result == 'success' || needs.gcp-infrastructure.result == 'success')
     steps:
-      - name: Test AWS deployment
-        if: needs.deploy-aws.result == 'success'
-        run: |
-          # AWS VM 배포 테스트
-          echo "Testing AWS deployment..."
-          # 실제 테스트 로직 추가
-
-      - name: Test GCP deployment
-        if: needs.deploy-gcp.result == 'success'
-        run: |
-          # GCP VM 배포 테스트
-          echo "Testing GCP deployment..."
-          # 실제 테스트 로직 추가
-
-  # 6. 리소스 정리 (수동 트리거)
-  cleanup:
-    name: Cleanup Resources
-    runs-on: ubuntu-latest
-    if: github.event.inputs.action == 'cleanup'
-    steps:
-      - name: Checkout code
+      - name: 코드 체크아웃
         uses: actions/checkout@v4
 
-      - name: Cleanup AWS resources
-        if: github.event.inputs.environment == 'aws'
+      - name: AWS EKS 클러스터 생성 (AWS 선택시)
+        if: ${{ github.event.inputs.cloud_provider == 'aws' || github.event.inputs.cloud_provider == 'both' }}
         run: |
-          # AWS 리소스 정리 스크립트 실행
-          echo "Cleaning up AWS resources..."
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x k8s-cluster-create.sh
+          ./k8s-cluster-create.sh --provider aws --skill-level ${{ env.SKILL_LEVEL }}
 
-      - name: Cleanup GCP resources
-        if: github.event.inputs.environment == 'gcp'
+      - name: GCP GKE 클러스터 생성 (GCP 선택시)
+        if: ${{ github.event.inputs.cloud_provider == 'gcp' || github.event.inputs.cloud_provider == 'both' }}
         run: |
-          # GCP 리소스 정리 스크립트 실행
-          echo "Cleaning up GCP resources..."
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x k8s-cluster-create.sh
+          ./k8s-cluster-create.sh --provider gcp --skill-level ${{ env.SKILL_LEVEL }}
 
-  # 7. 알림
-  notify:
-    name: Send Notification
+      - name: Kubernetes 애플리케이션 배포
+        run: |
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x k8s-app-deploy.sh
+          ./k8s-app-deploy.sh --skill-level ${{ env.SKILL_LEVEL }}
+
+  # 5. 모니터링 및 로깅 설정
+  monitoring-setup:
+    name: 모니터링 및 로깅 설정
     runs-on: ubuntu-latest
-    needs: [build-and-push, deploy-aws, deploy-gcp, post-deployment-test]
+    needs: kubernetes-deployment
+    if: always() && needs.kubernetes-deployment.result == 'success'
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: 모니터링 스택 배포
+        run: |
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x monitoring-stack-deploy.sh
+          ./monitoring-stack-deploy.sh --skill-level ${{ env.SKILL_LEVEL }}
+
+      - name: 로드밸런서 설정
+        run: |
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x load-balancer-setup.sh
+          ./load-balancer-setup.sh --skill-level ${{ env.SKILL_LEVEL }}
+
+  # 6. 보안 스캔
+  security-scan:
+    name: 보안 스캔
+    runs-on: ubuntu-latest
+    needs: [aws-infrastructure, gcp-infrastructure]
+    if: always() && (needs.aws-infrastructure.result == 'success' || needs.gcp-infrastructure.result == 'success')
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: AWS 보안 스캔
+        if: ${{ github.event.inputs.cloud_provider == 'aws' || github.event.inputs.cloud_provider == 'both' }}
+        run: |
+          # AWS Inspector 스캔 실행
+          aws inspector start-assessment-run --assessment-template-arn arn:aws:inspector:us-west-2:123456789012:target/0-XXXXXXXXX/template/0-XXXXXXXXX
+
+      - name: GCP 보안 스캔
+        if: ${{ github.event.inputs.cloud_provider == 'gcp' || github.event.inputs.cloud_provider == 'both' }}
+        run: |
+          # GCP Security Command Center 스캔 실행
+          gcloud scc sources list
+
+  # 7. 비용 최적화
+  cost-optimization:
+    name: 비용 최적화
+    runs-on: ubuntu-latest
+    needs: [aws-infrastructure, gcp-infrastructure]
+    if: always() && (needs.aws-infrastructure.result == 'success' || needs.gcp-infrastructure.result == 'success')
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: 비용 최적화 분석
+        run: |
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x cost-optimization.sh
+          ./cost-optimization.sh --budget-limit ${{ env.BUDGET_LIMIT }}
+
+      - name: 비용 보고서 생성
+        run: |
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x advanced-cost-optimization.sh
+          ./advanced-cost-optimization.sh --report-only
+
+  # 8. 알림 및 보고서
+  notification:
+    name: 알림 및 보고서
+    runs-on: ubuntu-latest
+    needs: [aws-infrastructure, gcp-infrastructure, kubernetes-deployment, monitoring-setup, security-scan, cost-optimization]
     if: always()
     steps:
-      - name: Notify Success
-        if: needs.build-and-push.result == 'success' && (needs.deploy-aws.result == 'success' || needs.deploy-gcp.result == 'success')
-        run: |
-          echo "✅ Deployment successful!"
-          # Slack, Discord, 이메일 알림 추가 가능
+      - name: Slack 알림 전송
+        if: ${{ secrets.SLACK_WEBHOOK_URL }}
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          channel: '#cloud-master'
+          text: |
+            Cloud Master CI/CD 파이프라인 완료
+            - 클라우드 프로바이더: ${{ github.event.inputs.cloud_provider }}
+            - 실습 난이도: ${{ env.SKILL_LEVEL }}
+            - 예산 한도: ${{ env.BUDGET_LIMIT }} USD
+            - 상태: ${{ job.status }}
 
-      - name: Notify Failure
-        if: needs.build-and-push.result == 'failure' || needs.deploy-aws.result == 'failure' || needs.deploy-gcp.result == 'failure'
+      - name: 이메일 알림 전송
+        if: ${{ secrets.EMAIL_NOTIFICATION }}
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: Cloud Master CI/CD 파이프라인 완료
+          to: ${{ secrets.EMAIL_NOTIFICATION }}
+          from: GitHub Actions
+          body: |
+            Cloud Master CI/CD 파이프라인이 완료되었습니다.
+            
+            결과:
+            - AWS 인프라: ${{ needs.aws-infrastructure.result }}
+            - GCP 인프라: ${{ needs.gcp-infrastructure.result }}
+            - Kubernetes: ${{ needs.kubernetes-deployment.result }}
+            - 모니터링: ${{ needs.monitoring-setup.result }}
+            - 보안 스캔: ${{ needs.security-scan.result }}
+            - 비용 최적화: ${{ needs.cost-optimization.result }}
+
+  # 9. 자동 정리 (스케줄 실행시)
+  cleanup:
+    name: 자동 정리
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: AWS 리소스 정리
+        if: ${{ secrets.AWS_ACCESS_KEY_ID }}
         run: |
-          echo "❌ Deployment failed!"
-          # 실패 알림 추가 가능
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x aws-resource-cleanup.sh
+          ./aws-resource-cleanup.sh --force
+
+      - name: GCP 리소스 정리
+        if: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        run: |
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x gcp-project-cleanup.sh
+          ./gcp-project-cleanup.sh --force

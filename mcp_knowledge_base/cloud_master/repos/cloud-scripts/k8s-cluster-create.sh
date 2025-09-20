@@ -75,7 +75,41 @@ check_environment() {
         exit 1
     fi
     
+    # 필요한 API 활성화
+    enable_required_apis
+    
     log_success "환경 체크 완료"
+}
+
+# 필요한 API 활성화
+enable_required_apis() {
+    log_info "필요한 GCP API 활성화 중..."
+    
+    # 필요한 API 목록
+    local apis=(
+        "container.googleapis.com"
+        "compute.googleapis.com"
+        "logging.googleapis.com"
+        "monitoring.googleapis.com"
+        "cloudresourcemanager.googleapis.com"
+    )
+    
+    for api in "${apis[@]}"; do
+        log_info "API 활성화 중: $api"
+        gcloud services enable "$api" --quiet
+        
+        if [ $? -eq 0 ]; then
+            log_success "✅ $api 활성화 완료"
+        else
+            log_warning "⚠️ $api 활성화 실패 (이미 활성화되었을 수 있음)"
+        fi
+    done
+    
+    # API 활성화 완료 대기
+    log_info "API 활성화 완료 대기 중... (30초)"
+    sleep 30
+    
+    log_success "필요한 API 활성화 완료"
 }
 
 # 클러스터 생성

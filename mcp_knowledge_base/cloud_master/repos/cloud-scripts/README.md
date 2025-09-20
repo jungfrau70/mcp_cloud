@@ -4,6 +4,45 @@
 
 Cloud Master 과정의 실습을 더 쉽고 효율적으로 진행할 수 있도록 자동화된 스크립트 모음입니다. 각 스크립트는 특정 클라우드 작업을 자동화하여 실습 시간을 단축하고 일관된 환경을 제공합니다.
 
+## 🚀 실행 순서 (필수)
+
+Cloud Master 과정을 시작하기 전에 **반드시** 다음 순서대로 실행하세요:
+
+### **1단계: 환경 설치 및 검증**
+```bash
+# WSL 환경 전체 설치
+mcp_knowledge_base/cloud_master/repos/install/install-all-wsl.sh
+
+# 환경 체크 (설치 확인)
+mcp_knowledge_base/cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+```
+
+### **2단계: AWS 환경 설정 및 인스턴스 생성**
+```bash
+# AWS 환경 자동 설정
+mcp_knowledge_base/cloud_master/repos/cloud-scripts/aws-setup-helper.sh
+
+# AWS EC2 인스턴스 생성
+mcp_knowledge_base/cloud_master/repos/cloud-scripts/aws-ec2-create.sh
+```
+
+### **3단계: GCP 환경 설정 및 인스턴스 생성**
+```bash
+# GCP 환경 자동 설정
+mcp_knowledge_base/cloud_master/repos/cloud-scripts/gcp-setup-helper.sh
+
+# GCP Compute Engine 인스턴스 생성
+mcp_knowledge_base/cloud_master/repos/cloud-scripts/gcp-compute-create.sh
+```
+
+### **4단계: GitHub Actions CI/CD 파이프라인 설정 (필수)**
+```bash
+# GitHub Actions 워크플로우 활성화
+# .github/workflows/cloud-master-ci-cd.yml 파일이 자동으로 실행됩니다.
+```
+
+> **⚠️ 중요**: 모든 단계를 순서대로 실행해야 합니다. 이전 단계를 건너뛰면 오류가 발생할 수 있습니다.
+
 ## 🖥️ 실행 환경
 
 ### **WSL (Windows Subsystem for Linux) - 권장** ⭐
@@ -59,43 +98,100 @@ cloud-scripts/
 
 ## 🚀 빠른 시작
 
-### 0. GitHub Actions CI/CD 설정 (선택사항)
+### 0. GitHub Actions CI/CD 설정 (권장) ⭐
 
-#### GitHub Actions 파이프라인 설정
+#### **GitHub Actions 파이프라인 개요**
+Cloud Master 과정의 모든 실습을 자동화하는 포괄적인 CI/CD 파이프라인입니다.
+
+**주요 기능:**
+- 🔧 **환경 검증**: WSL/VM 환경 자동 체크
+- ☁️ **클라우드 자동화**: AWS/GCP 인프라 자동 생성
+- ☸️ **Kubernetes 배포**: K8s 클러스터 및 애플리케이션 자동 배포
+- 📊 **모니터링 설정**: Prometheus, Grafana 자동 구성
+- 🔒 **보안 스캔**: 인프라 보안 취약점 자동 검사
+- 💰 **비용 최적화**: 리소스 사용량 분석 및 최적화 권장
+- 🧹 **자동 정리**: 실습 완료 후 리소스 자동 정리
+
+#### **GitHub Repository Secrets 설정**
 ```bash
-# 1. GitHub Repository Secrets 설정
-# Repository Settings → Secrets and variables → Actions
+# Repository Settings → Secrets and variables → Actions에서 설정
 
-# Docker Hub 설정
-DOCKERHUB_USERNAME: your-dockerhub-username
-DOCKERHUB_TOKEN: your-dockerhub-access-token
-
-# AWS 설정
+# AWS 자격증명 (필수)
 AWS_ACCESS_KEY_ID: your-aws-access-key
 AWS_SECRET_ACCESS_KEY: your-aws-secret-key
-AWS_SSH_PRIVATE_KEY: your-aws-ssh-private-key
 
-# GCP 설정
+# GCP 자격증명 (필수)
 GCP_PROJECT_ID: your-gcp-project-id
-GCP_SA_KEY: your-gcp-service-account-key-json
-GCP_SSH_PRIVATE_KEY: your-gcp-ssh-private-key
+GCP_SERVICE_ACCOUNT_KEY: your-gcp-service-account-json
+
+# 알림 설정 (선택사항)
+SLACK_WEBHOOK_URL: your-slack-webhook-url
+EMAIL_NOTIFICATION: your-email@example.com
+EMAIL_USERNAME: your-email-username
+EMAIL_PASSWORD: your-email-password
+
+# Docker Hub (선택사항)
+DOCKERHUB_USERNAME: your-dockerhub-username
+DOCKERHUB_TOKEN: your-dockerhub-access-token
 ```
 
-#### CI/CD 파이프라인 실행
-```bash
-# 1. VM 배포 (WSL에서 실행)
-cd $(wslpath "C:\Users\[사용자명]\githubs\mcp_cloud\mcp_knowledge_base\cloud_master\repos\cloud-scripts")
-./aws-ec2-create.sh
-./gcp-compute-create.sh
+#### **CI/CD 파이프라인 실행 방법**
 
-# 2. 코드 푸시 (GitHub Actions 자동 트리거)
+##### **방법 1: GitHub CLI 사용 (권장)**
+```bash
+# 1. GitHub CLI 설치 및 인증
+gh auth login
+
+# 2. 수동 워크플로우 실행
+gh workflow run cloud-master-ci-cd.yml \
+  --field cloud_provider=aws \
+  --field skill_level=중급 \
+  --field budget_limit=100
+
+# 3. 실행 상태 확인
+gh run list --workflow=cloud-master-ci-cd.yml
+
+# 4. 실시간 로그 확인
+gh run view <run-id> --log
+```
+
+##### **방법 2: GitHub 웹 인터페이스**
+```bash
+# 1. GitHub 저장소 → Actions 탭
+# 2. "Cloud Master CI/CD Pipeline" 선택
+# 3. "Run workflow" 버튼 클릭
+# 4. 파라미터 설정 후 "Run workflow" 실행
+```
+
+##### **방법 3: 코드 푸시로 자동 트리거**
+```bash
+# 1. 코드 변경 후 푸시
 git add .
 git commit -m "feat: add Day1 application"
 git push origin main
 
-# 3. 수동 실행 (선택사항)
-# GitHub Actions 탭 → "Cloud Master CI/CD Pipeline" → "Run workflow"
+# 2. GitHub Actions 자동 실행 확인
+# Repository → Actions 탭에서 실행 상태 확인
 ```
+
+#### **워크플로우 모니터링 및 디버깅**
+```bash
+# 특정 작업 로그 확인
+gh run view <run-id> --log --job=aws-infrastructure
+gh run view <run-id> --log --job=gcp-infrastructure
+gh run view <run-id> --log --job=kubernetes-deployment
+
+# 워크플로우 재실행
+gh run rerun <run-id>
+
+# 워크플로우 취소
+gh run cancel <run-id>
+```
+
+#### **스케줄된 워크플로우**
+- **매일 오전 9시**: 정기 정리 실행 (`cleanup-schedule.yml`)
+- **매일 오후 6시**: 비용 최적화 실행 (`cost-optimization.yml`)
+- **매주 월요일 오전 2시**: 보안 스캔 실행 (`security-scan.yml`)
 
 ### 1. 환경 준비 (WSL 권장) ⭐
 
@@ -216,6 +312,129 @@ chmod +x *.sh
 - **목적**: GCP Compute Engine 인스턴스 자동 생성
 - **기능**: 방화벽 규칙, 인스턴스 템플릿, 인스턴스 생성
 - **사용법**: `./gcp-compute-create.sh`
+
+### 🔄 GitHub Actions CI/CD 파이프라인 (Day1)
+
+#### `.github/workflows/cloud-master-ci-cd.yml`
+- **목적**: Cloud Master 실습 환경 자동화 CI/CD 파이프라인
+- **기능**: 
+  - **환경 검증**: WSL/VM 환경 자동 체크
+  - **AWS 자동화**: EC2 인스턴스 생성 및 설정
+  - **GCP 자동화**: Compute Engine 인스턴스 생성 및 설정
+  - **Kubernetes 배포**: Day2 K8s 클러스터 자동 생성
+  - **모니터링 설정**: Day3 모니터링 스택 자동 배포
+  - **비용 최적화**: 리소스 사용량 모니터링 및 최적화
+  - **보안 스캔**: 생성된 인프라 보안 취약점 검사
+  - **자동 정리**: 실습 완료 후 리소스 자동 정리
+
+#### **워크플로우 트리거**
+```yaml
+# 수동 실행
+workflow_dispatch:
+  inputs:
+    cloud_provider:
+      description: '클라우드 프로바이더 선택'
+      required: true
+      default: 'aws'
+      type: choice
+      options:
+      - aws
+      - gcp
+      - both
+    skill_level:
+      description: '실습 난이도'
+      required: true
+      default: '중급'
+      type: choice
+      options:
+      - 초급
+      - 중급
+      - 고급
+    budget_limit:
+      description: '예산 한도 (USD)'
+      required: false
+      default: '50'
+      type: string
+```
+
+#### **주요 워크플로우 단계**
+1. **환경 준비**
+   - WSL/VM 환경 검증
+   - 필수 도구 설치 확인
+   - 클라우드 자격증명 검증
+
+2. **AWS 인프라 자동화**
+   - VPC 및 서브넷 생성
+   - 보안 그룹 설정
+   - EC2 인스턴스 생성 및 설정
+   - RDS 데이터베이스 생성 (선택사항)
+
+3. **GCP 인프라 자동화**
+   - VPC 네트워크 생성
+   - 방화벽 규칙 설정
+   - Compute Engine 인스턴스 생성
+   - Cloud SQL 인스턴스 생성 (선택사항)
+
+4. **Kubernetes 클러스터 자동화**
+   - EKS/GKE 클러스터 생성
+   - 노드 그룹 설정
+   - 기본 애플리케이션 배포
+
+5. **모니터링 및 로깅**
+   - CloudWatch/Stackdriver 설정
+   - Prometheus + Grafana 배포
+   - 알림 규칙 설정
+
+6. **보안 및 컴플라이언스**
+   - 보안 스캔 실행
+   - 취약점 검사
+   - 컴플라이언스 체크
+
+7. **비용 최적화**
+   - 리소스 사용량 분석
+   - 비용 최적화 권장사항 생성
+   - 예산 알림 설정
+
+8. **자동 정리**
+   - 실습 완료 후 리소스 정리
+   - 비용 보고서 생성
+   - 학습 진도 저장
+
+#### **사용법**
+```bash
+# GitHub Actions 수동 실행
+gh workflow run cloud-master-ci-cd.yml \
+  --field cloud_provider=aws \
+  --field skill_level=중급 \
+  --field budget_limit=100
+
+# 워크플로우 상태 확인
+gh run list --workflow=cloud-master-ci-cd.yml
+
+# 로그 확인
+gh run view <run-id> --log
+```
+
+#### **환경 변수 설정**
+```bash
+# GitHub Secrets에 다음 값들을 설정해야 합니다:
+AWS_ACCESS_KEY_ID=your_aws_access_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret_key
+GCP_PROJECT_ID=your_gcp_project_id
+GCP_SERVICE_ACCOUNT_KEY=your_gcp_service_account_json
+SLACK_WEBHOOK_URL=your_slack_webhook_url (선택사항)
+EMAIL_NOTIFICATION=your_email@example.com (선택사항)
+```
+
+#### **워크플로우 파일 위치**
+```
+.github/
+└── workflows/
+    ├── cloud-master-ci-cd.yml          # 메인 CI/CD 파이프라인
+    ├── security-scan.yml               # 보안 스캔 워크플로우
+    ├── cost-optimization.yml           # 비용 최적화 워크플로우
+    └── cleanup-schedule.yml            # 정기 정리 워크플로우
+```
 
 ### ☸️ Kubernetes 스크립트 (Day2)
 
@@ -689,10 +908,13 @@ aws ce get-cost-and-usage --time-period Start=2024-01-01,End=2024-01-31
 ## 📚 추가 자료
 
 ### 공식 문서
+- [GitHub Actions 공식 자습서](https://docs.github.com/ko/actions/tutorials)
+- [GitHub Actions 워크플로우 구문](https://docs.github.com/ko/actions/using-workflows/workflow-syntax-for-github-actions)
 - [AWS CLI 공식 문서](https://docs.aws.amazon.com/cli/)
 - [Google Cloud CLI 공식 문서](https://cloud.google.com/sdk/docs)
 - [Kubernetes 공식 문서](https://kubernetes.io/docs/)
 - [WSL 공식 문서](https://docs.microsoft.com/en-us/windows/wsl/)
+- [Docker Desktop WSL2 가이드](https://docs.docker.com/desktop/wsl/)
 
 ### Cloud Master 과정
 - [Day1: Docker & VM 배포](cloud_master/textbook/Day1/README.md)

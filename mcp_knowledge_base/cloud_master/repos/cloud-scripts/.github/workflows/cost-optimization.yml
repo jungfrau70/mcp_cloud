@@ -1,0 +1,78 @@
+name: Cost Optimization
+
+on:
+  schedule:
+    # 매일 오후 6시에 비용 최적화 실행
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+    inputs:
+      optimization_type:
+        description: '최적화 유형'
+        required: true
+        default: 'recommendations'
+        type: choice
+        options:
+        - recommendations
+        - auto-optimize
+        - budget-alert
+
+jobs:
+  cost-optimization:
+    name: 비용 최적화
+    runs-on: ubuntu-latest
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: AWS 비용 분석
+        if: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        run: |
+          # AWS Cost Explorer API 사용
+          aws ce get-cost-and-usage \
+            --time-period Start=2024-01-01,End=2024-12-31 \
+            --granularity MONTHLY \
+            --metrics BlendedCost
+
+          # AWS Trusted Advisor 비용 최적화 권장사항
+          aws support describe-trusted-advisor-checks --language en
+
+      - name: GCP 비용 분석
+        if: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        run: |
+          # GCP Billing API 사용
+          gcloud billing budgets list --billing-account=$(gcloud billing accounts list --format="value(name)")
+
+          # GCP Recommender 비용 최적화 권장사항
+          gcloud recommender recommendations list \
+            --recommender=google.compute.instance.MachineTypeRecommender \
+            --location=us-central1
+
+      - name: 비용 최적화 스크립트 실행
+        run: |
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x cost-optimization.sh
+          ./cost-optimization.sh --type ${{ github.event.inputs.optimization_type }}
+
+      - name: 고급 비용 최적화 분석
+        run: |
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x advanced-cost-optimization.sh
+          ./advanced-cost-optimization.sh --report-only
+
+      - name: 예산 모니터링 설정
+        run: |
+          cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
+          chmod +x budget-monitoring.sh
+          ./budget-monitoring.sh --create-budget --set-thresholds
+
+      - name: 비용 보고서 생성
+        run: |
+          mkdir -p cost-reports
+          echo "비용 최적화 보고서 생성 중..." > cost-reports/optimization-report.txt
+          date >> cost-reports/optimization-report.txt
+
+      - name: 비용 보고서 업로드
+        uses: actions/upload-artifact@v4
+        with:
+          name: cost-optimization-report
+          path: cost-reports/

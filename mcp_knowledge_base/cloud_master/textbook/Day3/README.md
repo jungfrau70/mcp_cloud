@@ -513,6 +513,8 @@ docker rm prometheus grafana node-exporter alertmanager
 ## 📚 참고 자료
 
 ### 상세 가이드
+- [GitHub Actions 실습 가이드](cloud_master/textbook/Day3/guides/github-actions-tutorial.md) - GitHub Actions CI/CD 파이프라인
+- [Cloud Scripts 동작 원리 가이드](cloud_master/textbook/Day3/guides/cloud-scripts-operation-guide.md) - 스크립트 동작 원리 상세 설명
 - [로드 밸런싱 가이드](cloud_master/textbook/Day3/guides/load-balancing-guide.md) - 고급 로드 밸런싱 설정
 - [오토스케일링 가이드](cloud_master/textbook/Day3/guides/auto-scaling-guide.md) - 자동 스케일링 정책 설정
 - [모니터링 설정 가이드](cloud_master/textbook/Day3/guides/monitoring-setup-guide.md) - Prometheus & Grafana 설정
@@ -522,6 +524,8 @@ docker rm prometheus grafana node-exporter alertmanager
 - [트러블슈팅 가이드](cloud_master/textbook/Day3/guides/troubleshooting-guide.md) - 문제 해결 및 디버깅
 
 ### 공식 문서
+- [GitHub Actions 공식 자습서](https://docs.github.com/ko/actions/tutorials)
+- [GitHub Actions 워크플로우 구문](https://docs.github.com/ko/actions/using-workflows/workflow-syntax-for-github-actions)
 - [AWS ELB 공식 문서](https://docs.aws.amazon.com/elasticloadbalancing/)
 - [AWS Auto Scaling 공식 문서](https://docs.aws.amazon.com/autoscaling/)
 - [GCP Load Balancing 공식 문서](https://cloud.google.com/load-balancing/docs)
