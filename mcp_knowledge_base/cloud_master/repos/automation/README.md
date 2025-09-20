@@ -18,6 +18,7 @@
 
 ### 통합 실습
 - **`integrated-practice-automation.sh`**: 전체 과정 통합 실습 자동화
+- **GitHub Actions CI/CD 연계**: cloud-scripts와 연계된 자동화 파이프라인
 
 ## 🚀 사용 방법
 
@@ -48,7 +49,53 @@ chmod +x mcp_knowledge_base/cloud_master/automation/integrated-practice-automati
 ./mcp_knowledge_base/cloud_master/automation/integrated-practice-automation.sh 1  # 1일차만
 ./mcp_knowledge_base/cloud_master/automation/integrated-practice-automation.sh 2  # 2일차만
 ./mcp_knowledge_base/cloud_master/automation/integrated-practice-automation.sh 3  # 3일차만
+
+# GitHub Actions CI/CD 파이프라인만 실행
+./mcp_knowledge_base/cloud_master/automation/integrated-practice-automation.sh cicd
 ```
+
+## 🚀 GitHub Actions CI/CD 연계
+
+### 연계 기능
+- **Docker 이미지 자동 빌드**: GitHub Actions에서 Docker 이미지 자동 빌드
+- **Docker Hub 자동 푸시**: 빌드된 이미지를 Docker Hub에 자동 푸시
+- **VM 자동 배포**: AWS EC2 및 GCP Compute Engine에 자동 배포
+- **헬스체크 및 알림**: 배포 상태 확인 및 알림
+
+### 설정 방법
+1. **GitHub Secrets 설정**:
+   ```
+   DOCKERHUB_USERNAME: Docker Hub 사용자명
+   DOCKERHUB_TOKEN: Docker Hub 액세스 토큰
+   AWS_ACCESS_KEY_ID: AWS 액세스 키
+   AWS_SECRET_ACCESS_KEY: AWS 시크릿 키
+   AWS_SSH_PRIVATE_KEY: AWS SSH 개인키
+   GCP_PROJECT_ID: GCP 프로젝트 ID
+   GCP_SA_KEY: GCP 서비스 계정 키
+   GCP_SSH_PRIVATE_KEY: GCP SSH 개인키
+   ```
+
+2. **SSH 키 생성**:
+   ```bash
+   ssh-keygen -t rsa -b 4096 -f aws-key -C "mcp-cloud-master-aws"
+   ssh-keygen -t rsa -b 4096 -f gcp-key -C "mcp-cloud-master-gcp"
+   ```
+
+3. **워크플로우 실행**:
+   ```bash
+   # 코드 푸시 (자동 트리거)
+   git add .
+   git commit -m "feat: add CI/CD pipeline"
+   git push origin main
+   
+   # 수동 실행
+   ./integrated-practice-automation.sh cicd
+   ```
+
+### 연계된 스크립트
+- **`docker-practice-automation.sh`**: Docker 실습 후 GitHub Actions 연계
+- **`github-actions-automation.sh`**: GitHub Actions 실습 후 Cloud Master 파이프라인 연계
+- **`integrated-practice-automation.sh`**: 통합 실습에 CI/CD 파이프라인 포함
 
 ## 🔧 재수행 방지 기능
 

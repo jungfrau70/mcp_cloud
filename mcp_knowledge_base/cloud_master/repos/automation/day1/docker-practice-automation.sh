@@ -308,9 +308,54 @@ EOF
     log_success "5단계 완료: Dockerfile 실습"
 }
 
-# 6단계: 정리 및 요약
-step6_cleanup_and_summary() {
-    log_info "=== 6단계: 정리 및 요약 ==="
+# 6단계: GitHub Actions CI/CD 연계
+step6_github_actions_integration() {
+    log_info "=== 6단계: GitHub Actions CI/CD 연계 ==="
+    
+    # GitHub Actions 워크플로우 확인
+    log_info "GitHub Actions 워크플로우 확인:"
+    if [ -f "../../../cloud-scripts/.github/workflows/cloud-master-ci-cd.yml" ]; then
+        log_success "GitHub Actions CI/CD 파이프라인을 찾았습니다."
+        
+        # 워크플로우 내용 확인
+        log_info "CI/CD 파이프라인 기능:"
+        echo "  - Docker 이미지 자동 빌드"
+        echo "  - Docker Hub 자동 푸시"
+        echo "  - AWS/GCP VM 자동 배포"
+        echo "  - 헬스체크 및 알림"
+        
+        # GitHub Actions 실행 방법 안내
+        log_info "GitHub Actions 실행 방법:"
+        echo "  1. 코드를 GitHub에 푸시"
+        echo "  2. GitHub Actions 탭에서 워크플로우 확인"
+        echo "  3. 자동으로 Docker 이미지 빌드 및 배포"
+        
+    else
+        log_warning "GitHub Actions 워크플로우를 찾을 수 없습니다."
+        log_info "cloud-scripts 디렉토리에 .github/workflows/cloud-master-ci-cd.yml 파일이 있는지 확인하세요."
+    fi
+    
+    # Docker 이미지를 GitHub Actions에서 사용할 수 있도록 준비
+    log_info "GitHub Actions용 Docker 이미지 준비:"
+    
+    # MCP Cloud Master Day1 이미지로 태그 변경
+    if docker images | grep -q "my-web-app"; then
+        log_info "Docker 이미지를 GitHub Actions용으로 태그 변경:"
+        docker tag my-web-app mcp-cloud-master-day1:latest
+        log_success "이미지 태그 변경 완료: mcp-cloud-master-day1:latest"
+    fi
+    
+    # Docker Hub 푸시 준비 안내
+    log_info "Docker Hub 푸시 준비:"
+    echo "  docker tag mcp-cloud-master-day1:latest YOUR_DOCKERHUB_USERNAME/mcp-cloud-master-day1:latest"
+    echo "  docker push YOUR_DOCKERHUB_USERNAME/mcp-cloud-master-day1:latest"
+    
+    log_success "6단계 완료: GitHub Actions CI/CD 연계"
+}
+
+# 7단계: 정리 및 요약
+step7_cleanup_and_summary() {
+    log_info "=== 7단계: 정리 및 요약 ==="
     
     # 실행 중인 컨테이너 확인
     log_info "실행 중인 컨테이너 목록:"
@@ -333,11 +378,18 @@ step6_cleanup_and_summary() {
     echo "✅ 웹 서버 컨테이너 실행"
     echo "✅ 볼륨 마운트 실습"
     echo "✅ Dockerfile 빌드 실습"
+    echo "✅ GitHub Actions CI/CD 연계"
     echo ""
     echo "🌐 접속 가능한 웹 서비스:"
     echo "  - Nginx 기본: http://localhost:8080"
     echo "  - 볼륨 마운트: http://localhost:8081"
     echo "  - 커스텀 앱: http://localhost:8082"
+    echo ""
+    echo "🚀 GitHub Actions CI/CD:"
+    echo "  - Docker 이미지 자동 빌드"
+    echo "  - Docker Hub 자동 푸시"
+    echo "  - VM 자동 배포"
+    echo "  - 헬스체크 및 알림"
 }
 
 # 메인 실행 함수
@@ -351,7 +403,8 @@ main() {
     step3_web_server_practice
     step4_volume_mount_practice
     step5_dockerfile_practice
-    step6_cleanup_and_summary
+    step6_github_actions_integration
+    step7_cleanup_and_summary
     
     log_success "모든 Docker 실습이 완료되었습니다!"
 }

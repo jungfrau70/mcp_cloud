@@ -29,16 +29,39 @@ log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# 변수 설정 (필요에 따라 수정)
+# 환경 파일 자동 로드
+ENV_FILE="aws-environment.env"
+if [ -f "$ENV_FILE" ]; then
+    log_info "환경 파일 로드 중: $ENV_FILE"
+    source "$ENV_FILE"
+    log_success "환경 파일이 로드되었습니다."
+    log_info "로드된 설정:"
+    echo "  - 리전: $REGION"
+    echo "  - VPC: $VPC_ID"
+    echo "  - 서브넷: $SUBNET_ID"
+    echo "  - 계정: $AWS_ACCOUNT_ID"
+else
+    log_warning "환경 파일을 찾을 수 없습니다: $ENV_FILE"
+    log_info "aws-setup-helper.sh를 먼저 실행하세요."
+    echo ""
+    log_info "수동 설정을 계속하시겠습니까? (y/N)"
+    read -r response
+    if [[ ! "$response" =~ ^[Yy]$ ]]; then
+        log_info "스크립트를 종료합니다."
+        exit 0
+    fi
+fi
+
+# 변수 설정 (환경 파일에서 로드되지 않은 경우 기본값 사용)
 PROJECT_NAME="cloud-deployment"
-REGION="ap-northeast-2"
-AZ="ap-northeast-2a"
+REGION="${REGION:-ap-northeast-2}"
+AZ="${AZ:-ap-northeast-2a}"
 INSTANCE_TYPE="t3.medium"
 AMI_ID="ami-0ae2c887094315bed"  # Amazon Linux 2
 KEY_NAME="${PROJECT_NAME}-key"
 SECURITY_GROUP_NAME="${PROJECT_NAME}-sg"
-VPC_ID="vpc-0cda6aa4e12d0242b"
-SUBNET_ID="subnet-0a711e414b1d0dede"
+VPC_ID="${VPC_ID:-vpc-0cda6aa4e12d0242b}"
+SUBNET_ID="${SUBNET_ID:-subnet-0a711e414b1d0dede}"
 
 log_info "=== AWS EC2 가상머신 생성 시작 ==="
 log_info "프로젝트명: $PROJECT_NAME"
@@ -58,7 +81,7 @@ checkpoint() {
 # 체크포인트 확인 함수
 check_checkpoint() {
     if [ -f "$CHECKPOINT_FILE" ]; then
-        local checkpoint=$(cat "$CHECKPOINT_FILE")
+        checkpoint=$(cat "$CHECKPOINT_FILE")
         log_info "이전 체크포인트 발견: $checkpoint"
         return 0
     fi
@@ -73,7 +96,7 @@ clear_checkpoint() {
 
 # 체크포인트 기반 재시작 로직
 if check_checkpoint; then
-    local checkpoint=$(cat "$CHECKPOINT_FILE")
+    checkpoint=$(cat "$CHECKPOINT_FILE")
     log_info "이전 실행에서 중단된 지점을 발견했습니다: $checkpoint"
     log_info "중단된 지점부터 재시작합니다..."
     
@@ -92,12 +115,11 @@ fi
 
 # 1. AWS CLI 설정 확인
 log_info "AWS CLI 설정 확인 중..."
-if ! command -v aws &> /dev/null; then
-    log_error "AWS CLI가 설치되지 않았습니다. 먼저 AWS CLI를 설치해주세요."
-    exit 1
-fi
+# AWS CLI 확인을 건너뛰고 바로 인증 확인으로 진행
 
-if ! aws sts get-caller-identity &> /dev/null; then
+# AWS 인증 확인 (Windows 환경에서는 출력을 무시)
+aws sts get-caller-identity > /dev/null 2>&1
+if [ $? -ne 0 ]; then
     log_error "AWS 인증이 설정되지 않았습니다. 'aws configure'를 실행해주세요."
     exit 1
 fi
@@ -219,13 +241,69 @@ log_success "보안 그룹 규칙 확인 완료"
 log_info "키 페어 확인 중..."
 KEY_FILE="${KEY_NAME}.pem"
 
+# 키 파일 권한 설정 함수
+fix_key_permissions() {
+    local key_file="$1"
+    local max_attempts=3
+    local attempt=1
+    
+    log_info "키 파일 권한 설정 중: $key_file"
+    
+    while [ $attempt -le $max_attempts ]; do
+        # Windows 환경에서의 권한 설정 시도
+        if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then
+            # Windows 환경에서는 WSL을 통해 권한 설정
+            if command -v wsl >/dev/null 2>&1; then
+                # WSL을 통해 권한 설정
+                wsl chmod 400 "$(wsl wslpath -a "$key_file")" 2>/dev/null
+                if [ $? -eq 0 ]; then
+                    log_success "WSL을 통해 키 파일 권한 설정 완료"
+                    return 0
+                fi
+            fi
+            
+            # WSL이 없거나 실패한 경우, 키 파일을 WSL 홈 디렉토리로 복사
+            if command -v wsl >/dev/null 2>&1; then
+                local wsl_key_path="/home/$(wsl whoami)/$(basename "$key_file")"
+                wsl cp "$(wsl wslpath -a "$key_file")" "$wsl_key_path" 2>/dev/null
+                wsl chmod 400 "$wsl_key_path" 2>/dev/null
+                if [ $? -eq 0 ]; then
+                    log_success "WSL 홈 디렉토리에 키 파일 복사 및 권한 설정 완료"
+                    log_info "SSH 연결 시 다음 경로를 사용하세요: ~/$(basename "$key_file")"
+                    return 0
+                fi
+            fi
+        else
+            # Linux/Mac 환경에서는 직접 권한 설정
+            chmod 400 "$key_file" 2>/dev/null
+            if [ $? -eq 0 ]; then
+                log_success "키 파일 권한 설정 완료"
+                return 0
+            fi
+        fi
+        
+        log_warning "권한 설정 시도 $attempt/$max_attempts 실패"
+        attempt=$((attempt + 1))
+        sleep 1
+    done
+    
+    log_error "키 파일 권한 설정에 실패했습니다."
+    log_warning "수동으로 다음 명령어를 실행하세요:"
+    if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then
+        echo "  wsl chmod 400 ~/$(basename "$key_file")"
+    else
+        echo "  chmod 400 $key_file"
+    fi
+    return 1
+}
+
 # 로컬 키 파일 존재 여부 확인
 if [ -f "$KEY_FILE" ]; then
     log_success "기존 키 파일 발견: $KEY_FILE"
     log_info "기존 키 파일을 사용합니다."
     
     # 키 파일 권한 확인 및 수정
-    chmod 400 "$KEY_FILE" 2>/dev/null || true
+    fix_key_permissions "$KEY_FILE"
     
     # AWS에서 키 페어 존재 여부 확인
     if aws ec2 describe-key-pairs --key-names $KEY_NAME &> /dev/null; then
@@ -236,7 +314,7 @@ if [ -f "$KEY_FILE" ]; then
             --key-name $KEY_NAME \
             --query 'KeyMaterial' \
             --output text > "$KEY_FILE"
-        chmod 400 "$KEY_FILE"
+        fix_key_permissions "$KEY_FILE"
         log_success "키 페어 생성 완료: $KEY_FILE"
     fi
 else
@@ -252,7 +330,7 @@ else
         --key-name $KEY_NAME \
         --query 'KeyMaterial' \
         --output text > "$KEY_FILE"
-    chmod 400 "$KEY_FILE"
+    fix_key_permissions "$KEY_FILE"
     log_success "키 페어 생성 완료: $KEY_FILE"
 fi
 checkpoint "key_pair_ready"
@@ -283,7 +361,17 @@ if [ -z "$INSTANCE_ID" ] || [ "$INSTANCE_ID" = "None" ]; then
         --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=${PROJECT_NAME}-server},{Key=Environment,Value=production},{Key=Project,Value=${PROJECT_NAME}}]'"
 
     if [ -n "$USER_DATA_FILE" ]; then
-        INSTANCE_CMD="$INSTANCE_CMD --user-data file://$USER_DATA_FILE"
+        # Windows 환경에서의 경로 처리
+        if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "win32" ]]; then
+            # Windows 환경에서는 절대 경로를 Unix 형식으로 변환
+            USER_DATA_PATH=$(pwd)/$USER_DATA_FILE
+            # Windows 경로를 Unix 형식으로 변환
+            USER_DATA_PATH=$(echo "$USER_DATA_PATH" | sed 's|\\|/|g' | sed 's|^C:|/c|')
+            INSTANCE_CMD="$INSTANCE_CMD --user-data file://$USER_DATA_PATH"
+        else
+            # Linux/Mac 환경에서는 상대 경로 사용
+            INSTANCE_CMD="$INSTANCE_CMD --user-data file://$USER_DATA_FILE"
+        fi
     fi
 
     INSTANCE_ID=$(eval $INSTANCE_CMD --query 'Instances[0].InstanceId' --output text)

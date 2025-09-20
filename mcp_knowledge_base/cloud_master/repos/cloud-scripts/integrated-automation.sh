@@ -2,6 +2,49 @@
 
 # Cloud Master 통합 자동화 스크립트 (CI/CD + 모니터링 + 비용 최적화 + AI)
 
+# 환경 파일 자동 로드
+load_environment() {
+    local cloud_provider=$1
+    
+    if [ "$cloud_provider" = "aws" ]; then
+        ENV_FILE="aws-environment.env"
+    elif [ "$cloud_provider" = "gcp" ]; then
+        ENV_FILE="gcp-environment.env"
+    else
+        echo "❌ 지원되지 않는 클라우드 제공자: $cloud_provider"
+        exit 1
+    fi
+    
+    if [ -f "$ENV_FILE" ]; then
+        echo "🔧 환경 파일 로드 중: $ENV_FILE"
+        source "$ENV_FILE"
+        echo "✅ 환경 파일이 로드되었습니다."
+        echo "📋 로드된 설정:"
+        if [ "$cloud_provider" = "aws" ]; then
+            echo "  - 리전: $REGION"
+            echo "  - VPC: $VPC_ID"
+            echo "  - 서브넷: $SUBNET_ID"
+            echo "  - 계정: $AWS_ACCOUNT_ID"
+        else
+            echo "  - 프로젝트: $GCP_PROJECT_ID"
+            echo "  - 리전: $REGION"
+            echo "  - 존: $ZONE"
+            echo "  - 계정: $GCP_ACCOUNT"
+        fi
+        echo ""
+    else
+        echo "⚠️ 환경 파일을 찾을 수 없습니다: $ENV_FILE"
+        echo "💡 ${cloud_provider}-setup-helper.sh를 먼저 실행하세요."
+        echo ""
+        echo "수동 설정을 계속하시겠습니까? (y/N)"
+        read -r response
+        if [[ ! "$response" =~ ^[Yy]$ ]]; then
+            echo "❌ 스크립트를 종료합니다."
+            exit 0
+        fi
+    fi
+}
+
 # 사용법 함수
 usage() {
   echo "Usage: $0 [aws|gcp] [--full-deploy] [--monitor-only] [--cost-only] [--ci-cd-only] [--ai-only] [--ai-enhanced]"
@@ -67,8 +110,12 @@ if [ "$FULL_DEPLOY" == "false" ] && [ "$MONITOR_ONLY" == "false" ] && [ "$COST_O
   FULL_DEPLOY=true
 fi
 
-REGION="ap-northeast-2"  # AWS 기본 리전
-GCP_REGION="asia-northeast3"  # GCP 기본 리전
+# 환경 파일 로드
+load_environment "$CLOUD_PROVIDER"
+
+# 기본값 설정 (환경 파일에서 로드되지 않은 경우)
+REGION="${REGION:-ap-northeast-2}"  # AWS 기본 리전
+GCP_REGION="${REGION:-asia-northeast3}"  # GCP 기본 리전
 LOG_FILE="cloud-master-automation-$(date +%Y%m%d-%H%M%S).log"
 
 echo "🚀 Cloud Master 통합 자동화를 시작합니다..."

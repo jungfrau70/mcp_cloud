@@ -437,7 +437,36 @@ fi
 
 echo ""
 
-# 12. 스크립트 변수 업데이트 안내
+# 12. 환경 파일 생성
+ENV_FILE="gcp-environment.env"
+log_info "환경 파일 생성 중: $ENV_FILE"
+
+cat > "$ENV_FILE" << EOF
+# GCP 환경 설정 파일
+# 이 파일은 gcp-setup-helper.sh에 의해 자동 생성되었습니다.
+# 생성 시간: $(date)
+
+# GCP 계정 정보
+GCP_ACCOUNT="$CURRENT_ACCOUNT"
+GCP_PROJECT_ID="$CURRENT_PROJECT"
+
+# GCP 리전 및 존 설정
+REGION="$SELECTED_REGION"
+ZONE="$SELECTED_ZONE"
+
+# 환경 변수 내보내기
+export GOOGLE_CLOUD_PROJECT="\$GCP_PROJECT_ID"
+export GCP_PROJECT="\$GCP_PROJECT_ID"
+export GCP_REGION="\$REGION"
+export GCP_ZONE="\$ZONE"
+EOF
+
+log_success "환경 파일이 생성되었습니다: $ENV_FILE"
+
+# 13. 스크립트 변수 업데이트 안내
+log_info "이제 다음 방법으로 환경을 로드할 수 있습니다:"
+echo "source $ENV_FILE"
+echo ""
 log_info "또는 스크립트 상단의 변수를 다음과 같이 설정하세요:"
 echo "PROJECT_ID=\"$CURRENT_PROJECT\""
 echo "REGION=\"$SELECTED_REGION\""

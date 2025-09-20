@@ -657,6 +657,75 @@ EOF
     log_success "통합 프로젝트 생성 완료"
 }
 
+# GitHub Actions CI/CD 파이프라인 설정
+setup_github_actions() {
+    log_step "=== GitHub Actions CI/CD 파이프라인 설정 ==="
+    
+    # GitHub Actions 워크플로우 확인
+    if [ -f "../cloud-scripts/.github/workflows/cloud-master-ci-cd.yml" ]; then
+        log_success "GitHub Actions CI/CD 파이프라인을 찾았습니다."
+        
+        # 워크플로우 기능 설명
+        log_info "CI/CD 파이프라인 기능:"
+        echo "  - Docker 이미지 자동 빌드"
+        echo "  - Docker Hub 자동 푸시"
+        echo "  - AWS EC2 자동 배포"
+        echo "  - GCP Compute Engine 자동 배포"
+        echo "  - 헬스체크 및 알림"
+        echo "  - 환경별 배포 관리"
+        
+        # GitHub Secrets 설정 안내
+        log_info "GitHub Secrets 설정이 필요합니다:"
+        echo "  - DOCKERHUB_USERNAME: Docker Hub 사용자명"
+        echo "  - DOCKERHUB_TOKEN: Docker Hub 액세스 토큰"
+        echo "  - AWS_ACCESS_KEY_ID: AWS 액세스 키"
+        echo "  - AWS_SECRET_ACCESS_KEY: AWS 시크릿 키"
+        echo "  - AWS_SSH_PRIVATE_KEY: AWS SSH 개인키"
+        echo "  - GCP_PROJECT_ID: GCP 프로젝트 ID"
+        echo "  - GCP_SA_KEY: GCP 서비스 계정 키"
+        echo "  - GCP_SSH_PRIVATE_KEY: GCP SSH 개인키"
+        
+        # SSH 키 생성 안내
+        log_info "SSH 키 생성이 필요합니다:"
+        echo "  ssh-keygen -t rsa -b 4096 -f aws-key -C 'mcp-cloud-master-aws'"
+        echo "  ssh-keygen -t rsa -b 4096 -f gcp-key -C 'mcp-cloud-master-gcp'"
+        
+        # 워크플로우 실행 방법
+        log_info "워크플로우 실행 방법:"
+        echo "  1. 코드를 GitHub에 푸시"
+        echo "  2. GitHub Actions 탭에서 워크플로우 확인"
+        echo "  3. 자동으로 Docker 이미지 빌드 및 배포"
+        
+    else
+        log_warning "GitHub Actions CI/CD 파이프라인을 찾을 수 없습니다."
+        log_info "cloud-scripts 디렉토리에 .github/workflows/cloud-master-ci-cd.yml 파일이 있는지 확인하세요."
+    fi
+    
+    log_success "GitHub Actions CI/CD 파이프라인 설정 완료"
+}
+
+# 통합 CI/CD 파이프라인 실행
+run_integrated_cicd() {
+    log_step "=== 통합 CI/CD 파이프라인 실행 ==="
+    
+    # 통합 자동화 스크립트 실행
+    log_info "통합 자동화 스크립트 실행 중..."
+    if [ -f "../cloud-scripts/integrated-automation.sh" ]; then
+        # AWS 환경에서 CI/CD 실행
+        log_info "AWS 환경에서 CI/CD 실행:"
+        bash ../cloud-scripts/integrated-automation.sh aws --ci-cd-only
+        
+        # GCP 환경에서 CI/CD 실행
+        log_info "GCP 환경에서 CI/CD 실행:"
+        bash ../cloud-scripts/integrated-automation.sh gcp --ci-cd-only
+        
+    else
+        log_warning "통합 자동화 스크립트를 찾을 수 없습니다."
+    fi
+    
+    log_success "통합 CI/CD 파이프라인 실행 완료"
+}
+
 # 실습 실행
 run_practice() {
     local day=$1
@@ -664,21 +733,30 @@ run_practice() {
     case $day in
         "1"|"day1")
             day1_docker_github_actions
+            setup_github_actions
             ;;
         "2"|"day2")
             day2_kubernetes
+            setup_github_actions
             ;;
         "3"|"day3")
             day3_monitoring
+            setup_github_actions
             ;;
         "all"|"integrated")
             day1_docker_github_actions
             day2_kubernetes
             day3_monitoring
             create_integrated_project
+            setup_github_actions
+            run_integrated_cicd
+            ;;
+        "cicd")
+            setup_github_actions
+            run_integrated_cicd
             ;;
         *)
-            log_error "잘못된 일차입니다. 1, 2, 3, all 중 하나를 선택해주세요."
+            log_error "잘못된 일차입니다. 1, 2, 3, all, cicd 중 하나를 선택해주세요."
             exit 1
             ;;
     esac
@@ -691,11 +769,12 @@ main() {
     
     # 인수 확인
     if [ $# -eq 0 ]; then
-        log_info "사용법: $0 [1|2|3|all]"
+        log_info "사용법: $0 [1|2|3|all|cicd]"
         echo "  1    - 1일차: Docker & GitHub Actions"
         echo "  2    - 2일차: Kubernetes"
         echo "  3    - 3일차: 모니터링"
         echo "  all  - 전체 과정 통합 실습"
+        echo "  cicd - GitHub Actions CI/CD 파이프라인만 실행"
         exit 1
     fi
     

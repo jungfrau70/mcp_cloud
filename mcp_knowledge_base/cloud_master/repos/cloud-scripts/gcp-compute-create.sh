@@ -29,11 +29,34 @@ log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# 변수 설정 (gcp-setup-helper.sh에서 설정된 값 사용)
+# 환경 파일 자동 로드
+ENV_FILE="gcp-environment.env"
+if [ -f "$ENV_FILE" ]; then
+    log_info "환경 파일 로드 중: $ENV_FILE"
+    source "$ENV_FILE"
+    log_success "환경 파일이 로드되었습니다."
+    log_info "로드된 설정:"
+    echo "  - 프로젝트: $GCP_PROJECT_ID"
+    echo "  - 리전: $REGION"
+    echo "  - 존: $ZONE"
+    echo "  - 계정: $GCP_ACCOUNT"
+else
+    log_warning "환경 파일을 찾을 수 없습니다: $ENV_FILE"
+    log_info "gcp-setup-helper.sh를 먼저 실행하세요."
+    echo ""
+    log_info "수동 설정을 계속하시겠습니까? (y/N)"
+    read -r response
+    if [[ ! "$response" =~ ^[Yy]$ ]]; then
+        log_info "스크립트를 종료합니다."
+        exit 0
+    fi
+fi
+
+# 변수 설정 (환경 파일에서 로드되지 않은 경우 기본값 사용)
 PROJECT_NAME="cloud-deployment"
-PROJECT_ID=$(gcloud config get-value project 2>/dev/null)
-REGION=$(gcloud config get-value compute/region 2>/dev/null)
-ZONE=$(gcloud config get-value compute/zone 2>/dev/null)
+PROJECT_ID="${GCP_PROJECT_ID:-$(gcloud config get-value project 2>/dev/null)}"
+REGION="${REGION:-$(gcloud config get-value compute/region 2>/dev/null)}"
+ZONE="${ZONE:-$(gcloud config get-value compute/zone 2>/dev/null)}"
 MACHINE_TYPE="e2-medium"
 IMAGE_FAMILY="ubuntu-2204-lts"
 IMAGE_PROJECT="ubuntu-os-cloud"
@@ -234,15 +257,19 @@ if [ -f "$PUBLIC_KEY_FILE" ]; then
             chmod 400 "$KEY_FILE" 2>/dev/null || true
         elif [ -f "$PRIVATE_KEY_FILE" ]; then
             log_success "개인키 파일 발견 (.pem 형식): $PRIVATE_KEY_FILE"
-            # .pem 파일을 확장자 없는 파일로 복사
-            cp "$PRIVATE_KEY_FILE" "$KEY_FILE"
+            # .pem 파일을 확장자 없는 파일로 복사 (다른 파일인 경우에만)
+            if [ "$PRIVATE_KEY_FILE" != "$KEY_FILE" ]; then
+                cp "$PRIVATE_KEY_FILE" "$KEY_FILE"
+            fi
             chmod 400 "$KEY_FILE" 2>/dev/null || true
         else
             log_warning "개인키 파일이 없습니다. 새로 생성합니다."
             ssh-keygen -t rsa -b 4096 -f "$KEY_FILE" -N "" -C "${PROJECT_NAME}-key"
             chmod 400 "$KEY_FILE"
-            # 공개키도 새로 생성
-            cp "${KEY_FILE}.pub" "$PUBLIC_KEY_FILE"
+            # 공개키도 새로 생성 (다른 파일인 경우에만)
+            if [ "${KEY_FILE}.pub" != "$PUBLIC_KEY_FILE" ]; then
+                cp "${KEY_FILE}.pub" "$PUBLIC_KEY_FILE"
+            fi
             chmod 644 "$PUBLIC_KEY_FILE"
         fi
     else
@@ -252,7 +279,10 @@ if [ -f "$PUBLIC_KEY_FILE" ]; then
         ssh-keygen -t rsa -b 4096 -f "$KEY_FILE" -N "" -C "${PROJECT_NAME}-key"
         chmod 400 "$KEY_FILE"
         chmod 644 "${KEY_FILE}.pub"
-        cp "${KEY_FILE}.pub" "$PUBLIC_KEY_FILE"
+        # 공개키 복사 (다른 파일인 경우에만)
+        if [ "${KEY_FILE}.pub" != "$PUBLIC_KEY_FILE" ]; then
+            cp "${KEY_FILE}.pub" "$PUBLIC_KEY_FILE"
+        fi
         log_success "SSH 키 생성 완료: $KEY_FILE"
     fi
 else
@@ -260,7 +290,10 @@ else
     ssh-keygen -t rsa -b 4096 -f "$KEY_FILE" -N "" -C "${PROJECT_NAME}-key"
     chmod 400 "$KEY_FILE"
     chmod 644 "${KEY_FILE}.pub"
-    cp "${KEY_FILE}.pub" "$PUBLIC_KEY_FILE"
+    # 공개키 복사 (다른 파일인 경우에만)
+    if [ "${KEY_FILE}.pub" != "$PUBLIC_KEY_FILE" ]; then
+        cp "${KEY_FILE}.pub" "$PUBLIC_KEY_FILE"
+    fi
     log_success "SSH 키 생성 완료: $KEY_FILE"
 fi
 

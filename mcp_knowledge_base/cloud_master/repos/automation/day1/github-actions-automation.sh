@@ -642,9 +642,58 @@ step6_workflow_execution() {
     log_success "6단계 완료: 워크플로우 실행 및 확인"
 }
 
-# 7단계: 정리 및 요약
-step7_cleanup_and_summary() {
-    log_info "=== 7단계: 정리 및 요약 ==="
+# 7단계: Cloud Master CI/CD 파이프라인 연계
+step7_cloud_master_integration() {
+    log_info "=== 7단계: Cloud Master CI/CD 파이프라인 연계 ==="
+    
+    # Cloud Master CI/CD 파이프라인 확인
+    log_info "Cloud Master CI/CD 파이프라인 확인:"
+    if [ -f "../../../cloud-scripts/.github/workflows/cloud-master-ci-cd.yml" ]; then
+        log_success "Cloud Master CI/CD 파이프라인을 찾았습니다."
+        
+        # 파이프라인 기능 설명
+        log_info "Cloud Master CI/CD 파이프라인 기능:"
+        echo "  - Docker 이미지 자동 빌드"
+        echo "  - Docker Hub 자동 푸시"
+        echo "  - AWS EC2 자동 배포"
+        echo "  - GCP Compute Engine 자동 배포"
+        echo "  - 헬스체크 및 알림"
+        echo "  - 환경별 배포 관리"
+        
+        # 연계 방법 안내
+        log_info "Cloud Master 파이프라인과 연계 방법:"
+        echo "  1. 현재 프로젝트를 Cloud Master 저장소에 통합"
+        echo "  2. cloud-scripts/.github/workflows/cloud-master-ci-cd.yml 사용"
+        echo "  3. samples/day1/my-app/ 디렉토리에 프로젝트 배치"
+        echo "  4. 통합된 CI/CD 파이프라인으로 자동 배포"
+        
+        # 통합 스크립트 실행 안내
+        log_info "통합 자동화 스크립트 실행:"
+        echo "  cd ../../../cloud-scripts"
+        echo "  ./integrated-automation.sh aws --ci-cd-only"
+        echo "  ./integrated-automation.sh gcp --ci-cd-only"
+        
+    else
+        log_warning "Cloud Master CI/CD 파이프라인을 찾을 수 없습니다."
+        log_info "cloud-scripts 디렉토리에 .github/workflows/cloud-master-ci-cd.yml 파일이 있는지 확인하세요."
+    fi
+    
+    # 프로젝트를 Cloud Master 구조에 맞게 복사
+    log_info "Cloud Master 구조에 맞게 프로젝트 복사:"
+    if [ -d "../../../cloud-scripts/samples/day1/my-app" ]; then
+        log_info "Cloud Master samples 디렉토리에 프로젝트 복사 중..."
+        cp -r . ../../../cloud-scripts/samples/day1/my-app/
+        log_success "프로젝트가 Cloud Master 구조에 복사되었습니다."
+    else
+        log_warning "Cloud Master samples 디렉토리를 찾을 수 없습니다."
+    fi
+    
+    log_success "7단계 완료: Cloud Master CI/CD 파이프라인 연계"
+}
+
+# 8단계: 정리 및 요약
+step8_cleanup_and_summary() {
+    log_info "=== 8단계: 정리 및 요약 ==="
     
     # 생성된 파일 목록
     log_info "생성된 파일 목록:"
@@ -663,6 +712,7 @@ step7_cleanup_and_summary() {
     echo "✅ GitHub Actions CI 워크플로우 생성"
     echo "✅ 고급 CI/CD 파이프라인 설정"
     echo "✅ Docker 컨테이너화 설정"
+    echo "✅ Cloud Master CI/CD 파이프라인 연계"
     echo "✅ Git 커밋 및 푸시"
     echo ""
     echo "🌐 로컬 테스트:"
@@ -670,8 +720,14 @@ step7_cleanup_and_summary() {
     echo "  - 헬스 체크: http://localhost:3000/api/health"
     echo "  - 상태 확인: http://localhost:3000/api/status"
     echo ""
+    echo "🚀 Cloud Master CI/CD:"
+    echo "  - 통합 자동화 파이프라인"
+    echo "  - AWS/GCP 자동 배포"
+    echo "  - Docker Hub 자동 푸시"
+    echo "  - 헬스체크 및 알림"
+    echo ""
     echo "📁 프로젝트 위치: ~/github-actions-practice"
-    echo "🔧 다음 단계: GitHub에서 Actions 탭에서 워크플로우 실행 확인"
+    echo "🔧 다음 단계: Cloud Master 통합 자동화 스크립트 실행"
 }
 
 # 메인 실행 함수
@@ -686,7 +742,8 @@ main() {
     step4_install_and_test
     step5_git_commit_and_push
     step6_workflow_execution
-    step7_cleanup_and_summary
+    step7_cloud_master_integration
+    step8_cleanup_and_summary
     
     log_success "모든 GitHub Actions 실습이 완료되었습니다!"
 }

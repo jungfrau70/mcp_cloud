@@ -557,6 +557,11 @@ docker pull gcr.io/YOUR_PROJECT_ID/actions-demo:latest
 - **자동화 스크립트**: `cloud_master/repos/automation/day[숫자]/[주제]-practice-automation.sh`
 - **클라우드 스크립트**: `cloud_master/repos/cloud-scripts/`
 
+### 🔧 환경 설정 자동화
+- **AWS 환경 설정**: `aws-setup-helper.sh` → `aws-environment.env` 자동 생성
+- **GCP 환경 설정**: `gcp-setup-helper.sh` → `gcp-environment.env` 자동 생성
+- **환경 파일 로드**: 모든 스크립트가 자동으로 환경 파일을 로드하여 설정값 사용
+
 <details>
 <summary>🚀 실습 환경 준비</summary>
 
@@ -576,6 +581,15 @@ gcloud --version
 
 # Docker 설치 확인
 docker --version
+
+# 환경 설정 자동화
+cd cloud_master/repos/cloud-scripts/
+
+# AWS 환경 설정 (자동으로 aws-environment.env 생성)
+./aws-setup-helper.sh
+
+# GCP 환경 설정 (자동으로 gcp-environment.env 생성)
+./gcp-setup-helper.sh
 ```
 
 </details>
@@ -583,22 +597,31 @@ docker --version
 <details>
 <summary>🔧 1단계: 기본 실습</summary>
 
-#### 기본 설정
+#### 환경 파일 자동 로드
 ```bash
-# 환경 변수 설정
-export AWS_REGION=us-west-2
-export GCP_PROJECT_ID=your-project-id
+# AWS 환경 파일 로드
+source aws-environment.env
+
+# GCP 환경 파일 로드
+source gcp-environment.env
 
 # 설정 확인
-echo $AWS_REGION
-echo $GCP_PROJECT_ID
+echo "AWS 리전: $REGION"
+echo "AWS VPC: $VPC_ID"
+echo "GCP 프로젝트: $GCP_PROJECT_ID"
+echo "GCP 존: $ZONE"
 ```
 
-#### 기본 실습
+#### 자동화된 실습
 ```bash
-# 기본 명령어 실행
-aws s3 ls
-gcloud auth list
+# AWS EC2 자동 생성 (환경 파일 자동 로드)
+./aws-ec2-create.sh
+
+# GCP Compute Engine 자동 생성 (환경 파일 자동 로드)
+./gcp-compute-create.sh
+
+# 통합 자동화 실행 (환경 파일 자동 로드)
+./integrated-automation.sh aws --full-deploy
 ```
 
 </details>
