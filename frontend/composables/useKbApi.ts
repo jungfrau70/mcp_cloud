@@ -20,7 +20,13 @@ export function resolveApiBase(): string {
   const baseUrl = (config?.public?.apiBaseUrl as string) || 'http://localhost:8000/api'
   // production에서는 /api 제거, development에서는 /api 유지
   const isProduction = process.env.NODE_ENV === 'production'
-  return isProduction ? baseUrl : baseUrl
+  if (isProduction) {
+    // production에서는 baseUrl에서 /api 제거
+    return baseUrl.replace('/api', '')
+  } else {
+    // development에서는 /api 유지
+    return baseUrl
+  }
 }
 
 export function useKbApi(){
