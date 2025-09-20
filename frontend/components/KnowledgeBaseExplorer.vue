@@ -234,7 +234,7 @@ const handleDirectoryCreate = async (data) => {
   try {
     console.log('Creating item:', data);
     
-    const response = await fetch(`${apiBase}/api/v1/knowledge-base/item`, {
+    const response = await fetch(`${apiBase}/v1/knowledge-base/item`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -269,7 +269,7 @@ const handleDirectoryRename = async (data) => {
   try {
     console.log('Renaming item:', data);
     
-    const response = await fetch(`${apiBase}/api/v1/knowledge-base/item`, {
+    const response = await fetch(`${apiBase}/v1/knowledge-base/item`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -305,7 +305,7 @@ const handleDirectoryDelete = async (data) => {
     
     if (data.type === 'file') {
       // Delete file
-      const response = await fetch(`${apiBase}/api/v1/knowledge-base/item?path=${encodeURIComponent(stripBasePath(data.path))}`, {
+      const response = await fetch(`${apiBase}/v1/knowledge-base/item?path=${encodeURIComponent(stripBasePath(data.path))}`, {
         method: 'DELETE',
         headers: { 'X-API-Key': apiKey }
       });

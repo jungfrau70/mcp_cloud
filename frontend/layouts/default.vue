@@ -1152,8 +1152,8 @@ const handleKbSave = async ({ path, content, message, force }) => {
     // force bypass optimistic (call API directly)
     try {
       const config = useRuntimeConfig();
-      const apiBase = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000';
-      await fetch(`${apiBase}/api/v1/knowledge-base/item`, { method:'PATCH', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path, content, message }) })
+      const apiBase = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us/api' : 'http://localhost:8000/api';
+      await fetch(`${apiBase}/v1/knowledge-base/item`, { method:'PATCH', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path, content, message }) })
       toast.push('success','강제 저장 완료')
     } catch(e){ toast.push('error','강제 저장 실패') }
     return
@@ -1270,7 +1270,7 @@ async function ensureKbIndex(){
     kbTab.value = 'markdown'
   }catch{
     try{
-      await fetch(`${apiBase}/api/v1/knowledge-base/item`, {
+      await fetch(`${apiBase}/v1/knowledge-base/item`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
         body: JSON.stringify({ path: 'index.md', type: 'file', content: '# Knowledge Base\n\n시작 문서입니다.' })
