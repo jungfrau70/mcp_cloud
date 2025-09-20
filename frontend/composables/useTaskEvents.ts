@@ -36,17 +36,32 @@ function connect(){
   const configuredWs: string = (pub?.wsBaseUrl as string) || ''
   const apiKey: string = (pub?.apiKey as string) || 'my_mcp_eagle_tiger'
   
+  console.log('DEBUG: configuredWs:', configuredWs)
+  console.log('DEBUG: apiKey:', apiKey)
+  
   let wsUrl: string
-  if(configuredWs){
-    // 모든 환경에서 /api 포함 (백엔드에서 /api prefix 처리)
+  
+  // Production 환경에서는 강제로 올바른 WebSocket URL 사용
+  const isProduction = process.env.NODE_ENV === 'production'
+  
+  if(isProduction) {
+    // Production 환경에서는 명시적으로 올바른 URL 사용
+    wsUrl = `wss://api.goldencircle.us/api/v1/knowledge-base/tasks/ws?api_key=${apiKey}`
+    console.log('DEBUG: WebSocket URL (production):', wsUrl)
+  } else if(configuredWs){
+    // 개발 환경에서 configuredWs 사용
     wsUrl = `${configuredWs.replace(/\/$/,'')}/v1/knowledge-base/tasks/ws?api_key=${apiKey}`
+    console.log('DEBUG: WebSocket URL (configuredWs):', wsUrl)
   } else {
+    // Fallback
     const httpBase = resolveApiBase()
     const absolute = httpBase.startsWith('/') && typeof window !== 'undefined'
       ? `${window.location.protocol}//${window.location.host}${httpBase}`
       : httpBase
     const wsBase = absolute.replace(/^http/,'ws')
     wsUrl = `${wsBase}/v1/knowledge-base/tasks/ws?api_key=${apiKey}`
+    console.log('DEBUG: WebSocket URL (fallback):', wsUrl)
+    console.log('DEBUG: httpBase:', httpBase, 'wsBase:', wsBase)
   }
   
   socket = new WebSocket(wsUrl)
