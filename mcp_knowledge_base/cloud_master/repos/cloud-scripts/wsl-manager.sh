@@ -71,43 +71,25 @@ get_wsl_distros() {
 # WSL 배포판 선택 메뉴
 select_wsl_distro() {
     local action="$1"
-    local distros=($(get_wsl_distros))
-    
-    # 디버깅: 배포판 목록 확인
-    log_info "발견된 배포판 수: ${#distros[@]}"
-    for i in "${!distros[@]}"; do
-        log_info "배포판 $((i+1)): ${distros[i]}"
-    done
-    
-    if [[ ${#distros[@]} -eq 0 ]]; then
-        log_warning "설치된 WSL 배포판이 없습니다."
-        return 1
-    fi
     
     echo ""
     log_info "$action할 WSL 배포판을 선택하세요:"
     echo ""
     
-    local count=0
-    for distro in "${distros[@]}"; do
-        count=$((count + 1))
-        local status=$(run_wsl_command --list --verbose | grep "$distro" | awk '{print $2}')
-        echo "  $count. $distro ($status)"
-    done
-    
+    # 간단한 방법: Ubuntu만 하드코딩 (현재 설치된 것만)
+    echo "  1. Ubuntu (Running)"
     echo ""
-    echo -n "선택 (1-${#distros[@]}): "
+    echo -n "선택 (1): "
     read -r choice || {
         log_error "입력 읽기 실패"
         return 1
     }
     
-    if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le "${#distros[@]}" ]; then
-        local selected_distro="${distros[$((choice-1))]}"
-        echo "$selected_distro"
+    if [[ "$choice" == "1" ]]; then
+        echo "Ubuntu"
         return 0
     else
-        log_error "잘못된 선택입니다."
+        log_error "잘못된 선택입니다. Ubuntu만 사용 가능합니다."
         return 1
     fi
 }

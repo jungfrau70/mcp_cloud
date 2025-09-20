@@ -51,10 +51,12 @@ copy gotra_backup.sql \\wsl$\Ubuntu\home\youruser\
 ### 3-1. 기존 gotra DB 삭제 (옵션)
 
 ```bash
-docker exec -it postgres psql -U postgres -c "DROP DATABASE IF EXISTS gotra;"
-docker exec -it postgres psql -U postgres -c "CREATE DATABASE gotra;"
+docker exec -it mcp_postgres psql -U mcp_user -d postgres -c "DROP DATABASE IF EXISTS mcp_db;"
+docker exec -it mcp_postgres psql -U mcp_user -d postgres -c "CREATE DATABASE mcp_db;"
+
 
 docker exec -it mcp_postgres psql -U mcpuser -c "DROP DATABASE IF EXISTS mcp_db;"
+docker exec -it mcp_postgres psql -U mcpuser -c "CREATE DATABASE mcp_db;"
 
 docker exec -t mcp_postgres pg_dump -U mcpuser --encoding=UTF8 mcp_db > mcp_db_backup.sql
 
@@ -63,7 +65,7 @@ docker exec -t mcp_postgres pg_dump -U mcpuser --encoding=UTF8 mcp_db > mcp_db_b
 ### 3-2. 복구 실행 (STDIN 방식)
 
 ```bash
-cat gotra_backup.sql | docker exec -i postgres psql -U postgres gotra
+cat mcp_db_backup.sql | docker exec -i mcp_postgres psql -U mcpuser mcp_db
 ```
 
 ---

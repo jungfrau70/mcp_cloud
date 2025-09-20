@@ -33,7 +33,7 @@ export default defineNuxtConfig({
     public: {
       // 환경별 API URL 설정
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || (process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000/api'),
-      wsBaseUrl: process.env.NUXT_PUBLIC_WS_BASE_URL || (process.env.NODE_ENV === 'production' ? 'wss://api.goldencircle.us/api' : 'ws://localhost:8000/api'),
+      wsBaseUrl: process.env.NUXT_PUBLIC_WS_BASE_URL || (process.env.NODE_ENV === 'production' ? 'wss://api.goldencircle.us' : 'ws://localhost:8000/api'),
       // 환경 설정
       env: process.env.NUXT_PUBLIC_ENV || process.env.NODE_ENV || 'development',
       debug: process.env.NUXT_PUBLIC_DEBUG === 'true' || process.env.NODE_ENV === 'development',
