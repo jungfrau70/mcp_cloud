@@ -38,11 +38,8 @@ function connect(){
   
   let wsUrl: string
   if(configuredWs){
-    // production에서는 /api 추가, development에서는 이미 포함되어 있음
-    const isProduction = process.env.NODE_ENV === 'production'
-    const wsBase = configuredWs.replace(/\/$/,'')
-    const apiPath = isProduction ? '/api' : ''
-    wsUrl = `${wsBase}${apiPath}/v1/knowledge-base/tasks/ws?api_key=${apiKey}`
+    // 모든 환경에서 /api 포함 (백엔드에서 /api prefix 처리)
+    wsUrl = `${configuredWs.replace(/\/$/,'')}/v1/knowledge-base/tasks/ws?api_key=${apiKey}`
   } else {
     const httpBase = resolveApiBase()
     const absolute = httpBase.startsWith('/') && typeof window !== 'undefined'
