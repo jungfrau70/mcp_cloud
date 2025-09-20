@@ -32,8 +32,10 @@ CHECKPOINT_FILE="k8s-cluster-checkpoint.json"
 # 체크포인트 로드
 load_checkpoint() {
     if [ -f "$CHECKPOINT_FILE" ]; then
-        log_info "체크포인트 파일 로드 중..."
-        source "$CHECKPOINT_FILE"
+        log_warning "이전 체크포인트 파일이 발견되었습니다."
+        log_info "체크포인트 파일 삭제 중..."
+        rm -f "$CHECKPOINT_FILE"
+        log_success "체크포인트 파일 삭제 완료"
     fi
 }
 
@@ -61,6 +63,42 @@ check_environment() {
     if ! command -v kubectl &> /dev/null; then
         log_warning "kubectl이 설치되지 않았습니다. 설치 중..."
         gcloud components install kubectl
+    fi
+    
+    # gke-gcloud-auth-plugin 체크 및 설치
+    log_info "gke-gcloud-auth-plugin 설치 확인 중..."
+    if ! command -v gke-gcloud-auth-plugin &> /dev/null; then
+        log_warning "gke-gcloud-auth-plugin이 설치되지 않았습니다. 설치 시도 중..."
+        
+        # Windows 환경에서의 설치 시도
+        if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
+            log_info "Windows 환경에서 gke-gcloud-auth-plugin 설치 중..."
+            
+            # gke-gcloud-auth-plugin 다운로드 및 설치
+            curl -LO "https://storage.googleapis.com/gke-release/gke-gcloud-auth-plugin/v0.5.3/windows/amd64/gke-gcloud-auth-plugin.exe"
+            if [ -f "gke-gcloud-auth-plugin.exe" ]; then
+                mkdir -p "$HOME/.local/bin"
+                mv gke-gcloud-auth-plugin.exe "$HOME/.local/bin/"
+                chmod +x "$HOME/.local/bin/gke-gcloud-auth-plugin.exe"
+                export PATH="$HOME/.local/bin:$PATH"
+                log_success "gke-gcloud-auth-plugin 설치 완료"
+            else
+                log_warning "gke-gcloud-auth-plugin 다운로드에 실패했습니다."
+            fi
+        else
+            # Linux/macOS 환경에서의 설치
+            log_info "Linux/macOS 환경에서 gke-gcloud-auth-plugin 설치 중..."
+            gcloud components install gke-gcloud-auth-plugin --quiet
+        fi
+        
+        # 설치 확인
+        if command -v gke-gcloud-auth-plugin &> /dev/null; then
+            log_success "gke-gcloud-auth-plugin 설치 완료"
+        else
+            log_warning "gke-gcloud-auth-plugin 설치에 실패했습니다. 수동 설치가 필요할 수 있습니다."
+        fi
+    else
+        log_success "gke-gcloud-auth-plugin이 이미 설치되어 있습니다."
     fi
     
     # 인증 체크
@@ -121,7 +159,7 @@ create_cluster() {
     
     log_info "Kubernetes 클러스터 생성 중..."
     
-    # GKE 클러스터 생성
+    # GKE 클러스터 생성 (containerd 런타임 사용)
     gcloud container clusters create "$CLUSTER_NAME" \
         --zone="$ZONE" \
         --num-nodes="$NODE_COUNT" \
@@ -133,12 +171,13 @@ create_cluster() {
         --enable-autoupgrade \
         --disk-size=20GB \
         --disk-type=pd-standard \
-        --image-type=COS \
+        --image-type=COS_CONTAINERD \
         --enable-ip-alias \
         --network=default \
         --subnetwork=default \
         --enable-network-policy \
-        --enable-stackdriver-kubernetes \
+        --logging=SYSTEM,WORKLOAD \
+        --monitoring=SYSTEM \
         --addons=HttpLoadBalancing,HorizontalPodAutoscaling,NetworkPolicy \
         --labels=environment=development,project=cloud-master \
         --tags=cloud-master-k8s \

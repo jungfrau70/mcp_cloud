@@ -891,6 +891,89 @@ main() {
     
     # 결과 요약
     print_summary
+    
+    # 클러스터 정리 메뉴 (선택사항)
+    echo ""
+    log_info "클러스터 정리 기능을 사용하시겠습니까? (y/N)"
+    read -r response
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+        cluster_cleanup_menu
+    fi
+}
+
+# 클러스터 정리 메뉴
+cluster_cleanup_menu() {
+    while true; do
+        echo ""
+        log_header "=== 클러스터 정리 메뉴 ==="
+        echo "1. EKS 클러스터 목록 보기"
+        echo "2. GKE 클러스터 목록 보기"
+        echo "3. GCP VM 인스턴스 목록 보기"
+        echo "4. AWS EC2 인스턴스 목록 보기"
+        echo "5. 통합 클러스터 정리 스크립트 실행"
+        echo "6. 통합 VM 정리 스크립트 실행"
+        echo "7. 메인 메뉴로 돌아가기"
+        echo ""
+        echo -n "선택 (1-7): "
+        read -r choice
+        
+        case $choice in
+            1)
+                log_info "EKS 클러스터 목록 조회 중..."
+                if command -v eksctl &> /dev/null; then
+                    eksctl get cluster --region ap-northeast-2 2>/dev/null || log_warning "EKS 클러스터가 없거나 접근할 수 없습니다."
+                else
+                    log_error "eksctl이 설치되지 않았습니다."
+                fi
+                ;;
+            2)
+                log_info "GKE 클러스터 목록 조회 중..."
+                if command -v gcloud &> /dev/null; then
+                    gcloud container clusters list 2>/dev/null || log_warning "GKE 클러스터가 없거나 접근할 수 없습니다."
+                else
+                    log_error "gcloud가 설치되지 않았습니다."
+                fi
+                ;;
+            3)
+                log_info "GCP VM 인스턴스 목록 조회 중..."
+                if command -v gcloud &> /dev/null; then
+                    gcloud compute instances list 2>/dev/null || log_warning "GCP VM 인스턴스가 없거나 접근할 수 없습니다."
+                else
+                    log_error "gcloud가 설치되지 않았습니다."
+                fi
+                ;;
+            4)
+                log_info "AWS EC2 인스턴스 목록 조회 중..."
+                if command -v aws &> /dev/null; then
+                    aws ec2 describe-instances --region ap-northeast-2 --query 'Reservations[*].Instances[*].[InstanceId,State.Name,InstanceType,Tags[?Key==`Name`].Value|[0]]' --output table 2>/dev/null || log_warning "AWS EC2 인스턴스가 없거나 접근할 수 없습니다."
+                else
+                    log_error "aws가 설치되지 않았습니다."
+                fi
+                ;;
+            5)
+                if [ -f "./cluster-cleanup-interactive.sh" ]; then
+                    log_info "통합 클러스터 정리 스크립트를 실행합니다."
+                    ./cluster-cleanup-interactive.sh
+                else
+                    log_error "cluster-cleanup-interactive.sh 파일을 찾을 수 없습니다."
+                fi
+                ;;
+            6)
+                if [ -f "./vm-cleanup-interactive.sh" ]; then
+                    log_info "통합 VM 정리 스크립트를 실행합니다."
+                    ./vm-cleanup-interactive.sh
+                else
+                    log_error "vm-cleanup-interactive.sh 파일을 찾을 수 없습니다."
+                fi
+                ;;
+            7)
+                break
+                ;;
+            *)
+                log_error "잘못된 선택입니다."
+                ;;
+        esac
+    done
 }
 
 # 스크립트 실행

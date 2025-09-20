@@ -35,7 +35,23 @@ mcp_knowledge_base/cloud_master/repos/cloud-scripts/gcp-setup-helper.sh
 mcp_knowledge_base/cloud_master/repos/cloud-scripts/gcp-compute-create.sh
 ```
 
-### **4단계: GitHub Actions CI/CD 파이프라인 설정 (필수)**
+### **4단계: Kubernetes 클러스터 생성 (선택)**
+```bash
+# GCP GKE 클러스터 생성
+mcp_knowledge_base/cloud_master/repos/cloud-scripts/k8s-cluster-create.sh
+
+# AWS EKS 클러스터 생성
+mcp_knowledge_base/cloud_master/repos/cloud-scripts/eks-cluster-create.sh
+
+# kubectl context 설정 및 관리
+# Linux/macOS
+mcp_knowledge_base/cloud_master/repos/cloud-scripts/context-switch.sh help
+
+# Windows
+mcp_knowledge_base/cloud_master/repos/cloud-scripts/context-switch.bat help
+```
+
+### **5단계: GitHub Actions CI/CD 파이프라인 설정 (필수)**
 ```bash
 # GitHub Actions 워크플로우 활성화
 # .github/workflows/cloud-master-ci-cd.yml 파일이 자동으로 실행됩니다.
@@ -82,6 +98,9 @@ cloud-scripts/
 ├── user-data.sh                        # AWS 초기화 스크립트
 ├── k8s-cluster-create.sh               # Kubernetes 클러스터 자동 생성 (Day2)
 ├── k8s-app-deploy.sh                   # Kubernetes 애플리케이션 자동 배포 (Day2)
+├── context-switch.sh                   # kubectl context 관리 및 전환 (Linux/macOS)
+├── context-switch.bat                  # kubectl context 관리 및 전환 (Windows)
+├── kubectl-context-guide.md            # kubectl context 설정 가이드 문서
 ├── monitoring-stack-deploy.sh          # 모니터링 스택 자동 배포 (Day3)
 ├── load-balancer-setup.sh              # 로드밸런서 자동 설정 (Day3)
 ├── cost-optimization.sh                # 비용 최적화 자동화 (Day3)
@@ -195,6 +214,26 @@ gh run cancel <run-id>
 
 ### 1. 환경 준비 (WSL 권장) ⭐
 
+#### WSL 환경 구축
+
+##### 새로운 WSL 환경 생성 (권장)
+```bash
+# WSL 자동 설정 스크립트 실행
+./wsl-auto-setup.sh
+```
+
+##### 기존 WSL 환경 체크
+```bash
+# WSL 환경 체크 스크립트 실행
+./environment-check-wsl.sh
+
+# 또는 특정 Day 체크
+./environment-check-wsl.sh day2
+```
+
+##### WSL 수동 설정
+상세한 WSL 환경 구축 방법은 [WSL 추가 생성 가이드](wsl-setup-guide.md)를 참조하세요.
+
 #### WSL 환경에서 실행
 ```bash
 # WSL 터미널에서 실행
@@ -280,6 +319,157 @@ chmod +x *.sh
 ./ai-environment-generator.sh aws --skill-level "중급" --budget 100 --duration 8
 ./ai-learning-analyzer.sh --analyze-progress --generate-recommendations
 ./ai-qa-assistant.sh --interactive
+```
+
+### 5. 클러스터 삭제 및 정리
+
+#### **통합 클러스터 정리 도구 (권장)**
+
+##### 대화형 클러스터 정리
+```bash
+# 통합 클러스터 정리 스크립트 실행
+./cluster-cleanup-interactive.sh
+```
+
+**기능:**
+- EKS 클러스터 목록 보기 및 선택적 삭제
+- GKE 클러스터 목록 보기 및 선택적 삭제
+- 전체 클러스터 정리 (EKS + GKE)
+- 환경 상태 확인
+
+##### VPC 정리 도구
+```bash
+# VPC 선택적 삭제
+./cleanup-vpcs.sh
+
+# VPC 종속성 진단
+./diagnose-vpc.sh
+```
+
+##### VM 정리 도구
+```bash
+# 통합 VM 정리 스크립트 실행
+./vm-cleanup-interactive.sh
+```
+
+**기능:**
+- GCP VM 인스턴스 목록 보기 및 선택적 삭제
+- AWS EC2 인스턴스 목록 보기 및 선택적 삭제
+- 전체 VM 정리 (GCP + AWS)
+- 환경 상태 확인
+
+#### **GCP GKE 클러스터 삭제**
+
+##### 수동 삭제
+```bash
+# GKE 클러스터 삭제
+gcloud container clusters delete cloud-master-cluster --zone=asia-northeast3-a
+
+# 모든 GKE 클러스터 확인
+gcloud container clusters list
+
+# 특정 프로젝트의 모든 클러스터 삭제
+gcloud container clusters list --format="value(name,zone)" | while read name zone; do
+    gcloud container clusters delete "$name" --zone="$zone" --quiet
+done
+```
+
+##### 스크립트를 통한 삭제
+```bash
+# GKE 클러스터 삭제 스크립트 실행
+./k8s-cluster-create.sh --delete
+```
+
+#### **AWS EKS 클러스터 삭제**
+
+##### 수동 삭제
+```bash
+# EKS 클러스터 삭제
+eksctl delete cluster --name cloud-master-eks-cluster --region ap-northeast-2
+
+# 모든 EKS 클러스터 확인
+eksctl get cluster --region ap-northeast-2
+
+# 특정 리전의 모든 클러스터 삭제
+eksctl get cluster --region ap-northeast-2 --output json | jq -r '.[].name' | while read cluster; do
+    eksctl delete cluster --name "$cluster" --region ap-northeast-2
+done
+```
+
+##### 스크립트를 통한 삭제
+```bash
+# EKS 클러스터 삭제 스크립트 실행
+./eks-cluster-create.sh delete
+```
+
+#### **통합 정리 스크립트**
+```bash
+# 모든 클러스터 정리 (GCP + AWS)
+./cleanup-all-clusters.sh
+
+# 특정 클라우드만 정리
+./cleanup-all-clusters.sh --gcp-only
+./cleanup-all-clusters.sh --aws-only
+
+# 강제 삭제 (확인 없이)
+./cleanup-all-clusters.sh --force
+```
+
+#### **수동 정리 절차**
+
+**GCP 정리:**
+```bash
+# 1. 모든 클러스터 확인
+gcloud container clusters list
+
+# 2. 클러스터별 삭제
+gcloud container clusters delete [CLUSTER_NAME] --zone=[ZONE]
+
+# 3. 리소스 정리
+gcloud compute instances list
+gcloud compute instances delete [INSTANCE_NAME] --zone=[ZONE]
+
+# 4. 네트워크 정리
+gcloud compute networks list
+gcloud compute networks delete [NETWORK_NAME]
+
+# 5. 방화벽 규칙 정리
+gcloud compute firewall-rules list
+gcloud compute firewall-rules delete [RULE_NAME]
+```
+
+**AWS 정리:**
+```bash
+# 1. 모든 클러스터 확인
+eksctl get cluster --all-regions
+
+# 2. 클러스터별 삭제
+eksctl delete cluster --name [CLUSTER_NAME] --region [REGION]
+
+# 3. EC2 인스턴스 정리
+aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,State.Name]' --output table
+aws ec2 terminate-instances --instance-ids [INSTANCE_ID]
+
+# 4. VPC 정리
+aws ec2 describe-vpcs --query 'Vpcs[*].[VpcId,State]' --output table
+aws ec2 delete-vpc --vpc-id [VPC_ID]
+
+# 5. 보안 그룹 정리
+aws ec2 describe-security-groups --query 'SecurityGroups[*].[GroupId,GroupName]' --output table
+aws ec2 delete-security-group --group-id [SECURITY_GROUP_ID]
+```
+
+#### **비용 확인 및 최적화**
+```bash
+# GCP 비용 확인
+gcloud billing budgets list
+gcloud billing accounts list
+
+# AWS 비용 확인
+aws ce get-cost-and-usage --time-period Start=2024-01-01,End=2024-01-31 --granularity MONTHLY --metrics BlendedCost
+
+# 비용 최적화 권장사항
+./cost-optimization.sh --analyze --recommendations
 ```
 
 ## 📚 스크립트별 상세 가이드
@@ -447,6 +637,37 @@ EMAIL_NOTIFICATION=your_email@example.com (선택사항)
 - **목적**: Kubernetes 애플리케이션 자동 배포
 - **기능**: Docker 이미지 빌드, Deployment, Service, Ingress 생성
 - **사용법**: `./k8s-app-deploy.sh`
+
+#### `context-switch.sh` / `context-switch.bat`
+- **목적**: kubectl context 관리 및 전환
+- **기능**: 
+  - Context 목록 조회 및 전환
+  - GKE 클러스터 자격 증명 자동 설정
+  - Context 연결 테스트
+  - Context 삭제 및 관리
+- **사용법**: 
+  ```bash
+  # Linux/macOS
+  ./context-switch.sh current
+  ./context-switch.sh list
+  ./context-switch.sh switch gke-cloud-master
+  ./context-switch.sh test gke-cloud-master
+  
+  # Windows
+  context-switch.bat current
+  context-switch.bat list
+  context-switch.bat switch gke-cloud-master
+  context-switch.bat test gke-cloud-master
+  ```
+
+#### 📚 kubectl Context 가이드 문서
+- **파일**: `kubectl-context-guide.md`
+- **내용**: 
+  - kubectl context 설정 및 변경 방법
+  - GKE 클러스터 자격 증명 설정
+  - Context 문제 해결 가이드
+  - Windows/Linux 환경별 설정 방법
+  - Context 관리 모범 사례
 
 ### 📊 모니터링 & 최적화 스크립트 (Day3)
 
@@ -812,6 +1033,31 @@ gcloud auth login
 gcloud config set project PROJECT_ID
 ```
 
+#### 3. kubectl Context 문제
+```bash
+# 현재 context 확인
+kubectl config current-context
+
+# 모든 context 목록 확인
+kubectl config get-contexts
+
+# Context 전환
+kubectl config use-context <context-name>
+
+# GKE 클러스터 자격 증명 재설정
+gcloud container clusters get-credentials <cluster-name> --zone <zone> --project <project-id>
+
+# gke-gcloud-auth-plugin 설치 (Windows)
+curl -LO "https://storage.googleapis.com/gke-release/gke-gcloud-auth-plugin/v0.5.3/windows/amd64/gke-gcloud-auth-plugin.exe"
+mkdir -p "$HOME/.local/bin"
+mv gke-gcloud-auth-plugin.exe "$HOME/.local/bin/"
+set PATH=%USERPROFILE%\.local\bin;%PATH%
+
+# Context 연결 테스트
+kubectl get nodes
+kubectl get namespaces
+```
+
 #### 3. 리소스 생성 실패
 ```bash
 # 해결방법: 이전 리소스 정리 후 재실행
@@ -928,7 +1174,22 @@ aws ce get-cost-and-usage --time-period Start=2024-01-01,End=2024-01-31
 
 ### 설치 가이드
 - [WSL 환경 설치 가이드](cloud_master/repos/install/README-wsl.md)
+- [WSL 추가 생성 가이드](wsl-setup-guide.md) - 상세한 WSL 환경 구축 가이드
+- [WSL 자동 설정 스크립트](wsl-auto-setup.sh) - 원클릭 WSL 환경 구축
 - [전체 설치 스크립트](cloud_master/repos/install/install-all-wsl.sh)
+
+### kubectl Context 관리
+- [kubectl Context 설정 가이드](kubectl-context-guide.md)
+- [Context 전환 스크립트 (Linux/macOS)](context-switch.sh)
+- [Context 전환 스크립트 (Windows)](context-switch.bat)
+
+### 클러스터 정리 도구
+- [통합 클러스터 정리 스크립트](cluster-cleanup-interactive.sh) - EKS/GKE 클러스터 선택적 정리
+- [VPC 정리 스크립트](cleanup-vpcs.sh) - AWS VPC 선택적 삭제
+- [VPC 진단 스크립트](diagnose-vpc.sh) - VPC 종속성 진단
+
+### VM 정리 도구
+- [통합 VM 정리 스크립트](vm-cleanup-interactive.sh) - GCP/AWS VM 인스턴스 선택적 정리
 
 ### CI/CD 가이드
 - [GitHub Actions 워크플로우](.github/workflows/cloud-master-ci-cd.yml)
