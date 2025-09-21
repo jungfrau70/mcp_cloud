@@ -1,0 +1,114 @@
+
+name: Deploy to VM
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: '배포 환경 선택'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+        - staging
+        - production
+
+env:
+  DEPLOY_ENV: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+
+jobs:
+  deploy-aws:
+    name: AWS EC2 배포
+    runs-on: ubuntu-latest
+    environment: ${{ env.DEPLOY_ENV }}
+    
+    steps:
+    - name: 코드 체크아웃
+      uses: actions/checkout@v4
+      
+    - name: AWS 자격증명 설정
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+        
+    - name: AWS EC2 배포
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.AWS_HOST }}
+        username: ${{ secrets.AWS_USERNAME }}
+        key: ${{ secrets.AWS_SSH_KEY }}
+        script: |
+          # 애플리케이션 디렉토리로 이동
+          cd /opt/github-actions-demo
+          
+          # 최신 코드 가져오기
+          git pull origin main
+          
+          # Docker 이미지 빌드
+          docker build -t github-actions-demo:latest .
+          
+          # 기존 컨테이너 중지
+          docker-compose down
+          
+          # 새 컨테이너 시작
+          docker-compose up -d --build
+          
+          # 배포 상태 확인
+          docker ps
+          curl -f http://localhost:3000/health || exit 1
+          
+    - name: 배포 상태 확인
+      run: |
+        echo "AWS EC2 배포 완료"
+        echo "환경: ${{ env.DEPLOY_ENV }}"
+        echo "시간: $(date)"
+
+  deploy-gcp:
+    name: GCP Compute Engine 배포
+    runs-on: ubuntu-latest
+    environment: ${{ env.DEPLOY_ENV }}
+    
+    steps:
+    - name: 코드 체크아웃
+      uses: actions/checkout@v4
+      
+    - name: GCP 자격증명 설정
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        
+    - name: GCP Compute Engine 배포
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.GCP_HOST }}
+        username: ${{ secrets.GCP_USERNAME }}
+        key: ${{ secrets.GCP_SSH_KEY }}
+        script: |
+          # 애플리케이션 디렉토리로 이동
+          cd /opt/github-actions-demo
+          
+          # 최신 코드 가져오기
+          git pull origin main
+          
+          # Docker 이미지 빌드
+          docker build -t github-actions-demo:latest .
+          
+          # 기존 컨테이너 중지
+          docker-compose down
+          
+          # 새 컨테이너 시작
+          docker-compose up -d --build
+          
+          # 배포 상태 확인
+          docker ps
+          curl -f http://localhost:3000/health || exit 1
+          
+    - name: 배포 상태 확인
+      run: |
+        echo "GCP Compute Engine 배포 완료"
+        echo "환경: ${{ env.DEPLOY_ENV }}"
+        echo "시간: $(date)"

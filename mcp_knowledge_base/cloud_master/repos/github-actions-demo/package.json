@@ -1,0 +1,21 @@
+{
+    "name": "github-actions-demo",
+    "version": "1.0.0",
+    "description": "GitHub Actions CI/CD 실습 프로젝트",
+    "main": "src/app.js",
+    "scripts": {
+      "start": "node src/app.js",
+      "test": "jest",
+      "lint": "eslint src/",
+      "build": "echo 'Build completed'"
+    },
+    "dependencies": {
+      "express": "^4.18.2",
+      "cors": "^2.8.5"
+    },
+    "devDependencies": {
+      "jest": "^29.7.0",
+      "supertest": "^6.3.3",
+      "eslint": "^8.57.0"
+    }
+  }
