@@ -993,8 +993,8 @@ const handleFileClick = async (path) => {
       tbSlide.value = null
       return
     }
-    // 텍스트 계열은 중앙 패널에 표시
-    if(ext === 'md' || ['txt','log','json','yaml','yml','csv'].includes(ext) || ext === ''){
+    // 텍스트 계열은 중앙 패널에 표시 (셸 스크립트 포함)
+    if(ext === 'md' || ['txt','log','json','yaml','yml','csv','sh','bash','zsh'].includes(ext) || ext === ''){
       console.log('Making API call to curriculum endpoint with path:', cleanPath)
       console.log('apiBase:', apiBase, 'apiKey:', apiKey)
       const apiUrl = `${apiBase}/api/v1/curriculum?curriculum_path=${encodeURIComponent(cleanPath)}`
