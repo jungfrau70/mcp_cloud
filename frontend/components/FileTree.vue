@@ -544,8 +544,8 @@ const handleFileClick = (file) => {
         return;
     }
     
-    // 텍스트 파일들은 읽기 전용으로 열기
-    if (['txt', 'log', 'json', 'yaml', 'yml', 'csv'].includes(ext)) {
+    // 텍스트 파일들은 읽기 전용으로 열기 (셸 스크립트 포함)
+    if (['txt', 'log', 'json', 'yaml', 'yml', 'csv', 'sh', 'bash', 'zsh'].includes(ext)) {
         emit('file-click', filePath);
         return;
     }
