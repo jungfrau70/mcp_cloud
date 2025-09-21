@@ -1,4 +1,4 @@
-# GitHub Actions CI/CD 완전 가이드
+# 🚀 Cloud Master CI/CD 가이드
 
 ## 🎯 학습 목표
 
@@ -25,15 +25,14 @@
 ## 📚 기존 문서와의 연계
 
 ### 관련 실습 가이드
-- [GitHub Actions 기초 실습](github-actions-basics.md) - 기본 워크플로우 생성
-- [VM 배포 실습](vm-deployment.md) - 클라우드 VM 배포
-- [Kubernetes 실습](../Day2/practices/kubernetes-basics.md) - 컨테이너 오케스트레이션
-- [모니터링 실습](../Day3/practices/monitoring-basics.md) - 모니터링 시스템 구축
+- [인프라 가이드](infra-guide.md) - 인프라 환경 설정 및 관리
+- [실습 가이드](execuise-guide.md) - 전체 과정 실습 가이드
+- [GitHub Actions 기초 실습](../textbook/Day1/practices/github-actions-basics.md) - 기본 워크플로우 생성
 
 ### 자동화 스크립트
-- [통합 자동화 스크립트](../../../automation/integrated-practice-automation.sh) - 전체 과정 자동화
-- [환경 체크 도구](../../../cloud-scripts/environment-check-wsl.sh) - 실습 환경 검증
-- [클러스터 생성 스크립트](../../../cloud-scripts/k8s-cluster-create.sh) - Kubernetes 클러스터 자동 생성
+- [통합 자동화 스크립트](../repos/automation/integrated-practice-automation.sh) - 전체 과정 자동화
+- [GitHub Actions 자동화](../repos/automation/github-actions-cicd-automation.sh) - CI/CD 파이프라인 자동화
+- [환경 체크 도구](../repos/cloud-scripts/environment-check-wsl.sh) - 실습 환경 검증
 
 ---
 
@@ -694,60 +693,6 @@ jobs:
         kubectl get deployments
 ```
 
-### 🔧 고급 기능 구현
-
-#### 환경별 설정 관리
-**.github/workflows/environment-deploy.yml**
-```yaml
-name: Environment Deployment
-
-on:
-  push:
-    branches: [ main, develop ]
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: '배포 환경 선택'
-        required: true
-        default: 'staging'
-        type: choice
-        options:
-        - staging
-        - production
-
-env:
-  DEPLOY_ENV: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
-
-jobs:
-  deploy:
-    name: ${{ env.DEPLOY_ENV }} 환경 배포
-    runs-on: ubuntu-latest
-    environment: ${{ env.DEPLOY_ENV }}
-    
-    steps:
-    - name: 코드 체크아웃
-      uses: actions/checkout@v4
-      
-    - name: 환경별 설정 적용
-      run: |
-        if [ "${{ env.DEPLOY_ENV }}" = "production" ]; then
-          echo "PRODUCTION 환경 설정 적용"
-          export NODE_ENV=production
-          export LOG_LEVEL=warn
-        else
-          echo "STAGING 환경 설정 적용"
-          export NODE_ENV=staging
-          export LOG_LEVEL=debug
-        fi
-        
-    - name: 환경별 배포 실행
-      run: |
-        echo "배포 환경: ${{ env.DEPLOY_ENV }}"
-        echo "Node 환경: $NODE_ENV"
-        echo "로그 레벨: $LOG_LEVEL"
-        # 실제 배포 로직
-```
-
 ---
 
 ## 🚀 Day 3: 모니터링 및 최적화
@@ -974,9 +919,9 @@ jobs:
 
 <div align="center">
 
-[← 이전: GitHub Actions 기초 실습](github-actions-basics.md) | 
-[📚 전체 커리큘럼](../../../curriculum.md) | 
-[🏠 학습 경로로 돌아가기](../../../index.md) | 
-[다음: VM 배포 실습 →](vm-deployment.md)
+[← 이전: 인프라 가이드](infra-guide.md) | 
+[📚 전체 커리큘럼](../curriculum.md) | 
+[🏠 학습 경로로 돌아가기](../index.md) | 
+[다음: 실습 가이드 →](execuise-guide.md)
 
 </div>

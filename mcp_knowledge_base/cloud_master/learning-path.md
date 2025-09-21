@@ -23,6 +23,11 @@
 - [AWS 계정 가입](cloud_master/accounts/AWS계정가입.md)
 - [GCP 계정 가입](cloud_master/accounts/GCP_개인계정가입.md)
 
+### 1.5단계: 전문 분야별 가이드
+- [인프라 관리 가이드](infra-guide.md) - WSL 환경 설정, 클라우드 계정 구성, VM 배포, Kubernetes 클러스터 구축
+- [CI/CD 파이프라인 가이드](cicd-guide.md) - GitHub Actions, Docker, 자동 배포, 모니터링 시스템
+- [전체 실습 가이드](execuise-guide.md) - 전체 과정 개요, 학습 자료 구조, 실습 진행 방법
+
 ### 2단계: Day별 학습
 
 <details>

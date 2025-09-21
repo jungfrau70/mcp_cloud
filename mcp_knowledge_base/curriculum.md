@@ -15,6 +15,7 @@
 - **기간**: 3일
 - **목표**: 고급 CI/CD 및 VM 기반 컨테이너 배포
 - **내용**: Docker, Kubernetes, GitHub Actions, 고가용성
+- **전문 분야**: [인프라 관리](cloud_master/infra-guide.md), [CI/CD 파이프라인](cloud_master/cicd-guide.md)
 
 ### 3. Cloud Container - 클라우드 컨테이너
 - **기간**: 2일

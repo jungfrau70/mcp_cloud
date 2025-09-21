@@ -21,8 +21,9 @@ Cloud Master 과정 실습을 위한 완전한 가이드입니다. WSL 환경 �
 
 4. [고급 기능](#4-고급-기능)
    - [AI 기반 학습 지원](#41-ai-기반-학습-지원)
-   - [자동화 및 CI/CD](#42-자동화-및-cicd)
-   - [모니터링 및 최적화](#43-모니터링-및-최적화)
+   - [인프라 관리](#42-인프라-관리)
+   - [CI/CD 파이프라인](#43-cicd-파이프라인)
+   - [모니터링 및 최적화](#44-모니터링-및-최적화)
 
 5. [문제 해결](#5-문제-해결)
 
@@ -322,9 +323,21 @@ mcp_knowledge_base/cloud_master/repos/cloud-scripts/ai-learning-analyzer.sh
 - 개인화된 추천사항 생성
 - 학습 경로 최적화
 
-### 4.2 자동화 및 CI/CD
+### 4.2 인프라 관리
 
-#### 통합 자동화 실행
+#### 인프라 가이드
+```
+mcp_knowledge_base/cloud_master/infra-guide.md
+```
+
+**포함 내용:**
+- WSL 환경 설정 및 도구 설치
+- 클라우드 계정 설정 (AWS, GCP)
+- VM 인프라 배포 (EC2, Compute Engine)
+- Kubernetes 클러스터 구축 (로컬, EKS, GKE)
+- 인프라 모니터링 및 최적화
+
+#### 인프라 자동화 실행
 ```bash
 # 전체 과정 통합 자동화
 ./integrated-automation.sh aws --full-deploy
@@ -332,6 +345,19 @@ mcp_knowledge_base/cloud_master/repos/cloud-scripts/ai-learning-analyzer.sh
 # GCP 환경 자동화
 ./integrated-automation.sh gcp --full-deploy
 ```
+
+### 4.3 CI/CD 파이프라인
+
+#### CI/CD 가이드
+```
+mcp_knowledge_base/cloud_master/cicd-guide.md
+```
+
+**포함 내용:**
+- GitHub Actions 워크플로우 생성
+- Docker 이미지 자동 빌드 및 배포
+- VM 및 Kubernetes 자동 배포
+- 모니터링 및 알림 시스템 구축
 
 #### CI/CD 파이프라인 설정
 ```bash
@@ -342,7 +368,7 @@ mcp_knowledge_base/cloud_master/repos/cloud-scripts/ai-learning-analyzer.sh
 ./setup-gitlab-ci.sh
 ```
 
-### 4.3 모니터링 및 최적화
+### 4.4 모니터링 및 최적화
 
 #### 성능 모니터링
 ```bash
@@ -458,16 +484,35 @@ cd mcp_knowledge_base/cloud_master/repos/cloud-scripts
 cat mcp_knowledge_base/cloud_master/learning-path.md
 ```
 
-### 3단계: Day별 실습 진행
+### 3단계: 전문 분야별 실습 진행
 ```bash
-# Day 1 실습
+# 인프라 관리 실습
+cat mcp_knowledge_base/cloud_master/infra-guide.md
+
+# CI/CD 파이프라인 실습
+cat mcp_knowledge_base/cloud_master/cicd-guide.md
+
+# Day별 실습
 cat mcp_knowledge_base/cloud_master/textbook/Day1/README.md
-
-# Day 2 실습
 cat mcp_knowledge_base/cloud_master/textbook/Day2/README.md
-
-# Day 3 실습
 cat mcp_knowledge_base/cloud_master/textbook/Day3/README.md
 ```
+
+## 📚 전문 분야별 가이드
+
+### 🏗️ 인프라 관리
+- **문서**: [infra-guide.md](infra-guide.md)
+- **내용**: WSL 환경 설정, 클라우드 계정 구성, VM 배포, Kubernetes 클러스터 구축
+- **대상**: 인프라 엔지니어, DevOps 엔지니어
+
+### 🚀 CI/CD 파이프라인
+- **문서**: [cicd-guide.md](cicd-guide.md)
+- **내용**: GitHub Actions, Docker, 자동 배포, 모니터링 시스템
+- **대상**: 개발자, CI/CD 엔지니어, SRE
+
+### 📖 전체 실습 가이드
+- **문서**: [execuise-guide.md](execuise-guide.md) (현재 문서)
+- **내용**: 전체 과정 개요, 학습 자료 구조, 실습 진행 방법
+- **대상**: 모든 학습자
 
 이 가이드를 따라하면 Cloud Master 과정의 모든 실습을 체계적으로 진행할 수 있습니다! 🚀✨
