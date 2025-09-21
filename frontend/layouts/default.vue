@@ -1228,13 +1228,30 @@ function getExt(p){
 
 async function openKbBinary(path){
   try{
-    const r = await fetch(`${apiBase}/api/v1/knowledge-base/file?path=${encodeURIComponent(path)}`, { headers: { 'X-API-Key': apiKey } })
-    if(!r.ok){ toast.push('error', '파일 열기 실패: ' + r.status); return }
+    console.log('openKbBinary called with path:', path)
+    const apiUrl = `${apiBase}/api/v1/knowledge-base/file?path=${encodeURIComponent(path)}`
+    console.log('openKbBinary - API URL:', apiUrl)
+    
+    const r = await fetch(apiUrl, { headers: { 'X-API-Key': apiKey } })
+    console.log('openKbBinary - Response status:', r.status)
+    
+    if(!r.ok){ 
+      console.error('openKbBinary - API call failed:', r.status, r.statusText)
+      toast.push('error', '파일 열기 실패: ' + r.status); 
+      return 
+    }
+    
     const blob = await r.blob()
+    console.log('openKbBinary - Blob size:', blob.size)
     const url = URL.createObjectURL(blob)
+    console.log('openKbBinary - Opening in new tab:', url)
+    
     // 새 탭에서 열기
     window.open(url, '_blank', 'noopener,noreferrer')
-  }catch(e){ toast.push('error','파일 로드 오류') }
+  }catch(e){ 
+    console.error('openKbBinary - Error:', e)
+    toast.push('error','파일 로드 오류') 
+  }
 }
 
 async function downloadKbFile(path){
@@ -1255,6 +1272,7 @@ async function downloadKbFile(path){
 
 async function onTreeSelect(p){
   console.log('onTreeSelect called with path:', p)
+  console.log('onTreeSelect - API call will be made for:', p)
   
   // 한글 파일명 처리: 이미 인코딩된 경로인 경우 디코딩
   let decodedPath = p
