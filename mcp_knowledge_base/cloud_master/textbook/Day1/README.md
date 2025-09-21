@@ -38,15 +38,26 @@
 
 ### 환경 설정
 
-#### 방법 1: WSL 자동 설정 (권장)
+#### 방법 1: WSL 환경에서 GitHub 저장소 클론 (권장)
 ```bash
+# WSL 환경에서 cloud_master 디렉토리 생성
+mkdir -p ~/cloud_master
+cd ~/cloud_master
+
+# GitHub 저장소 클론
+git clone https://github.com/jungfrau70/github-actions-demo.git
+cd github-actions-demo
+
+# feature/cloud-master 브랜치로 전환
+git checkout feature/cloud-master
+
 # WSL 자동 설정 스크립트 실행
-chmod +x cloud_master/repos/cloud-scripts/wsl-auto-setup.sh
-./cloud_master/repos/cloud-scripts/wsl-auto-setup.sh
+chmod +x cloud-scripts/wsl-auto-setup.sh
+./cloud-scripts/wsl-auto-setup.sh
 
 # 환경 체크 실행
-chmod +x cloud_master/repos/cloud-scripts/environment-check-wsl.sh
-./cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+chmod +x cloud-scripts/environment-check-wsl.sh
+./cloud-scripts/environment-check-wsl.sh
 ```
 
 #### 방법 2: 수동 환경 설정
@@ -67,11 +78,11 @@ gcloud --version
 #### 방법 3: 환경 체크 도구 사용
 ```bash
 # 실습 환경 자동 검증
-chmod +x cloud_master/repos/cloud-scripts/environment-check-wsl.sh
-./cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+chmod +x cloud-scripts/environment-check-wsl.sh
+./cloud-scripts/environment-check-wsl.sh
 
 # 특정 Day 환경 체크
-./cloud_master/repos/cloud-scripts/environment-check-wsl.sh day1
+./cloud-scripts/environment-check-wsl.sh day1
 ```
 
 ---
@@ -227,19 +238,23 @@ gcloud compute ssh my-vm --zone=us-central1-a
 ## 🛠️ 실습 학습
 
 > 📚 **상세 실습 가이드**: 각 주제별 상세한 실습은 다음 파일들을 참조하세요.
+> - [WSL 환경 설정 가이드](cloud_master/textbook/Day1/practices/wsl-setup-guide.md) - **NEW!** Windows WSL2 환경 구축
 > - [Docker 기초 실습](cloud_master/textbook/Day1/practices/docker-basics.md)
 > - [Git/GitHub 기초 실습](cloud_master/textbook/Day1/practices/git-github-basics.md)
 > - [GitHub Actions 기초 실습](cloud_master/textbook/Day1/practices/github-actions-basics.md)
+> - [GitHub Actions CI/CD 완전 가이드](cloud_master/textbook/Day1/practices/github-actions-cicd-guide.md) - **NEW!** 일자별 CI/CD 파이프라인 구축
+> - [배포 후 체크포인트 가이드](cloud_master/textbook/Day1/practices/deployment-checkpoints-guide.md) - **NEW!** 배포 확인 및 문제 해결
 > - [VM 배포 실습](cloud_master/textbook/Day1/practices/vm-deployment.md)
 
 > 🚀 **자동화 스크립트**: 실습을 더 쉽게 하려면 다음 자동화 스크립트를 사용하세요.
-> - [WSL 자동 설정](cloud_master/repos/cloud-scripts/wsl-auto-setup.sh) - WSL 환경 원클릭 구축
-> - [환경 체크 도구](cloud_master/repos/cloud-scripts/environment-check-wsl.sh) - 실습 환경 자동 검증
-> - [AWS EC2 자동 생성](cloud_master/repos/cloud-scripts/aws-ec2-create.sh) - EC2 인스턴스 자동 생성
-> - [GCP VM 자동 생성](cloud_master/repos/cloud-scripts/gcp-compute-create.sh) - Compute Engine 자동 생성
-> - [통합 VM 정리](cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh) - VM 인스턴스 선택적 정리
-> - [통합 클러스터 정리](cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh) - 클러스터 선택적 정리
-> - [리소스 정리 스크립트](cloud_master/repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
+> - [GitHub Actions CI/CD 자동화](automation/github-actions-cicd-automation.sh) - **NEW!** CI/CD 파이프라인 자동 설정
+> - [WSL 자동 설정](cloud-scripts/wsl-auto-setup.sh) - WSL 환경 원클릭 구축
+> - [환경 체크 도구](cloud-scripts/environment-check-wsl.sh) - 실습 환경 자동 검증
+> - [AWS EC2 자동 생성](cloud-scripts/aws-ec2-create.sh) - EC2 인스턴스 자동 생성
+> - [GCP VM 자동 생성](cloud-scripts/gcp-compute-create.sh) - Compute Engine 자동 생성
+> - [통합 VM 정리](cloud-scripts/vm-cleanup-interactive.sh) - VM 인스턴스 선택적 정리
+> - [통합 클러스터 정리](cloud-scripts/cluster-cleanup-interactive.sh) - 클러스터 선택적 정리
+> - [리소스 정리 스크립트](cloud-scripts/README.md) - 생성된 리소스 자동 정리
 
 <details>
 <summary>🐳 Docker 실습</summary>
@@ -408,12 +423,12 @@ git push origin main
 **방법 1: 자동화 스크립트 사용 (권장)**
 ```bash
 # AWS 설정 도우미 실행
-chmod +x cloud_master/repos/cloud-scripts/aws-setup-helper.sh
-./cloud_master/repos/cloud-scripts/aws-setup-helper.sh
+chmod +x cloud-scripts/aws-setup-helper.sh
+./cloud-scripts/aws-setup-helper.sh
 
 # EC2 인스턴스 자동 생성
-chmod +x cloud_master/repos/cloud-scripts/aws-ec2-create.sh
-./cloud_master/repos/cloud-scripts/aws-ec2-create.sh
+chmod +x cloud-scripts/aws-ec2-create.sh
+./cloud-scripts/aws-ec2-create.sh
 ```
 
 **방법 2: 수동 명령어 실행**
@@ -442,12 +457,12 @@ EOF
 **방법 1: 자동화 스크립트 사용 (권장)**
 ```bash
 # GCP 설정 도우미 실행
-chmod +x cloud_master/repos/cloud-scripts/gcp-setup-helper.sh
-./cloud_master/repos/cloud-scripts/gcp-setup-helper.sh
+chmod +x cloud-scripts/gcp-setup-helper.sh
+./cloud-scripts/gcp-setup-helper.sh
 
 # Compute Engine 인스턴스 자동 생성
-chmod +x cloud_master/repos/cloud-scripts/gcp-compute-create.sh
-./cloud_master/repos/cloud-scripts/gcp-compute-create.sh
+chmod +x cloud-scripts/gcp-compute-create.sh
+./cloud-scripts/gcp-compute-create.sh
 ```
 
 **방법 2: 수동 명령어 실행**
@@ -482,27 +497,27 @@ EOF
 **방법 1: 통합 정리 스크립트 사용 (권장)**
 ```bash
 # 통합 VM 정리 스크립트 실행
-chmod +x cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh
-./cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh
+chmod +x cloud-scripts/vm-cleanup-interactive.sh
+./cloud-scripts/vm-cleanup-interactive.sh
 
 # 통합 클러스터 정리 스크립트 실행
-chmod +x cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh
-./cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh
+chmod +x cloud-scripts/cluster-cleanup-interactive.sh
+./cloud-scripts/cluster-cleanup-interactive.sh
 
 # 환경 체크 도구에서 정리 메뉴 사용
-chmod +x cloud_master/repos/cloud-scripts/environment-check-wsl.sh
-./cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+chmod +x cloud-scripts/environment-check-wsl.sh
+./cloud-scripts/environment-check-wsl.sh
 ```
 
 **방법 2: 개별 정리 스크립트 사용**
 ```bash
 # AWS 리소스 자동 정리
-chmod +x cloud_master/repos/cloud-scripts/aws-resource-cleanup.sh
-./cloud_master/repos/cloud-scripts/aws-resource-cleanup.sh
+chmod +x cloud-scripts/aws-resource-cleanup.sh
+./cloud-scripts/aws-resource-cleanup.sh
 
 # GCP 리소스 자동 정리
-chmod +x cloud_master/repos/cloud-scripts/gcp-project-cleanup.sh
-./cloud_master/repos/cloud-scripts/gcp-project-cleanup.sh
+chmod +x cloud-scripts/gcp-project-cleanup.sh
+./cloud-scripts/gcp-project-cleanup.sh
 ```
 
 **방법 3: 수동 정리**
@@ -532,6 +547,9 @@ gcloud compute instances delete my-vm --zone=us-central1-a
 ## 📚 참고 자료
 
 ### 상세 가이드
+- [WSL 환경 설정 가이드](cloud_master/textbook/Day1/practices/wsl-setup-guide.md) - **NEW!** Windows WSL2 환경 구축
+- [GitHub Actions CI/CD 완전 가이드](cloud_master/textbook/Day1/practices/github-actions-cicd-guide.md) - **NEW!** 일자별 CI/CD 파이프라인 구축
+- [배포 후 체크포인트 가이드](cloud_master/textbook/Day1/practices/deployment-checkpoints-guide.md) - **NEW!** 배포 확인 및 문제 해결
 - [Docker 고급 가이드](cloud_master/textbook/Day1/guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
 - [Docker Compose 가이드](cloud_master/textbook/Day1/guides/docker-compose-guide.md) - 다중 서비스 관리
 - [GitHub Actions 가이드](cloud_master/textbook/Day1/guides/github-actions-guide.md) - CI/CD 파이프라인 구축

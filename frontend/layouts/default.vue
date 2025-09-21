@@ -957,8 +957,37 @@ const handleFileClick = async (path) => {
 
     const ext = getExt(path)
     console.log('File extension detected:', ext, 'for path:', path)
-    // KB와 동일 정책: 미디어/문서는 새 탭(Blob URL)으로 열기
-    if(['pdf','ppt','pptx','png','jpg','jpeg','gif','svg','webp','mp4','webm','mp3','wav'].includes(ext)){
+    // PDF/PPTX는 ContentView에서 표시, 나머지 미디어는 새 탭에서 열기
+    if(['pdf','ppt','pptx'].includes(ext)){
+      // PDF/PPTX는 ContentView에서 표시
+      try {
+        const response = await fetch(`${apiBase}/api/v1/curriculum?curriculum_path=${encodeURIComponent(cleanPath)}`, { 
+          headers: { 'X-API-Key': apiKey } 
+        })
+        if (response.ok) {
+          const contentType = response.headers.get('content-type') || ''
+          if (contentType.includes('application/pdf')) {
+            const blob = await response.blob()
+            tbContent.value = `# ${getFileName(path)}\n\nPDF 문서가 로드되었습니다.`
+            tbSlide.value = { type: 'pdf', url: URL.createObjectURL(blob) }
+          } else {
+            tbContent.value = await response.text()
+            tbSlide.value = null
+          }
+        } else {
+          tbContent.value = '# 문서를 불러올 수 없습니다.'
+          tbSlide.value = null
+        }
+      } catch (error) {
+        console.error('PDF/PPTX 로드 실패:', error)
+        tbContent.value = '# 문서 로드 중 오류가 발생했습니다.'
+        tbSlide.value = null
+      }
+      return
+    }
+    
+    // 나머지 미디어 파일은 새 탭에서 열기
+    if(['png','jpg','jpeg','gif','svg','webp','mp4','webm','mp3','wav'].includes(ext)){
       await openKbBinary(path)
       tbContent.value = ''
       tbSlide.value = null

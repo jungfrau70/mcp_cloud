@@ -844,9 +844,13 @@ const downloadPdf = async () => {
     normalized = normalized.replace(/^mcp_knowledge_base\//,'')
     normalized = normalized.replace(/^cloud_basic\/textbook\//,'')
     normalized = normalized.replace(/^textbook\//,'')
-    const url = `${apiBase}/v1/curriculum/pdf?path=${encodeURIComponent(cleanApiPath(normalized))}`;
+    const url = `${apiBase}/api/v1/curriculum/pdf?path=${encodeURIComponent(cleanApiPath(normalized))}`;
+    console.log('PDF download URL:', url);
     const res = await fetch(url, { headers: { 'X-API-Key': API_KEY } });
-    if (!res.ok) throw new Error(`Failed to export PDF: ${res.status}`);
+    if (!res.ok) {
+      console.error('PDF download failed:', res.status, res.statusText);
+      throw new Error(`Failed to export PDF: ${res.status}`);
+    }
     const ct = (res.headers.get('content-type') || '').toLowerCase();
     const blob = await res.blob();
     const a = document.createElement('a');
@@ -859,8 +863,8 @@ const downloadPdf = async () => {
     a.remove();
     setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
   } catch (e) {
-    console.error(e);
-    alert('PDF 생성 중 오류가 발생했습니다.');
+    console.error('PDF download error:', e);
+    alert('PDF 생성 중 오류가 발생했습니다: ' + e.message);
   }
 };
 

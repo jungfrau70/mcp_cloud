@@ -80,7 +80,7 @@ Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일)
 ### 교육 문의
 - 📧 **### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/github-actions-demo.git)
 ## 💡 추가 학습 자료
 
 - [AWS 공식 문서](https:///docs.aws.amazon.com/)
