@@ -221,7 +221,8 @@ const handleFileOpen = (path) => {
   // Windows 경로 구분자(\\)를 Unix 경로 구분자(/)로 정규화
   const normalizedPath = path.replace(/\\/g, '/');
   const p = stripBasePath(normalizedPath)
-  emit('file-select', p)
+  console.log('KnowledgeBaseExplorer handleFileOpen called with path:', p)
+  emit('file-open', p)
 };
 
 function onExternalGenerated(path){

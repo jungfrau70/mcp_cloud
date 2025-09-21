@@ -110,7 +110,7 @@
             </div>
             <div class="flex-1 overflow-hidden">
               <div v-if="kbTab==='tree'" class="h-full">
-                <KnowledgeBaseExplorer mode="full" :selected-file="activePath" @file-select="onTreeSelect" @file-open="onTreeSelect" />
+                <KnowledgeBaseExplorer mode="full" :selected-file="activePath" @file-select="onTreeSelect" @file-open="onFileOpen" />
               </div>
               <div v-else-if="kbTab==='tiptap'" class="h-full">
                 <div v-if="activePath" class="h-full"><TipTapKbEditor :key="editorKeyFull" :path="activePath" :content="activeContent" /></div>
@@ -1299,8 +1299,55 @@ async function onTreeSelect(p){
     return
   }
   
-  // 텍스트 계열: 읽기 전용 마크다운 뷰로 열기
-  if(['txt','log','json','yaml','yml','csv'].includes(ext)){
+  // 텍스트 계열: 읽기 전용 마크다운 뷰로 열기 (셸 스크립트 포함)
+  if(['txt','log','json','yaml','yml','csv','sh','bash','zsh'].includes(ext)){
+    console.log('Opening text file with markdown view')
+    await handleKbFileSelect(decodedPath)
+    kbTab.value = 'markdown'
+    return
+  }
+  
+  // 미디어/문서: 바이너리로 열기 또는 다운로드
+  if(['pdf','ppt','pptx','png','jpg','jpeg','gif','svg','webp','mp4','webm','mp3','wav'].includes(ext)){
+    console.log('Opening binary file')
+    await openKbBinary(decodedPath)
+    return
+  }
+  
+  // 나머지는 다운로드만
+  console.log('Downloading file:', decodedPath)
+  await downloadKbFile(decodedPath)
+}
+
+// file-open 이벤트 처리 함수 (지식베이스에서 파일 열기)
+async function onFileOpen(p) {
+  console.log('onFileOpen called with path:', p)
+  console.log('onFileOpen - API call will be made for:', p)
+  
+  // 한글 파일명 처리: 이미 인코딩된 경로인 경우 디코딩
+  let decodedPath = p
+  try {
+    if (p.includes('%')) {
+      decodedPath = decodeURIComponent(p)
+    }
+  } catch (e) {
+    console.warn('Failed to decode path in onFileOpen:', p, e)
+    decodedPath = p
+  }
+  
+  const ext = getExt(decodedPath)
+  console.log('File extension detected:', ext, 'for path:', decodedPath)
+  
+  // md: SplitEditor로 열기 (편집 가능한 형태)
+  if(ext === 'md'){
+    console.log('Opening markdown file with SplitEditor')
+    await handleKbFileSelect(decodedPath)
+    kbTab.value = 'markdown' // SplitEditor가 있는 markdown 탭으로 설정
+    return
+  }
+  
+  // 텍스트 계열: 읽기 전용 마크다운 뷰로 열기 (셸 스크립트 포함)
+  if(['txt','log','json','yaml','yml','csv','sh','bash','zsh'].includes(ext)){
     console.log('Opening text file with markdown view')
     await handleKbFileSelect(decodedPath)
     kbTab.value = 'markdown'
