@@ -18,10 +18,10 @@
 ### 1단계: 환경 설정
 - [AWS Free Tier 계정](https://aws.amazon.com/free/) 생성
 - [GCP Free Tier 계정](https://cloud.google.com/free) 생성
-- [Docker 설치](cloud_basic/textbook/Day1/guides/install_docker.md)
-- [Git 설정](cloud_basic/textbook/Day1/guides/install_git.md)
-- [AWS CLI 설정](cloud_basic/textbook/Day1/guides/install_aws_cli.md)
-- [GCP CLI 설정](cloud_basic/textbook/Day1/guides/install_gcp_cli.md)
+- [WSL 설치 및 설정](cloud_master/repos/cloud-scripts/wsl-install.md)
+- [필수 도구 설치](cloud_master/repos/install/install-all-wsl.sh)
+- [AWS 계정 가입](cloud_master/accounts/AWS계정가입.md)
+- [GCP 계정 가입](cloud_master/accounts/GCP_개인계정가입.md)
 
 ### 2단계: Day별 학습
 
@@ -35,26 +35,26 @@
 - VM 기반 애플리케이션 배포
 
 #### 📖 이론 학습
-- [Docker 기초 개념](textbook/Day1/README.md#docker-기초)
-- [Git/GitHub 워크플로우](textbook/Day1/README.md#gitgithub-기초)
-- [GitHub Actions 개념](textbook/Day1/README.md#github-actions-기초)
-- [VM 배포 전략](textbook/Day1/README.md#vm-배포)
+- [Docker 기초 개념](cloud_master/textbook/Day1/README.md#docker-기초)
+- [Git/GitHub 워크플로우](cloud_master/textbook/Day1/README.md#gitgithub-기초)
+- [GitHub Actions 개념](cloud_master/textbook/Day1/README.md#github-actions-기초)
+- [VM 배포 전략](cloud_master/textbook/Day1/README.md#vm-배포)
 
 #### 🛠️ 실습 가이드
-- [Docker 실습](textbook/Day1/README.md#docker-기초-실습)
-- [Git/GitHub 실습](textbook/Day1/README.md#gitgithub-협업-실습)
-- [GitHub Actions 실습](textbook/Day1/README.md#github-actions-cicd-실습)
-- [VM 배포 실습](textbook/Day1/README.md#vm-배포-자동화-실습)
+- [Docker 실습](cloud_master/textbook/Day1/README.md#docker-기초-실습)
+- [Git/GitHub 실습](cloud_master/textbook/Day1/README.md#gitgithub-협업-실습)
+- [GitHub Actions 실습](cloud_master/textbook/Day1/README.md#github-actions-cicd-실습)
+- [VM 배포 실습](cloud_master/textbook/Day1/README.md#vm-배포-자동화-실습)
 
 #### 💻 실습 코드
-- [Docker 샘플 코드](repos/samples/day1/docker/)
-- [GitHub Actions 워크플로우](repos/samples/day1/github-actions/)
-- [VM 배포 스크립트](repos/cloud-scripts/day1/)
+- [Docker 샘플 코드](cloud_master/repos/samples/day1/docker/)
+- [GitHub Actions 워크플로우](cloud_master/repos/samples/day1/github-actions/)
+- [VM 배포 스크립트](cloud_master/repos/cloud-scripts/day1/)
 
 #### 🔧 자동화 도구
-- [Docker 실습 자동화](repos/automation/day1/docker-practice-automation.sh)
-- [GitHub Actions 실습 자동화](repos/automation/day1/github-actions-practice-automation.sh)
-- [VM 배포 자동화](repos/automation/day1/vm-deployment-automation.sh)
+- [Docker 실습 자동화](cloud_master/repos/automation/day1/docker-practice-automation.sh)
+- [GitHub Actions 실습 자동화](cloud_master/repos/automation/day1/github-actions-practice-automation.sh)
+- [VM 배포 자동화](cloud_master/repos/automation/day1/vm-deployment-automation.sh)
 
 </details>
 
@@ -68,26 +68,26 @@
 - 자동화된 컨테이너 배포
 
 #### 📖 이론 학습
-- [고급 Docker 기술](textbook/Day2/README.md#고급-docker)
-- [고급 GitHub Actions](textbook/Day2/README.md#고급-github-actions)
-- [Kubernetes 기초](textbook/Day2/README.md#kubernetes-기초)
-- [자동화된 배포](textbook/Day2/README.md#자동화된-배포)
+- [고급 Docker 기술](cloud_master/textbook/Day2/README.md#고급-docker)
+- [고급 GitHub Actions](cloud_master/textbook/Day2/README.md#고급-github-actions)
+- [Kubernetes 기초](cloud_master/textbook/Day2/README.md#kubernetes-기초)
+- [자동화된 배포](cloud_master/textbook/Day2/README.md#자동화된-배포)
 
 #### 🛠️ 실습 가이드
-- [고급 Docker 실습](textbook/Day2/README.md#고급-docker-실습)
-- [고급 GitHub Actions 실습](textbook/Day2/README.md#고급-github-actions-실습)
-- [Kubernetes 실습](textbook/Day2/README.md#kubernetes-실습)
-- [자동화된 배포 실습](textbook/Day2/README.md#자동화된-배포-실습)
+- [고급 Docker 실습](cloud_master/textbook/Day2/README.md#고급-docker-실습)
+- [고급 GitHub Actions 실습](cloud_master/textbook/Day2/README.md#고급-github-actions-실습)
+- [Kubernetes 실습](cloud_master/textbook/Day2/README.md#kubernetes-실습)
+- [자동화된 배포 실습](cloud_master/textbook/Day2/README.md#자동화된-배포-실습)
 
 #### 💻 실습 코드
-- [고급 Docker 샘플](repos/samples/day2/advanced-docker/)
-- [고급 GitHub Actions 워크플로우](repos/samples/day2/advanced-github-actions/)
-- [Kubernetes 매니페스트](repos/samples/day2/kubernetes/)
+- [고급 Docker 샘플](cloud_master/repos/samples/day2/advanced-docker/)
+- [고급 GitHub Actions 워크플로우](cloud_master/repos/samples/day2/advanced-github-actions/)
+- [Kubernetes 매니페스트](cloud_master/repos/samples/day2/kubernetes/)
 
 #### 🔧 자동화 도구
-- [고급 Docker 실습 자동화](repos/automation/day2/advanced-docker-practice-automation.sh)
-- [고급 GitHub Actions 실습 자동화](repos/automation/day2/advanced-github-actions-practice-automation.sh)
-- [Kubernetes 실습 자동화](repos/automation/day2/kubernetes-practice-automation.sh)
+- [고급 Docker 실습 자동화](cloud_master/repos/automation/day2/advanced-docker-practice-automation.sh)
+- [고급 GitHub Actions 실습 자동화](cloud_master/repos/automation/day2/advanced-github-actions-practice-automation.sh)
+- [Kubernetes 실습 자동화](cloud_master/repos/automation/day2/kubernetes-practice-automation.sh)
 
 </details>
 
@@ -101,26 +101,26 @@
 - 재해 복구 계획
 
 #### 📖 이론 학습
-- [로드밸런싱](textbook/Day3/README.md#로드밸런싱)
-- [오토스케일링](textbook/Day3/README.md#오토스케일링)
-- [모니터링](textbook/Day3/README.md#모니터링)
-- [비용 최적화](textbook/Day3/README.md#비용-최적화)
+- [로드밸런싱](cloud_master/textbook/Day3/README.md#로드밸런싱)
+- [오토스케일링](cloud_master/textbook/Day3/README.md#오토스케일링)
+- [모니터링](cloud_master/textbook/Day3/README.md#모니터링)
+- [비용 최적화](cloud_master/textbook/Day3/README.md#비용-최적화)
 
 #### 🛠️ 실습 가이드
-- [로드밸런싱 실습](textbook/Day3/README.md#로드-밸런싱-실습)
-- [오토스케일링 실습](textbook/Day3/README.md#오토스케일링-실습)
-- [모니터링 실습](textbook/Day3/README.md#모니터링-실습)
-- [비용 최적화 실습](textbook/Day3/README.md#비용-최적화-실습)
+- [로드밸런싱 실습](cloud_master/textbook/Day3/README.md#로드-밸런싱-실습)
+- [오토스케일링 실습](cloud_master/textbook/Day3/README.md#오토스케일링-실습)
+- [모니터링 실습](cloud_master/textbook/Day3/README.md#모니터링-실습)
+- [비용 최적화 실습](cloud_master/textbook/Day3/README.md#비용-최적화-실습)
 
 #### 💻 실습 코드
-- [로드밸런싱 설정](repos/samples/day3/load-balancing/)
-- [모니터링 설정](repos/samples/day3/monitoring/)
-- [비용 최적화 스크립트](repos/samples/day3/cost-optimization/)
+- [로드밸런싱 설정](cloud_master/repos/samples/day3/load-balancing/)
+- [모니터링 설정](cloud_master/repos/samples/day3/monitoring/)
+- [비용 최적화 스크립트](cloud_master/repos/samples/day3/cost-optimization/)
 
 #### 🔧 자동화 도구
-- [로드밸런싱 실습 자동화](repos/automation/day3/load-balancing-practice-automation.sh)
-- [모니터링 실습 자동화](repos/automation/day3/monitoring-practice-automation.sh)
-- [비용 최적화 실습 자동화](repos/automation/day3/cost-optimization-practice-automation.sh)
+- [로드밸런싱 실습 자동화](cloud_master/repos/automation/day3/load-balancing-practice-automation.sh)
+- [모니터링 실습 자동화](cloud_master/repos/automation/day3/monitoring-practice-automation.sh)
+- [비용 최적화 실습 자동화](cloud_master/repos/automation/day3/cost-optimization-practice-automation.sh)
 
 </details>
 
@@ -159,12 +159,12 @@
 ## 🚀 다음 단계
 
 ### Cloud Container 과정 준비
-- [Cloud Container 과정 상세](cloud_container/과정상세.md)
-- [Cloud Container 1일차 실습 가이드](cloud_container/README.md)
+- [Cloud Container 과정 상세](cloud_master/cloud_container/과정상세.md)
+- [Cloud Container 1일차 실습 가이드](cloud_master/cloud_container/README.md)
 
 ### 통합 학습 경로
-- [전체 커리큘럼](curriculum.md)
-- [통합 인덱스](index.md)
+- [전체 커리큘럼](cloud_master/curriculum.md)
+- [통합 인덱스](cloud_master/index.md)
 
 ## 💡 추가 학습 자료
 
@@ -196,9 +196,9 @@
 
 <div align="center">
 
-[← 이전: Cloud Container 과정](cloud_container/README.md) | 
-[📚 전체 커리큘럼](curriculum.md) | 
-[🏠 학습 경로로 돌아가기](index.md) | 
-[다음: 과정 상세 정보 →](과정상세.md)
+[← 이전: Cloud Container 과정](cloud_master/cloud_container/README.md) | 
+[📚 전체 커리큘럼](cloud_master/curriculum.md) | 
+[🏠 학습 경로로 돌아가기](cloud_master/index.md) | 
+[다음: 과정 상세 정보 →](cloud_master/과정상세.md)
 
 </div>

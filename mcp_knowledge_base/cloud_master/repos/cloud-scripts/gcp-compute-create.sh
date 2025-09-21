@@ -562,6 +562,12 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
         # 인스턴스에 이미 할당되어 있는지 확인
         EXISTING_STATIC_IP=$(gcloud compute instances describe $INSTANCE_NAME --zone=$ZONE --format="get(networkInterfaces[0].accessConfigs[0].natIP)")
         if [ "$EXISTING_STATIC_IP" != "$STATIC_IP" ]; then
+            # 기존 외부 IP 제거 후 정적 IP 할당
+            log_info "기존 외부 IP 제거 중..."
+            gcloud compute instances delete-access-config $INSTANCE_NAME \
+                --zone=$ZONE \
+                --access-config-name="External NAT" > /dev/null 2>&1 || true
+            
             log_info "인스턴스에 정적 IP 할당 중..."
             gcloud compute instances add-access-config $INSTANCE_NAME \
                 --zone=$ZONE \
@@ -575,6 +581,13 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
         gcloud compute addresses create $STATIC_IP_NAME --region=$REGION
         STATIC_IP=$(gcloud compute addresses describe $STATIC_IP_NAME --region=$REGION --format="get(address)")
         
+        # 기존 외부 IP 제거 후 정적 IP 할당
+        log_info "기존 외부 IP 제거 중..."
+        gcloud compute instances delete-access-config $INSTANCE_NAME \
+            --zone=$ZONE \
+            --access-config-name="External NAT" > /dev/null 2>&1 || true
+        
+        log_info "정적 IP 할당 중..."
         gcloud compute instances add-access-config $INSTANCE_NAME \
             --zone=$ZONE \
             --address=$STATIC_IP > /dev/null

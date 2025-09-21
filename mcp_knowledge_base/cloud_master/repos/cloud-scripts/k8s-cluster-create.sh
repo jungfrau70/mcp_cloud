@@ -86,9 +86,28 @@ check_environment() {
                 log_warning "gke-gcloud-auth-plugin 다운로드에 실패했습니다."
             fi
         else
-            # Linux/macOS 환경에서의 설치
-            log_info "Linux/macOS 환경에서 gke-gcloud-auth-plugin 설치 중..."
-            gcloud components install gke-gcloud-auth-plugin --quiet
+            # Linux/macOS/WSL 환경에서의 설치
+            log_info "Linux/macOS/WSL 환경에서 gke-gcloud-auth-plugin 설치 중..."
+            
+            # WSL 환경 감지
+            if grep -q Microsoft /proc/version 2>/dev/null; then
+                log_info "WSL 환경 감지됨. 수동 설치 스크립트 실행 중..."
+                if [ -f "./fix-gke-auth.sh" ]; then
+                    chmod +x ./fix-gke-auth.sh
+                    if ./fix-gke-auth.sh; then
+                        log_success "WSL 환경에서 gke-gcloud-auth-plugin 설치 완료"
+                    else
+                        log_warning "수동 설치 스크립트 실패. gcloud components 설치 시도 중..."
+                        gcloud components install gke-gcloud-auth-plugin --quiet
+                    fi
+                else
+                    log_warning "수동 설치 스크립트를 찾을 수 없습니다. gcloud components 설치 시도 중..."
+                    gcloud components install gke-gcloud-auth-plugin --quiet
+                fi
+            else
+                # 일반 Linux/macOS 환경
+                gcloud components install gke-gcloud-auth-plugin --quiet
+            fi
         fi
         
         # 설치 확인

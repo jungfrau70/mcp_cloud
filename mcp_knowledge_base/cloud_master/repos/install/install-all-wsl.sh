@@ -84,6 +84,15 @@ else
     log_info "GCP CLI가 이미 설치되어 있습니다: $(gcloud --version | head -1)"
 fi
 
+# 4-1. GKE 인증 플러그인 설치 시도
+log_info "GKE 인증 플러그인 설치 시도 중..."
+if gcloud components install gke-gcloud-auth-plugin --quiet 2>/dev/null; then
+    log_success "GKE 인증 플러그인 설치 완료"
+else
+    log_warning "GKE 인증 플러그인 설치 실패 (권한 문제일 수 있음)"
+    log_info "WSL 관리자 권한으로 설치가 필요할 수 있습니다."
+fi
+
 # 5. Docker 설치 (최신 버전을 사용자 bin에 직접 설치)
 log_info "Docker 최신 버전 설치 중..."
 if ! command -v docker &> /dev/null; then
@@ -266,6 +275,14 @@ log_info "=== 설치된 소프트웨어 버전 확인 ==="
 echo "AWS CLI: $(aws --version 2>/dev/null || echo '설치되지 않음')"
 echo "GCP CLI: $(gcloud --version 2>/dev/null | head -1 || echo '설치되지 않음')"
 
+# GKE 인증 플러그인 확인
+if command -v gke-gcloud-auth-plugin &> /dev/null; then
+    echo "GKE Auth Plugin: $(gke-gcloud-auth-plugin --version 2>/dev/null || echo '설치됨 (버전 확인 불가)')"
+else
+    echo "GKE Auth Plugin: 설치되지 않음"
+    log_warning "⚠️ GKE 인증 플러그인이 설치되지 않았습니다."
+fi
+
 # Docker 확인 (Docker Engine 설치 확인)
 if command -v docker &> /dev/null; then
     echo "Docker: $(docker --version)"
@@ -428,6 +445,33 @@ log_info "MCP Knowledge Base: ~/mcp_knowledge_base (심볼릭 링크)"
 # 설치 문제 해결 가이드
 log_info "=== 설치 문제 해결 가이드 ==="
 echo ""
+
+# GKE 인증 플러그인 문제 해결 가이드
+if ! command -v gke-gcloud-auth-plugin &> /dev/null; then
+    echo "🔧 GKE 인증 플러그인 문제 해결:"
+    echo "  ⚠️ GKE 인증 플러그인이 설치되지 않았습니다."
+    echo "  📋 해결 방법:"
+    echo "    1. WSL을 관리자 권한으로 실행:"
+    echo "       - Windows 시작 메뉴에서 'Ubuntu' 또는 'WSL' 검색"
+    echo "       - '관리자 권한으로 실행' 선택"
+    echo "    2. Google Cloud SDK 업데이트:"
+    echo "       sudo gcloud components update"
+    echo "    3. GKE 인증 플러그인 설치:"
+    echo "       sudo gcloud components install gke-gcloud-auth-plugin"
+    echo "    4. PC 재시작 (권장):"
+    echo "       - WSL 종료: wsl --shutdown"
+    echo "       - PC 재시작"
+    echo "    5. 설치 확인:"
+    echo "       gke-gcloud-auth-plugin --version"
+    echo "       kubectl get nodes"
+    echo ""
+    echo "  🔗 자동 수정 스크립트 사용:"
+    echo "     cd ~/mcp_knowledge_base/cloud_master/repos/cloud-scripts"
+    echo "     ./fix-gke-auth.sh"
+    echo "     ./fix-cluster-issues.sh"
+    echo ""
+fi
+
 echo "🔧 Docker 문제 해결:"
 echo "  - Docker Desktop이 설치되어 있다면:"
 echo "    1. Docker Desktop 실행"
@@ -479,4 +523,15 @@ echo "    echo \$PATH"
 echo ""
 
 log_warning "새로운 터미널을 열거나 'source ~/.bashrc'를 실행하여 환경 설정을 적용하세요."
-log_info "다음 단계: AWS 및 GCP 인증 설정을 진행하세요."
+
+# GKE 인증 플러그인 설치 상태에 따른 다음 단계 안내
+if ! command -v gke-gcloud-auth-plugin &> /dev/null; then
+    log_warning "⚠️ 중요: GKE 인증 플러그인이 설치되지 않았습니다."
+    log_info "다음 단계:"
+    log_info "1. WSL을 관리자 권한으로 실행"
+    log_info "2. sudo gcloud components install gke-gcloud-auth-plugin 실행"
+    log_info "3. PC 재시작 후 클러스터 연결 테스트"
+    log_info "4. AWS 및 GCP 인증 설정 진행"
+else
+    log_info "다음 단계: AWS 및 GCP 인증 설정을 진행하세요."
+fi

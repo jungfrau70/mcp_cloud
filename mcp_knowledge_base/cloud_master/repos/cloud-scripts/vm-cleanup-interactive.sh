@@ -5,7 +5,7 @@
 # GCP와 AWS VM 인스턴스를 선택적으로 정리할 수 있는 대화형 스크립트
 # =============================================================================
 
-set -e
+# set -e  # WSL 환경에서 입력 오류 시 스크립트가 종료되는 것을 방지
 
 # 색상 정의
 RED='\033[0;31m'
@@ -34,6 +34,8 @@ CHECKPOINT_FILE="vm-cleanup-checkpoint.json"
 # =============================================================================
 # 유틸리티 함수
 # =============================================================================
+
+# 입력 읽기 함수 (WSL 환경 최적화)
 
 # 환경 체크
 check_environment() {
@@ -140,10 +142,10 @@ delete_gcp_vm() {
     
     log_warning "GCP VM 인스턴스 삭제: $vm_name (존: $zone)"
     echo -n "정말로 삭제하시겠습니까? (y/N): "
-    read -r response || {
+    if ! read -r response; then
         log_error "입력 읽기 실패"
         return 1
-    }
+    fi
     
     if [[ ! "$response" =~ ^[Yy]$ ]]; then
         log_info "삭제가 취소되었습니다."
@@ -211,10 +213,10 @@ delete_aws_ec2() {
     
     log_warning "AWS EC2 인스턴스 삭제: $instance_id"
     echo -n "정말로 삭제하시겠습니까? (y/N): "
-    read -r response || {
+    if ! read -r response; then
         log_error "입력 읽기 실패"
         return 1
-    }
+    fi
     
     if [[ ! "$response" =~ ^[Yy]$ ]]; then
         log_info "삭제가 취소되었습니다."
@@ -247,10 +249,10 @@ gcp_vm_menu() {
         echo "4. 메인 메뉴로 돌아가기"
         echo ""
         echo -n "선택 (1-4): "
-        read -r choice || {
+        if ! read -r choice; then
             log_error "입력 읽기 실패"
             continue
-        }
+        fi
         
         case $choice in
             1)
@@ -304,10 +306,10 @@ aws_ec2_menu() {
         echo "4. 메인 메뉴로 돌아가기"
         echo ""
         echo -n "선택 (1-4): "
-        read -r choice || {
+        if ! read -r choice; then
             log_error "입력 읽기 실패"
             continue
-        }
+        fi
         
         case $choice in
             1)
@@ -357,10 +359,10 @@ full_cleanup_menu() {
     log_warning "전체 VM 정리를 시작합니다."
     echo "이 작업은 모든 GCP와 AWS VM 인스턴스를 삭제합니다."
     echo -n "정말로 계속하시겠습니까? (y/N): "
-    read -r response || {
+    if ! read -r response; then
         log_error "입력 읽기 실패"
         return 1
-    }
+    fi
     
     if [[ ! "$response" =~ ^[Yy]$ ]]; then
         log_info "전체 정리가 취소되었습니다."
@@ -413,10 +415,10 @@ main_menu() {
         echo "5. 종료"
         echo ""
         echo -n "선택 (1-5): "
-        read -r choice || {
+        if ! read -r choice; then
             log_error "입력 읽기 실패"
             continue
-        }
+        fi
         
         case $choice in
             1)
