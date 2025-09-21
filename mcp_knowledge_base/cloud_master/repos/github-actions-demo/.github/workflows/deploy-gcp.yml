@@ -1,7 +1,7 @@
-# 🚀 VM 배포 워크플로우
-# main 브랜치에 푸시될 때마다 자동으로 VM에 배포합니다
+# 🚀 GCP Compute Engine 배포 워크플로우
+# main 브랜치에 푸시될 때마다 자동으로 GCP VM에 배포합니다
 
-name: Deploy to VM
+name: Deploy to GCP
 
 # 언제 실행할지 정의
 on:
@@ -24,9 +24,9 @@ env:
   IMAGE_NAME: github-actions-demo
 
 jobs:
-  # VM 배포
-  deploy:
-    name: VM 배포
+  # GCP VM 배포
+  deploy-gcp:
+    name: GCP VM 배포
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment || 'staging' }}
     
@@ -39,12 +39,12 @@ jobs:
         echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
         docker pull ${{ env.REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
         
-    - name: VM에 SSH 연결 및 배포
+    - name: GCP VM에 SSH 연결 및 배포
       uses: appleboy/ssh-action@v1.0.0
       with:
-        host: ${{ secrets.VM_HOST }}
-        username: ${{ secrets.VM_USERNAME }}
-        key: ${{ secrets.VM_SSH_KEY }}
+        host: ${{ secrets.GCP_VM_HOST }}
+        username: ${{ secrets.GCP_VM_USERNAME }}
+        key: ${{ secrets.GCP_VM_SSH_KEY }}
         script: |
           # 기존 컨테이너 중지 및 제거
           docker stop github-actions-demo || true
@@ -66,15 +66,17 @@ jobs:
           sleep 10
           curl -f http://localhost:3000/health || exit 1
           
-          echo "✅ 배포가 성공적으로 완료되었습니다!"
+          echo "✅ GCP VM 배포가 성공적으로 완료되었습니다!"
           
     - name: 배포 상태 확인
       run: |
-        echo "🔍 배포 상태를 확인합니다..."
-        # 실제 환경에서는 모니터링 도구를 사용하여 상태 확인
+        echo "🔍 GCP VM 배포 상태를 확인합니다..."
+        echo "🌐 애플리케이션 URL: http://${{ secrets.GCP_VM_HOST }}:3000"
         
     - name: 배포 완료 알림
       if: success()
       run: |
-        echo "✅ VM 배포가 성공적으로 완료되었습니다!"
-        echo "🌐 애플리케이션 URL: http://${{ secrets.VM_HOST }}:3000"
+        echo "✅ GCP VM 배포가 성공적으로 완료되었습니다!"
+        echo "🌐 애플리케이션 URL: http://${{ secrets.GCP_VM_HOST }}:3000"
+        echo "📊 헬스 체크: http://${{ secrets.GCP_VM_HOST }}:3000/health"
+        echo "📈 메트릭: http://${{ secrets.GCP_VM_HOST }}:3000/metrics"

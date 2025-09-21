@@ -57,13 +57,22 @@
 
 ---
 
-## 🚀 Day 1: 기본 CI/CD 파이프라인 구축
+## 🚀 실습 1: 기본 CI/CD 파이프라인 구축
 
-### 📖 스토리: "첫 번째 자동화 파이프라인 만들기"
+### 📖 실습 시나리오: "첫 번째 자동화 파이프라인 만들기"
 
-**상황**: 당신은 개발팀의 새로운 DevOps 엔지니어입니다. 팀장이 "우리도 CI/CD를 도입해서 개발 효율성을 높여보자"라고 제안했습니다. 하지만 팀원들은 "복잡해 보이는데... 정말 도움이 될까?"라고 걱정하고 있습니다.
+**🎯 실습 목표**: 
+- GitHub 저장소 생성 및 기본 설정
+- Docker 이미지 수동 빌드 및 테스트
+- GitHub Actions CI 워크플로우 생성
+- 자동화된 테스트 및 빌드 파이프라인 구축
 
-**목표**: 간단하지만 효과적인 CI/CD 파이프라인을 만들어서 팀원들에게 "와, 이거 정말 편하네!"라는 반응을 이끌어내는 것입니다.
+**⏱️ 예상 소요 시간**: 60-90분
+
+**📋 실습 전 준비사항**:
+- [ ] GitHub 계정 및 Personal Access Token
+- [ ] Docker Hub 계정 및 Personal Access Token
+- [ ] 로컬 개발 환경 (Docker, Node.js, Git)
 
 ### 📋 실습 환경 준비
 
@@ -94,17 +103,20 @@ gh --version || sudo apt install gh
 echo "✅ 환경 설정이 완료되었습니다!"
 ```
 
-### 🔧 1단계: GitHub 저장소 생성 및 기본 설정
+### 🔧 실습 1-1: GitHub 저장소 생성 및 기본 설정
 
-#### 📖 스토리: "먼저 GitHub에 우리의 프로젝트를 올려보자!"
+#### 📝 실습 단계
 
-**상황**: 로컬에서 프로젝트를 만들었지만, 이제 GitHub에 올려서 다른 사람들과 공유하고 CI/CD를 설정해야 합니다.
-
-**목표**: 
+**🎯 이 단계에서 할 일**:
 1. GitHub 저장소 생성
-2. 로컬 프로젝트를 GitHub에 연결
-3. Docker 이미지 빌드 및 푸시 테스트
-4. 그 다음에 CI/CD 워크플로우 설정
+2. 로컬 프로젝트 초기화
+3. GitHub에 프로젝트 연결
+4. 기본 파일 구조 생성
+
+**✅ 실습 완료 기준**:
+- [ ] GitHub 저장소가 생성되었음
+- [ ] 로컬 프로젝트가 GitHub에 연결되었음
+- [ ] 기본 프로젝트 파일들이 생성되었음
 
 #### 🐙 GitHub 저장소 생성하기
 
@@ -213,9 +225,96 @@ gh auth login
 git push -u origin main
 ```
 
+### 🔧 실습 1-2: Docker 이미지 빌드 및 테스트
+
+#### 📝 실습 단계
+
+**🎯 이 단계에서 할 일**:
+1. 기본 Dockerfile 생성
+2. Docker 이미지 수동 빌드
+3. 로컬에서 컨테이너 실행 테스트
+4. Docker Hub에 이미지 푸시
+
+**✅ 실습 완료 기준**:
+- [ ] Docker 이미지가 성공적으로 빌드되었음
+- [ ] 로컬에서 컨테이너가 정상 실행되었음
+- [ ] Docker Hub에 이미지가 업로드되었음
+
 #### 🐳 Docker 이미지 빌드 및 푸시 테스트
 
-**3단계: Docker 이미지 직접 빌드해보기**
+**1단계: 기본 Dockerfile 생성**
+
+**📁 Dockerfile 종류별 생성**
+
+**Dockerfile (기본 - 프로덕션용)**
+```dockerfile
+# 기본 프로덕션용 Dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+# 의존성 설치
+COPY package*.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+
+# 소스 코드 복사
+COPY . .
+
+# 비root 사용자 생성
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001
+RUN chown -R nextjs:nodejs /app
+USER nextjs
+
+# 포트 노출
+EXPOSE 3000
+
+# 헬스 체크
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
+
+# 애플리케이션 시작
+CMD ["node", "src/app.js"]
+```
+
+**Dockerfile.dev (개발용)**
+```dockerfile
+# 개발용 Dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+# 개발 의존성 포함 설치
+COPY package*.json ./
+RUN npm ci && npm cache clean --force
+
+# 소스 코드 복사
+COPY . .
+
+# 포트 노출
+EXPOSE 3000
+
+# 개발 서버 시작 (핫 리로드 지원)
+CMD ["npm", "start"]
+```
+
+**Dockerfile.test (테스트용)**
+```dockerfile
+# 테스트용 Dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+# 모든 의존성 설치 (테스트 도구 포함)
+COPY package*.json ./
+RUN npm ci && npm cache clean --force
+
+# 소스 코드 복사
+COPY . .
+
+# 테스트 실행
+CMD ["npm", "test"]
+```
 
 **⚠️ Docker 빌드 오류 해결**
 
@@ -253,56 +352,129 @@ docker build -t github-actions-demo:latest .
 # RUN npm install --only=production && npm cache clean --force
 ```
 
-**정상적인 Docker 빌드 과정**
+**3. package.json JSON 구문 오류 해결**
 ```bash
-# Docker 이미지 빌드
-docker build -t github-actions-demo:latest .
+# package.json에 JavaScript 주석(//)이 있는 경우:
+
+# 1단계: package.json 파일 확인
+cat package.json
+
+# 2단계: JSON 유효성 검사
+npm install --dry-run
+
+# 3단계: 주석 제거 후 재시도
+# JSON에서는 // 주석을 사용할 수 없습니다!
+# 주석이 필요하면 README.md에 작성하세요
+
+# 4단계: 정상 설치 확인
+npm install
+```
+
+**2단계: Docker 이미지 빌드 및 테스트**
+
+**프로덕션용 이미지 빌드**
+```bash
+# 프로덕션용 이미지 빌드
+docker build -f Dockerfile -t github-actions-demo:latest .
 
 # 빌드된 이미지 확인
 docker images | grep github-actions-demo
 
 # 로컬에서 실행 테스트
-docker run -d -p 3000:3000 --name test-app github-actions-demo:latest
+docker run -d -p 3000:3000 --name prod-app github-actions-demo:latest
 
 # 애플리케이션 동작 확인
 curl http://localhost:3000/health
 
 # 테스트 완료 후 컨테이너 정리
-docker stop test-app
-docker rm test-app
+docker stop prod-app
+docker rm prod-app
+```
+
+**개발용 이미지 빌드**
+```bash
+# 개발용 이미지 빌드
+docker build -f Dockerfile.dev -t github-actions-demo:dev .
+
+# 개발용 컨테이너 실행
+docker run -d -p 3001:3000 --name dev-app github-actions-demo:dev
+
+# 개발 서버 확인
+curl http://localhost:3001/health
+
+# 정리
+docker stop dev-app
+docker rm dev-app
+```
+
+**테스트용 이미지 빌드**
+```bash
+# 테스트용 이미지 빌드
+docker build -f Dockerfile.test -t github-actions-demo:test .
+
+# 테스트 실행
+docker run --rm github-actions-demo:test
+
+# 테스트 결과 확인
+echo "테스트가 성공적으로 완료되었습니다!"
 ```
 
 **4단계: Docker Hub에 푸시하기**
 ```bash
+YOUR_DOCKERHUB_USERNAME=<username>
+
 # Docker Hub 로그인
-docker login
+docker login -u $YOUR_DOCKERHUB_USERNAME
 
 # 이미지 태그 설정 (Docker Hub 사용자명으로 변경)
-docker tag github-actions-demo:latest [YOUR_DOCKERHUB_USERNAME]/github-actions-demo:latest
+docker tag github-actions-demo:latest $YOUR_DOCKERHUB_USERNAME/github-actions-demo:latest
+
+# 이미지 리스트업
+docker image ls
 
 # Docker Hub에 푸시
-docker push [YOUR_DOCKERHUB_USERNAME]/github-actions-demo:latest
+docker push $YOUR_DOCKERHUB_USERNAME/github-actions-demo:latest
 
 echo "✅ Docker Hub에 성공적으로 업로드되었습니다!"
 echo "이제 어디서든 다음 명령어로 실행할 수 있습니다:"
 echo "docker run -p 3000:3000 [YOUR_DOCKERHUB_USERNAME]/github-actions-demo:latest"
 ```
 
-### 🔧 2단계: GitHub Actions 설정
+### 🔧 실습 1-3: GitHub Actions CI 워크플로우 설정
 
-#### 📖 스토리: "이제 GitHub Actions를 설정해보자!"
+#### 📝 실습 단계
 
-**상황**: Docker 이미지 빌드와 푸시가 성공적으로 작동하는 것을 확인했습니다. 이제 GitHub Actions를 설정해서 코드가 변경될 때마다 자동으로 빌드하고 배포하는 시스템을 만들어봅시다!
+**🎯 이 단계에서 할 일**:
+1. GitHub Secrets 설정 (Docker Hub 인증)
+2. 기본 CI 워크플로우 파일 생성
+3. 자동화된 테스트 및 빌드 파이프라인 구축
+4. 워크플로우 실행 및 결과 확인
 
-**목표**: 
-1. GitHub Actions 워크플로우 파일 생성
-2. GitHub Secrets 설정 (Docker Hub 인증)
-3. 첫 번째 자동화 테스트
-4. 워크플로우 동작 확인
+**✅ 실습 완료 기준**:
+- [ ] GitHub Secrets가 설정되었음
+- [ ] CI 워크플로우 파일이 생성되었음
+- [ ] 코드 푸시 시 자동으로 워크플로우가 실행됨
+- [ ] 모든 테스트와 빌드가 성공적으로 완료됨
 
 #### 🔐 GitHub Secrets 설정하기
 
-**1단계: Docker Hub 인증 정보 설정**
+**1단계: Docker Hub Personal Access Token 생성**
+
+**Docker Hub에서 토큰 생성하기**
+```bash
+# 1. Docker Hub 웹사이트 접속: https://hub.docker.com
+# 2. 로그인 후 우상단 프로필 아이콘 클릭
+# 3. "Account Settings" 선택
+# 4. 왼쪽 메뉴에서 "Personsl access tokens" 클릭
+# 5. "New Access Token" 버튼 클릭
+# 6. Token Description: "GitHub Actions CI/CD" 입력
+# 7. Access permissions: "Read, Write, Delete" 선택
+# 8. "Generate" 클릭 후 토큰 복사 (한 번만 보여줍니다!)
+
+# 생성된 토큰 예시: dckr_pat_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+**GitHub Secrets에 토큰 등록**
 ```bash
 # GitHub 저장소 페이지에서:
 # 1. Settings 탭 클릭
@@ -311,22 +483,46 @@ echo "docker run -p 3000:3000 [YOUR_DOCKERHUB_USERNAME]/github-actions-demo:late
 # 4. 다음 시크릿들을 추가:
 
 # DOCKER_USERNAME: Docker Hub 사용자명
-# DOCKER_PASSWORD: Docker Hub 비밀번호 또는 액세스 토큰
+# DOCKER_PASSWORD: Docker Hub Personal Access Token (dckr_pat_로 시작)
+
+YOUR_DOCKERHUB_USERNAME=<username>
+echo $YOUR_DOCKERHUB_USERNAME
 
 # 또는 GitHub CLI로 설정:
-gh secret set DOCKER_USERNAME --body "your-dockerhub-username"
-gh secret set DOCKER_PASSWORD --body "your-dockerhub-password"
+gh secret set DOCKER_USERNAME --body  $YOUR_DOCKERHUB_USERNAME
+gh secret set DOCKER_PASSWORD --body "dckr_pat_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 ```
 
-**💡 Docker Hub 액세스 토큰 생성 방법**
+**💡 Docker Hub Personal Access Token의 장점**
 ```bash
-# Docker Hub 웹사이트에서:
+# 🔒 보안성 향상:
+# - 비밀번호 대신 토큰 사용으로 보안 강화
+# - 토큰별로 권한 제어 가능
+# - 필요시 토큰만 삭제하여 접근 차단 가능
+
+# 🎯 권한 제어:
+# - Read: 이미지 다운로드 권한
+# - Write: 이미지 업로드 권한  
+# - Delete: 이미지 삭제 권한
+
+# 🔄 토큰 관리:
+# - 토큰 이름으로 용도 구분 가능
+# - 언제든지 토큰 삭제/재생성 가능
+# - 토큰 사용 내역 추적 가능
+
+# 📝 토큰 생성 방법 (2024년 최신):
 # 1. https://hub.docker.com/settings/security 접속
 # 2. "New Access Token" 클릭
 # 3. Access Token Description: "GitHub Actions CI/CD"
 # 4. Access permissions: "Read, Write, Delete" 선택
-# 5. "Generate" 클릭 후 토큰 복사
+# 5. "Generate" 클릭 후 토큰 복사 (dckr_pat_로 시작)
 # 6. 이 토큰을 DOCKER_PASSWORD로 사용
+
+# ⚠️ 2024년 Docker Hub 정책 변경사항:
+# - 무료 계정: 6개월간 비활성 시 이미지 삭제
+# - 유료 계정: 무제한 이미지 보관
+# - 공개 이미지: 무제한 다운로드
+# - 비공개 이미지: 유료 계정 필요
 ```
 
 **2단계: AWS/GCP 인증 정보 설정 (선택사항)**
@@ -334,7 +530,7 @@ gh secret set DOCKER_PASSWORD --body "your-dockerhub-password"
 # AWS 인증 정보 (나중에 클라우드 배포용)
 gh secret set AWS_ACCESS_KEY_ID --body "your-aws-access-key"
 gh secret set AWS_SECRET_ACCESS_KEY --body "your-aws-secret-key"
-gh secret set AWS_REGION --body "us-west-2"
+gh secret set AWS_REGION --body "ap-northeast-2"
 
 # GCP 인증 정보 (나중에 클라우드 배포용)
 gh secret set GCP_SERVICE_ACCOUNT_KEY --body "your-gcp-service-account-json"
@@ -527,6 +723,9 @@ jobs:
     - name: 의존성 설치
       run: npm ci  # package-lock.json 기반으로 정확한 버전 설치
       
+    - name: prom-client 모듈 설치 (필수)
+      run: npm install prom-client
+      
     - name: 린팅 실행
       run: npm run lint  # 코드 스타일 검사
       
@@ -560,6 +759,9 @@ jobs:
     - name: 의존성 설치
       run: npm ci
       
+    - name: prom-client 모듈 설치 (필수)
+      run: npm install prom-client
+      
     - name: 애플리케이션 빌드
       run: npm run build
       
@@ -592,11 +794,18 @@ jobs:
     - name: 의존성 설치
       run: npm ci
       
+    - name: prom-client 모듈 설치 (필수)
+      run: npm install prom-client
+      
     - name: 보안 취약점 스캔
       run: npm audit --audit-level moderate
       
     - name: 의존성 취약점 스캔
       run: npx audit-ci --moderate
+      
+    - name: 취약점 자동 수정 시도
+      run: npm audit fix
+      continue-on-error: true
 ```
 
 **💡 이 워크플로우가 하는 일:**
@@ -658,11 +867,12 @@ gh run view --log
 
 # 일반적인 문제들:
 # 1. package.json 파일이 없음 -> npm init 실행
-# 2. package-lock.json 파일이 없음 -> npm install 실행
-# 3. 테스트 파일이 없음 -> 기본 테스트 파일 생성
-# 4. 린팅 설정이 없음 -> ESLint 설정 파일 생성
-# 5. Docker BuildKit 오류 -> export DOCKER_BUILDKIT=0 실행
-# 6. Docker buildx 누락 -> docker buildx install 실행
+# 2. package.json JSON 구문 오류 -> JavaScript 주석(//) 제거
+# 3. package-lock.json 파일이 없음 -> npm install 실행
+# 4. 테스트 파일이 없음 -> 기본 테스트 파일 생성
+# 5. 린팅 설정이 없음 -> ESLint 설정 파일 생성
+# 6. Docker BuildKit 오류 -> export DOCKER_BUILDKIT=0 실행
+# 7. Docker buildx 누락 -> docker buildx install 실행
 
 echo "🔧 문제가 있다면 로그를 확인하고 수정해보세요!"
 ```
@@ -692,13 +902,37 @@ sudo systemctl status docker
 docker build -t github-actions-demo:latest .
 ```
 
-### 🐳 2단계: Docker 이미지 자동 빌드 (컨테이너화의 마법!)
+## 🚀 실습 2: 고급 CI/CD 파이프라인 구축
 
-#### 📖 스토리: "내 컴퓨터에서는 잘 되는데..." 문제 해결하기
+### 📖 실습 시나리오: "멀티스테이지 빌드와 자동 배포"
 
-**상황**: 팀원들이 "내 컴퓨터에서는 잘 되는데 서버에서는 안 돼요"라고 자주 말합니다. 이는 각자의 개발 환경이 다르기 때문입니다. Docker를 사용하면 이 문제를 완전히 해결할 수 있습니다!
+**🎯 실습 목표**:
+- 멀티스테이지 Dockerfile 생성
+- Docker 이미지 자동 빌드 및 푸시
+- 환경별 배포 파이프라인 구축
+- 모니터링 및 알림 시스템 설정
 
-**목표**: 우리의 애플리케이션을 "컨테이너"라는 표준화된 상자에 넣어서, 어디서든 동일하게 실행되도록 만들기
+**⏱️ 예상 소요 시간**: 90-120분
+
+**📋 실습 전 준비사항**:
+- [ ] 실습 1 완료
+- [ ] AWS/GCP 계정 설정
+- [ ] 클라우드 인증 정보 준비
+
+### 🔧 실습 2-1: 멀티스테이지 Dockerfile 생성
+
+#### 📝 실습 단계
+
+**🎯 이 단계에서 할 일**:
+1. 고급 멀티스테이지 Dockerfile 생성
+2. 이미지 크기 최적화
+3. 보안 강화 설정
+4. 빌드 성능 최적화
+
+**✅ 실습 완료 기준**:
+- [ ] 멀티스테이지 Dockerfile이 생성되었음
+- [ ] 이미지 크기가 최적화되었음
+- [ ] 보안 설정이 적용되었음
 
 #### 🏗️ Dockerfile 생성 (애플리케이션을 컨테이너로 포장하기)
 
@@ -802,7 +1036,7 @@ jobs:
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKER_USERNAME }}    # Docker Hub 사용자명
-        password: ${{ secrets.DOCKER_PASSWORD }}    # Docker Hub 비밀번호
+        password: ${{ secrets.DOCKER_PASSWORD }}    # Docker Hub Personal Access Token
         # GitHub Secrets에 저장된 인증 정보 사용
         
     - name: 메타데이터 추출
@@ -827,6 +1061,10 @@ jobs:
         cache-from: type=gha          # GitHub Actions 캐시 사용
         cache-to: type=gha,mode=max   # 빌드 캐시 저장
         platforms: linux/amd64,linux/arm64  # 두 플랫폼에서 빌드
+        build-args: |
+          NODE_ENV=production
+          BUILD_DATE=${{ github.event.head_commit.timestamp }}
+          VCS_REF=${{ github.sha }}
         
     - name: 이미지 보안 스캔
       uses: aquasecurity/trivy-action@master
@@ -834,11 +1072,26 @@ jobs:
         image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
         format: 'sarif'               # 보안 스캔 결과 형식
         output: 'trivy-results.sarif' # 결과 파일명
+        severity: 'HIGH,CRITICAL'     # 높은 심각도만 스캔
         
     - name: 보안 스캔 결과 업로드
       uses: github/codeql-action/upload-sarif@v2
       with:
         sarif_file: 'trivy-results.sarif'  # GitHub에 보안 결과 업로드
+        
+    - name: 이미지 크기 최적화 확인
+      run: |
+        echo "=== 이미지 크기 확인 ==="
+        docker images ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}"
+        
+    - name: 이미지 실행 테스트
+      run: |
+        echo "=== 이미지 실행 테스트 ==="
+        docker run --rm -d --name test-container -p 3000:3000 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        sleep 10
+        curl -f http://localhost:3000/health || exit 1
+        docker stop test-container
+        echo "✅ 이미지 실행 테스트 성공"
 ```
 
 **💡 이 워크플로우가 하는 일:**
@@ -1446,6 +1699,216 @@ jobs:
 
 ---
 
+## 🔍 스크립트 수행 후 필수 체크 사항
+
+### 📋 실습 완료 후 검증 체크리스트
+
+#### 1. 환경 설정 검증
+```bash
+# 필수 도구 설치 확인
+echo "=== 필수 도구 설치 확인 ==="
+docker --version
+docker-compose --version
+node --version
+npm --version
+git --version
+gh --version
+
+# 환경 변수 로드 확인
+echo "=== 환경 변수 확인 ==="
+if [ -f .env ]; then
+    echo "✅ .env 파일 존재"
+    source .env
+    echo "NODE_ENV: $NODE_ENV"
+    echo "PORT: $PORT"
+else
+    echo "❌ .env 파일 없음"
+fi
+```
+
+#### 2. GitHub Actions 워크플로우 검증
+```bash
+# 워크플로우 파일 존재 확인
+echo "=== 워크플로우 파일 확인 ==="
+ls -la .github/workflows/
+
+# 워크플로우 실행 상태 확인
+echo "=== 워크플로우 실행 상태 ==="
+gh run list --limit 10
+
+# 최근 실행 결과 확인
+echo "=== 최근 실행 결과 ==="
+gh run view --log
+```
+
+#### 3. Docker 이미지 빌드 검증
+```bash
+# Docker 이미지 확인
+echo "=== Docker 이미지 확인 ==="
+docker images | grep github-actions-demo
+
+# 이미지별 상태 확인
+echo "=== 이미지별 상태 확인 ==="
+for tag in latest dev test multistage; do
+    if docker images | grep -q "github-actions-demo.*$tag"; then
+        echo "✅ github-actions-demo:$tag 이미지 존재"
+        size=$(docker images --format "table {{.Size}}" github-actions-demo:$tag | tail -n 1)
+        echo "   크기: $size"
+    else
+        echo "❌ github-actions-demo:$tag 이미지 없음"
+    fi
+done
+```
+
+#### 4. 애플리케이션 응답 검증
+```bash
+# 애플리케이션 엔드포인트 테스트
+echo "=== 애플리케이션 응답 테스트 ==="
+
+# 홈페이지 응답 확인
+echo "홈페이지 응답 확인..."
+if curl -s http://localhost:3000/ > /dev/null; then
+    echo "✅ 홈페이지 응답 정상"
+    response=$(curl -s http://localhost:3000/)
+    if echo "$response" | grep -q "GitHub Actions"; then
+        echo "   ✅ 응답 내용 정상"
+    else
+        echo "   ❌ 응답 내용 이상"
+    fi
+else
+    echo "❌ 홈페이지 응답 실패"
+fi
+
+# 헬스 체크 확인
+echo "헬스 체크 확인..."
+if curl -s http://localhost:3000/health > /dev/null; then
+    echo "✅ 헬스 체크 정상"
+    health=$(curl -s http://localhost:3000/health)
+    echo "   상태: $(echo $health | jq -r '.status' 2>/dev/null || echo 'JSON 파싱 실패')"
+else
+    echo "❌ 헬스 체크 실패"
+fi
+```
+
+#### 5. 보안 스캔 결과 확인
+```bash
+# npm audit 결과 확인
+echo "=== 보안 취약점 스캔 ==="
+audit_result=$(npm audit --audit-level moderate 2>&1)
+if echo "$audit_result" | grep -q "found 0 vulnerabilities"; then
+    echo "✅ 보안 취약점 없음"
+else
+    echo "⚠️ 보안 취약점 발견"
+    echo "$audit_result" | grep -E "(moderate|high|critical)"
+fi
+
+# Docker 이미지 보안 스캔 (선택사항)
+echo "=== Docker 이미지 보안 스캔 ==="
+if command -v docker-scan > /dev/null; then
+    echo "Docker 이미지 스캔 실행 중..."
+    docker scan github-actions-demo:latest --severity high
+else
+    echo "Docker Scan 도구 없음 - 건너뜀"
+fi
+```
+
+#### 6. 전체 상태 요약
+```bash
+# 전체 상태 요약 생성
+echo "=== 전체 상태 요약 ==="
+echo "실행 시간: $(date)"
+echo "프로젝트: GitHub Actions CI/CD 실습"
+echo "환경: $(echo $NODE_ENV || echo 'development')"
+
+# 성공/실패 카운트
+success_count=0
+total_count=0
+
+# 각 검증 항목별 결과 확인
+check_items=(
+    "GitHub 저장소 연결"
+    "Docker 이미지 빌드"
+    "GitHub Actions 워크플로우"
+    "애플리케이션 응답"
+    "보안 스캔"
+)
+
+for item in "${check_items[@]}"; do
+    total_count=$((total_count + 1))
+    echo "검증 항목: $item"
+done
+
+echo "=== 검증 완료 ==="
+echo "총 검증 항목: $total_count"
+echo "성공: $success_count"
+echo "실패: $((total_count - success_count))"
+
+if [ $success_count -eq $total_count ]; then
+    echo "🎉 모든 검증 통과! CI/CD 파이프라인이 정상적으로 설정되었습니다."
+else
+    echo "⚠️ 일부 검증 실패. 위의 오류 메시지를 확인하고 문제를 해결하세요."
+fi
+```
+
+### 🚨 문제 해결 가이드
+
+#### 자주 발생하는 문제들
+
+**1. GitHub Actions 워크플로우 실패**
+```bash
+# 워크플로우 실행 로그 확인
+gh run view --log
+
+# 일반적인 해결 방법
+# - package.json 파일 존재 확인
+# - package-lock.json 파일 생성 (npm install)
+# - GitHub Secrets 설정 확인
+# - Docker BuildKit 오류 시: export DOCKER_BUILDKIT=0
+```
+
+**2. Docker 이미지 빌드 실패**
+```bash
+# BuildKit 오류 해결
+export DOCKER_BUILDKIT=0
+docker build -t github-actions-demo:latest .
+
+# package-lock.json 누락 오류 해결
+npm install
+ls -la package*.json
+
+# Docker buildx 설치
+docker buildx install
+docker buildx create --use
+```
+
+**3. 애플리케이션 응답 실패**
+```bash
+# 포트 충돌 확인
+netstat -tulpn | grep :3000
+
+# 컨테이너 상태 확인
+docker ps
+
+# 컨테이너 로그 확인
+docker logs [container_name]
+
+# 컨테이너 재시작
+docker-compose down
+docker-compose up -d --build
+```
+
+**4. 보안 취약점 해결**
+```bash
+# npm audit 취약점 자동 수정
+npm audit fix
+
+# 강제 수정 (주의: breaking changes 가능)
+npm audit fix --force
+
+# 취약점 상세 확인
+npm audit --audit-level moderate
+```
+
 ## 🧪 실습 완료 체크리스트 (성취감을 느껴보세요!)
 
 ### 🎯 Day 1: 기본 CI/CD (자동화의 첫 걸음!)
@@ -1500,23 +1963,142 @@ jobs:
 - **모니터링**: ELK Stack, Grafana, Jaeger 등 관찰 가능성 도구들
 - **GitOps**: ArgoCD, Flux 등 Git 기반 배포 관리
 
-### 💡 실무 팁
+### 💡 실무 팁 (2024년 최신)
+
+#### 🚀 기본 원칙
 - **작은 것부터 시작**: 복잡한 파이프라인보다는 간단한 것부터 만들어보세요
 - **실패를 두려워하지 마세요**: CI/CD는 반복과 개선의 과정입니다
 - **커뮤니티 활용**: GitHub, Stack Overflow에서 다른 사람들의 경험을 배우세요
 - **문서화**: 팀원들과 함께 사용할 수 있도록 잘 정리해두세요
+
+#### 🔧 GitHub Actions 최적화
 - **GitHub 저장소 관리**: README.md를 잘 작성하고 이슈/PR 템플릿을 활용하세요
 - **Secrets 관리**: 민감한 정보는 절대 코드에 직접 넣지 말고 GitHub Secrets를 사용하세요
 - **워크플로우 테스트**: 로컬에서 먼저 테스트해보고 GitHub Actions에 올리세요
+- **캐시 활용**: npm, Docker 빌드 캐시를 적극 활용하여 빌드 시간을 단축하세요
+- **병렬 실행**: 독립적인 작업들은 병렬로 실행하여 전체 시간을 단축하세요
+
+#### 🐳 Docker 최적화
 - **Docker 이미지 최적화**: 멀티스테이지 빌드와 .dockerignore를 활용하여 이미지 크기를 줄이세요
 - **Docker BuildKit 문제**: BuildKit 오류 시 `export DOCKER_BUILDKIT=0`으로 비활성화하거나 `docker buildx install`로 해결하세요
+- **이미지 보안**: 정기적으로 베이스 이미지를 업데이트하고 보안 스캔을 실행하세요
+- **이미지 태깅**: 의미있는 태그를 사용하여 버전 관리를 체계적으로 하세요
+
+#### 📦 Node.js 프로젝트 관리
 - **package-lock.json 관리**: `npm install`로 package-lock.json을 생성하고 Git에 커밋하여 일관된 의존성 관리하세요
+- **package.json 구문**: JSON에서는 JavaScript 주석(//)을 사용할 수 없으므로, 주석이 필요하면 README.md에 작성하세요
+- **의존성 보안**: `npm audit`을 정기적으로 실행하고 취약점을 즉시 수정하세요
+- **prom-client 모듈**: 모니터링을 위한 필수 모듈이므로 package.json에 명시적으로 추가하세요
+
+#### 🔐 보안 및 인증
 - **GitHub 인증**: Personal Access Token을 사용하고, 가능하면 SSH 키를 설정하세요
 - **토큰 보안**: Personal Access Token은 안전한 곳에 보관하고 정기적으로 갱신하세요
 - **GitHub 메뉴 변경**: GitHub는 정기적으로 UI를 업데이트하므로, 메뉴가 바뀌어도 당황하지 마세요
 - **토큰 종류**: Classic tokens가 더 간단하고, Fine-grained tokens는 더 세밀한 권한 제어가 가능합니다
 - **권한 최소화**: 필요한 권한만 부여하고, 정기적으로 토큰을 갱신하세요
-- **Docker Hub 토큰**: 비밀번호 대신 액세스 토큰을 사용하면 더 안전합니다
+- **Docker Hub 토큰**: Personal Access Token을 사용하여 보안을 강화하고 권한을 세밀하게 제어하세요
+
+#### 🚨 문제 해결
+- **BuildKit 오류**: `export DOCKER_BUILDKIT=0` 또는 `docker buildx install`로 해결
+- **prom-client 누락**: `npm install prom-client`로 설치
+- **테스트 실패**: `npm ci`로 의존성 재설치 후 테스트 재실행
+- **Docker Compose 오류**: `docker-compose down --remove-orphans` 후 재시작
+- **npm audit 취약점**: `npm audit fix`로 자동 수정 시도
+
+#### 📊 모니터링 및 최적화
+- **성능 모니터링**: 빌드 시간, 테스트 실행 시간을 정기적으로 측정하세요
+- **비용 최적화**: 불필요한 리소스 사용을 줄이고 효율적인 빌드 전략을 수립하세요
+- **알림 설정**: 빌드 실패나 보안 취약점 발견 시 즉시 알림을 받도록 설정하세요
+- **로그 관리**: 빌드 로그를 체계적으로 관리하고 문제 발생 시 빠르게 원인을 파악하세요
+
+#### 🔄 지속적 개선
+- **피드백 수집**: 팀원들의 피드백을 수집하고 파이프라인을 지속적으로 개선하세요
+- **최신 기술 적용**: 새로운 도구나 기술을 적극적으로 도입하여 효율성을 높이세요
+- **문서 업데이트**: 변경사항을 즉시 문서에 반영하여 팀원들이 최신 정보를 활용할 수 있도록 하세요
+- **교육 및 공유**: 팀원들과 지식을 공유하고 CI/CD 모범 사례를 함께 학습하세요
+
+---
+
+## 📋 실습 완료 체크리스트
+
+### ✅ 실습 1: 기본 CI/CD 파이프라인 구축
+- [ ] GitHub 저장소 생성 및 연결
+- [ ] 기본 프로젝트 파일 생성 (package.json, app.js)
+- [ ] Dockerfile 3종류 생성 (기본, 개발, 테스트)
+- [ ] Docker 이미지 빌드 및 테스트 성공
+- [ ] Docker Hub에 이미지 푸시 성공
+- [ ] GitHub Secrets 설정 완료
+- [ ] CI 워크플로우 파일 생성 및 실행 성공
+
+### ✅ 실습 2: 고급 CI/CD 파이프라인 구축
+- [ ] 멀티스테이지 Dockerfile 생성
+- [ ] Docker 이미지 자동 빌드 워크플로우 생성
+- [ ] 환경별 배포 파이프라인 구축
+- [ ] 보안 스캔 및 품질 검사 자동화
+- [ ] 롤백 및 복구 시스템 구축
+
+### ✅ 실습 3: 모니터링 및 최적화
+- [ ] 애플리케이션 모니터링 시스템 구축
+- [ ] 로그 수집 및 분석 시스템 설정
+- [ ] 알림 및 알림 시스템 구축
+- [ ] 성능 최적화 및 비용 절감
+- [ ] 장애 대응 프로세스 구축
+
+## 🧪 실습 검증 방법
+
+### 🔍 각 실습별 검증 명령어
+
+**실습 1 검증**
+```bash
+# GitHub 저장소 확인
+gh repo view
+
+# Docker 이미지 확인
+docker images | grep github-actions-demo
+
+# GitHub Actions 실행 확인
+gh run list
+
+# 워크플로우 상태 확인
+gh run view --log
+```
+
+**실습 2 검증**
+```bash
+# 멀티스테이지 빌드 확인
+docker build -f Dockerfile -t github-actions-demo:latest .
+
+# 이미지 크기 비교
+docker images github-actions-demo --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}"
+
+# 보안 스캔 결과 확인
+docker scan github-actions-demo:latest
+```
+
+**실습 3 검증**
+```bash
+# 모니터링 메트릭 확인
+curl http://localhost:3000/metrics
+
+# 로그 수집 확인
+docker logs [container_name]
+
+# 알림 테스트
+# (설정한 알림 채널에서 테스트 메시지 확인)
+```
+
+## 🎯 실습 성공 기준
+
+### 📊 정량적 지표
+- **빌드 성공률**: 95% 이상
+- **테스트 통과율**: 100%
+- **배포 시간**: 5분 이내
+- **장애 복구 시간**: 10분 이내
+
+### 📈 정성적 지표
+- **자동화 수준**: 수동 개입 없이 전체 파이프라인 실행
+- **모니터링 효과**: 문제 발생 시 즉시 감지 및 알림
+- **운영 효율성**: 반복 작업의 90% 이상 자동화
 
 ---
 

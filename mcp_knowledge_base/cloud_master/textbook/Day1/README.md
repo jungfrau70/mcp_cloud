@@ -6,19 +6,23 @@
 - **Docker 컨테이너화**: 애플리케이션 컨테이너화 및 최적화
 - **Git/GitHub 협업**: 버전 관리 및 협업 워크플로우
 - **GitHub Actions CI/CD**: 자동화 파이프라인 구축
-- **VM 배포**: AWS EC2, GCP Compute Engine을 활용한 애플리케이션 배포
+- **멀티 클라우드 VM 배포**: AWS EC2, GCP Compute Engine을 활용한 애플리케이션 배포
+- **자동화된 배포 파이프라인**: GitHub Actions를 통한 CI/CD 자동화
 
 ### 실습 후 달성할 수 있는 능력
 - ✅ Docker를 활용한 웹 애플리케이션 컨테이너화
 - ✅ Git/GitHub을 통한 버전 관리 및 협업
 - ✅ GitHub Actions로 기본 CI/CD 파이프라인 구축
-- ✅ VM 기반 웹 애플리케이션 배포 및 기본 운영
+- ✅ AWS EC2와 GCP Compute Engine에 애플리케이션 배포
+- ✅ 멀티 클라우드 환경에서의 자동화된 배포 운영
+- ✅ Docker 권한 관리 및 보안 설정
 
 ### 예상 소요 시간
 - **Docker 기초**: 90-120분
 - **Git/GitHub 기초**: 60-90분
 - **GitHub Actions 기초**: 90-120분
-- **VM 배포**: 90-120분
+- **AWS VM 배포**: 60-90분
+- **GCP VM 배포**: 60-90분
 - **전체 과정**: 6-8시간
 
 ---
@@ -429,6 +433,42 @@ chmod +x cloud-scripts/aws-setup-helper.sh
 # EC2 인스턴스 자동 생성
 chmod +x cloud-scripts/aws-ec2-create.sh
 ./cloud-scripts/aws-ec2-create.sh
+```
+
+### GCP Compute Engine 배포
+
+**방법 1: 자동화 스크립트 사용 (권장)**
+```bash
+# GCP 설정 도우미 실행
+chmod +x cloud-scripts/gcp-setup-helper.sh
+./cloud-scripts/gcp-setup-helper.sh
+
+# GCP Compute Engine 인스턴스 자동 생성
+chmod +x cloud-scripts/gcp-compute-create.sh
+./cloud-scripts/gcp-compute-create.sh
+```
+
+**방법 2: 수동 명령어 실행**
+```bash
+# GCP Compute Engine 인스턴스 생성
+gcloud compute instances create github-actions-demo-gcp \
+    --zone=us-central1-a \
+    --machine-type=e2-medium \
+    --image-family=ubuntu-2004-lts \
+    --image-project=ubuntu-os-cloud \
+    --boot-disk-size=20GB \
+    --tags=github-actions-demo
+
+# 방화벽 규칙 설정
+gcloud compute firewall-rules create allow-http \
+    --allow tcp:3000 \
+    --source-ranges 0.0.0.0/0 \
+    --target-tags github-actions-demo
+
+gcloud compute firewall-rules create allow-ssh \
+    --allow tcp:22 \
+    --source-ranges 0.0.0.0/0 \
+    --target-tags github-actions-demo
 ```
 
 **방법 2: 수동 명령어 실행**
