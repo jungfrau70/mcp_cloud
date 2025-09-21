@@ -181,17 +181,30 @@ delete_gcp_clusters() {
 delete_aws_clusters() {
     log_info "AWS EKS 클러스터 삭제 시작..."
     
-    # 모든 클러스터 목록 가져오기
-    local clusters=$(eksctl get cluster --region "$AWS_REGION" --output json 2>/dev/null | jq -r '.[].name' 2>/dev/null)
+    # 모든 클러스터 목록 가져오기 (더 안전한 방법)
+    local cluster_json=$(eksctl get cluster --region "$AWS_REGION" --output json 2>/dev/null)
     
-    if [ -z "$clusters" ]; then
+    # JSON이 유효한지 확인
+    if ! echo "$cluster_json" | jq empty 2>/dev/null; then
+        log_info "AWS EKS 클러스터 목록을 가져올 수 없습니다. (eksctl 오류 또는 클러스터 없음)"
+        return 0
+    fi
+    
+    # 클러스터 이름 추출
+    local clusters=$(echo "$cluster_json" | jq -r '.[].name' 2>/dev/null)
+    
+    # null 값이나 빈 값 체크
+    if [ -z "$clusters" ] || [ "$clusters" = "null" ]; then
         log_info "삭제할 AWS 클러스터가 없습니다."
         return 0
     fi
     
     log_info "발견된 AWS 클러스터:"
     echo "$clusters" | while read name; do
-        log_info "  - $name"
+        # null 값이나 빈 값 건너뛰기
+        if [ -n "$name" ] && [ "$name" != "null" ]; then
+            log_info "  - $name"
+        fi
     done
     
     # 확인
@@ -206,13 +219,16 @@ delete_aws_clusters() {
     
     # 클러스터 삭제
     echo "$clusters" | while read name; do
-        log_info "클러스터 삭제 중: $name"
-        eksctl delete cluster --name "$name" --region "$AWS_REGION" --wait
-        
-        if [ $? -eq 0 ]; then
-            log_success "✅ 클러스터 삭제 완료: $name"
-        else
-            log_error "❌ 클러스터 삭제 실패: $name"
+        # null 값이나 빈 값 건너뛰기
+        if [ -n "$name" ] && [ "$name" != "null" ]; then
+            log_info "클러스터 삭제 중: $name"
+            eksctl delete cluster --name "$name" --region "$AWS_REGION" --wait
+            
+            if [ $? -eq 0 ]; then
+                log_success "✅ 클러스터 삭제 완료: $name"
+            else
+                log_error "❌ 클러스터 삭제 실패: $name"
+            fi
         fi
     done
     

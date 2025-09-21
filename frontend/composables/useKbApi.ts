@@ -39,13 +39,25 @@ export function useKbApi(){
   }
 
 async function getItem(path: string): Promise<any>{
+  console.log('useKbApi.getItem called with path:', path)
+  
   // 개선된 안전한 경로 처리
   const result = processPathSafely(path, 'encode')
   if (!result.success) {
     console.warn('Path processing failed for getItem:', path, result.errors)
   }
   
-  return request<any>(`${apiBase}/v1/knowledge-base/item?path=${result.result}`, { headers: { 'X-API-Key': apiKey }}, 'getItem failed')
+  const url = `${apiBase}/v1/knowledge-base/item?path=${result.result}`
+  console.log('useKbApi.getItem - making request to:', url)
+  
+  const response = await request<any>(url, { headers: { 'X-API-Key': apiKey }}, 'getItem failed')
+  console.log('useKbApi.getItem - response received:', { 
+    hasContent: !!response.content, 
+    contentLength: response.content?.length,
+    version: response.version_no 
+  })
+  
+  return response
 }
 
   async function saveItem(path: string, content: string, message?: string, expectedVersion?: number): Promise<KbSaveResponse>{
