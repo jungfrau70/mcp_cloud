@@ -1142,11 +1142,8 @@ const handleKbFileSelect = async (path) => {
   decodedPath = decodedPath.replace(/\\/g, '/')
   
   console.log('handleKbFileSelect - original path:', path, 'decoded path:', decodedPath)
-  console.log('handleKbFileSelect - calling docStore.open with:', decodedPath)
   
   await docStore.open(decodedPath)
-  
-  console.log('handleKbFileSelect - docStore.open completed, error:', docStore.error, 'content length:', docStore.content?.length)
   
   // 현재 파일 정보 저장 (커리큘럼 ↔ 지식베이스 공유용)
   if (!docStore.error && docStore.content) {
@@ -1166,10 +1163,7 @@ const handleKbFileSelect = async (path) => {
     kbTab.value = 'markdown'
   }
   
-  if(docStore.error) {
-    console.error('handleKbFileSelect - docStore error:', docStore.error)
-    toast.push('error','로드 실패: ' + docStore.error)
-  }
+  if(docStore.error) toast.push('error','로드 실패: ' + docStore.error)
 }
 
 function goKbBack(){
@@ -1275,8 +1269,6 @@ async function onTreeSelect(p){
   
   // Windows 경로 구분자(\\)를 Unix 경로 구분자(/)로 정규화
   decodedPath = decodedPath.replace(/\\/g, '/')
-  
-  console.log('onTreeSelect - decoded path:', decodedPath)
   
   const ext = getExt(decodedPath)
   console.log('File extension detected:', ext, 'for path:', decodedPath)

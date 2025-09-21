@@ -13,33 +13,20 @@ export const useDocStore = defineStore('doc', () => {
   const error = ref<string|undefined>()
 
   async function open(p: string){
-    console.log('docStore.open called with path:', p)
     loading.value = true
     error.value = undefined
     try {
       path.value = p
       // persist last opened KB path
       try{ if(typeof window!=='undefined') localStorage.setItem('kb_last_path', p) }catch{}
-      
-      console.log('docStore.open - calling api.getItem with path:', p)
       const data: any = await api.getItem(p)
-      console.log('docStore.open - api.getItem response:', { 
-        hasContent: !!data.content, 
-        contentLength: data.content?.length, 
-        version: data.version_no 
-      })
-      
       content.value = data.content || ''
       version.value = data.version_no
       baseVersion.value = data.version_no
       dirty.value = false
     } catch(e: any){
-      console.error('docStore.open - error:', e)
       error.value = e.message || 'load failed'
-    } finally { 
-      loading.value = false 
-      console.log('docStore.open - completed, error:', error.value, 'content length:', content.value?.length)
-    }
+    } finally { loading.value = false }
   }
 
   function update(newContent: string){

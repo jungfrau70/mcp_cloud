@@ -169,25 +169,33 @@ def kb_get_file(path: str):
     if fp.is_dir():
         raise HTTPException(status_code=400, detail='Path is a directory')
 
-    # Handle PowerPoint → PDF conversion on the fly
+    # Handle PowerPoint → PDF conversion on the fly (if available)
     ext = (fp.suffix or '').lstrip('.').lower()
     if ext in {'ppt', 'pptx'}:
-        if convert_pptx_to_pdf is None:
-            raise HTTPException(status_code=501, detail='PPTX conversion is not available on server')
-        try:
-            pdf_path = convert_pptx_to_pdf(fp, KB_ROOT)
-        except HTTPException as e:
-            # propagate HTTPException as is
-            raise e
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f'Conversion error: {e}')
-        # Always inline PDF preview for converted output; let Starlette build headers safely
-        return FileResponse(
-            path=str(pdf_path),
-            media_type='application/pdf',
-            filename=pdf_path.name,
-            content_disposition_type='inline'
-        )
+        if convert_pptx_to_pdf is not None:
+            try:
+                pdf_path = convert_pptx_to_pdf(fp, KB_ROOT)
+                # Always inline PDF preview for converted output; let Starlette build headers safely
+                return FileResponse(
+                    path=str(pdf_path),
+                    media_type='application/pdf',
+                    filename=pdf_path.name,
+                    content_disposition_type='inline'
+                )
+            except HTTPException as e:
+                # propagate HTTPException as is
+                raise e
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f'Conversion error: {e}')
+        else:
+            # Fallback: serve PPTX as download if conversion is not available
+            print(f"PPTX conversion not available, serving as download: {fp.name}")
+            return FileResponse(
+                path=str(fp),
+                media_type='application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                filename=fp.name,
+                content_disposition_type='attachment'
+            )
 
     # Guess content type
     import mimetypes

@@ -212,12 +212,7 @@ function taskStatusClass(st){
 const handleFileSelect = (path) => {
   // Windows 경로 구분자(\\)를 Unix 경로 구분자(/)로 정규화
   const normalizedPath = path.replace(/\\/g, '/');
-  console.log('KnowledgeBaseExplorer handleFileSelect - original path:', path, 'normalized:', normalizedPath);
-  
-  // stripBasePath를 사용하여 mcp_knowledge_base/ 접두사 제거
   const p = stripBasePath(normalizedPath)
-  console.log('KnowledgeBaseExplorer handleFileSelect - stripped path:', p);
-  
   emit('file-select', p);
 };
 
@@ -225,11 +220,7 @@ const handleFileSelect = (path) => {
 const handleFileOpen = (path) => {
   // Windows 경로 구분자(\\)를 Unix 경로 구분자(/)로 정규화
   const normalizedPath = path.replace(/\\/g, '/');
-  console.log('KnowledgeBaseExplorer handleFileOpen - original path:', path, 'normalized:', normalizedPath);
-  
   const p = stripBasePath(normalizedPath)
-  console.log('KnowledgeBaseExplorer handleFileOpen - stripped path:', p);
-  
   emit('file-select', p)
 };
 
