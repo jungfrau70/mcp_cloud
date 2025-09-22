@@ -1,6 +1,6 @@
-# 🚀 GitHub Actions Demo - Cloud Master 과정 완성 프로젝트
+# 🚀 GitHub Actions Demo
 
-**Cloud Master 과정**의 3일차에 걸쳐 점진적으로 발전시킨 프로덕션 수준의 클라우드 네이티브 애플리케이션입니다.
+GitHub Actions를 활용한 CI/CD 파이프라인 실습 프로젝트입니다.
 
 ## 🎯 프로젝트 배경 및 목적
 

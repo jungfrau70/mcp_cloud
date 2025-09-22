@@ -863,12 +863,29 @@ const downloadPdf = async () => {
     const a = document.createElement('a');
     const objectUrl = URL.createObjectURL(blob);
     a.href = objectUrl;
+    
+    // 한글 파일명 처리 개선
     const base = props.path.split('/').pop()?.replace(/\.md$/i,'') || 'document';
-    a.download = base + (ct.includes('application/pdf') ? '.pdf' : '.md');
+    const filename = base + (ct.includes('application/pdf') ? '.pdf' : '.md');
+    
+    // 한글 파일명을 위한 UTF-8 BOM 추가
+    const utf8Bom = '\uFEFF';
+    const encodedFilename = utf8Bom + filename;
+    
+    // Blob을 사용하여 한글 파일명 처리
+    const blobWithBom = new Blob([blob], { type: blob.type });
+    const urlWithBom = URL.createObjectURL(blobWithBom);
+    
+    a.href = urlWithBom;
+    a.download = filename; // 브라우저가 한글을 올바르게 처리하도록
+    
     document.body.appendChild(a);
     a.click();
     a.remove();
-    setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
+    setTimeout(() => {
+      URL.revokeObjectURL(objectUrl);
+      URL.revokeObjectURL(urlWithBom);
+    }, 1500);
   } catch (e) {
     console.error('PDF download error:', e);
     alert('PDF 생성 중 오류가 발생했습니다: ' + e.message);
@@ -878,15 +895,20 @@ const downloadPdf = async () => {
 const downloadMarkdown = async () => {
   if (!props.path || !props.content) return;
   try {
-    // Create a blob with the markdown content
-    const blob = new Blob([props.content], { type: 'text/markdown;charset=utf-8' });
+    // 한글 파일명 처리 개선
+    const base = props.path.split('/').pop()?.replace(/\.md$/i,'') || 'document';
+    const filename = base + '.md';
+    
+    // UTF-8 BOM을 추가하여 한글 파일명 지원
+    const utf8Bom = '\uFEFF';
+    const contentWithBom = utf8Bom + props.content;
+    
+    // Create a blob with the markdown content and UTF-8 BOM
+    const blob = new Blob([contentWithBom], { type: 'text/markdown;charset=utf-8' });
     const a = document.createElement('a');
     const objectUrl = URL.createObjectURL(blob);
     a.href = objectUrl;
-    
-    // Generate filename from path
-    const base = props.path.split('/').pop()?.replace(/\.md$/i,'') || 'document';
-    a.download = base + '.md';
+    a.download = filename; // 브라우저가 한글을 올바르게 처리하도록
     
     document.body.appendChild(a);
     a.click();

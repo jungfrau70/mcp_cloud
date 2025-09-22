@@ -1,8 +1,8 @@
--- Day2: 데이터베이스 초기화 스크립트
--- Day1의 기본 애플리케이션에 데이터베이스 기능 추가
+-- Day2 - Database Initialization Script
+-- Cloud Master Day2 강의안 기반
 
--- 데이터베이스 생성 (이미 docker-compose에서 생성됨)
--- CREATE DATABASE myapp;
+-- 데이터베이스 생성 (이미 생성되어 있음)
+-- CREATE DATABASE github_actions_demo;
 
 -- 사용자 테이블 생성
 CREATE TABLE IF NOT EXISTS users (
@@ -13,53 +13,85 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 애플리케이션 로그 테이블 생성
-CREATE TABLE IF NOT EXISTS app_logs (
+-- 로그 테이블 생성
+CREATE TABLE IF NOT EXISTS logs (
     id SERIAL PRIMARY KEY,
     level VARCHAR(20) NOT NULL,
     message TEXT NOT NULL,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    user_id INTEGER REFERENCES users(id)
+    service VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 헬스체크 테이블 생성
-CREATE TABLE IF NOT EXISTS health_checks (
+-- 메트릭 테이블 생성
+CREATE TABLE IF NOT EXISTS metrics (
     id SERIAL PRIMARY KEY,
-    service_name VARCHAR(50) NOT NULL,
-    status VARCHAR(20) NOT NULL,
-    response_time INTEGER,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    metric_name VARCHAR(100) NOT NULL,
+    metric_value DECIMAL(10,4) NOT NULL,
+    labels JSONB,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
--- 샘플 데이터 삽입
-INSERT INTO users (username, email) VALUES 
-    ('admin', 'admin@example.com'),
-    ('user1', 'user1@example.com'),
-    ('user2', 'user2@example.com')
-ON CONFLICT (username) DO NOTHING;
 
 -- 인덱스 생성
 CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
-CREATE INDEX IF NOT EXISTS idx_app_logs_timestamp ON app_logs(timestamp);
-CREATE INDEX IF NOT EXISTS idx_health_checks_timestamp ON health_checks(timestamp);
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_logs_level ON logs(level);
+CREATE INDEX IF NOT EXISTS idx_logs_service ON logs(service);
+CREATE INDEX IF NOT EXISTS idx_logs_created_at ON logs(created_at);
+CREATE INDEX IF NOT EXISTS idx_metrics_name ON metrics(metric_name);
+CREATE INDEX IF NOT EXISTS idx_metrics_created_at ON metrics(created_at);
 
--- 뷰 생성 (애플리케이션에서 사용)
+-- 샘플 데이터 삽입
+INSERT INTO users (username, email) VALUES 
+    ('admin', 'admin@github-actions-demo.com'),
+    ('user1', 'user1@github-actions-demo.com'),
+    ('user2', 'user2@github-actions-demo.com')
+ON CONFLICT (username) DO NOTHING;
+
+INSERT INTO logs (level, message, service) VALUES 
+    ('INFO', 'Application started', 'web'),
+    ('INFO', 'Database connected', 'web'),
+    ('INFO', 'Redis connected', 'web'),
+    ('INFO', 'Prometheus metrics enabled', 'web')
+ON CONFLICT DO NOTHING;
+
+-- 함수 생성 (업데이트 시간 자동 갱신)
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- 트리거 생성
+DROP TRIGGER IF EXISTS update_users_updated_at ON users;
+CREATE TRIGGER update_users_updated_at
+    BEFORE UPDATE ON users
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- 뷰 생성 (사용자 통계)
 CREATE OR REPLACE VIEW user_stats AS
 SELECT 
     COUNT(*) as total_users,
     COUNT(CASE WHEN created_at >= CURRENT_DATE THEN 1 END) as new_users_today,
-    MAX(created_at) as last_user_created
+    COUNT(CASE WHEN created_at >= CURRENT_DATE - INTERVAL '7 days' THEN 1 END) as new_users_week,
+    COUNT(CASE WHEN created_at >= CURRENT_DATE - INTERVAL '30 days' THEN 1 END) as new_users_month
 FROM users;
 
--- 함수 생성 (헬스체크용)
-CREATE OR REPLACE FUNCTION check_database_health()
-RETURNS BOOLEAN AS $$
-BEGIN
-    -- 간단한 쿼리로 데이터베이스 연결 확인
-    PERFORM 1;
-    RETURN TRUE;
-EXCEPTION
-    WHEN OTHERS THEN
-        RETURN FALSE;
-END;
-$$ LANGUAGE plpgsql;
+-- 뷰 생성 (로그 통계)
+CREATE OR REPLACE VIEW log_stats AS
+SELECT 
+    level,
+    service,
+    COUNT(*) as count,
+    MAX(created_at) as last_occurrence
+FROM logs
+WHERE created_at >= CURRENT_DATE - INTERVAL '24 hours'
+GROUP BY level, service
+ORDER BY count DESC;
+
+-- 권한 설정
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO postgres;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO postgres;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO postgres;
