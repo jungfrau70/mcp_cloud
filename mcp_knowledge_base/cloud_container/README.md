@@ -107,7 +107,16 @@ Kubernetes, 고가용성 아키텍처, 고급 모니터링 등
 # https:///cloud.google.com/sdk/docs/install
 ```
 
-### 3️⃣ 첫 번째 실습 시작
+### 3️⃣ 자동화 스크립트
+Cloud Master 과정에서 이동된 Kubernetes 관련 스크립트들을 활용하세요:
+
+- [Kubernetes 클러스터 생성](repos/cloud-scripts/k8s-cluster-create.sh) - 로컬 K8s 클러스터 자동 생성
+- [EKS 클러스터 생성](repos/cloud-scripts/eks-cluster-create.sh) - AWS EKS 클러스터 자동 생성
+- [클러스터 정리](repos/cloud-scripts/cluster-cleanup-interactive.sh) - 클러스터 선택적 정리
+- [K8s 앱 배포](repos/cloud-scripts/k8s-app-deploy.sh) - Kubernetes 애플리케이션 자동 배포
+- [클러스터 연결 테스트](repos/cloud-scripts/test-cluster-connection.sh) - 클러스터 연결 상태 확인
+
+### 4️⃣ 첫 번째 실습 시작
 1. Day 1 실습 가이드로 이동
 2. [Kubernetes 기초](cloud_container/textbook/Day1/practice/kubernetes-basics.md) 따라하기
 3. [GKE 클러스터 생성](cloud_container/textbook/Day1/container-orchestration-guide.md) 따라하기

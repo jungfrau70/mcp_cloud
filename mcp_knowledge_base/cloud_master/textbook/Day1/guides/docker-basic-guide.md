@@ -547,9 +547,9 @@ jobs:
     - name: Deploy to VM
       uses: appleboy/ssh-action@v0.1.5
       with:
-        host: ${{ secrets.VM_HOST }}
-        username: ${{ secrets.VM_USERNAME }}
-        key: ${{ secrets.VM_SSH_KEY }}
+        host: ${{ secrets.AWS_VM_HOST }}
+        username: ${{ secrets.AWS_VM_USERNAME }}
+        key: ${{ secrets.AWS_VM_SSH_KEY }}
         script: |
           cd /home/ubuntu/app
           git pull origin main

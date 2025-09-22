@@ -5,19 +5,19 @@
 ### 핵심 학습 목표
 - **인프라 기초**: WSL 환경 설정, 클라우드 계정 구성
 - **VM 관리**: AWS EC2, GCP Compute Engine 인스턴스 생성 및 관리
-- **Kubernetes 클러스터**: 로컬, AWS EKS, GCP GKE 클러스터 구축
+- **VM 기반 컨테이너**: Docker Compose를 활용한 VM 기반 컨테이너 배포
 - **모니터링**: 인프라 리소스 모니터링 및 최적화
 
 ### 실습 후 달성할 수 있는 능력
 - ✅ WSL 환경에서 완전한 클라우드 개발 환경 구축
 - ✅ 멀티 클라우드 VM 인스턴스 자동 배포
-- ✅ Kubernetes 클러스터 설계 및 구축
+- ✅ VM 기반 컨테이너 오케스트레이션 구축
 - ✅ 인프라 모니터링 및 성능 최적화
 
 ### 예상 소요 시간
 - **환경 설정**: 60-90분
 - **VM 배포**: 90-120분
-- **Kubernetes 클러스터**: 120-150분
+- **VM 기반 컨테이너**: 90-120분
 - **모니터링 설정**: 60-90분
 - **전체 과정**: 5-7시간
 
@@ -33,7 +33,7 @@
 ### 자동화 스크립트
 - [통합 자동화 스크립트](../repos/automation/integrated-practice-automation.sh) - 전체 과정 자동화
 - [환경 체크 도구](../repos/cloud-scripts/environment-check-wsl.sh) - 실습 환경 검증
-- [클러스터 생성 스크립트](../repos/cloud-scripts/k8s-cluster-create.sh) - Kubernetes 클러스터 자동 생성
+- [VM 배포 스크립트](../repos/cloud-scripts/vm-deployment.sh) - VM 기반 컨테이너 자동 배포
 
 ---
 
@@ -175,68 +175,65 @@ gcloud compute instances delete INSTANCE_NAME --zone=ZONE
 
 ---
 
-## ☸️ 3. Kubernetes 클러스터 구축
+## 🐳 3. VM 기반 컨테이너 배포
 
-### 3.1 로컬 Kubernetes 클러스터
+### 3.1 Docker Compose 환경 구성
 
 #### 스크립트 디렉토리 이동
 ```bash
 cd ~/mcp-cloud-workspace/mcp_knowledge_base/cloud_master/repos/cloud-scripts
 ```
 
-#### 로컬 K8s 클러스터 생성
+#### VM 기반 컨테이너 배포
 ```bash
-# 로컬 K8s 클러스터 생성
-./k8s-cluster-create.sh
+# VM 기반 컨테이너 배포 스크립트 실행
+./vm-container-deploy.sh
 
-# 클러스터 상태 확인
-kubectl get nodes
-kubectl get pods --all-namespaces
+# Docker Compose 상태 확인
+docker-compose ps
+docker-compose logs
 ```
 
-### 3.2 AWS EKS 클러스터
+### 3.2 AWS EC2 + Docker Compose
 
-#### EKS 클러스터 생성
+#### EC2에서 컨테이너 배포
 ```bash
-# EKS 클러스터 생성
-./eks-cluster-create.sh
+# EC2 인스턴스에 접속
+ssh -i aws-key.pem ubuntu@[EC2-IP]
 
-# 클러스터 연결
-aws eks update-kubeconfig --region us-west-2 --name my-eks-cluster
+# Docker Compose 실행
+cd /opt/my-app
+docker-compose up -d
 
-# 클러스터 상태 확인
-kubectl get nodes
+# 컨테이너 상태 확인
+docker-compose ps
 ```
 
-### 3.3 GCP GKE 클러스터
+### 3.3 GCP Compute Engine + Docker Compose
 
-#### GKE 클러스터 생성 및 연결
+#### GCP VM에서 컨테이너 배포
 ```bash
-# GKE 클러스터 목록 확인
-gcloud container clusters list
+# GCP VM에 접속
+ssh -i gcp-key ubuntu@[GCP-IP]
 
-# kubectl 컨텍스트 전환
-./context-switch.sh
-./context-switch.sh list
+# Docker Compose 실행
+cd /opt/my-app
+docker-compose up -d
 
-# 클러스터 연결 확인
-kubectl get nodes
-kubectl get pods
+# 컨테이너 상태 확인
+docker-compose ps
 ```
 
-#### GKE 인증 문제 해결
+#### Docker Compose 문제 해결
 ```bash
-# WSL 관리자 권한으로 실행
-sudo gcloud components update
-sudo gcloud components install gke-gcloud-auth-plugin
+# Docker 서비스 상태 확인
+sudo systemctl status docker
 
-# 설치 확인
-gcloud components list | grep -i gke
-gke-gcloud-auth-plugin --version
+# Docker Compose 설치 확인
+docker-compose --version
 
-# 클러스터 연결 테스트
-gcloud container clusters get-credentials cloud-master-cluster --zone=asia-northeast3-a
-kubectl get nodes
+# 컨테이너 로그 확인
+docker-compose logs -f
 ```
 
 ---
@@ -250,8 +247,8 @@ kubectl get nodes
 # EC2 인스턴스 상태 확인
 aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,State.Name,PublicIpAddress]' --output table
 
-# EKS 클러스터 상태 확인
-aws eks describe-cluster --name my-eks-cluster --region us-west-2
+# EC2 인스턴스 상세 정보 확인
+aws ec2 describe-instances --instance-ids i-1234567890abcdef0
 
 # 비용 확인
 aws ce get-cost-and-usage --time-period Start=2024-01-01,End=2024-01-31
@@ -262,40 +259,44 @@ aws ce get-cost-and-usage --time-period Start=2024-01-01,End=2024-01-31
 # Compute Engine 인스턴스 상태 확인
 gcloud compute instances list --format="table(name,zone,machineType,status)"
 
-# GKE 클러스터 상태 확인
-gcloud container clusters list
+# Compute Engine 인스턴스 상세 정보 확인
+gcloud compute instances describe INSTANCE_NAME --zone=ZONE
 
 # 비용 확인
 gcloud billing accounts list
 ```
 
-### 4.2 Kubernetes 클러스터 모니터링
+### 4.2 VM 기반 컨테이너 모니터링
 
-#### 클러스터 상태 확인
+#### 컨테이너 상태 확인
 ```bash
-# 노드 상태 확인
-kubectl get nodes
+# Docker 컨테이너 상태 확인
+docker ps -a
 
-# 파드 상태 확인
-kubectl get pods --all-namespaces
+# Docker Compose 서비스 상태 확인
+docker-compose ps
 
-# 서비스 상태 확인
-kubectl get services --all-namespaces
+# 컨테이너 로그 확인
+docker-compose logs -f
 
-# 배포 상태 확인
-kubectl get deployments --all-namespaces
+# 컨테이너 리소스 사용량 확인
+docker stats
 ```
 
-#### 클러스터 성능 모니터링
+#### VM 성능 모니터링
 ```bash
-# 노드 리소스 사용량 확인
-kubectl top nodes
+# VM 리소스 사용량 확인
+htop
+free -h
+df -h
 
-# 파드 리소스 사용량 확인
-kubectl top pods --all-namespaces
+# Docker 시스템 정보 확인
+docker system df
+docker system events
 
-# 클러스터 이벤트 확인
-kubectl get events --sort-by=.metadata.creationTimestamp
+# 컨테이너 네트워크 확인
+docker network ls
+docker network inspect bridge
 ```
 
 ---
@@ -352,46 +353,44 @@ gcloud auth login
 gcloud config get-value project
 ```
 
-### 5.3 Kubernetes 클러스터 문제
+### 5.3 Docker 컨테이너 문제
 
-#### 클러스터 연결 문제
+#### 컨테이너 연결 문제
 ```bash
-# kubectl 컨텍스트 확인
-kubectl config get-contexts
+# Docker 서비스 상태 확인
+sudo systemctl status docker
 
-# 현재 context 확인
-kubectl config current-context
+# Docker 데몬 재시작
+sudo systemctl restart docker
 
-# 컨텍스트 전환
-kubectl config use-context CONTEXT_NAME
-
-# 클러스터 연결 테스트
-kubectl cluster-info
+# 컨테이너 네트워크 확인
+docker network ls
+docker network inspect bridge
 ```
 
-#### 클러스터 문제 해결
+#### 컨테이너 문제 해결
 ```bash
-# GKE 인증 문제 해결
-./fix-gke-auth.sh
+# Docker Compose 문제 해결
+./fix-docker-compose.sh
 
-# 클러스터 연결 테스트
-./test-cluster-connection.sh
+# 컨테이너 연결 테스트
+./test-container-connection.sh
 
-# 클러스터 문제 해결
-./fix-cluster-issues.sh
+# VM 컨테이너 문제 해결
+./fix-vm-container-issues.sh
 ```
 
 ---
 
 ## 🧹 6. 리소스 정리
 
-### 6.1 클러스터 정리
+### 6.1 컨테이너 정리
 ```bash
-# 클러스터 대화형 정리
-./cluster-cleanup-interactive.sh
+# 컨테이너 대화형 정리
+./container-cleanup-interactive.sh
 
-# 특정 클러스터 정리
-kubectl delete cluster --all
+# Docker 리소스 정리
+docker system prune -a
 ```
 
 ### 6.2 VM 정리
@@ -439,15 +438,15 @@ docker image prune -a
 - [ ] GCP Compute 배포 (`./gcp-compute-create.sh`)
 - [ ] VM 상태 확인
 
-### ✅ Kubernetes 배포 완료
-- [ ] 로컬 K8s 클러스터 (`./k8s-cluster-create.sh`)
-- [ ] AWS EKS 클러스터 (`./eks-cluster-create.sh`)
-- [ ] GCP GKE 클러스터 (GCP Console 또는 gcloud 명령어)
-- [ ] 클러스터 연결 확인 (`kubectl get nodes`)
+### ✅ VM 기반 컨테이너 배포 완료
+- [ ] Docker Compose 환경 구성 (`./vm-container-deploy.sh`)
+- [ ] AWS EC2 + Docker Compose 배포
+- [ ] GCP Compute Engine + Docker Compose 배포
+- [ ] 컨테이너 상태 확인 (`docker-compose ps`)
 
 ### ✅ 모니터링 설정 완료
 - [ ] 리소스 모니터링 설정
-- [ ] 클러스터 모니터링 설정
+- [ ] 컨테이너 모니터링 설정
 - [ ] 비용 모니터링 설정
 
 ---
@@ -465,12 +464,12 @@ aws configure && gcloud init
 # 3. VM 배포
 ./aws-ec2-create.sh && ./gcp-compute-create.sh
 
-# 4. K8s 배포
+# 4. VM 기반 컨테이너 배포
 cd ~/mcp-cloud-workspace/mcp_knowledge_base/cloud_master/repos/cloud-scripts
-./k8s-cluster-create.sh && ./eks-cluster-create.sh
+./vm-container-deploy.sh
 
 # 5. 확인
-kubectl get nodes
+docker-compose ps
 ```
 
 ---
@@ -480,14 +479,14 @@ kubectl get nodes
 ### 공식 문서
 - [WSL 공식 문서](https://docs.microsoft.com/ko-kr/windows/wsl/)
 - [Docker 공식 문서](https://docs.docker.com/)
-- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
+- [Docker Compose 공식 문서](https://docs.docker.com/compose/)
 - [AWS 공식 문서](https://docs.aws.amazon.com/)
 - [GCP 공식 문서](https://cloud.google.com/docs)
 
 ### 추가 학습 자료
 - [AWS 예제](https://github.com/aws-samples)
 - [GCP 예제](https://github.com/GoogleCloudPlatform)
-- [Kubernetes 예제](https://kubernetes.io/examples/)
+- [Docker Compose 예제](https://github.com/docker/awesome-compose)
 
 ---
 

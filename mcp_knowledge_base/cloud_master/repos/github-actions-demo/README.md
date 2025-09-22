@@ -1,6 +1,6 @@
-# 🚀 GitHub Actions Demo
+# 🚀 GitHub Actions Demo - Cloud Master 과정 완성 프로젝트
 
-GitHub Actions를 활용한 CI/CD 파이프라인 실습 프로젝트입니다.
+**Cloud Master 과정**의 3일차에 걸쳐 점진적으로 발전시킨 프로덕션 수준의 클라우드 네이티브 애플리케이션입니다.
 
 ## 🎯 프로젝트 배경 및 목적
 
@@ -205,9 +205,9 @@ DOCKER_USERNAME=your-dockerhub-username
 DOCKER_PASSWORD=your-dockerhub-password
 
 # VM 배포 (선택사항)
-VM_HOST=your-vm-host
-VM_USERNAME=your-vm-username
-VM_SSH_KEY=your-ssh-private-key
+AWS_VM_HOST=your-aws-vm-host
+AWS_VM_USERNAME=your-aws-vm-username
+AWS_VM_SSH_KEY=your-aws-ssh-private-key.pem  # .pem 파일 형식
 
 # 알림 (선택사항)
 SLACK_WEBHOOK=your-slack-webhook-url
@@ -403,9 +403,9 @@ git push origin main
 npm run setup:env
 
 # VM 접속 정보 설정
-export VM_HOST="your-vm-ip"
-export VM_USERNAME="ubuntu"
-export VM_SSH_KEY="~/.ssh/id_rsa"
+export AWS_VM_HOST="your-aws-vm-ip"
+export AWS_VM_USERNAME="ubuntu"
+export AWS_VM_SSH_KEY="~/.ssh/aws-key.pem"  # AWS: .pem 파일 사용
 
 # VM 배포
 npm run day1:deploy

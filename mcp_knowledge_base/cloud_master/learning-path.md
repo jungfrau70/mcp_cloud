@@ -69,30 +69,30 @@
 #### 🎯 학습 목표
 - 고급 Docker 기술 (멀티스테이지 빌드, 최적화)
 - 고급 GitHub Actions (매트릭스 빌드, 환경별 배포)
-- Kubernetes 기초
+- VM 기반 컨테이너 배포
 - 자동화된 컨테이너 배포
 
 #### 📖 이론 학습
 - [고급 Docker 기술](cloud_master/textbook/Day2/README.md#고급-docker)
 - [고급 GitHub Actions](cloud_master/textbook/Day2/README.md#고급-github-actions)
-- [Kubernetes 기초](cloud_master/textbook/Day2/README.md#kubernetes-기초)
+- [VM 기반 컨테이너 배포](cloud_master/textbook/Day2/README.md#vm-기반-컨테이너-배포)
 - [자동화된 배포](cloud_master/textbook/Day2/README.md#자동화된-배포)
 
 #### 🛠️ 실습 가이드
 - [고급 Docker 실습](cloud_master/textbook/Day2/README.md#고급-docker-실습)
 - [고급 GitHub Actions 실습](cloud_master/textbook/Day2/README.md#고급-github-actions-실습)
-- [Kubernetes 실습](cloud_master/textbook/Day2/README.md#kubernetes-실습)
+- [VM 기반 컨테이너 배포 실습](cloud_master/textbook/Day2/README.md#vm-기반-컨테이너-배포-실습)
 - [자동화된 배포 실습](cloud_master/textbook/Day2/README.md#자동화된-배포-실습)
 
 #### 💻 실습 코드
 - [고급 Docker 샘플](cloud_master/repos/samples/day2/advanced-docker/)
 - [고급 GitHub Actions 워크플로우](cloud_master/repos/samples/day2/advanced-github-actions/)
-- [Kubernetes 매니페스트](cloud_master/repos/samples/day2/kubernetes/)
+- [VM 배포 스크립트](cloud_master/repos/samples/day2/vm-deployment/)
 
 #### 🔧 자동화 도구
 - [고급 Docker 실습 자동화](cloud_master/repos/automation/day2/advanced-docker-practice-automation.sh)
 - [고급 GitHub Actions 실습 자동화](cloud_master/repos/automation/day2/advanced-github-actions-practice-automation.sh)
-- [Kubernetes 실습 자동화](cloud_master/repos/automation/day2/kubernetes-practice-automation.sh)
+- [VM 배포 실습 자동화](cloud_master/repos/automation/day2/vm-deployment-practice-automation.sh)
 
 </details>
 

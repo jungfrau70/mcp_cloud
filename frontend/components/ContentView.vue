@@ -33,6 +33,13 @@
         >
           PDF
         </button>
+        <button
+          v-if="path && !isSlideView"
+          @click="downloadMarkdown"
+          class="px-3 py-1 text-sm rounded bg-gray-500 text-white hover:bg-gray-600 transition-colors"
+        >
+          Markdown
+        </button>
       </div>
     </div>
 
@@ -865,6 +872,29 @@ const downloadPdf = async () => {
   } catch (e) {
     console.error('PDF download error:', e);
     alert('PDF 생성 중 오류가 발생했습니다: ' + e.message);
+  }
+};
+
+const downloadMarkdown = async () => {
+  if (!props.path || !props.content) return;
+  try {
+    // Create a blob with the markdown content
+    const blob = new Blob([props.content], { type: 'text/markdown;charset=utf-8' });
+    const a = document.createElement('a');
+    const objectUrl = URL.createObjectURL(blob);
+    a.href = objectUrl;
+    
+    // Generate filename from path
+    const base = props.path.split('/').pop()?.replace(/\.md$/i,'') || 'document';
+    a.download = base + '.md';
+    
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
+  } catch (e) {
+    console.error('Markdown download error:', e);
+    alert('Markdown 다운로드 중 오류가 발생했습니다: ' + e.message);
   }
 };
 
