@@ -860,32 +860,32 @@ const downloadPdf = async () => {
     }
     const ct = (res.headers.get('content-type') || '').toLowerCase();
     const blob = await res.blob();
-    const a = document.createElement('a');
-    const objectUrl = URL.createObjectURL(blob);
-    a.href = objectUrl;
     
-    // 한글 파일명 처리 개선
+    // 한글 파일명 처리 - URL 디코딩 적용
     const base = props.path.split('/').pop()?.replace(/\.md$/i,'') || 'document';
-    const filename = base + (ct.includes('application/pdf') ? '.pdf' : '.md');
+    const decodedBase = decodeURIComponent(base); // URL 디코딩
+    const filename = decodedBase + (ct.includes('application/pdf') ? '.pdf' : '.md');
     
-    // 한글 파일명을 위한 UTF-8 BOM 추가
-    const utf8Bom = '\uFEFF';
-    const encodedFilename = utf8Bom + filename;
+    // 파일명을 UTF-8로 인코딩하여 Blob 생성
+    const encoder = new TextEncoder();
+    const filenameBytes = encoder.encode(filename);
     
-    // Blob을 사용하여 한글 파일명 처리
-    const blobWithBom = new Blob([blob], { type: blob.type });
-    const urlWithBom = URL.createObjectURL(blobWithBom);
+    // Blob에 Content-Disposition 헤더를 시뮬레이션하기 위한 메타데이터 추가
+    const metadata = `Content-Disposition: attachment; filename*=UTF-8''${encodeURIComponent(filename)}\n\n`;
+    const metadataBytes = encoder.encode(metadata);
     
-    a.href = urlWithBom;
-    a.download = filename; // 브라우저가 한글을 올바르게 처리하도록
+    // 원본 Blob과 메타데이터를 결합
+    const combinedBlob = new Blob([metadataBytes, blob], { type: blob.type });
+    const objectUrl = URL.createObjectURL(combinedBlob);
+    
+    const a = document.createElement('a');
+    a.href = objectUrl;
+    a.download = filename; // 디코딩된 한글 파일명 사용
     
     document.body.appendChild(a);
     a.click();
     a.remove();
-    setTimeout(() => {
-      URL.revokeObjectURL(objectUrl);
-      URL.revokeObjectURL(urlWithBom);
-    }, 1500);
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
   } catch (e) {
     console.error('PDF download error:', e);
     alert('PDF 생성 중 오류가 발생했습니다: ' + e.message);
@@ -895,20 +895,30 @@ const downloadPdf = async () => {
 const downloadMarkdown = async () => {
   if (!props.path || !props.content) return;
   try {
-    // 한글 파일명 처리 개선
+    // 한글 파일명 처리 - URL 디코딩 적용
     const base = props.path.split('/').pop()?.replace(/\.md$/i,'') || 'document';
-    const filename = base + '.md';
+    const decodedBase = decodeURIComponent(base); // URL 디코딩
+    const filename = decodedBase + '.md';
     
     // UTF-8 BOM을 추가하여 한글 파일명 지원
     const utf8Bom = '\uFEFF';
     const contentWithBom = utf8Bom + props.content;
     
-    // Create a blob with the markdown content and UTF-8 BOM
-    const blob = new Blob([contentWithBom], { type: 'text/markdown;charset=utf-8' });
+    // 파일명을 UTF-8로 인코딩하여 Blob 생성
+    const encoder = new TextEncoder();
+    
+    // Blob에 Content-Disposition 헤더를 시뮬레이션하기 위한 메타데이터 추가
+    const metadata = `Content-Disposition: attachment; filename*=UTF-8''${encodeURIComponent(filename)}\n\n`;
+    const metadataBytes = encoder.encode(metadata);
+    const contentBytes = encoder.encode(contentWithBom);
+    
+    // 메타데이터와 콘텐츠를 결합
+    const combinedBlob = new Blob([metadataBytes, contentBytes], { type: 'text/markdown;charset=utf-8' });
+    const objectUrl = URL.createObjectURL(combinedBlob);
+    
     const a = document.createElement('a');
-    const objectUrl = URL.createObjectURL(blob);
     a.href = objectUrl;
-    a.download = filename; // 브라우저가 한글을 올바르게 처리하도록
+    a.download = filename; // 디코딩된 한글 파일명 사용
     
     document.body.appendChild(a);
     a.click();
