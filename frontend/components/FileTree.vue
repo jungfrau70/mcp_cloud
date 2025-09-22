@@ -550,8 +550,14 @@ const handleFileClick = (file) => {
         return;
     }
     
-    // 미디어/문서 파일들은 새 탭에서 열기
-    if (['pdf', 'ppt', 'pptx', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'mp4', 'webm', 'mp3', 'wav'].includes(ext)) {
+    // PDF/PPTX는 선택하고 중앙 패널에 표시
+    if (['pdf', 'ppt', 'pptx'].includes(ext)) {
+        emit('file-click', filePath);
+        return;
+    }
+    
+    // 기타 미디어 파일들은 새 탭에서 열기
+    if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'mp4', 'webm', 'mp3', 'wav'].includes(ext)) {
         emit('file-open', filePath);
         return;
     }
