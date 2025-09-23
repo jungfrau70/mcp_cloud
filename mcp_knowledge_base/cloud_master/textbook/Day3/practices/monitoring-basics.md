@@ -3,15 +3,43 @@
 <details>
 <summary>📋 목차</summary>
 
-[📚 이론 학습](#-)
+[📚 이론 학습](#이론-학습)
 
 [🛠️ 실습 학습](#실습-학습)
 
 [📚 참고 자료](#참고-자료)
 
-[📚 문제 해결 및 참고 자료](#-)
+[📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
 
 </details>
+
+---
+
+## 📚 이론 학습
+
+### Prometheus 기초
+- **메트릭 수집**: 애플리케이션 및 시스템 메트릭 수집
+- **데이터 저장**: 시계열 데이터베이스에 효율적 저장
+- **쿼리 언어**: PromQL을 이용한 강력한 쿼리 기능
+- **서비스 디스커버리**: 동적 타겟 발견 및 모니터링
+
+### Grafana 대시보드
+- **시각화**: 다양한 차트와 그래프로 메트릭 표시
+- **알림**: 임계값 기반 알림 및 알림 채널 연동
+- **템플릿**: 재사용 가능한 대시보드 템플릿
+- **플러그인**: 확장 가능한 플러그인 아키텍처
+
+### 로드 밸런싱
+- **트래픽 분산**: 여러 서버에 요청 분산
+- **고가용성**: 서버 장애 시 자동 복구
+- **성능 최적화**: 응답 시간 및 처리량 개선
+- **헬스 체크**: 백엔드 서버 상태 모니터링
+
+### Auto Scaling
+- **자동 확장**: 부하에 따른 자동 인스턴스 증가
+- **자동 축소**: 부하 감소 시 자동 인스턴스 감소
+- **메트릭 기반**: CPU, 메모리, 커스텀 메트릭 활용
+- **비용 최적화**: 필요에 따른 리소스 최적화
 
 ---
 
@@ -100,6 +128,11 @@ scrape_configs:
       - targets: ['cadvisor:8080']
 ```
 
+**✅ 예상 결과:**
+- Prometheus 설정 파일 생성 완료
+- 3개 타겟 설정: prometheus, node-exporter, cadvisor
+- 스크래핑 간격: 15초
+
 #### Docker Compose로 실행
 
 ```yaml
@@ -158,6 +191,12 @@ docker-compose ps
 # Prometheus 접근
 open http://localhost:9090
 ```
+
+**✅ 예상 결과:**
+- 3개 컨테이너 실행: prometheus, node-exporter, cadvisor
+- Prometheus 웹 UI: `http://localhost:9090` 접근 가능
+- 타겟 상태: `UP` (정상 수집 중)
+- 메트릭 수집: CPU, 메모리, 네트워크, 디스크 사용량
 
 </details>
 
@@ -375,3 +414,36 @@ gcloud compute forwarding-rules delete my-forwarding-rule --global
 - [ ] AWS 리소스 정리
 - [ ] GCP 리소스 정리
 - [ ] 모니터링 스택 정리
+
+---
+
+## 📚 문제 해결 및 참고 자료
+
+### 문제 해결
+
+1. **Prometheus 메트릭 수집 실패**
+   - 네트워크 연결 확인
+   - 포트 접근 확인
+   - 방화벽 규칙 확인
+
+2. **Grafana 대시보드 로드 실패**
+   - 데이터소스 연결 확인
+   - 권한 설정 확인
+   - 메트릭 쿼리 문법 확인
+
+3. **로드 밸런서 헬스 체크 실패**
+   - 백엔드 서버 상태 확인
+   - 방화벽 규칙 확인
+   - 헬스 체크 경로 확인
+
+4. **Auto Scaling 작동 안함**
+   - 메트릭 설정 확인
+   - 임계값 설정 확인
+   - 권한 설정 확인
+
+### 참고 자료
+
+- **Prometheus 공식 문서**: https://prometheus.io/docs/
+- **Grafana 공식 문서**: https://grafana.com/docs/
+- **AWS Load Balancer 가이드**: https://docs.aws.amazon.com/elasticloadbalancing/
+- **GCP Load Balancing 가이드**: https://cloud.google.com/load-balancing/docs

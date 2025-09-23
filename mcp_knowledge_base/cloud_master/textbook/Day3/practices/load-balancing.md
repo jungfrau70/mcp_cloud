@@ -76,6 +76,12 @@ aws ec2 authorize-security-group-ingress --group-id sg-12345 --protocol tcp --po
 aws ec2 authorize-security-group-ingress --group-id sg-12345 --protocol tcp --port 443 --cidr 0.0.0.0/0
 ```
 
+**✅ 예상 결과:**
+- VPC ID: `vpc-1234567890abcdef0` 생성
+- 서브넷 ID: `subnet-1234567890abcdef0`, `subnet-0987654321fedcba0` 생성
+- 보안 그룹 ID: `sg-1234567890abcdef0` 생성
+- HTTP(80), HTTPS(443) 포트 열림 확인
+
 #### ALB 생성
 ```bash
 # ALB 생성
@@ -106,6 +112,12 @@ aws elbv2 create-listener /
   --port 80 /
   --default-actions Type=forward,TargetGroupArn=arn:aws:elasticloadbalancing:us-west-2:123456789012:targetgroup/web-targets/1234567890123456
 ```
+
+**✅ 예상 결과:**
+- ALB DNS 이름: `my-alb-1234567890.us-west-2.elb.amazonaws.com`
+- ALB 상태: `active` (약 2-3분 소요)
+- 타겟 그룹 ARN: `arn:aws:elasticloadbalancing:us-west-2:123456789012:targetgroup/web-targets/1234567890123456`
+- 리스너 ARN: `arn:aws:elasticloadbalancing:us-west-2:123456789012:listener/app/my-alb/1234567890123456/1234567890123456`
 
 #### EC2 인스턴스 생성 및 등록
 ```bash
