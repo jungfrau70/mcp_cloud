@@ -153,7 +153,13 @@
 
 ### Day별 학습 완료
 - [ ] **Day 1**: Docker & Git/GitHub & GitHub Actions & VM 배포
-- [ ] **Day 2**: 고급 CI/CD & VM 기반 컨테이너 배포
+- [ ] **Day 2**: 고급 CI/CD & Docker Compose & 멀티 서비스 배포
+  - [ ] Docker Compose 개발/프로덕션 환경 구축
+  - [ ] PostgreSQL, Redis 데이터베이스 연동
+  - [ ] Nginx 리버스 프록시 설정
+  - [ ] 컨테이너 이름 충돌 문제 해결
+  - [ ] Redis 연결 오류 해결 (IPv6 vs IPv4)
+  - [ ] PostgreSQL SQL 문법 오류 해결
 - [ ] **Day 3**: 로드밸런싱 & 모니터링 & 비용 최적화
 
 ### 최종 평가

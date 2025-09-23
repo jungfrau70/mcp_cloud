@@ -75,8 +75,10 @@ const pool = new Pool({
 
 // Redis 클라이언트 설정
 const redisClient = redis.createClient({
-  host: process.env.REDIS_HOST || 'redis',
-  port: process.env.REDIS_PORT || 6379,
+  socket: {
+    host: process.env.REDIS_HOST || 'redis',
+    port: process.env.REDIS_PORT || 6379,
+  },
   password: process.env.REDIS_PASSWORD || 'password',
   retry_strategy: (options) => {
     if (options.error && options.error.code === 'ECONNREFUSED') {
@@ -217,7 +219,7 @@ app.get('/api/users', async (req, res) => {
     const result = await pool.query('SELECT * FROM users ORDER BY created_at DESC LIMIT 100');
     
     // Redis 캐시에 저장 (5분)
-    await redisClient.setex('users:list', 300, JSON.stringify(result.rows));
+    await redisClient.setEx('users:list', 300, JSON.stringify(result.rows));
     
     logger.info(`Retrieved ${result.rows.length} users`);
     res.json({
@@ -252,7 +254,7 @@ app.get('/api/users/cached', async (req, res) => {
     } else {
       // 캐시가 없으면 DB에서 조회
       const result = await pool.query('SELECT * FROM users ORDER BY created_at DESC LIMIT 100');
-      await redisClient.setex('users:list', 300, JSON.stringify(result.rows));
+      await redisClient.setEx('users:list', 300, JSON.stringify(result.rows));
       
       res.json({
         success: true,

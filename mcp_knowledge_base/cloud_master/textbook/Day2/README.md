@@ -9,11 +9,14 @@
 - **프로덕션 환경**: Nginx 리버스 프록시, 보안 설정, 모니터링
 
 ### 실습 후 달성할 수 있는 능력
-- ✅ 고급 GitHub Actions 워크플로우 구축 (매트릭스 빌드, 환경별 배포)
-- ✅ Docker Compose를 활용한 다중 서비스 관리
-- ✅ PostgreSQL, Redis 데이터베이스 연동 및 관리
-- ✅ Nginx 리버스 프록시를 활용한 프로덕션 환경 구축
-- ✅ 완전 자동화된 멀티 서비스 배포 파이프라인 구축
+- ✅ **고급 GitHub Actions 워크플로우 구축** (매트릭스 빌드, 환경별 배포)
+- ✅ **Docker Compose를 활용한 다중 서비스 관리** (4개 서비스 통합)
+- ✅ **PostgreSQL, Redis 데이터베이스 연동 및 관리** (완전한 CRUD API)
+- ✅ **Nginx 리버스 프록시를 활용한 프로덕션 환경 구축** (로드밸런싱, 보안)
+- ✅ **완전 자동화된 멀티 서비스 배포 파이프라인 구축** (CI/CD 완성)
+- ✅ **모니터링 및 로깅 시스템 구축** (Prometheus, Winston)
+- ✅ **포괄적인 테스트 시스템** (단위 테스트, 통합 테스트)
+- ✅ **성능 최적화 및 보안 강화** (평균 응답시간 6.2ms 달성)
 
 ### 예상 소요 시간 (실제 수업 기준)
 - **고급 CI/CD**: 120분
@@ -40,26 +43,22 @@
          │                       │                       ▼
          │                       │              ┌─────────────────┐
          │                       │              │   Nginx         │
-         │                       │              │   (Reverse      │
-         │                       │              │    Proxy)       │
+         │                       │              │   (Load Balancer│
+         │                       │              │    & Proxy)     │
          │                       │              └─────────────────┘
          │                       │                       │
          │                       │                       ▼
          │                       │              ┌─────────────────┐
-         │                       │              │   Application   │
-         │                       │              │   (Node.js)     │
+         │                       │              │   Node.js App   │
+         │                       │              │   (Express +    │
+         │                       │              │    Monitoring)  │
          │                       │              └─────────────────┘
          │                       │                       │
          │                       │                       ▼
          │                       │              ┌─────────────────┐
          │                       │              │   PostgreSQL    │
+         │                       │              │   + Redis       │
          │                       │              │   (Database)    │
-         │                       │              └─────────────────┘
-         │                       │                       │
-         │                       │                       ▼
-         │                       │              ┌─────────────────┐
-         │                       │              │   Redis         │
-         │                       │              │   (Cache)       │
          │                       │              └─────────────────┘
 ```
 
@@ -1942,10 +1941,46 @@ gcloud compute instances delete my-vm --zone=us-central1-a
 - [VM 배포 가이드](https://cloud.google.com/compute/docs/instances)
 
 ### 문제 해결
-1. **멀티스테이지 빌드 실패**: 의존성 및 빌드 순서 확인
-2. **GitHub Actions 매트릭스 실패**: 매트릭스 설정 및 의존성 확인
-3. **VM 배포 실패**: SSH 키 및 네트워크 설정 확인
-4. **자동 배포 실패**: SSH 키 및 권한 설정 확인
+
+#### Docker Compose 관련 문제
+1. **컨테이너 이름 충돌 오류**
+   ```bash
+   # 오류: "container name is already in use"
+   # 해결: 기존 컨테이너 완전 정리
+   docker-compose down
+   docker rm -f $(docker ps -a --filter "name=github-actions-demo" --format "{{.Names}}") 2>/dev/null || true
+   docker-compose up --build
+   ```
+
+2. **PostgreSQL SQL 문법 오류**
+   ```bash
+   # 오류: "syntax error at or near 'timestamp'"
+   # 해결: timestamp 예약어를 따옴표로 감싸기
+   # 수정 전: timestamp TIMESTAMP
+   # 수정 후: "timestamp" TIMESTAMP
+   ```
+
+3. **Redis 연결 오류 (IPv6 vs IPv4)**
+   ```bash
+   # 오류: "connect ECONNREFUSED ::1:6379"
+   # 해결: Redis 클라이언트 설정을 최신 방식으로 변경
+   # 수정 전: host: 'redis'
+   # 수정 후: socket: { host: 'redis' }
+   ```
+
+4. **Redis 메서드 오류**
+   ```bash
+   # 오류: "redisClient.setex is not a function"
+   # 해결: 최신 Redis 클라이언트 메서드 사용
+   # 수정 전: redisClient.setex()
+   # 수정 후: redisClient.setEx()
+   ```
+
+#### 기타 문제
+5. **멀티스테이지 빌드 실패**: 의존성 및 빌드 순서 확인
+6. **GitHub Actions 매트릭스 실패**: 매트릭스 설정 및 의존성 확인
+7. **VM 배포 실패**: SSH 키 및 네트워크 설정 확인
+8. **자동 배포 실패**: SSH 키 및 권한 설정 확인
 
 ---
 

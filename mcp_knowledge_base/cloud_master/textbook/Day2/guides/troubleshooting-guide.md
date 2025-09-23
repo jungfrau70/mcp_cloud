@@ -1,17 +1,360 @@
 
-# 트러블슈팅 가이드
+# Day2 실습 트러블슈팅 가이드
 
-
+## 🚨 자주 발생하는 문제와 해결방법
 
 ## 📋 목차
 
-[📋 목차](#목차)
-1. [💰 비용 관리 관련 문제](#비용-관리-관련-문제)
-2. [📊 모니터링 관련 문제](#모니터링-관련-문제)
-3. [Kubernetes 관련 문제](#kubernetes-관련-문제)
-4. [🌐 네트워킹 관련 문제](#네트워킹-관련-문제)
-5. [⚡ 성능 및 최적화 문제](#성능-및-최적화-문제)
-6. [🚨 일반적인 오류 코드](#일반적인-오류-코드)
+1. [Docker Compose 관련 문제](#1-docker-compose-관련-문제)
+2. [데이터베이스 관련 문제](#2-데이터베이스-관련-문제)
+3. [Redis 관련 문제](#3-redis-관련-문제)
+4. [네트워킹 관련 문제](#4-네트워킹-관련-문제)
+5. [GitHub Actions 관련 문제](#5-github-actions-관련-문제)
+6. [일반적인 오류 코드](#6-일반적인-오류-코드)
+
+---
+
+## 1. Docker Compose 관련 문제
+
+### 1.1 컨테이너 이름 충돌 오류
+**증상**: `container name is already in use`
+
+**원인**: 기존 컨테이너가 실행 중
+
+**해결방법**:
+```bash
+# 1단계: 기존 컨테이너 완전 정리
+docker-compose down
+docker rm -f $(docker ps -a --filter "name=github-actions-demo" --format "{{.Names}}") 2>/dev/null || true
+
+# 2단계: 네트워크 정리
+docker network prune -f
+
+# 3단계: 다시 실행
+docker-compose up --build
+```
+
+### 1.2 포트 충돌 오류
+**증상**: `port is already allocated`
+
+**원인**: 해당 포트가 이미 사용 중
+
+**해결방법**:
+```bash
+# 1단계: 포트 사용 확인
+netstat -tulpn | grep :3000
+netstat -tulpn | grep :5432
+netstat -tulpn | grep :6379
+netstat -tulpn | grep :80
+
+# 2단계: 사용 중인 프로세스 종료
+sudo kill -9 $(lsof -t -i:3000)
+sudo kill -9 $(lsof -t -i:5432)
+sudo kill -9 $(lsof -t -i:6379)
+sudo kill -9 $(lsof -t -i:80)
+
+# 3단계: 다시 실행
+docker-compose up --build
+```
+
+### 1.3 메모리 부족 오류
+**증상**: 컨테이너가 메모리 부족으로 종료
+
+**해결방법**:
+```bash
+# 1단계: Docker 리소스 정리
+docker system prune -a
+
+# 2단계: 사용하지 않는 컨테이너 제거
+docker container prune -f
+
+# 3단계: 사용하지 않는 이미지 제거
+docker image prune -a -f
+
+# 4단계: 다시 실행
+docker-compose up --build
+```
+
+---
+
+## 2. 데이터베이스 관련 문제
+
+### 2.1 PostgreSQL SQL 문법 오류
+**증상**: `syntax error at or near 'timestamp'`
+
+**원인**: `timestamp`는 PostgreSQL 예약어
+
+**해결방법**:
+```sql
+-- 수정 전
+CREATE TABLE app_logs (
+    id SERIAL PRIMARY KEY,
+    level VARCHAR(20),
+    message TEXT,
+    timestamp TIMESTAMP
+);
+
+-- 수정 후
+CREATE TABLE app_logs (
+    id SERIAL PRIMARY KEY,
+    level VARCHAR(20),
+    message TEXT,
+    "timestamp" TIMESTAMP
+);
+```
+
+### 2.2 데이터베이스 연결 실패
+**증상**: 애플리케이션이 데이터베이스에 연결할 수 없음
+
+**해결방법**:
+```bash
+# 1단계: 데이터베이스 컨테이너 상태 확인
+docker-compose ps postgres
+
+# 2단계: 데이터베이스 로그 확인
+docker-compose logs postgres
+
+# 3단계: 데이터베이스 재시작
+docker-compose restart postgres
+
+# 4단계: 헬스체크 대기
+docker-compose up --wait
+```
+
+### 2.3 데이터베이스 초기화 실패
+**증상**: `init.sql` 실행 시 오류 발생
+
+**해결방법**:
+```bash
+# 1단계: 데이터베이스 볼륨 제거
+docker-compose down -v
+
+# 2단계: SQL 문법 검증
+# init.sql 파일에서 예약어 확인 및 수정
+
+# 3단계: 다시 실행
+docker-compose up --build
+```
+
+---
+
+## 3. Redis 관련 문제
+
+### 3.1 Redis 연결 오류 (IPv6 vs IPv4)
+**증상**: `connect ECONNREFUSED ::1:6379`
+
+**원인**: IPv6 vs IPv4 주소 문제
+
+**해결방법**:
+```javascript
+// 수정 전 (구버전)
+const redisClient = redis.createClient({
+  host: 'redis',
+  port: 6379,
+  password: 'password'
+});
+
+// 수정 후 (최신 버전)
+const redisClient = redis.createClient({
+  socket: {
+    host: 'redis',
+    port: 6379
+  },
+  password: 'password'
+});
+```
+
+### 3.2 Redis 메서드 오류
+**증상**: `redisClient.setex is not a function`
+
+**원인**: 최신 Redis 클라이언트에서 메서드명 변경
+
+**해결방법**:
+```javascript
+// 수정 전
+await redisClient.setex('key', 300, 'value');
+
+// 수정 후
+await redisClient.setEx('key', 300, 'value');
+```
+
+### 3.3 Redis 인증 실패
+**증상**: `NOAUTH Authentication required`
+
+**원인**: Redis 비밀번호 설정 문제
+
+**해결방법**:
+```bash
+# 1단계: Redis 컨테이너 재시작
+docker-compose restart redis
+
+# 2단계: Redis 연결 테스트
+docker exec -it github-actions-demo-redis-dev redis-cli
+AUTH password
+PING
+```
+
+---
+
+## 4. 네트워킹 관련 문제
+
+### 4.1 Nginx 프록시 오류
+**증상**: `502 Bad Gateway`
+
+**원인**: 백엔드 서비스 연결 실패
+
+**해결방법**:
+```bash
+# 1단계: Nginx 설정 확인
+docker-compose logs nginx
+
+# 2단계: 백엔드 서비스 상태 확인
+docker-compose ps app
+
+# 3단계: 네트워크 연결 테스트
+docker exec -it github-actions-demo-nginx-dev curl http://app:3000/health
+```
+
+### 4.2 서비스 간 통신 실패
+**증상**: 컨테이너 간 통신이 안 됨
+
+**원인**: Docker 네트워크 설정 문제
+
+**해결방법**:
+```bash
+# 1단계: 네트워크 확인
+docker network ls
+docker network inspect project_app-network
+
+# 2단계: 컨테이너 재시작
+docker-compose restart
+
+# 3단계: 네트워크 재생성
+docker-compose down
+docker network prune -f
+docker-compose up --build
+```
+
+---
+
+## 5. GitHub Actions 관련 문제
+
+### 5.1 워크플로우 실행 실패
+**증상**: GitHub Actions 워크플로우가 실패함
+
+**원인**: 권한, 시크릿, 또는 설정 문제
+
+**해결방법**:
+```yaml
+# 1단계: 권한 확인
+permissions:
+  contents: read
+  packages: write
+
+# 2단계: 시크릿 확인
+env:
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+# 3단계: 단계별 디버깅
+- name: Debug
+  run: |
+    echo "Docker version:"
+    docker --version
+    echo "Docker Compose version:"
+    docker-compose --version
+```
+
+### 5.2 Docker 이미지 푸시 실패
+**증상**: `denied: requested access to the resource is denied`
+
+**원인**: Docker Hub 인증 실패
+
+**해결방법**:
+```bash
+# 1단계: Docker Hub 로그인 테스트
+docker login
+
+# 2단계: 시크릿 확인
+# GitHub Repository Settings > Secrets and variables > Actions
+
+# 3단계: 권한 확인
+# Docker Hub 계정 권한 확인
+```
+
+---
+
+## 6. 일반적인 오류 코드
+
+### 6.1 HTTP 상태 코드
+- **200**: 성공
+- **400**: 잘못된 요청
+- **401**: 인증 실패
+- **403**: 권한 없음
+- **404**: 리소스 없음
+- **500**: 서버 내부 오류
+- **502**: Bad Gateway
+- **503**: 서비스 사용 불가
+
+### 6.2 Docker 오류 코드
+- **125**: Dockerfile 실행 실패
+- **126**: 명령어 실행 실패
+- **127**: 명령어를 찾을 수 없음
+- **128**: 종료 신호 없음
+- **130**: SIGINT (Ctrl+C)
+- **137**: SIGKILL (메모리 부족)
+
+### 6.3 데이터베이스 오류 코드
+- **23505**: 고유 제약 조건 위반
+- **23503**: 외래 키 제약 조건 위반
+- **23514**: 체크 제약 조건 위반
+- **42P01**: 테이블이 존재하지 않음
+- **42P07**: 테이블이 이미 존재함
+
+---
+
+## 🔧 디버깅 도구
+
+### 로그 확인
+```bash
+# 전체 로그
+docker-compose logs
+
+# 특정 서비스 로그
+docker-compose logs app
+docker-compose logs postgres
+docker-compose logs redis
+docker-compose logs nginx
+
+# 실시간 로그
+docker-compose logs -f app
+```
+
+### 컨테이너 내부 접근
+```bash
+# 애플리케이션 컨테이너 접근
+docker exec -it github-actions-demo-app-dev /bin/sh
+
+# 데이터베이스 컨테이너 접근
+docker exec -it github-actions-demo-db-dev psql -U myapp_user -d myapp
+
+# Redis 컨테이너 접근
+docker exec -it github-actions-demo-redis-dev redis-cli
+```
+
+### 네트워크 디버깅
+```bash
+# 네트워크 목록
+docker network ls
+
+# 네트워크 상세 정보
+docker network inspect project_app-network
+
+# 컨테이너 IP 확인
+docker inspect github-actions-demo-app-dev | grep IPAddress
+```
+
+이 가이드를 통해 대부분의 문제를 해결할 수 있습니다. 추가 문제가 발생하면 로그를 확인하고 단계별로 디버깅해보세요! 🚀
 
 ---
 

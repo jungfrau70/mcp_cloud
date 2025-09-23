@@ -27,18 +27,25 @@
           {{ allDetailsExpanded ? '🔼 접기' : '🔽 펼치기' }}
         </button>
         <button
-          v-if="path && !isSlideView"
+          v-if="path && !isSlideView && isMarkdownFile"
           @click="downloadPdf"
           class="px-3 py-1 text-sm rounded bg-gray-500 text-white hover:bg-gray-600 transition-colors"
         >
           PDF
         </button>
         <button
-          v-if="path && !isSlideView"
+          v-if="path && !isSlideView && isMarkdownFile"
           @click="downloadMarkdown"
           class="px-3 py-1 text-sm rounded bg-gray-500 text-white hover:bg-gray-600 transition-colors"
         >
           Markdown
+        </button>
+        <button
+          v-if="path && !isSlideView && !isMarkdownFile"
+          @click="downloadFile"
+          class="px-3 py-1 text-sm rounded bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+        >
+          {{ getFileExtension(path).toUpperCase() }} 다운로드
         </button>
       </div>
     </div>
@@ -159,6 +166,20 @@ const isFileNotFound = computed(() => {
          (props.content && props.content.includes('Error loading content')) ||
          (props.content && props.content.includes('공개되지 않은 자료'));
 });
+
+// 마크다운 파일인지 확인
+const isMarkdownFile = computed(() => {
+  if (!props.path) return false;
+  const extension = getFileExtension(props.path).toLowerCase();
+  return extension === 'md' || extension === 'markdown';
+});
+
+// 파일 확장자 추출
+const getFileExtension = (filePath) => {
+  if (!filePath) return '';
+  const parts = filePath.split('.');
+  return parts.length > 1 ? parts[parts.length - 1] : '';
+};
 
 // 최근 파일 관리
 const userKey = 'guest';
@@ -927,6 +948,81 @@ const downloadMarkdown = async () => {
   } catch (e) {
     console.error('Markdown download error:', e);
     alert('Markdown 다운로드 중 오류가 발생했습니다: ' + e.message);
+  }
+};
+
+const downloadFile = async () => {
+  if (!props.path) return;
+  try {
+    // 파일 확장자에 따른 MIME 타입 결정
+    const extension = getFileExtension(props.path).toLowerCase();
+    const mimeTypes = {
+      'js': 'application/javascript',
+      'ts': 'application/typescript',
+      'json': 'application/json',
+      'yaml': 'application/x-yaml',
+      'yml': 'application/x-yaml',
+      'xml': 'application/xml',
+      'html': 'text/html',
+      'css': 'text/css',
+      'txt': 'text/plain',
+      'sh': 'application/x-sh',
+      'py': 'text/x-python',
+      'java': 'text/x-java-source',
+      'cpp': 'text/x-c++src',
+      'c': 'text/x-csrc',
+      'sql': 'application/sql',
+      'dockerfile': 'text/plain',
+      'env': 'text/plain',
+      'gitignore': 'text/plain',
+      'md': 'text/markdown',
+      'markdown': 'text/markdown'
+    };
+    
+    const mimeType = mimeTypes[extension] || 'application/octet-stream';
+    
+    // API를 통해 파일 내용 가져오기
+    const url = `${apiBase}/api/v1/curriculum/file?path=${encodeURIComponent(cleanApiPath(props.path))}`;
+    console.log('File download URL:', url);
+    
+    const res = await fetch(url, { 
+      headers: { 'X-API-Key': API_KEY } 
+    });
+    
+    if (!res.ok) {
+      console.error('File download failed:', res.status, res.statusText);
+      throw new Error(`Failed to download file: ${res.status}`);
+    }
+    
+    const blob = await res.blob();
+    
+    // 한글 파일명 처리 - URL 디코딩 적용
+    const base = props.path.split('/').pop() || 'file';
+    const decodedBase = decodeURIComponent(base); // URL 디코딩
+    const filename = decodedBase;
+    
+    // 파일명을 UTF-8로 인코딩하여 Blob 생성
+    const encoder = new TextEncoder();
+    
+    // Blob에 Content-Disposition 헤더를 시뮬레이션하기 위한 메타데이터 추가
+    const metadata = `Content-Disposition: attachment; filename*=UTF-8''${encodeURIComponent(filename)}\n\n`;
+    const metadataBytes = encoder.encode(metadata);
+    
+    // 원본 Blob과 메타데이터를 결합
+    const combinedBlob = new Blob([metadataBytes, blob], { type: mimeType });
+    const objectUrl = URL.createObjectURL(combinedBlob);
+    
+    const a = document.createElement('a');
+    a.href = objectUrl;
+    a.download = filename; // 디코딩된 한글 파일명 사용
+    
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
+  } catch (e) {
+    console.error('File download error:', e);
+    alert('파일 다운로드 중 오류가 발생했습니다: ' + e.message);
   }
 };
 

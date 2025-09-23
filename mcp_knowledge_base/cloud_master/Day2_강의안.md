@@ -221,7 +221,20 @@ cp /path/to/mcp_knowledge_base/cloud_master/textbook/Day2/project/package.json .
 
 # 의존성 설치
 npm install
+
+# 설치된 패키지 확인
+npm list --depth=0
 ```
+
+**주요 의존성 패키지:**
+- `express`: 웹 프레임워크
+- `pg`: PostgreSQL 클라이언트
+- `redis`: Redis 클라이언트
+- `prom-client`: Prometheus 메트릭 수집
+- `winston`: 로깅 시스템
+- `helmet`: 보안 미들웨어
+- `cors`: CORS 지원
+- `compression`: Gzip 압축
 
 #### Step 3: 데이터베이스 스키마 설정 (10분)
 ```bash

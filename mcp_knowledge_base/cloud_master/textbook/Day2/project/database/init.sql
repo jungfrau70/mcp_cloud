@@ -102,13 +102,13 @@ RETURNS TABLE (
     id INTEGER,
     level VARCHAR(20),
     message TEXT,
-    timestamp TIMESTAMP
+    "timestamp" TIMESTAMP
 ) AS $$
 BEGIN
     RETURN QUERY
-    SELECT l.id, l.level, l.message, l.timestamp
+    SELECT l.id, l.level, l.message, l."timestamp"
     FROM app_logs l
-    ORDER BY l.timestamp DESC
+    ORDER BY l."timestamp" DESC
     LIMIT limit_count;
 END;
 $$ LANGUAGE plpgsql;
