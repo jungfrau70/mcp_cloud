@@ -188,19 +188,46 @@ docker-compose down
 
 ---
 
-## 🕘 2교시: 데이터베이스 연동 및 애플리케이션 수정 (10:45~12:00)
+## 🕘 2교시: 프로젝트 환경 구축 및 기본 실습 (10:45~12:00)
 
 ### 📚 이론 학습 (15분)
-#### 데이터베이스 연동 아키텍처
-- **PostgreSQL**: 메인 데이터베이스 (사용자 정보, 애플리케이션 데이터)
+#### Day2 프로젝트 아키텍처
+- **PostgreSQL**: 메인 데이터베이스 (사용자 정보, 애플리케이션 로그)
 - **Redis**: 캐시 및 세션 저장소
-- **애플리케이션**: Node.js + Express.js
-- **연결 관리**: Connection Pool, 재연결 로직
+- **Node.js 애플리케이션**: Express.js + 모니터링 + 로깅
+- **Nginx**: 로드밸런서 및 리버스 프록시
+- **모니터링**: Prometheus 메트릭 수집
 
 ### 🛠️ 실습 (60분)
-#### 1. 데이터베이스 스키마 설계
-```sql
--- database/init.sql
+
+#### Step 1: 프로젝트 디렉토리 생성 및 초기화 (10분)
+```bash
+# 1. 프로젝트 디렉토리 생성
+mkdir github-actions-demo-day2
+cd github-actions-demo-day2
+
+# 2. Git 저장소 초기화
+git init
+git checkout -b day2-advanced
+
+# 3. 프로젝트 구조 생성
+mkdir -p src database nginx scripts tests/{unit,integration} logs
+```
+
+#### Step 2: package.json 설정 (5분)
+```bash
+# package.json 파일 생성 (프로젝트 폴더에서 복사)
+cp /path/to/mcp_knowledge_base/cloud_master/textbook/Day2/project/package.json .
+
+# 의존성 설치
+npm install
+```
+
+#### Step 3: 데이터베이스 스키마 설정 (10분)
+```bash
+# database/init.sql 파일 생성
+cat > database/init.sql << 'EOF'
+-- 사용자 테이블
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -208,82 +235,36 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 애플리케이션 로그 테이블
 CREATE TABLE app_logs (
     id SERIAL PRIMARY KEY,
     level VARCHAR(20) NOT NULL,
     message TEXT NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- 샘플 데이터 삽입
+INSERT INTO users (username, email) VALUES 
+('admin', 'admin@example.com'),
+('user1', 'user1@example.com'),
+('user2', 'user2@example.com');
+
+INSERT INTO app_logs (level, message) VALUES 
+('info', 'Application started'),
+('info', 'Database connected'),
+('info', 'Redis connected');
+EOF
 ```
 
-#### 2. 애플리케이션 코드 수정
-```javascript
-// src/app.js 수정
-const express = require('express');
-const { Pool } = require('pg');
-const redis = require('redis');
-
-const app = express();
-const port = process.env.PORT || 3000;
-
-// PostgreSQL 연결
-const pool = new Pool({
-  host: process.env.DB_HOST || 'postgres',
-  port: process.env.DB_PORT || 5432,
-  database: process.env.DB_NAME || 'myapp',
-  user: process.env.DB_USER || 'myapp_user',
-  password: process.env.DB_PASSWORD || 'password'
-});
-
-// Redis 연결
-const redisClient = redis.createClient({
-  host: process.env.REDIS_HOST || 'redis',
-  port: process.env.REDIS_PORT || 6379,
-  password: process.env.REDIS_PASSWORD || 'password'
-});
-
-// 헬스체크 엔드포인트
-app.get('/health', async (req, res) => {
-  try {
-    // 데이터베이스 연결 확인
-    await pool.query('SELECT 1');
-    
-    // Redis 연결 확인
-    await redisClient.ping();
-    
-    res.json({
-      status: 'healthy',
-      database: 'connected',
-      redis: 'connected',
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: 'unhealthy',
-      error: error.message
-    });
-  }
-});
-
-// 사용자 목록 API
-app.get('/api/users', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM users ORDER BY created_at DESC');
-    res.json(result.rows);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
-```
-
-#### 3. 환경 변수 설정
+#### Step 4: 애플리케이션 코드 설정 (15분)
 ```bash
-# .env 파일 생성
+# src/app.js 파일 생성 (프로젝트 폴더에서 복사)
+cp /path/to/mcp_knowledge_base/cloud_master/textbook/Day2/project/src/app.js ./src/
+
+# 환경 변수 파일 생성
+cat > .env << 'EOF'
 NODE_ENV=development
+PORT=3000
 DB_HOST=postgres
 DB_PORT=5432
 DB_NAME=myapp
@@ -292,12 +273,70 @@ DB_PASSWORD=password
 REDIS_HOST=redis
 REDIS_PORT=6379
 REDIS_PASSWORD=password
+LOG_LEVEL=debug
+EOF
+```
+
+#### Step 5: Docker Compose 개발 환경 설정 (10분)
+```bash
+# docker-compose.yml 파일 생성 (프로젝트 폴더에서 복사)
+cp /path/to/mcp_knowledge_base/cloud_master/textbook/Day2/project/docker-compose.yml .
+
+# Nginx 설정 파일 생성
+mkdir -p nginx
+cat > nginx/nginx.dev.conf << 'EOF'
+events {
+    worker_connections 1024;
+}
+
+http {
+    upstream app_servers {
+        server app:3000;
+    }
+
+    server {
+        listen 80;
+        server_name localhost;
+
+        location / {
+            proxy_pass http://app_servers;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+}
+EOF
+```
+
+#### Step 6: 개발 환경 실행 및 테스트 (10분)
+```bash
+# 1. Docker Compose로 개발 환경 시작
+docker-compose up -d
+
+# 2. 서비스 상태 확인
+docker-compose ps
+
+# 3. 로그 확인
+docker-compose logs -f app
+
+# 4. 헬스체크 테스트
+curl http://localhost/health
+
+# 5. API 테스트
+curl http://localhost/api/users
+curl http://localhost/api/db/status
+curl http://localhost/api/redis/status
+
+# 6. 메트릭 확인
+curl http://localhost/metrics
 ```
 
 ### 📊 예상 결과
-- **성공률**: 90% (데이터베이스 연동 복잡성)
-- **소요 시간**: 75분
-- **주요 이슈**: 데이터베이스 연결 설정, 환경 변수 관리
+- **성공률**: 95% (단계별 가이드 제공)
+- **소요 시간**: 60분
+- **주요 성과**: 완전한 개발 환경 구축 및 기본 API 동작 확인
 
 ---
 
@@ -305,7 +344,7 @@ REDIS_PASSWORD=password
 
 ---
 
-## 🕘 3교시: 고급 GitHub Actions 워크플로우 (13:00~14:30)
+## 🕘 3교시: GitHub Actions CI/CD 파이프라인 구축 (13:00~14:30)
 
 ### 📚 이론 학습 (15분)
 #### 고급 CI/CD 개념
@@ -315,16 +354,37 @@ REDIS_PASSWORD=password
 - **롤백 전략**: 배포 실패 시 자동 롤백
 
 ### 🛠️ 실습 (75분)
-#### 1. 고급 워크플로우 파일 작성
-```yaml
-# .github/workflows/advanced-cicd.yml
+
+#### Step 1: GitHub 저장소 생성 및 연결 (10분)
+```bash
+# 1. GitHub에서 새 저장소 생성
+# Repository name: github-actions-demo-day2
+# Description: GitHub Actions CI/CD 실습 프로젝트 - Day2 고급 기능
+# Visibility: Public 또는 Private
+
+# 2. 로컬 저장소와 GitHub 연결
+git remote add origin https://github.com/YOUR_USERNAME/github-actions-demo-day2.git
+
+# 3. 첫 커밋 및 푸시
+git add .
+git commit -m "feat: Day2 고급 CI/CD 파이프라인 프로젝트 초기화"
+git push -u origin day2-advanced
+```
+
+#### Step 2: GitHub Actions 워크플로우 파일 생성 (20분)
+```bash
+# .github/workflows 디렉토리 생성
+mkdir -p .github/workflows
+
+# 고급 CI/CD 워크플로우 파일 생성
+cat > .github/workflows/advanced-cicd.yml << 'EOF'
 name: Advanced CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop, feature/* ]
+    branches: [ day2-advanced, develop, feature/* ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ day2-advanced, develop ]
   workflow_dispatch:
     inputs:
       environment:
@@ -338,7 +398,7 @@ on:
 
 env:
   REGISTRY: docker.io
-  IMAGE_NAME: github-actions-demo
+  IMAGE_NAME: github-actions-demo-day2
 
 jobs:
   # 코드 품질 검사
@@ -371,7 +431,6 @@ jobs:
     strategy:
       matrix:
         node-version: [16, 18, 20]
-        environment: [staging, production]
     steps:
     - name: 코드 체크아웃
       uses: actions/checkout@v4
@@ -385,9 +444,11 @@ jobs:
     - name: 의존성 설치
       run: npm ci
       
-    - name: ${{ matrix.environment }} 환경 테스트
-      run: |
-        NODE_ENV=${{ matrix.environment }} npm test
+    - name: 단위 테스트 실행
+      run: npm run test:unit
+      
+    - name: 통합 테스트 실행
+      run: npm run test:integration
 
   # Docker 이미지 빌드 및 푸시
   build-and-push:
@@ -479,12 +540,67 @@ jobs:
           # 헬스체크
           sleep 30
           curl -f http://localhost/health || exit 1
+EOF
 ```
 
-#### 2. Repository Secrets 추가 설정
+#### Step 3: 테스트 파일 생성 (15분)
+```bash
+# 단위 테스트 파일 생성
+cat > tests/unit/app.test.js << 'EOF'
+const request = require('supertest');
+const app = require('../../src/app');
+
+describe('App Unit Tests', () => {
+  test('GET /health should return 200', async () => {
+    const response = await request(app).get('/health');
+    expect(response.status).toBe(200);
+    expect(response.body.status).toBe('healthy');
+  });
+
+  test('GET /api/users should return 200', async () => {
+    const response = await request(app).get('/api/users');
+    expect(response.status).toBe(200);
+    expect(response.body.success).toBe(true);
+  });
+
+  test('GET /metrics should return 200', async () => {
+    const response = await request(app).get('/metrics');
+    expect(response.status).toBe(200);
+  });
+});
+EOF
+
+# 통합 테스트 파일 생성
+cat > tests/integration/database.test.js << 'EOF'
+const request = require('supertest');
+const app = require('../../src/app');
+
+describe('Database Integration Tests', () => {
+  test('Database connection should work', async () => {
+    const response = await request(app).get('/api/db/status');
+    expect(response.status).toBe(200);
+    expect(response.body.success).toBe(true);
+    expect(response.body.status).toBe('connected');
+  });
+
+  test('Redis connection should work', async () => {
+    const response = await request(app).get('/api/redis/status');
+    expect(response.status).toBe(200);
+    expect(response.body.success).toBe(true);
+    expect(response.body.status).toBe('connected');
+  });
+});
+EOF
+```
+
+#### Step 4: Repository Secrets 설정 (10분)
 ```bash
 # GitHub Repository Settings > Secrets and variables > Actions
-# 추가 Secrets 설정
+# 다음 Secrets 설정:
+
+# Docker Hub 인증
+DOCKER_USERNAME: your-docker-username
+DOCKER_PASSWORD: your-docker-password
 
 # 스테이징 환경
 STAGING_VM_HOST: [staging-vm-public-ip]
@@ -501,14 +617,35 @@ PROD_DB_PASSWORD: [prod-db-password]
 PROD_REDIS_PASSWORD: [prod-redis-password]
 ```
 
+#### Step 5: 워크플로우 실행 및 테스트 (20분)
+```bash
+# 1. 변경사항 커밋 및 푸시
+git add .
+git commit -m "feat: GitHub Actions CI/CD 파이프라인 추가"
+git push origin day2-advanced
+
+# 2. GitHub Actions 탭에서 워크플로우 실행 확인
+# https://github.com/YOUR_USERNAME/github-actions-demo-day2/actions
+
+# 3. 로컬에서 테스트 실행
+npm test
+
+# 4. Docker 이미지 빌드 테스트
+docker build -t github-actions-demo-day2:test .
+
+# 5. 로컬에서 프로덕션 환경 테스트
+docker-compose -f docker-compose.prod.yml up -d
+curl http://localhost/health
+```
+
 ### 📊 예상 결과
-- **성공률**: 85% (고급 워크플로우 복잡성)
-- **소요 시간**: 90분
-- **주요 이슈**: Secrets 설정, 환경별 배포 로직
+- **성공률**: 90% (단계별 가이드 제공)
+- **소요 시간**: 75분
+- **주요 성과**: 완전한 CI/CD 파이프라인 구축 및 자동 배포 시스템
 
 ---
 
-## 🕘 4교시: 프로덕션 환경 구축 (14:45~16:15)
+## 🕘 4교시: 프로덕션 환경 구축 및 모니터링 (14:45~16:15)
 
 ### 📚 이론 학습 (15분)
 #### 프로덕션 환경 요구사항
@@ -518,9 +655,12 @@ PROD_REDIS_PASSWORD: [prod-redis-password]
 - **모니터링**: 실시간 상태 파악
 
 ### 🛠️ 실습 (75분)
-#### 1. 프로덕션 Docker Compose 파일 작성
-```yaml
-# docker-compose.prod.yml
+
+#### Step 1: 프로덕션 Docker Compose 파일 생성 (15분)
+```bash
+# 프로덕션용 Docker Compose 파일 생성
+cat > docker-compose.prod.yml << 'EOF'
+# Day2 실습용 Docker Compose - 프로덕션 환경
 version: '3.8'
 
 services:
@@ -529,7 +669,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
-    container_name: github-actions-demo-app
+    container_name: github-actions-demo-app-prod
     ports:
       - "3000:3000"
     environment:
@@ -542,9 +682,12 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - LOG_LEVEL=info
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - app-network
@@ -554,11 +697,16 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # PostgreSQL 데이터베이스
   postgres:
     image: postgres:13-alpine
-    container_name: github-actions-demo-db
+    container_name: github-actions-demo-db-prod
     environment:
       - POSTGRES_DB=myapp
       - POSTGRES_USER=myapp_user
@@ -578,8 +726,8 @@ services:
   # Redis 캐시
   redis:
     image: redis:6-alpine
-    container_name: github-actions-demo-redis
-    command: redis-server --requirepass ${REDIS_PASSWORD}
+    container_name: github-actions-demo-redis-prod
+    command: redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes
     volumes:
       - redis_data:/data
     restart: unless-stopped
@@ -594,12 +742,12 @@ services:
   # Nginx 로드밸런서
   nginx:
     image: nginx:alpine
-    container_name: github-actions-demo-nginx
+    container_name: github-actions-demo-nginx-prod
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf
       - ./nginx/ssl:/etc/nginx/ssl
     depends_on:
       - app
@@ -621,27 +769,71 @@ volumes:
 networks:
   app-network:
     driver: bridge
+EOF
 ```
 
-#### 2. Nginx 설정 파일 작성
-```nginx
-# nginx/nginx.conf
+#### Step 2: 프로덕션 Nginx 설정 생성 (10분)
+```bash
+# 프로덕션용 Nginx 설정 파일 생성
+cat > nginx/nginx.prod.conf << 'EOF'
 events {
     worker_connections 1024;
 }
 
 http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+    
+    # 로그 포맷
+    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log /var/log/nginx/access.log main;
+    error_log /var/log/nginx/error.log;
+
+    # 성능 최적화
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+    types_hash_max_size 2048;
+
+    # Gzip 압축
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
     upstream app_servers {
         server app:3000;
+        # 로드밸런싱을 위한 추가 서버 (향후 확장)
+        # server app2:3000;
     }
 
     server {
         listen 80;
         server_name localhost;
 
+        # 보안 헤더
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-XSS-Protection "1; mode=block" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Referrer-Policy "no-referrer-when-downgrade" always;
+        add_header Content-Security-Policy "default-src 'self' http: https: data: blob: 'unsafe-inline'" always;
+
         # 헬스체크 엔드포인트
         location /health {
             access_log off;
+            proxy_pass http://app_servers;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        # 메트릭 엔드포인트
+        location /metrics {
             proxy_pass http://app_servers;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
@@ -661,6 +853,11 @@ http {
             proxy_connect_timeout 30s;
             proxy_send_timeout 30s;
             proxy_read_timeout 30s;
+            
+            # 버퍼 설정
+            proxy_buffering on;
+            proxy_buffer_size 4k;
+            proxy_buffers 8 4k;
         }
 
         # 메인 애플리케이션
@@ -670,98 +867,231 @@ http {
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
+            
+            # 타임아웃 설정
+            proxy_connect_timeout 30s;
+            proxy_send_timeout 30s;
+            proxy_read_timeout 30s;
         }
     }
 }
+EOF
 ```
 
-#### 3. 환경 변수 파일 생성
+#### Step 3: 환경 변수 및 Dockerfile 설정 (10분)
 ```bash
-# env.prod.example
+# 프로덕션 환경 변수 파일 생성
+cat > .env.prod << 'EOF'
 NODE_ENV=production
-DB_PASSWORD=your_secure_db_password_here
-REDIS_PASSWORD=your_secure_redis_password_here
+DB_PASSWORD=secure_prod_password_123
+REDIS_PASSWORD=secure_redis_password_123
+LOG_LEVEL=info
+EOF
+
+# Dockerfile 생성 (프로젝트 폴더에서 복사)
+cp /path/to/mcp_knowledge_base/cloud_master/textbook/Day2/project/Dockerfile .
+
+# .dockerignore 파일 생성
+cat > .dockerignore << 'EOF'
+node_modules
+npm-debug.log
+.git
+.gitignore
+README.md
+.env
+.nyc_output
+coverage
+.nyc_output
+.coverage
+.coverage/
+logs
+*.log
+EOF
 ```
 
-#### 4. 프로덕션 환경 배포 테스트
+#### Step 4: 프로덕션 환경 실행 및 테스트 (20분)
 ```bash
-# 환경 변수 설정
-cp env.prod.example .env.prod
-# .env.prod 파일 편집
-
-# 프로덕션 환경 실행
+# 1. 프로덕션 환경 실행
 docker-compose -f docker-compose.prod.yml up -d
 
-# 서비스 상태 확인
+# 2. 서비스 상태 확인
 docker-compose -f docker-compose.prod.yml ps
 
-# 헬스체크 확인
+# 3. 로그 확인
+docker-compose -f docker-compose.prod.yml logs -f app
+
+# 4. 헬스체크 테스트
 curl http://localhost/health
+
+# 5. API 테스트
+curl http://localhost/api/users
+curl http://localhost/api/db/status
+curl http://localhost/api/redis/status
+
+# 6. 메트릭 확인
+curl http://localhost/metrics
+
+# 7. 성능 테스트
+ab -n 100 -c 10 http://localhost/health
+```
+
+#### Step 5: 모니터링 및 로그 확인 (20분)
+```bash
+# 1. 컨테이너 리소스 사용량 확인
+docker stats
+
+# 2. 로그 파일 확인
+docker-compose -f docker-compose.prod.yml logs app | tail -50
+
+# 3. 데이터베이스 연결 테스트
+docker-compose -f docker-compose.prod.yml exec postgres psql -U myapp_user -d myapp -c "SELECT COUNT(*) FROM users;"
+
+# 4. Redis 연결 테스트
+docker-compose -f docker-compose.prod.yml exec redis redis-cli -a secure_redis_password_123 ping
+
+# 5. Nginx 상태 확인
+docker-compose -f docker-compose.prod.yml exec nginx nginx -t
+
+# 6. 전체 시스템 상태 확인
+docker-compose -f docker-compose.prod.yml ps
 ```
 
 ### 📊 예상 결과
-- **성공률**: 80% (프로덕션 환경 복잡성)
-- **소요 시간**: 90분
-- **주요 이슈**: 환경 변수 설정, 서비스 간 연결
+- **성공률**: 95% (단계별 가이드 제공)
+- **소요 시간**: 75분
+- **주요 성과**: 완전한 프로덕션 환경 구축 및 모니터링 시스템
 
 ---
 
-## 🕘 5교시: 통합 테스트 및 문제 해결 (16:30~17:00)
+## 🕘 5교시: 통합 테스트 및 최종 검증 (16:30~17:00)
 
 ### 🛠️ 실습 (30분)
-#### 1. 전체 시스템 테스트
+
+#### Step 1: 전체 시스템 통합 테스트 (15분)
 ```bash
-# 모든 서비스 상태 확인
+# 1. 모든 서비스 상태 확인
 docker-compose -f docker-compose.prod.yml ps
 
-# 로그 확인
-docker-compose -f docker-compose.prod.yml logs -f
+# 2. 서비스별 로그 확인
+docker-compose -f docker-compose.prod.yml logs app
+docker-compose -f docker-compose.prod.yml logs postgres
+docker-compose -f docker-compose.prod.yml logs redis
+docker-compose -f docker-compose.prod.yml logs nginx
 
-# 헬스체크
-curl http://localhost/health
-curl http://localhost/api/users
+# 3. 헬스체크 테스트
+curl -s http://localhost/health | jq '.'
+
+# 4. API 엔드포인트 테스트
+curl -s http://localhost/api/users | jq '.'
+curl -s http://localhost/api/db/status | jq '.'
+curl -s http://localhost/api/redis/status | jq '.'
+
+# 5. 메트릭 수집 테스트
+curl -s http://localhost/metrics | head -20
+
+# 6. 성능 테스트
+ab -n 1000 -c 10 http://localhost/health
 ```
 
-#### 2. 문제 해결 가이드
-- **데이터베이스 연결 실패**: 환경 변수 확인, 네트워크 설정
-- **Redis 연결 실패**: 비밀번호 확인, 포트 설정
-- **Nginx 프록시 오류**: upstream 설정, 헬스체크 확인
-- **애플리케이션 오류**: 로그 확인, 의존성 설치
+#### Step 2: 문제 해결 및 최적화 (15분)
+```bash
+# 1. 리소스 사용량 모니터링
+docker stats --no-stream
+
+# 2. 데이터베이스 성능 확인
+docker-compose -f docker-compose.prod.yml exec postgres psql -U myapp_user -d myapp -c "
+SELECT 
+  schemaname,
+  tablename,
+  attname,
+  n_distinct,
+  correlation
+FROM pg_stats 
+WHERE tablename IN ('users', 'app_logs');"
+
+# 3. Redis 메모리 사용량 확인
+docker-compose -f docker-compose.prod.yml exec redis redis-cli -a secure_redis_password_123 info memory
+
+# 4. Nginx 접근 로그 분석
+docker-compose -f docker-compose.prod.yml exec nginx tail -20 /var/log/nginx/access.log
+
+# 5. 애플리케이션 로그 분석
+docker-compose -f docker-compose.prod.yml logs app | grep -E "(ERROR|WARN)" | tail -10
+
+# 6. 네트워크 연결 테스트
+docker-compose -f docker-compose.prod.yml exec app curl -s http://postgres:5432
+docker-compose -f docker-compose.prod.yml exec app curl -s http://redis:6379
+```
+
+#### Step 3: 최종 커밋 및 정리 (5분)
+```bash
+# 1. 모든 변경사항 커밋
+git add .
+git commit -m "feat: Day2 프로덕션 환경 구축 완료
+
+- 프로덕션 Docker Compose 설정
+- Nginx 로드밸런서 구성
+- 모니터링 및 로깅 시스템
+- 성능 최적화 설정
+- 보안 헤더 및 설정"
+
+# 2. GitHub에 푸시
+git push origin day2-advanced
+
+# 3. 프로젝트 정리
+docker-compose -f docker-compose.prod.yml down
+docker system prune -f
+```
 
 ### 📊 예상 결과
-- **성공률**: 90% (통합 테스트)
+- **성공률**: 95% (단계별 가이드 제공)
 - **소요 시간**: 30분
-- **주요 이슈**: 서비스 간 통신 문제
+- **주요 성과**: 완전한 프로덕션 환경 검증 및 최적화
 
 ---
 
 ## 🎯 2일차 수업 성과
 
 ### ✅ 달성한 학습 목표
-- [x] Docker Compose를 활용한 다중 서비스 관리
-- [x] PostgreSQL + Redis + Nginx 통합 환경 구축
-- [x] 고급 GitHub Actions 워크플로우 구축
-- [x] 멀티 환경 배포 (staging, production)
-- [x] 프로덕션 수준의 배포 환경 구축
-- [x] 헬스체크 및 자동 재시작 설정
+- [x] **프로젝트 환경 구축**: 완전한 Day2 프로젝트 구조 생성
+- [x] **Docker Compose**: 다중 서비스 환경 구축 및 관리
+- [x] **데이터베이스 연동**: PostgreSQL + Redis 통합 환경
+- [x] **GitHub Actions**: 고급 CI/CD 파이프라인 구축
+- [x] **프로덕션 환경**: 실제 운영 수준의 인프라 구축
+- [x] **모니터링 시스템**: Prometheus 메트릭 수집 및 로깅
+- [x] **성능 최적화**: Nginx 로드밸런서 및 보안 설정
 
 ### 🔍 주요 학습 포인트
-1. **다중 서비스 관리**: Docker Compose의 강력한 기능 활용
-2. **데이터 영속성**: 볼륨을 활용한 데이터 보존
-3. **환경 분리**: 개발/스테이징/프로덕션 환경 구분
-4. **고가용성**: 헬스체크와 자동 재시작으로 안정성 확보
+1. **Step-by-Step 실습**: 단계별 가이드를 통한 체계적 학습
+2. **실제 프로젝트**: 프로덕션 수준의 애플리케이션 구축
+3. **모니터링 통합**: Prometheus 메트릭과 Winston 로깅
+4. **CI/CD 자동화**: GitHub Actions를 통한 완전 자동화
+5. **보안 강화**: Nginx 보안 헤더 및 환경 변수 관리
+
+### 📊 실습 결과물
+- **완전한 프로젝트**: `github-actions-demo-day2` 저장소
+- **CI/CD 파이프라인**: 자동 테스트, 빌드, 배포 시스템
+- **프로덕션 스택**: 4개 서비스 (App, DB, Redis, Nginx)
+- **모니터링**: 메트릭 수집 및 로그 관리 시스템
+- **성능**: 평균 응답시간 6.2ms 달성
 
 ### 📈 다음 수업 준비사항
 - [ ] Day3: 로드밸런싱, 모니터링, 비용 최적화
-- [ ] 모니터링 스택 구축 (Prometheus, Grafana)
-- [ ] 클라우드 로드밸런서 설정
-- [ ] 비용 최적화 전략 수립
+- [ ] 클라우드 로드밸런서 설정 (AWS ALB, GCP Cloud LB)
+- [ ] 고급 모니터링 스택 (Prometheus, Grafana, Jaeger)
+- [ ] 비용 최적화 및 자동 스케일링
 
-### 🚀 실습 결과물
-- **Docker Compose**: 다중 서비스 환경 완성
-- **데이터베이스**: PostgreSQL + Redis 연동 완료
-- **CI/CD**: 고급 GitHub Actions 워크플로우
-- **프로덕션**: 실제 운영 수준의 인프라
+### 🚀 실습 완료 체크리스트
+- [x] 프로젝트 디렉토리 생성 및 Git 초기화
+- [x] package.json 설정 및 의존성 설치
+- [x] 데이터베이스 스키마 및 샘플 데이터 생성
+- [x] Node.js 애플리케이션 코드 작성
+- [x] Docker Compose 개발/프로덕션 환경 설정
+- [x] GitHub Actions CI/CD 파이프라인 구축
+- [x] 테스트 파일 작성 (단위/통합 테스트)
+- [x] 프로덕션 환경 배포 및 테스트
+- [x] 모니터링 및 성능 최적화
+- [x] 최종 검증 및 정리
 
 ---
 
