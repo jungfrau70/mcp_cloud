@@ -972,8 +972,8 @@ curl -w "@curl-format.txt" -o /dev/null -s http://my-alb-1234567890.us-west-2.el
 **방법 1: 자동화 스크립트 사용 (권장)**
 ```bash
 # 로드밸런서 자동 설정
-chmod +x ../../repos/cloud-scripts/load-balancer-setup.sh
-./../../repos/cloud-scripts/load-balancer-setup.sh aws
+chmod +x ../../repos/day1/cloud-scripts/load-balancer-setup.sh
+./../../repos/day1/cloud-scripts/load-balancer-setup.sh aws
 ```
 
 **방법 2: 수동 명령어 실행**
@@ -1245,8 +1245,8 @@ gcloud monitoring metrics list \
 **방법 1: 자동화 스크립트 사용 (권장)**
 ```bash
 # 비용 최적화 스크립트 실행
-chmod +x ../../repos/cloud-scripts/cost-optimization.sh
-./../../repos/cloud-scripts/cost-optimization.sh aws
+chmod +x ../../repos/day1/cloud-scripts/cost-optimization.sh
+./../../repos/day1/cloud-scripts/cost-optimization.sh aws
 ```
 
 **방법 2: 수동 명령어 실행**
@@ -1309,16 +1309,16 @@ aws ec2 describe-spot-price-history \
 **방법 1: 통합 정리 스크립트 사용 (권장)**
 ```bash
 # 통합 클러스터 정리 스크립트 실행
-chmod +x cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh
-./cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh
+chmod +x ../../repos/day1/cloud-scripts/cluster-cleanup-interactive.sh
+./../../repos/day1/cloud-scripts/cluster-cleanup-interactive.sh
 
 # 통합 VM 정리 스크립트 실행
-chmod +x cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh
-./cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh
+chmod +x ../../repos/day1/cloud-scripts/vm-cleanup-interactive.sh
+./../../repos/day1/cloud-scripts/vm-cleanup-interactive.sh
 
 # 환경 체크 도구에서 정리 메뉴 사용
-chmod +x cloud_master/repos/cloud-scripts/environment-check-wsl.sh
-./cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+chmod +x ../../repos/day1/cloud-scripts/environment-check-wsl.sh
+./../../repos/day1/cloud-scripts/environment-check-wsl.sh
 ```
 
 **방법 2: 개별 정리 명령어**
@@ -1382,9 +1382,9 @@ docker rm prometheus grafana node-exporter alertmanager
 
 <div align="center">
 
-[← 이전: Day 2](cloud_master/textbook/Day2/README.md) | 
-[📚 전체 커리큘럼](curriculum.md) | 
-[🏠 학습 경로로 돌아가기](index.md) | 
-[다음: Cloud Container 과정 →](cloud_container/README.md)
+[← 이전: Day 2](../Day2/README.md) | 
+[📚 전체 커리큘럼](../../../curriculum.md) | 
+[🏠 학습 경로로 돌아가기](../../../index.md) | 
+[다음: Cloud Container 과정 →](../../../cloud_container/README.md)
 
 </div>

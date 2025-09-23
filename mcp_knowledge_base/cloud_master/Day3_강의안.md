@@ -9,20 +9,339 @@
 ## 🎯 3일차 학습 목표
 
 ### 핵심 목표
-- **로드밸런싱**: AWS ELB + GCP Cloud Load Balancing 구축
-- **모니터링**: Prometheus + Grafana + Jaeger 통합 모니터링
-- **비용 최적화**: 클라우드 리소스 최적화 및 자동 스케일링
-- **고가용성**: 장애 대응 및 복구 전략
+- **기존 VM 활용**: Day1, Day2에서 배포된 VM을 활용한 로드밸런싱
+- **로드밸런싱**: AWS ALB + GCP Cloud Load Balancing 구축
+- **모니터링**: Prometheus + Grafana 통합 모니터링 스택
+- **비용 최적화**: 클라우드 리소스 최적화 및 분석
+- **자동화**: 실습 자동화 스크립트를 통한 효율적 학습
+
+## ⚠️ 실습 전 필수 준비사항
+
+### 🔧 **사전 요구사항 확인**
+```bash
+# 1. 필수 도구 설치 확인
+echo "=== 필수 도구 확인 ==="
+command -v aws && echo "✅ AWS CLI 설치됨" || echo "❌ AWS CLI 설치 필요"
+command -v gcloud && echo "✅ GCP CLI 설치됨" || echo "❌ GCP CLI 설치 필요"
+command -v docker && echo "✅ Docker 설치됨" || echo "❌ Docker 설치 필요"
+command -v docker-compose && echo "✅ Docker Compose 설치됨" || echo "❌ Docker Compose 설치 필요"
+command -v jq && echo "✅ jq 설치됨" || echo "❌ jq 설치 필요"
+command -v curl && echo "✅ curl 설치됨" || echo "❌ curl 설치 필요"
+
+# 2. 클라우드 계정 설정 확인
+echo "=== 클라우드 계정 설정 확인 ==="
+aws sts get-caller-identity && echo "✅ AWS 계정 설정됨" || echo "❌ AWS 계정 설정 필요"
+gcloud auth list && echo "✅ GCP 계정 설정됨" || echo "❌ GCP 계정 설정 필요"
+
+# 3. 기존 VM 상태 확인
+echo "=== 기존 VM 상태 확인 ==="
+aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" \
+    --query 'Reservations[*].Instances[*].[InstanceId,Tags[?Key==`Name`].Value|[0],PublicIpAddress]' \
+    --output table
+gcloud compute instances list --format="table(name,zone,status,EXTERNAL_IP)"
+```
+
+### 🚨 **중요: 모니터링 스택 포트 충돌 해결**
+
+#### **문제점**
+- **Day2**: Prometheus (9090), Grafana (3001) 포트 사용
+- **Day3**: Prometheus (9090), Grafana (3001) 포트 사용
+- **충돌**: 동일한 포트로 인한 서비스 충돌 발생
+
+#### **해결 방안**
+```bash
+# 옵션 1: Day2 모니터링 스택 중지 (권장)
+cd mcp_knowledge_base/cloud_master/repos/samples/day2/my-app
+docker-compose down
+
+# 옵션 2: Day3 모니터링 스택 포트 변경
+# 3일차 스크립트에서 자동으로 포트 충돌 감지 및 해결
+./03-monitoring-stack.sh setup  # 자동으로 포트 충돌 감지 및 해결
+
+# 옵션 3: 별도 네트워크 사용
+# Day2와 Day3 모니터링 스택을 별도 Docker 네트워크에서 실행
+docker network create day3-monitoring
+# Day3 스크립트에서 별도 네트워크 사용
+
+# 옵션 4: 포트 매핑 변경
+# Day3 모니터링 스택을 다른 포트로 실행
+# Prometheus: 9091, Grafana: 3002, Jaeger: 16687
+```
+
+### 📋 **실습 전 체크리스트**
+
+#### **자동 체크 (권장)**
+```bash
+# 환경 체크 스크립트 실행
+cd /mnt/c/Users/[사용자명]/mcp_cloud/mcp_knowledge_base/cloud_master/repos/day3/scripts
+./environment-check.sh
+```
+
+#### **수동 체크**
+- [ ] **AWS CLI 설정**: `aws sts get-caller-identity` 성공
+- [ ] **GCP CLI 설정**: `gcloud auth list` 성공  
+- [ ] **Docker 실행**: `docker --version` 확인
+- [ ] **Day2 모니터링 중지**: 포트 충돌 방지
+- [ ] **기존 VM 확인**: Day1, Day2 VM 상태 정상
+- [ ] **권한 확인**: AWS/GCP 리소스 생성 권한
+- [ ] **네트워크 확인**: 인터넷 연결 및 방화벽 설정
+- [ ] **Git Repository 준비**: 실습 코드 저장소 생성 및 설정
+
+## 📁 **3일차 강의 자료 구조**
+
+### **새로운 디렉토리 구조**
+```
+mcp_knowledge_base/cloud_master/repos/day3/
+├── automation/          # 자동화 스크립트
+│   ├── 01-aws-loadbalancing.sh
+│   ├── 02-gcp-loadbalancing.sh
+│   ├── 03-monitoring-stack.sh
+│   ├── 04-autoscaling.sh
+│   ├── 05-cost-optimization.sh
+│   ├── 06-integration-test.sh
+│   ├── create-git-repo.sh
+│   └── vm-setup.sh
+├── guides/              # 가이드 문서
+│   ├── wsl-to-vm-setup.md
+│   ├── port-conflict-resolution.md
+│   └── troubleshooting.md
+├── samples/             # 실습 샘플 코드
+│   ├── cloud-master-day3/
+│   ├── cloud-master-day3-aws-vm/
+│   ├── cloud-master-day3-existing-vm/
+│   ├── cloud-master-day3-smooth/
+│   └── cloud-master-day3-vm/
+├── docs/                # 문서 및 보고서
+│   └── cost-reports/
+└── scripts/             # 유틸리티 스크립트
+    └── environment-check.sh
+```
+
+### **구조화의 장점**
+- **체계적 관리**: 기능별로 명확하게 분리된 디렉토리 구조
+- **쉬운 접근**: 필요한 자료를 빠르게 찾을 수 있는 구조
+- **확장성**: 새로운 자료 추가 시 적절한 위치에 배치 가능
+- **유지보수**: 각 디렉토리의 역할이 명확하여 관리 용이
+
+## 🖥️ **WSL → Cloud VM 작업 환경 구성**
+
+### 🔄 **작업 환경 전략**
+
+#### **1단계: WSL에서 Git Repository 생성 (자동화)**
+
+##### **방법 1: 자동화 스크립트 사용 (권장)**
+```bash
+# WSL에서 자동화 스크립트 실행
+cd /mnt/c/Users/[사용자명]/mcp_cloud/mcp_knowledge_base/cloud_master/repos/day3/automation
+./create-git-repo.sh
+
+# GitHub 사용자명 입력 후 자동으로 Repository 생성 및 설정
+```
+
+##### **방법 2: 수동 설정**
+```bash
+# WSL 환경에서 실습 코드를 Git Repository로 생성
+cd /mnt/c/Users/[사용자명]/Documents
+mkdir cloud-master-day3-practice
+cd cloud-master-day3-practice
+
+# Git Repository 초기화
+git init
+git config user.name "Cloud Master Student"
+git config user.email "student@cloudmaster.com"
+
+# 실습 코드 복사 및 커밋
+cp -r /mnt/c/Users/[사용자명]/mcp_cloud/mcp_knowledge_base/cloud_master/repos/day3/automation/* .
+git add .
+git commit -m "Initial commit: Day3 practice automation scripts"
+
+# GitHub/GitLab에 Repository 생성 및 Push
+# (GitHub에서 새 repository 생성 후)
+git remote add origin https://github.com/[사용자명]/cloud-master-day3-practice.git
+git branch -M main
+git push -u origin main
+```
+
+#### **2단계: Cloud VM에서 Repository Clone 및 환경 설정**
+
+##### **방법 1: 자동화 스크립트 사용 (권장)**
+```bash
+# AWS/GCP VM에 SSH 접속
+ssh -i ~/.ssh/cloud-master-key.pem ubuntu@[VM_IP]
+
+# VM 초기 설정 스크립트 다운로드 및 실행
+curl -O https://raw.githubusercontent.com/[사용자명]/cloud-master-day3-practice/main/vm-setup.sh
+chmod +x vm-setup.sh
+./vm-setup.sh
+
+# 실습 코드 자동 Clone 및 환경 설정 완료
+# 실습 시작
+./01-aws-loadbalancing.sh setup
+```
+
+##### **방법 2: 수동 설정**
+```bash
+# AWS/GCP VM에 SSH 접속
+ssh -i ~/.ssh/cloud-master-key.pem ubuntu@[VM_IP]
+
+# VM에서 실습 코드 Clone
+git clone https://github.com/[사용자명]/cloud-master-day3-practice.git
+cd cloud-master-day3-practice
+
+# 실행 권한 부여
+chmod +x *.sh
+
+# 실습 시작
+./01-aws-loadbalancing.sh setup
+```
+
+### 🛠️ **VM 환경 자동 설정 스크립트**
+
+#### **VM 초기 설정 스크립트 생성**
+```bash
+# WSL에서 VM 설정 스크립트 생성
+cat > vm-setup.sh << 'EOF'
+#!/bin/bash
+
+# Cloud VM 초기 설정 스크립트
+# 작성일: 2024년 9월 23일
+# 목적: Day3 실습을 위한 VM 환경 자동 설정
+
+echo "=== Cloud Master Day3 VM 설정 시작 ==="
+
+# 1. 시스템 업데이트
+sudo apt update && sudo apt upgrade -y
+
+# 2. 필수 도구 설치
+sudo apt install -y git curl wget jq unzip
+
+# 3. Docker 설치
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+
+# 4. Docker Compose 설치
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+# 5. AWS CLI 설치
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+# 6. GCP CLI 설치
+curl https://sdk.cloud.google.com | bash
+exec -l $SHELL
+
+# 7. 실습 코드 Clone
+git clone https://github.com/[사용자명]/cloud-master-day3-practice.git
+cd cloud-master-day3-practice
+chmod +x *.sh
+
+echo "=== VM 설정 완료 ==="
+echo "다음 명령어로 실습을 시작하세요:"
+echo "cd cloud-master-day3-practice"
+echo "./01-aws-loadbalancing.sh setup"
+EOF
+
+chmod +x vm-setup.sh
+```
+
+### 🔗 **WSL ↔ Cloud VM 연동 방법**
+
+#### **옵션 1: SSH + SCP를 통한 파일 동기화**
+```bash
+# WSL에서 VM으로 파일 전송
+scp -i ~/.ssh/cloud-master-key.pem *.sh ubuntu@[VM_IP]:~/cloud-master-day3-practice/
+
+# VM에서 WSL로 결과 파일 수신
+scp -i ~/.ssh/cloud-master-key.pem ubuntu@[VM_IP]:~/cloud-master-day3-practice/results/* ./
+```
+
+#### **옵션 2: Git을 통한 실시간 동기화**
+```bash
+# WSL에서 코드 수정 후
+git add .
+git commit -m "Update monitoring configuration"
+git push origin main
+
+# VM에서 최신 코드 Pull
+git pull origin main
+```
+
+#### **옵션 3: VS Code Remote SSH 확장 사용**
+```bash
+# VS Code에서 Remote SSH 확장 설치
+# SSH 설정 파일에 VM 정보 추가
+Host cloud-master-vm
+    HostName [VM_IP]
+    User ubuntu
+    IdentityFile ~/.ssh/cloud-master-key.pem
+    Port 22
+
+# VS Code에서 Remote SSH로 VM에 직접 연결하여 작업
+```
+
+### 📊 **작업 흐름도**
+
+```mermaid
+graph TD
+    A[WSL 환경] --> B[Git Repository 생성]
+    B --> C[실습 코드 Push]
+    C --> D[Cloud VM 접속]
+    D --> E[Repository Clone]
+    E --> F[실습 스크립트 실행]
+    F --> G[결과 확인]
+    G --> H[결과를 WSL로 동기화]
+    H --> I[WSL에서 분석 및 정리]
+    
+    style A fill:#e1f5fe
+    style D fill:#f3e5f5
+    style F fill:#e8f5e8
+    style I fill:#fff3e0
+```
+
+### 🚀 **권장 작업 순서**
+
+#### **실습 전 준비 (WSL)**
+1. **Git Repository 생성 및 설정**
+2. **실습 코드 Push**
+3. **VM 접속 정보 확인**
+
+#### **실습 실행 (Cloud VM)**
+1. **VM 환경 설정** (`vm-setup.sh` 실행)
+2. **Repository Clone**
+3. **실습 스크립트 순차 실행**
+
+#### **실습 후 정리 (WSL)**
+1. **결과 파일 동기화**
+2. **분석 및 문서화**
+3. **Repository 업데이트**
+
+### ⚠️ **주의사항**
+
+#### **보안 고려사항**
+- **SSH 키 관리**: 개인키는 안전하게 보관
+- **방화벽 설정**: 필요한 포트만 개방
+- **권한 관리**: 최소 권한 원칙 적용
+
+#### **비용 최적화**
+- **VM 사용 후 정리**: 실습 완료 후 VM 중지
+- **리소스 모니터링**: 사용하지 않는 리소스 정리
+- **스냅샷 활용**: 설정 완료된 VM 스냅샷 생성
+
+#### **백업 전략**
+- **코드 백업**: Git Repository에 정기적 커밋
+- **설정 백업**: VM 설정 스크립트 보관
+- **결과 백업**: 실습 결과물 정기적 다운로드
 
 ### 실습 후 달성할 수 있는 능력
-- ✅ 클라우드 로드밸런서 설정 및 관리
-- ✅ 통합 모니터링 시스템 구축
-- ✅ 분산 추적 및 로그 관리
-- ✅ 비용 최적화 전략 수립
-- ✅ 고가용성 아키텍처 설계
-- ✅ 프로덕션 스택 운영 (8개 서비스)
-- ✅ 보안 스캔 및 취약점 관리
-- ✅ 성능 최적화 (평균 응답시간 6.2ms)
+- ✅ 기존 VM을 활용한 로드밸런서 설정
+- ✅ AWS ALB와 GCP Cloud LB 비교 실습
+- ✅ Prometheus + Grafana 모니터링 시스템 구축
+- ✅ 비용 최적화 분석 및 리포트 생성
+- ✅ 자동화 스크립트를 통한 효율적 실습
+- ✅ 실제 프로덕션 환경과 유사한 실습 경험
 
 ---
 
@@ -49,195 +368,335 @@
 ```
 
 ### 🛠️ 실습 (60분)
-#### 1. AWS Application Load Balancer 설정
+
+#### 🚀 **권장: 자동화 스크립트 사용**
 ```bash
-# aws-elb-setup.sh
-#!/bin/bash
+# 1. AWS 로드밸런싱 구축
+./mcp_knowledge_base/cloud_master/repos/automation/day3/01-aws-loadbalancing.sh setup
 
-# 변수 설정
-ALB_NAME="github-actions-demo-alb"
-SECURITY_GROUP_NAME="github-actions-demo-sg"
-TARGET_GROUP_NAME="github-actions-demo-tg"
-VPC_ID=$(aws ec2 describe-vpcs --filters "Name=is-default,Values=true" --query "Vpcs[0].VpcId" --output text)
+# 2. GCP 로드밸런싱 구축
+./mcp_knowledge_base/cloud_master/repos/automation/day3/02-gcp-loadbalancing.sh setup
 
-echo "🚀 AWS Application Load Balancer 설정 시작..."
+# 3. 모니터링 스택 구축
+./mcp_knowledge_base/cloud_master/repos/automation/day3/03-monitoring-stack.sh setup
 
-# 1. 보안 그룹 생성
-echo "📋 보안 그룹 생성 중..."
-SECURITY_GROUP_ID=$(aws ec2 create-security-group \
-    --group-name $SECURITY_GROUP_NAME \
-    --description "Security group for GitHub Actions Demo ALB" \
-    --vpc-id $VPC_ID \
-    --query 'GroupId' \
-    --output text)
+# 4. 자동 스케일링 설정
+./mcp_knowledge_base/cloud_master/repos/automation/day3/04-autoscaling.sh setup
 
-# HTTP/HTTPS 트래픽 허용
-aws ec2 authorize-security-group-ingress \
-    --group-id $SECURITY_GROUP_ID \
-    --protocol tcp \
-    --port 80 \
-    --cidr 0.0.0.0/0
+# 5. 비용 최적화 분석
+./mcp_knowledge_base/cloud_master/repos/automation/day3/05-cost-optimization.sh analyze
 
-aws ec2 authorize-security-group-ingress \
-    --group-id $SECURITY_GROUP_ID \
-    --protocol tcp \
-    --port 443 \
-    --cidr 0.0.0.0/0
+# 6. 통합 테스트 실행
+./mcp_knowledge_base/cloud_master/repos/automation/day3/06-integration-test.sh setup
 
-echo "✅ 보안 그룹 생성 완료: $SECURITY_GROUP_ID"
+# 자동화 스크립트 장점:
+# ✅ 기존 VM 활용으로 비용 절약
+# ✅ 보안 그룹/방화벽 규칙 재사용으로 설정 간소화  
+# ✅ 타임아웃 처리로 안정성 확보
+# ✅ 진행 상황 실시간 표시
+# ✅ 자동 리소스 정리 기능
+# ✅ 에러 처리 강화
+# ✅ 멀티 클라우드 환경 지원
+```
 
-# 2. 타겟 그룹 생성
-echo "📋 타겟 그룹 생성 중..."
+#### 🔧 **수동 설정 (참고용)**
+```bash
+# AWS ALB 수동 설정 (자동화 스크립트 사용 권장)
+
+# 1. 기존 VM 확인
+aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" \
+    --query 'Reservations[*].Instances[*].[InstanceId,Tags[?Key==`Name`].Value|[0],PublicIpAddress]' \
+    --output table
+
+# 2. VPC 및 서브넷 정보 확인
+VPC_ID=$(aws ec2 describe-vpcs --filters "Name=is-default,Values=true" --query 'Vpcs[0].VpcId' --output text)
+aws ec2 describe-subnets --filters "Name=vpc-id,Values=$VPC_ID" --query 'Subnets[*].[SubnetId,AvailabilityZone]' --output table
+
+# 3. 기존 보안 그룹 확인
+INSTANCE_ID="i-099f55941265d751f"  # cloud-deployment-server
+SECURITY_GROUP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID \
+    --query 'Reservations[0].Instances[0].SecurityGroups[0].GroupId' --output text)
+echo "기존 보안 그룹: $SECURITY_GROUP"
+
+# 4. Target Group 생성 (상세 설정 포함)
 TARGET_GROUP_ARN=$(aws elbv2 create-target-group \
-    --name $TARGET_GROUP_NAME \
-    --protocol HTTP \
-    --port 3000 \
-    --vpc-id $VPC_ID \
-    --health-check-path /health \
+    --name "cloud-master-day3-targets" \
+    --protocol HTTP --port 80 --vpc-id $VPC_ID \
+    --health-check-path "/" \
     --health-check-interval-seconds 30 \
     --health-check-timeout-seconds 5 \
     --healthy-threshold-count 2 \
     --unhealthy-threshold-count 3 \
-    --query 'TargetGroups[0].TargetGroupArn' \
-    --output text)
+    --target-type instance \
+    --query 'TargetGroups[0].TargetGroupArn' --output text)
 
-echo "✅ 타겟 그룹 생성 완료: $TARGET_GROUP_ARN"
-
-# 3. Application Load Balancer 생성
-echo "📋 Application Load Balancer 생성 중..."
+# 5. ALB 생성
 ALB_ARN=$(aws elbv2 create-load-balancer \
-    --name $ALB_NAME \
-    --subnets $(aws ec2 describe-subnets --filters "Name=vpc-id,Values=$VPC_ID" --query "Subnets[0:2].SubnetId" --output text | tr '\t' ' ') \
-    --security-groups $SECURITY_GROUP_ID \
-    --query 'LoadBalancers[0].LoadBalancerArn' \
-    --output text)
+    --name "cloud-master-day3-alb" \
+    --subnets $(aws ec2 describe-subnets --filters "Name=vpc-id,Values=$VPC_ID" \
+        --query 'Subnets[*].SubnetId' --output text | tr '\n' ' ') \
+    --security-groups $SECURITY_GROUP \
+    --query 'LoadBalancers[0].LoadBalancerArn' --output text)
 
-# ALB DNS 이름 가져오기
-ALB_DNS=$(aws elbv2 describe-load-balancers \
-    --load-balancer-arns $ALB_ARN \
-    --query 'LoadBalancers[0].DNSName' \
-    --output text)
-
-echo "✅ Application Load Balancer 생성 완료: $ALB_DNS"
-
-# 4. 리스너 생성 (HTTP)
-echo "📋 HTTP 리스너 생성 중..."
-aws elbv2 create-listener \
-    --load-balancer-arn $ALB_ARN \
-    --protocol HTTP \
-    --port 80 \
-    --default-actions Type=forward,TargetGroupArn=$TARGET_GROUP_ARN
-
-echo "✅ HTTP 리스너 생성 완료"
-
-# 5. 타겟 등록 (기존 EC2 인스턴스)
-echo "📋 타겟 등록 중..."
-INSTANCE_ID=$(aws ec2 describe-instances \
-    --filters "Name=tag:Name,Values=github-actions-demo" \
-    --query "Reservations[0].Instances[0].InstanceId" \
-    --output text)
-
+# 6. VM을 Target Group에 등록
 aws elbv2 register-targets \
     --target-group-arn $TARGET_GROUP_ARN \
-    --targets Id=$INSTANCE_ID,Port=3000
+    --targets "Id=$INSTANCE_ID,Port=80"
 
-echo "✅ 타겟 등록 완료: $INSTANCE_ID"
+# 7. Listener 생성
+aws elbv2 create-listener \
+    --load-balancer-arn $ALB_ARN \
+    --protocol HTTP --port 80 \
+    --default-actions Type=forward,TargetGroupArn=$TARGET_GROUP_ARN
 
-echo "🎉 AWS ALB 설정 완료!"
-echo "🌐 ALB DNS: http://$ALB_DNS"
-echo "🔍 헬스체크: http://$ALB_DNS/health"
+# 8. ALB DNS 확인
+ALB_DNS=$(aws elbv2 describe-load-balancers \
+    --load-balancer-arns $ALB_ARN \
+    --query 'LoadBalancers[0].DNSName' --output text)
+echo "ALB DNS: http://$ALB_DNS"
+
+# 9. 확인 가능한 URL들
+echo "🌐 확인 가능한 URL들:"
+echo "- AWS ALB: http://$ALB_DNS"
+echo "- AWS Console: https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LoadBalancers:"
+echo "- Target Group: https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#TargetGroups:"
+echo "- EC2 Instances: https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Instances:"
 ```
 
-#### 2. GCP Cloud Load Balancing 설정
+#### 🚨 **Target Group 생성 실패 해결 방법**
 ```bash
-# gcp-lb-setup.sh
-#!/bin/bash
+# 1. 기존 Target Group 정리
+aws elbv2 describe-target-groups --query 'TargetGroups[?contains(TargetGroupName, `cloud-master-day3`)].TargetGroupArn' --output text | xargs -I {} aws elbv2 delete-target-group --target-group-arn {}
 
-# 변수 설정
-LB_NAME="github-actions-demo-lb"
-HEALTH_CHECK_NAME="github-actions-demo-hc"
-BACKEND_SERVICE_NAME="github-actions-demo-backend"
-INSTANCE_GROUP_NAME="github-actions-demo-ig"
-ZONE="us-central1-a"
+# 2. IAM 권한 확인
+aws iam get-user
+aws iam list-attached-user-policies --user-name $(aws sts get-caller-identity --query User --output text)
 
-echo "🚀 GCP Cloud Load Balancing 설정 시작..."
+# 3. VPC DNS 설정 확인
+aws ec2 describe-vpc-attribute --vpc-id $VPC_ID --attribute enableDnsHostnames
+aws ec2 describe-vpc-attribute --vpc-id $VPC_ID --attribute enableDnsSupport
 
-# 1. 인스턴스 그룹 생성
-echo "📋 인스턴스 그룹 생성 중..."
-gcloud compute instance-groups unmanaged create $INSTANCE_GROUP_NAME \
-    --zone=$ZONE
+# 4. Target Group 생성 디버그
+aws elbv2 create-target-group \
+    --name "test-target-group-$(date +%s)" \
+    --protocol HTTP --port 80 --vpc-id $VPC_ID \
+    --health-check-path "/" \
+    --health-check-interval-seconds 30 \
+    --health-check-timeout-seconds 5 \
+    --healthy-threshold-count 2 \
+    --unhealthy-threshold-count 3 \
+    --target-type instance \
+    --verbose
+```
 
-# 기존 VM 인스턴스를 그룹에 추가
-INSTANCE_NAME=$(gcloud compute instances list --filter="name~github-actions-demo" --format="value(name)" | head -1)
-gcloud compute instance-groups unmanaged add-instances $INSTANCE_GROUP_NAME \
-    --instances=$INSTANCE_NAME \
-    --zone=$ZONE
+#### 🔧 **GCP Cloud Load Balancing 수동 설정 (참고용)**
+```bash
+# GCP Cloud Load Balancing 수동 설정 (자동화 스크립트 사용 권장)
 
-echo "✅ 인스턴스 그룹 생성 완료"
+# 1. 기존 VM 확인
+gcloud compute instances list --format="table(name,zone,status,EXTERNAL_IP,INTERNAL_IP)"
 
-# 2. 헬스체크 생성
-echo "📋 헬스체크 생성 중..."
-gcloud compute health-checks create http $HEALTH_CHECK_NAME \
-    --port=3000 \
-    --request-path=/health \
-    --check-interval=30s \
-    --timeout=5s \
-    --healthy-threshold=2 \
-    --unhealthy-threshold=3
+# 2. Instance Group 생성
+gcloud compute instance-groups unmanaged create cloud-master-day3-ig --zone=asia-northeast3-a
 
-echo "✅ 헬스체크 생성 완료"
+# 3. VM을 Instance Group에 추가
+gcloud compute instance-groups unmanaged add-instances cloud-master-day3-ig \
+    --instances=cloud-deployment-server --zone=asia-northeast3-a
 
-# 3. 백엔드 서비스 생성
-echo "📋 백엔드 서비스 생성 중..."
-gcloud compute backend-services create $BACKEND_SERVICE_NAME \
-    --protocol=HTTP \
-    --port-name=http \
-    --health-checks=$HEALTH_CHECK_NAME \
-    --global
+# 4. Health Check 생성
+gcloud compute health-checks create http cloud-master-day3-hc \
+    --port=80 --request-path=/ --check-interval=10s --timeout=5s \
+    --healthy-threshold=1 --unhealthy-threshold=3
 
-# 인스턴스 그룹을 백엔드에 추가
-gcloud compute backend-services add-backend $BACKEND_SERVICE_NAME \
-    --instance-group=$INSTANCE_GROUP_NAME \
-    --instance-group-zone=$ZONE \
-    --global
+# 5. Backend Service 생성
+gcloud compute backend-services create cloud-master-day3-backend \
+    --protocol=HTTP --port-name=http --health-checks=cloud-master-day3-hc --global
 
-echo "✅ 백엔드 서비스 생성 완료"
+# 6. Backend Service에 Instance Group 추가
+gcloud compute backend-services add-backend cloud-master-day3-backend \
+    --instance-group=cloud-master-day3-ig \
+    --instance-group-zone=asia-northeast3-a --global
 
-# 4. URL 맵 생성
-echo "📋 URL 맵 생성 중..."
-gcloud compute url-maps create $LB_NAME \
-    --default-service=$BACKEND_SERVICE_NAME
+# 7. URL Map 생성
+gcloud compute url-maps create cloud-master-day3-url-map \
+    --default-service=cloud-master-day3-backend
 
-echo "✅ URL 맵 생성 완료"
+# 8. Target HTTP Proxy 생성
+gcloud compute target-http-proxies create cloud-master-day3-proxy \
+    --url-map=cloud-master-day3-url-map
 
-# 5. HTTP 프록시 생성
-echo "📋 HTTP 프록시 생성 중..."
-gcloud compute target-http-proxies create $LB_NAME-proxy \
-    --url-map=$LB_NAME
+# 9. Forwarding Rule 생성
+gcloud compute forwarding-rules create cloud-master-day3-rule \
+    --global --target-http-proxy=cloud-master-day3-proxy --ports=80
 
-echo "✅ HTTP 프록시 생성 완료"
+# 10. Load Balancer IP 확인
+LB_IP=$(gcloud compute forwarding-rules describe cloud-master-day3-rule \
+    --global --format="value(IPAddress)")
+echo "Load Balancer IP: http://$LB_IP"
 
-# 6. 글로벌 포워딩 규칙 생성
-echo "📋 글로벌 포워딩 규칙 생성 중..."
-gcloud compute forwarding-rules create $LB_NAME-rule \
-    --global \
-    --target-http-proxy=$LB_NAME-proxy \
-    --ports=80
+# 11. 확인 가능한 URL들
+echo "🌐 확인 가능한 URL들:"
+echo "- GCP Load Balancer: http://$LB_IP"
+echo "- GCP Console: https://console.cloud.google.com/net-services/loadbalancing"
+echo "- Instance Groups: https://console.cloud.google.com/compute/instanceGroups"
+echo "- Health Checks: https://console.cloud.google.com/compute/healthChecks"
+echo "- Backend Services: https://console.cloud.google.com/net-services/loadbalancing/backendServices"
+```
 
-echo "✅ 글로벌 포워딩 규칙 생성 완료"
+#### 🚀 **GCP MIG 자동 스케일링 자동화 스크립트**
+```bash
+# GCP Managed Instance Group 자동 스케일링 설정
+./mcp_knowledge_base/cloud_master/repos/automation/day3/gcp-autoscaling-practice-automation.sh setup
 
-# 7. 로드밸런서 IP 주소 확인
-LB_IP=$(gcloud compute forwarding-rules describe $LB_NAME-rule --global --format="value(IPAddress)")
+# 자동화 장점:
+# ✅ 인스턴스 템플릿 자동 생성
+# ✅ MIG 자동 스케일링 설정
+# ✅ 헬스 체크 자동 구성
+# ✅ 로드밸런서 자동 연결
+# ✅ 모니터링 스택 자동 구축
+```
 
-echo "🎉 GCP Cloud Load Balancing 설정 완료!"
-echo "🌐 LB IP: http://$LB_IP"
-echo "🔍 헬스체크: http://$LB_IP/health"
+#### 💰 **GCP 비용 최적화 자동화 스크립트**
+```bash
+# GCP 비용 최적화 분석 실행
+./mcp_knowledge_base/cloud_master/repos/automation/day3/gcp-cost-optimization-practice-automation.sh analyze
+
+# 자동화 장점:
+# ✅ 사용하지 않는 리소스 자동 검색
+# ✅ 비용 절약 권장사항 자동 생성
+# ✅ 상세한 비용 분석 리포트 제공
+# ✅ 실행 가능한 명령어 자동 생성
+```
+
+#### 🚀 **GCP 자동화 스크립트 상세 가이드**
+```bash
+# GCP Cloud Load Balancing 자동화 스크립트 사용법
+./mcp_knowledge_base/cloud_master/repos/automation/day3/02-gcp-loadbalancing.sh setup
+
+# GCP MIG 자동 스케일링 자동화 스크립트 사용법
+./mcp_knowledge_base/cloud_master/repos/automation/day3/04-autoscaling.sh setup
+
+# GCP 비용 최적화 자동화 스크립트 사용법
+./mcp_knowledge_base/cloud_master/repos/automation/day3/05-cost-optimization.sh analyze
+
+# GCP 통합 실습 자동화 스크립트 사용법
+./mcp_knowledge_base/cloud_master/repos/automation/day3/06-integration-test.sh setup
+
+# 스크립트 옵션:
+# setup   - 설정 실행 (기본값)
+# cleanup - 리소스 정리
+# test    - 시스템 테스트
+
+# 예시:
+./mcp_knowledge_base/cloud_master/repos/automation/day3/02-gcp-loadbalancing.sh cleanup
+./mcp_knowledge_base/cloud_master/repos/automation/day3/04-autoscaling.sh test
+```
+
+# 1. GCP 전용 로드밸런싱 실습
+./mcp_knowledge_base/cloud_master/repos/automation/day3/02-gcp-loadbalancing.sh setup
+
+# 2. GCP 모니터링 스택 자동 구축
+./mcp_knowledge_base/cloud_master/repos/automation/day3/03-monitoring-stack.sh setup
+
+# 3. GCP 자동 스케일링 설정
+./mcp_knowledge_base/cloud_master/repos/automation/day3/04-autoscaling.sh setup
+
+# 4. GCP 비용 최적화 분석
+./mcp_knowledge_base/cloud_master/repos/automation/day3/05-cost-optimization.sh analyze
+
+# GCP 자동화 스크립트 특징:
+# ✅ GCP Cloud SDK 자동 설정 확인
+# ✅ 기존 VM 자동 검색 및 활용
+# ✅ 방화벽 규칙 자동 생성 및 관리
+# ✅ Instance Group 자동 구성
+# ✅ Health Check 자동 설정
+# ✅ Backend Service 자동 생성
+# ✅ URL Map 및 Forwarding Rule 자동 구성
+# ✅ 로드밸런서 상태 자동 모니터링
+# ✅ 실패 시 자동 롤백 기능
+# ✅ 리소스 정리 자동화
 ```
 
 ### 📊 예상 결과
-- **성공률**: 85% (클라우드 서비스 복잡성)
-- **소요 시간**: 90분
-- **주요 이슈**: 권한 설정, 네트워크 구성
+- **성공률**: 95% (자동화 스크립트 활용)
+- **소요 시간**: 60분 (자동화로 단축)
+- **주요 개선**: 기존 VM 활용, 보안 그룹 재사용, 타임아웃 처리
+
+### 🏗️ 시스템 아키텍처 변화
+
+#### 초기 상태 (Day1, Day2 완료 후)
+```mermaid
+graph TB
+    subgraph "AWS"
+        A1[EC2 Instance<br/>cloud-deployment-server]
+        A2[Security Group<br/>기존 설정]
+        A3[VPC<br/>기본 VPC]
+    end
+    
+    subgraph "GCP"
+        G1[VM Instance<br/>cloud-deployment-server]
+        G2[Firewall Rules<br/>기존 설정]
+        G3[VPC Network<br/>기본 네트워크]
+    end
+    
+    subgraph "Local"
+        L1[개발자 머신]
+    end
+    
+    L1 --> A1
+    L1 --> G1
+```
+
+#### 1단계: AWS ALB 로드밸런싱 구축 후
+```mermaid
+graph TB
+    subgraph "AWS"
+        A1[EC2 Instance<br/>cloud-deployment-server]
+        A2[Security Group<br/>기존 설정]
+        A3[VPC<br/>기본 VPC]
+        A4[Application Load Balancer<br/>cloud-master-day3-alb]
+        A5[Target Group<br/>cloud-master-day3-targets]
+        A6[Listener<br/>HTTP:80]
+    end
+    
+    subgraph "GCP"
+        G1[VM Instance<br/>cloud-deployment-server]
+        G2[Firewall Rules<br/>기존 설정]
+        G3[VPC Network<br/>기본 네트워크]
+    end
+    
+    subgraph "Local"
+        L1[개발자 머신]
+    end
+    
+    L1 --> A4
+    A4 --> A6
+    A6 --> A5
+    A5 --> A1
+    L1 --> G1
+```
+
+**적용된 기능:**
+- ✅ **로드밸런서 생성**: 트래픽 분산 시작
+- ✅ **Target Group**: VM을 백엔드로 등록
+- ✅ **헬스체크**: 서버 상태 모니터링
+- ✅ **보안 그룹 재사용**: 기존 설정 활용
+
+#### 📊 장단점 분석
+
+**✅ 장점:**
+- **고가용성 확보**: 단일 장애점 제거로 서비스 안정성 향상
+- **트래픽 분산**: 부하를 여러 인스턴스에 균등 분산
+- **자동 장애 복구**: 헬스체크를 통한 자동 트래픽 전환
+- **비용 효율성**: 기존 VM 재사용으로 추가 비용 없음
+- **확장성 준비**: 향후 인스턴스 추가 용이
+
+**❌ 단점:**
+- **복잡성 증가**: 단순한 단일 VM에서 로드밸런서 구조로 복잡해짐
+- **지연 시간**: 로드밸런서를 통한 추가 홉으로 약간의 지연 발생
+- **비용 증가**: ALB 사용료 발생 (시간당 약 $0.0225)
+- **설정 복잡성**: Target Group, Listener 등 추가 설정 필요
+- **디버깅 어려움**: 문제 발생 시 로드밸런서와 백엔드 모두 확인 필요
 
 ---
 
@@ -251,13 +710,81 @@ echo "🔍 헬스체크: http://$LB_IP/health"
 - **ELK Stack**: 로그 수집 및 분석
 
 ### 🛠️ 실습 (60분)
-#### 1. Prometheus + Grafana 모니터링 스택
-```yaml
-# monitoring/docker-compose.monitoring.yml
-version: '3.8'
 
+#### 🚀 **권장: 자동화 스크립트 사용**
+```bash
+# 모니터링 스택이 자동으로 구축됩니다
+# AWS/GCP VM 실습 스크립트에 포함되어 있음
+
+# 1. AWS 통합 실습 실행 (모니터링 포함)
+./mcp_knowledge_base/cloud_master/repos/automation/day3/01-aws-loadbalancing.sh setup
+
+# 2. GCP 통합 실습 실행 (모니터링 포함)
+./mcp_knowledge_base/cloud_master/repos/automation/day3/02-gcp-loadbalancing.sh setup
+
+# 3. 멀티 클라우드 모니터링 통합 실행
+./mcp_knowledge_base/cloud_master/repos/automation/day3/03-monitoring-stack.sh setup
+
+# 4. 모니터링만 별도 실행
+./mcp_knowledge_base/cloud_master/repos/automation/day3/03-monitoring-stack.sh setup
+
+# 접속 URL:
+# - Prometheus: http://localhost:9090
+# - Grafana: http://localhost:3001 (admin/admin)
+# - Node Exporter: http://localhost:9100
+# - GCP Monitoring: https://console.cloud.google.com/monitoring
+
+# 확인 가능한 URL들
+echo "🌐 모니터링 시스템 접속 URL:"
+echo "- Prometheus (메트릭 수집): http://localhost:9090"
+echo "- Grafana (대시보드): http://localhost:3001 (admin/admin)"
+echo "- Node Exporter (시스템 메트릭): http://localhost:9100"
+echo "- GCP Cloud Monitoring: https://console.cloud.google.com/monitoring"
+echo "- Docker Compose 상태: docker-compose ps"
+
+# 자동화 장점:
+# ✅ Docker Compose 자동 실행
+# ✅ Prometheus 설정 자동 생성
+# ✅ Grafana 데이터소스 자동 설정
+# ✅ 시스템 메트릭 수집 자동 설정
+# ✅ 컨테이너 상태 모니터링
+# ✅ GCP Cloud Monitoring 연동
+# ✅ 멀티 클라우드 메트릭 통합
+```
+
+#### 🔧 **수동 모니터링 설정 (참고용)**
+```bash
+# Docker Compose로 모니터링 스택 수동 실행
+
+# 1. 모니터링 디렉토리 생성
+mkdir -p monitoring/{prometheus,grafana/dashboards,grafana/provisioning/datasources}
+
+# 2. Prometheus 설정 파일 생성
+cat > monitoring/prometheus/prometheus.yml << 'EOF'
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+  
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+  
+  - job_name: 'app'
+    static_configs:
+      - targets: ['app:3000']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+EOF
+
+# 3. Docker Compose 파일 생성
+cat > monitoring/docker-compose.yml << 'EOF'
+version: '3.8'
 services:
-  # Prometheus 메트릭 수집
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -265,34 +792,22 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./prometheus/alert_rules.yml:/etc/prometheus/alert_rules.yml
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/etc/prometheus/console_libraries'
-      - '--web.console.templates=/etc/prometheus/consoles'
-      - '--storage.tsdb.retention.time=200h'
       - '--web.enable-lifecycle'
-    networks:
-      - monitoring
 
-  # Grafana 시각화
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
     ports:
       - "3001:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./grafana/dashboards:/var/lib/grafana/dashboards
-      - ./grafana/provisioning:/etc/grafana/provisioning
-    networks:
-      - monitoring
 
-  # Node Exporter (시스템 메트릭)
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
@@ -306,136 +821,124 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
-    networks:
-      - monitoring
-
-  # Jaeger 분산 추적
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    container_name: jaeger
-    ports:
-      - "16686:16686"
-      - "14268:14268"
-    environment:
-      - COLLECTOR_OTLP_ENABLED=true
-    networks:
-      - monitoring
 
 volumes:
   prometheus_data:
   grafana_data:
+EOF
 
-networks:
-  monitoring:
-    driver: bridge
-```
+# 4. 모니터링 스택 실행
+cd monitoring
+docker-compose up -d
 
-#### 2. Prometheus 설정
-```yaml
-# monitoring/prometheus/prometheus.yml
-global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
+# 5. 상태 확인
+echo "🔍 모니터링 시스템 상태 확인"
+curl -f http://localhost:9090 && echo "✅ Prometheus 정상"
+curl -f http://localhost:3001 && echo "✅ Grafana 정상"
+curl -f http://localhost:9100 && echo "✅ Node Exporter 정상"
 
-rule_files:
-  - "alert_rules.yml"
+# 6. 접속 정보
+echo "📊 모니터링 접속 정보:"
+echo "- Prometheus: http://localhost:9090"
+echo "- Grafana: http://localhost:3001 (admin/admin)"
+echo "- Node Exporter: http://localhost:9100"
 
-alerting:
-  alertmanagers:
-    - static_configs:
-        - targets: []
-
-scrape_configs:
-  # Prometheus 자체 모니터링
-  - job_name: 'prometheus'
-    static_configs:
-      - targets: ['localhost:9090']
-
-  # Node Exporter (시스템 메트릭)
-  - job_name: 'node-exporter'
-    static_configs:
-      - targets: ['node-exporter:9100']
-
-  # 애플리케이션 메트릭
-  - job_name: 'github-actions-demo'
-    static_configs:
-      - targets: ['app:3000']
-    metrics_path: '/metrics'
-    scrape_interval: 30s
-```
-
-#### 3. Grafana 대시보드 설정
-```json
-// monitoring/grafana/dashboards/app-dashboard.json
-{
-  "dashboard": {
-    "id": null,
-    "title": "GitHub Actions Demo - Application Dashboard",
-    "tags": ["github-actions-demo"],
-    "style": "dark",
-    "timezone": "browser",
-    "panels": [
-      {
-        "id": 1,
-        "title": "Application Health",
-        "type": "stat",
-        "targets": [
-          {
-            "expr": "up{job=\"github-actions-demo\"}",
-            "legendFormat": "App Status"
-          }
-        ],
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "thresholds": {
-              "steps": [
-                {"color": "red", "value": 0},
-                {"color": "green", "value": 1}
-              ]
-            }
-          }
-        }
-      },
-      {
-        "id": 2,
-        "title": "HTTP Request Rate",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "rate(http_requests_total[5m])",
-            "legendFormat": "{{method}} {{endpoint}}"
-          }
-        ]
-      },
-      {
-        "id": 3,
-        "title": "Response Time",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))",
-            "legendFormat": "95th percentile"
-          }
-        ]
-      }
-    ],
-    "time": {
-      "from": "now-1h",
-      "to": "now"
-    },
-    "refresh": "30s"
-  }
-}
+# 7. 추가 확인 URL들
+echo "🌐 추가 확인 가능한 URL들:"
+echo "- Prometheus Targets: http://localhost:9090/targets"
+echo "- Prometheus Graph: http://localhost:9090/graph"
+echo "- Grafana Dashboards: http://localhost:3001/dashboards"
+echo "- Grafana Data Sources: http://localhost:3001/datasources"
+echo "- Node Exporter Metrics: http://localhost:9100/metrics"
+echo "- Docker Compose Logs: docker-compose logs"
 ```
 
 ### 📊 예상 결과
-- **성공률**: 80% (모니터링 스택 복잡성)
-- **소요 시간**: 75분
-- **주요 이슈**: 메트릭 수집 설정, 대시보드 구성
+- **성공률**: 95% (자동화 스크립트 활용)
+- **소요 시간**: 30분 (자동화로 단축)
+- **주요 개선**: Docker Compose 자동 실행, 설정 파일 자동 생성
+
+### 🏗️ 시스템 아키텍처 변화
+
+#### 2단계: 모니터링 스택 구축 후
+```mermaid
+graph TB
+    subgraph "AWS"
+        A1[EC2 Instance<br/>cloud-deployment-server]
+        A2[Security Group<br/>기존 설정]
+        A3[VPC<br/>기본 VPC]
+        A4[Application Load Balancer<br/>cloud-master-day3-alb]
+        A5[Target Group<br/>cloud-master-day3-targets]
+        A6[Listener<br/>HTTP:80]
+    end
+    
+    subgraph "GCP"
+        G1[VM Instance<br/>cloud-deployment-server]
+        G2[Firewall Rules<br/>기존 설정]
+        G3[VPC Network<br/>기본 네트워크]
+        G4[HTTP(S) Load Balancer<br/>cloud-master-day3-rule]
+        G5[Backend Service<br/>cloud-master-day3-backend]
+        G6[Instance Group<br/>cloud-master-day3-ig]
+        G7[Health Check<br/>cloud-master-day3-hc]
+    end
+    
+    subgraph "Local - Monitoring Stack"
+        M1[Prometheus<br/>:9090]
+        M2[Grafana<br/>:3001]
+        M3[Node Exporter<br/>:9100]
+        M4[Docker Compose<br/>모니터링 스택]
+    end
+    
+    subgraph "Local"
+        L1[개발자 머신]
+    end
+    
+    L1 --> A4
+    A4 --> A6
+    A6 --> A5
+    A5 --> A1
+    
+    L1 --> G4
+    G4 --> G5
+    G5 --> G6
+    G6 --> G1
+    G5 --> G7
+    G7 --> G1
+    
+    M1 --> A1
+    M1 --> G1
+    M3 --> A1
+    M3 --> G1
+    M2 --> M1
+    L1 --> M2
+    L1 --> M1
+    L1 --> M3
+```
+
+**적용된 기능:**
+- ✅ **Prometheus**: 메트릭 수집 및 저장
+- ✅ **Grafana**: 시각화 대시보드
+- ✅ **Node Exporter**: 시스템 메트릭 수집
+- ✅ **Docker Compose**: 모니터링 스택 자동화
+- ✅ **GCP Load Balancer**: 멀티 클라우드 로드밸런싱
+
+#### 📊 장단점 분석
+
+**✅ 장점:**
+- **실시간 모니터링**: 시스템 상태를 실시간으로 파악 가능
+- **시각화**: Grafana를 통한 직관적인 대시보드 제공
+- **문제 조기 발견**: 메트릭 기반으로 성능 이슈 사전 감지
+- **멀티 클라우드 지원**: AWS와 GCP 리소스 동시 모니터링
+- **자동화**: Docker Compose로 모니터링 스택 자동 구축
+- **확장성**: 추가 메트릭 수집기 쉽게 추가 가능
+
+**❌ 단점:**
+- **리소스 사용량**: 모니터링 스택 자체가 CPU/메모리 사용
+- **데이터 저장**: Prometheus가 메트릭 데이터를 계속 저장하여 디스크 사용량 증가
+- **복잡성**: 모니터링 설정과 대시보드 구성에 추가 학습 필요
+- **비용**: GCP Cloud Monitoring 사용 시 추가 비용 발생 가능
+- **의존성**: 모니터링 시스템 장애 시 전체 시스템 상태 파악 어려움
+- **설정 관리**: Prometheus 설정 파일과 Grafana 대시보드 관리 필요
 
 ---
 
@@ -453,142 +956,86 @@ scrape_configs:
 - **의존성 분석**: 서비스 간 관계 파악
 
 ### 🛠️ 실습 (75분)
-#### 1. Jaeger 분산 추적 설정
-```javascript
-// src/app.js에 Jaeger 추적 추가
-const express = require('express');
-const { initTracer } = require('jaeger-client');
 
-// Jaeger 설정
-const config = {
-  serviceName: 'github-actions-demo',
-  sampler: {
-    type: 'const',
-    param: 1,
-  },
-  reporter: {
-    logSpans: true,
-    agentHost: process.env.JAEGER_AGENT_HOST || 'jaeger',
-    agentPort: process.env.JAEGER_AGENT_PORT || 14268,
-  },
-};
+#### 🚀 **권장: 자동화 스크립트 사용**
+```bash
+# 비용 최적화 자동 분석 실행
+./mcp_knowledge_base/cloud_master/repos/automation/day3/05-cost-optimization.sh analyze
 
-const tracer = initTracer(config);
-
-// Express 미들웨어
-app.use((req, res, next) => {
-  const span = tracer.startSpan(`${req.method} ${req.path}`);
-  req.span = span;
-  
-  res.on('finish', () => {
-    span.setTag('http.status_code', res.statusCode);
-    span.finish();
-  });
-  
-  next();
-});
-
-// 데이터베이스 쿼리 추적
-app.get('/api/users', async (req, res) => {
-  const span = tracer.startSpan('get_users', { childOf: req.span });
-  
-  try {
-    const result = await pool.query('SELECT * FROM users ORDER BY created_at DESC');
-    span.setTag('db.rows_returned', result.rows.length);
-    res.json(result.rows);
-  } catch (error) {
-    span.setTag('error', true);
-    span.setTag('error.message', error.message);
-    res.status(500).json({ error: error.message });
-  } finally {
-    span.finish();
-  }
-});
+# 자동화 장점:
+# ✅ AWS/GCP 비용 분석 자동 실행
+# ✅ 사용하지 않는 리소스 자동 검색
+# ✅ 비용 최적화 리포트 자동 생성
+# ✅ 예산 알림 설정 자동 구성
+# ✅ 리소스 사용량 분석 자동화
 ```
 
-#### 2. ELK Stack 로그 관리
-```yaml
-# monitoring/docker-compose.logging.yml
-version: '3.8'
+#### 🔧 **수동 비용 최적화 분석 (참고용)**
+```bash
+# AWS 비용 분석 수동 실행
 
-services:
-  # Elasticsearch
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
-    container_name: elasticsearch
-    environment:
-      - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ports:
-      - "9200:9200"
-    volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
-    networks:
-      - logging
+# 1. AWS 비용 및 사용량 조회
+echo "💰 AWS 비용 분석 시작..."
+aws ce get-cost-and-usage \
+    --time-period Start=2024-01-01,End=2024-12-31 \
+    --granularity MONTHLY \
+    --metrics BlendedCost \
+    --group-by Type=DIMENSION,Key=SERVICE
 
-  # Logstash
-  logstash:
-    image: docker.elastic.co/logstash/logstash:7.15.0
-    container_name: logstash
-    ports:
-      - "5044:5044"
-    volumes:
-      - ./logstash/pipeline:/usr/share/logstash/pipeline
-      - ./logstash/config:/usr/share/logstash/config
-    depends_on:
-      - elasticsearch
-    networks:
-      - logging
+# 2. 사용하지 않는 EC2 인스턴스 찾기
+echo "🔍 중지된 EC2 인스턴스:"
+aws ec2 describe-instances \
+    --filters "Name=instance-state-name,Values=stopped" \
+    --query "Reservations[].Instances[].{InstanceId:InstanceId,State:State.Name,LaunchTime:LaunchTime}" \
+    --output table
 
-  # Kibana
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.15.0
-    container_name: kibana
-    ports:
-      - "5601:5601"
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-    depends_on:
-      - elasticsearch
-    networks:
-      - logging
+# 3. 사용하지 않는 EBS 볼륨 찾기
+echo "🔍 사용하지 않는 EBS 볼륨:"
+aws ec2 describe-volumes \
+    --filters "Name=status,Values=available" \
+    --query "Volumes[].{VolumeId:VolumeId,Size:Size,CreateTime:CreateTime}" \
+    --output table
 
-volumes:
-  elasticsearch_data:
+# 4. 사용하지 않는 Elastic IP 찾기
+echo "🔍 사용하지 않는 Elastic IP:"
+aws ec2 describe-addresses \
+    --query "Addresses[?AssociationId==null].{PublicIp:PublicIp,AllocationId:AllocationId}" \
+    --output table
 
-networks:
-  logging:
-    driver: bridge
-```
+# 5. GCP 비용 분석
+echo "💰 GCP 비용 분석..."
+gcloud billing budgets list
 
-#### 3. 애플리케이션 로그 설정
-```javascript
-// src/logger.js
-const winston = require('winston');
+# 6. 중지된 GCP 인스턴스 찾기
+echo "🔍 중지된 GCP 인스턴스:"
+gcloud compute instances list --filter="status=TERMINATED" --format="table(name,zone,status)"
 
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.errors({ stack: true }),
-    winston.format.json()
-  ),
-  transports: [
-    new winston.transports.Console({
-      format: winston.format.simple()
-    }),
-    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'logs/combined.log' })
-  ]
-});
+# 7. 사용하지 않는 GCP 디스크 찾기
+echo "🔍 사용하지 않는 GCP 디스크:"
+gcloud compute disks list --filter="status=UNATTACHED" --format="table(name,zone,sizeGb,status)"
 
-module.exports = logger;
+# 8. 비용 최적화 권장사항
+echo "📊 비용 최적화 권장사항:"
+echo "1. 중지된 인스턴스 삭제 또는 스냅샷 생성 후 삭제"
+echo "2. 사용하지 않는 EBS 볼륨 삭제"
+echo "3. 사용하지 않는 Elastic IP 해제"
+echo "4. 예약 인스턴스 고려 (장기 사용 시)"
+echo "5. 스팟 인스턴스 활용 (개발/테스트 환경)"
+
+# 9. 확인 가능한 URL들
+echo "🌐 비용 최적화 확인 URL들:"
+echo "- AWS Cost Explorer: https://console.aws.amazon.com/cost-management/home#/dashboard"
+echo "- AWS Budgets: https://console.aws.amazon.com/billing/home#/budgets"
+echo "- AWS Trusted Advisor: https://console.aws.amazon.com/trustedadvisor/"
+echo "- GCP Billing: https://console.cloud.google.com/billing"
+echo "- GCP Recommender: https://console.cloud.google.com/recommender"
+echo "- GCP Cost Management: https://console.cloud.google.com/cost-management"
 ```
 
 ### 📊 예상 결과
-- **성공률**: 75% (분산 추적 복잡성)
-- **소요 시간**: 90분
-- **주요 이슈**: 추적 설정, 로그 파이프라인 구성
+- **성공률**: 95% (자동화 스크립트 활용)
+- **소요 시간**: 30분 (자동화로 단축)
+- **주요 개선**: 비용 분석 자동화, 리포트 자동 생성
 
 ---
 
@@ -602,57 +1049,49 @@ module.exports = logger;
 - **예약 인스턴스**: 장기 사용 시 할인 혜택
 
 ### 🛠️ 실습 (75분)
-#### 1. AWS Auto Scaling 설정
+
+#### 🚀 **권장: 자동화 스크립트 사용**
 ```bash
-# aws-autoscaling-setup.sh
-#!/bin/bash
+# 자동 스케일링 자동 설정 실행
+./mcp_knowledge_base/cloud_master/repos/automation/day3/04-autoscaling.sh setup
 
-# 변수 설정
-LAUNCH_TEMPLATE_NAME="github-actions-demo-template"
-AUTO_SCALING_GROUP_NAME="github-actions-demo-asg"
-TARGET_GROUP_ARN="arn:aws:elasticloadbalancing:us-west-2:123456789012:targetgroup/github-actions-demo-tg/1234567890123456"
+# 자동화 장점:
+# ✅ AWS Auto Scaling Group 자동 생성
+# ✅ GCP Managed Instance Group 자동 설정
+# ✅ 스케일링 정책 자동 구성
+# ✅ 헬스체크 자동 설정
+# ✅ 타겟 그룹 자동 연결
+```
 
-echo "🚀 AWS Auto Scaling 설정 시작..."
+#### 🔧 **수동 자동 스케일링 설정 (참고용)**
+```bash
+# AWS Auto Scaling 수동 설정
 
 # 1. Launch Template 생성
-echo "📋 Launch Template 생성 중..."
 LAUNCH_TEMPLATE_ID=$(aws ec2 create-launch-template \
-    --launch-template-name $LAUNCH_TEMPLATE_NAME \
+    --launch-template-name cloud-master-day3-template \
     --launch-template-data '{
         "ImageId": "ami-0c02fb55956c7d316",
         "InstanceType": "t2.micro",
-        "KeyName": "my-key-pair",
-        "SecurityGroupIds": ["sg-12345678"],
-        "UserData": "'$(base64 -w 0 user-data.sh)'",
+        "SecurityGroupIds": ["'$SECURITY_GROUP'"],
         "TagSpecifications": [{
             "ResourceType": "instance",
-            "Tags": [{"Key": "Name", "Value": "github-actions-demo-asg"}]
+            "Tags": [{"Key": "Name", "Value": "cloud-master-day3-asg"}]
         }]
     }' \
-    --query 'LaunchTemplate.LaunchTemplateId' \
-    --output text)
-
-echo "✅ Launch Template 생성 완료: $LAUNCH_TEMPLATE_ID"
+    --query 'LaunchTemplate.LaunchTemplateId' --output text)
 
 # 2. Auto Scaling Group 생성
-echo "📋 Auto Scaling Group 생성 중..."
 aws autoscaling create-auto-scaling-group \
-    --auto-scaling-group-name $AUTO_SCALING_GROUP_NAME \
+    --auto-scaling-group-name cloud-master-day3-asg \
     --launch-template LaunchTemplateId=$LAUNCH_TEMPLATE_ID,Version='$Latest' \
-    --min-size 1 \
-    --max-size 3 \
-    --desired-capacity 2 \
+    --min-size 1 --max-size 3 --desired-capacity 2 \
     --target-group-arns $TARGET_GROUP_ARN \
-    --health-check-type ELB \
-    --health-check-grace-period 300
-
-echo "✅ Auto Scaling Group 생성 완료"
+    --health-check-type ELB --health-check-grace-period 300
 
 # 3. 스케일링 정책 생성
-echo "📋 스케일링 정책 생성 중..."
-# CPU 사용률 기반 스케일 아웃
 aws autoscaling put-scaling-policy \
-    --auto-scaling-group-name $AUTO_SCALING_GROUP_NAME \
+    --auto-scaling-group-name cloud-master-day3-asg \
     --policy-name scale-out-policy \
     --policy-type TargetTrackingScaling \
     --target-tracking-configuration '{
@@ -662,193 +1101,394 @@ aws autoscaling put-scaling-policy \
         }
     }'
 
-# CPU 사용률 기반 스케일 인
-aws autoscaling put-scaling-policy \
-    --auto-scaling-group-name $AUTO_SCALING_GROUP_NAME \
-    --policy-name scale-in-policy \
-    --policy-type TargetTrackingScaling \
-    --target-tracking-configuration '{
-        "TargetValue": 30.0,
-        "PredefinedMetricSpecification": {
-            "PredefinedMetricType": "ASGAverageCPUUtilization"
-        }
-    }'
+# GCP Managed Instance Group 수동 설정
+gcloud compute instance-templates create cloud-master-day3-template \
+    --image-family=ubuntu-2004-lts --image-project=ubuntu-os-cloud \
+    --machine-type=e2-micro --boot-disk-size=10GB
 
-echo "✅ 스케일링 정책 생성 완료"
+gcloud compute instance-groups managed create cloud-master-day3-mig \
+    --template=cloud-master-day3-template --size=2 --zone=asia-northeast3-a
 
-echo "🎉 AWS Auto Scaling 설정 완료!"
-```
+gcloud compute instance-groups managed set-autoscaling cloud-master-day3-mig \
+    --zone=asia-northeast3-a --max-num-replicas=5 --min-num-replicas=1 \
+    --target-cpu-utilization=0.7 --cool-down-period=60
 
-#### 2. GCP Managed Instance Group 설정
-```bash
-# gcp-autoscaling-setup.sh
-#!/bin/bash
-
-# 변수 설정
-INSTANCE_TEMPLATE_NAME="github-actions-demo-template"
-INSTANCE_GROUP_NAME="github-actions-demo-mig"
-ZONE="us-central1-a"
-
-echo "🚀 GCP Managed Instance Group 설정 시작..."
-
-# 1. 인스턴스 템플릿 생성
-echo "📋 인스턴스 템플릿 생성 중..."
-gcloud compute instance-templates create $INSTANCE_TEMPLATE_NAME \
-    --image-family=ubuntu-2004-lts \
-    --image-project=ubuntu-os-cloud \
-    --machine-type=e2-micro \
-    --boot-disk-size=10GB \
-    --boot-disk-type=pd-standard \
-    --tags=github-actions-demo \
-    --metadata-from-file startup-script=startup-script.sh
-
-echo "✅ 인스턴스 템플릿 생성 완료"
-
-# 2. Managed Instance Group 생성
-echo "📋 Managed Instance Group 생성 중..."
-gcloud compute instance-groups managed create $INSTANCE_GROUP_NAME \
-    --template=$INSTANCE_TEMPLATE_NAME \
-    --size=2 \
-    --zone=$ZONE
-
-echo "✅ Managed Instance Group 생성 완료"
-
-# 3. 자동 스케일링 설정
-echo "📋 자동 스케일링 설정 중..."
-gcloud compute instance-groups managed set-autoscaling $INSTANCE_GROUP_NAME \
-    --zone=$ZONE \
-    --max-num-replicas=5 \
-    --min-num-replicas=1 \
-    --target-cpu-utilization=0.7 \
-    --cool-down-period=60
-
-echo "✅ 자동 스케일링 설정 완료"
-
-echo "🎉 GCP Managed Instance Group 설정 완료!"
-```
-
-#### 3. 비용 최적화 스크립트
-```bash
-# cost-optimization.sh
-#!/bin/bash
-
-echo "💰 클라우드 비용 최적화 분석 시작..."
-
-# AWS 비용 분석
-echo "📊 AWS 비용 분석..."
-aws ce get-cost-and-usage \
-    --time-period Start=2024-09-01,End=2024-09-30 \
-    --granularity MONTHLY \
-    --metrics BlendedCost \
-    --group-by Type=DIMENSION,Key=SERVICE
-
-# 사용하지 않는 리소스 찾기
-echo "🔍 사용하지 않는 리소스 검색..."
-
-# 중지된 EC2 인스턴스
-echo "📋 중지된 EC2 인스턴스:"
-aws ec2 describe-instances \
-    --filters "Name=instance-state-name,Values=stopped" \
-    --query "Reservations[].Instances[].{InstanceId:InstanceId,State:State.Name,LaunchTime:LaunchTime}"
-
-# 사용하지 않는 EBS 볼륨
-echo "📋 사용하지 않는 EBS 볼륨:"
-aws ec2 describe-volumes \
-    --filters "Name=status,Values=available" \
-    --query "Volumes[].{VolumeId:VolumeId,Size:Size,CreateTime:CreateTime}"
-
-# GCP 비용 분석
-echo "📊 GCP 비용 분석..."
-gcloud billing budgets list
-
-# 사용하지 않는 GCP 리소스
-echo "🔍 사용하지 않는 GCP 리소스 검색..."
-
-# 중지된 Compute Engine 인스턴스
-echo "📋 중지된 Compute Engine 인스턴스:"
-gcloud compute instances list --filter="status=TERMINATED"
-
-# 사용하지 않는 디스크
-echo "📋 사용하지 않는 디스크:"
-gcloud compute disks list --filter="status=UNATTACHED"
-
-echo "✅ 비용 최적화 분석 완료!"
+# 확인 가능한 URL들
+echo "🌐 자동 스케일링 확인 URL들:"
+echo "- AWS Auto Scaling Groups: https://console.aws.amazon.com/ec2autoscaling/home?region=us-east-1#/groups"
+echo "- AWS Launch Templates: https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LaunchTemplates:"
+echo "- AWS CloudWatch Alarms: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#alarmsV2:"
+echo "- GCP Instance Groups: https://console.cloud.google.com/compute/instanceGroups"
+echo "- GCP Instance Templates: https://console.cloud.google.com/compute/instanceTemplates"
+echo "- GCP Monitoring: https://console.cloud.google.com/monitoring"
 ```
 
 ### 📊 예상 결과
-- **성공률**: 70% (자동 스케일링 복잡성)
-- **소요 시간**: 90분
-- **주요 이슈**: 권한 설정, 스케일링 정책 구성
+- **성공률**: 95% (자동화 스크립트 활용)
+- **소요 시간**: 30분 (자동화로 단축)
+- **주요 개선**: 스케일링 정책 자동 구성, 헬스체크 자동 설정
+
+### 🏗️ 시스템 아키텍처 변화
+
+#### 3단계: 자동 스케일링 설정 후
+```mermaid
+graph TB
+    subgraph "AWS"
+        A1[EC2 Instances<br/>Auto Scaling Group]
+        A2[Security Group<br/>기존 설정]
+        A3[VPC<br/>기본 VPC]
+        A4[Application Load Balancer<br/>cloud-master-day3-alb]
+        A5[Target Group<br/>cloud-master-day3-targets]
+        A6[Listener<br/>HTTP:80]
+        A7[Auto Scaling Group<br/>cloud-master-day3-asg]
+        A8[Launch Template<br/>cloud-master-day3-template]
+        A9[Scaling Policy<br/>CPU 기반 스케일링]
+    end
+    
+    subgraph "GCP"
+        G1[VM Instances<br/>Managed Instance Group]
+        G2[Firewall Rules<br/>기존 설정]
+        G3[VPC Network<br/>기본 네트워크]
+        G4[HTTP(S) Load Balancer<br/>cloud-master-day3-rule]
+        G5[Backend Service<br/>cloud-master-day3-backend]
+        G6[Instance Group<br/>cloud-master-day3-ig]
+        G7[Health Check<br/>cloud-master-day3-hc]
+        G8[Managed Instance Group<br/>cloud-master-day3-mig]
+        G9[Instance Template<br/>cloud-master-day3-template]
+        G10[Autoscaling Policy<br/>CPU 기반 스케일링]
+    end
+    
+    subgraph "Local - Monitoring Stack"
+        M1[Prometheus<br/>:9090]
+        M2[Grafana<br/>:3001]
+        M3[Node Exporter<br/>:9100]
+        M4[Docker Compose<br/>모니터링 스택]
+    end
+    
+    subgraph "Local"
+        L1[개발자 머신]
+    end
+    
+    L1 --> A4
+    A4 --> A6
+    A6 --> A5
+    A5 --> A1
+    A5 --> A7
+    A7 --> A8
+    A7 --> A9
+    
+    L1 --> G4
+    G4 --> G5
+    G5 --> G6
+    G6 --> G1
+    G5 --> G8
+    G8 --> G9
+    G8 --> G10
+    G5 --> G7
+    G7 --> G1
+    
+    M1 --> A1
+    M1 --> G1
+    M3 --> A1
+    M3 --> G1
+    M2 --> M1
+    L1 --> M2
+    L1 --> M1
+    L1 --> M3
+```
+
+**적용된 기능:**
+- ✅ **AWS Auto Scaling**: CPU 기반 자동 스케일링
+- ✅ **GCP MIG**: Managed Instance Group 자동 스케일링
+- ✅ **Launch Template**: 인스턴스 템플릿 자동 생성
+- ✅ **Scaling Policy**: 스케일링 정책 자동 구성
+- ✅ **동적 리소스 관리**: 수요에 따른 자동 인스턴스 조정
+
+#### 📊 장단점 분석
+
+**✅ 장점:**
+- **비용 최적화**: 트래픽에 따라 자동으로 리소스 조정하여 비용 절약
+- **성능 보장**: 높은 부하 시 자동으로 인스턴스 추가하여 성능 유지
+- **운영 효율성**: 수동 개입 없이 자동으로 시스템 관리
+- **확장성**: 수요 증가에 즉시 대응 가능
+- **안정성**: 인스턴스 장애 시 자동으로 교체
+- **멀티 클라우드**: AWS와 GCP 모두에서 동일한 자동 스케일링 적용
+
+**❌ 단점:**
+- **복잡성 증가**: 스케일링 정책 설정과 튜닝이 복잡
+- **비용 예측 어려움**: 자동 스케일링으로 인한 비용 변동성 증가
+- **Cold Start**: 새 인스턴스 시작 시 초기 응답 시간 지연
+- **설정 오류 위험**: 잘못된 스케일링 정책으로 과도한 비용 발생 가능
+- **의존성**: 스케일링 정책에 의존하여 수동 제어 어려움
+- **모니터링 필요**: 스케일링 동작을 지속적으로 모니터링해야 함
 
 ---
 
 ## 🕘 5교시: 통합 테스트 및 최종 정리 (16:30~17:00)
 
 ### 🛠️ 실습 (30분)
-#### 1. 전체 시스템 통합 테스트
+
+#### 🚀 **권장: 통합 자동화 스크립트 사용**
+```bash
+# 전체 시스템 통합 테스트 자동 실행
+./mcp_knowledge_base/cloud_master/repos/automation/day3/06-integration-test.sh setup
+
+# 개선된 통합 실습 (매끄러운 실행)
+./mcp_knowledge_base/cloud_master/repos/automation/day3/06-integration-test.sh setup
+
+# 자동화 장점:
+# ✅ 전체 시스템 상태 자동 확인
+# ✅ 로드밸런서 헬스체크 자동 실행
+# ✅ 모니터링 시스템 접속 확인
+# ✅ 성능 테스트 자동 실행
+# ✅ 결과 리포트 자동 생성
+```
+
+#### 🔧 **수동 통합 테스트 (참고용)**
 ```bash
 # 전체 시스템 상태 확인
 echo "🔍 전체 시스템 상태 확인..."
 
-# 로드밸런서 상태
-echo "📋 로드밸런서 상태:"
-curl -f http://$ALB_DNS/health
-curl -f http://$LB_IP/health
+# 1. 로드밸런서 상태 확인
+echo "📋 AWS ALB 상태:"
+ALB_DNS=$(aws elbv2 describe-load-balancers \
+    --names cloud-master-day3-alb \
+    --query 'LoadBalancers[0].DNSName' --output text)
+curl -f http://$ALB_DNS/health && echo "✅ AWS ALB 정상"
 
-# 모니터링 시스템
+# 2. 모니터링 시스템 확인
 echo "📋 모니터링 시스템:"
-curl -f http://localhost:9090  # Prometheus
-curl -f http://localhost:3001  # Grafana
-curl -f http://localhost:16686 # Jaeger
-curl -f http://localhost:5601  # Kibana
+curl -f http://localhost:9090 && echo "✅ Prometheus 정상"
+curl -f http://localhost:3001 && echo "✅ Grafana 정상"
+curl -f http://localhost:9100 && echo "✅ Node Exporter 정상"
 
-# 자동 스케일링 상태
+# 3. 자동 스케일링 상태 확인
 echo "📋 자동 스케일링 상태:"
-aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $AUTO_SCALING_GROUP_NAME
-gcloud compute instance-groups managed describe $INSTANCE_GROUP_NAME --zone=$ZONE
-```
+aws autoscaling describe-auto-scaling-groups \
+    --auto-scaling-group-names cloud-master-day3-asg \
+    --query 'AutoScalingGroups[0].{DesiredCapacity:DesiredCapacity,MinSize:MinSize,MaxSize:MaxSize}'
 
-#### 2. 성능 테스트
-```bash
-# 부하 테스트 (Apache Bench)
+# 4. 성능 테스트 (Apache Bench)
 echo "🚀 부하 테스트 시작..."
-ab -n 1000 -c 10 http://$ALB_DNS/
-ab -n 1000 -c 10 http://$LB_IP/
+if command -v ab &> /dev/null; then
+    ab -n 100 -c 5 http://$ALB_DNS/ | grep "Requests per second"
+else
+    echo "Apache Bench가 설치되지 않았습니다. 수동으로 테스트하세요."
+fi
 
-# 모니터링 대시보드에서 결과 확인
-echo "📊 Grafana 대시보드에서 결과 확인: http://localhost:3001"
-echo "📊 Jaeger 추적 결과 확인: http://localhost:16686"
+# 5. 비용 최적화 결과 확인
+echo "💰 비용 최적화 결과:"
+ls -la cloud-master-day3-*/cost-optimization-report.json 2>/dev/null || echo "비용 리포트가 생성되지 않았습니다."
+
+echo "🎉 통합 테스트 완료!"
+echo "📊 모니터링 대시보드: http://localhost:3001 (admin/admin)"
+echo "📊 Prometheus: http://localhost:9090"
+echo "🌐 ALB DNS: http://$ALB_DNS"
+
+# 전체 시스템 확인 URL들
+echo "🌐 전체 시스템 확인 URL들:"
+echo ""
+echo "📊 모니터링 시스템:"
+echo "- Grafana 대시보드: http://localhost:3001 (admin/admin)"
+echo "- Prometheus 메트릭: http://localhost:9090"
+echo "- Node Exporter: http://localhost:9100"
+echo ""
+echo "☁️ AWS 리소스:"
+echo "- ALB: http://$ALB_DNS"
+echo "- EC2 콘솔: https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Instances:"
+echo "- Load Balancer: https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LoadBalancers:"
+echo "- Auto Scaling: https://console.aws.amazon.com/ec2autoscaling/home?region=us-east-1#/groups"
+echo ""
+echo "☁️ GCP 리소스:"
+echo "- GCP 콘솔: https://console.cloud.google.com/compute/instances"
+echo "- Load Balancing: https://console.cloud.google.com/net-services/loadbalancing"
+echo "- Instance Groups: https://console.cloud.google.com/compute/instanceGroups"
+echo "- Monitoring: https://console.cloud.google.com/monitoring"
+echo ""
+echo "💰 비용 관리:"
+echo "- AWS Cost Explorer: https://console.aws.amazon.com/cost-management/home#/dashboard"
+echo "- GCP Billing: https://console.cloud.google.com/billing"
 ```
 
 ### 📊 예상 결과
-- **성공률**: 90% (통합 테스트)
-- **소요 시간**: 30분
-- **주요 이슈**: 네트워크 연결, 서비스 간 통신
+- **성공률**: 95% (자동화 스크립트 활용)
+- **소요 시간**: 15분 (자동화로 단축)
+- **주요 개선**: 통합 테스트 자동화, 결과 리포트 자동 생성
+
+### 🏗️ 최종 시스템 아키텍처
+
+#### 4단계: 통합 테스트 및 비용 최적화 완료 후
+```mermaid
+graph TB
+    subgraph "AWS Cloud"
+        A1[EC2 Instances<br/>Auto Scaling Group]
+        A2[Application Load Balancer<br/>High Availability]
+        A3[Target Groups<br/>Health Checks]
+        A4[Security Groups<br/>Network Security]
+        A5[VPC<br/>Network Isolation]
+        A6[Cost Optimization<br/>Resource Management]
+    end
+    
+    subgraph "GCP Cloud"
+        G1[VM Instances<br/>Managed Instance Group]
+        G2[HTTP(S) Load Balancer<br/>Global Load Balancing]
+        G3[Backend Services<br/>Health Checks]
+        G4[Firewall Rules<br/>Network Security]
+        G5[VPC Network<br/>Network Isolation]
+        G6[Cost Optimization<br/>Resource Management]
+    end
+    
+    subgraph "Local Environment"
+        L1[Prometheus<br/>Metrics Collection]
+        L2[Grafana<br/>Visualization Dashboard]
+        L3[Node Exporter<br/>System Metrics]
+        L4[Docker Compose<br/>Monitoring Stack]
+        L5[Cost Analysis Tools<br/>Optimization Scripts]
+    end
+    
+    subgraph "Developer Machine"
+        D1[CLI Tools<br/>AWS CLI, GCP CLI]
+        D2[Automation Scripts<br/>Day3 Practice Scripts]
+        D3[Monitoring Access<br/>Grafana, Prometheus]
+    end
+    
+    D1 --> A2
+    D1 --> G2
+    D2 --> A1
+    D2 --> G1
+    D3 --> L2
+    D3 --> L1
+    
+    A2 --> A3
+    A3 --> A1
+    A1 --> A4
+    A4 --> A5
+    
+    G2 --> G3
+    G3 --> G1
+    G1 --> G4
+    G4 --> G5
+    
+    L1 --> A1
+    L1 --> G1
+    L3 --> A1
+    L3 --> G1
+    L2 --> L1
+    L4 --> L1
+    L4 --> L2
+    L4 --> L3
+    
+    L5 --> A6
+    L5 --> G6
+    D2 --> L5
+```
+
+**최종 적용된 기능:**
+- ✅ **멀티 클라우드 로드밸런싱**: AWS ALB + GCP Cloud LB
+- ✅ **자동 스케일링**: CPU 기반 동적 리소스 조정
+- ✅ **통합 모니터링**: Prometheus + Grafana + Node Exporter
+- ✅ **비용 최적화**: 자동화된 비용 분석 및 리포트
+- ✅ **고가용성**: 다중 AZ/Region 분산 배포
+- ✅ **자동화**: 전체 시스템 자동 구축 및 관리
+
+#### 📊 최종 시스템 장단점 분석
+
+**✅ 장점:**
+- **프로덕션 수준 아키텍처**: 실제 서비스에 바로 적용 가능한 고급 구조
+- **멀티 클라우드 전략**: 벤더 종속성 제거 및 리스크 분산
+- **완전 자동화**: 수동 개입 최소화로 운영 효율성 극대화
+- **비용 최적화**: 자동 스케일링과 비용 분석으로 최적 비용 달성
+- **고가용성**: 다중 장애점으로 서비스 중단 위험 최소화
+- **확장성**: 트래픽 증가에 자동 대응하는 무제한 확장 가능
+- **모니터링**: 실시간 시스템 상태 파악으로 문제 조기 발견
+
+**❌ 단점:**
+- **높은 복잡성**: 다수의 컴포넌트와 설정으로 관리 복잡도 증가
+- **비용 증가**: 멀티 클라우드와 고급 기능으로 인한 비용 상승
+- **학습 곡선**: 운영팀의 높은 수준의 기술 역량 필요
+- **의존성 증가**: 각 컴포넌트 간 의존성으로 장애 전파 위험
+- **디버깅 어려움**: 문제 발생 시 여러 시스템을 동시에 확인해야 함
+- **설정 관리**: 복잡한 설정 파일과 정책 관리 부담
+- **초기 투자**: 시스템 구축과 학습을 위한 높은 초기 비용
+
+#### 🎯 권장 사용 시나리오
+
+**✅ 적합한 경우:**
+- 대규모 트래픽을 처리해야 하는 프로덕션 서비스
+- 24/7 고가용성이 필요한 비즈니스 크리티컬 애플리케이션
+- 멀티 클라우드 전략을 추구하는 기업
+- 비용 최적화가 중요한 장기 운영 서비스
+- DevOps 팀의 높은 기술 역량을 보유한 조직
+
+**❌ 부적합한 경우:**
+- 소규모 프로토타입이나 MVP 단계의 서비스
+- 예측 가능한 트래픽 패턴의 단순한 애플리케이션
+- 제한된 예산과 리소스를 가진 스타트업
+- 단일 클라우드 벤더에 특화된 서비스
+- 간단한 정적 웹사이트나 개인 프로젝트
 
 ---
 
 ## 🎯 3일차 수업 성과
 
 ### ✅ 달성한 학습 목표
-- [x] AWS ELB + GCP Cloud Load Balancing 구축
+- [x] 기존 VM을 활용한 AWS ALB 구축
 - [x] Prometheus + Grafana 통합 모니터링 시스템
-- [x] Jaeger 분산 추적 및 ELK Stack 로그 관리
+- [x] 자동화 스크립트를 통한 효율적 실습
 - [x] AWS Auto Scaling + GCP Managed Instance Group
-- [x] 클라우드 비용 최적화 전략 수립
+- [x] 클라우드 비용 최적화 분석 및 리포트 생성
 - [x] 고가용성 아키텍처 설계 및 구현
 
 ### 🔍 주요 학습 포인트
-1. **로드밸런싱**: 트래픽 분산과 고가용성 확보
-2. **모니터링**: 실시간 시스템 상태 파악
-3. **분산 추적**: 마이크로서비스 환경에서의 문제 진단
-4. **자동 스케일링**: 수요에 따른 자동 리소스 조정
-5. **비용 최적화**: 효율적인 클라우드 리소스 활용
+1. **기존 VM 활용**: Day1, Day2 VM을 활용한 비용 효율적 실습
+2. **자동화 도구**: 스크립트를 통한 효율적 실습 환경 구축
+3. **로드밸런싱**: 트래픽 분산과 고가용성 확보
+4. **모니터링**: 실시간 시스템 상태 파악 및 시각화
+5. **자동 스케일링**: 수요에 따른 자동 리소스 조정
+6. **비용 최적화**: 효율적인 클라우드 리소스 활용
 
 ### 🚀 실습 결과물
-- **로드밸런서**: AWS ALB + GCP Cloud LB
-- **모니터링**: Prometheus + Grafana + Jaeger + ELK
+- **로드밸런서**: AWS ALB (기존 VM 활용)
+- **모니터링**: Prometheus + Grafana + Node Exporter
 - **자동 스케일링**: AWS Auto Scaling + GCP MIG
-- **비용 최적화**: 리소스 사용량 분석 및 최적화
+- **비용 최적화**: 자동화된 비용 분석 및 리포트
+- **자동화 스크립트**: 효율적인 실습 환경 구축
+
+### 🔄 시스템 변화 요약
+
+#### 단계별 아키텍처 진화
+1. **초기 상태**: 단일 VM (Day1, Day2 완료)
+2. **1단계**: 로드밸런싱 구축 (ALB + Target Group)
+3. **2단계**: 모니터링 추가 (Prometheus + Grafana)
+4. **3단계**: 자동 스케일링 (Auto Scaling Group + MIG)
+5. **4단계**: 비용 최적화 (Cost Analysis + Optimization)
+
+#### 핵심 변화 포인트
+- **정적 → 동적**: 고정 리소스에서 자동 스케일링으로
+- **단일 → 분산**: 하나의 VM에서 로드밸런싱된 다중 인스턴스로
+- **수동 → 자동**: 수동 관리에서 자동화된 운영으로
+- **단일 클라우드 → 멀티 클라우드**: AWS와 GCP 동시 활용
+- **기본 → 고급**: 단순 배포에서 프로덕션 수준 아키텍처로
+
+#### 📈 단계별 장단점 진화
+
+**1단계 (로드밸런싱)**
+- ✅ 고가용성 확보, ❌ 복잡성 증가
+
+**2단계 (모니터링)**
+- ✅ 실시간 상태 파악, ❌ 리소스 사용량 증가
+
+**3단계 (자동 스케일링)**
+- ✅ 비용 최적화, ❌ 비용 예측 어려움
+
+**4단계 (통합 시스템)**
+- ✅ 프로덕션 수준, ❌ 높은 복잡성
+
+#### 🎯 아키텍처 선택 가이드
+
+**소규모 프로젝트**: Day1, Day2 수준 (단일 VM + CI/CD)
+**중간 규모 서비스**: Day3 1-2단계 (로드밸런싱 + 모니터링)
+**대규모 프로덕션**: Day3 전체 (완전 자동화 + 멀티 클라우드)
 
 ### 📈 Cloud Master 과정 완성
 - **Day1**: 기본 환경 구축 및 CI/CD 파이프라인
@@ -859,6 +1499,322 @@ echo "📊 Jaeger 추적 결과 확인: http://localhost:16686"
 ---
 
 **강의안 작성일**: 2024년 9월 24일  
-**예상 소요 시간**: 8시간 (9:00~17:00)  
-**실습 중심**: 85% 실습, 15% 이론  
+**예상 소요 시간**: 6시간 (9:00~17:00, 자동화로 단축)  
+**실습 중심**: 90% 실습, 10% 이론  
+**자동화 활용**: 95% 자동화 스크립트 사용 권장  
 **과정 완료**: Cloud Master 과정 전체 완성
+
+---
+
+## 🛠️ 자동화 스크립트 사용 가이드
+
+### 📋 **실습 전 준비사항**
+```bash
+# 1. 스크립트 실행 권한 부여
+chmod +x mcp_knowledge_base/cloud_master/repos/automation/day3/*.sh
+
+# 2. 환경 변수 확인
+echo "AWS CLI 설정 확인:"
+aws sts get-caller-identity
+
+echo "GCP CLI 설정 확인:"
+gcloud auth list
+
+# 3. 기존 VM 확인
+aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" \
+    --query 'Reservations[*].Instances[*].[InstanceId,Tags[?Key==`Name`].Value|[0]]' --output table
+
+# 4. 실습 후 확인 가능한 URL들
+echo "🌐 실습 완료 후 확인 가능한 URL들:"
+echo ""
+echo "📊 모니터링 시스템:"
+echo "- Grafana: http://localhost:3001 (admin/admin)"
+echo "- Prometheus: http://localhost:9090"
+echo "- Node Exporter: http://localhost:9100"
+echo ""
+echo "☁️ AWS 콘솔:"
+echo "- EC2: https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Instances:"
+echo "- Load Balancer: https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LoadBalancers:"
+echo "- Auto Scaling: https://console.aws.amazon.com/ec2autoscaling/home?region=us-east-1#/groups"
+echo ""
+echo "☁️ GCP 콘솔:"
+echo "- Compute Engine: https://console.cloud.google.com/compute/instances"
+echo "- Load Balancing: https://console.cloud.google.com/net-services/loadbalancing"
+echo "- Monitoring: https://console.cloud.google.com/monitoring"
+```
+
+### 🚀 **권장 실습 순서**
+
+#### 📋 **자동화 스크립트 명명 규칙**
+```
+01-aws-loadbalancing.sh     # AWS 로드밸런싱 구축
+02-gcp-loadbalancing.sh     # GCP 로드밸런싱 구축  
+03-monitoring-stack.sh      # 모니터링 스택 구축
+04-autoscaling.sh           # 자동 스케일링 설정
+05-cost-optimization.sh     # 비용 최적화 분석
+06-integration-test.sh      # 통합 테스트 실행
+```
+
+#### 🔢 **실습 순서**
+```bash
+# 1. AWS 로드밸런싱 구축 (권장)
+./mcp_knowledge_base/cloud_master/repos/automation/day3/01-aws-loadbalancing.sh setup
+
+# 2. GCP 로드밸런싱 구축
+./mcp_knowledge_base/cloud_master/repos/automation/day3/02-gcp-loadbalancing.sh setup
+
+# 3. 모니터링 스택 구축
+./mcp_knowledge_base/cloud_master/repos/automation/day3/03-monitoring-stack.sh setup
+
+# 4. 자동 스케일링 설정
+./mcp_knowledge_base/cloud_master/repos/automation/day3/04-autoscaling.sh setup
+
+# 5. 비용 최적화 분석
+./mcp_knowledge_base/cloud_master/repos/automation/day3/05-cost-optimization.sh analyze
+
+# 6. 통합 테스트
+./mcp_knowledge_base/cloud_master/repos/automation/day3/06-integration-test.sh setup
+
+# 각 스크립트 실행 후 확인 가능한 URL들
+echo "🌐 실습 완료 후 확인 URL들:"
+echo ""
+echo "📊 모니터링 시스템:"
+echo "- Grafana: http://localhost:3001 (admin/admin)"
+echo "- Prometheus: http://localhost:9090"
+echo "- Node Exporter: http://localhost:9100"
+echo ""
+echo "☁️ AWS 리소스:"
+echo "- EC2 콘솔: https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Instances:"
+echo "- Load Balancer: https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LoadBalancers:"
+echo "- Auto Scaling: https://console.aws.amazon.com/ec2autoscaling/home?region=us-east-1#/groups"
+echo "- CloudWatch: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1"
+echo ""
+echo "☁️ GCP 리소스:"
+echo "- Compute Engine: https://console.cloud.google.com/compute/instances"
+echo "- Load Balancing: https://console.cloud.google.com/net-services/loadbalancing"
+echo "- Instance Groups: https://console.cloud.google.com/compute/instanceGroups"
+echo "- Monitoring: https://console.cloud.google.com/monitoring"
+echo ""
+echo "💰 비용 관리:"
+echo "- AWS Cost Explorer: https://console.aws.amazon.com/cost-management/home#/dashboard"
+echo "- GCP Billing: https://console.cloud.google.com/billing"
+```
+
+### ⚠️ **주의사항**
+- 자동화 스크립트 사용을 **강력히 권장**합니다
+- 수동 설정은 참고용으로만 사용하세요
+- 실습 전 반드시 기존 VM 상태를 확인하세요
+- 문제 발생 시 스크립트의 `cleanup` 옵션을 사용하세요
+
+### 🔧 **스크립트 옵션 사용법**
+
+#### **01-aws-loadbalancing.sh**
+```bash
+./01-aws-loadbalancing.sh [옵션]
+
+옵션:
+  setup      전체 실습 환경 설정 (기본값)
+  test       시스템 테스트
+  status     시스템 상태 확인
+  cleanup    전체 리소스 정리
+  help       도움말 표시
+
+특징:
+  - 기존 AWS cloud-deployment-server VM 활용
+  - AWS ALB 로드밸런서 설정
+  - 통합 모니터링 설정
+  - 비용 최적화 분석
+```
+
+#### **02-gcp-loadbalancing.sh**
+```bash
+./02-gcp-loadbalancing.sh [setup|cleanup|test]
+
+옵션:
+  setup   - GCP Load Balancing 설정 (기본값)
+  cleanup - 리소스 정리
+  test    - 시스템 테스트
+
+특징:
+  - GCP Cloud Load Balancing 설정
+  - Instance Group 자동 구성
+  - Health Check 자동 설정
+  - 멀티 클라우드 지원
+```
+
+#### **03-monitoring-stack.sh**
+```bash
+./03-monitoring-stack.sh [옵션]
+
+옵션:
+  setup     모니터링 스택 설정 (기본값)
+  start     모니터링 스택 시작
+  test      모니터링 테스트
+  stop      모니터링 스택 중지
+  cleanup   리소스 정리
+  help      도움말 표시
+
+접속 URL:
+  Prometheus: http://localhost:9090
+  Grafana: http://localhost:3001 (admin/admin)
+  Jaeger: http://localhost:16686
+  Elasticsearch: http://localhost:9200
+  Kibana: http://localhost:5601
+  Test App: http://localhost:3000
+```
+
+#### **04-autoscaling.sh**
+```bash
+./04-autoscaling.sh [setup|cleanup|test]
+
+옵션:
+  setup   - 자동 스케일링 설정 (기본값)
+  cleanup - 리소스 정리
+  test    - 스케일링 테스트
+
+특징:
+  - AWS Auto Scaling Group 설정
+  - GCP Managed Instance Group 설정
+  - CPU 기반 스케일링 정책
+  - Launch Template 자동 생성
+```
+
+#### **05-cost-optimization.sh**
+```bash
+./05-cost-optimization.sh [analyze|optimize|monitor|report|cleanup]
+
+옵션:
+  analyze  - 비용 분석 실행 (기본값)
+  optimize - 비용 최적화 실행
+  monitor  - 비용 모니터링 설정
+  report   - 리포트 생성
+  cleanup  - 리소스 정리
+
+특징:
+  - AWS/GCP 비용 분석
+  - 사용하지 않는 리소스 검색
+  - 비용 최적화 권장사항
+  - 상세 리포트 생성
+```
+
+#### **06-integration-test.sh**
+```bash
+./06-integration-test.sh [setup|cleanup|test]
+
+옵션:
+  setup   - 통합 테스트 실행 (기본값)
+  cleanup - 전체 리소스 정리
+  test    - 시스템 통합 테스트
+
+특징:
+  - 전체 시스템 상태 확인
+  - 로드밸런서 헬스체크
+  - 모니터링 시스템 검증
+  - 성능 테스트 자동 실행
+```
+
+#### **create-git-repo.sh (WSL용)**
+```bash
+./create-git-repo.sh
+
+기능:
+  - Git Repository 자동 생성
+  - GitHub Repository 생성 및 연결
+  - 실습 스크립트 자동 복사
+  - .gitignore 및 README.md 생성
+
+사용법:
+  # WSL에서 실행
+  cd /mnt/c/Users/[사용자명]/mcp_cloud/mcp_knowledge_base/cloud_master/repos/automation/day3
+  ./create-git-repo.sh
+```
+
+#### **vm-setup.sh (Cloud VM용)**
+```bash
+./vm-setup.sh
+
+기능:
+  - VM 환경 자동 설정
+  - Docker, AWS CLI, GCP CLI 설치
+  - 실습 코드 자동 Clone
+  - 작업 공간 및 환경 변수 설정
+
+사용법:
+  # Cloud VM에서 실행
+  curl -O https://raw.githubusercontent.com/[사용자명]/cloud-master-day3-practice/main/vm-setup.sh
+  chmod +x vm-setup.sh
+  ./vm-setup.sh
+```
+
+#### **environment-check.sh (환경 진단용)**
+```bash
+./environment-check.sh
+
+기능:
+  - 시스템 사전 요구사항 자동 확인
+  - Docker, AWS CLI, GCP CLI 상태 검증
+  - 포트 사용 현황 및 충돌 확인
+  - 메모리, 디스크 공간 확인
+  - 실습 스크립트 존재 여부 확인
+
+사용법:
+  # WSL 또는 Cloud VM에서 실행
+  cd /path/to/day3/scripts
+  ./environment-check.sh
+```
+
+### 🚀 **실습 순서별 스크립트 사용법**
+
+#### **WSL에서 (개발 환경)**
+```bash
+# 1단계: Git Repository 생성
+cd /mnt/c/Users/[사용자명]/mcp_cloud/mcp_knowledge_base/cloud_master/repos/day3/automation
+./create-git-repo.sh
+
+# 2단계: 코드 수정 및 동기화
+# (필요시 스크립트 수정)
+git add .
+git commit -m "Update scripts"
+git push origin main
+```
+
+#### **Cloud VM에서 (실습 환경)**
+```bash
+# 1단계: VM 환경 설정
+curl -O https://raw.githubusercontent.com/[사용자명]/cloud-master-day3-practice/main/vm-setup.sh
+chmod +x vm-setup.sh
+./vm-setup.sh
+
+# 2단계: AWS 로드밸런싱
+./01-aws-loadbalancing.sh setup
+./01-aws-loadbalancing.sh status
+
+# 3단계: GCP 로드밸런싱
+./02-gcp-loadbalancing.sh setup
+./02-gcp-loadbalancing.sh test
+
+# 4단계: 모니터링 스택
+./03-monitoring-stack.sh setup
+./03-monitoring-stack.sh start
+
+# 5단계: 자동 스케일링
+./04-autoscaling.sh setup
+./04-autoscaling.sh test
+
+# 6단계: 비용 최적화
+./05-cost-optimization.sh analyze
+./05-cost-optimization.sh report
+
+# 7단계: 통합 테스트
+./06-integration-test.sh setup
+./06-integration-test.sh test
+```
+
+#### **WSL에서 (결과 분석)**
+```bash
+# 1단계: 결과 파일 동기화
+scp -i ~/.ssh/cloud-master-key.pem ubuntu@[VM_IP]:~/cloud-master-workspace/results/* ./
+
+# 2단계: 분석 및 문서화
+# (결과 파일 분석 및 정리)
+```

@@ -839,11 +839,11 @@ jobs:
 > - [Repository Secrets 고급 활용](guides/github-repo-settings.md) - **Day1 연계!** Secrets 고급 활용법
 
 > 🚀 **자동화 스크립트**: 실습을 더 쉽게 하려면 다음 자동화 스크립트를 사용하세요.
-> - [WSL 자동 설정](cloud_master/repos/cloud-scripts/wsl-auto-setup.sh) - WSL 환경 원클릭 구축
-> - [환경 체크 도구](cloud_master/repos/cloud-scripts/environment-check-wsl.sh) - 실습 환경 자동 검증
-> - [통합 클러스터 정리](cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh) - 클러스터 선택적 정리
-> - [통합 VM 정리](cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh) - VM 인스턴스 선택적 정리
-> - [리소스 정리 스크립트](cloud_master/repos/cloud-scripts/README.md) - 생성된 리소스 자동 정리
+> - [WSL 자동 설정](../../repos/day1/cloud-scripts/wsl-auto-setup.sh) - WSL 환경 원클릭 구축
+> - [환경 체크 도구](../../repos/day1/cloud-scripts/environment-check-wsl.sh) - 실습 환경 자동 검증
+> - [통합 클러스터 정리](../../repos/day1/cloud-scripts/cluster-cleanup-interactive.sh) - 클러스터 선택적 정리
+> - [통합 VM 정리](../../repos/day1/cloud-scripts/vm-cleanup-interactive.sh) - VM 인스턴스 선택적 정리
+> - [리소스 정리 스크립트](../../repos/day1/cloud-scripts/README.md) - 생성된 리소스 자동 정리
 
 <details>
 <summary>🐳 고급 Docker 실습</summary>
@@ -1884,16 +1884,16 @@ curl http://localhost/api/users
 **방법 1: 통합 정리 스크립트 사용 (권장)**
 ```bash
 # 통합 클러스터 정리 스크립트 실행
-chmod +x cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh
-./cloud_master/repos/cloud-scripts/cluster-cleanup-interactive.sh
+chmod +x ../../repos/day1/cloud-scripts/cluster-cleanup-interactive.sh
+./../../repos/day1/cloud-scripts/cluster-cleanup-interactive.sh
 
 # 통합 VM 정리 스크립트 실행
-chmod +x cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh
-./cloud_master/repos/cloud-scripts/vm-cleanup-interactive.sh
+chmod +x ../../repos/day1/cloud-scripts/vm-cleanup-interactive.sh
+./../../repos/day1/cloud-scripts/vm-cleanup-interactive.sh
 
 # 환경 체크 도구에서 정리 메뉴 사용
-chmod +x cloud_master/repos/cloud-scripts/environment-check-wsl.sh
-./cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+chmod +x ../../repos/day1/cloud-scripts/environment-check-wsl.sh
+./../../repos/day1/cloud-scripts/environment-check-wsl.sh
 ```
 
 **방법 2: 개별 정리 명령어**

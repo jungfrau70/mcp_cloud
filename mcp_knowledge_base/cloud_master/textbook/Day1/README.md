@@ -102,9 +102,9 @@ github-actions-demo/
 wsl --install -d Ubuntu
 
 # WSL 환경에서 필수 도구 설치
-# 실행: cloud_master/repos/install/install-all-wsl.sh
-chmod +x cloud_master/repos/install/install-all-wsl.sh
-./cloud_master/repos/install/install-all-wsl.sh
+# 실행: repos/day1/install/install-all-wsl.sh
+chmod +x repos/day1/install/install-all-wsl.sh
+./repos/day1/install/install-all-wsl.sh
 ```
 
 #### 2단계: 클라우드 계정 연동 (2교시: 35분)
@@ -118,32 +118,32 @@ gcloud auth login
 gcloud config set project [project-id]
 
 # 설정 도우미 스크립트 실행
-chmod +x cloud_master/repos/cloud-scripts/aws-setup-helper.sh
-./cloud_master/repos/cloud-scripts/aws-setup-helper.sh
+chmod +x repos/day1/cloud-scripts/aws-setup-helper.sh
+./repos/day1/cloud-scripts/aws-setup-helper.sh
 
-chmod +x cloud_master/repos/cloud-scripts/gcp-setup-helper.sh
-./cloud_master/repos/cloud-scripts/gcp-setup-helper.sh
+chmod +x repos/day1/cloud-scripts/gcp-setup-helper.sh
+./repos/day1/cloud-scripts/gcp-setup-helper.sh
 ```
 
 #### 3단계: VM 생성 (3교시: 50분)
 ```bash
 # AWS EC2 인스턴스 생성
-chmod +x cloud_master/repos/cloud-scripts/aws-ec2-create.sh
-./cloud_master/repos/cloud-scripts/aws-ec2-create.sh
+chmod +x repos/day1/cloud-scripts/aws-ec2-create.sh
+./repos/day1/cloud-scripts/aws-ec2-create.sh
 
 # GCP Compute Engine 인스턴스 생성
-chmod +x cloud_master/repos/cloud-scripts/gcp-compute-create.sh
-./cloud_master/repos/cloud-scripts/gcp-compute-create.sh
+chmod +x repos/day1/cloud-scripts/gcp-compute-create.sh
+./repos/day1/cloud-scripts/gcp-compute-create.sh
 ```
 
 #### 4단계: 환경 체크
 ```bash
 # 실습 환경 자동 검증
-chmod +x cloud_master/repos/cloud-scripts/environment-check-wsl.sh
-./cloud_master/repos/cloud-scripts/environment-check-wsl.sh
+chmod +x repos/day1/cloud-scripts/environment-check-wsl.sh
+./repos/day1/cloud-scripts/environment-check-wsl.sh
 
 # 특정 Day 환경 체크
-./cloud_master/repos/cloud-scripts/environment-check-wsl.sh day1
+./repos/day1/cloud-scripts/environment-check-wsl.sh day1
 ```
 
 ---
@@ -802,9 +802,9 @@ ssh -i gcp-key ubuntu@[GCP-VM-IP]
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](cloud_master/README.md) | 
-[📚 전체 커리큘럼](curriculum.md) | 
-[🏠 학습 경로로 돌아가기](index.md) | 
-[다음: Day 2 →](cloud_master/textbook/Day2/README.md)
+[← 이전: Cloud Master 메인](../README.md) | 
+[📚 전체 커리큘럼](../../curriculum.md) | 
+[🏠 학습 경로로 돌아가기](../../index.md) | 
+[다음: Day 2 →](../Day2/README.md)
 
 </div>

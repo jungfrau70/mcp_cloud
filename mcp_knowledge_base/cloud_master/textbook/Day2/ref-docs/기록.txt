@@ -2,8 +2,22 @@
    -. Day1 Recap
    -. Multi-stage image
    -. Docker-compose & Yaml
+2교시 >
+   -. Github Actions 개념/구조/화면
+   -. yaml
 
-2교시 10시 10분에 시작합니다
+3교시> 
+   - 실습 : https://github.com/your-username/github-actions-demo-day2.git
+
+
+4교시 14시 05분에 시작합니다
+
+5교시 15시 10분에 시작합니다
+
+5교시 16시 15분에 시작합니다
+
+
+
 
 
 

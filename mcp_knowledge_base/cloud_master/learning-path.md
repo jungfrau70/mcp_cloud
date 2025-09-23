@@ -18,8 +18,8 @@
 ### 1단계: 환경 설정
 - [AWS Free Tier 계정](https://aws.amazon.com/free/) 생성
 - [GCP Free Tier 계정](https://cloud.google.com/free) 생성
-- [WSL 설치 및 설정](cloud_master/repos/cloud-scripts/wsl-install.md)
-- [필수 도구 설치](cloud_master/repos/install/install-all-wsl.sh)
+- [WSL 설치 및 설정](cloud_master/repos/day1/cloud-scripts/wsl-install.md)
+- [필수 도구 설치](cloud_master/repos/day1/install/install-all-wsl.sh)
 - [AWS 계정 가입](cloud_master/accounts/AWS계정가입.md)
 - [GCP 계정 가입](cloud_master/accounts/GCP_개인계정가입.md)
 
@@ -52,9 +52,9 @@
 - [VM 배포 실습](cloud_master/textbook/Day1/README.md#vm-배포-자동화-실습)
 
 #### 💻 실습 코드
-- [Docker 샘플 코드](cloud_master/repos/samples/day1/docker/)
-- [GitHub Actions 워크플로우](cloud_master/repos/samples/day1/github-actions/)
-- [VM 배포 스크립트](cloud_master/repos/cloud-scripts/day1/)
+- [Docker 샘플 코드](cloud_master/repos/samples/day1/my-app/)
+- [GitHub Actions 워크플로우](cloud_master/repos/samples/day1/my-app/)
+- [VM 배포 스크립트](cloud_master/repos/day1/cloud-scripts/)
 
 #### 🔧 자동화 도구
 - [Docker 실습 자동화](cloud_master/repos/automation/day1/docker-practice-automation.sh)
@@ -85,14 +85,14 @@
 - [자동화된 배포 실습](cloud_master/textbook/Day2/README.md#자동화된-배포-실습)
 
 #### 💻 실습 코드
-- [고급 Docker 샘플](cloud_master/repos/samples/day2/advanced-docker/)
-- [고급 GitHub Actions 워크플로우](cloud_master/repos/samples/day2/advanced-github-actions/)
-- [VM 배포 스크립트](cloud_master/repos/samples/day2/vm-deployment/)
+- [고급 Docker 샘플](cloud_master/repos/samples/day2/my-app/)
+- [고급 GitHub Actions 워크플로우](cloud_master/repos/samples/day2/actions-demo/)
+- [VM 배포 스크립트](cloud_master/repos/samples/day2/)
 
 #### 🔧 자동화 도구
-- [고급 Docker 실습 자동화](cloud_master/repos/automation/day2/advanced-docker-practice-automation.sh)
-- [고급 GitHub Actions 실습 자동화](cloud_master/repos/automation/day2/advanced-github-actions-practice-automation.sh)
-- [VM 배포 실습 자동화](cloud_master/repos/automation/day2/vm-deployment-practice-automation.sh)
+- [고급 Docker 실습 자동화](cloud_master/repos/automation/day2/docker_advanced.sh)
+- [고급 GitHub Actions 실습 자동화](cloud_master/repos/automation/day2/advanced_cicd.sh)
+- [VM 배포 실습 자동화](cloud_master/repos/automation/day2/container_orchestration.sh)
 
 </details>
 
@@ -118,9 +118,9 @@
 - [비용 최적화 실습](cloud_master/textbook/Day3/README.md#비용-최적화-실습)
 
 #### 💻 실습 코드
-- [로드밸런싱 설정](cloud_master/repos/samples/day3/load-balancing/)
-- [모니터링 설정](cloud_master/repos/samples/day3/monitoring/)
-- [비용 최적화 스크립트](cloud_master/repos/samples/day3/cost-optimization/)
+- [로드밸런싱 설정](cloud_master/repos/samples/day3/)
+- [모니터링 설정](cloud_master/repos/samples/day3/)
+- [비용 최적화 스크립트](cloud_master/repos/samples/day3/)
 
 #### 🔧 자동화 도구
 - [로드밸런싱 실습 자동화](cloud_master/repos/automation/day3/load-balancing-practice-automation.sh)
@@ -174,8 +174,8 @@
 - [Cloud Container 1일차 실습 가이드](cloud_master/cloud_container/README.md)
 
 ### 통합 학습 경로
-- [전체 커리큘럼](cloud_master/curriculum.md)
-- [통합 인덱스](cloud_master/index.md)
+- [전체 커리큘럼](../curriculum.md)
+- [통합 인덱스](../index.md)
 
 ## 💡 추가 학습 자료
 
@@ -207,9 +207,9 @@
 
 <div align="center">
 
-[← 이전: Cloud Container 과정](cloud_master/cloud_container/README.md) | 
-[📚 전체 커리큘럼](cloud_master/curriculum.md) | 
-[🏠 학습 경로로 돌아가기](cloud_master/index.md) | 
-[다음: 과정 상세 정보 →](cloud_master/과정상세.md)
+[← 이전: Cloud Container 과정](../cloud_container/README.md) | 
+[📚 전체 커리큘럼](../curriculum.md) | 
+[🏠 학습 경로로 돌아가기](../index.md) | 
+[다음: 과정 상세 정보 →](과정상세.md)
 
 </div>
