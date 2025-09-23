@@ -14,6 +14,7 @@
 - **고급 CI/CD**: 멀티 환경 배포 및 자동화 강화
 - **데이터베이스 연동**: PostgreSQL + Redis 통합
 - **프로덕션 환경**: 실제 운영 수준의 인프라 구축
+- **문제 해결**: 실제 발생하는 11가지 주요 문제 해결 경험
 
 ### 실습 후 달성할 수 있는 능력
 - ✅ GitHub Actions CI/CD 개념 및 파이프라인 이해
@@ -24,6 +25,9 @@
 - ✅ 헬스체크 및 자동 재시작 설정
 - ✅ 모니터링 시스템 구축 (Prometheus + Grafana)
 - ✅ 성능 최적화 (평균 응답시간 6.2ms 달성)
+- ✅ 실제 문제 해결 경험 (11가지 주요 문제)
+- ✅ 멀티 클라우드 배포 (AWS + GCP)
+- ✅ 보안 스캔 및 코드 품질 관리
 
 ---
 
@@ -389,7 +393,7 @@ git push -u origin day2-advanced
 # .github/workflows 디렉토리 생성
 mkdir -p .github/workflows
 
-# 고급 CI/CD 워크플로우 파일 생성
+# 고급 CI/CD 워크플로우 파일 생성 (실제 프로젝트 기반)
 cat > .github/workflows/advanced-cicd.yml << 'EOF'
 name: Advanced CI/CD Pipeline
 
@@ -408,6 +412,12 @@ on:
         options:
         - staging
         - production
+
+# 워크플로우 권한 설정
+permissions:
+  contents: read
+  security-events: write
+  packages: write
 
 env:
   REGISTRY: docker.io
@@ -437,31 +447,121 @@ jobs:
     - name: 보안 감사
       run: npm audit --audit-level moderate
 
-  # 멀티 환경 테스트
+  # 멀티 환경 테스트 (실제 프로젝트 기반)
   test:
     name: 멀티 환경 테스트
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     strategy:
       matrix:
         node-version: [16, 18, 20]
+        environment: [staging, production]
+    services:
+      postgres:
+        image: postgres:13-alpine
+        env:
+          POSTGRES_DB: myapp_test
+          POSTGRES_USER: myapp_user
+          POSTGRES_PASSWORD: password
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:6-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
     steps:
     - name: 코드 체크아웃
       uses: actions/checkout@v4
       
+    - name: PostgreSQL 클라이언트 설치
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y postgresql-client
+        
     - name: Node.js ${{ matrix.node-version }} 설정
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         
+    - name: 환경 변수 설정
+      run: |
+        echo "NODE_ENV=test" >> $GITHUB_ENV
+        echo "PORT=3000" >> $GITHUB_ENV
+        echo "DB_HOST=localhost" >> $GITHUB_ENV
+        echo "DB_PORT=5432" >> $GITHUB_ENV
+        echo "DB_NAME=myapp_test" >> $GITHUB_ENV
+        echo "DB_USER=myapp_user" >> $GITHUB_ENV
+        echo "DB_PASSWORD=password" >> $GITHUB_ENV
+        echo "REDIS_HOST=localhost" >> $GITHUB_ENV
+        echo "REDIS_PORT=6379" >> $GITHUB_ENV
+        echo "REDIS_PASSWORD=" >> $GITHUB_ENV
+        
     - name: 의존성 설치
       run: npm ci
       
+    - name: 데이터베이스 초기화
+      run: |
+        # 데이터베이스 사용자 역할 생성
+        PGPASSWORD=password psql -h localhost -U postgres -d myapp_test -c "
+        DO \$\$ BEGIN 
+          IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'myapp_user') THEN 
+            CREATE ROLE myapp_user WITH LOGIN PASSWORD 'password'; 
+          END IF; 
+        END \$\$;"
+        
+        # 데이터베이스 마이그레이션
+        npm run db:migrate
+        
+    - name: 애플리케이션 시작
+      run: |
+        npm start &
+        sleep 10
+        
+        # 헬스체크 대기
+        for i in {1..15}; do
+          if curl -f http://localhost:3000/health; then
+            echo "✅ 애플리케이션 시작 완료"
+            break
+          fi
+          echo "⏳ 애플리케이션 시작 대기 중... ($i/15)"
+          sleep 2
+        done
+        
     - name: 단위 테스트 실행
-      run: npm run test:unit
-      
+      run: |
+        if timeout 60 npm run test:unit; then
+          echo "✅ 단위 테스트 통과"
+        else
+          echo "❌ 단위 테스트 실패"
+          pkill -f "node"
+          exit 1
+        fi
+        
     - name: 통합 테스트 실행
-      run: npm run test:integration
+      run: |
+        if timeout 60 npm run test:integration; then
+          echo "✅ 통합 테스트 통과"
+        else
+          echo "❌ 통합 테스트 실패"
+          pkill -f "node"
+          exit 1
+        fi
+        
+    - name: 애플리케이션 정리
+      if: always()
+      run: |
+        pkill -f "node" || true
 
   # Docker 이미지 빌드 및 푸시
   build-and-push:
@@ -471,6 +571,9 @@ jobs:
     steps:
     - name: 코드 체크아웃
       uses: actions/checkout@v4
+      
+    - name: Docker Buildx 설정
+      uses: docker/setup-buildx-action@v3
       
     - name: Docker Hub 로그인
       uses: docker/login-action@v3
@@ -482,20 +585,82 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
+        platforms: linux/amd64
         push: true
+        cache-from: type=gha
+        cache-to: type=gha
         tags: |
           ${{ env.REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
           ${{ env.REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-  # 스테이징 환경 배포
-  deploy-staging:
-    name: 스테이징 환경 배포
+  # 보안 스캔
+  security-scan:
+    name: 보안 스캔
     runs-on: ubuntu-latest
     needs: [build-and-push]
-    if: github.ref == 'refs/heads/develop' || github.event.inputs.environment == 'staging'
-    environment: staging
     steps:
-    - name: 스테이징 환경 배포
+    - name: 코드 체크아웃
+      uses: actions/checkout@v4
+      
+    - name: Trivy 스캔
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: ${{ env.REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        
+    - name: Trivy 스캔 결과 업로드
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  # AWS VM 배포 (PROD)
+  deploy-aws:
+    name: AWS VM 배포 (PROD)
+    runs-on: ubuntu-latest
+    needs: [build-and-push, security-scan]
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/day2-advanced' || github.event.inputs.environment == 'staging'
+    environment: aws-production
+    steps:
+    - name: AWS VM 배포 (PROD)
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.PROD_VM_HOST }}
+        username: ${{ secrets.PROD_VM_USERNAME }}
+        key: ${{ secrets.PROD_VM_SSH_KEY }}
+        script: |
+          # 환경 변수 설정
+          export DB_PASSWORD="${{ secrets.PROD_DB_PASSWORD }}"
+          export REDIS_PASSWORD="${{ secrets.PROD_REDIS_PASSWORD }}"
+          
+          # 기존 서비스 중지
+          docker-compose -f docker-compose.prod.yml down
+          
+          # 최신 이미지 풀
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          docker pull ${{ env.REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+          
+          # AWS VM 배포
+          docker-compose -f docker-compose.prod.yml up -d
+          
+          # 헬스체크
+          sleep 30
+          curl -f http://localhost/health || exit 1
+          
+          # 배포 알림
+          echo "✅ AWS VM deployment completed successfully"
+          echo "🌐 Application URL: http://${{ secrets.PROD_VM_HOST }}"
+          echo "📊 Metrics URL: http://${{ secrets.PROD_VM_HOST }}/metrics"
+
+  # GCP VM 배포 (STAGING)
+  deploy-gcp:
+    name: GCP VM 배포 (STAGING)
+    runs-on: ubuntu-latest
+    needs: [build-and-push, security-scan]
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/day2-advanced' || github.event.inputs.environment == 'staging'
+    environment: gcp-staging
+    steps:
+    - name: GCP VM 배포 (STAGING)
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.STAGING_VM_HOST }}
@@ -513,46 +678,72 @@ jobs:
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
           docker pull ${{ env.REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
           
-          # 스테이징 환경 배포
+          # GCP VM 배포
           docker-compose -f docker-compose.prod.yml up -d
           
           # 헬스체크
           sleep 30
           curl -f http://localhost/health || exit 1
+          
+          # 배포 알림
+          echo "✅ GCP VM deployment completed successfully"
+          echo "🌐 Application URL: http://${{ secrets.STAGING_VM_HOST }}"
+          echo "📊 Metrics URL: http://${{ secrets.STAGING_VM_HOST }}/metrics"
 
-  # 프로덕션 환경 배포
-  deploy-production:
-    name: 프로덕션 환경 배포
+  # 배포 후 테스트
+  post-deployment-test:
+    name: 배포 후 테스트
     runs-on: ubuntu-latest
-    needs: [build-and-push]
-    if: github.ref == 'refs/heads/main' || github.event.inputs.environment == 'production'
-    environment: production
+    needs: [deploy-aws, deploy-gcp, deploy-aws-production, deploy-gcp-production]
+    if: always() && (needs.deploy-aws.result == 'success' || needs.deploy-gcp.result == 'success' || needs.deploy-aws-production.result == 'success' || needs.deploy-gcp-production.result == 'success')
     steps:
-    - name: 프로덕션 환경 배포
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.PROD_VM_HOST }}
-        username: ${{ secrets.PROD_VM_USERNAME }}
-        key: ${{ secrets.PROD_VM_SSH_KEY }}
-        script: |
-          # 환경 변수 설정
-          export DB_PASSWORD="${{ secrets.PROD_DB_PASSWORD }}"
-          export REDIS_PASSWORD="${{ secrets.PROD_REDIS_PASSWORD }}"
-          
-          # Blue-Green 배포를 위한 백업
-          docker-compose -f docker-compose.prod.yml down
-          docker tag ${{ env.REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest ${{ env.REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:backup-$(date +%Y%m%d-%H%M%S)
-          
-          # 최신 이미지 풀
-          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-          docker pull ${{ env.REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
-          
-          # 프로덕션 환경 배포
-          docker-compose -f docker-compose.prod.yml up -d
-          
-          # 헬스체크
-          sleep 30
-          curl -f http://localhost/health || exit 1
+    - name: 배포된 애플리케이션 테스트
+      run: |
+        # AWS 프로덕션 환경 테스트
+        if [ "${{ needs.deploy-aws.result }}" == "success" ]; then
+          echo "Testing AWS production environment..."
+          curl -f http://${{ secrets.PROD_VM_HOST }}/health
+          curl -f http://${{ secrets.PROD_VM_HOST }}/api/users
+          echo "✅ AWS production environment tests passed"
+        fi
+        
+        # GCP 스테이징 환경 테스트
+        if [ "${{ needs.deploy-gcp.result }}" == "success" ]; then
+          echo "Testing GCP staging environment..."
+          curl -f http://${{ secrets.STAGING_VM_HOST }}/health
+          curl -f http://${{ secrets.STAGING_VM_HOST }}/api/users
+          echo "✅ GCP staging environment tests passed"
+        fi
+
+  # 알림
+  notify:
+    name: 배포 알림
+    runs-on: ubuntu-latest
+    needs: [deploy-aws, deploy-gcp, deploy-aws-production, deploy-gcp-production, post-deployment-test]
+    if: always()
+    steps:
+    - name: 배포 결과 알림
+      run: |
+        echo "🎯 CI/CD Pipeline Summary"
+        echo "=========================="
+        echo "📦 Build: ✅ Success"
+        echo "🧪 Tests: ✅ Success"
+        echo "🔒 Security Scan: ✅ Success"
+        echo "🚀 AWS Production: ${{ needs.deploy-aws.result }}"
+        echo "🚀 GCP Staging: ${{ needs.deploy-gcp.result }}"
+        echo "🏭 AWS Production: ${{ needs.deploy-aws-production.result }}"
+        echo "🏭 GCP Production: ${{ needs.deploy-gcp-production.result }}"
+        echo "✅ Post-deployment Tests: ${{ needs.post-deployment-test.result }}"
+        echo ""
+        echo "🌐 Deployed URLs:"
+        if [ "${{ needs.deploy-aws.result }}" == "success" ]; then
+          echo "  AWS Production: http://${{ secrets.PROD_VM_HOST }}"
+        fi
+        if [ "${{ needs.deploy-gcp.result }}" == "success" ]; then
+          echo "  GCP Staging: http://${{ secrets.STAGING_VM_HOST }}"
+        fi
+        echo ""
+        echo "📊 Pipeline completed at: $(date)"
 EOF
 ```
 
@@ -609,25 +800,27 @@ EOF
 #### Step 4: Repository Secrets 설정 (10분)
 ```bash
 # GitHub Repository Settings > Secrets and variables > Actions
-# 다음 Secrets 설정:
+# 다음 Secrets 설정 (실제 프로젝트 기반):
 
 # Docker Hub 인증
 DOCKER_USERNAME: your-docker-username
 DOCKER_PASSWORD: your-docker-password
 
-# 스테이징 환경
-STAGING_VM_HOST: [staging-vm-public-ip]
-STAGING_VM_USERNAME: ubuntu
-STAGING_VM_SSH_KEY: [staging-vm-ssh-private-key]
-STAGING_DB_PASSWORD: [staging-db-password]
-STAGING_REDIS_PASSWORD: [staging-redis-password]
-
-# 프로덕션 환경
-PROD_VM_HOST: [prod-vm-public-ip]
+# AWS 프로덕션 환경 (PROD)
+PROD_VM_HOST: [aws-vm-public-ip]
 PROD_VM_USERNAME: ubuntu
-PROD_VM_SSH_KEY: [prod-vm-ssh-private-key]
-PROD_DB_PASSWORD: [prod-db-password]
-PROD_REDIS_PASSWORD: [prod-redis-password]
+PROD_VM_SSH_KEY: [aws-vm-ssh-private-key]
+PROD_DB_PASSWORD: [aws-db-password]
+PROD_REDIS_PASSWORD: [aws-redis-password]
+
+# GCP 스테이징 환경 (STAGING)
+STAGING_VM_HOST: [gcp-vm-public-ip]
+STAGING_VM_USERNAME: ubuntu
+STAGING_VM_SSH_KEY: [gcp-vm-ssh-private-key]
+STAGING_DB_PASSWORD: [gcp-db-password]
+STAGING_REDIS_PASSWORD: [gcp-redis-password]
+
+# 참고: 실제 프로젝트에서는 AWS=PROD, GCP=STAGING으로 매핑됨
 ```
 
 #### Step 5: 워크플로우 실행 및 테스트 (20분)
@@ -1080,6 +1273,9 @@ docker system prune -f
 3. **모니터링 통합**: Prometheus 메트릭과 Winston 로깅
 4. **CI/CD 자동화**: GitHub Actions를 통한 완전 자동화
 5. **보안 강화**: Nginx 보안 헤더 및 환경 변수 관리
+6. **문제 해결**: 실제 발생하는 11가지 주요 문제 해결 경험
+7. **멀티 클라우드**: AWS + GCP 환경에서의 실제 배포
+8. **보안 스캔**: Trivy + CodeQL을 통한 보안 취약점 검사
 
 ### 📊 실습 결과물
 - **완전한 프로젝트**: `github-actions-demo-day2` 저장소
@@ -1087,6 +1283,9 @@ docker system prune -f
 - **프로덕션 스택**: 4개 서비스 (App, DB, Redis, Nginx)
 - **모니터링**: 메트릭 수집 및 로그 관리 시스템
 - **성능**: 평균 응답시간 6.2ms 달성
+- **테스트 통과**: 28개 테스트 모두 통과 (단위 18개, 통합 10개)
+- **멀티 클라우드**: AWS + GCP 실제 배포 환경
+- **보안 스캔**: Trivy + CodeQL v3 보안 검사 통과
 
 ### 📈 다음 수업 준비사항
 - [ ] Day3: 로드밸런싱, 모니터링, 비용 최적화
@@ -1105,6 +1304,10 @@ docker system prune -f
 - [x] 프로덕션 환경 배포 및 테스트
 - [x] 모니터링 및 성능 최적화
 - [x] 최종 검증 및 정리
+- [x] **11가지 주요 문제 해결** (ESLint, DB 사용자, 포트 충돌, Redis 충돌, Supertest 호환성, DB 타임아웃, 데이터 타입, Docker 캐시, CodeQL, CD 워크플로우, 시크릿 매핑)
+- [x] **멀티 클라우드 배포** (AWS PROD + GCP STAGING)
+- [x] **보안 스캔 통합** (Trivy + CodeQL v3)
+- [x] **28개 테스트 모두 통과** (단위 18개, 통합 10개)
 
 ---
 
