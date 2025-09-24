@@ -24,7 +24,7 @@
           class="px-3 py-1 text-sm rounded bg-gray-500 text-white hover:bg-gray-600 transition-colors"
           :title="allDetailsExpanded ? '모든 목차 접기' : '모든 목차 펼치기'"
         >
-          {{ allDetailsExpanded ? '🔼 접기' : '🔽 펼치기' }}
+          {{ allDetailsExpanded ? '🔼' : '🔽' }}
         </button>
         <button
           v-if="path && !isSlideView && isMarkdownFile"
@@ -38,7 +38,7 @@
           @click="downloadMarkdown"
           class="px-3 py-1 text-sm rounded bg-gray-500 text-white hover:bg-gray-600 transition-colors"
         >
-          Markdown
+          MD
         </button>
         <button
           v-if="path && !isSlideView && !isMarkdownFile"
@@ -887,21 +887,15 @@ const downloadPdf = async () => {
     const decodedBase = decodeURIComponent(base); // URL 디코딩
     const filename = decodedBase + (ct.includes('application/pdf') ? '.pdf' : '.md');
     
-    // 파일명을 UTF-8로 인코딩하여 Blob 생성
-    const encoder = new TextEncoder();
-    const filenameBytes = encoder.encode(filename);
-    
-    // Blob에 Content-Disposition 헤더를 시뮬레이션하기 위한 메타데이터 추가
-    const metadata = `Content-Disposition: attachment; filename*=UTF-8''${encodeURIComponent(filename)}\n\n`;
-    const metadataBytes = encoder.encode(metadata);
-    
-    // 원본 Blob과 메타데이터를 결합
-    const combinedBlob = new Blob([metadataBytes, blob], { type: blob.type });
-    const objectUrl = URL.createObjectURL(combinedBlob);
+    // 한글 파일명을 안전하게 처리하기 위한 URL 생성
+    const objectUrl = URL.createObjectURL(blob);
     
     const a = document.createElement('a');
     a.href = objectUrl;
     a.download = filename; // 디코딩된 한글 파일명 사용
+    
+    // 다운로드 속성에 한글 파일명 직접 설정
+    a.setAttribute('download', filename);
     
     document.body.appendChild(a);
     a.click();
@@ -925,21 +919,20 @@ const downloadMarkdown = async () => {
     const utf8Bom = '\uFEFF';
     const contentWithBom = utf8Bom + props.content;
     
-    // 파일명을 UTF-8로 인코딩하여 Blob 생성
-    const encoder = new TextEncoder();
+    // Blob을 UTF-8로 명시적으로 생성
+    const blob = new Blob([contentWithBom], { 
+      type: 'text/markdown;charset=utf-8' 
+    });
     
-    // Blob에 Content-Disposition 헤더를 시뮬레이션하기 위한 메타데이터 추가
-    const metadata = `Content-Disposition: attachment; filename*=UTF-8''${encodeURIComponent(filename)}\n\n`;
-    const metadataBytes = encoder.encode(metadata);
-    const contentBytes = encoder.encode(contentWithBom);
-    
-    // 메타데이터와 콘텐츠를 결합
-    const combinedBlob = new Blob([metadataBytes, contentBytes], { type: 'text/markdown;charset=utf-8' });
-    const objectUrl = URL.createObjectURL(combinedBlob);
+    // 한글 파일명을 안전하게 처리하기 위한 URL 생성
+    const objectUrl = URL.createObjectURL(blob);
     
     const a = document.createElement('a');
     a.href = objectUrl;
     a.download = filename; // 디코딩된 한글 파일명 사용
+    
+    // 다운로드 속성에 한글 파일명 직접 설정
+    a.setAttribute('download', filename);
     
     document.body.appendChild(a);
     a.click();
@@ -1001,20 +994,15 @@ const downloadFile = async () => {
     const decodedBase = decodeURIComponent(base); // URL 디코딩
     const filename = decodedBase;
     
-    // 파일명을 UTF-8로 인코딩하여 Blob 생성
-    const encoder = new TextEncoder();
-    
-    // Blob에 Content-Disposition 헤더를 시뮬레이션하기 위한 메타데이터 추가
-    const metadata = `Content-Disposition: attachment; filename*=UTF-8''${encodeURIComponent(filename)}\n\n`;
-    const metadataBytes = encoder.encode(metadata);
-    
-    // 원본 Blob과 메타데이터를 결합
-    const combinedBlob = new Blob([metadataBytes, blob], { type: mimeType });
-    const objectUrl = URL.createObjectURL(combinedBlob);
+    // 한글 파일명을 안전하게 처리하기 위한 URL 생성
+    const objectUrl = URL.createObjectURL(blob);
     
     const a = document.createElement('a');
     a.href = objectUrl;
     a.download = filename; // 디코딩된 한글 파일명 사용
+    
+    // 다운로드 속성에 한글 파일명 직접 설정
+    a.setAttribute('download', filename);
     
     document.body.appendChild(a);
     a.click();
