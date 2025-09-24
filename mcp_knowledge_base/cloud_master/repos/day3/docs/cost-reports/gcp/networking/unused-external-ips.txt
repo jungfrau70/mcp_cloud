@@ -1,2 +1,0 @@
-NAME                 REGION           ADDRESS       STATUS    USERS
-cloud-deployment-ip  asia-northeast3  34.47.82.247  RESERVED
