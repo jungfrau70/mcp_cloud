@@ -7,7 +7,7 @@
    -. yaml
 
 3교시> 
-   - 실습 : https://github.com/your-username/github-actions-demo-day2.git
+   - 실습 : https://github.com/[your-username=jungfrau70]/github-actions-demo-day2.git
 
 
 4교시 14시 05분에 시작합니다
@@ -18,6 +18,29 @@
 
 
 
+3일차
+
+
+안녕하세요!     >>> 9시 5분에 시작합니다. <<<
+
+
+$ git clone https://github.com/jungfrau70/github-actions-demo-day2.git
+$ git switch day2-advanced
+
+
+2교시 10:20 에 시작합니다.
+
+3교시 11:10 에 시작합니다.
+
+
+>>>>> 점심 시간 (12:00 - 13:00)
+
+4교시 13:00 에 시작합니다.
+
+
+5교시 14:15 에 시작합니다.
+
+6교시 15:10 에 시작합니다.
 
 
 

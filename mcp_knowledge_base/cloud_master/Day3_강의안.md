@@ -27,6 +27,14 @@ command -v docker && echo "✅ Docker 설치됨" || echo "❌ Docker 설치 필�
 command -v docker-compose && echo "✅ Docker Compose 설치됨" || echo "❌ Docker Compose 설치 필요"
 command -v jq && echo "✅ jq 설치됨" || echo "❌ jq 설치 필요"
 command -v curl && echo "✅ curl 설치됨" || echo "❌ curl 설치 필요"
+command -v ab && echo "✅ Apache Bench 설치됨" || echo "❌ Apache Bench 설치 필요 (부하테스트용)"
+
+# Apache Bench 설치 (Ubuntu/Debian)
+if ! command -v ab &> /dev/null; then
+    echo "Apache Bench 설치 중..."
+    sudo apt update && sudo apt install -y apache2-utils
+    echo "✅ Apache Bench 설치 완료"
+fi
 
 # 2. 클라우드 계정 설정 확인
 echo "=== 클라우드 계정 설정 확인 ==="
@@ -1066,7 +1074,7 @@ echo "=== 수동 모니터링 스택 구축 ==="
 # 1. 모니터링 디렉토리 생성
 mkdir -p monitoring/{prometheus,grafana/dashboards,grafana/provisioning/datasources}
 
-# 2. Prometheus 설정 파일 생성
+# 2. Prometheus 설정 파일 생성 (클라우드 인스턴스 메트릭 수집 포함)
 cat > monitoring/prometheus/prometheus.yml << 'EOF'
 global:
   scrape_interval: 15s
@@ -1086,7 +1094,53 @@ scrape_configs:
       - targets: ['app:3000']
     metrics_path: '/metrics'
     scrape_interval: 30s
+  
+  # AWS EC2 인스턴스 메트릭 수집
+  - job_name: 'aws-ec2-instances'
+    static_configs:
+      - targets: ['AWS_INSTANCE_IP:9100']  # Node Exporter가 설치된 AWS 인스턴스
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'aws-ec2-instance'
+  
+  # GCP VM 인스턴스 메트릭 수집
+  - job_name: 'gcp-vm-instances'
+    static_configs:
+      - targets: ['GCP_INSTANCE_IP:9100']  # Node Exporter가 설치된 GCP 인스턴스
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'gcp-vm-instance'
+  
+  # HTTP 요청 메트릭 수집 (nginx_exporter)
+  - job_name: 'nginx-metrics'
+    static_configs:
+      - targets: ['AWS_INSTANCE_IP:9113', 'GCP_INSTANCE_IP:9113']  # nginx_exporter 포트
+    scrape_interval: 10s
+    metrics_path: '/metrics'
 EOF
+
+echo "✅ Prometheus 설정에 클라우드 인스턴스 메트릭 수집 추가됨"
+echo "   - AWS EC2 인스턴스 메트릭 수집"
+echo "   - GCP VM 인스턴스 메트릭 수집"
+echo "   - HTTP 요청 메트릭 수집"
+
+# 2-1. 클라우드 인스턴스에 Node Exporter 설치 (부하테스트 연계용)
+echo "=== 클라우드 인스턴스에 Node Exporter 설치 ==="
+echo "AWS EC2 인스턴스에 Node Exporter 설치:"
+echo "ssh -i ~/.ssh/cloud-master-key.pem ubuntu@[AWS_INSTANCE_IP]"
+echo "sudo docker run -d --name node-exporter --restart=always -p 9100:9100 prom/node-exporter"
+echo ""
+echo "GCP VM 인스턴스에 Node Exporter 설치:"
+echo "ssh -i ~/.ssh/cloud-master-key.pem ubuntu@[GCP_INSTANCE_IP]"
+echo "sudo docker run -d --name node-exporter --restart=always -p 9100:9100 prom/node-exporter"
+echo ""
+echo "⚠️ 주의: 실제 IP 주소로 교체하고 보안 그룹/방화벽에서 9100 포트 개방 필요"
 
 # 3. Docker Compose 파일 생성
 cat > monitoring/docker-compose.yml << 'EOF'
@@ -1590,6 +1644,12 @@ echo "- GCP Cost Management: https://console.cloud.google.com/cost-management"
 ## 🕘 4교시: 비용 최적화 및 자동 스케일링 (14:45~16:15)
 
 ### 📚 이론 학습 (15분)
+#### 로드밸런서와 오토스케일링 연계 동작
+- **자동 등록**: 오토스케일링으로 생성된 인스턴스가 자동으로 로드밸런서에 등록
+- **헬스체크 연동**: 로드밸런서 헬스체크를 통한 인스턴스 상태 모니터링
+- **트래픽 분산**: 스케일링된 인스턴스들에 자동으로 트래픽 분산
+- **장애 복구**: 불건전한 인스턴스 자동 제거 및 교체
+
 #### 비용 최적화 전략
 - **리소스 최적화**: 사용하지 않는 리소스 제거
 - **스케일링**: 수요에 따른 자동 조정
@@ -1600,7 +1660,7 @@ echo "- GCP Cost Management: https://console.cloud.google.com/cost-management"
 
 #### 🏗️ **1단계: 자동 스케일링 아키텍처 이해**
 
-**목표 아키텍처 (자동 스케일링 추가 후)**
+**목표 아키텍처 (로드밸런서와 오토스케일링 연계)**
 ```mermaid
 graph TB
     subgraph "AWS Cloud"
@@ -1645,6 +1705,12 @@ graph TB
     M1 --> G1
     M2 --> M1
     L1 --> M2
+    
+    %% 연계 관계 표시
+    A3 -.->|자동 등록| A1
+    A1 -.->|스케일링| A3
+    G3 -.->|자동 등록| G1
+    G1 -.->|스케일링| G3
 ```
 
 **🔍 명령 실행: AWS Auto Scaling Group 구축**
@@ -1670,13 +1736,19 @@ LAUNCH_TEMPLATE_ID=$(aws ec2 create-launch-template \
     --query 'LaunchTemplate.LaunchTemplateId' --output text)
 echo "Launch Template ID: $LAUNCH_TEMPLATE_ID"
 
-# 2. Auto Scaling Group 생성
+# 2. Auto Scaling Group 생성 (로드밸런서와 연계)
 aws autoscaling create-auto-scaling-group \
     --auto-scaling-group-name cloud-master-day3-asg \
     --launch-template LaunchTemplateId=$LAUNCH_TEMPLATE_ID,Version='$Latest' \
     --min-size 1 --max-size 3 --desired-capacity 2 \
     --target-group-arns $TARGET_GROUP_ARN \
-    --health-check-type ELB --health-check-grace-period 300
+    --health-check-type ELB --health-check-grace-period 300 \
+    --vpc-zone-identifier $(aws ec2 describe-subnets --filters "Name=vpc-id,Values=$VPC_ID" \
+        --query 'Subnets[*].SubnetId' --output text | tr '\n' ',' | sed 's/,$//')
+
+echo "✅ Auto Scaling Group이 Target Group과 연계되어 생성됨"
+echo "   - 새 인스턴스가 자동으로 Target Group에 등록됨"
+echo "   - 로드밸런서가 Auto Scaling Group 인스턴스들을 자동으로 관리함"
 
 # 3. 스케일링 정책 생성
 aws autoscaling put-scaling-policy \
@@ -1724,11 +1796,22 @@ gcloud compute instance-templates create cloud-master-day3-template \
     --machine-type=e2-micro --boot-disk-size=10GB \
     --tags=http-server
 
-# 2. Managed Instance Group 생성
+# 2. Managed Instance Group 생성 (로드밸런서와 연계)
 gcloud compute instance-groups managed create cloud-master-day3-mig \
     --template=cloud-master-day3-template --size=2 --zone=asia-northeast3-a
 
-# 3. Auto Scaling 정책 설정
+echo "✅ Managed Instance Group이 생성됨"
+
+# 3. MIG를 Backend Service에 연결 (로드밸런서 연계)
+gcloud compute backend-services add-backend cloud-master-day3-backend \
+    --instance-group=cloud-master-day3-mig \
+    --instance-group-zone=asia-northeast3-a --global
+
+echo "✅ MIG가 Backend Service와 연계됨"
+echo "   - MIG 인스턴스들이 자동으로 로드밸런서에 등록됨"
+echo "   - 로드밸런서가 MIG 인스턴스들을 자동으로 관리함"
+
+# 4. Auto Scaling 정책 설정
 gcloud compute instance-groups managed set-autoscaling cloud-master-day3-mig \
     --zone=asia-northeast3-a --max-num-replicas=5 --min-num-replicas=1 \
     --target-cpu-utilization=0.7 --cool-down-period=60
@@ -1751,36 +1834,390 @@ gcloud compute instance-groups managed describe cloud-master-day3-mig \
 
 ---
 
-#### 🎯 **3단계: 자동 스케일링 테스트**
+#### 🎯 **3단계: 로드밸런서와 오토스케일링 연계 동작 확인**
 
-**🔍 명령 실행: 스케일링 동작 테스트**
+**🔍 명령 실행: 로드밸런서-오토스케일링 연계 상태 확인**
 ```bash
-echo "=== 자동 스케일링 테스트 시작 ==="
+echo "=== 로드밸런서와 오토스케일링 연계 동작 확인 ==="
 
-# AWS Auto Scaling 상태 모니터링
-echo "--- AWS Auto Scaling 상태 ---"
+# 1. AWS ALB와 Auto Scaling Group 연계 확인
+echo "--- AWS ALB ↔ Auto Scaling Group 연계 상태 ---"
+echo "ALB Target Group 상태:"
+aws elbv2 describe-target-health --target-group-arn $TARGET_GROUP_ARN \
+    --query 'TargetHealthDescriptions[*].{InstanceId:Target.Id,Port:Target.Port,Health:TargetHealth.State}'
+
+echo "Auto Scaling Group 인스턴스 상태:"
 aws autoscaling describe-auto-scaling-groups \
     --auto-scaling-group-names cloud-master-day3-asg \
     --query 'AutoScalingGroups[0].{DesiredCapacity:DesiredCapacity,Instances:length(Instances),HealthStatus:Instances[0].HealthStatus}'
 
-# GCP MIG 상태 모니터링
-echo "--- GCP MIG 상태 ---"
+echo "Auto Scaling Group 인스턴스 목록:"
+aws autoscaling describe-auto-scaling-groups \
+    --auto-scaling-group-names cloud-master-day3-asg \
+    --query 'AutoScalingGroups[0].Instances[*].{InstanceId:InstanceId,HealthStatus:HealthStatus,LifecycleState:LifecycleState}'
+
+# 2. GCP Load Balancer와 MIG 연계 확인
+echo "--- GCP Load Balancer ↔ MIG 연계 상태 ---"
+echo "Backend Service 상태:"
+gcloud compute backend-services get-health cloud-master-day3-backend --global
+
+echo "MIG 인스턴스 상태:"
 gcloud compute instance-groups managed list-instances cloud-master-day3-mig \
     --zone=asia-northeast3-a \
-    --format="table(instance,status,currentAction)"
+    --format="table(instance,status,currentAction,healthState)"
 
-# CPU 부하 테스트 (선택사항)
-echo "--- CPU 부하 테스트 ---"
-echo "다음 명령어로 CPU 부하를 생성하여 스케일링을 테스트할 수 있습니다:"
-echo "yes > /dev/null &  # CPU 부하 생성"
-echo "top  # CPU 사용률 확인"
-echo "killall yes  # 부하 테스트 종료"
+# 3. 로드밸런서를 통한 트래픽 분산 확인
+echo "--- 로드밸런서 트래픽 분산 테스트 ---"
+ALB_DNS=$(aws elbv2 describe-load-balancers --names cloud-master-day3-alb \
+    --query 'LoadBalancers[0].DNSName' --output text)
+LB_IP=$(gcloud compute forwarding-rules describe cloud-master-day3-rule \
+    --global --format="value(IPAddress)")
+
+echo "AWS ALB 트래픽 분산 테스트 (10회 요청):"
+for i in {1..10}; do
+    echo -n "요청 $i: "
+    curl -s http://$ALB_DNS | grep -o "Server: [^<]*" || echo "응답 없음"
+    sleep 1
+done
+
+echo "GCP LB 트래픽 분산 테스트 (10회 요청):"
+for i in {1..10}; do
+    echo -n "요청 $i: "
+    curl -s http://$LB_IP | grep -o "Server: [^<]*" || echo "응답 없음"
+    sleep 1
+done
+```
+
+**✅ 예상 결과:**
+- AWS ALB: Target Group에 Auto Scaling Group 인스턴스들이 `healthy` 상태로 등록
+- GCP LB: Backend Service에 MIG 인스턴스들이 `HEALTHY` 상태로 등록
+- 트래픽 분산: 로드밸런서가 여러 인스턴스에 요청을 분산하여 처리
+- 연계 동작: 오토스케일링으로 생성된 인스턴스가 자동으로 로드밸런서에 등록
+
+#### 🎯 **4단계: 자동 스케일링 동작 테스트**
+
+**🔍 명령 실행: 스케일링 동작 테스트**
+```bash
+echo "=== 자동 스케일링 동작 테스트 시작 ==="
+
+# 1. 현재 상태 확인
+echo "--- 현재 스케일링 상태 ---"
+echo "AWS Auto Scaling Group:"
+aws autoscaling describe-auto-scaling-groups \
+    --auto-scaling-group-names cloud-master-day3-asg \
+    --query 'AutoScalingGroups[0].{DesiredCapacity:DesiredCapacity,MinSize:MinSize,MaxSize:MaxSize,Instances:length(Instances)}'
+
+echo "GCP MIG:"
+gcloud compute instance-groups managed describe cloud-master-day3-mig \
+    --zone=asia-northeast3-a \
+    --format="value(targetSize,autoscaler.autoscalingPolicy.maxNumReplicas,autoscaler.autoscalingPolicy.minNumReplicas)"
+
+# 2. CPU 부하 생성으로 스케일링 트리거 (선택사항)
+echo "--- CPU 부하 생성으로 스케일링 테스트 ---"
+echo "⚠️ 주의: 이 테스트는 실제 CPU 부하를 생성합니다."
+read -p "CPU 부하 테스트를 실행하시겠습니까? (y/N): " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo "CPU 부하 생성 중... (60초간)"
+    # CPU 부하 생성 (백그라운드)
+    yes > /dev/null &
+    LOAD_PID=$!
+    
+    echo "CPU 부하 생성됨 (PID: $LOAD_PID)"
+    echo "60초 후 자동으로 종료됩니다..."
+    
+    # 60초 대기
+    sleep 60
+    
+    # 부하 종료
+    kill $LOAD_PID 2>/dev/null
+    echo "CPU 부하 테스트 완료"
+    
+    # 스케일링 결과 확인
+    echo "--- 스케일링 결과 확인 ---"
+    echo "AWS Auto Scaling Group 상태:"
+    aws autoscaling describe-auto-scaling-groups \
+        --auto-scaling-group-names cloud-master-day3-asg \
+        --query 'AutoScalingGroups[0].{DesiredCapacity:DesiredCapacity,Instances:length(Instances)}'
+    
+    echo "GCP MIG 상태:"
+    gcloud compute instance-groups managed list-instances cloud-master-day3-mig \
+        --zone=asia-northeast3-a \
+        --format="table(instance,status,currentAction)"
+else
+    echo "CPU 부하 테스트를 건너뜁니다."
+fi
+
+# 3. 스케일링 활동 로그 확인
+echo "--- 스케일링 활동 로그 ---"
+echo "AWS Auto Scaling 활동:"
+aws autoscaling describe-scaling-activities \
+    --auto-scaling-group-name cloud-master-day3-asg \
+    --max-items 5 \
+    --query 'Activities[*].{Time:StartTime,Status:StatusCode,Description:Description}'
+
+echo "GCP MIG 활동:"
+gcloud compute instance-groups managed list-instances cloud-master-day3-mig \
+    --zone=asia-northeast3-a \
+    --format="table(instance,status,currentAction,lastAttempt)"
 ```
 
 **✅ 예상 결과:**
 - AWS ASG: 2개 인스턴스 실행 중, `Healthy` 상태
 - GCP MIG: 2개 인스턴스 실행 중, `RUNNING` 상태
 - CPU 사용률이 70% 초과 시 자동으로 인스턴스 추가
+
+#### 🎯 **5단계: 로드밸런서-오토스케일링 연계 부하테스트**
+
+**🔍 명령 실행: 연계 동작 검증을 위한 부하테스트**
+```bash
+echo "=== 로드밸런서-오토스케일링 연계 부하테스트 시작 ==="
+
+# 1. 초기 상태 확인
+echo "--- 부하테스트 전 초기 상태 ---"
+echo "AWS Auto Scaling Group 초기 상태:"
+aws autoscaling describe-auto-scaling-groups \
+    --auto-scaling-group-names cloud-master-day3-asg \
+    --query 'AutoScalingGroups[0].{DesiredCapacity:DesiredCapacity,Instances:length(Instances)}'
+
+echo "GCP MIG 초기 상태:"
+gcloud compute instance-groups managed describe cloud-master-day3-mig \
+    --zone=asia-northeast3-a \
+    --format="value(targetSize)"
+
+# 2. 로드밸런서 접속 정보 확인
+ALB_DNS=$(aws elbv2 describe-load-balancers --names cloud-master-day3-alb \
+    --query 'LoadBalancers[0].DNSName' --output text)
+LB_IP=$(gcloud compute forwarding-rules describe cloud-master-day3-rule \
+    --global --format="value(IPAddress)")
+
+echo "부하테스트 대상:"
+echo "- AWS ALB: http://$ALB_DNS"
+echo "- GCP LB: http://$LB_IP"
+
+# 3. Apache Bench를 이용한 부하테스트 (설치 확인)
+if command -v ab &> /dev/null; then
+    echo "--- Apache Bench 부하테스트 실행 ---"
+    
+    echo "AWS ALB 부하테스트 (1000 요청, 동시 50개):"
+    ab -n 1000 -c 50 http://$ALB_DNS/ > aws_alb_loadtest.log 2>&1 &
+    AWS_PID=$!
+    
+    echo "GCP LB 부하테스트 (1000 요청, 동시 50개):"
+    ab -n 1000 -c 50 http://$LB_IP/ > gcp_lb_loadtest.log 2>&1 &
+    GCP_PID=$!
+    
+    echo "부하테스트 실행 중... (PID: AWS=$AWS_PID, GCP=$GCP_PID)"
+    echo "진행 상황을 모니터링합니다..."
+    
+    # 4. 부하테스트 중 스케일링 모니터링 (모니터링 스택 연계)
+    echo "=== 모니터링 스택 연계 부하테스트 시작 ==="
+    
+    # Prometheus 메트릭 수집 시작
+    echo "Prometheus 메트릭 수집 시작..."
+    PROMETHEUS_URL="http://localhost:9090"
+    GRAFANA_URL="http://localhost:3001"
+    
+    # 부하테스트 시작 시간 기록
+    LOADTEST_START_TIME=$(date -u +%Y-%m-%dT%H:%M:%S)
+    echo "부하테스트 시작 시간: $LOADTEST_START_TIME"
+    
+    for i in {1..20}; do
+        echo "--- 모니터링 $i/20 (10초 간격) ---"
+        
+        # AWS ASG 상태
+        echo "AWS ASG 상태:"
+        aws autoscaling describe-auto-scaling-groups \
+            --auto-scaling-group-names cloud-master-day3-asg \
+            --query 'AutoScalingGroups[0].{DesiredCapacity:DesiredCapacity,Instances:length(Instances)}'
+        
+        # GCP MIG 상태
+        echo "GCP MIG 상태:"
+        gcloud compute instance-groups managed describe cloud-master-day3-mig \
+            --zone=asia-northeast3-a \
+            --format="value(targetSize)"
+        
+        # Prometheus 메트릭 확인
+        echo "Prometheus 메트릭 확인:"
+        if curl -s $PROMETHEUS_URL/api/v1/query?query=up > /dev/null; then
+            echo "✅ Prometheus 연결됨"
+            
+            # CPU 사용률 메트릭 쿼리
+            CPU_METRICS=$(curl -s "$PROMETHEUS_URL/api/v1/query?query=100%20-%20(avg%20by%20(instance)%20(irate(node_cpu_seconds_total{mode=\"idle\"}[5m]))%20*%20100)")
+            echo "CPU 사용률 메트릭: $CPU_METRICS"
+            
+            # 메모리 사용률 메트릭 쿼리
+            MEMORY_METRICS=$(curl -s "$PROMETHEUS_URL/api/v1/query?query=(1%20-%20(node_memory_MemAvailable_bytes%20/%20node_memory_MemTotal_bytes))%20*%20100")
+            echo "메모리 사용률 메트릭: $MEMORY_METRICS"
+            
+            # HTTP 요청 메트릭 쿼리 (nginx_exporter가 있다면)
+            HTTP_METRICS=$(curl -s "$PROMETHEUS_URL/api/v1/query?query=rate(nginx_http_requests_total[1m])")
+            echo "HTTP 요청 메트릭: $HTTP_METRICS"
+        else
+            echo "❌ Prometheus 연결 실패"
+        fi
+        
+        # Grafana 대시보드 상태 확인
+        echo "Grafana 대시보드 확인:"
+        if curl -s $GRAFANA_URL/api/health > /dev/null; then
+            echo "✅ Grafana 연결됨 - 대시보드에서 실시간 모니터링 가능"
+            echo "   대시보드 URL: $GRAFANA_URL"
+        else
+            echo "❌ Grafana 연결 실패"
+        fi
+        
+        # AWS CloudWatch 메트릭 확인
+        echo "AWS CloudWatch 메트릭:"
+        aws cloudwatch get-metric-statistics \
+            --namespace AWS/EC2 \
+            --metric-name CPUUtilization \
+            --dimensions Name=AutoScalingGroupName,Value=cloud-master-day3-asg \
+            --start-time $(date -u -d '5 minutes ago' +%Y-%m-%dT%H:%M:%S) \
+            --end-time $(date -u +%Y-%m-%dT%H:%M:%S) \
+            --period 300 \
+            --statistics Average \
+            --query 'Datapoints[0].Average' --output text 2>/dev/null || echo "데이터 없음"
+        
+        # GCP Monitoring 메트릭 확인
+        echo "GCP Monitoring 메트릭:"
+        gcloud monitoring metrics list --filter="metric.type:compute.googleapis.com/instance/cpu/utilization" \
+            --limit=5 --format="value(metric.type)" 2>/dev/null || echo "GCP Monitoring 데이터 없음"
+        
+        sleep 10
+    done
+    
+    # 5. 부하테스트 완료 대기
+    echo "부하테스트 완료 대기 중..."
+    wait $AWS_PID
+    wait $GCP_PID
+    
+    echo "부하테스트 완료!"
+    
+    # 6. 부하테스트 결과 분석 (모니터링 스택 연계)
+    echo "--- 부하테스트 결과 분석 (모니터링 스택 연계) ---"
+    
+    # 부하테스트 종료 시간 기록
+    LOADTEST_END_TIME=$(date -u +%Y-%m-%dT%H:%M:%S)
+    echo "부하테스트 종료 시간: $LOADTEST_END_TIME"
+    
+    # Apache Bench 결과 분석
+    echo "AWS ALB Apache Bench 결과:"
+    grep -E "(Requests per second|Time per request|Failed requests)" aws_alb_loadtest.log || echo "결과 분석 실패"
+    
+    echo "GCP LB Apache Bench 결과:"
+    grep -E "(Requests per second|Time per request|Failed requests)" gcp_lb_loadtest.log || echo "결과 분석 실패"
+    
+    # Prometheus 메트릭 기반 분석
+    echo "--- Prometheus 메트릭 기반 부하테스트 분석 ---"
+    if curl -s $PROMETHEUS_URL/api/v1/query?query=up > /dev/null; then
+        echo "부하테스트 기간 중 최대 CPU 사용률:"
+        MAX_CPU=$(curl -s "$PROMETHEUS_URL/api/v1/query?query=max_over_time(100%20-%20(avg%20by%20(instance)%20(irate(node_cpu_seconds_total{mode=\"idle\"}[5m]))%20*%20100)[10m:1m])")
+        echo "$MAX_CPU"
+        
+        echo "부하테스트 기간 중 최대 메모리 사용률:"
+        MAX_MEMORY=$(curl -s "$PROMETHEUS_URL/api/v1/query?query=max_over_time((1%20-%20(node_memory_MemAvailable_bytes%20/%20node_memory_MemTotal_bytes))%20*%20100[10m:1m])")
+        echo "$MAX_MEMORY"
+        
+        echo "부하테스트 기간 중 평균 응답 시간:"
+        AVG_RESPONSE_TIME=$(curl -s "$PROMETHEUS_URL/api/v1/query?query=avg_over_time(http_request_duration_seconds[10m])")
+        echo "$AVG_RESPONSE_TIME"
+    else
+        echo "❌ Prometheus 연결 실패 - 메트릭 분석 불가"
+    fi
+    
+    # Grafana 대시보드에서 부하테스트 결과 확인 안내
+    echo "--- Grafana 대시보드에서 부하테스트 결과 확인 ---"
+    echo "1. Grafana 대시보드 접속: $GRAFANA_URL (admin/admin)"
+    echo "2. 부하테스트 기간: $LOADTEST_START_TIME ~ $LOADTEST_END_TIME"
+    echo "3. 확인할 메트릭:"
+    echo "   - CPU 사용률 그래프"
+    echo "   - 메모리 사용률 그래프"
+    echo "   - HTTP 요청 수 그래프"
+    echo "   - 응답 시간 그래프"
+    echo "   - 인스턴스 수 변화 그래프"
+    
+else
+    echo "Apache Bench가 설치되지 않았습니다."
+    echo "수동 부하테스트를 실행합니다..."
+    
+    # 7. 수동 부하테스트 (curl 기반)
+    echo "--- 수동 부하테스트 (curl 기반) ---"
+    echo "AWS ALB 수동 부하테스트 (100회 요청):"
+    for i in {1..100}; do
+        curl -s -o /dev/null -w "요청 $i: %{http_code} - %{time_total}s\n" http://$ALB_DNS/ &
+        if [ $((i % 10)) -eq 0 ]; then
+            wait  # 10개씩 배치로 실행
+        fi
+    done
+    wait
+    
+    echo "GCP LB 수동 부하테스트 (100회 요청):"
+    for i in {1..100}; do
+        curl -s -o /dev/null -w "요청 $i: %{http_code} - %{time_total}s\n" http://$LB_IP/ &
+        if [ $((i % 10)) -eq 0 ]; then
+            wait  # 10개씩 배치로 실행
+        fi
+    done
+    wait
+fi
+
+# 8. 부하테스트 후 스케일링 결과 확인
+echo "--- 부하테스트 후 스케일링 결과 ---"
+echo "AWS Auto Scaling Group 최종 상태:"
+aws autoscaling describe-auto-scaling-groups \
+    --auto-scaling-group-names cloud-master-day3-asg \
+    --query 'AutoScalingGroups[0].{DesiredCapacity:DesiredCapacity,Instances:length(Instances),MinSize:MinSize,MaxSize:MaxSize}'
+
+echo "GCP MIG 최종 상태:"
+gcloud compute instance-groups managed describe cloud-master-day3-mig \
+    --zone=asia-northeast3-a \
+    --format="value(targetSize,autoscaler.autoscalingPolicy.maxNumReplicas,autoscaler.autoscalingPolicy.minNumReplicas)"
+
+# 9. 스케일링 활동 로그 확인
+echo "--- 스케일링 활동 로그 ---"
+echo "AWS Auto Scaling 활동 (최근 10개):"
+aws autoscaling describe-scaling-activities \
+    --auto-scaling-group-name cloud-master-day3-asg \
+    --max-items 10 \
+    --query 'Activities[*].{Time:StartTime,Status:StatusCode,Description:Description}' \
+    --output table
+
+echo "GCP MIG 인스턴스 상태:"
+gcloud compute instance-groups managed list-instances cloud-master-day3-mig \
+    --zone=asia-northeast3-a \
+    --format="table(instance,status,currentAction,healthState)"
+
+# 10. 로드밸런서 헬스체크 상태 확인
+echo "--- 로드밸런서 헬스체크 상태 ---"
+echo "AWS ALB Target Group 헬스체크:"
+aws elbv2 describe-target-health --target-group-arn $TARGET_GROUP_ARN \
+    --query 'TargetHealthDescriptions[*].{InstanceId:Target.Id,Health:TargetHealth.State,Reason:TargetHealth.Reason}'
+
+echo "GCP Backend Service 헬스체크:"
+gcloud compute backend-services get-health cloud-master-day3-backend --global
+```
+
+**✅ 예상 결과:**
+- **부하테스트 전**: AWS 2개, GCP 2개 인스턴스
+- **부하테스트 중**: CPU 사용률 증가로 인한 스케일링 트리거
+- **부하테스트 후**: AWS 최대 3개, GCP 최대 5개 인스턴스로 확장
+- **응답 시간**: 부하 증가에도 안정적인 응답 시간 유지
+- **헬스체크**: 모든 인스턴스가 `healthy` 상태 유지
+
+**🌐 브라우저로 부하테스트 결과 확인:**
+```bash
+echo "=== 부하테스트 결과 확인 ==="
+echo "1. Grafana: http://localhost:3001 - CPU 사용률 및 응답 시간 그래프 확인"
+echo "2. Prometheus: http://localhost:9090/graph - 메트릭 쿼리로 부하 확인"
+echo "3. AWS Console: Auto Scaling Groups에서 스케일링 활동 확인"
+echo "4. GCP Console: Instance Groups에서 스케일링 활동 확인"
+echo ""
+echo "확인 포인트:"
+echo "- CPU 사용률이 70% 초과했는지"
+echo "- 자동으로 인스턴스가 추가되었는지"
+echo "- 부하 분산이 정상적으로 작동했는지"
+echo "- 응답 시간이 안정적으로 유지되었는지"
+```
 
 **🌐 브라우저로 모니터링 확인:**
 ```bash
@@ -2018,6 +2455,9 @@ graph TB
 - ✅ **Launch Template**: 인스턴스 템플릿 자동 생성
 - ✅ **Scaling Policy**: 스케일링 정책 자동 구성
 - ✅ **동적 리소스 관리**: 수요에 따른 자동 인스턴스 조정
+- ✅ **로드밸런서 연계**: 오토스케일링 인스턴스가 자동으로 로드밸런서에 등록
+- ✅ **헬스체크 연동**: 로드밸런서 헬스체크를 통한 인스턴스 상태 관리
+- ✅ **트래픽 분산**: 스케일링된 인스턴스들에 자동 트래픽 분산
 
 #### 📊 장단점 분석
 

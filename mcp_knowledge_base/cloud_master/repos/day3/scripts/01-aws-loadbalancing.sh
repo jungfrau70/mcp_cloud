@@ -76,18 +76,40 @@ run_with_timeout() {
     shift
     local command="$@"
     
-    timeout "$timeout_seconds" bash -c "$command" 2>/dev/null
+    # 명령어 실행
+    local output
+    if [ "$silent" = "true" ]; then
+        output=$(timeout "$timeout_seconds" bash -c "$command" 2>/dev/null)
+    else
+        output=$(timeout "$timeout_seconds" bash -c "$command" 2>&1)
+    fi
+    
     local exit_code=$?
     
+    # 결과 출력 (silent 모드가 아닌 경우)
+    if [ "$silent" = "false" ] && [ -n "$output" ]; then
+        echo "$output"
+    fi
+    
+    # 종료 코드 처리
     if [ $exit_code -eq 124 ]; then
-        log_warning "명령어가 타임아웃되었습니다 ($timeout_seconds초)"
+        if [ "$silent" = "false" ]; then
+            log_warning "명령어가 타임아웃되었습니다 ($timeout_seconds초)"
+        fi
         return 1
     elif [ $exit_code -ne 0 ]; then
-        log_warning "명령어 실행 실패 (종료 코드: $exit_code)"
+        if [ "$silent" = "false" ]; then
+            log_warning "명령어 실행 실패 (종료 코드: $exit_code)"
+        fi
         return 1
     fi
     
     return 0
+}
+
+# 조용한 모드로 명령어 실행하는 함수
+run_silent() {
+    SILENT_MODE=true run_with_timeout "$@"
 }
 
 verify_existing_vm() {
@@ -506,15 +528,81 @@ show_status() {
         source vm-info.env
         log_info "사용 중인 VM:"
         echo "  AWS: $AWS_INSTANCE_ID ($AWS_PUBLIC_IP)"
+    else
+        log_warning "VM 정보 파일을 찾을 수 없습니다. (vm-info.env)"
     fi
     
-    # AWS 리소스 상태
+    # AWS 리소스 상태 (개선된 오류 처리)
     log_info "AWS 리소스 상태:"
-    run_with_timeout 30 aws elbv2 describe-load-balancers --query 'LoadBalancers[*].[LoadBalancerName,State.Code,DNSName]' --output table 2>/dev/null || log_warning "AWS 리소스 정보를 가져올 수 없습니다."
+    if command -v aws &> /dev/null; then
+        # AWS CLI 설정 확인
+        if timeout 5 aws sts get-caller-identity &> /dev/null; then
+            # ALB 상태 확인
+            local alb_status
+            alb_status=$(timeout 15 aws elbv2 describe-load-balancers \
+                --query 'LoadBalancers[*].[LoadBalancerName,State.Code,DNSName]' \
+                --output table 2>/dev/null)
+            
+            if [ $? -eq 0 ] && [ -n "$alb_status" ]; then
+                echo "$alb_status"
+            else
+                log_warning "ALB 정보를 가져올 수 없습니다. (ALB가 생성되지 않았거나 권한 부족)"
+            fi
+            
+            # Target Group 상태 확인
+            if [ -f "aws-lb-config.env" ]; then
+                source aws-lb-config.env
+                local tg_status
+                tg_status=$(timeout 15 aws elbv2 describe-target-health \
+                    --target-group-arn "$TARGET_GROUP_ARN" \
+                    --query 'TargetHealthDescriptions[*].[Target.Id,TargetHealth.State]' \
+                    --output table 2>/dev/null)
+                
+                if [ $? -eq 0 ] && [ -n "$tg_status" ]; then
+                    log_info "Target Group 상태:"
+                    echo "$tg_status"
+                else
+                    log_warning "Target Group 상태를 가져올 수 없습니다."
+                fi
+            fi
+        else
+            log_warning "AWS CLI가 설정되지 않았거나 권한이 없습니다."
+        fi
+    else
+        log_warning "AWS CLI가 설치되지 않았습니다."
+    fi
     
-    # Docker 컨테이너 상태
+    # Docker 컨테이너 상태 (개선된 오류 처리)
     log_info "Docker 컨테이너 상태:"
-    run_with_timeout 10 docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" 2>/dev/null || log_warning "Docker 컨테이너 정보를 가져올 수 없습니다."
+    if command -v docker &> /dev/null; then
+        # Docker 서비스 상태 확인
+        if timeout 5 docker info &> /dev/null; then
+            local container_status
+            container_status=$(timeout 10 docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" 2>/dev/null)
+            
+            if [ $? -eq 0 ] && [ -n "$container_status" ]; then
+                echo "$container_status"
+            else
+                log_warning "실행 중인 컨테이너가 없습니다."
+            fi
+            
+            # 모니터링 스택 상태 확인
+            if [ -d "monitoring-stack" ]; then
+                cd monitoring-stack
+                local compose_status
+                compose_status=$(timeout 10 docker-compose ps 2>/dev/null)
+                if [ $? -eq 0 ] && [ -n "$compose_status" ]; then
+                    log_info "모니터링 스택 상태:"
+                    echo "$compose_status"
+                fi
+                cd ..
+            fi
+        else
+            log_warning "Docker 서비스가 실행되지 않았거나 권한이 없습니다."
+        fi
+    else
+        log_warning "Docker가 설치되지 않았습니다."
+    fi
     
     # 접속 URL 정보
     log_info "접속 URL:"
@@ -524,7 +612,45 @@ show_status() {
     
     if [ -f "aws-lb-config.env" ]; then
         source aws-lb-config.env
-        echo "  AWS ALB: http://$ALB_DNS"
+        if [ -n "$ALB_DNS" ]; then
+            echo "  AWS ALB: http://$ALB_DNS"
+        fi
+    fi
+    
+    # 서비스 접근성 테스트
+    log_info "서비스 접근성 테스트:"
+    
+    # Prometheus 테스트
+    if timeout 5 curl -f -s "http://localhost:9090" &>/dev/null; then
+        log_success "  ✅ Prometheus: 접근 가능"
+    else
+        log_warning "  ❌ Prometheus: 접근 불가"
+    fi
+    
+    # Grafana 테스트
+    if timeout 5 curl -f -s "http://localhost:3001" &>/dev/null; then
+        log_success "  ✅ Grafana: 접근 가능"
+    else
+        log_warning "  ❌ Grafana: 접근 불가"
+    fi
+    
+    # Node Exporter 테스트
+    if timeout 5 curl -f -s "http://localhost:9100" &>/dev/null; then
+        log_success "  ✅ Node Exporter: 접근 가능"
+    else
+        log_warning "  ❌ Node Exporter: 접근 불가"
+    fi
+    
+    # AWS ALB 테스트
+    if [ -f "aws-lb-config.env" ]; then
+        source aws-lb-config.env
+        if [ -n "$ALB_DNS" ]; then
+            if timeout 10 curl -f -s "http://$ALB_DNS" &>/dev/null; then
+                log_success "  ✅ AWS ALB: 접근 가능"
+            else
+                log_warning "  ❌ AWS ALB: 접근 불가 (Target이 등록되지 않았을 수 있음)"
+            fi
+        fi
     fi
 }
 
