@@ -67,7 +67,14 @@ async def kb_tasks_ws(websocket: WebSocket):
     except WebSocketDisconnect:
         return
 
+# Docker 환경과 로컬 환경 모두 지원
 KB_ROOT = Path('../mcp_knowledge_base').resolve()
+if not KB_ROOT.exists():
+    # Docker 환경에서 시도
+    KB_ROOT = Path('/app/../mcp_knowledge_base').resolve()
+if not KB_ROOT.exists():
+    # 절대 경로로 시도
+    KB_ROOT = Path('/mcp_knowledge_base').resolve()
 try:
     from utils.doc_convert import convert_pptx_to_pdf  # correct import within backend package
 except Exception:

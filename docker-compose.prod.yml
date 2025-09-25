@@ -43,7 +43,7 @@ services:
       - terraform_modules_data:/app/terraform_modules
       - ./backend/env/alpha-ktixap-43e9bf90eb00.json:/app/gcp-sa-key.json
       - ./mcp_knowledge_base:/mcp_knowledge_base
-      - ./.slides_selection.json:/.slides_selection.json
+      - ./mcp_knowledge_base/shared_configs/.slides_selection.json:/.slides_selection.json
       - hf_cache:/cache/hf
       - azure_config:/root/.azure
       - aws_config:/root/.aws

@@ -5,11 +5,19 @@ from pathlib import Path
 from security import get_api_key
 from fastapi.responses import PlainTextResponse, FileResponse
 import urllib.parse
+import json
 
 router = APIRouter(prefix="/api/v1/curriculum", tags=["Curriculum"])
 
+# Docker 환경과 로컬 환경 모두 지원
 KB_ROOT = Path('../mcp_knowledge_base').resolve()
-SELECTION_FILE = Path('../../.slides_selection.json').resolve()
+if not KB_ROOT.exists():
+    # Docker 환경에서 시도
+    KB_ROOT = Path('/app/../mcp_knowledge_base').resolve()
+if not KB_ROOT.exists():
+    # 절대 경로로 시도
+    KB_ROOT = Path('/mcp_knowledge_base').resolve()
+SELECTION_FILE = Path('/.slides_selection.json')  # Docker 컨테이너 내부 경로
 try:
     from utils.doc_convert import convert_pptx_to_pdf  # correct import within backend package
 except Exception:
@@ -607,5 +615,42 @@ def download_pdf(path: str):
     encoded_filename = _encode_filename(filename)
     
     return PlainTextResponse(text, headers={'Content-Disposition': f'attachment; {encoded_filename}'})
+
+
+@router.get("/slides-selection")
+async def get_slides_selection():
+    """
+    현재 선택된 슬라이드 정보를 반환합니다.
+    """
+    try:
+        if SELECTION_FILE.exists():
+            with open(SELECTION_FILE, 'r', encoding='utf-8') as f:
+                slides_selection = json.load(f)
+            return {
+                "success": True,
+                "slides_selection": slides_selection,
+                "message": "슬라이드 선택 정보를 성공적으로 로드했습니다."
+            }
+        else:
+            return {
+                "success": False,
+                "slides_selection": [],
+                "message": "슬라이드 선택 파일을 찾을 수 없습니다.",
+                "file_path": str(SELECTION_FILE)
+            }
+    except json.JSONDecodeError as e:
+        return {
+            "success": False,
+            "slides_selection": [],
+            "message": f"JSON 파싱 오류: {str(e)}",
+            "file_path": str(SELECTION_FILE)
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "slides_selection": [],
+            "message": f"파일 읽기 오류: {str(e)}",
+            "file_path": str(SELECTION_FILE)
+        }
 
 

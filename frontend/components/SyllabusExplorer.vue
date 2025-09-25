@@ -49,7 +49,7 @@
 
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-lg font-semibold whitespace-nowrap text-gray-800">
-        과정
+        mcp_knowledge_base
       </h3>
       <!-- <button @click="toggleHiddenFiles" class="px-2 py-1 text-xs border rounded" :class="showHiddenFiles ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'" title="숨김 파일 표시/숨김">
         {{ showHiddenFiles ? '숨김 파일 숨기기' : '숨김 파일 보기' }}
