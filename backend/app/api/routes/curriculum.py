@@ -357,16 +357,20 @@ def curriculum_get_file(path: str):
         raise HTTPException(status_code=400, detail='Path is a directory')
 
     ext = (fp.suffix or '').lstrip('.').lower()
-    # PPT/PPTX → PDF
+    # PPT/PPTX → PDF (LibreOffice가 없는 경우 원본 파일 서빙)
     if ext in {'ppt','pptx'}:
         if convert_pptx_to_pdf is None:
-            raise HTTPException(status_code=501, detail='PPTX conversion is not available on server')
+            # LibreOffice가 없는 경우 원본 PPTX 파일을 직접 서빙
+            print(f"DEBUG: LibreOffice not available, serving original PPTX file: {fp}")
+            return FileResponse(str(fp), media_type='application/vnd.openxmlformats-officedocument.presentationml.presentation', filename=fp.name, content_disposition_type='inline')
         try:
             pdf_fp = convert_pptx_to_pdf(fp, KB_ROOT)
         except HTTPException as e:
             raise e
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f'Conversion error: {e}')
+            print(f"DEBUG: PPTX conversion failed: {e}, serving original file")
+            # 변환 실패 시 원본 파일 서빙
+            return FileResponse(str(fp), media_type='application/vnd.openxmlformats-officedocument.presentationml.presentation', filename=fp.name, content_disposition_type='inline')
         return FileResponse(str(pdf_fp), media_type='application/pdf', filename=pdf_fp.name, content_disposition_type='inline')
 
     # Guess type and serve
@@ -453,15 +457,66 @@ def download_pdf(path: str):
                 md = markdown.Markdown(extensions=['toc', 'tables', 'fenced_code'])
                 html_content = md.convert(cleaned_content)
                 
-                # Add basic CSS for better PDF formatting
+                # Add basic CSS for better PDF formatting with landscape support
                 css_content = """
-                body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px; }
-                h1, h2, h3, h4, h5, h6 { color: #333; margin-top: 30px; }
-                code { background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; }
-                pre { background-color: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
-                table { border-collapse: collapse; width: 100%; }
-                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                @page {
+                    size: A4 landscape;
+                    margin: 20mm;
+                }
+                body { 
+                    font-family: Arial, sans-serif; 
+                    line-height: 1.4; 
+                    margin: 0; 
+                    padding: 0;
+                    font-size: 12px;
+                }
+                h1, h2, h3, h4, h5, h6 { 
+                    color: #333; 
+                    margin-top: 20px; 
+                    margin-bottom: 10px;
+                    page-break-after: avoid;
+                }
+                h1 { font-size: 18px; }
+                h2 { font-size: 16px; }
+                h3 { font-size: 14px; }
+                code { 
+                    background-color: #f4f4f4; 
+                    padding: 2px 4px; 
+                    border-radius: 3px; 
+                    font-size: 11px;
+                }
+                pre { 
+                    background-color: #f4f4f4; 
+                    padding: 10px; 
+                    border-radius: 5px; 
+                    overflow-x: auto; 
+                    font-size: 11px;
+                    page-break-inside: avoid;
+                }
+                table { 
+                    border-collapse: collapse; 
+                    width: 100%; 
+                    font-size: 11px;
+                    page-break-inside: avoid;
+                }
+                th, td { 
+                    border: 1px solid #ddd; 
+                    padding: 6px; 
+                    text-align: left; 
+                }
                 th { background-color: #f2f2f2; }
+                p { 
+                    margin: 8px 0;
+                    page-break-inside: avoid;
+                }
+                ul, ol {
+                    margin: 8px 0;
+                    padding-left: 20px;
+                }
+                li {
+                    margin: 4px 0;
+                    page-break-inside: avoid;
+                }
                 """
                 
                 # Create full HTML document

@@ -330,6 +330,12 @@ onMounted(async () => {
     userMenuOpen.value = false
     console.log('onMounted: userMenuOpen set to false')
     
+    // 로그인 후 리다이렉트 시 드롭박스가 열리는 문제 방지
+    if (route.query.login === 'success' || route.query.redirect) {
+      userMenuOpen.value = false
+      console.log('Login redirect detected, userMenuOpen set to false')
+    }
+    
     // 프로필 모달 자동 열림 방지
     if (typeof window !== 'undefined') {
       window.profileModalClicked = false
@@ -968,8 +974,15 @@ const handleFileClick = async (path) => {
           const contentType = response.headers.get('content-type') || ''
           if (contentType.includes('application/pdf')) {
             const blob = await response.blob()
-            tbContent.value = `# ${getFileName(path)}\n\nPDF 문서가 로드되었습니다.`
+            tbContent.value = `# ${path.split('/').pop()}\n\nPDF 문서가 로드되었습니다.`
             tbSlide.value = { type: 'pdf', url: URL.createObjectURL(blob) }
+          } else if (contentType.includes('application/vnd.openxmlformats-officedocument.presentationml.presentation') || 
+                     contentType.includes('application/vnd.ms-powerpoint')) {
+            // PPTX/PPT 파일인 경우 다운로드 링크 제공
+            const blob = await response.blob()
+            const downloadUrl = URL.createObjectURL(blob)
+            tbContent.value = `# ${path.split('/').pop()}\n\n## 📊 PowerPoint 프레젠테이션\n\n이 문서는 PowerPoint 프레젠테이션입니다.\n\n### 📥 다운로드\n\n[${path.split('/').pop()} 다운로드](${downloadUrl})\n\n### 💡 참고사항\n\n- 브라우저에서 직접 보려면 PowerPoint나 호환 프로그램이 필요합니다.\n- 다운로드 후 로컬에서 열어보세요.`
+            tbSlide.value = { type: 'pptx', url: downloadUrl, filename: path.split('/').pop() }
           } else {
             tbContent.value = await response.text()
             tbSlide.value = null
@@ -1163,7 +1176,11 @@ const handleKbFileSelect = async (path) => {
     kbTab.value = 'markdown'
   }
   
-  if(docStore.error) toast.push('error','로드 실패: ' + docStore.error)
+  if(docStore.error) {
+    toast.push('error','로드 실패: ' + docStore.error)
+    // 문서 로딩 실패 시 FileTree 탭으로 전환
+    kbTab.value = 'tree'
+  }
 }
 
 function goKbBack(){

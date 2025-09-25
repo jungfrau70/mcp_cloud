@@ -10,6 +10,7 @@ from pydantic import BaseModel
 from typing import List, Optional, Literal
 import shutil
 import os
+import urllib.parse
 
 router = APIRouter(
     prefix="/api/v1/knowledge-base",
@@ -142,7 +143,18 @@ def kb_tree(path: str = "") -> Dict[str, Any]:
 @router.get('/item')
 def kb_get_item(path: str):
     print(f"DEBUG: kb_get_item called with path: {path}")
-    fp = _safe_path(path)
+    
+    # URL 디코딩 처리 (한글 파일명 지원, 2중 인코딩 방지)
+    try:
+        decoded_path = path
+        # 재귀적 디코딩: 2중 인코딩된 경우를 처리
+        while '%' in decoded_path and decoded_path != urllib.parse.unquote(decoded_path):
+            decoded_path = urllib.parse.unquote(decoded_path)
+    except Exception:
+        decoded_path = path
+    
+    print(f"DEBUG: decoded_path = {decoded_path}")
+    fp = _safe_path(decoded_path)
     print(f"DEBUG: KB_ROOT = {KB_ROOT}")
     print(f"DEBUG: fp = {fp}")
     print(f"DEBUG: fp.exists() = {fp.exists()}")
@@ -163,7 +175,16 @@ def kb_get_file(path: str):
 
     Intended for non-markdown assets like pdf/images/video or arbitrary downloads.
     """
-    fp = _safe_path(path)
+    # URL 디코딩 처리 (한글 파일명 지원, 2중 인코딩 방지)
+    try:
+        decoded_path = path
+        # 재귀적 디코딩: 2중 인코딩된 경우를 처리
+        while '%' in decoded_path and decoded_path != urllib.parse.unquote(decoded_path):
+            decoded_path = urllib.parse.unquote(decoded_path)
+    except Exception:
+        decoded_path = path
+    
+    fp = _safe_path(decoded_path)
     if not fp.exists():
         raise HTTPException(status_code=404, detail='Not found')
     if fp.is_dir():

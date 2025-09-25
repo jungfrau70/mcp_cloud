@@ -272,7 +272,7 @@ function openCurriculumSettings() {
 async function loadSelectedCurriculumDirs() {
   curriculumDirsLoading.value = true
   try {
-    const response = await fetch(`${apiBase}/api/v1/curriculum/selection`, {
+    const response = await fetch(`${apiBase}/v1/curriculum/selection`, {
       headers: { 'X-API-Key': apiKey }
     })
     if (response.ok) {
@@ -506,7 +506,7 @@ async function loadcurriculumTreeIfCurriculum(){
     console.log('🔍 커리큘럼 트리 로드 시작...')
     
     // 선택 디렉토리
-    const r2 = await fetch(`${apiBase}/api/v1/curriculum/selection`, { headers: { 'X-API-Key': apiKey } });
+    const r2 = await fetch(`${apiBase}/v1/curriculum/selection`, { headers: { 'X-API-Key': apiKey } });
     const sel = await r2.json();
     selectedDirs.value = Array.isArray(sel?.selected_dirs) ? sel.selected_dirs : []
     console.log('📁 선택된 디렉토리:', selectedDirs.value)
