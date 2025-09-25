@@ -4,16 +4,16 @@
 Docker는 컨테이너 기반의 애플리케이션 배포 플랫폼입니다. 이 가이드는 다양한 운영체제에서 Docker를 설치하는 방법을 설명합니다.
 
 ## 목차
-- [Windows 설치](#windows-설치)
-- [macOS 설치](#macos-설치)
-- [Linux 설치](#linux-설치)
-- [설치 확인](#설치-확인)
-- [기본 설정](#기본-설정)
-- [문제 해결](#문제-해결)
+- ["Windows 설치"]["#windows-설치"]
+- ["macOS 설치"]["#macos-설치"]
+- ["Linux 설치"]["#linux-설치"]
+- ["설치 확인"]["#설치-확인"]
+- ["기본 설정"]["#기본-설정"]
+- ["문제 해결"]["#문제-해결"]
 
 ## Windows 설치
 
-### 방법 1: Docker Desktop (권장)
+### 방법 1: Docker Desktop ["권장"]
 
 1. **Docker Desktop 다운로드**
    ```bash
@@ -22,13 +22,13 @@ Docker는 컨테이너 기반의 애플리케이션 배포 플랫폼입니다. �
    ```
 
 2. **시스템 요구사항 확인**
-   - Windows 10 64-bit: Pro, Enterprise, 또는 Education (Build 15063 이상)
+   - Windows 10 64-bit: Pro, Enterprise, 또는 Education ["Build 15063 이상"]
    - WSL 2 기능 활성화
    - BIOS에서 가상화 기능 활성화
 
 3. **설치 실행**
    - 다운로드한 Docker Desktop Installer.exe 실행
-   - "Use WSL 2 instead of Hyper-V" 옵션 선택 (권장)
+   - "Use WSL 2 instead of Hyper-V" 옵션 선택 ["권장"]
    - 설치 완료 후 재부팅
 
 4. **Docker Desktop 시작**
@@ -38,8 +38,8 @@ Docker는 컨테이너 기반의 애플리케이션 배포 플랫폼입니다. �
 ### 방법 2: Chocolatey 사용
 
 ```cmd
-# Chocolatey 설치 (없는 경우)
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https:///community.chocolatey.org/install.ps1'))
+# Chocolatey 설치 ["없는 경우"]
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex [[New-Object System.Net.WebClient].DownloadString['https:///community.chocolatey.org/install.ps1']]
 
 # Docker Desktop 설치
 choco install docker-desktop
@@ -72,7 +72,7 @@ winget install Docker.DockerDesktop
 
 ## macOS 설치
 
-### 방법 1: Docker Desktop (권장)
+### 방법 1: Docker Desktop ["권장"]
 
 1. **Docker Desktop 다운로드**
    ```bash
@@ -83,7 +83,7 @@ winget install Docker.DockerDesktop
 2. **시스템 요구사항 확인**
    - macOS 10.15 이상
    - 최소 4GB RAM
-   - Intel 또는 Apple Silicon (M1/M2) 프로세서
+   - Intel 또는 Apple Silicon [M1/M2] 프로세서
 
 3. **설치 실행**
    - 다운로드한 Docker.dmg 파일 실행
@@ -103,7 +103,7 @@ brew install --cask docker
 brew install docker
 ```
 
-### Apple Silicon (M1/M2) 지원
+### Apple Silicon [M1/M2] 지원
 
 ```bash
 # Apple Silicon용 Docker Desktop 설치
@@ -144,8 +144,8 @@ arch -arm64 brew install --cask docker
 5. **Docker 리포지토리 설정**
    ```bash
    echo /
-     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https:///download.docker.com/linux/ubuntu /
-     $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+     "deb [arch=$[dpkg --print-architecture] signed-by=/etc/apt/keyrings/docker.gpg] https:///download.docker.com/linux/ubuntu /
+     $[lsb_release -cs] stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
    ```
 
 6. **Docker Engine 설치**
@@ -275,7 +275,7 @@ sudo systemctl enable docker
 # 현재 사용자를 docker 그룹에 추가
 sudo usermod -aG docker $USER
 
-# 그룹 변경사항 적용 (재로그인 또는)
+# 그룹 변경사항 적용 ["재로그인 또는"]
 newgrp docker
 
 # 권한 확인
@@ -309,7 +309,7 @@ sudo systemctl restart docker
 
 ### 일반적인 문제들
 
-1. **권한 오류 (Permission denied)**
+1. **권한 오류 [Permission denied]**
    ```bash
    # 사용자를 docker 그룹에 추가
    sudo usermod -aG docker $USER
@@ -330,7 +330,7 @@ sudo systemctl restart docker
    sudo systemctl restart docker
    ```
 
-3. **가상화 문제 (Windows)**
+3. **가상화 문제 [Windows]**
    ```powershell
    # Hyper-V 활성화
    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
@@ -381,10 +381,10 @@ sudo systemctl restart docker
 
 ## 추가 리소스
 
-- [Docker 공식 문서](https:///docs.docker.com/)
-- [Docker Desktop 가이드](https:///docs.docker.com/desktop/)
-- [Docker 명령어 참조](https:///docs.docker.com/engine/reference/commandline/docker/)
-- [Docker Compose 가이드](https:///docs.docker.com/compose/)
+- ["Docker 공식 문서"][https:///docs.docker.com/]
+- ["Docker Desktop 가이드"][https:///docs.docker.com/desktop/]
+- ["Docker 명령어 참조"][https:///docs.docker.com/engine/reference/commandline/docker/]
+- ["Docker Compose 가이드"][https:///docs.docker.com/compose/]
 
 ## 버전 관리
 
@@ -451,8 +451,8 @@ curl -fsSL https:///download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o
 
 # Docker 리포지토리 설정
 echo /
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https:///download.docker.com/linux/ubuntu /
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  "deb [arch=$[dpkg --print-architecture] signed-by=/etc/apt/keyrings/docker.gpg] https:///download.docker.com/linux/ubuntu /
+  $[lsb_release -cs] stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 # Docker 설치
 sudo apt-get update
@@ -475,7 +475,7 @@ echo "재로그인 후 'docker run hello-world'로 테스트하세요."
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -483,6 +483,6 @@ echo "재로그인 후 'docker run hello-world'로 테스트하세요."
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Master 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

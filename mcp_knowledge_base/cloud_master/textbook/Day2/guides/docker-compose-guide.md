@@ -6,11 +6,11 @@
 
 ## 📋 목차
 
-1. [Docker Compose 기본 개념](#1-docker-compose-기본-개념)
-2. [개발 환경 vs 프로덕션 환경](#2-개발-환경-vs-프로덕션-환경)
-3. [실습 환경 설정](#3-실습-환경-설정)
-4. [문제 해결 가이드](#4-문제-해결-가이드)
-5. [고급 기능](#5-고급-기능)
+1. ["Docker Compose 기본 개념"]["#1-docker-compose-기본-개념"]
+2. ["개발 환경 vs 프로덕션 환경"]["#2-개발-환경-vs-프로덕션-환경"]
+3. ["실습 환경 설정"]["#3-실습-환경-설정"]
+4. ["문제 해결 가이드"]["#4-문제-해결-가이드"]
+5. ["고급 기능"]["#5-고급-기능"]
 
 ---
 
@@ -46,7 +46,7 @@ project/
 
 ## 2. 개발 환경 vs 프로덕션 환경
 
-### 2.1 개발 환경 (docker-compose.yml)
+### 2.1 개발 환경 [docker-compose.yml]
 
 **특징:**
 - 디버깅 및 개발에 최적화
@@ -68,7 +68,7 @@ services:
       - ./logs:/app/logs  # 로그 마운트
 ```
 
-### 2.2 프로덕션 환경 (docker-compose.prod.yml)
+### 2.2 프로덕션 환경 [docker-compose.prod.yml]
 
 **특징:**
 - 보안 및 성능 최적화
@@ -127,7 +127,7 @@ docker-compose --version
 # Git 설치 확인
 git --version
 
-# Node.js 설치 확인 (로컬 개발용)
+# Node.js 설치 확인 ["로컬 개발용"]
 node --version
 npm --version
 ```
@@ -201,7 +201,7 @@ curl -I http://localhost/
 # 메트릭 수집 확인
 curl http://localhost/metrics
 
-# Rate Limiting 확인 (여러 번 요청)
+# Rate Limiting 확인 ["여러 번 요청"]
 for i in {1..5}; do curl http://localhost/api/users; done
 ```
 
@@ -227,7 +227,7 @@ docker rm -f github-actions-demo-redis-dev
 docker rm -f github-actions-demo-nginx-dev
 
 # 3단계: 모든 관련 컨테이너 제거
-docker rm -f $(docker ps -a --filter "name=github-actions-demo" --format "{{.Names}}") 2>/dev/null || true
+docker rm -f $[docker ps -a --filter "name=github-actions-demo" --format "{{.Names}}"] 2>/dev/null || true
 
 # 4단계: 다시 실행
 docker-compose up --build
@@ -242,20 +242,20 @@ docker-compose up --build
 **해결방법:**
 ```sql
 -- 수정 전
-CREATE TABLE app_logs (
+CREATE TABLE app_logs [
     id SERIAL PRIMARY KEY,
-    level VARCHAR(20),
+    level VARCHAR[20],
     message TEXT,
     timestamp TIMESTAMP
-);
+];
 
 -- 수정 후
-CREATE TABLE app_logs (
+CREATE TABLE app_logs [
     id SERIAL PRIMARY KEY,
-    level VARCHAR(20),
+    level VARCHAR[20],
     message TEXT,
     "timestamp" TIMESTAMP
-);
+];
 ```
 
 ### 4.3 Redis 연결 오류
@@ -266,21 +266,21 @@ CREATE TABLE app_logs (
 
 **해결방법:**
 ```javascript
-// 수정 전 (구버전)
-const redisClient = redis.createClient({
+// 수정 전 ["구버전"]
+const redisClient = redis.createClient[{
   host: 'redis',
   port: 6379,
   password: 'password'
-});
+}];
 
-// 수정 후 (최신 버전)
-const redisClient = redis.createClient({
+// 수정 후 ["최신 버전"]
+const redisClient = redis.createClient[{
   socket: {
     host: 'redis',
     port: 6379
   },
   password: 'password'
-});
+}];
 ```
 
 ### 4.4 Redis 메서드 오류
@@ -292,10 +292,10 @@ const redisClient = redis.createClient({
 **해결방법:**
 ```javascript
 // 수정 전
-await redisClient.setex('key', 300, 'value');
+await redisClient.setex['key', 300, 'value'];
 
 // 수정 후
-await redisClient.setEx('key', 300, 'value');
+await redisClient.setEx['key', 300, 'value'];
 ```
 
 ### 4.5 데이터베이스 연결 실패
@@ -458,15 +458,15 @@ services:
 ## 7. 추가 학습 자료
 
 ### 공식 문서
-- [Docker Compose 공식 문서](https://docs.docker.com/compose/)
-- [Docker 공식 문서](https://docs.docker.com/)
-- [PostgreSQL 공식 문서](https://www.postgresql.org/docs/)
-- [Redis 공식 문서](https://redis.io/documentation)
+- ["Docker Compose 공식 문서"][https://docs.docker.com/compose/]
+- ["Docker 공식 문서"][https://docs.docker.com/]
+- ["PostgreSQL 공식 문서"][https://www.postgresql.org/docs/]
+- ["Redis 공식 문서"][https://redis.io/documentation]
 
 ### 관련 가이드
-- [Docker 기본 실습 가이드](docker-basic-guide.md)
-- [데이터베이스 연동 가이드](database-integration-guide.md)
-- [Nginx 설정 가이드](nginx-configuration-guide.md)
-- [모니터링 설정 가이드](monitoring-setup-guide.md)
+- ["Docker 기본 실습 가이드"][docker-basic-guide.md]
+- ["데이터베이스 연동 가이드"][database-integration-guide.md]
+- ["Nginx 설정 가이드"][nginx-configuration-guide.md]
+- ["모니터링 설정 가이드"][monitoring-setup-guide.md]
 
 이 가이드를 통해 Docker Compose의 모든 기능을 마스터하고, 실제 프로덕션 환경에서 안정적으로 운영할 수 있습니다! 🚀

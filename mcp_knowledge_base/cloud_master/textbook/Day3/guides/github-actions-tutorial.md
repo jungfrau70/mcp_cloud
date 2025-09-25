@@ -9,13 +9,13 @@
 
 ## 📖 참고 자료
 
-- [GitHub Actions 공식 자습서](https://docs.github.com/ko/actions/tutorials)
-- [GitHub Actions 워크플로우 구문](https://docs.github.com/ko/actions/using-workflows/workflow-syntax-for-github-actions)
-- [GitHub Actions 변수 및 컨텍스트](https://docs.github.com/ko/actions/learn-github-actions/contexts)
+- ["GitHub Actions 공식 자습서"][https://docs.github.com/ko/actions/tutorials]
+- ["GitHub Actions 워크플로우 구문"][https://docs.github.com/ko/actions/using-workflows/workflow-syntax-for-github-actions]
+- ["GitHub Actions 변수 및 컨텍스트"][https://docs.github.com/ko/actions/learn-github-actions/contexts]
 
 ## 🚀 GitHub Actions 핵심 개념
 
-### **1. 워크플로우 (Workflow)**
+### **1. 워크플로우 [Workflow]**
 ```yaml
 # .github/workflows/ci-cd.yml
 name: Cloud Master CI/CD Pipeline
@@ -37,7 +37,7 @@ env:
 - **환경 변수**: 모든 작업에서 공유되는 변수 정의
 - **조건부 실행**: 특정 조건에서만 작업 실행
 
-### **2. 작업 (Job)**
+### **2. 작업 [Job]**
 ```yaml
 jobs:
   environment-check:
@@ -58,7 +58,7 @@ jobs:
 - **의존성**: `needs` 키워드로 작업 간 의존성 정의
 - **실행기**: GitHub 호스팅 또는 자체 호스팅 실행기 사용
 
-### **3. 단계 (Step)**
+### **3. 단계 [Step]**
 ```yaml
 steps:
   - name: Configure AWS credentials
@@ -225,7 +225,7 @@ jobs:
   uses: actions/cache@v4
   with:
     path: ~/.npm
-    key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+    key: ${{ runner.os }}-node-${{ hashFiles['**/package-lock.json'] }}
     restore-keys: |
       ${{ runner.os }}-node-
 ```
@@ -336,7 +336,7 @@ jobs:
           echo "Running integration tests..."
           # 전체 실습 환경 배포 테스트
   
-  # 6. 배포 (Production)
+  # 6. 배포 [Production]
   deploy:
     name: Deploy to Production
     runs-on: ubuntu-latest
@@ -386,7 +386,7 @@ jobs:
 - **런타임 주입**: 워크플로우 실행 시에만 비밀 값 주입
 - **로그 보호**: 비밀 값이 로그에 노출되지 않음
 
-### **OpenID Connect (OIDC) 사용**
+### **OpenID Connect [OIDC] 사용**
 
 ```yaml
 - name: Configure AWS credentials
@@ -412,7 +412,7 @@ jobs:
       ~/.npm
       ~/.cache/pip
       ~/.terraform
-    key: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json', '**/requirements.txt', '**/.terraform.lock.hcl') }}
+    key: ${{ runner.os }}-deps-${{ hashFiles['**/package-lock.json', '**/requirements.txt', '**/.terraform.lock.hcl'] }}
     restore-keys: |
       ${{ runner.os }}-deps-
 ```
@@ -468,9 +468,9 @@ jobs:
 ```yaml
 - name: Debug Information
   run: |
-    echo "::debug::GitHub Context: ${{ toJson(github) }}"
-    echo "::debug::Runner Context: ${{ toJson(runner) }}"
-    echo "::debug::Job Context: ${{ toJson(job) }}"
+    echo "::debug::GitHub Context: ${{ toJson[github] }}"
+    echo "::debug::Runner Context: ${{ toJson[runner] }}"
+    echo "::debug::Job Context: ${{ toJson[job] }}"
 ```
 
 ## 🎯 실습 완료 체크리스트
@@ -485,9 +485,9 @@ jobs:
 
 ## 🔗 추가 학습 자료
 
-- [GitHub Actions 공식 문서](https://docs.github.com/ko/actions)
-- [GitHub Actions 마켓플레이스](https://github.com/marketplace?type=actions)
-- [GitHub Actions 예제 모음](https://github.com/actions/starter-workflows)
-- [GitHub Actions 모범 사례](https://docs.github.com/ko/actions/learn-github-actions/best-practices-for-github-actions)
+- ["GitHub Actions 공식 문서"][https://docs.github.com/ko/actions]
+- ["GitHub Actions 마켓플레이스"][https://github.com/marketplace?type=actions]
+- ["GitHub Actions 예제 모음"][https://github.com/actions/starter-workflows]
+- ["GitHub Actions 모범 사례"][https://docs.github.com/ko/actions/learn-github-actions/best-practices-for-github-actions]
 
 이 가이드를 통해 GitHub Actions의 핵심 개념과 실무 적용 방법을 체계적으로 학습할 수 있습니다.

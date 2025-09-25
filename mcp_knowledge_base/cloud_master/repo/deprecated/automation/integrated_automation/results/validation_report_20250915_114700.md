@@ -57,7 +57,7 @@
   - gcloud: {'installed': False, 'error': '[WinError 2] 지정된 파일을 찾을 수 없습니다'}
   - docker: {'installed': True, 'version': 'Docker version 28.3.2, build 578ccf6'}
   - git: {'installed': True, 'version': 'git version 2.45.2.windows.1'}
-  - gh: {'installed': True, 'version': 'gh version 2.60.1 (2024-10-25)'}
+  - gh: {'installed': True, 'version': 'gh version 2.60.1 [2024-10-25]'}
   - kubectl: {'installed': False, 'error': "error: unknown flag: --version/nSee 'kubectl --help' for usage./n"}
   - helm: {'installed': False, 'error': '[WinError 2] 지정된 파일을 찾을 수 없습니다'}
   - terraform: {'installed': True, 'version': 'Terraform v1.10.5'}
@@ -100,7 +100,7 @@
 **통합 자동화**
 
 ## 🔗 관련 과정
-[Cloud Basic 1일차](README.md) | [Cloud Master 1일차](README.md) | [Cloud Container 1일차](README.md)
+["Cloud Basic 1일차"][README.md] | ["Cloud Master 1일차"][README.md] | ["Cloud Container 1일차"][README.md]
 
 </div>
 
@@ -108,6 +108,6 @@
 
 <div align="center">
 
-[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
+["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
 
 </div>

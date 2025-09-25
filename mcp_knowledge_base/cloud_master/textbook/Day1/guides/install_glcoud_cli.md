@@ -1,20 +1,20 @@
 # Google Cloud CLI 설치 가이드
 
 
-Google Cloud CLI(gcloud)는 Google Cloud Platform 서비스와 상호작용하기 위한 명령줄 도구입니다. 이 가이드는 다양한 운영체제에서 Google Cloud CLI를 설치하는 방법을 설명합니다.
+Google Cloud CLI[gcloud]는 Google Cloud Platform 서비스와 상호작용하기 위한 명령줄 도구입니다. 이 가이드는 다양한 운영체제에서 Google Cloud CLI를 설치하는 방법을 설명합니다.
 
 ## 목차
-- [Windows 설치](#windows-설치)
-- [macOS 설치](#macos-설치)
-- [Linux 설치](#linux-설치)
-- [Docker를 사용한 설치](#docker를-사용한-설치)
-- [설치 확인](#설치-확인)
-- [기본 설정](#기본-설정)
-- [문제 해결](#문제-해결)
+- ["Windows 설치"]["#windows-설치"]
+- ["macOS 설치"]["#macos-설치"]
+- ["Linux 설치"]["#linux-설치"]
+- ["Docker를 사용한 설치"]["#docker를-사용한-설치"]
+- ["설치 확인"]["#설치-확인"]
+- ["기본 설정"]["#기본-설정"]
+- ["문제 해결"]["#문제-해결"]
 
 ## Windows 설치
 
-### 방법 1: Google Cloud CLI 설치 프로그램 (권장)
+### 방법 1: Google Cloud CLI 설치 프로그램 ["권장"]
 
 1. **Google Cloud CLI 설치 프로그램 다운로드**
    ```bash
@@ -25,7 +25,7 @@ Google Cloud CLI(gcloud)는 Google Cloud Platform 서비스와 상호작용하�
 2. **설치 실행**
    - 다운로드한 설치 프로그램을 더블클릭하여 실행
    - 설치 마법사의 지시를 따름
-   - 기본 설치 경로: `C:/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/`
+   - 기본 설치 경로: `C:/Program Files [x86]/Google/Cloud SDK/google-cloud-sdk/`
 
 3. **PATH 확인**
    - 설치 후 자동으로 PATH에 추가됨
@@ -35,7 +35,7 @@ Google Cloud CLI(gcloud)는 Google Cloud Platform 서비스와 상호작용하�
 
 ```powershell
 # PowerShell을 관리자 권한으로 실행
-(New-Object Net.WebClient).DownloadFile("https:///dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe", "$env:Temp/GoogleCloudSDKInstaller.exe")
+[New-Object Net.WebClient].DownloadFile["https:///dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe", "$env:Temp/GoogleCloudSDKInstaller.exe"]
 & "$env:Temp/GoogleCloudSDKInstaller.exe" /S
 ```
 
@@ -68,7 +68,7 @@ winget install Google.CloudSDK
 
 ## macOS 설치
 
-### 방법 1: Homebrew 사용 (권장)
+### 방법 1: Homebrew 사용 ["권장"]
 
 1. **Homebrew 설치 확인**
    ```bash
@@ -172,7 +172,7 @@ sudo zypper install google-cloud-cli
 sudo pacman -S google-cloud-cli
 ```
 
-### curl을 사용한 설치 (모든 Linux 배포판)
+### curl을 사용한 설치 ["모든 Linux 배포판"]
 
 ```bash
 # 설치 스크립트 다운로드 및 실행
@@ -395,10 +395,10 @@ gcloud config set disable_usage_reporting true
 
 ## 추가 리소스
 
-- [Google Cloud CLI 공식 문서](https:///cloud.google.com/sdk/docs)
-- [Google Cloud CLI 명령어 참조](https:///cloud.google.com/sdk/gcloud/reference)
-- [Google Cloud CLI 구성](https:///cloud.google.com/sdk/docs/configurations)
-- [Google Cloud CLI 컴포넌트](https:///cloud.google.com/sdk/docs/components)
+- ["Google Cloud CLI 공식 문서"][https:///cloud.google.com/sdk/docs]
+- ["Google Cloud CLI 명령어 참조"][https:///cloud.google.com/sdk/gcloud/reference]
+- ["Google Cloud CLI 구성"][https:///cloud.google.com/sdk/docs/configurations]
+- ["Google Cloud CLI 컴포넌트"][https:///cloud.google.com/sdk/docs/components]
 
 ## 버전 관리
 
@@ -542,6 +542,6 @@ gcloud auth activate-service-account --key-file=path/to/service-account-key.json
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Master 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

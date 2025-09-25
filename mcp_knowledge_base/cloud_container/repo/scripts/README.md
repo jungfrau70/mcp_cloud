@@ -8,16 +8,16 @@ Cloud Container 과정을 위한 통합 실습 스크립트 모음입니다.
 scripts/
 ├── README.md                        # 이 파일
 ├── cloud-container-helper.sh        # 통합 컨테이너 실습 도우미
-├── day1-practice-improved.sh        # Day1 실습 (GKE, CI/CD, 모니터링)
-├── day2-practice-improved.sh        # Day2 실습 (고가용성, 보안, 성능)
-└── deprecated/                      # 기존 스크립트 (참고용)
+├── day1-practice-improved.sh        # Day1 실습 ["GKE, CI/CD, 모니터링"]
+├── day2-practice-improved.sh        # Day2 실습 ["고가용성, 보안, 성능"]
+└── deprecated/                      # 기존 스크립트 ["참고용"]
     ├── cloud-scripts/
     └── textbook-scripts/
 ```
 
 ## 🚀 빠른 시작
 
-### 1. 통합 도우미 실행 (권장)
+### 1. 통합 도우미 실행 ["권장"]
 ```bash
 # 실행 권한 부여
 chmod +x cloud-container-helper.sh
@@ -42,11 +42,11 @@ chmod +x day2-practice-improved.sh
 ### 🔧 `cloud-container-helper.sh` - 통합 컨테이너 실습 도우미
 
 **기능:**
-- 환경 체크 (kubectl, gcloud, docker, helm, git)
+- 환경 체크 [kubectl, gcloud, docker, helm, git]
 - GKE 클러스터 생성 및 관리
 - Docker 이미지 빌드 및 푸시
 - Kubernetes 배포
-- 모니터링 설정 (Prometheus/Grafana)
+- 모니터링 설정 [Prometheus/Grafana]
 - 자동 스케일링 설정
 - 클러스터 정리
 
@@ -61,9 +61,9 @@ chmod +x day2-practice-improved.sh
 **학습 목표:**
 - GKE 클러스터 구축
 - GitHub Actions CI/CD 파이프라인
-- 외부 모니터링 (Prometheus/Grafana)
-- 로드밸런싱 (Ingress)
-- 자동 스케일링 (HPA)
+- 외부 모니터링 [Prometheus/Grafana]
+- 로드밸런싱 [Ingress]
+- 자동 스케일링 [HPA]
 - 스트레스 테스트
 
 **주요 기능:**
@@ -84,18 +84,18 @@ chmod +x day2-practice-improved.sh
 ### 🏗️ `day2-practice-improved.sh` - Day2 실습
 
 **학습 목표:**
-- 고가용성 아키텍처 (Multi-AZ)
-- 고급 모니터링 (Alerting, Logging)
-- 보안 강화 (RBAC, Network Policies)
-- 성능 최적화 (VPA, 고급 HPA)
-- 재해 복구 (Velero 백업)
+- 고가용성 아키텍처 [Multi-AZ]
+- 고급 모니터링 [Alerting, Logging]
+- 보안 강화 [RBAC, Network Policies]
+- 성능 최적화 ["VPA, 고급 HPA"]
+- 재해 복구 ["Velero 백업"]
 
 **주요 기능:**
 1. **Multi-AZ 클러스터**: 3개 존에 걸친 고가용성 클러스터
 2. **Pod Anti-Affinity**: 노드/존 간 Pod 분산
 3. **고급 모니터링**: ServiceMonitor, Alerting 규칙
 4. **보안 강화**: Network Policy, Pod Security Policy, RBAC
-5. **성능 최적화**: VPA + 고급 HPA (CPU/Memory 기반)
+5. **성능 최적화**: VPA + 고급 HPA ["CPU/Memory 기반"]
 6. **재해 복구**: Velero를 통한 백업 및 복구
 
 **실행 예시:**
@@ -115,7 +115,7 @@ chmod +x day2-practice-improved.sh
 
 ### 클라우드 계정
 - **GCP 계정**: Kubernetes Engine API 활성화
-- **GitHub 계정**: Actions 권한 (Day1 실습용)
+- **GitHub 계정**: Actions 권한 ["Day1 실습용"]
 
 ### 권한 설정
 ```bash

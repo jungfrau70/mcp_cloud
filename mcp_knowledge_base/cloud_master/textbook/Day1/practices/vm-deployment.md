@@ -3,7 +3,7 @@
 
 ## 🎯 실습 목표
 
-[🎯 실습 목표](#실습-목표)
+["🎯 실습 목표"]["#실습-목표"]
 - AWS EC2와 GCP Compute Engine을 활용한 VM 배포
 - Docker 컨테이너를 VM에 배포하는 방법 학습
 - 자동화된 배포 파이프라인 구축
@@ -11,19 +11,19 @@
 
 ## 📋 실습 환경 준비
 
-[📋 실습 환경 준비](#실습-환경-준비)
+["📋 실습 환경 준비"]["#실습-환경-준비"]
 
 ### 필수 계정 및 도구
 
-[필수 계정 및 도구](#필수-계정-및-도구)
-- **AWS 계정**: Free Tier 계정 (Cloud Basic에서 생성)
-- **GCP 계정**: $300 크레딧 계정 (Cloud Basic에서 생성)
+["필수 계정 및 도구"]["#필수-계정-및-도구"]
+- **AWS 계정**: Free Tier 계정 ["Cloud Basic에서 생성"]
+- **GCP 계정**: $300 크레딧 계정 ["Cloud Basic에서 생성"]
 - **GitHub 계정**: 코드 저장소 및 Actions 사용
-- **도메인**: 배포된 애플리케이션 접근용 (선택사항)
+- **도메인**: 배포된 애플리케이션 접근용 ["선택사항"]
 
 ### 필수 도구 설치
 
-[필수 도구 설치](#필수-도구-설치)
+["필수 도구 설치"]["#필수-도구-설치"]
 ```bash
 # AWS CLI 설치 확인
 aws --version
@@ -38,11 +38,11 @@ docker-compose --version
 
 ## ☁️ 실습 1: AWS EC2 배포
 
-[☁️ 실습 1: AWS EC2 배포](#실습-1-aws-ec2-배포)
+["☁️ 실습 1: AWS EC2 배포"]["#실습-1-aws-ec2-배포"]
 
 ### 1. EC2 인스턴스 생성
 
-[1. EC2 인스턴스 생성](#1-ec2-인스턴스-생성)
+["1. EC2 인스턴스 생성"]["#1-ec2-인스턴스-생성"]
 
 **AWS CLI를 사용한 인스턴스 생성**
 ```bash
@@ -86,7 +86,7 @@ aws ec2 run-instances /
 
 ### 2. EC2 인스턴스 설정
 
-[2. EC2 인스턴스 설정](#2-ec2-인스턴스-설정)
+["2. EC2 인스턴스 설정"]["#2-ec2-인스턴스-설정"]
 
 **SSH로 인스턴스 접속**
 ```bash
@@ -110,7 +110,7 @@ sudo systemctl enable docker
 sudo usermod -a -G docker ec2-user
 
 # Docker Compose 설치
-sudo curl -L "https:///github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https:///github.com/docker/compose/releases/latest/download/docker-compose-$[uname -s]-$[uname -m]" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
 # Git 설치
@@ -119,7 +119,7 @@ sudo yum install -y git
 
 ### 3. 애플리케이션 배포
 
-[3. 애플리케이션 배포](#3-애플리케이션-배포)
+["3. 애플리케이션 배포"]["#3-애플리케이션-배포"]
 
 **애플리케이션 클론 및 실행**
 ```bash
@@ -137,11 +137,11 @@ docker-compose logs
 
 ## ☁️ 실습 2: GCP Compute Engine 배포
 
-[☁️ 실습 2: GCP Compute Engine 배포](#실습-2-gcp-compute-engine-배포)
+["☁️ 실습 2: GCP Compute Engine 배포"]["#실습-2-gcp-compute-engine-배포"]
 
 ### 1. Compute Engine 인스턴스 생성
 
-[1. Compute Engine 인스턴스 생성](#1-compute-engine-인스턴스-생성)
+["1. Compute Engine 인스턴스 생성"]["#1-compute-engine-인스턴스-생성"]
 
 **gcloud CLI를 사용한 인스턴스 생성**
 ```bash
@@ -183,7 +183,7 @@ sudo sh get-docker.sh
 sudo usermod -aG docker ubuntu
 
 # Docker Compose 설치
-sudo curl -L "https:///github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https:///github.com/docker/compose/releases/latest/download/docker-compose-$[uname -s]-$[uname -m]" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
 # Git 설치
@@ -201,14 +201,14 @@ sudo docker-compose up -d
 
 ### 2. Compute Engine 인스턴스 설정
 
-[2. Compute Engine 인스턴스 설정](#2-compute-engine-인스턴스-설정)
+["2. Compute Engine 인스턴스 설정"]["#2-compute-engine-인스턴스-설정"]
 
 **SSH로 인스턴스 접속**
 ```bash
 # 인스턴스 IP 확인
 gcloud compute instances describe my-web-app /
   --zone=asia-northeast3-a /
-  --format='get(networkInterfaces[0].accessConfigs[0].natIP)'
+  --format='get[networkInterfaces[0].accessConfigs[0].natIP]'
 
 # SSH 접속
 gcloud compute ssh my-web-app --zone=asia-northeast3-a
@@ -216,11 +216,11 @@ gcloud compute ssh my-web-app --zone=asia-northeast3-a
 
 ## ☁️ 실습 3: 자동화된 배포 파이프라인
 
-[☁️ 실습 3: 자동화된 배포 파이프라인](#실습-3-자동화된-배포-파이프라인)
+["☁️ 실습 3: 자동화된 배포 파이프라인"]["#실습-3-자동화된-배포-파이프라인"]
 
 ### 1. GitHub Actions 워크플로우 생성
 
-[1. GitHub Actions 워크플로우 생성](#1-github-actions-워크플로우-생성)
+["1. GitHub Actions 워크플로우 생성"]["#1-github-actions-워크플로우-생성"]
 
 **.github/workflows/deploy-vm.yml**
 ```yaml
@@ -274,7 +274,7 @@ jobs:
 
 ### 2. GitHub Secrets 설정
 
-[2. GitHub Secrets 설정](#2-github-secrets-설정)
+["2. GitHub Secrets 설정"]["#2-github-secrets-설정"]
 
 **필요한 시크릿들:**
 - `AWS_HOST`: AWS EC2 퍼블릭 IP
@@ -286,18 +286,18 @@ jobs:
 
 ## ☁️ 실습 4: 도메인 연결 및 SSL 설정
 
-[☁️ 실습 4: 도메인 연결 및 SSL 설정](#실습-4-도메인-연결-및-ssl-설정)
+["☁️ 실습 4: 도메인 연결 및 SSL 설정"]["#실습-4-도메인-연결-및-ssl-설정"]
 
 ### 1. 도메인 연결
 
-[1. 도메인 연결](#1-도메인-연결)
+["1. 도메인 연결"]["#1-도메인-연결"]
 
 **AWS Route 53 설정**
 ```bash
 # 호스팅 영역 생성
 aws route53 create-hosted-zone /
   --name example.com /
-  --caller-reference $(date +%s)
+  --caller-reference $[date +%s]
 
 # A 레코드 생성
 aws route53 change-resource-record-sets /
@@ -328,7 +328,7 @@ aws route53 change-resource-record-sets /
 
 ### 2. SSL 인증서 설정
 
-[2. SSL 인증서 설정](#2-ssl-인증서-설정)
+["2. SSL 인증서 설정"]["#2-ssl-인증서-설정"]
 
 **Let's Encrypt를 사용한 SSL 설정**
 ```bash
@@ -371,11 +371,11 @@ server {
 
 ## ☁️ 실습 5: 기본 모니터링 설정
 
-[☁️ 실습 5: 기본 모니터링 설정](#실습-5-기본-모니터링-설정)
+["☁️ 실습 5: 기본 모니터링 설정"]["#실습-5-기본-모니터링-설정"]
 
 ### 1. 로그 관리
 
-[1. 로그 관리](#1-로그-관리)
+["1. 로그 관리"]["#1-로그-관리"]
 
 **Docker 로그 설정**
 ```yaml
@@ -416,25 +416,25 @@ sudo nano /etc/logrotate.d/docker
 
 ### 2. 헬스체크 설정
 
-[2. 헬스체크 설정](#2-헬스체크-설정)
+["2. 헬스체크 설정"]["#2-헬스체크-설정"]
 
 **애플리케이션 헬스체크**
 ```javascript
 // app.js에 추가
-app.get('/health', (req, res) => {
+app.get['/health', [req, res] => {
   const healthcheck = {
-    uptime: process.uptime(),
+    uptime: process.uptime[],
     message: 'OK',
-    timestamp: Date.now()
+    timestamp: Date.now[]
   };
   
   try {
-    res.status(200).send(healthcheck);
-  } catch (error) {
+    res.status[200].send[healthcheck];
+  } catch [error] {
     healthcheck.message = error;
-    res.status(503).send(healthcheck);
+    res.status[503].send[healthcheck];
   }
-});
+}];
 ```
 
 **Docker 헬스체크**
@@ -446,7 +446,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 /
 
 ### 3. 기본 모니터링 스크립트
 
-[3. 기본 모니터링 스크립트](#3-기본-모니터링-스크립트)
+["3. 기본 모니터링 스크립트"]["#3-기본-모니터링-스크립트"]
 
 **monitor.sh**
 ```bash
@@ -474,7 +474,7 @@ check_containers() {
 
 # 디스크 사용량 확인
 check_disk() {
-  usage=$(df / | awk 'NR==2 {print $5}' | sed 's/%//')
+  usage=$[df / | awk 'NR==2 {print $5}' | sed 's/%//']
   if [ $usage -gt 80 ]; then
     echo "⚠️ Disk usage is high: ${usage}%"
   else
@@ -484,7 +484,7 @@ check_disk() {
 
 # 메모리 사용량 확인
 check_memory() {
-  usage=$(free | awk 'NR==2{printf "%.0f", $3*100/$2}')
+  usage=$[free | awk 'NR==2{printf "%.0f", $3*100/$2}']
   if [ $usage -gt 80 ]; then
     echo "⚠️ Memory usage is high: ${usage}%"
   else
@@ -507,11 +507,11 @@ echo "*/5 * * * * /home/ec2-user/monitor.sh >> /var/log/monitor.log 2>&1" | cron
 
 ## ☁️ 실습 6: 배포 자동화 고도화
 
-[☁️ 실습 6: 배포 자동화 고도화](#실습-6-배포-자동화-고도화)
+["☁️ 실습 6: 배포 자동화 고도화"]["#실습-6-배포-자동화-고도화"]
 
 ### 1. Blue-Green 배포
 
-[1. Blue-Green 배포](#1-bluegreen-배포)
+["1. Blue-Green 배포"]["#1-bluegreen-배포"]
 
 **blue-green-deploy.sh**
 ```bash
@@ -558,7 +558,7 @@ fi
 
 ### 2. 롤백 스크립트
 
-[2. 롤백 스크립트](#2-롤백-스크립트)
+["2. 롤백 스크립트"]["#2-롤백-스크립트"]
 
 **rollback.sh**
 ```bash
@@ -590,7 +590,7 @@ echo "Rollback completed"
 
 ## 🎯 실습 완료 체크리스트
 
-[🎯 실습 완료 체크리스트](#실습-완료-체크리스트)
+["🎯 실습 완료 체크리스트"]["#실습-완료-체크리스트"]
 
 - [ ] AWS EC2 인스턴스 생성 및 설정
 - [ ] GCP Compute Engine 인스턴스 생성 및 설정
@@ -603,16 +603,16 @@ echo "Rollback completed"
 
 ## 📚 추가 학습 자료
 
-[📚 추가 학습 자료](#추가-학습-자료)
+["📚 추가 학습 자료"]["#추가-학습-자료"]
 
-- [AWS EC2 공식 문서](https:///docs.aws.amazon.com/ec2/)
-- [GCP Compute Engine 공식 문서](https:///cloud.google.com/compute/docs)
-- [Docker 공식 문서](https:///docs.docker.com/)
-- [Nginx 공식 문서](https:///nginx.org/en/docs/)
+- ["AWS EC2 공식 문서"][https:///docs.aws.amazon.com/ec2/]
+- ["GCP Compute Engine 공식 문서"][https:///cloud.google.com/compute/docs]
+- ["Docker 공식 문서"][https:///docs.docker.com/]
+- ["Nginx 공식 문서"][https:///nginx.org/en/docs/]
 
 ## 🚀 다음 단계
 
-[🚀 다음 단계](#다음-단계)
+["🚀 다음 단계"]["#다음-단계"]
 
 - **Cloud Master 2일차**: Docker 고급 기법, GitHub Actions 고급 워크플로우
 - **로드 밸런싱**: 여러 VM에 트래픽 분산
@@ -629,6 +629,6 @@ echo "Rollback completed"
 
 <div align="center">
 
-[← 이전: GitHub Actions 기초 실습](cloud_master/textbook/Day1/practices/github-actions-basics.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [다음: Cloud Master 2일차 →](README.md) | [📋 학습 경로](learning-path.md)
+["← 이전: GitHub Actions 기초 실습"][cloud_master/textbook/Day1/practices/github-actions-basics.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["다음: Cloud Master 2일차 →"][README.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

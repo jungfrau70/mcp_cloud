@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cloud-intermediate
+  labels:
+    name: cloud-intermediate
+    environment: development
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-quota
+  namespace: cloud-intermediate
+spec:
+  hard:
+    requests.cpu: "2"
+    requests.memory: 4Gi
+    limits.cpu: "4"
+    limits.memory: 8Gi
+    pods: "10"
+    services: "5"
+    persistentvolumeclaims: "4"
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+  namespace: cloud-intermediate
+spec:
+  limits:
+  - default:
+      memory: "512Mi"
+      cpu: "500m"
+    defaultRequest:
+      memory: "256Mi"
+      cpu: "250m"
+    type: Container

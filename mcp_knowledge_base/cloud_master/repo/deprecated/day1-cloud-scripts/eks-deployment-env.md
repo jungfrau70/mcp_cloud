@@ -1,7 +1,7 @@
 ## 🛠️ 작업 환경 및 기초 명령어 정리
 
 ### **현재 작업 환경**
-- **OS**: Windows 11 + WSL2 (Ubuntu)
+- **OS**: Windows 11 + WSL2 [Ubuntu]
 - **사용자**: `jih`
 - **호스트명**: `DESKTOP-0TCBR9U`
 - **리눅스 커널**: `5.15.153.1-microsoft-standard-WSL2`
@@ -122,7 +122,7 @@ gcloud container clusters list
 gcloud container clusters get-credentials CLUSTER_NAME --zone ZONE
 ```
 
-#### **Kubernetes (kubectl)**
+#### **Kubernetes [kubectl]**
 ```bash
 # 노드 상태 확인
 kubectl get nodes

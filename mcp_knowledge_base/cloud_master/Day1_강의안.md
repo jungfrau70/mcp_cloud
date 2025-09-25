@@ -1,19 +1,19 @@
 # Cloud Master - 1일차 수업 진행 기록
 
-> 📋 **수업 일시**: 2024년 9월 22일 (월) 9:00~17:00  
+> 📋 **수업 일시**: 2024년 9월 22일 ["월"] 9:00~17:00  
 > 📋 **수업 방식**: 온라인 실습 중심  
 > 📋 **수업 결과**: ✅ 성공적으로 완료
 
 ---
 
-## 🕘 1교시: WSL 구성 및 Utility 설치 (9:00~10:05)
+## 🕘 1교시: WSL 구성 및 Utility 설치 [9:00~10:05]
 
 ### ✅ 완료된 작업
 1. **Windows 기능 활성화**
-   - Windows Subsystem for Linux (WSL) 활성화
+   - Windows Subsystem for Linux [WSL] 활성화
    - Virtual Machine Platform 활성화
 
-2. **WSL(Ubuntu) 설치**
+2. **WSL[Ubuntu] 설치**
    - WSL2 기반 Ubuntu 설치
    - 참조: `cloud_master/repos/cloud-scripts/wsl-install.md`
 
@@ -22,14 +22,14 @@
    - Docker, Git, AWS CLI, GCP CLI 설치 완료
 
 ### 📊 수업 결과
-- **성공률**: 100% (모든 학습자 WSL 환경 구축 완료)
-- **소요 시간**: 65분 (예상 65분)
+- **성공률**: 100% ["모든 학습자 WSL 환경 구축 완료"]
+- **소요 시간**: 65분 ["예상 65분"]
 - **주요 이슈**: 없음
 - **테스트 결과**: 기본 환경 검증 완료
 
 ---
 
-## 🕘 2교시: AWS & GCP Setup (10:20~10:55)
+## 🕘 2교시: AWS & GCP Setup [10:20~10:55]
 
 ### ✅ 완료된 작업
 1. **AWS 설정**
@@ -45,13 +45,13 @@
    - `cloud_master/repos/cloud-scripts/aws-setup-helper.sh`
 
 ### 📊 수업 결과
-- **성공률**: 100% (모든 학습자 클라우드 계정 연동 완료)
-- **소요 시간**: 35분 (예상 35분)
+- **성공률**: 100% ["모든 학습자 클라우드 계정 연동 완료"]
+- **소요 시간**: 35분 ["예상 35분"]
 - **주요 이슈**: 없음
 
 ---
 
-## 🕘 3교시: VM 생성 (11:10~12:00)
+## 🕘 3교시: VM 생성 [11:10~12:00]
 
 ### ✅ 완료된 작업
 1. **AWS EC2 인스턴스 생성**
@@ -63,19 +63,19 @@
    - e2-micro 인스턴스 생성 완료
 
 ### 📊 수업 결과
-- **성공률**: 100% (모든 학습자 VM 생성 완료)
-- **소요 시간**: 50분 (예상 50분)
+- **성공률**: 100% ["모든 학습자 VM 생성 완료"]
+- **소요 시간**: 50분 ["예상 50분"]
 - **주요 이슈**: 없음
 
 ---
 
-## 🍽️ 점심 시간 (12:00~13:00)
+## 🍽️ 점심 시간 [12:00~13:00]
 
 ---
 
-## 🕘 4교시: Docker & Dockerfile 기초 이론 (13:00~14:00)
+## 🕘 4교시: Docker & Dockerfile 기초 이론 [13:00~14:00]
 
-### 📚 이론 학습 (60분)
+### 📚 이론 학습 ["60분"]
 #### Docker 개념 및 핵심 원리
 - **컨테이너화**: 애플리케이션과 의존성을 하나의 패키지로 묶기
 - **가상화 vs 컨테이너**: 하이퍼바이저 vs OS 레벨 가상화
@@ -133,13 +133,13 @@ docker pull myapp:latest                # 이미지 풀
 ```
 
 ### 📊 예상 결과
-- **성공률**: 100% (이론 학습)
+- **성공률**: 100% ["이론 학습"]
 - **소요 시간**: 60분
 - **주요 학습**: Docker 기본 개념, Dockerfile 작성법
 
 ---
 
-## 🕘 5교시: GitHub Actions 배포 실습 (14:00~17:00)
+## 🕘 5교시: GitHub Actions 배포 실습 [14:00~17:00]
 
 ### ✅ 완료된 작업
 1. **GitHub 저장소 준비**
@@ -151,17 +151,17 @@ docker pull myapp:latest                # 이미지 풀
    - 로컬 작업 디렉토리 구성 완료
 
 3. **🔑 중요: Repository Secrets 설정**
-   - **기존 교재 방식**: 환경파일(.env) 사용
+   - **기존 교재 방식**: 환경파일[.env] 사용
    - **실제 수업 방식**: **Repository Secrets** 사용 ✅
    - 설정 위치: `https://github.com/[github-userid]/github-actions-demo/settings/secrets/actions`
    - 설정된 Secrets:
      - `DOCKER_USERNAME`: Docker Hub 사용자명
      - `DOCKER_PASSWORD`: Docker Hub Personal Access Token
      - `GCP_VM_HOST`: GCP VM 공인 IP
-     - `GCP_VM_SSH_KEY`: GCP VM SSH 개인키 (OpenSSH 형식)
+     - `GCP_VM_SSH_KEY`: GCP VM SSH 개인키 ["OpenSSH 형식"]
      - `GCP_VM_USERNAME`: GCP VM 사용자명
      - `AWS_VM_HOST`: AWS VM 공인 IP
-     - `AWS_VM_SSH_KEY`: AWS VM SSH 개인키 (.pem 파일)
+     - `AWS_VM_SSH_KEY`: AWS VM SSH 개인키 [".pem 파일"]
      - `AWS_VM_USERNAME`: AWS VM 사용자명
 
 4. **GitHub Actions 실행**
@@ -170,12 +170,12 @@ docker pull myapp:latest                # 이미지 풀
    - GitHub Actions 탭에서 배포 상태 확인
 
 5. **배포 결과 확인**
-   - AWS VM: `http://[AWS-공인IP]:3000` ✅
-   - GCP VM: `http://[GCP-공인IP]:3000` ✅
+   - AWS VM: `http://["AWS-공인IP"]:3000` ✅
+   - GCP VM: `http://["GCP-공인IP"]:3000` ✅
 
 ### 📊 수업 결과
-- **성공률**: 100% (모든 학습자 자동 배포 성공)
-- **소요 시간**: 240분 (예상 240분)
+- **성공률**: 100% ["모든 학습자 자동 배포 성공"]
+- **소요 시간**: 240분 ["예상 240분"]
 - **주요 발견사항**: 
   - ✅ **Repository Secrets 방식이 환경파일보다 안전하고 효과적**
   - ✅ **모든 학습자가 성공적으로 배포 완료**

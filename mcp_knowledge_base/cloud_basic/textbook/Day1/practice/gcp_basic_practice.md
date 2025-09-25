@@ -1,7 +1,7 @@
 
 ## 🎯 실습 목표
 
-[🎯 실습 목표](#실습-목표)
+["🎯 실습 목표"]["#실습-목표"]
 
 이 실습을 통해 다음을 달성할 수 있습니다:
 
@@ -17,7 +17,7 @@
 
 ## 📋 개요
 
-[📋 개요](#개요)
+["📋 개요"]["#개요"]
 
 **목적**: GCP Free Tier를 활용한 기초 서비스 실습
 **범위**: 
@@ -30,37 +30,37 @@
 
 ## 🏗️ 1단계: GCP 계정 생성 및 설정
 
-[🏗️ 1단계: GCP 계정 생성 및 설정](#1단계-gcp-계정-생성-및-설정)
+["🏗️ 1단계: GCP 계정 생성 및 설정"]["#1단계-gcp-계정-생성-및-설정"]
 
 ### 1.1 GCP 계정 생성
 
-[1.1 GCP 계정 생성](#11-gcp-계정-생성)
+["1.1 GCP 계정 생성"]["#11-gcp-계정-생성"]
 
 #### 🌐 웹콘솔 방식
 
-[🌐 웹콘솔 방식](#웹콘솔-방식)
+["🌐 웹콘솔 방식"]["#웹콘솔-방식"]
 ```markdown
-1. [Google Cloud Platform](https:///cloud.google.com) 접속
+1. [Google Cloud Platform][https:///cloud.google.com] 접속
 2. "무료로 시작하기" 클릭
 3. Google 계정으로 로그인
 4. 국가/지역: "대한민국" 선택
 5. 계정 유형: "개인" 선택
 6. 약관 동의 및 계정 생성
-7. 결제 정보 등록 ($300 크레딧 활성화)
+7. 결제 정보 등록 ["$300 크레딧 활성화"]
 8. 프로젝트 생성: "cloud-student-project"
 ```
 
 #### 💻 CLI 방식
 
-[💻 CLI 방식](#cli-방식)
+["💻 CLI 방식"]["#cli-방식"]
 ```bash
-# Google Cloud SDK 설치 (Windows)
+# Google Cloud SDK 설치 [Windows]
 winget install Google.CloudSDK
 
-# Google Cloud SDK 설치 (macOS)
+# Google Cloud SDK 설치 [macOS]
 brew install google-cloud-sdk
 
-# Google Cloud SDK 설치 (Ubuntu)
+# Google Cloud SDK 설치 [Ubuntu]
 curl https:///sdk.cloud.google.com | bash
 exec -l $SHELL
 
@@ -76,35 +76,35 @@ gcloud auth list
 
 ### 1.2 GCP 콘솔 탐색
 
-[1.2 GCP 콘솔 탐색](#12-gcp-콘솔-탐색)
+["1.2 GCP 콘솔 탐색"]["#12-gcp-콘솔-탐색"]
 
 #### 🌐 웹콘솔 방식
 
-[🌐 웹콘솔 방식](#웹콘솔-방식)
+["🌐 웹콘솔 방식"]["#웹콘솔-방식"]
 ```markdown
-1. [Google Cloud Console](https:///console.cloud.google.com) 접속
+1. [Google Cloud Console][https:///console.cloud.google.com] 접속
 2. 주요 서비스 탐색:
-   - Compute Engine (가상머신)
-   - Cloud Storage (스토리지)
-   - IAM & Admin (사용자 및 권한)
-   - VPC Network (네트워킹)
-   - Cloud SQL (데이터베이스)
-3. 리전 변경: asia-northeast3 (서울) 선택
+   - Compute Engine ["가상머신"]
+   - Cloud Storage ["스토리지"]
+   - IAM & Admin ["사용자 및 권한"]
+   - VPC Network ["네트워킹"]
+   - Cloud SQL ["데이터베이스"]
+3. 리전 변경: asia-northeast3 ["서울"] 선택
 ```
 
 ---
 
 ## 👥 2단계: IAM 서비스 계정 및 권한 관리
 
-[👥 2단계: IAM 서비스 계정 및 권한 관리](#2단계-iam-서비스-계정-및-권한-관리)
+["👥 2단계: IAM 서비스 계정 및 권한 관리"]["#2단계-iam-서비스-계정-및-권한-관리"]
 
 ### 2.1 IAM 서비스 계정 생성
 
-[2.1 IAM 서비스 계정 생성](#21-iam-서비스-계정-생성)
+["2.1 IAM 서비스 계정 생성"]["#21-iam-서비스-계정-생성"]
 
 #### 🌐 웹콘솔 방식
 
-[🌐 웹콘솔 방식](#웹콘솔-방식)
+["🌐 웹콘솔 방식"]["#웹콘솔-방식"]
 ```markdown
 1. GCP Console → "IAM 및 관리자" → "서비스 계정" 클릭
 2. "서비스 계정 만들기" 클릭
@@ -121,7 +121,7 @@ gcloud auth list
 
 #### 💻 CLI 방식
 
-[💻 CLI 방식](#cli-방식)
+["💻 CLI 방식"]["#cli-방식"]
 ```bash
 # 서비스 계정 생성
 gcloud iam service-accounts create cloud-student-sa /
@@ -155,16 +155,16 @@ gcloud iam service-accounts list
 
 ### 2.2 IAM 사용자 및 역할 관리
 
-[2.2 IAM 사용자 및 역할 관리](#22-iam-사용자-및-역할-관리)
+["2.2 IAM 사용자 및 역할 관리"]["#22-iam-사용자-및-역할-관리"]
 
 #### 💻 CLI 방식
 
-[💻 CLI 방식](#cli-방식)
+["💻 CLI 방식"]["#cli-방식"]
 ```bash
 # IAM 정책 확인
 gcloud projects get-iam-policy cloud-student-project
 
-# 사용자에게 역할 부여 (예시)
+# 사용자에게 역할 부여 ["예시"]
 gcloud projects add-iam-policy-binding cloud-student-project /
   --member="user:student@example.com" /
   --role="roles/viewer"
@@ -181,22 +181,22 @@ gcloud iam roles create cloudStudentRole /
 
 ## 💻 3단계: Compute Engine 인스턴스 생성 및 관리
 
-[💻 3단계: Compute Engine 인스턴스 생성 및 관리](#3단계-compute-engine-인스턴스-생성-및-관리)
+["💻 3단계: Compute Engine 인스턴스 생성 및 관리"]["#3단계-compute-engine-인스턴스-생성-및-관리"]
 
 ### 3.1 Compute Engine 인스턴스 생성
 
-[3.1 Compute Engine 인스턴스 생성](#31-compute-engine-인스턴스-생성)
+["3.1 Compute Engine 인스턴스 생성"]["#31-compute-engine-인스턴스-생성"]
 
 #### 🌐 웹콘솔 방식
 
-[🌐 웹콘솔 방식](#웹콘솔-방식)
+["🌐 웹콘솔 방식"]["#웹콘솔-방식"]
 ```markdown
 1. GCP Console → "Compute Engine" → "VM 인스턴스" 클릭
 2. "인스턴스 만들기" 클릭
 3. 인스턴스 이름: "cloud-student-server"
-4. 리전: "asia-northeast3 (서울)"
+4. 리전: "asia-northeast3 ["서울"]"
 5. 영역: "asia-northeast3-a"
-6. 머신 유형: "e2-micro" (Free Tier)
+6. 머신 유형: "e2-micro" [Free Tier]
 7. 부팅 디스크: "Ubuntu 22.04 LTS"
 8. 방화벽: "HTTP 트래픽 허용", "HTTPS 트래픽 허용" 체크
 9. "만들기" 클릭
@@ -204,7 +204,7 @@ gcloud iam roles create cloudStudentRole /
 
 #### 💻 CLI 방식
 
-[💻 CLI 방식](#cli-방식)
+["💻 CLI 방식"]["#cli-방식"]
 ```bash
 # 방화벽 규칙 생성
 gcloud compute firewall-rules create allow-http-https /
@@ -212,7 +212,7 @@ gcloud compute firewall-rules create allow-http-https /
   --source-ranges 0.0.0.0/0 /
   --description "Allow HTTP and HTTPS traffic"
 
-# SSH 키 생성 (이미 있는 경우 생략)
+# SSH 키 생성 ["이미 있는 경우 생략"]
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/gcp-student-key
 
 # SSH 키를 GCP에 등록
@@ -236,22 +236,22 @@ gcloud compute instances create cloud-student-server /
 
 ### 3.2 Compute Engine 인스턴스 접속
 
-[3.2 Compute Engine 인스턴스 접속](#32-compute-engine-인스턴스-접속)
+["3.2 Compute Engine 인스턴스 접속"]["#32-compute-engine-인스턴스-접속"]
 
 #### 💻 SSH 접속
 
-[💻 SSH 접속](#ssh-접속)
+["💻 SSH 접속"]["#ssh-접속"]
 ```bash
 # 인스턴스 IP 확인
 gcloud compute instances describe cloud-student-server /
   --zone=asia-northeast3-a /
-  --format='get(networkInterfaces[0].accessConfigs[0].natIP)'
+  --format='get[networkInterfaces[0].accessConfigs[0].natIP]'
 
 # SSH 접속
 gcloud compute ssh cloud-student-server --zone=asia-northeast3-a
 
 # 또는 직접 SSH 접속
-ssh -i ~/.ssh/gcp-student-key [인스턴스-IP]
+ssh -i ~/.ssh/gcp-student-key ["인스턴스-IP"]
 
 # 웹 서버 상태 확인
 sudo systemctl status apache2
@@ -262,21 +262,21 @@ curl localhost
 
 ## 🗂️ 4단계: Cloud Storage 서비스 활용
 
-[🗂️ 4단계: Cloud Storage 서비스 활용](#4단계-cloud-storage-서비스-활용)
+["🗂️ 4단계: Cloud Storage 서비스 활용"]["#4단계-cloud-storage-서비스-활용"]
 
 ### 4.1 Cloud Storage 버킷 생성
 
-[4.1 Cloud Storage 버킷 생성](#41-cloud-storage-버킷-생성)
+["4.1 Cloud Storage 버킷 생성"]["#41-cloud-storage-버킷-생성"]
 
 #### 🌐 웹콘솔 방식
 
-[🌐 웹콘솔 방식](#웹콘솔-방식)
+["🌐 웹콘솔 방식"]["#웹콘솔-방식"]
 ```markdown
 1. GCP Console → "Cloud Storage" → "버킷" 클릭
 2. "버킷 만들기" 클릭
-3. 버킷 이름: "cloud-student-bucket-[고유번호]"
+3. 버킷 이름: "cloud-student-bucket-["고유번호"]"
 4. 위치 유형: "리전"
-5. 리전: "asia-northeast3 (서울)"
+5. 리전: "asia-northeast3 ["서울"]"
 6. 스토리지 클래스: "Standard"
 7. 액세스 제어: "균일한 액세스"
 8. "만들기" 클릭
@@ -284,32 +284,32 @@ curl localhost
 
 #### 💻 CLI 방식
 
-[💻 CLI 방식](#cli-방식)
+["💻 CLI 방식"]["#cli-방식"]
 ```bash
 # Cloud Storage 버킷 생성
-gsutil mb gs://cloud-student-bucket-$(date +%s)
+gsutil mb gs://cloud-student-bucket-$[date +%s]
 
 # 버킷 목록 확인
 gsutil ls
 
 # 파일 업로드
 echo "Hello from GCP Cloud Storage!" > hello.txt
-gsutil cp hello.txt gs://cloud-student-bucket-[버킷명]/
+gsutil cp hello.txt gs://cloud-student-bucket-["버킷명"]/
 
 # 파일 다운로드
-gsutil cp gs://cloud-student-bucket-[버킷명]/hello.txt downloaded-hello.txt
+gsutil cp gs://cloud-student-bucket-["버킷명"]/hello.txt downloaded-hello.txt
 
 # 버킷 내용 확인
-gsutil ls gs://cloud-student-bucket-[버킷명]/
+gsutil ls gs://cloud-student-bucket-["버킷명"]/
 ```
 
 ### 4.2 Cloud Storage 정적 웹사이트 호스팅
 
-[4.2 Cloud Storage 정적 웹사이트 호스팅](#42-cloud-storage-정적-웹사이트-호스팅)
+["4.2 Cloud Storage 정적 웹사이트 호스팅"]["#42-cloud-storage-정적-웹사이트-호스팅"]
 
 #### 💻 CLI 방식
 
-[💻 CLI 방식](#cli-방식)
+["💻 CLI 방식"]["#cli-방식"]
 ```bash
 # HTML 파일 생성
 cat > index.html << 'EOF'
@@ -326,30 +326,30 @@ cat > index.html << 'EOF'
 EOF
 
 # HTML 파일 업로드
-gsutil cp index.html gs://cloud-student-bucket-[버킷명]/
+gsutil cp index.html gs://cloud-student-bucket-["버킷명"]/
 
 # 버킷을 정적 웹사이트로 설정
-gsutil web set -m index.html -e index.html gs://cloud-student-bucket-[버킷명]
+gsutil web set -m index.html -e index.html gs://cloud-student-bucket-["버킷명"]
 
 # 웹사이트 URL 확인
-echo "Website URL: https:///storage.googleapis.com/cloud-student-bucket-[버킷명]/index.html"
+echo "Website URL: https:///storage.googleapis.com/cloud-student-bucket-["버킷명"]/index.html"
 ```
 
 ---
 
 ## 🧪 5단계: 실습 테스트
 
-[🧪 5단계: 실습 테스트](#5단계-실습-테스트)
+["🧪 5단계: 실습 테스트"]["#5단계-실습-테스트"]
 
 ### 5.1 Compute Engine 웹서버 테스트
 
-[5.1 Compute Engine 웹서버 테스트](#51-compute-engine-웹서버-테스트)
+["5.1 Compute Engine 웹서버 테스트"]["#51-compute-engine-웹서버-테스트"]
 
 ```bash
 # Compute Engine 인스턴스 IP 확인
-INSTANCE_IP=$(gcloud compute instances describe cloud-student-server /
+INSTANCE_IP=$[gcloud compute instances describe cloud-student-server /
   --zone=asia-northeast3-a /
-  --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
+  --format='get[networkInterfaces[0].accessConfigs[0].natIP]']
 
 # 웹서버 접속 테스트
 curl http://$INSTANCE_IP
@@ -357,22 +357,22 @@ curl http://$INSTANCE_IP
 
 ### 5.2 Cloud Storage 정적 웹사이트 테스트
 
-[5.2 Cloud Storage 정적 웹사이트 테스트](#52-cloud-storage-정적-웹사이트-테스트)
+["5.2 Cloud Storage 정적 웹사이트 테스트"]["#52-cloud-storage-정적-웹사이트-테스트"]
 
 ```bash
 # Cloud Storage 웹사이트 URL로 접속 테스트
-curl https:///storage.googleapis.com/cloud-student-bucket-[버킷명]/index.html
+curl https:///storage.googleapis.com/cloud-student-bucket-["버킷명"]/index.html
 ```
 
 ---
 
 ## 🧹 6단계: 리소스 정리
 
-[🧹 6단계: 리소스 정리](#6단계-리소스-정리)
+["🧹 6단계: 리소스 정리"]["#6단계-리소스-정리"]
 
 ### 6.1 Compute Engine 리소스 정리
 
-[6.1 Compute Engine 리소스 정리](#61-compute-engine-리소스-정리)
+["6.1 Compute Engine 리소스 정리"]["#61-compute-engine-리소스-정리"]
 
 ```bash
 # Compute Engine 인스턴스 삭제
@@ -389,19 +389,19 @@ gcloud compute os-login ssh-keys remove --key-file=~/.ssh/gcp-student-key.pub
 
 ### 6.2 Cloud Storage 리소스 정리
 
-[6.2 Cloud Storage 리소스 정리](#62-cloud-storage-리소스-정리)
+["6.2 Cloud Storage 리소스 정리"]["#62-cloud-storage-리소스-정리"]
 
 ```bash
 # Cloud Storage 버킷 내용 삭제
-gsutil rm gs://cloud-student-bucket-[버킷명]/*
+gsutil rm gs://cloud-student-bucket-["버킷명"]/*
 
 # Cloud Storage 버킷 삭제
-gsutil rb gs://cloud-student-bucket-[버킷명]
+gsutil rb gs://cloud-student-bucket-["버킷명"]
 ```
 
 ### 6.3 서비스 계정 정리
 
-[6.3 서비스 계정 정리](#63-서비스-계정-정리)
+["6.3 서비스 계정 정리"]["#63-서비스-계정-정리"]
 
 ```bash
 # 서비스 계정 키 삭제
@@ -417,7 +417,7 @@ gcloud iam service-accounts delete /
 
 ## ✅ 실습 완료 체크리스트
 
-[✅ 실습 완료 체크리스트](#실습-완료-체크리스트)
+["✅ 실습 완료 체크리스트"]["#실습-완료-체크리스트"]
 
 - [ ] GCP 계정 생성 및 $300 크레딧 활성화
 - [ ] IAM 서비스 계정 생성 및 권한 설정
@@ -430,11 +430,11 @@ gcloud iam service-accounts delete /
 
 ## 🎯 학습 포인트
 
-[🎯 학습 포인트](#학습-포인트)
+["🎯 학습 포인트"]["#학습-포인트"]
 
 ### GCP 기초 개념
 
-[GCP 기초 개념](#gcp-기초-개념)
+["GCP 기초 개념"]["#gcp-기초-개념"]
 - GCP 계정 구조 및 Free Tier 활용
 - IAM을 통한 서비스 계정 및 권한 관리
 - Compute Engine을 통한 가상머신 관리
@@ -442,7 +442,7 @@ gcloud iam service-accounts delete /
 
 ### 실무 적용
 
-[실무 적용](#실무-적용)
+["실무 적용"]["#실무-적용"]
 - gcloud CLI를 통한 자동화된 리소스 관리
 - 방화벽 규칙을 통한 네트워크 보안 설정
 - Cloud Storage 정적 웹사이트 호스팅 활용
@@ -452,7 +452,7 @@ gcloud iam service-accounts delete /
 
 ## 💡 추가 학습 아이디어
 
-[💡 추가 학습 아이디어](#추가-학습-아이디어)
+["💡 추가 학습 아이디어"]["#추가-학습-아이디어"]
 
 1. **Cloud Functions**: 서버리스 함수 실행
 2. **Cloud Monitoring**: 모니터링 및 로깅
@@ -464,7 +464,7 @@ gcloud iam service-accounts delete /
 
 ## 🔄 AWS vs GCP 비교
 
-[🔄 AWS vs GCP 비교](#aws-vs-gcp-비교)
+["🔄 AWS vs GCP 비교"]["#aws-vs-gcp-비교"]
 
 | 구분 | AWS | GCP |
 |------|-----|-----|
@@ -473,7 +473,7 @@ gcloud iam service-accounts delete /
 | **IAM** | IAM | IAM & Admin |
 | **CLI** | AWS CLI | gcloud CLI |
 | **Free Tier** | 12개월 무료 | $300 크레딧 |
-| **리전** | ap-northeast-2 (서울) | asia-northeast3 (서울) |
+| **리전** | ap-northeast-2 ["서울"] | asia-northeast3 ["서울"] |
 
 
 ---
@@ -481,9 +481,9 @@ gcloud iam service-accounts delete /
 
 ### 📧 연락처
 
-[📧 연락처](#연락처)
+["📧 연락처"]["#연락처"]
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -491,6 +491,6 @@ gcloud iam service-accounts delete /
 
 <div align="center">
 
-[← 이전: AWS 기초 실습](cloud_basic/textbook/Day1/practice/aws_basic_practice.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [다음: 통합 실습 →](cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md) | [← 이전: Cloud Basic 메인](README.md) | [📋 학습 경로](learning-path.md)
+["← 이전: AWS 기초 실습"][cloud_basic/textbook/Day1/practice/aws_basic_practice.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["다음: 통합 실습 →"]["cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md"] | ["← 이전: Cloud Basic 메인"][README.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

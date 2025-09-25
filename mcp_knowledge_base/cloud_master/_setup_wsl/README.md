@@ -1,6 +1,6 @@
 # Cloud Master WSL 실습 환경 구성 가이드
 
-Cloud Master 과정을 위한 WSL(Windows Subsystem for Linux) 실습 환경 구성 스크립트 모음입니다.
+Cloud Master 과정을 위한 WSL[Windows Subsystem for Linux] 실습 환경 구성 스크립트 모음입니다.
 
 ## 📁 스크립트 구조
 
@@ -30,7 +30,7 @@ wsl --version
 wsl --install
 ```
 
-### 2. 전체 환경 설정 (권장)
+### 2. 전체 환경 설정 ["권장"]
 ```bash
 # 모든 도구를 한 번에 설치
 ./install-all-wsl.sh
@@ -149,7 +149,7 @@ wsl --install
 # WSL 업데이트
 wsl --update
 
-# Ubuntu 배포판 설치 (권장)
+# Ubuntu 배포판 설치 ["권장"]
 wsl --install -d Ubuntu
 ```
 
@@ -231,7 +231,7 @@ gcloud auth application-default login
 ## 📊 환경 요구사항
 
 ### 최소 요구사항
-- **OS**: Windows 10 (버전 2004 이상) 또는 Windows 11
+- **OS**: Windows 10 ["버전 2004 이상"] 또는 Windows 11
 - **RAM**: 4GB 이상
 - **저장공간**: 10GB 이상 여유 공간
 - **네트워크**: 인터넷 연결 필요
@@ -256,7 +256,7 @@ gcloud auth application-default login
 - [ ] AWS 계정 생성 및 IAM 사용자 설정
 - [ ] GCP 프로젝트 생성 및 서비스 계정 설정
 - [ ] GitHub 계정 설정
-- [ ] Docker Hub 계정 설정 (선택사항)
+- [ ] Docker Hub 계정 설정 ["선택사항"]
 
 ### 환경 변수
 - [ ] AWS_ACCESS_KEY_ID 설정

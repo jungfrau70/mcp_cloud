@@ -3,19 +3,19 @@
 
 ## 개요
 
-[개요](#개요)
+["개요"]["#개요"]
 Cloud Basic 2일차의 클라우드 계정 설정 및 기본 서비스 실습을 위한 가이드입니다.
 
 ## 학습 목표
 
-[학습 목표](#학습-목표)
+["학습 목표"]["#학습-목표"]
 - AWS Free Tier 계정 생성 및 설정
 - GCP 계정 생성 및 $300 크레딧 활성화
 - 기본 서비스 콘솔 탐색
 
 ## 실습 내용
 
-[실습 내용](#실습-내용)
+["실습 내용"]["#실습-내용"]
 1. **AWS 계정 설정**
    - Free Tier 계정 생성
    - 기본 보안 설정
@@ -32,9 +32,9 @@ Cloud Basic 2일차의 클라우드 계정 설정 및 기본 서비스 실습을
 
 ## 참고 자료
 
-[참고 자료](#참고-자료)
-- [AWS Free Tier 가이드](https:///aws.amazon.com/free/)
-- [GCP Free Tier 가이드](https:///cloud.google.com/free)
+["참고 자료"]["#참고-자료"]
+- ["AWS Free Tier 가이드"][https:///aws.amazon.com/free/]
+- ["GCP Free Tier 가이드"][https:///cloud.google.com/free]
 
 
 ---
@@ -42,9 +42,9 @@ Cloud Basic 2일차의 클라우드 계정 설정 및 기본 서비스 실습을
 
 ### 📧 연락처
 
-[📧 연락처](#연락처)
+["📧 연락처"]["#연락처"]
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -52,6 +52,6 @@ Cloud Basic 2일차의 클라우드 계정 설정 및 기본 서비스 실습을
 
 <div align="center">
 
-[← 이전: Cloud Basic 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Basic 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

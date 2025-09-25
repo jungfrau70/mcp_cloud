@@ -94,7 +94,7 @@ aws ec2 request-spot-instances /
     "InstanceType": "t3.micro",
     "KeyName": "my-key",
     "SecurityGroups": ["sg-12345"],
-    "UserData": "'$(base64 -w 0 user-data.sh)'"
+    "UserData": "'$[base64 -w 0 user-data.sh]'"
   }'
 
 # Spot Instance 요청 상태 확인
@@ -347,7 +347,7 @@ from datetime import datetime
 
 def auto_tag_resources():
     """리소스에 자동으로 태그 추가"""
-    ec2 = boto3.client('ec2')
+    ec2 = boto3.client['ec2']
     
     # 모든 EC2 인스턴스에 태그 추가
     instances = ec2.describe_instances()
@@ -359,15 +359,15 @@ def auto_tag_resources():
                 tags = [
                     {'Key': 'CostCenter', 'Value': 'Engineering'},
                     {'Key': 'Environment', 'Value': 'Production'},
-                    {'Key': 'CreatedDate', 'Value': datetime.now().strftime('%Y-%m-%d')},
+                    {'Key': 'CreatedDate', 'Value': datetime.now().strftime['%Y-%m-%d']},
                     {'Key': 'AutoTagged', 'Value': 'True'}
                 ]
                 
-                ec2.create_tags(
+                ec2.create_tags[
                     Resources=[instance['InstanceId']],
                     Tags=tags
-                )
-                print(f"Tagged instance: {instance['InstanceId']}")
+                ]
+                print[f"Tagged instance: {instance['InstanceId']}"]
 
 if __name__ == "__main__":
     auto_tag_resources()
@@ -381,8 +381,8 @@ aws ec2 describe-volumes --filters "Name=status,Values=available" --query "Volum
 # 미사용 Elastic IP 정리
 aws ec2 describe-addresses --query "Addresses[?AssociationId==null].AllocationId" --output text | xargs -I {} aws ec2 release-address --allocation-id {}
 
-# 미사용 스냅샷 정리 (30일 이상)
-aws ec2 describe-snapshots --owner-ids self --query "Snapshots[?StartTime<='$(date -d '30 days ago' --iso-8601)'].SnapshotId" --output text | xargs -I {} aws ec2 delete-snapshot --snapshot-id {}
+# 미사용 스냅샷 정리 ["30일 이상"]
+aws ec2 describe-snapshots --owner-ids self --query "Snapshots[?StartTime<='$[date -d '30 days ago' --iso-8601]'].SnapshotId" --output text | xargs -I {} aws ec2 delete-snapshot --snapshot-id {}
 ```
 
 #### 비용 최적화 권장사항 자동화
@@ -393,29 +393,29 @@ import json
 
 def get_cost_optimization_recommendations():
     """비용 최적화 권장사항 조회"""
-    ce = boto3.client('ce')
+    ce = boto3.client['ce']
     
     # Reserved Instance 권장사항
-    ri_recommendations = ce.get_reservation_purchase_recommendation(
+    ri_recommendations = ce.get_reservation_purchase_recommendation[
         Service='Amazon Elastic Compute Cloud - Compute',
         LookbackPeriodInDays=30,
         TermInYears='ONE_YEAR',
         PaymentOption='NO_UPFRONT'
-    )
+    ]
     
     # Savings Plans 권장사항
-    sp_recommendations = ce.get_savings_plans_purchase_recommendation(
+    sp_recommendations = ce.get_savings_plans_purchase_recommendation[
         LookbackPeriodInDays=30,
         TermInYears='ONE_YEAR',
         PaymentOption='NO_UPFRONT',
         SavingsPlanType='COMPUTE_SP'
-    )
+    ]
     
-    print("Reserved Instance 권장사항:")
-    print(json.dumps(ri_recommendations, indent=2, default=str))
+    print["Reserved Instance 권장사항:"]
+    print[json.dumps[ri_recommendations, indent=2, default=str]]
     
-    print("/nSavings Plans 권장사항:")
-    print(json.dumps(sp_recommendations, indent=2, default=str))
+    print["/nSavings Plans 권장사항:"]
+    print[json.dumps[sp_recommendations, indent=2, default=str]]
 
 if __name__ == "__main__":
     get_cost_optimization_recommendations()
@@ -436,10 +436,10 @@ resource "aws_ec2_spot_instance_request" "web" {
   
   user_data = var.user_data
   
-  tags = merge(var.tags, {
+  tags = merge[var.tags, {
     Name = "spot-instance-${count.index + 1}"
     Type = "spot"
-  })
+  }]
 }
 
 resource "aws_ec2_instance" "on_demand" {
@@ -454,10 +454,10 @@ resource "aws_ec2_instance" "on_demand" {
   
   user_data = var.user_data
   
-  tags = merge(var.tags, {
+  tags = merge[var.tags, {
     Name = "on-demand-instance-${count.index + 1}"
     Type = "on-demand"
-  })
+  }]
 }
 
 # Auto Scaling Group with mixed instance policy

@@ -1,7 +1,7 @@
 
 ## 🎯 실습 목표
 
-[🎯 실습 목표](#실습-목표)
+["🎯 실습 목표"]["#실습-목표"]
 
 이 실습을 통해 다음을 달성할 수 있습니다:
 
@@ -18,14 +18,14 @@
 <details>
 <summary>📋 목차</summary>
 
-1. [🎯 학습 목표](#학습-목표)
-2. [📚 실습 개요](#실습-개요)
-3. [🔧 실습 환경 준비](#실습-환경-준비)
-4. [🚀 Kubernetes 기본 개념](#kubernetes-기본-개념)
-5. [🚀 GKE 클러스터 생성 및 관리](#gke-클러스터-생성-및-관리)
-6. [📦 Pod, Service, Deployment 실습](#pod-service-deployment-실습)
-7. [🔐 ConfigMap, Secret, PersistentVolume 관리](#configmap-secret-persistentvolume-관리)
-8. [📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
+1. ["🎯 학습 목표"]["#학습-목표"]
+2. ["📚 실습 개요"]["#실습-개요"]
+3. ["🔧 실습 환경 준비"]["#실습-환경-준비"]
+4. ["🚀 Kubernetes 기본 개념"]["#kubernetes-기본-개념"]
+5. ["🚀 GKE 클러스터 생성 및 관리"]["#gke-클러스터-생성-및-관리"]
+6. ["📦 Pod, Service, Deployment 실습"]["#pod-service-deployment-실습"]
+7. ["🔐 ConfigMap, Secret, PersistentVolume 관리"]["#configmap-secret-persistentvolume-관리"]
+8. ["📚 문제 해결 및 참고 자료"]["#문제-해결-및-참고-자료"]
 
 </details>
 
@@ -38,7 +38,7 @@
 
 ### 핵심 학습 목표
 
-[핵심 학습 목표](#핵심-학습-목표)
+["핵심 학습 목표"]["#핵심-학습-목표"]
 - **Kubernetes 아키텍처** 이해 및 핵심 개념 습득
 - **GKE 클러스터** 생성 및 기본 관리
 - **Pod, Service, Deployment** 기본 사용법
@@ -46,7 +46,7 @@
 
 ### 실습 후 달성할 수 있는 능력
 
-[실습 후 달성할 수 있는 능력](#실습-후-달성할-수-있는-능력)
+["실습 후 달성할 수 있는 능력"]["#실습-후-달성할-수-있는-능력"]
 - ✅ Kubernetes 클러스터 생성 및 관리
 - ✅ Pod, Service, Deployment 기본 사용법
 - ✅ ConfigMap, Secret, PersistentVolume 관리
@@ -54,7 +54,7 @@
 
 ### 예상 소요 시간
 
-[예상 소요 시간](#예상-소요-시간)
+["예상 소요 시간"]["#예상-소요-시간"]
 - **Kubernetes 기초**: 60-90분
 - **GKE 클러스터**: 45-60분
 - **Pod/Service/Deployment**: 90-120분
@@ -72,12 +72,12 @@
 
 ### 실습 목적
 
-[실습 목적](#실습-목적)
+["실습 목적"]["#실습-목적"]
 **Cloud Master 과정을 수료한 학습자를 위한 Kubernetes 기초 실습**
 
 ### 실습 범위
 
-[실습 범위](#실습-범위)
+["실습 범위"]["#실습-범위"]
 - Kubernetes 기본 개념 및 아키텍처
 - GKE 클러스터 생성 및 관리
 - Pod, Service, Deployment 기본 사용법
@@ -91,9 +91,9 @@
 
 ### 실습 결과물
 
-[실습 결과물](#실습-결과물)
+["실습 결과물"]["#실습-결과물"]
 - GKE 클러스터
-- Kubernetes 리소스 (Pod, Service, Deployment)
+- Kubernetes 리소스 [Pod, Service, Deployment]
 - ConfigMap, Secret, PersistentVolume
 - 마이크로서비스 아키텍처
 
@@ -108,22 +108,22 @@
 
 ### 필수 계정
 
-[필수 계정](#필수-계정)
-- **GCP 계정**: GKE 클러스터 생성용 (Cloud Basic 과정 완료)
+["필수 계정"]["#필수-계정"]
+- **GCP 계정**: GKE 클러스터 생성용 ["Cloud Basic 과정 완료"]
 - **Docker Hub 계정**: 컨테이너 이미지 저장소
-- **GitHub 계정**: 코드 저장소 (선택사항)
+- **GitHub 계정**: 코드 저장소 ["선택사항"]
 
 ### 필수 도구
 
-[필수 도구](#필수-도구)
+["필수 도구"]["#필수-도구"]
 - **kubectl**: Kubernetes CLI 도구
 - **Docker**: 컨테이너 이미지 빌드
 - **gcloud CLI**: GCP CLI 도구
-- **VS Code**: 코드 편집 (선택사항)
+- **VS Code**: 코드 편집 ["선택사항"]
 
 ### 도구 설치
 
-[도구 설치](#도구-설치)
+["도구 설치"]["#도구-설치"]
 ```bash
 # kubectl 설치
 # Windows
@@ -133,7 +133,7 @@ winget install Kubernetes.kubectl
 brew install kubectl
 
 # Ubuntu
-curl -LO "https:///dl.k8s.io/release/$(curl -L -s https:///dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https:///dl.k8s.io/release/$[curl -L -s https:///dl.k8s.io/release/stable.txt]/bin/linux/amd64/kubectl"
 
 # gcloud CLI 설치
 # Windows
@@ -153,7 +153,7 @@ curl https:///sdk.cloud.google.com | bash
 
 ### 환경 확인
 
-[환경 확인](#환경-확인)
+["환경 확인"]["#환경-확인"]
 - [ ] GCP 계정이 설정되어 있는가?
 - [ ] kubectl이 설치되어 있는가?
 - [ ] Docker가 설치되어 있는가?
@@ -161,7 +161,7 @@ curl https:///sdk.cloud.google.com | bash
 
 ### 계정 준비
 
-[계정 준비](#계정-준비)
+["계정 준비"]["#계정-준비"]
 - [ ] GCP 프로젝트가 생성되어 있는가?
 - [ ] GKE API가 활성화되어 있는가?
 - [ ] Docker Hub 로그인이 완료되었는가?
@@ -175,10 +175,10 @@ curl https:///sdk.cloud.google.com | bash
 
 ### 1. Kubernetes 아키텍처
 
-[1. Kubernetes 아키텍처](#1-kubernetes-아키텍처)
+["1. Kubernetes 아키텍처"]["#1-kubernetes-아키텍처"]
 
 ```mermaid
-graph TB
+flowchart TB
     subgraph "Control Plane"
         API[API Server]
         ETCD[etcd]
@@ -194,15 +194,15 @@ graph TB
         Pod3[Pod 3]
     end
     
-    API --> Kubelet
-    API --> Proxy
-    Scheduler --> Kubelet
-    Controller --> Kubelet
+    API -->> Kubelet
+    API -->> Proxy
+    Scheduler -->> Kubelet
+    Controller -->> Kubelet
 ```
 
 ### 2. 핵심 리소스
 
-[2. 핵심 리소스](#2-핵심-리소스)
+["2. 핵심 리소스"]["#2-핵심-리소스"]
 
 | 리소스 | 설명 | 용도 |
 |--------|------|------|
@@ -219,17 +219,17 @@ graph TB
 
 ### 1. GKE 클러스터 생성
 
-[1. GKE 클러스터 생성](#1-gke-클러스터-생성)
+["1. GKE 클러스터 생성"]["#1-gke-클러스터-생성"]
 
 #### 🌐 웹콘솔 방식
 
-[🌐 웹콘솔 방식](#웹콘솔-방식)
+["🌐 웹콘솔 방식"]["#웹콘솔-방식"]
 ```markdown
 1. GCP Console → "Kubernetes Engine" → "클러스터" 클릭
 2. "클러스터 만들기" 클릭
 3. 클러스터 정보:
    - 이름: "cloud-container-cluster"
-   - 위치: "asia-northeast3 (서울)"
+   - 위치: "asia-northeast3 ["서울"]"
    - 노드 풀: "default-pool"
    - 머신 유형: "e2-medium"
    - 노드 수: 3
@@ -238,7 +238,7 @@ graph TB
 
 #### 💻 CLI 방식
 
-[💻 CLI 방식](#cli-방식)
+["💻 CLI 방식"]["#cli-방식"]
 ```bash
 # GKE 클러스터 생성
 gcloud container clusters create cloud-container-cluster /
@@ -259,7 +259,7 @@ kubectl get nodes
 
 ### 2. 클러스터 연결 확인
 
-[2. 클러스터 연결 확인](#2-클러스터-연결-확인)
+["2. 클러스터 연결 확인"]["#2-클러스터-연결-확인"]
 
 ```bash
 # 클러스터 정보 확인
@@ -276,11 +276,11 @@ kubectl get namespaces
 
 ## 🚀 기본 애플리케이션 배포
 
-[🚀 기본 애플리케이션 배포](#기본-애플리케이션-배포)
+["🚀 기본 애플리케이션 배포"]["#기본-애플리케이션-배포"]
 
 ### 1. 간단한 Pod 생성
 
-[1. 간단한 Pod 생성](#1-간단한-pod-생성)
+["1. 간단한 Pod 생성"]["#1-간단한-pod-생성"]
 
 ```yaml
 # simple-pod.yaml
@@ -321,7 +321,7 @@ kubectl logs simple-web-pod
 
 ### 2. Service 생성
 
-[2. Service 생성](#2-service-생성)
+["2. Service 생성"]["#2-service-생성"]
 
 ```yaml
 # simple-service.yaml
@@ -352,7 +352,7 @@ kubectl get service simple-web-service
 
 ### 3. Deployment 생성
 
-[3. Deployment 생성](#3-deployment-생성)
+["3. Deployment 생성"]["#3-deployment-생성"]
 
 ```yaml
 # simple-deployment.yaml
@@ -404,11 +404,11 @@ kubectl scale deployment simple-web-deployment --replicas=5
 
 ## 🔧 고급 설정 관리
 
-[🔧 고급 설정 관리](#고급-설정-관리)
+["🔧 고급 설정 관리"]["#고급-설정-관리"]
 
 ### 1. ConfigMap 생성 및 사용
 
-[1. ConfigMap 생성 및 사용](#1-configmap-생성-및-사용)
+["1. ConfigMap 생성 및 사용"]["#1-configmap-생성-및-사용"]
 
 ```yaml
 # configmap.yaml
@@ -460,7 +460,7 @@ spec:
 
 ### 2. Secret 생성 및 사용
 
-[2. Secret 생성 및 사용](#2-secret-생성-및-사용)
+["2. Secret 생성 및 사용"]["#2-secret-생성-및-사용"]
 
 ```bash
 # Secret 생성
@@ -507,7 +507,7 @@ spec:
 
 ### 3. PersistentVolume 및 PersistentVolumeClaim
 
-[3. PersistentVolume 및 PersistentVolumeClaim](#3-persistentvolume-및-persistentvolumeclaim)
+["3. PersistentVolume 및 PersistentVolumeClaim"]["#3-persistentvolume-및-persistentvolumeclaim"]
 
 ```yaml
 # pv.yaml
@@ -571,11 +571,11 @@ spec:
 
 ## 🌐 Ingress 설정
 
-[🌐 Ingress 설정](#ingress-설정)
+["🌐 Ingress 설정"]["#ingress-설정"]
 
 ### 1. Ingress Controller 설치
 
-[1. Ingress Controller 설치](#1-ingress-controller-설치)
+["1. Ingress Controller 설치"]["#1-ingress-controller-설치"]
 
 ```bash
 # Nginx Ingress Controller 설치
@@ -587,7 +587,7 @@ kubectl get pods -n ingress-nginx
 
 ### 2. Ingress 리소스 생성
 
-[2. Ingress 리소스 생성](#2-ingress-리소스-생성)
+["2. Ingress 리소스 생성"]["#2-ingress-리소스-생성"]
 
 ```yaml
 # ingress.yaml
@@ -623,11 +623,11 @@ kubectl get ingress
 
 ## 🧪 실습 테스트
 
-[🧪 실습 테스트](#실습-테스트)
+["🧪 실습 테스트"]["#실습-테스트"]
 
 ### 1. 애플리케이션 접속 테스트
 
-[1. 애플리케이션 접속 테스트](#1-애플리케이션-접속-테스트)
+["1. 애플리케이션 접속 테스트"]["#1-애플리케이션-접속-테스트"]
 
 ```bash
 # Pod 내부에서 테스트
@@ -641,7 +641,7 @@ kubectl port-forward service/simple-web-service 8080:80
 
 ### 2. 로그 및 모니터링
 
-[2. 로그 및 모니터링](#2-로그-및-모니터링)
+["2. 로그 및 모니터링"]["#2-로그-및-모니터링"]
 
 ```bash
 # Pod 로그 확인
@@ -662,7 +662,7 @@ kubectl top nodes
 
 ## 🧹 리소스 정리
 
-[🧹 리소스 정리](#리소스-정리)
+["🧹 리소스 정리"]["#리소스-정리"]
 
 ```bash
 # 모든 리소스 삭제
@@ -684,7 +684,7 @@ gcloud container clusters delete cloud-container-cluster /
 
 ## ✅ 실습 완료 체크리스트
 
-[✅ 실습 완료 체크리스트](#실습-완료-체크리스트)
+["✅ 실습 완료 체크리스트"]["#실습-완료-체크리스트"]
 
 - [ ] GKE 클러스터 생성 및 연결
 - [ ] Pod, Service, Deployment 기본 사용법
@@ -697,13 +697,13 @@ gcloud container clusters delete cloud-container-cluster /
 
 ## 🚀 다음 단계
 
-[🚀 다음 단계](#다음-단계)
+["🚀 다음 단계"]["#다음-단계"]
 
 Kubernetes 기초를 완료했다면 다음 고급 주제로 진행하세요:
 
 ### 고급 주제
 
-[고급 주제](#고급-주제)
+["고급 주제"]["#고급-주제"]
 - **Helm**: 패키지 관리자
 - **Istio**: 서비스 메시
 - **Prometheus**: 모니터링
@@ -711,7 +711,7 @@ Kubernetes 기초를 완료했다면 다음 고급 주제로 진행하세요:
 
 ### 실무 적용
 
-[실무 적용](#실무-적용)
+["실무 적용"]["#실무-적용"]
 - **마이크로서비스 아키텍처** 구성
 - **CI/CD 파이프라인** 구축
 - **모니터링 및 로깅** 시스템 구축
@@ -726,7 +726,7 @@ Kubernetes 기초를 완료했다면 다음 고급 주제로 진행하세요:
 
 ### GKE 클러스터 관련 문제
 
-[GKE 클러스터 관련 문제](#gke-클러스터-관련-문제)
+["GKE 클러스터 관련 문제"]["#gke-클러스터-관련-문제"]
 <details>
 <summary>❌ 클러스터 생성 실패</summary>
 
@@ -775,7 +775,7 @@ gcloud container clusters describe cloud-container-cluster /
 
 ### Pod 관련 문제
 
-[Pod 관련 문제](#pod-관련-문제)
+["Pod 관련 문제"]["#pod-관련-문제"]
 <details>
 <summary>❌ Pod 시작 실패</summary>
 
@@ -822,7 +822,7 @@ kubectl get endpoints
 
 ### ConfigMap/Secret 관련 문제
 
-[ConfigMap/Secret 관련 문제](#configmapsecret-관련-문제)
+["ConfigMap/Secret 관련 문제"]["#configmapsecret-관련-문제"]
 <details>
 <summary>❌ ConfigMap/Secret 마운트 실패</summary>
 
@@ -854,27 +854,27 @@ kubectl exec -it <pod-name> -- ls /etc/config
 
 ### 공식 문서
 
-[공식 문서](#공식-문서)
-- [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
-- [GKE 공식 문서](https:///cloud.google.com/kubernetes-engine/docs)
-- [Kubernetes 실습 환경](https:///kubernetes.io/docs/tutorials/)
-- [Kubernetes 대시보드](https:///kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
+["공식 문서"]["#공식-문서"]
+- ["Kubernetes 공식 문서"][https:///kubernetes.io/docs/]
+- ["GKE 공식 문서"][https:///cloud.google.com/kubernetes-engine/docs]
+- ["Kubernetes 실습 환경"][https:///kubernetes.io/docs/tutorials/]
+- ["Kubernetes 대시보드"][https:///kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/]
 
 ### 유용한 리소스
 
-[유용한 리소스](#유용한-리소스)
-- [Kubernetes Playground](https:///www.katacoda.com/courses/kubernetes)
-- [Kubernetes Examples](https:///github.com/kubernetes/examples)
-- [GKE Workshop](https:///cloud.google.com/kubernetes-engine/docs/tutorials)
-- [Kubernetes Best Practices](https:///kubernetes.io/docs/concepts/configuration/overview/)
+["유용한 리소스"]["#유용한-리소스"]
+- [Kubernetes Playground][https:///www.katacoda.com/courses/kubernetes]
+- [Kubernetes Examples][https:///github.com/kubernetes/examples]
+- [GKE Workshop][https:///cloud.google.com/kubernetes-engine/docs/tutorials]
+- [Kubernetes Best Practices][https:///kubernetes.io/docs/concepts/configuration/overview/]
 
 ### 관련 프로젝트
 
-[관련 프로젝트](#관련-프로젝트)
-- [Kubernetes 샘플](https:///github.com/kubernetes/examples)
-- [GKE 샘플](https:///github.com/GoogleCloudPlatform/kubernetes-engine-samples)
-- [Kubernetes Helm Charts](https:///github.com/helm/charts)
-- [Istio 샘플](https:///github.com/istio/istio)
+["관련 프로젝트"]["#관련-프로젝트"]
+- ["Kubernetes 샘플"][https:///github.com/kubernetes/examples]
+- ["GKE 샘플"][https:///github.com/GoogleCloudPlatform/kubernetes-engine-samples]
+- [Kubernetes Helm Charts][https:///github.com/helm/charts]
+- ["Istio 샘플"][https:///github.com/istio/istio]
 
 </details>
 
@@ -883,7 +883,7 @@ kubectl exec -it <pod-name> -- ls /etc/config
 
 ### Cloud Container 과정 계속
 
-[Cloud Container 과정 계속](#cloud-container-과정-계속)
+["Cloud Container 과정 계속"]["#cloud-container-과정-계속"]
 1. **고급 Kubernetes**: Helm, Istio, 서비스 메시
 2. **ECS/Fargate**: AWS 컨테이너 서비스
 3. **고가용성 아키텍처**: Multi-AZ, Auto Scaling
@@ -891,7 +891,7 @@ kubectl exec -it <pod-name> -- ls /etc/config
 
 ### 실무 적용
 
-[실무 적용](#실무-적용)
+["실무 적용"]["#실무-적용"]
 1. **마이크로서비스 아키텍처**: 서비스 분리 및 통신
 2. **CI/CD 파이프라인**: GitOps, ArgoCD
 3. **보안**: Network Policy, Pod Security Policy
@@ -903,13 +903,13 @@ kubectl exec -it <pod-name> -- ls /etc/config
 
 ## 🎉 실습 완료!
 
-[🎉 실습 완료!](#실습-완료)
+["🎉 실습 완료!"]["#실습-완료"]
 
 축하합니다! Kubernetes 기초 실습을 완료했습니다.
 
 ### 📚 학습 요약
 
-[📚 학습 요약](#학습-요약)
+["📚 학습 요약"]["#학습-요약"]
 
 이번 실습을 통해 다음을 배웠습니다:
 
@@ -920,7 +920,7 @@ kubectl exec -it <pod-name> -- ls /etc/config
 
 ### 🚀 다음 단계
 
-[🚀 다음 단계](#다음-단계)
+["🚀 다음 단계"]["#다음-단계"]
 
 - **고급 Kubernetes**: Helm, Istio, 서비스 메시
 - **ECS/Fargate**: AWS 컨테이너 서비스
@@ -928,7 +928,7 @@ kubectl exec -it <pod-name> -- ls /etc/config
 
 ### 💡 추가 학습 아이디어
 
-[💡 추가 학습 아이디어](#추가-학습-아이디어)
+["💡 추가 학습 아이디어"]["#추가-학습-아이디어"]
 
 1. **Helm**: 패키지 관리자
 2. **Istio**: 서비스 메시
@@ -943,11 +943,11 @@ kubectl exec -it <pod-name> -- ls /etc/config
 
 ## 🚀 기본 애플리케이션 배포
 
-[🚀 기본 애플리케이션 배포](#기본-애플리케이션-배포)
+["🚀 기본 애플리케이션 배포"]["#기본-애플리케이션-배포"]
 
 ## 🔧 고급 설정 관리
 
-[🔧 고급 설정 관리](#고급-설정-관리)
+["🔧 고급 설정 관리"]["#고급-설정-관리"]
 
 ## Pod, Service, Deployment 실습
 
@@ -963,6 +963,6 @@ kubectl exec -it <pod-name> -- ls /etc/config
 
 <div align="center">
 
-[← 이전: 컨테이너 기초 실습](cloud_container/textbook/Day1/practice/container-basics.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [다음: Cloud Container 2일차 →](README.md) | [📋 학습 경로](learning-path.md)
+["← 이전: 컨테이너 기초 실습"][cloud_container/textbook/Day1/practice/container-basics.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["다음: Cloud Container 2일차 →"][README.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

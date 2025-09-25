@@ -319,7 +319,7 @@ helm uninstall my-app
 </details>
 
 <details>
-<summary>🔧 3단계: 서비스 메시 (Istio)</summary>
+<summary>🔧 3단계: 서비스 메시 [Istio]</summary>
 
 #### Istio 설치
 ```bash
@@ -480,7 +480,7 @@ data:
             "type": "graph",
             "targets": [
               {
-                "expr": "rate(http_requests_total[5m])",
+                "expr": "rate[http_requests_total[5m]]",
                 "legendFormat": "{{instance}}"
               }
             ]
@@ -490,7 +490,7 @@ data:
             "type": "graph",
             "targets": [
               {
-                "expr": "rate(http_requests_total{status=~/"5../"}[5m])",
+                "expr": "rate[http_requests_total{status=~/"5../"}[5m]]",
                 "legendFormat": "{{instance}}"
               }
             ]
@@ -513,7 +513,7 @@ spec:
   - name: my-app
     rules:
     - alert: HighErrorRate
-      expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
+      expr: rate[http_requests_total{status=~"5.."}[5m]] > 0.1
       for: 5m
       labels:
         severity: warning
@@ -522,7 +522,7 @@ spec:
         description: "Error rate is {{ $value }} errors per second"
     
     - alert: PodCrashLooping
-      expr: rate(kube_pod_container_status_restarts_total[15m]) > 0
+      expr: rate[kube_pod_container_status_restarts_total[15m]] > 0
       for: 5m
       labels:
         severity: critical

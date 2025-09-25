@@ -1,8 +1,8 @@
 # Cloud Basic - 1일차 강의안
 
-> 📋 **강의 일시**: 2024년 9월 2일 (월) 9:00~17:00  
+> 📋 **강의 일시**: 2024년 9월 2일 ["월"] 9:00~17:00  
 > 📋 **강의 방식**: 오프라인 실습 중심  
-> 📋 **선수 학습**: IT 기초 지식 (OS, 네트워크 기본 이해)
+> 📋 **선수 학습**: IT 기초 지식 ["OS, 네트워크 기본 이해"]
 
 ---
 
@@ -50,7 +50,7 @@ ping -c 3 google.com && echo "✅ 인터넷 연결 정상" || echo "❌ 인터�
 # 3. 브라우저 확인
 echo "=== 브라우저 확인 ==="
 echo "다음 브라우저 중 하나가 필요합니다:"
-echo "- Chrome (권장)"
+echo "- Chrome ["권장"]"
 echo "- Firefox"
 echo "- Edge"
 echo "- Safari"
@@ -62,7 +62,7 @@ echo "- Safari"
 - [ ] **이메일 계정**: 계정 생성용 이메일 주소 준비
 - [ ] **전화번호**: 2단계 인증용 전화번호 준비
 - [ ] **브라우저**: 최신 브라우저 설치 및 업데이트
-- [ ] **SSH 클라이언트**: PuTTY (Windows) 또는 기본 터미널 (Mac/Linux)
+- [ ] **SSH 클라이언트**: PuTTY [Windows] 또는 기본 터미널 [Mac/Linux]
 
 ## 📁 **1일차 강의 자료 구조**
 
@@ -91,9 +91,9 @@ repo/automation/day1/
 
 ---
 
-## 🕘 1교시: 클라우드 기본 개념 및 계정 생성 (9:00~10:30)
+## 🕘 1교시: 클라우드 기본 개념 및 계정 생성 [9:00~10:30]
 
-### 📚 이론 학습 (30분)
+### 📚 이론 학습 ["30분"]
 #### 클라우드 컴퓨팅 개념
 - **클라우드 컴퓨팅**: 인터넷을 통한 컴퓨팅 리소스 제공
 - **서비스 모델**: IaaS, PaaS, SaaS
@@ -105,28 +105,28 @@ repo/automation/day1/
 - **GCP**: Google 기술력, AI/ML 강점, 개발자 친화적
 - **서비스 매핑**: EC2 ↔ Compute Engine, S3 ↔ Cloud Storage
 
-### 🛠️ 실습 (60분)
+### 🛠️ 실습 ["60분"]
 
 #### 🏗️ **1단계: AWS 계정 생성 및 설정**
 
-**목표 아키텍처 (1단계 완료 후)**
+**목표 아키텍처 ["1단계 완료 후"]**
 ```mermaid
-graph TB
+flowchart TB
     subgraph "AWS Cloud"
-        A1[AWS 계정<br/>Free Tier]
-        A2[IAM 사용자<br/>실습용]
-        A3[보안 설정<br/>MFA 활성화]
-        A4[AWS CLI<br/>로컬 설정]
+        A1["AWS 계정<br/>Free Tier"]
+        A2["IAM 사용자<br/>실습용"]
+        A3["보안 설정<br/>MFA 활성화"]
+        A4["AWS CLI<br/>로컬 설정"]
     end
     
     subgraph "Local"
-        L1[개발자 머신<br/>AWS CLI]
+        L1["개발자 머신<br/>AWS CLI"]
     end
     
-    L1 --> A4
-    A4 --> A1
-    A1 --> A2
-    A1 --> A3
+    L1 -->> A4
+    A4 -->> A1
+    A1 -->> A2
+    A1 -->> A3
 ```
 
 **🔍 명령 실행: AWS 계정 생성 및 설정**
@@ -135,24 +135,24 @@ graph TB
 echo "=== AWS 계정 생성 및 설정 시작 ==="
 ./repo/automation/day1/automation/01-aws-setup.sh setup
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 AWS 계정 생성 및 설정 ==="
-# 1. AWS 계정 생성 (브라우저에서 실행)
+# 1. AWS 계정 생성 ["브라우저에서 실행"]
 echo "AWS 계정 생성: https://aws.amazon.com/"
 echo "1. 이메일 주소 입력"
 echo "2. 계정 이름 입력"
 echo "3. 비밀번호 설정"
 echo "4. 신용카드 정보 입력"
 echo "5. 전화번호 인증"
-echo "6. 지원 플랜 선택 (Basic Support - Free)"
+echo "6. 지원 플랜 선택 [Basic Support - Free]"
 
 # 2. AWS CLI 설치 확인
 aws --version
 
 # 3. AWS CLI 설정
 aws configure
-# AWS Access Key ID: [입력]
-# AWS Secret Access Key: [입력]
+# AWS Access Key ID: ["입력"]
+# AWS Secret Access Key: ["입력"]
 # Default region name: ap-northeast-2
 # Default output format: json
 
@@ -177,9 +177,9 @@ aws sts get-caller-identity
 echo "=== GCP 계정 생성 및 설정 시작 ==="
 ./repo/automation/day1/automation/02-gcp-setup.sh setup
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 GCP 계정 생성 및 설정 ==="
-# 1. GCP 계정 생성 (브라우저에서 실행)
+# 1. GCP 계정 생성 ["브라우저에서 실행"]
 echo "GCP 계정 생성: https://cloud.google.com/"
 echo "1. Google 계정으로 로그인"
 echo "2. $300 크레딧 활성화"
@@ -211,38 +211,38 @@ gcloud auth list
 
 ---
 
-## 🕘 2교시: AWS EC2 실습 (10:45~12:00)
+## 🕘 2교시: AWS EC2 실습 [10:45~12:00]
 
-### 📚 이론 학습 (15분)
+### 📚 이론 학습 ["15분"]
 #### EC2 기본 개념
 - **인스턴스**: 가상 서버
-- **AMI**: Amazon Machine Image (운영체제 템플릿)
+- **AMI**: Amazon Machine Image ["운영체제 템플릿"]
 - **인스턴스 타입**: CPU, 메모리, 스토리지 조합
 - **키 페어**: SSH 접속용 키
 - **보안 그룹**: 방화벽 규칙
 
-### 🛠️ 실습 (60분)
+### 🛠️ 실습 ["60분"]
 
 #### 🏗️ **3단계: AWS EC2 인스턴스 생성**
 
-**목표 아키텍처 (3단계 완료 후)**
+**목표 아키텍처 ["3단계 완료 후"]**
 ```mermaid
-graph TB
+flowchart TB
     subgraph "AWS Cloud"
-        A1[EC2 인스턴스<br/>t2.micro]
-        A2[보안 그룹<br/>SSH 허용]
-        A3[키 페어<br/>SSH 접속용]
-        A4[퍼블릭 IP<br/>외부 접속]
+        A1["EC2 인스턴스<br/>t2.micro"]
+        A2["보안 그룹<br/>SSH 허용"]
+        A3["키 페어<br/>SSH 접속용"]
+        A4["퍼블릭 IP<br/>외부 접속"]
     end
     
     subgraph "Local"
-        L1[개발자 머신<br/>SSH 클라이언트]
+        L1["개발자 머신<br/>SSH 클라이언트"]
     end
     
-    L1 --> A4
-    A4 --> A1
-    A1 --> A2
-    A1 --> A3
+    L1 -->> A4
+    A4 -->> A1
+    A1 -->> A2
+    A1 -->> A3
 ```
 
 **🔍 명령 실행: AWS EC2 인스턴스 생성**
@@ -251,7 +251,7 @@ graph TB
 echo "=== AWS EC2 인스턴스 생성 시작 ==="
 ./repo/automation/day1/automation/03-ec2-practice.sh setup
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 AWS EC2 인스턴스 생성 ==="
 # 1. 키 페어 생성
 aws ec2 create-key-pair --key-name cloud-basic-key --query 'KeyMaterial' --output text > cloud-basic-key.pem
@@ -290,7 +290,7 @@ aws ec2 describe-instances \
 
 **✅ 예상 결과:**
 - EC2 인스턴스: t2.micro 인스턴스 생성
-- 보안 그룹: SSH(22번 포트) 허용
+- 보안 그룹: SSH["22번 포트"] 허용
 - 키 페어: SSH 접속용 키 생성
 - 퍼블릭 IP: 외부 접속 가능한 IP 할당
 
@@ -299,10 +299,10 @@ aws ec2 describe-instances \
 **🔍 명령 실행: SSH 접속 및 기본 명령어**
 ```bash
 # 1. 퍼블릭 IP 가져오기
-PUBLIC_IP=$(aws ec2 describe-instances \
+PUBLIC_IP=$[aws ec2 describe-instances \
     --filters "Name=tag:Name,Values=cloud-basic-instance" \
     --query 'Reservations[0].Instances[0].PublicIpAddress' \
-    --output text)
+    --output text]
 
 echo "퍼블릭 IP: $PUBLIC_IP"
 
@@ -326,7 +326,7 @@ sudo systemctl enable httpd
 # 5. 간단한 웹 페이지 생성
 echo "<h1>Hello from AWS EC2!</h1>" | sudo tee /var/www/html/index.html
 
-# 6. 웹 서버 포트 허용 (보안 그룹)
+# 6. 웹 서버 포트 허용 ["보안 그룹"]
 aws ec2 authorize-security-group-ingress \
     --group-name cloud-basic-sg \
     --protocol tcp \
@@ -352,13 +352,13 @@ echo "브라우저에서 접속하여 확인하세요!"
 
 ---
 
-## 🍽️ 점심 시간 (12:00~13:00)
+## 🍽️ 점심 시간 [12:00~13:00]
 
 ---
 
-## 🕘 3교시: AWS S3 실습 (13:00~14:30)
+## 🕘 3교시: AWS S3 실습 [13:00~14:30]
 
-### 📚 이론 학습 (15분)
+### 📚 이론 학습 ["15분"]
 #### S3 기본 개념
 - **버킷**: 파일 저장소 컨테이너
 - **객체**: 버킷에 저장되는 파일
@@ -366,33 +366,33 @@ echo "브라우저에서 접속하여 확인하세요!"
 - **스토리지 클래스**: Standard, IA, Glacier 등
 - **권한**: 버킷 정책, ACL
 
-### 🛠️ 실습 (75분)
+### 🛠️ 실습 ["75분"]
 
 #### 🏗️ **5단계: AWS S3 버킷 생성 및 파일 관리**
 
-**목표 아키텍처 (5단계 완료 후)**
+**목표 아키텍처 ["5단계 완료 후"]**
 ```mermaid
-graph TB
+flowchart TB
     subgraph "AWS Cloud"
-        A1[S3 버킷<br/>cloud-basic-bucket]
-        A2[객체<br/>파일들]
-        A3[권한 설정<br/>퍼블릭 읽기]
-        A4[웹 호스팅<br/>정적 웹사이트]
+        A1["S3 버킷<br/>cloud-basic-bucket"]
+        A2["객체<br/>파일들"]
+        A3["권한 설정<br/>퍼블릭 읽기"]
+        A4["웹 호스팅<br/>정적 웹사이트"]
     end
     
     subgraph "Local"
-        L1[개발자 머신<br/>파일 업로드]
+        L1["개발자 머신<br/>파일 업로드"]
     end
     
     subgraph "Internet"
-        I1[사용자<br/>웹 브라우저]
+        I1["사용자<br/>웹 브라우저"]
     end
     
-    L1 --> A1
-    A1 --> A2
-    A1 --> A3
-    A1 --> A4
-    I1 --> A4
+    L1 -->> A1
+    A1 -->> A2
+    A1 -->> A3
+    A1 -->> A4
+    I1 -->> A4
 ```
 
 **🔍 명령 실행: AWS S3 버킷 생성 및 파일 관리**
@@ -401,10 +401,10 @@ graph TB
 echo "=== AWS S3 버킷 생성 및 파일 관리 시작 ==="
 ./repo/automation/day1/automation/04-s3-practice.sh setup
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 AWS S3 버킷 생성 및 파일 관리 ==="
 # 1. 고유한 버킷 이름 생성
-BUCKET_NAME="cloud-basic-bucket-$(date +%s)"
+BUCKET_NAME="cloud-basic-bucket-$[date +%s]"
 echo "버킷 이름: $BUCKET_NAME"
 
 # 2. S3 버킷 생성
@@ -430,7 +430,7 @@ aws s3 cp s3://$BUCKET_NAME/hello.txt downloaded-hello.txt
 # 8. 파일 내용 확인
 cat downloaded-hello.txt
 
-# 9. 버킷 정책 설정 (퍼블릭 읽기 허용)
+# 9. 버킷 정책 설정 ["퍼블릭 읽기 허용"]
 cat > bucket-policy.json << EOF
 {
     "Version": "2012-10-17",
@@ -471,9 +471,9 @@ echo "브라우저에서 접속하여 확인하세요!"
 
 ---
 
-## 🕘 4교시: GCP Compute Engine 실습 (14:45~16:15)
+## 🕘 4교시: GCP Compute Engine 실습 [14:45~16:15]
 
-### 📚 이론 학습 (15분)
+### 📚 이론 학습 ["15분"]
 #### Compute Engine 기본 개념
 - **인스턴스**: 가상 머신
 - **이미지**: 운영체제 템플릿
@@ -481,28 +481,28 @@ echo "브라우저에서 접속하여 확인하세요!"
 - **방화벽 규칙**: 네트워크 보안
 - **SSH 키**: 인스턴스 접속
 
-### 🛠️ 실습 (75분)
+### 🛠️ 실습 ["75분"]
 
 #### 🏗️ **6단계: GCP Compute Engine 인스턴스 생성**
 
-**목표 아키텍처 (6단계 완료 후)**
+**목표 아키텍처 ["6단계 완료 후"]**
 ```mermaid
-graph TB
+flowchart TB
     subgraph "GCP Cloud"
         G1[Compute Engine<br/>e2-micro]
-        G2[방화벽 규칙<br/>SSH, HTTP 허용]
-        G3[SSH 키<br/>인스턴스 접속용]
-        G4[외부 IP<br/>외부 접속]
+        G2["방화벽 규칙<br/>SSH, HTTP 허용"]
+        G3["SSH 키<br/>인스턴스 접속용"]
+        G4["외부 IP<br/>외부 접속"]
     end
     
     subgraph "Local"
-        L1[개발자 머신<br/>SSH 클라이언트]
+        L1["개발자 머신<br/>SSH 클라이언트"]
     end
     
-    L1 --> G4
-    G4 --> G1
-    G1 --> G2
-    G1 --> G3
+    L1 -->> G4
+    G4 -->> G1
+    G1 -->> G2
+    G1 -->> G3
 ```
 
 **🔍 명령 실행: GCP Compute Engine 인스턴스 생성**
@@ -511,7 +511,7 @@ graph TB
 echo "=== GCP Compute Engine 인스턴스 생성 시작 ==="
 ./repo/automation/day1/automation/05-compute-practice.sh setup
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 GCP Compute Engine 인스턴스 생성 ==="
 # 1. SSH 키 생성
 ssh-keygen -t rsa -f ~/.ssh/gcp-key -C "cloud-basic-user"
@@ -519,15 +519,15 @@ ssh-keygen -t rsa -f ~/.ssh/gcp-key -C "cloud-basic-user"
 # 2. SSH 키를 GCP에 등록
 gcloud compute os-login ssh-keys add \
     --key-file ~/.ssh/gcp-key.pub \
-    --project $(gcloud config get-value project)
+    --project $[gcloud config get-value project]
 
-# 3. 방화벽 규칙 생성 (SSH 허용)
+# 3. 방화벽 규칙 생성 ["SSH 허용"]
 gcloud compute firewall-rules create allow-ssh \
     --allow tcp:22 \
     --source-ranges 0.0.0.0/0 \
     --description "Allow SSH access"
 
-# 4. 방화벽 규칙 생성 (HTTP 허용)
+# 4. 방화벽 규칙 생성 ["HTTP 허용"]
 gcloud compute firewall-rules create allow-http \
     --allow tcp:80 \
     --source-ranges 0.0.0.0/0 \
@@ -549,12 +549,12 @@ gcloud compute instances list
 # 7. 외부 IP 확인
 gcloud compute instances describe cloud-basic-instance \
     --zone=asia-northeast3-a \
-    --format='get(networkInterfaces[0].accessConfigs[0].natIP)'
+    --format='get[networkInterfaces[0].accessConfigs[0].natIP]'
 ```
 
 **✅ 예상 결과:**
 - Compute Engine 인스턴스: e2-micro 인스턴스 생성
-- 방화벽 규칙: SSH(22번), HTTP(80번) 포트 허용
+- 방화벽 규칙: SSH["22번"], HTTP["80번"] 포트 허용
 - SSH 키: 인스턴스 접속용 키 생성
 - 외부 IP: 외부 접속 가능한 IP 할당
 
@@ -563,9 +563,9 @@ gcloud compute instances describe cloud-basic-instance \
 **🔍 명령 실행: SSH 접속 및 웹 서버 설정**
 ```bash
 # 1. 외부 IP 가져오기
-EXTERNAL_IP=$(gcloud compute instances describe cloud-basic-instance \
+EXTERNAL_IP=$[gcloud compute instances describe cloud-basic-instance \
     --zone=asia-northeast3-a \
-    --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
+    --format='get[networkInterfaces[0].accessConfigs[0].natIP]']
 
 echo "외부 IP: $EXTERNAL_IP"
 
@@ -614,9 +614,9 @@ echo "브라우저에서 접속하여 확인하세요!"
 
 ---
 
-## 🕘 5교시: GCP Cloud Storage 실습 (16:30~17:00)
+## 🕘 5교시: GCP Cloud Storage 실습 [16:30~17:00]
 
-### 📚 이론 학습 (10분)
+### 📚 이론 학습 ["10분"]
 #### Cloud Storage 기본 개념
 - **버킷**: 파일 저장소 컨테이너
 - **객체**: 버킷에 저장되는 파일
@@ -624,7 +624,7 @@ echo "브라우저에서 접속하여 확인하세요!"
 - **권한**: IAM, ACL
 - **라이프사이클**: 자동 관리 정책
 
-### 🛠️ 실습 (20분)
+### 🛠️ 실습 ["20분"]
 
 #### 🏗️ **8단계: GCP Cloud Storage 버킷 생성 및 파일 관리**
 
@@ -634,10 +634,10 @@ echo "브라우저에서 접속하여 확인하세요!"
 echo "=== GCP Cloud Storage 버킷 생성 및 파일 관리 시작 ==="
 ./repo/automation/day1/automation/06-storage-practice.sh setup
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 GCP Cloud Storage 버킷 생성 및 파일 관리 ==="
 # 1. 고유한 버킷 이름 생성
-BUCKET_NAME="cloud-basic-bucket-$(date +%s)"
+BUCKET_NAME="cloud-basic-bucket-$[date +%s]"
 echo "버킷 이름: $BUCKET_NAME"
 
 # 2. Cloud Storage 버킷 생성
@@ -718,43 +718,43 @@ echo "브라우저에서 접속하여 확인하세요!"
 
 ### 5교시: GCP Cloud Storage 실습 완료 후
 ```mermaid
-graph TB
+flowchart TB
     subgraph "AWS Cloud"
-        A1[EC2 인스턴스<br/>t2.micro<br/>웹 서버]
-        A2[S3 버킷<br/>정적 웹사이트<br/>파일 저장소]
-        A3[보안 그룹<br/>SSH, HTTP 허용]
-        A4[키 페어<br/>SSH 접속용]
+        A1["EC2 인스턴스<br/>t2.micro<br/>웹 서버"]
+        A2["S3 버킷<br/>정적 웹사이트<br/>파일 저장소"]
+        A3["보안 그룹<br/>SSH, HTTP 허용"]
+        A4["키 페어<br/>SSH 접속용"]
     end
     
     subgraph "GCP Cloud"
-        G1[Compute Engine<br/>e2-micro<br/>웹 서버]
-        G2[Cloud Storage<br/>정적 웹사이트<br/>파일 저장소]
-        G3[방화벽 규칙<br/>SSH, HTTP 허용]
-        G4[SSH 키<br/>인스턴스 접속용]
+        G1["Compute Engine<br/>e2-micro<br/>웹 서버"]
+        G2["Cloud Storage<br/>정적 웹사이트<br/>파일 저장소"]
+        G3["방화벽 규칙<br/>SSH, HTTP 허용"]
+        G4["SSH 키<br/>인스턴스 접속용"]
     end
     
     subgraph "Local"
-        L1[개발자 머신<br/>AWS CLI, GCP CLI]
+        L1["개발자 머신<br/>AWS CLI, GCP CLI"]
     end
     
     subgraph "Internet"
-        I1[사용자<br/>웹 브라우저]
+        I1["사용자<br/>웹 브라우저"]
     end
     
-    L1 --> A1
-    L1 --> A2
-    L1 --> G1
-    L1 --> G2
+    L1 -->> A1
+    L1 -->> A2
+    L1 -->> G1
+    L1 -->> G2
     
-    I1 --> A1
-    I1 --> A2
-    I1 --> G1
-    I1 --> G2
+    I1 -->> A1
+    I1 -->> A2
+    I1 -->> G1
+    I1 -->> G2
     
-    A1 --> A3
-    A1 --> A4
-    G1 --> G3
-    G1 --> G4
+    A1 -->> A3
+    A1 -->> A4
+    G1 -->> G3
+    G1 -->> G4
 ```
 
 **최종 적용된 기능:**
@@ -766,8 +766,8 @@ graph TB
 - ✅ **Cloud Storage**: 정적 웹사이트 호스팅 및 파일 관리
 
 ### 📊 예상 결과
-- **성공률**: 95% (자동화 스크립트 활용)
-- **소요 시간**: 7시간 (자동화로 단축)
+- **성공률**: 95% ["자동화 스크립트 활용"]
+- **소요 시간**: 7시간 ["자동화로 단축"]
 - **주요 개선**: AWS/GCP 비교 학습, 실습 중심 교육
 
 ---
@@ -793,7 +793,7 @@ graph TB
 ### 🚀 실습 결과물
 - **AWS 환경**: EC2 인스턴스 + S3 버킷
 - **GCP 환경**: Compute Engine 인스턴스 + Cloud Storage 버킷
-- **웹 서비스**: 4개의 웹사이트 (EC2, S3, Compute Engine, Cloud Storage)
+- **웹 서비스**: 4개의 웹사이트 [EC2, S3, Compute Engine, Cloud Storage]
 - **비교 분석**: AWS vs GCP 서비스 비교 경험
 
 ---
@@ -841,7 +841,7 @@ graph TB
 ---
 
 **강의안 작성일**: 2024년 9월 2일  
-**예상 소요 시간**: 7시간 (9:00~17:00, 자동화로 단축)  
+**예상 소요 시간**: 7시간 ["9:00~17:00, 자동화로 단축"]  
 **실습 중심**: 90% 실습, 10% 이론  
 **자동화 활용**: 95% 자동화 스크립트 사용 권장  
 **비교 학습**: AWS vs GCP 서비스 비교 실습

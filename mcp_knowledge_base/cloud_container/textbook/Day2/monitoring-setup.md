@@ -3,7 +3,7 @@
 
 ## 🎯 학습 목표
 
-[🎯 학습 목표](#학습-목표)
+["🎯 학습 목표"]["#학습-목표"]
 
 이 가이드를 통해 다음을 학습합니다:
 - AWS CloudWatch 및 GCP Cloud Monitoring 설정
@@ -16,15 +16,15 @@
 
 ## 📋 목차
 
-[📋 목차](#목차)
+["📋 목차"]["#목차"]
 
-1. [모니터링 아키텍처 설계](#모니터링-아키텍처-설계)
-2. [AWS CloudWatch 설정](#aws-cloudwatch-설정)
-3. [GCP Cloud Monitoring 설정](#gcp-cloud-monitoring-설정)
-4. [Prometheus + Grafana 스택](#prometheus-grafana-스택)
-5. [로그 수집 및 분석](#로그-수집-및-분석)
-6. [알림 시스템 구성](#알림-시스템-구성)
-7. [실습 시나리오](#실습-시나리오)
+1. ["모니터링 아키텍처 설계"]["#모니터링-아키텍처-설계"]
+2. ["AWS CloudWatch 설정"]["#aws-cloudwatch-설정"]
+3. ["GCP Cloud Monitoring 설정"]["#gcp-cloud-monitoring-설정"]
+4. ["Prometheus + Grafana 스택"]["#prometheus-grafana-스택"]
+5. ["로그 수집 및 분석"]["#로그-수집-및-분석"]
+6. ["알림 시스템 구성"]["#알림-시스템-구성"]
+7. ["실습 시나리오"]["#실습-시나리오"]
 
 ---
 
@@ -32,36 +32,36 @@
 
 ### 모니터링 계층 구조
 
-[모니터링 계층 구조](#모니터링-계층-구조)
+["모니터링 계층 구조"]["#모니터링-계층-구조"]
 
 #### 1. 인프라 모니터링
 
-[1. 인프라 모니터링](#1-인프라-모니터링)
+["1. 인프라 모니터링"]["#1-인프라-모니터링"]
 - **시스템 메트릭**: CPU, 메모리, 디스크, 네트워크
 - **애플리케이션 메트릭**: 응답 시간, 처리량, 에러율
 - **비즈니스 메트릭**: 사용자 수, 트랜잭션 수, 매출
 
 #### 2. 로그 모니터링
 
-[2. 로그 모니터링](#2-로그-모니터링)
+["2. 로그 모니터링"]["#2-로그-모니터링"]
 - **애플리케이션 로그**: 에러, 디버그, 액세스 로그
 - **시스템 로그**: 커널, 시스템 서비스 로그
 - **보안 로그**: 인증, 권한, 보안 이벤트
 
 #### 3. 알림 및 대응
 
-[3. 알림 및 대응](#3-알림-및-대응)
+["3. 알림 및 대응"]["#3-알림-및-대응"]
 - **실시간 알림**: 이메일, SMS, Slack, PagerDuty
 - **자동 대응**: 자동 스케일링, 자동 복구
 - **에스컬레이션**: 심각도별 알림 전략
 
 ### 모니터링 도구 선택 기준
 
-[모니터링 도구 선택 기준](#모니터링-도구-선택-기준)
+["모니터링 도구 선택 기준"]["#모니터링-도구-선택-기준"]
 
 #### AWS 환경
 
-[AWS 환경](#aws-환경)
+["AWS 환경"]["#aws-환경"]
 - **CloudWatch**: 기본 메트릭 및 로그
 - **X-Ray**: 분산 추적
 - **CloudTrail**: API 호출 추적
@@ -69,7 +69,7 @@
 
 #### GCP 환경
 
-[GCP 환경](#gcp-환경)
+["GCP 환경"]["#gcp-환경"]
 - **Cloud Monitoring**: 기본 메트릭 및 로그
 - **Cloud Trace**: 분산 추적
 - **Cloud Logging**: 중앙화된 로그 관리
@@ -77,7 +77,7 @@
 
 #### 오픈소스 도구
 
-[오픈소스 도구](#오픈소스-도구)
+["오픈소스 도구"]["#오픈소스-도구"]
 - **Prometheus**: 메트릭 수집 및 저장
 - **Grafana**: 시각화 및 대시보드
 - **ELK Stack**: 로그 수집, 분석, 시각화
@@ -89,18 +89,18 @@
 
 ### CloudWatch 메트릭 설정
 
-[CloudWatch 메트릭 설정](#cloudwatch-메트릭-설정)
+["CloudWatch 메트릭 설정"]["#cloudwatch-메트릭-설정"]
 
 #### 커스텀 메트릭 생성
 
-[커스텀 메트릭 생성](#커스텀-메트릭-생성)
+["커스텀 메트릭 생성"]["#커스텀-메트릭-생성"]
 ```javascript
 // custom-metrics.js
-const AWS = require('aws-sdk');
-const cloudwatch = new AWS.CloudWatch({ region: 'ap-northeast-2' });
+const AWS = require['aws-sdk'];
+const cloudwatch = new AWS.CloudWatch[{ region: 'ap-northeast-2' }];
 
 // 커스텀 메트릭 전송
-async function sendCustomMetric(metricName, value, unit = 'Count') {
+async function sendCustomMetric[metricName, value, unit = 'Count'] {
   const params = {
     Namespace: 'ContainerDemo/Application',
     MetricData: [
@@ -124,10 +124,10 @@ async function sendCustomMetric(metricName, value, unit = 'Count') {
   };
 
   try {
-    await cloudwatch.putMetricData(params).promise();
-    console.log(`메트릭 전송 성공: ${metricName} = ${value}`);
-  } catch (error) {
-    console.error('메트릭 전송 실패:', error);
+    await cloudwatch.putMetricData[params].promise();
+    console.log["`메트릭 전송 성공: ${metricName} = ${value}`"];
+  } catch [error] {
+    console.error["'메트릭 전송 실패:', error"];
   }
 }
 
@@ -135,26 +135,26 @@ async function sendCustomMetric(metricName, value, unit = 'Count') {
 function collectApplicationMetrics() {
   // 응답 시간 메트릭
   const responseTime = Math.random() * 1000; // 실제로는 측정된 값
-  sendCustomMetric('ResponseTime', responseTime, 'Milliseconds');
+  sendCustomMetric['ResponseTime', responseTime, 'Milliseconds'];
 
   // 처리량 메트릭
-  const throughput = Math.floor(Math.random() * 100); // 실제로는 측정된 값
-  sendCustomMetric('Throughput', throughput, 'Count');
+  const throughput = Math.floor[Math.random[] * 100]; // 실제로는 측정된 값
+  sendCustomMetric['Throughput', throughput, 'Count'];
 
   // 에러율 메트릭
   const errorRate = Math.random() * 5; // 실제로는 측정된 값
-  sendCustomMetric('ErrorRate', errorRate, 'Percent');
+  sendCustomMetric['ErrorRate', errorRate, 'Percent'];
 }
 
 // 주기적으로 메트릭 수집
-setInterval(collectApplicationMetrics, 60000); // 1분마다
+setInterval[collectApplicationMetrics, 60000]; // 1분마다
 
 module.exports = { sendCustomMetric, collectApplicationMetrics };
 ```
 
 #### CloudWatch 알림 설정
 
-[CloudWatch 알림 설정](#cloudwatch-알림-설정)
+["CloudWatch 알림 설정"]["#cloudwatch-알림-설정"]
 ```yaml
 # cloudwatch-alarms.yaml
 apiVersion: v1
@@ -207,11 +207,11 @@ data:
 
 ### CloudWatch 로그 설정
 
-[CloudWatch 로그 설정](#cloudwatch-로그-설정)
+["CloudWatch 로그 설정"]["#cloudwatch-로그-설정"]
 
 #### 로그 그룹 생성
 
-[로그 그룹 생성](#로그-그룹-생성)
+["로그 그룹 생성"]["#로그-그룹-생성"]
 ```bash
 #!/bin/bash
 # cloudwatch-logs-setup.sh
@@ -236,7 +236,7 @@ aws logs put-retention-policy /
 
 #### 로그 필터 설정
 
-[로그 필터 설정](#로그-필터-설정)
+["로그 필터 설정"]["#로그-필터-설정"]
 ```json
 {
   "filterName": "container-demo-error-filter",
@@ -252,18 +252,18 @@ aws logs put-retention-policy /
 
 ### Cloud Monitoring 메트릭 설정
 
-[Cloud Monitoring 메트릭 설정](#cloud-monitoring-메트릭-설정)
+["Cloud Monitoring 메트릭 설정"]["#cloud-monitoring-메트릭-설정"]
 
 #### 커스텀 메트릭 생성
 
-[커스텀 메트릭 생성](#커스텀-메트릭-생성)
+["커스텀 메트릭 생성"]["#커스텀-메트릭-생성"]
 ```javascript
 // gcp-custom-metrics.js
-const { MonitoringServiceClient } = require('@google-cloud/monitoring');
+const { MonitoringServiceClient } = require['@google-cloud/monitoring'];
 const client = new MonitoringServiceClient();
 
 // 커스텀 메트릭 전송
-async function sendCustomMetric(metricType, value) {
+async function sendCustomMetric[metricType, value] {
   const projectId = 'your-project-id';
   const projectName = `projects/${projectId}`;
 
@@ -301,10 +301,10 @@ async function sendCustomMetric(metricType, value) {
   };
 
   try {
-    await client.createTimeSeries(request);
-    console.log(`메트릭 전송 성공: ${metricType} = ${value}`);
-  } catch (error) {
-    console.error('메트릭 전송 실패:', error);
+    await client.createTimeSeries[request];
+    console.log["`메트릭 전송 성공: ${metricType} = ${value}`"];
+  } catch [error] {
+    console.error["'메트릭 전송 실패:', error"];
   }
 }
 
@@ -312,26 +312,26 @@ async function sendCustomMetric(metricType, value) {
 function collectApplicationMetrics() {
   // 응답 시간 메트릭
   const responseTime = Math.random() * 1000;
-  sendCustomMetric('response_time', responseTime);
+  sendCustomMetric['response_time', responseTime];
 
   // 처리량 메트릭
-  const throughput = Math.floor(Math.random() * 100);
-  sendCustomMetric('throughput', throughput);
+  const throughput = Math.floor[Math.random[] * 100];
+  sendCustomMetric['throughput', throughput];
 
   // 에러율 메트릭
   const errorRate = Math.random() * 5;
-  sendCustomMetric('error_rate', errorRate);
+  sendCustomMetric['error_rate', errorRate];
 }
 
 // 주기적으로 메트릭 수집
-setInterval(collectApplicationMetrics, 60000);
+setInterval[collectApplicationMetrics, 60000];
 
 module.exports = { sendCustomMetric, collectApplicationMetrics };
 ```
 
 #### Cloud Monitoring 알림 정책
 
-[Cloud Monitoring 알림 정책](#cloud-monitoring-알림-정책)
+["Cloud Monitoring 알림 정책"]["#cloud-monitoring-알림-정책"]
 ```yaml
 # gcp-alerting-policy.yaml
 apiVersion: v1
@@ -369,11 +369,11 @@ data:
 
 ### Prometheus 설정
 
-[Prometheus 설정](#prometheus-설정)
+["Prometheus 설정"]["#prometheus-설정"]
 
 #### Prometheus 구성 파일
 
-[Prometheus 구성 파일](#prometheus-구성-파일)
+["Prometheus 구성 파일"]["#prometheus-구성-파일"]
 ```yaml
 # prometheus.yml
 global:
@@ -413,11 +413,11 @@ scrape_configs:
     bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
     relabel_configs:
     - action: labelmap
-      regex: __meta_kubernetes_node_label_(.+)
+      regex: __meta_kubernetes_node_label_[.+]
     - target_label: __address__
       replacement: kubernetes.default.svc:443
     - source_labels: [__meta_kubernetes_node_name]
-      regex: (.+)
+      regex: [.+]
       target_label: __metrics_path__
       replacement: /api/v1/nodes/${1}/proxy/metrics
 
@@ -432,14 +432,14 @@ scrape_configs:
     - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
       action: replace
       target_label: __metrics_path__
-      regex: (.+)
+      regex: [.+]
     - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
       action: replace
-      regex: ([^:]+)(?::/d+)?;(/d+)
+      regex: [[^:]+][?::/d+]?;[/d+]
       replacement: $1:$2
       target_label: __address__
     - action: labelmap
-      regex: __meta_kubernetes_pod_label_(.+)
+      regex: __meta_kubernetes_pod_label_[.+]
     - source_labels: [__meta_kubernetes_namespace]
       action: replace
       target_label: kubernetes_namespace
@@ -462,7 +462,7 @@ scrape_configs:
 
 #### Prometheus 알림 규칙
 
-[Prometheus 알림 규칙](#prometheus-알림-규칙)
+["Prometheus 알림 규칙"]["#prometheus-알림-규칙"]
 ```yaml
 # rules/container-demo-alerts.yml
 groups:
@@ -478,7 +478,7 @@ groups:
       description: "Container Demo application has been down for more than 1 minute"
 
   - alert: ContainerDemoHighErrorRate
-    expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
+    expr: rate[http_requests_total{status=~"5.."}[5m]] > 0.1
     for: 2m
     labels:
       severity: warning
@@ -487,7 +487,7 @@ groups:
       description: "Container Demo error rate is {{ $value }} errors per second"
 
   - alert: ContainerDemoHighResponseTime
-    expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 1
+    expr: histogram_quantile[0.95, rate[http_request_duration_seconds_bucket[5m]]] > 1
     for: 3m
     labels:
       severity: warning
@@ -496,7 +496,7 @@ groups:
       description: "Container Demo 95th percentile response time is {{ $value }} seconds"
 
   - alert: ContainerDemoHighCPUUsage
-    expr: rate(container_cpu_usage_seconds_total[5m]) > 0.8
+    expr: rate[container_cpu_usage_seconds_total[5m]] > 0.8
     for: 5m
     labels:
       severity: warning
@@ -516,11 +516,11 @@ groups:
 
 ### Grafana 대시보드 설정
 
-[Grafana 대시보드 설정](#grafana-대시보드-설정)
+["Grafana 대시보드 설정"]["#grafana-대시보드-설정"]
 
 #### Grafana 대시보드 JSON
 
-[Grafana 대시보드 JSON](#grafana-대시보드-json)
+["Grafana 대시보드 JSON"]["#grafana-대시보드-json"]
 ```json
 {
   "dashboard": {
@@ -536,7 +536,7 @@ groups:
         "type": "graph",
         "targets": [
           {
-            "expr": "rate(http_requests_total[5m])",
+            "expr": "rate[http_requests_total[5m]]",
             "legendFormat": "{{method}} {{status}}"
           }
         ],
@@ -562,11 +562,11 @@ groups:
         "type": "graph",
         "targets": [
           {
-            "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))",
+            "expr": "histogram_quantile[0.95, rate[http_request_duration_seconds_bucket[5m]]]",
             "legendFormat": "95th percentile"
           },
           {
-            "expr": "histogram_quantile(0.50, rate(http_request_duration_seconds_bucket[5m]))",
+            "expr": "histogram_quantile[0.50, rate[http_request_duration_seconds_bucket[5m]]]",
             "legendFormat": "50th percentile"
           }
         ],
@@ -575,7 +575,7 @@ groups:
         },
         "yAxes": [
           {
-            "label": "Response time (seconds)",
+            "label": "Response time [seconds]",
             "show": true
           }
         ],
@@ -592,11 +592,11 @@ groups:
         "type": "graph",
         "targets": [
           {
-            "expr": "rate(http_requests_total{status=~/"5../"}[5m])",
+            "expr": "rate[http_requests_total{status=~/"5../"}[5m]]",
             "legendFormat": "5xx errors"
           },
           {
-            "expr": "rate(http_requests_total{status=~/"4../"}[5m])",
+            "expr": "rate[http_requests_total{status=~/"4../"}[5m]]",
             "legendFormat": "4xx errors"
           }
         ],
@@ -605,7 +605,7 @@ groups:
         },
         "yAxes": [
           {
-            "label": "Error rate (errors per second)",
+            "label": "Error rate [errors per second]",
             "show": true
           }
         ],
@@ -622,7 +622,7 @@ groups:
         "type": "graph",
         "targets": [
           {
-            "expr": "rate(container_cpu_usage_seconds_total[5m])",
+            "expr": "rate[container_cpu_usage_seconds_total[5m]]",
             "legendFormat": "CPU usage"
           },
           {
@@ -664,11 +664,11 @@ groups:
 
 ### ELK Stack 설정
 
-[ELK Stack 설정](#elk-stack-설정)
+["ELK Stack 설정"]["#elk-stack-설정"]
 
 #### Elasticsearch 설정
 
-[Elasticsearch 설정](#elasticsearch-설정)
+["Elasticsearch 설정"]["#elasticsearch-설정"]
 ```yaml
 # elasticsearch.yml
 cluster.name: container-demo-cluster
@@ -680,7 +680,7 @@ xpack.security.enabled: false
 
 #### Logstash 설정
 
-[Logstash 설정](#logstash-설정)
+["Logstash 설정"]["#logstash-설정"]
 ```ruby
 # logstash.conf
 input {
@@ -725,7 +725,7 @@ output {
 
 #### Kibana 대시보드 설정
 
-[Kibana 대시보드 설정](#kibana-대시보드-설정)
+["Kibana 대시보드 설정"]["#kibana-대시보드-설정"]
 ```json
 {
   "version": 1,
@@ -748,18 +748,18 @@ output {
 
 ### Slack 알림 설정
 
-[Slack 알림 설정](#slack-알림-설정)
+["Slack 알림 설정"]["#slack-알림-설정"]
 
 #### Slack 웹훅 설정
 
-[Slack 웹훅 설정](#slack-웹훅-설정)
+["Slack 웹훅 설정"]["#slack-웹훅-설정"]
 ```javascript
 // slack-notifications.js
-const axios = require('axios');
+const axios = require['axios'];
 
 const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
 
-async function sendSlackNotification(alert) {
+async function sendSlackNotification[alert] {
   const message = {
     text: `🚨 *${alert.severity.toUpperCase()}* - ${alert.title}`,
     attachments: [
@@ -787,10 +787,10 @@ async function sendSlackNotification(alert) {
   };
 
   try {
-    await axios.post(SLACK_WEBHOOK_URL, message);
-    console.log('Slack 알림 전송 성공');
-  } catch (error) {
-    console.error('Slack 알림 전송 실패:', error);
+    await axios.post[SLACK_WEBHOOK_URL, message];
+    console.log["'Slack 알림 전송 성공'"];
+  } catch [error] {
+    console.error["'Slack 알림 전송 실패:', error"];
   }
 }
 
@@ -799,18 +799,18 @@ module.exports = { sendSlackNotification };
 
 ### PagerDuty 통합
 
-[PagerDuty 통합](#pagerduty-통합)
+["PagerDuty 통합"]["#pagerduty-통합"]
 
 #### PagerDuty 이벤트 전송
 
-[PagerDuty 이벤트 전송](#pagerduty-이벤트-전송)
+["PagerDuty 이벤트 전송"]["#pagerduty-이벤트-전송"]
 ```javascript
 // pagerduty-integration.js
-const axios = require('axios');
+const axios = require['axios'];
 
 const PAGERDUTY_INTEGRATION_KEY = process.env.PAGERDUTY_INTEGRATION_KEY;
 
-async function sendPagerDutyEvent(alert) {
+async function sendPagerDutyEvent[alert] {
   const event = {
     routing_key: PAGERDUTY_INTEGRATION_KEY,
     event_action: 'trigger',
@@ -827,10 +827,10 @@ async function sendPagerDutyEvent(alert) {
   };
 
   try {
-    await axios.post('https:///events.pagerduty.com/v2/enqueue', event);
-    console.log('PagerDuty 이벤트 전송 성공');
-  } catch (error) {
-    console.error('PagerDuty 이벤트 전송 실패:', error);
+    await axios.post['https:///events.pagerduty.com/v2/enqueue', event];
+    console.log["'PagerDuty 이벤트 전송 성공'"];
+  } catch [error] {
+    console.error["'PagerDuty 이벤트 전송 실패:', error"];
   }
 }
 
@@ -843,11 +843,11 @@ module.exports = { sendPagerDutyEvent };
 
 ### 시나리오 1: AWS CloudWatch 설정
 
-[시나리오 1: AWS CloudWatch 설정](#시나리오-1-aws-cloudwatch-설정)
+["시나리오 1: AWS CloudWatch 설정"]["#시나리오-1-aws-cloudwatch-설정"]
 
 #### 1단계: CloudWatch 메트릭 설정
 
-[1단계: CloudWatch 메트릭 설정](#1단계-cloudwatch-메트릭-설정)
+["1단계: CloudWatch 메트릭 설정"]["#1단계-cloudwatch-메트릭-설정"]
 ```bash
 # CloudWatch 로그 그룹 생성
 aws logs create-log-group /
@@ -870,7 +870,7 @@ aws cloudwatch put-metric-alarm /
 
 #### 2단계: 커스텀 메트릭 전송
 
-[2단계: 커스텀 메트릭 전송](#2단계-커스텀-메트릭-전송)
+["2단계: 커스텀 메트릭 전송"]["#2단계-커스텀-메트릭-전송"]
 ```bash
 # 커스텀 메트릭 전송 스크립트 실행
 node custom-metrics.js
@@ -878,11 +878,11 @@ node custom-metrics.js
 
 ### 시나리오 2: Prometheus + Grafana 설정
 
-[시나리오 2: Prometheus + Grafana 설정](#시나리오-2-prometheus-grafana-설정)
+["시나리오 2: Prometheus + Grafana 설정"]["#시나리오-2-prometheus-grafana-설정"]
 
 #### 1단계: Prometheus 배포
 
-[1단계: Prometheus 배포](#1단계-prometheus-배포)
+["1단계: Prometheus 배포"]["#1단계-prometheus-배포"]
 ```bash
 # Prometheus ConfigMap 생성
 kubectl apply -f monitoring-advanced/prometheus-config.yaml
@@ -921,7 +921,7 @@ EOF
 
 #### 2단계: Grafana 배포
 
-[2단계: Grafana 배포](#2단계-grafana-배포)
+["2단계: Grafana 배포"]["#2단계-grafana-배포"]
 ```bash
 # Grafana 배포
 kubectl apply -f - <<EOF
@@ -953,11 +953,11 @@ EOF
 
 ### 시나리오 3: 로그 기반 알림 설정
 
-[시나리오 3: 로그 기반 알림 설정](#시나리오-3-로그-기반-알림-설정)
+["시나리오 3: 로그 기반 알림 설정"]["#시나리오-3-로그-기반-알림-설정"]
 
 #### 1단계: ELK Stack 배포
 
-[1단계: ELK Stack 배포](#1단계-elk-stack-배포)
+["1단계: ELK Stack 배포"]["#1단계-elk-stack-배포"]
 ```bash
 # Elasticsearch 배포
 kubectl apply -f - <<EOF
@@ -991,7 +991,7 @@ EOF
 
 #### 2단계: 로그 수집 설정
 
-[2단계: 로그 수집 설정](#2단계-로그-수집-설정)
+["2단계: 로그 수집 설정"]["#2단계-로그-수집-설정"]
 ```bash
 # Logstash 배포
 kubectl apply -f - <<EOF
@@ -1029,7 +1029,7 @@ EOF
 
 ## ✅ 체크리스트
 
-[✅ 체크리스트](#체크리스트)
+["✅ 체크리스트"]["#체크리스트"]
 
 ### AWS CloudWatch 설정
 - [ ] CloudWatch 로그 그룹 생성
@@ -1063,21 +1063,21 @@ EOF
 
 ## 📚 참고 자료
 
-[📚 참고 자료](#참고-자료)
+["📚 참고 자료"]["#참고-자료"]
 
 ### 공식 문서
 
-[공식 문서](#공식-문서)
-- [AWS CloudWatch 공식 문서](https:///docs.aws.amazon.com/cloudwatch/)
-- [GCP Cloud Monitoring 공식 문서](https:///cloud.google.com/monitoring/docs)
-- [Prometheus 공식 문서](https:///prometheus.io/docs/)
-- [Grafana 공식 문서](https:///grafana.com/docs/)
+["공식 문서"]["#공식-문서"]
+- ["AWS CloudWatch 공식 문서"][https:///docs.aws.amazon.com/cloudwatch/]
+- ["GCP Cloud Monitoring 공식 문서"][https:///cloud.google.com/monitoring/docs]
+- ["Prometheus 공식 문서"][https:///prometheus.io/docs/]
+- ["Grafana 공식 문서"][https:///grafana.com/docs/]
 
 ### 추가 학습 자료
 
-[추가 학습 자료](#추가-학습-자료)
-- [고가용성 아키텍처 가이드](cloud_container/textbook/Day2/high-availability-architecture.md)
-- [종합 프로젝트 실습](cloud_container/textbook/Day2/practice/comprehensive-project.md)
+["추가 학습 자료"]["#추가-학습-자료"]
+- ["고가용성 아키텍처 가이드"][cloud_container/textbook/Day2/high-availability-architecture.md]
+- ["종합 프로젝트 실습"][cloud_container/textbook/Day2/practice/comprehensive-project.md]
 
 ---
 
@@ -1089,9 +1089,9 @@ EOF
 
 ### 📧 연락처
 
-[📧 연락처](#연락처)
+["📧 연락처"]["#연락처"]
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -1099,6 +1099,6 @@ EOF
 
 <div align="center">
 
-[← 이전: Cloud Container 2일차 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Container 2일차 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

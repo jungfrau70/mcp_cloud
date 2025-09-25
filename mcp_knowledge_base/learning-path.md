@@ -6,12 +6,12 @@
 <details>
 <summary>📋 목차</summary>
 
-1. [🎯 학습 목표](#학습-목표)
-2. [📚 Docker 고급 개념](#docker-고급-개념)
-3. [🔧 Dockerfile 최적화](#dockerfile-최적화)
-4. [🐳 Docker Compose 고급 설정](#docker-compose-고급-설정)
-5. [⚡ Docker 이미지 빌드 최적화](#docker-이미지-빌드-최적화)
-6. [📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
+1. ["🎯 학습 목표"]["#학습-목표"]
+2. ["📚 Docker 고급 개념"]["#docker-고급-개념"]
+3. ["🔧 Dockerfile 최적화"]["#dockerfile-최적화"]
+4. ["🐳 Docker Compose 고급 설정"]["#docker-compose-고급-설정"]
+5. ["⚡ Docker 이미지 빌드 최적화"]["#docker-이미지-빌드-최적화"]
+6. ["📚 문제 해결 및 참고 자료"]["#문제-해결-및-참고-자료"]
 
 </details>
 
@@ -96,7 +96,7 @@ docker images --format "table {{.Repository}}/t{{.Tag}}/t{{.Size}}"
 ## 🔧 Dockerfile 최적화
 
 <details>
-<summary>📖 기본 Dockerfile (비최적화)</summary>
+<summary>📖 기본 Dockerfile ["비최적화"]</summary>
 
 ### 문제점이 있는 Dockerfile
 ```dockerfile
@@ -128,7 +128,7 @@ FROM node:18-alpine AS builder
 # 빌드 환경 설정
 WORKDIR /app
 
-# 의존성 파일만 먼저 복사 (캐시 활용)
+# 의존성 파일만 먼저 복사 ["캐시 활용"]
 COPY package*.json ./
 RUN npm ci --only=production && npm cache clean --force
 
@@ -382,7 +382,7 @@ networks:
 <details>
 <summary>📖 환경별 설정</summary>
 
-### 개발 환경 (docker-compose.dev.yml)
+### 개발 환경 [docker-compose.dev.yml]
 ```yaml
 version: '3.8'
 
@@ -418,7 +418,7 @@ volumes:
   postgres_dev_data:
 ```
 
-### 프로덕션 환경 (docker-compose.prod.yml)
+### 프로덕션 환경 [docker-compose.prod.yml]
 ```yaml
 version: '3.8'
 
@@ -568,7 +568,7 @@ jspm_packages/
 # dotenv environment variables file
 .env
 
-# parcel-bundler cache (https:///parceljs.org/)
+# parcel-bundler cache [https:///parceljs.org/]
 .cache
 .parcel-cache
 
@@ -678,7 +678,7 @@ docker images | grep my-app
 docker history my-app:latest
 
 # 2. 불필요한 파일 제거
-docker run --rm -v $(pwd):/app -w /app node:18-alpine sh -c "find . -name 'node_modules' -type d -exec rm -rf {} +"
+docker run --rm -v $[pwd]:/app -w /app node:18-alpine sh -c "find . -name 'node_modules' -type d -exec rm -rf {} +"
 
 # 3. 멀티스테이지 빌드 적용
 docker build --target runtime -t my-app:latest .
@@ -738,20 +738,20 @@ docker-compose port service-name port
 <summary>📖 추가 학습 자료</summary>
 
 ### 공식 문서
-- [Docker 공식 문서](https:///docs.docker.com/)
-- [Docker Compose 공식 문서](https:///docs.docker.com/compose/)
-- [Dockerfile 참조](https:///docs.docker.com/engine/reference/builder/)
-- [Docker Best Practices](https:///docs.docker.com/develop/dev-best-practices/)
+- ["Docker 공식 문서"][https:///docs.docker.com/]
+- ["Docker Compose 공식 문서"][https:///docs.docker.com/compose/]
+- ["Dockerfile 참조"][https:///docs.docker.com/engine/reference/builder/]
+- [Docker Best Practices][https:///docs.docker.com/develop/dev-best-practices/]
 
 ### 유용한 리소스
-- [Docker Hub](https:///hub.docker.com/)
-- [Docker 샘플 프로젝트](https:///github.com/docker/awesome-compose)
-- [Docker 보안 가이드](https:///docs.docker.com/engine/security/)
-- [Docker 성능 최적화](https:///docs.docker.com/config/containers/resource_constraints/)
+- [Docker Hub][https:///hub.docker.com/]
+- ["Docker 샘플 프로젝트"][https:///github.com/docker/awesome-compose]
+- ["Docker 보안 가이드"][https:///docs.docker.com/engine/security/]
+- ["Docker 성능 최적화"][https:///docs.docker.com/config/containers/resource_constraints/]
 
 ### 관련 프로젝트
-- [Docker Compose 예제](https:///docs.docker.com/compose/gettingstarted/)
-- [멀티스테이지 빌드 예제](https:///docs.docker.com/develop/dev-best-practices/dockerfile_best-practices/#use-multi-stage-builds)
+- ["Docker Compose 예제"][https:///docs.docker.com/compose/gettingstarted/]
+- ["멀티스테이지 빌드 예제"][https:///docs.docker.com/develop/dev-best-practices/dockerfile_best-practices/#use-multi-stage-builds]
 
 </details>
 
@@ -795,9 +795,9 @@ docker-compose port service-name port
 
 ### 💡 추가 학습 자료
 
-- [Docker 공식 문서](https:///docs.docker.com/)
-- [Docker Best Practices](https:///docs.docker.com/develop/dev-best-practices/)
-- [GitHub Actions 고급 실습](cloud_master/textbook/Day1/guides/github-actions-guide.md)
+- ["Docker 공식 문서"][https:///docs.docker.com/]
+- [Docker Best Practices][https:///docs.docker.com/develop/dev-best-practices/]
+- ["GitHub Actions 고급 실습"][cloud_master/textbook/Day1/guides/github-actions-guide.md]
 
 ---
 
@@ -810,6 +810,6 @@ docker-compose port service-name port
 
 <div align="center">
 
-[← 이전: Cloud Master 1일차 메인](index.md) | [← 이전: Cloud Basic 2일차](README.md) | [다음: GitHub Actions 가이드 →](cloud_master/textbook/Day1/guides/github-actions-guide.md)
+["← 이전: Cloud Master 1일차 메인"][index.md] | ["← 이전: Cloud Basic 2일차"][README.md] | ["다음: GitHub Actions 가이드 →"][cloud_master/textbook/Day1/guides/github-actions-guide.md]
 
 </div>

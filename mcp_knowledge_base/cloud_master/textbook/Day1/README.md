@@ -16,17 +16,17 @@
 - ✅ 멀티 클라우드 VM 인스턴스 생성 및 관리
 - ✅ Docker & Dockerfile 기초 이론 및 실습
 - ✅ GitHub Actions CI/CD 파이프라인 구축
-- ✅ **Repository Secrets를 활용한 보안 설정** (실제 수업 100% 성공)
+- ✅ **Repository Secrets를 활용한 보안 설정** ["실제 수업 100% 성공"]
 - ✅ **실제 운영 환경과 동일한 방식으로 애플리케이션을 배포할 수 있다**
 - ✅ **멀티 클라우드 환경에서의 자동화된 배포 운영**
 
-### 예상 소요 시간 (실제 수업 검증)
-- **WSL 구성 및 Utility 설치**: 65분 (1교시)
-- **AWS & GCP Setup**: 35분 (2교시)
-- **VM 생성**: 50분 (3교시)
-- **Docker & Dockerfile 기초 이론**: 60분 (4교시)
-- **GitHub Actions 배포 실습**: 180분 (5교시)
-- **전체 과정**: 8시간 (9:00~17:00)
+### 예상 소요 시간 ["실제 수업 검증"]
+- **WSL 구성 및 Utility 설치**: 65분 ["1교시"]
+- **AWS & GCP Setup**: 35분 ["2교시"]
+- **VM 생성**: 50분 ["3교시"]
+- **Docker & Dockerfile 기초 이론**: 60분 ["4교시"]
+- **GitHub Actions 배포 실습**: 180분 ["5교시"]
+- **전체 과정**: 8시간 [9:00~17:00]
 
 ---
 
@@ -41,7 +41,7 @@ github-actions-demo/
 │   └── workflows/
 │       ├── ci.yml              # CI 파이프라인
 │       ├── docker-build.yml    # Docker 빌드 및 푸시
-│       └── deploy-vm.yml       # VM 배포 (실제 수업에서 사용)
+│       └── deploy-vm.yml       # VM 배포 ["실제 수업에서 사용"]
 ├── monitoring/
 │   ├── prometheus.yml          # Prometheus 설정
 │   └── alert_rules.yml         # 알림 규칙
@@ -61,12 +61,12 @@ github-actions-demo/
 - **Node.js Express 애플리케이션**: RESTful API 서버
 - **Docker 멀티스테이지 빌드**: 최적화된 컨테이너 이미지
 - **GitHub Actions CI/CD**: 자동화된 빌드 및 배포
-- **Repository Secrets**: 보안 설정 관리 (실제 수업 100% 성공)
+- **Repository Secrets**: 보안 설정 관리 ["실제 수업 100% 성공"]
 - **멀티 클라우드 배포**: AWS EC2 + GCP Compute Engine
 
-### 실제 배포 결과 (2024년 9월 22일 수업 검증)
-- ✅ **AWS VM**: `http://[AWS-공인IP]:3000` - 성공적으로 배포됨
-- ✅ **GCP VM**: `http://[GCP-공인IP]:3000` - 성공적으로 배포됨
+### 실제 배포 결과 ["2024년 9월 22일 수업 검증"]
+- ✅ **AWS VM**: `http://["AWS-공인IP"]:3000` - 성공적으로 배포됨
+- ✅ **GCP VM**: `http://["GCP-공인IP"]:3000` - 성공적으로 배포됨
 - ✅ **Repository Secrets 방식**: 환경파일보다 안전하고 효과적
 - ✅ **모든 학습자 100% 성공**: 실제 운영 환경과 동일한 방식으로 배포 완료
 - ✅ **자동화된 CI/CD**: 한 번의 git push로 전체 배포 파이프라인 실행
@@ -78,11 +78,11 @@ github-actions-demo/
 
 ### 필수 계정
 - **AWS 계정**: Free Tier 계정
-- **GCP 계정**: Free Tier 계정 ($300 크레딧)
+- **GCP 계정**: Free Tier 계정 ["$300 크레딧"]
 - **GitHub 계정**: 코드 저장소 및 CI/CD
 - **Docker Hub 계정**: 컨테이너 이미지 저장소
 
-### 필수 도구 (WSL2 기반)
+### 필수 도구 ["WSL2 기반"]
 - **WSL2**: Windows Subsystem for Linux 2
 - **Ubuntu**: WSL2 기반 Ubuntu 배포판
 - **Docker**: 컨테이너 실행 환경
@@ -90,12 +90,12 @@ github-actions-demo/
 - **AWS CLI**: AWS 서비스 관리
 - **GCP CLI**: GCP 서비스 관리
 
-### 환경 설정 (실제 수업 방식)
+### 환경 설정 ["실제 수업 방식"]
 
-#### 1단계: WSL 환경 구축 (1교시: 65분)
+#### 1단계: WSL 환경 구축 ["1교시: 65분"]
 ```bash
 # Windows 기능 활성화
-# - Windows Subsystem for Linux (WSL)
+# - Windows Subsystem for Linux [WSL]
 # - Virtual Machine Platform
 
 # WSL2 기반 Ubuntu 설치
@@ -107,7 +107,7 @@ chmod +x repos/day1/install/install-all-wsl.sh
 ./repos/day1/install/install-all-wsl.sh
 ```
 
-#### 2단계: 클라우드 계정 연동 (2교시: 35분)
+#### 2단계: 클라우드 계정 연동 ["2교시: 35분"]
 ```bash
 # AWS 설정
 aws configure
@@ -125,7 +125,7 @@ chmod +x repos/day1/cloud-scripts/gcp-setup-helper.sh
 ./repos/day1/cloud-scripts/gcp-setup-helper.sh
 ```
 
-#### 3단계: VM 생성 (3교시: 50분)
+#### 3단계: VM 생성 ["3교시: 50분"]
 ```bash
 # AWS EC2 인스턴스 생성
 chmod +x repos/day1/cloud-scripts/aws-ec2-create.sh
@@ -148,7 +148,7 @@ chmod +x repos/day1/cloud-scripts/environment-check-wsl.sh
 
 ---
 
-## 📚 이론 학습 (4교시: 60분)
+## 📚 이론 학습 ["4교시: 60분"]
 
 <details>
 <summary>🐳 Docker & Dockerfile 기초 이론</summary>
@@ -257,8 +257,8 @@ git merge feature/new-feature
 <summary>⚡ GitHub Actions 기초</summary>
 
 ### CI/CD 개념
-- **CI (Continuous Integration)**: 코드 통합 및 테스트 자동화
-- **CD (Continuous Deployment)**: 자동 배포
+- **CI [Continuous Integration]**: 코드 통합 및 테스트 자동화
+- **CD [Continuous Deployment]**: 자동 배포
 
 ### 실제 수업에서 사용된 워크플로우 구조
 ```yaml
@@ -320,7 +320,7 @@ aws ec2 run-instances \
   --key-name my-key \
   --security-group-ids sg-12345678
 
-# SSH 연결 (.pem 파일 사용)
+# SSH 연결 [".pem 파일 사용"]
 ssh -i my-key.pem ubuntu@<public-ip>
 ```
 
@@ -333,7 +333,7 @@ gcloud compute instances create my-vm \
   --image-family=ubuntu-2004-lts \
   --image-project=ubuntu-os-cloud
 
-# SSH 연결 (OpenSSH 키 사용)
+# SSH 연결 ["OpenSSH 키 사용"]
 gcloud compute ssh my-vm --zone=us-central1-a
 # 또는 직접 SSH 연결
 ssh -i gcp-key ubuntu@<public-ip>
@@ -346,25 +346,25 @@ ssh -i gcp-key ubuntu@<public-ip>
 ## 🛠️ 실습 학습
 
 > 📚 **상세 실습 가이드**: 각 주제별 상세한 실습은 다음 파일들을 참조하세요.
-> - [WSL 환경 설정 가이드](practices/wsl-setup-guide.md) - **NEW!** Windows WSL2 환경 구축
-> - [Docker 기초 실습](practices/docker-basics.md)
-> - [Git/GitHub 기초 실습](practices/git-github-basics.md)
-> - [GitHub Actions 기초 실습](practices/git-hub-actions-basics.md)
-> - [실제 배포 프로젝트](repos/github-actions-demo/) - **실제 수업에서 사용된 프로젝트**
-> - [GitHub Actions CI/CD 완전 가이드](practices/github-actions-cicd-guide.md) - **NEW!** 일자별 CI/CD 파이프라인 구축
-> - [배포 후 체크포인트 가이드](practices/deployment-checkpoints-guide.md) - **NEW!** 배포 확인 및 문제 해결
-> - [VM 배포 실습](practices/vm-deployment.md)
-> - [GitHub Repository Secrets 설정 가이드](guides/github-repo-settings.md) - **실제 수업 검증!** 환경파일 대신 Secrets 사용
+> - ["WSL 환경 설정 가이드"][practices/wsl-setup-guide.md] - **NEW!** Windows WSL2 환경 구축
+> - ["Docker 기초 실습"][practices/docker-basics.md]
+> - ["Git/GitHub 기초 실습"][practices/git-github-basics.md]
+> - ["GitHub Actions 기초 실습"][practices/git-hub-actions-basics.md]
+> - ["실제 배포 프로젝트"][repos/github-actions-demo/] - **실제 수업에서 사용된 프로젝트**
+> - ["GitHub Actions CI/CD 완전 가이드"][practices/github-actions-cicd-guide.md] - **NEW!** 일자별 CI/CD 파이프라인 구축
+> - ["배포 후 체크포인트 가이드"][practices/deployment-checkpoints-guide.md] - **NEW!** 배포 확인 및 문제 해결
+> - ["VM 배포 실습"][practices/vm-deployment.md]
+> - ["GitHub Repository Secrets 설정 가이드"][guides/github-repo-settings.md] - **실제 수업 검증!** 환경파일 대신 Secrets 사용
 
 > 🚀 **자동화 스크립트**: 실습을 더 쉽게 하려면 다음 자동화 스크립트를 사용하세요.
-> - [GitHub Actions CI/CD 자동화](automation/github-actions-cicd-automation.sh) - **NEW!** CI/CD 파이프라인 자동 설정
-> - [WSL 자동 설정](cloud-scripts/wsl-auto-setup.sh) - WSL 환경 원클릭 구축
-> - [환경 체크 도구](cloud-scripts/environment-check-wsl.sh) - 실습 환경 자동 검증
-> - [AWS EC2 자동 생성](cloud-scripts/aws-ec2-create.sh) - EC2 인스턴스 자동 생성
-> - [GCP VM 자동 생성](cloud-scripts/gcp-compute-create.sh) - Compute Engine 자동 생성
-> - [통합 VM 정리](cloud-scripts/vm-cleanup-interactive.sh) - VM 인스턴스 선택적 정리
-> - [통합 클러스터 정리](cloud-scripts/cluster-cleanup-interactive.sh) - 클러스터 선택적 정리
-> - [리소스 정리 스크립트](cloud-scripts/README.md) - 생성된 리소스 자동 정리
+> - ["GitHub Actions CI/CD 자동화"][automation/github-actions-cicd-automation.sh] - **NEW!** CI/CD 파이프라인 자동 설정
+> - ["WSL 자동 설정"][cloud-scripts/wsl-auto-setup.sh] - WSL 환경 원클릭 구축
+> - ["환경 체크 도구"][cloud-scripts/environment-check-wsl.sh] - 실습 환경 자동 검증
+> - ["AWS EC2 자동 생성"][cloud-scripts/aws-ec2-create.sh] - EC2 인스턴스 자동 생성
+> - ["GCP VM 자동 생성"][cloud-scripts/gcp-compute-create.sh] - Compute Engine 자동 생성
+> - ["통합 VM 정리"][cloud-scripts/vm-cleanup-interactive.sh] - VM 인스턴스 선택적 정리
+> - ["통합 클러스터 정리"][cloud-scripts/cluster-cleanup-interactive.sh] - 클러스터 선택적 정리
+> - ["리소스 정리 스크립트"][cloud-scripts/README.md] - 생성된 리소스 자동 정리
 
 <details>
 <summary>🐳 Docker 실습</summary>
@@ -381,17 +381,17 @@ npm install express
 
 # app.js 생성
 cat > app.js << EOF
-const express = require('express');
+const express = require['express'];
 const app = express();
 const port = 3000;
 
-app.get('/', (req, res) => {
-  res.send('Hello Docker!');
-});
+app.get['/', [req, res] => {
+  res.send['Hello Docker!'];
+}];
 
-app.listen(port, () => {
-  console.log(\`App running on port \${port}\`);
-});
+app.listen[port, [] => {
+  console.log[\`App running on port \${port}\`];
+}];
 EOF
 
 # Dockerfile 생성
@@ -477,11 +477,11 @@ git push origin feature/docker-setup
 </details>
 
 <details>
-<summary>⚡ GitHub Actions 배포 실습 (5교시: 180분)</summary>
+<summary>⚡ GitHub Actions 배포 실습 ["5교시: 180분"]</summary>
 
-### 🔑 중요: Repository Secrets 사용 (실제 수업에서 100% 성공)
+### 🔑 중요: Repository Secrets 사용 ["실제 수업에서 100% 성공"]
 
-**기존 방식**: 환경파일(.env) 사용 ❌  
+**기존 방식**: 환경파일[.env] 사용 ❌  
 **실제 수업 방식**: Repository Secrets 사용 ✅
 
 ### 1단계: GitHub 저장소 Fork 및 Clone
@@ -496,7 +496,7 @@ git clone https://github.com/[your-username]/github-actions-demo.git
 cd github-actions-demo
 ```
 
-### 2단계: Repository Secrets 설정 (핵심!)
+### 2단계: Repository Secrets 설정 ["핵심!"]
 1. **GitHub 저장소 Settings 이동**
    - `https://github.com/[your-username]/github-actions-demo/settings/secrets/actions`
 
@@ -512,7 +512,7 @@ cd github-actions-demo
    AWS_VM_USERNAME: ubuntu
    ```
 
-3. **상세 설정 방법**: [GitHub Repository Secrets 설정 가이드](guides/github-repo-settings.md)
+3. **상세 설정 방법**: ["GitHub Repository Secrets 설정 가이드"][guides/github-repo-settings.md]
 
 ### 3단계: GitHub Actions 실행
 ```bash
@@ -527,9 +527,9 @@ git push origin main
 2. **AWS VM 배포 확인**: `http://[AWS-VM-IP]:3000`
 3. **GCP VM 배포 확인**: `http://[GCP-VM-IP]:3000`
 
-### ✅ 실제 수업 결과 (2024년 9월 22일)
-- **성공률**: 100% (모든 학습자 성공)
-- **소요 시간**: 180분 (예상 180분)
+### ✅ 실제 수업 결과 ["2024년 9월 22일"]
+- **성공률**: 100% ["모든 학습자 성공"]
+- **소요 시간**: 180분 ["예상 180분"]
 - **주요 장점**: 환경파일보다 안전하고 실무 표준 방식
 - **보안성**: 민감한 정보가 코드에 노출되지 않음
 - **실무 연계**: 실제 운영 환경과 동일한 방식으로 진행
@@ -537,11 +537,11 @@ git push origin main
 </details>
 
 <details>
-<summary>☁️ VM 배포 실습 (4교시: 120분)</summary>
+<summary>☁️ VM 배포 실습 ["4교시: 120분"]</summary>
 
-### AWS EC2 배포 (실제 수업 검증)
+### AWS EC2 배포 ["실제 수업 검증"]
 
-**방법 1: 자동화 스크립트 사용 (권장)**
+**방법 1: 자동화 스크립트 사용 ["권장"]**
 ```bash
 # AWS 설정 도우미 실행
 chmod +x cloud-scripts/aws-setup-helper.sh
@@ -552,9 +552,9 @@ chmod +x cloud-scripts/aws-ec2-create.sh
 ./cloud-scripts/aws-ec2-create.sh
 ```
 
-### GCP Compute Engine 배포 (실제 수업 검증)
+### GCP Compute Engine 배포 ["실제 수업 검증"]
 
-**방법 1: 자동화 스크립트 사용 (권장)**
+**방법 1: 자동화 스크립트 사용 ["권장"]**
 ```bash
 # GCP 설정 도우미 실행
 chmod +x cloud-scripts/gcp-setup-helper.sh
@@ -611,7 +611,7 @@ EOF
 
 ### GCP Compute Engine 배포
 
-**방법 1: 자동화 스크립트 사용 (권장)**
+**방법 1: 자동화 스크립트 사용 ["권장"]**
 ```bash
 # GCP 설정 도우미 실행
 chmod +x cloud-scripts/gcp-setup-helper.sh
@@ -643,10 +643,10 @@ usermod -a -G docker $USER
 EOF
 ```
 
-### ✅ 실제 수업 결과 (2024년 9월 22일)
+### ✅ 실제 수업 결과 ["2024년 9월 22일"]
 - **AWS EC2 배포**: 100% 성공
 - **GCP Compute Engine 배포**: 100% 성공
-- **소요 시간**: 120분 (예상 120분)
+- **소요 시간**: 120분 ["예상 120분"]
 - **주요 성과**: 멀티 클라우드 환경에서 동일한 애플리케이션 배포 완료
 - **학습자 피드백**: "실제 운영 환경과 동일한 방식으로 배포해보니 실무에 바로 적용할 수 있겠다"
 
@@ -658,7 +658,7 @@ EOF
 
 ### 자동 정리
 
-**방법 1: 통합 정리 스크립트 사용 (권장)**
+**방법 1: 통합 정리 스크립트 사용 ["권장"]**
 ```bash
 # 통합 VM 정리 스크립트 실행
 chmod +x cloud-scripts/vm-cleanup-interactive.sh
@@ -687,9 +687,9 @@ chmod +x cloud-scripts/gcp-project-cleanup.sh
 **방법 3: 수동 정리**
 ```bash
 # Docker 컨테이너 정리
-docker stop $(docker ps -aq)
-docker rm $(docker ps -aq)
-docker rmi $(docker images -q)
+docker stop $[docker ps -aq]
+docker rm $[docker ps -aq]
+docker rmi $[docker images -q]
 
 # AWS 리소스 정리
 aws ec2 terminate-instances --instance-ids i-1234567890abcdef0
@@ -711,22 +711,22 @@ gcloud compute instances delete my-vm --zone=us-central1-a
 ## 📚 참고 자료
 
 ### 상세 가이드
-- [WSL 환경 설정 가이드](practices/wsl-setup-guide.md) - **NEW!** Windows WSL2 환경 구축
-- [GitHub Actions CI/CD 완전 가이드](practices/github-actions-cicd-guide.md) - **NEW!** 일자별 CI/CD 파이프라인 구축
-- [배포 후 체크포인트 가이드](practices/deployment-checkpoints-guide.md) - **NEW!** 배포 확인 및 문제 해결
-- [GitHub Repository Secrets 설정 가이드](guides/github-repo-settings.md) - **실제 수업 검증!** 환경파일 대신 Secrets 사용
-- [Docker 고급 가이드](guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
-- [Docker Compose 가이드](guides/docker-compose-guide.md) - 다중 서비스 관리
-- [GitHub Actions 가이드](guides/github-actions-guide.md) - CI/CD 파이프라인 구축
-- [AWS & GCP 배포 가이드](guides/aws-gcp-deployment-guide.md) - 멀티클라우드 배포
-- [트러블슈팅 가이드](guides/troubleshooting-guide.md) - 문제 해결 및 디버깅
+- ["WSL 환경 설정 가이드"][practices/wsl-setup-guide.md] - **NEW!** Windows WSL2 환경 구축
+- ["GitHub Actions CI/CD 완전 가이드"][practices/github-actions-cicd-guide.md] - **NEW!** 일자별 CI/CD 파이프라인 구축
+- ["배포 후 체크포인트 가이드"][practices/deployment-checkpoints-guide.md] - **NEW!** 배포 확인 및 문제 해결
+- ["GitHub Repository Secrets 설정 가이드"][guides/github-repo-settings.md] - **실제 수업 검증!** 환경파일 대신 Secrets 사용
+- ["Docker 고급 가이드"][guides/docker-advanced-guide.md] - 멀티스테이지 빌드, 이미지 최적화
+- ["Docker Compose 가이드"][guides/docker-compose-guide.md] - 다중 서비스 관리
+- ["GitHub Actions 가이드"][guides/github-actions-guide.md] - CI/CD 파이프라인 구축
+- ["AWS & GCP 배포 가이드"][guides/aws-gcp-deployment-guide.md] - 멀티클라우드 배포
+- ["트러블슈팅 가이드"][guides/troubleshooting-guide.md] - 문제 해결 및 디버깅
 
 ### 공식 문서
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Git 공식 문서](https://git-scm.com/doc)
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [AWS EC2 공식 문서](https://docs.aws.amazon.com/ec2/)
-- [GCP Compute Engine 공식 문서](https://cloud.google.com/compute/docs)
+- ["Docker 공식 문서"][https://docs.docker.com/]
+- ["Git 공식 문서"][https://git-scm.com/doc]
+- ["GitHub Actions 공식 문서"][https://docs.github.com/en/actions]
+- ["AWS EC2 공식 문서"][https://docs.aws.amazon.com/ec2/]
+- ["GCP Compute Engine 공식 문서"][https://cloud.google.com/compute/docs]
 
 ### 실제 수업에서 사용된 Repository Secrets 설정
 실제 1일차 수업에서는 환경파일 대신 **Repository Secrets**를 사용하여 성공적으로 배포했습니다.
@@ -753,10 +753,10 @@ GCP_VM_USERNAME: ubuntu
 
 #### SSH 연결 명령어
 ```bash
-# AWS VM 연결 (.pem 파일 사용)
+# AWS VM 연결 [".pem 파일 사용"]
 ssh -i aws-key.pem ubuntu@[AWS-VM-IP]
 
-# GCP VM 연결 (OpenSSH 키 사용)
+# GCP VM 연결 ["OpenSSH 키 사용"]
 ssh -i gcp-key ubuntu@[GCP-VM-IP]
 ```
 
@@ -765,17 +765,17 @@ ssh -i gcp-key ubuntu@[GCP-VM-IP]
 2. **Git 푸시 실패**: 인증 정보 및 권한 확인
 3. **GitHub Actions 실패**: 워크플로우 파일 문법 확인
 4. **VM 연결 실패**: 보안 그룹 및 네트워크 설정 확인
-5. **Repository Secrets 문제**: Secrets 이름이 정확한지 확인 (대소문자 구분)
+5. **Repository Secrets 문제**: Secrets 이름이 정확한지 확인 ["대소문자 구분"]
 6. **SSH 키 형식 문제**: AWS는 .pem 파일, GCP는 OpenSSH 키 사용
 
 ---
 
-## 🎯 Day 1 수업 결과 요약 (2024년 9월 22일)
+## 🎯 Day 1 수업 결과 요약 ["2024년 9월 22일"]
 
 ### ✅ 전체 성과
 - **수강생 수**: 15명
-- **완료율**: 100% (모든 학습자 성공)
-- **총 소요 시간**: 8시간 (예상 8시간)
+- **완료율**: 100% ["모든 학습자 성공"]
+- **총 소요 시간**: 8시간 ["예상 8시간"]
 - **주요 성과**: 멀티 클라우드 환경에서 실제 운영 수준의 CI/CD 파이프라인 구축
 
 ### 📊 교시별 성과
@@ -802,9 +802,9 @@ ssh -i gcp-key ubuntu@[GCP-VM-IP]
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](../README.md) | 
-[📚 전체 커리큘럼](../../curriculum.md) | 
-[🏠 학습 경로로 돌아가기](../../index.md) | 
-[다음: Day 2 →](../Day2/README.md)
+["← 이전: Cloud Master 메인"][../README.md] | 
+["📚 전체 커리큘럼"][../../curriculum.md] | 
+["🏠 학습 경로로 돌아가기"][../../index.md] | 
+["다음: Day 2 →"][../Day2/README.md]
 
 </div>

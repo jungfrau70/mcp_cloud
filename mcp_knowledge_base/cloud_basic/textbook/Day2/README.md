@@ -2,14 +2,14 @@
 
 ## 🎯 학습 목표
 
-[🎯 학습 목표](#학습-목표)
+["🎯 학습 목표"]["#학습-목표"]
 
 오늘은 AWS와 GCP의 핵심 서비스를 비교 분석하고, 비용 최적화와 보안의 기초를 학습합니다. 
 이 과정을 완료하면 두 클라우드 플랫폼의 장단점을 이해하고, 프로젝트에 적합한 서비스를 선택할 수 있는 역량을 갖추게 됩니다.
 
 ### 📋 구체적인 학습 목표
 
-[📋 구체적인 학습 목표](#구체적인-학습-목표)
+["📋 구체적인 학습 목표"]["#구체적인-학습-목표"]
 - **서비스 비교 분석**: AWS와 GCP의 주요 서비스를 체계적으로 비교할 수 있습니다
 - **비용 구조 이해**: 클라우드 서비스의 비용 구조를 이해하고 예상 비용을 계산할 수 있습니다
 - **최적화 전략 수립**: 프로젝트에 맞는 비용 최적화 전략을 수립할 수 있습니다
@@ -18,91 +18,91 @@
 
 ## ⏱️ 예상 소요시간
 
-[⏱️ 예상 소요시간](#예상-소요시간)
+["⏱️ 예상 소요시간"]["#예상-소요시간"]
 
-- **이론 학습**: 2시간 (서비스 비교, 비용 구조)
-- **실습**: 5시간 (비교 분석, 최적화 실습)
+- **이론 학습**: 2시간 ["서비스 비교, 비용 구조"]
+- **실습**: 5시간 ["비교 분석, 최적화 실습"]
 - **정리 및 프로젝트**: 1시간
 - **총 소요시간**: 8시간
 
 ## 📚 학습 순서
 
-[📚 학습 순서](#학습-순서)
+["📚 학습 순서"]["#학습-순서"]
 
-### 🌅 오전 (4시간)
+### 🌅 오전 ["4시간"]
 
-[🌅 오전 (4시간)](#오전-4시간)
+["🌅 오전 ["4시간"]"]["#오전-4시간"]
 
-#### 1단계: 컴퓨팅 서비스 비교 (1시간)
+#### 1단계: 컴퓨팅 서비스 비교 ["1시간"]
 
-- [EC2 vs Compute Engine 비교](cloud_basic/textbook/Day2/compute_comparison.md)
-- [인스턴스 유형 분석](cloud_basic/textbook/Day2/compute_comparison.md)
-- [가격 비교](cloud_basic/textbook/Day2/compute_comparison.md)
+- ["EC2 vs Compute Engine 비교"][cloud_basic/textbook/Day2/compute_comparison.md]
+- ["인스턴스 유형 분석"][cloud_basic/textbook/Day2/compute_comparison.md]
+- ["가격 비교"][cloud_basic/textbook/Day2/compute_comparison.md]
 
-#### 2단계: 스토리지 서비스 비교 (1시간)
+#### 2단계: 스토리지 서비스 비교 ["1시간"]
 
-- [S3 vs Cloud Storage 비교](cloud_basic/textbook/Day2/storage_comparison.md)
-- [스토리지 클래스 분석](cloud_basic/textbook/Day2/storage_comparison.md)
-- [성능 및 가격 비교](cloud_basic/textbook/Day2/storage_comparison.md)
+- ["S3 vs Cloud Storage 비교"][cloud_basic/textbook/Day2/storage_comparison.md]
+- ["스토리지 클래스 분석"][cloud_basic/textbook/Day2/storage_comparison.md]
+- ["성능 및 가격 비교"][cloud_basic/textbook/Day2/storage_comparison.md]
 
-#### 3단계: 데이터베이스 서비스 비교 (1시간)
+#### 3단계: 데이터베이스 서비스 비교 ["1시간"]
 
-- [RDS vs Cloud SQL 비교](cloud_basic/textbook/Day2/database_comparison.md)
-- [NoSQL 서비스 비교](cloud_basic/textbook/Day2/database_comparison.md)
-- [관리형 서비스 장단점](cloud_basic/textbook/Day2/database_comparison.md)
+- ["RDS vs Cloud SQL 비교"][cloud_basic/textbook/Day2/database_comparison.md]
+- ["NoSQL 서비스 비교"][cloud_basic/textbook/Day2/database_comparison.md]
+- ["관리형 서비스 장단점"][cloud_basic/textbook/Day2/database_comparison.md]
 
-#### 4단계: 네트워킹 서비스 비교 (1시간)
+#### 4단계: 네트워킹 서비스 비교 ["1시간"]
 
-- [VPC vs VPC 비교](cloud_basic/textbook/Day2/network_comparison.md)
-- [로드 밸런서 비교](cloud_basic/textbook/Day2/network_comparison.md)
-- [CDN 서비스 비교](cloud_basic/textbook/Day2/network_comparison.md)
+- ["VPC vs VPC 비교"][cloud_basic/textbook/Day2/network_comparison.md]
+- ["로드 밸런서 비교"][cloud_basic/textbook/Day2/network_comparison.md]
+- ["CDN 서비스 비교"][cloud_basic/textbook/Day2/network_comparison.md]
 
-### 🌆 오후 (4시간)
+### 🌆 오후 ["4시간"]
 
-[🌆 오후 (4시간)](#오후-4시간)
+["🌆 오후 ["4시간"]"]["#오후-4시간"]
 
-#### 5단계: 비용 최적화 실습 (2시간)
+#### 5단계: 비용 최적화 실습 ["2시간"]
 
-- [비용 분석 도구 사용](cloud_basic/textbook/Day2/compute_comparison.md)
-- [리소스 최적화](cloud_basic/textbook/Day2/storage_comparison.md)
-- [예산 설정 및 모니터링](cloud_basic/textbook/Day2/database_comparison.md)
+- ["비용 분석 도구 사용"][cloud_basic/textbook/Day2/compute_comparison.md]
+- ["리소스 최적화"][cloud_basic/textbook/Day2/storage_comparison.md]
+- ["예산 설정 및 모니터링"][cloud_basic/textbook/Day2/database_comparison.md]
 
-#### 6단계: 보안 및 모니터링 기초 (1시간)
+#### 6단계: 보안 및 모니터링 기초 ["1시간"]
 
-- [IAM 권한 관리](cloud_basic/textbook/Day1/iam-basics-guide.md)
-- [보안 그룹 설정](cloud_basic/textbook/Day1/iam-basics-guide.md)
-- [기본 모니터링 설정](cloud_basic/textbook/Day2/compute_comparison.md)
+- ["IAM 권한 관리"][cloud_basic/textbook/Day1/iam-basics-guide.md]
+- ["보안 그룹 설정"][cloud_basic/textbook/Day1/iam-basics-guide.md]
+- ["기본 모니터링 설정"][cloud_basic/textbook/Day2/compute_comparison.md]
 
-#### 7단계: 종합 프로젝트 (1시간)
+#### 7단계: 종합 프로젝트 ["1시간"]
 
-- [프로젝트 요구사항 분석](cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
-- [서비스 선택 및 설계](cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
-- [비용 예상 및 최적화](cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
+- ["프로젝트 요구사항 분석"][cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md]
+- ["서비스 선택 및 설계"][cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md]
+- ["비용 예상 및 최적화"][cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md]
 
 ## 💻 실습 가이드
 
-[💻 실습 가이드](#실습-가이드)
+["💻 실습 가이드"]["#실습-가이드"]
 
 ### 🔧 비교 분석 도구
 
-[🔧 비교 분석 도구](#비교-분석-도구)
+["🔧 비교 분석 도구"]["#비교-분석-도구"]
 실습을 위해 다음 도구들을 활용합니다:
 
 1. **AWS 비용 계산기**
-   - [AWS Pricing Calculator](https:///calculator.aws/)
-   - [AWS Cost Explorer](https:///console.aws.amazon.com/cost-management/home)
+   - [AWS Pricing Calculator][https:///calculator.aws/]
+   - [AWS Cost Explorer][https:///console.aws.amazon.com/cost-management/home]
 
 2. **GCP 비용 계산기**
-   - [GCP Pricing Calculator](https:///cloud.google.com/products/calculator)
-   - [GCP Billing Console](https:///console.cloud.google.com/billing)
+   - [GCP Pricing Calculator][https:///cloud.google.com/products/calculator]
+   - [GCP Billing Console][https:///console.cloud.google.com/billing]
 
 3. **비교 분석 템플릿**
-   - [서비스 비교 체크리스트](cloud_basic/textbook/Day2/compute_comparison.md)
-   - [비용 분석 템플릿](cloud_basic/textbook/Day2/storage_comparison.md)
+   - ["서비스 비교 체크리스트"][cloud_basic/textbook/Day2/compute_comparison.md]
+   - ["비용 분석 템플릿"][cloud_basic/textbook/Day2/storage_comparison.md]
 
 ### 📝 실습 체크리스트
 
-[📝 실습 체크리스트](#실습-체크리스트)
+["📝 실습 체크리스트"]["#실습-체크리스트"]
 
 #### 서비스 비교 체크리스트
 
@@ -128,11 +128,11 @@
 
 ## ✅ 완료 확인
 
-[✅ 완료 확인](#완료-확인)
+["✅ 완료 확인"]["#완료-확인"]
 
 ### 🎯 학습 목표 달성 확인
 
-[🎯 학습 목표 달성 확인](#학습-목표-달성-확인)
+["🎯 학습 목표 달성 확인"]["#학습-목표-달성-확인"]
 다음 질문들에 답할 수 있다면 학습 목표를 달성한 것입니다:
 
 1. **서비스 비교**
@@ -153,7 +153,7 @@
 
 ### 📊 실습 결과 확인
 
-[📊 실습 결과 확인](#실습-결과-확인)
+["📊 실습 결과 확인"]["#실습-결과-확인"]
 - **서비스 비교**: 모든 서비스 비교 분석 완료
 - **비용 최적화**: 최적화 방안 도출 및 적용 완료
 - **보안 설정**: 기본 보안 설정 완료
@@ -161,11 +161,11 @@
 
 ## 🔧 문제해결
 
-[🔧 문제해결](#문제해결)
+["🔧 문제해결"]["#문제해결"]
 
 ### 자주 발생하는 문제들
 
-[자주 발생하는 문제들](#자주-발생하는-문제들)
+["자주 발생하는 문제들"]["#자주-발생하는-문제들"]
 
 #### 1. 비용 계산 오류
 
@@ -193,18 +193,18 @@
 
 ### 📞 추가 도움
 
-[📞 추가 도움](#추가-도움)
-- [종합 문제해결 가이드](cloud_basic/textbook/Day1/troubleshooting-guide.md)
-- [비용 최적화 가이드](cloud_basic/textbook/Day2/compute_comparison.md)
-- [보안 모범 사례](cloud_basic/textbook/Day1/iam-basics-guide.md)
+["📞 추가 도움"]["#추가-도움"]
+- ["종합 문제해결 가이드"][cloud_basic/textbook/Day1/troubleshooting-guide.md]
+- ["비용 최적화 가이드"][cloud_basic/textbook/Day2/compute_comparison.md]
+- ["보안 모범 사례"][cloud_basic/textbook/Day1/iam-basics-guide.md]
 
 ## ➡️ 다음 단계
 
-[➡️ 다음 단계](#다음-단계)
+["➡️ 다음 단계"]["#다음-단계"]
 
 ### 🚀 Cloud Master 과정 준비
 
-[🚀 Cloud Master 과정 준비](#cloud-master-과정-준비)
+["🚀 Cloud Master 과정 준비"]["#cloud-master-과정-준비"]
 Cloud Basic을 성공적으로 완료했다면, 다음 단계인 Cloud Master 과정을 추천합니다:
 
 - Cloud Master 과정
@@ -212,14 +212,14 @@ Cloud Basic을 성공적으로 완료했다면, 다음 단계인 Cloud Master �
 
 ### 🔗 관련 자료
 
-[🔗 관련 자료](#관련-자료)
+["🔗 관련 자료"]["#관련-자료"]
 - Cloud Basic 과정 전체
-- [학습 경로](learning-path.md)
-- [전체 커리큘럼](curriculum.md)
+- ["학습 경로"][learning-path.md]
+- ["전체 커리큘럼"][curriculum.md]
 
 ### 🎯 다음 단계 학습 목표
 
-[🎯 다음 단계 학습 목표](#다음-단계-학습-목표)
+["🎯 다음 단계 학습 목표"]["#다음-단계-학습-목표"]
 Cloud Master 과정에서는 다음 내용을 학습하게 됩니다:
 - Docker 컨테이너 기술
 - Git/GitHub 협업 워크플로우
@@ -233,11 +233,11 @@ Cloud Master 과정에서는 다음 내용을 학습하게 됩니다:
 
 ## 🎉 Day 2 실습을 시작하세요!
 
-[🎉 Day 2 실습을 시작하세요!](#day-2-실습을-시작하세요)
+["🎉 Day 2 실습을 시작하세요!"]["#day-2-실습을-시작하세요"]
 
-[🚀 실습 시작하기](cloud_basic/textbook/Day2/compute_comparison.md) | 
+["🚀 실습 시작하기"][cloud_basic/textbook/Day2/compute_comparison.md] | 
 📚 Cloud Basic 과정 전체 |
-[🏠 홈으로 돌아가기](index.md)
+["🏠 홈으로 돌아가기"][index.md]
 
 </div>
 
@@ -245,6 +245,6 @@ Cloud Master 과정에서는 다음 내용을 학습하게 됩니다:
 
 <div align="center">
 
-[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
+["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
 
 </div>

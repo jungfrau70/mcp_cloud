@@ -69,7 +69,7 @@ aws elbv2 create-load-balancer \
   --subnets subnet-12345678 subnet-87654321 \
   --security-groups sg-12345678
 
-# GCP HTTP(S) Load Balancing 설정
+# GCP HTTP[S] Load Balancing 설정
 gcloud compute backend-services create my-backend-service \
   --protocol=HTTP \
   --port-name=http \
@@ -100,7 +100,7 @@ gcloud compute instance-groups managed create my-mig \
 docker run -d \
   --name prometheus \
   -p 9090:9090 \
-  -v $(pwd)/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+  -v $[pwd]/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
   prom/prometheus
 
 # Grafana 실행
@@ -145,8 +145,8 @@ chmod +x ../../../repos/cloud-scripts/gcp-project-cleanup.sh
 ```
 
 ## 📚 참고 자료
-- [Cloud Master Day3 가이드](cloud_master/textbook/Day3/README.md)
-- [로드밸런싱 실습](cloud_master/textbook/Day3/practices/load-balancing.md)
-- [모니터링 기초 실습](cloud_master/textbook/Day3/practices/monitoring-basics.md)
-- [비용 최적화 실습](cloud_master/textbook/Day3/practices/cost-optimization.md)
-- [cloud-scripts 가이드](cloud_master/repos/cloud-scripts/README.md)
+- ["Cloud Master Day3 가이드"][cloud_master/textbook/Day3/README.md]
+- ["로드밸런싱 실습"][cloud_master/textbook/Day3/practices/load-balancing.md]
+- ["모니터링 기초 실습"][cloud_master/textbook/Day3/practices/monitoring-basics.md]
+- ["비용 최적화 실습"][cloud_master/textbook/Day3/practices/cost-optimization.md]
+- ["cloud-scripts 가이드"][cloud_master/repos/cloud-scripts/README.md]

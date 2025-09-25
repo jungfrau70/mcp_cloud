@@ -69,7 +69,7 @@ aws ec2 create-launch-template /
     "InstanceType": "t3.micro",
     "KeyName": "my-key",
     "SecurityGroupIds": ["sg-12345"],
-    "UserData": "'$(base64 -w 0 user-data.sh)'",
+    "UserData": "'$[base64 -w 0 user-data.sh]'",
     "TagSpecifications": [{
       "ResourceType": "instance",
       "Tags": [{"Key": "Name", "Value": "web-instance"}]
@@ -340,14 +340,14 @@ kubectl describe hpa web-app-hpa
 # 부하 테스트 실행
 kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh
 
-# 부하 테스트 명령어 (컨테이너 내부에서 실행)
+# 부하 테스트 명령어 ["컨테이너 내부에서 실행"]
 while true; do wget -q -O- http://web-app-service; done
 
 # HPA 스케일링 모니터링
 watch kubectl get hpa,deployment,pods
 ```
 
-#### Vertical Pod Autoscaler (VPA)
+#### Vertical Pod Autoscaler [VPA]
 ```yaml
 # vpa.yaml
 apiVersion: autoscaling.k8s.io/v1
@@ -440,7 +440,7 @@ data:
     - name: scaling
       rules:
       - alert: HighCPUUtilization
-        expr: rate(container_cpu_usage_seconds_total[5m]) > 0.8
+        expr: rate[container_cpu_usage_seconds_total[5m]] > 0.8
         for: 2m
         labels:
           severity: warning
@@ -449,7 +449,7 @@ data:
           description: "CPU utilization is {{ $value }}%"
       
       - alert: ScalingEvent
-        expr: increase(kube_horizontalpodautoscaler_status_current_replicas[5m]) > 0
+        expr: increase[kube_horizontalpodautoscaler_status_current_replicas[5m]] > 0
         for: 0m
         labels:
           severity: info

@@ -6,7 +6,7 @@
 이 문서는 Google Workspace 또는 Cloud Identity를 사용하여 GCP 조직 계정을 설정하고, 사용자 및 그룹 관리를 포함한 전체적인 조직 관리 과정을 단계별로 안내합니다.
 
 ### 🎯 목표
-- **조직(Organization)** 생성 및 설정
+- **조직[Organization]** 생성 및 설정
 - **사용자 및 그룹** 관리
 - **IAM 정책** 및 **조직 정책** 설정
 - **비용 관리** 및 **보안** 설정
@@ -15,7 +15,7 @@
 
 ## 1️⃣ 조직 계정 유형 선택
 
-### 1.1 Google Workspace (권장)
+### 1.1 Google Workspace ["권장"]
 **완전한 비즈니스 솔루션**
 - G Suite + GCP 관리 통합
 - 이메일, 캘린더, 드라이브 포함
@@ -27,7 +27,7 @@
 | **Business Standard** | $12 | 2TB | ✅ |
 | **Business Plus** | $18 | 5TB | ✅ |
 
-### 1.2 Cloud Identity (무료)
+### 1.2 Cloud Identity ["무료"]
 **GCP 관리 전용**
 - GCP 사용자 관리만 제공
 - 이메일, 캘린더 등 G Suite 기능 없음
@@ -47,10 +47,10 @@
 ### 2.1 도메인 준비
 1. **도메인 소유권** 확인 필요
 2. **DNS 설정** 권한 필요
-3. **도메인 등록** (예: `mycompany.com`)
+3. **도메인 등록** ["예: `mycompany.com`"]
 
 ### 2.2 Google Workspace 가입
-1. [Google Workspace](https:///workspace.google.com) 접속
+1. [Google Workspace][https:///workspace.google.com] 접속
 2. **무료로 시작하기** 클릭
 3. 도메인 입력: `mycompany.com`
 4. 계정 정보 입력:
@@ -61,7 +61,7 @@
 
 ### 2.3 도메인 소유권 확인
 1. **DNS 설정** 방법 선택:
-   - **TXT 레코드** 추가 (권장)
+   - **TXT 레코드** 추가 ["권장"]
    - **HTML 파일** 업로드
 2. DNS 관리자에서 설정 적용
 3. **확인** 클릭
@@ -76,10 +76,10 @@
 
 ---
 
-## 3️⃣ Cloud Identity 설정 (무료 옵션)
+## 3️⃣ Cloud Identity 설정 ["무료 옵션"]
 
 ### 3.1 Cloud Identity 가입
-1. [Cloud Identity](https:///identity.google.com) 접속
+1. [Cloud Identity][https:///identity.google.com] 접속
 2. **무료로 시작하기** 클릭
 3. 도메인 입력: `mycompany.com`
 4. 관리자 계정 생성:
@@ -104,7 +104,7 @@
 ## 4️⃣ GCP 조직 생성
 
 ### 4.1 조직 생성
-1. [Google Cloud Console](https:///console.cloud.google.com) 접속
+1. [Google Cloud Console][https:///console.cloud.google.com] 접속
 2. **조직** → **조직 만들기**
 3. 조직 정보 입력:
    - 조직 이름: `My Company`
@@ -116,14 +116,14 @@
 2. **폴더 만들기** 클릭
 3. 폴더 구조 생성:
    ```
-   My Company (조직)
-   ├── Production (폴더)
-   │   ├── Web Services (프로젝트)
-   │   └── Database (프로젝트)
-   ├── Staging (폴더)
-   │   └── Test Environment (프로젝트)
-   └── Development (폴더)
-       └── Dev Environment (프로젝트)
+   My Company ["조직"]
+   ├── Production ["폴더"]
+   │   ├── Web Services ["프로젝트"]
+   │   └── Database ["프로젝트"]
+   ├── Staging ["폴더"]
+   │   └── Test Environment ["프로젝트"]
+   └── Development ["폴더"]
+       └── Dev Environment ["프로젝트"]
    ```
 
 ---
@@ -331,16 +331,16 @@ resource "google_project_iam_member" "developers" {
 ### Q1: Google Workspace와 Cloud Identity 중 어떤 것을 선택해야 하나요?
 **A**: 
 - **Google Workspace**: 이메일, 캘린더 등 G Suite 기능이 필요한 경우
-- **Cloud Identity**: GCP 관리만 필요한 경우 (무료)
+- **Cloud Identity**: GCP 관리만 필요한 경우 ["무료"]
 
 ### Q2: 조직 정책은 언제 적용되나요?
 **A**: 조직 정책은 **상속**됩니다. 조직 레벨에서 설정하면 모든 하위 폴더와 프로젝트에 적용됩니다.
 
 ### Q3: 사용자 그룹을 어떻게 효율적으로 관리하나요?
 **A**: 
-- **부서별 그룹** 생성 (개발팀, 운영팀, 관리팀)
-- **역할별 그룹** 생성 (개발자, 관리자, 뷰어)
-- **프로젝트별 그룹** 생성 (프로덕션, 스테이징, 개발)
+- **부서별 그룹** 생성 ["개발팀, 운영팀, 관리팀"]
+- **역할별 그룹** 생성 ["개발자, 관리자, 뷰어"]
+- **프로젝트별 그룹** 생성 ["프로덕션, 스테이징, 개발"]
 
 ### Q4: 비용을 어떻게 효과적으로 관리하나요?
 **A**: 
@@ -397,9 +397,9 @@ resource "google_project_iam_member" "developers" {
 3. **정책 충돌**: 조직 정책 우선순위 확인
 
 ### 지원 채널
-- [GCP 지원 센터](https:///cloud.google.com/support/)
-- [Google Workspace 지원](https:///support.google.com/a/)
-- [Cloud Identity 지원](https:///support.google.com/cloudidentity/)
+- ["GCP 지원 센터"][https:///cloud.google.com/support/]
+- ["Google Workspace 지원"][https:///support.google.com/a/]
+- ["Cloud Identity 지원"][https:///support.google.com/cloudidentity/]
 
 
 ---
@@ -411,6 +411,6 @@ resource "google_project_iam_member" "developers" {
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Master 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

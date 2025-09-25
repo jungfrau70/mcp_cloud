@@ -1,6 +1,6 @@
 # Cloud Container - 2일차 강의안
 
-> 📋 **강의 일시**: 2024년 10월 2일 (수) 9:00~17:00  
+> 📋 **강의 일시**: 2024년 10월 2일 ["수"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Cloud Container 1일차 완료
 
@@ -66,7 +66,7 @@ gcloud container clusters get-credentials cloud-container-ha-cluster --zone=asia
 
 ---
 
-## 🕘 1교시: 고가용성 아키텍처 (9:00~10:30)
+## 🕘 1교시: 고가용성 아키텍처 [9:00~10:30]
 
 ### 📚 학습 목표
 - Multi-AZ 클러스터 구축
@@ -123,12 +123,12 @@ echo "Health Check: http://$EXTERNAL_IP/health"
 
 ---
 
-## 🕘 2교시: 고급 모니터링 (10:45~12:00)
+## 🕘 2교시: 고급 모니터링 [10:45~12:00]
 
 ### 📚 학습 목표
 - 고급 Alerting 시스템 구축
 - 중앙화된 Logging 시스템 구축
-- APM (Application Performance Monitoring) 설정
+- APM [Application Performance Monitoring] 설정
 
 ### 🛠️ 주요 실습
 
@@ -170,7 +170,7 @@ kubectl apply -f k8s/apm-deployment.yaml
 **🌐 브라우저로 모니터링 확인:**
 ```bash
 echo "Prometheus: http://localhost:9090"
-echo "Grafana: http://localhost:3000 (admin/admin)"
+echo "Grafana: http://localhost:3000 [admin/admin]"
 echo "Alertmanager: http://localhost:9093"
 echo "Kibana: http://localhost:5601"
 echo "Jaeger: http://localhost:16686"
@@ -178,14 +178,14 @@ echo "Jaeger: http://localhost:16686"
 
 ---
 
-## 🍽️ 점심 시간 (12:00~13:00)
+## 🍽️ 점심 시간 [12:00~13:00]
 
 ---
 
-## 🕘 3교시: 보안 강화 (13:00~14:30)
+## 🕘 3교시: 보안 강화 [13:00~14:30]
 
 ### 📚 학습 목표
-- RBAC (Role-Based Access Control) 설정
+- RBAC [Role-Based Access Control] 설정
 - Network Policies 설정
 - Secrets 관리
 - Pod Security Standards 설정
@@ -234,9 +234,9 @@ kubectl apply -f k8s/security/security-test-pod.yaml
 ```
 
 **✅ 예상 결과:**
-- Service Accounts: 3개 생성 (sample-app-sa, monitoring-sa, admin-sa)
-- Network Policies: 4개 생성 (기본 거부 + 선택적 허용)
-- Secrets: 4개 생성 (db-secret, tls-secret, registry-secret, app-secret)
+- Service Accounts: 3개 생성 [sample-app-sa, monitoring-sa, admin-sa]
+- Network Policies: 4개 생성 ["기본 거부 + 선택적 허용"]
+- Secrets: 4개 생성 [db-secret, tls-secret, registry-secret, app-secret]
 - Pod Security: restricted-psp 생성
 
 **🌐 브라우저로 보안 설정 확인:**
@@ -248,14 +248,14 @@ echo "Secrets: kubectl get secrets"
 
 ---
 
-## 🕘 4교시: 성능 최적화 (14:45~16:15)
+## 🕘 4교시: 성능 최적화 [14:45~16:15]
 
 ### 📚 학습 목표
 - Resource Management 및 QoS 설정
 - Node Affinity 설정
 - Pod Disruption Budget 설정
 - 성능 튜닝 및 최적화
-- VPA (Vertical Pod Autoscaler) 설정
+- VPA [Vertical Pod Autoscaler] 설정
 
 ### 🛠️ 주요 실습
 
@@ -274,7 +274,7 @@ kubectl get pods -o custom-columns=NAME:.metadata.name,QOS-CLASS:.status.qosClas
 #### 🏗️ **12단계: Node Affinity 설정**
 ```bash
 # 노드 라벨 추가
-kubectl label nodes $(kubectl get nodes -o jsonpath='{.items[0].metadata.name}') node-type=high-performance
+kubectl label nodes $[kubectl get nodes -o jsonpath='{.items[0].metadata.name}'] node-type=high-performance
 
 # Node Affinity Pod 적용
 kubectl apply -f k8s/performance/node-affinity-pod.yaml
@@ -317,16 +317,16 @@ kubectl apply -f k8s/performance/vpa-config.yaml
 **🌐 브라우저로 성능 모니터링 확인:**
 ```bash
 echo "Prometheus: http://localhost:9090"
-echo "Grafana: http://localhost:3000 (admin/admin)"
+echo "Grafana: http://localhost:3000 [admin/admin]"
 echo "성능 메트릭: kubectl top pods --sort-by=cpu"
 ```
 
 ---
 
-## 🕘 5교시: 재해 복구 (16:30~17:00)
+## 🕘 5교시: 재해 복구 [16:30~17:00]
 
 ### 📚 학습 목표
-- 데이터 백업 시스템 구축 (Velero)
+- 데이터 백업 시스템 구축 [Velero]
 - Persistent Volume 백업 설정
 - 다중 지역 재해 복구 설정
 - 자동화된 재해 복구 파이프라인
@@ -388,7 +388,7 @@ kubectl apply -f k8s/backup/backup-cronjob.yaml
 velero backup get --output table
 
 # 복원 테스트
-velero restore create test-restore-$(date +%Y%m%d-%H%M%S) \
+velero restore create test-restore-$[date +%Y%m%d-%H%M%S] \
     --from-backup sample-app-backup
 
 # 데이터 무결성 확인
@@ -421,11 +421,11 @@ echo "클러스터 상태: kubectl cluster-info"
 5. **🌐 브라우저로 서비스 접근**: 실제 서비스에 접근하여 동작 확인
 
 ### 🚀 **실습 진행 순서**
-1. **1교시**: 고가용성 아키텍처 (Multi-AZ, Pod Anti-Affinity, Load Balancer)
-2. **2교시**: 고급 모니터링 (Alerting, Logging, APM)
-3. **3교시**: 보안 강화 (RBAC, Network Policies, Secrets)
-4. **4교시**: 성능 최적화 (Resource Management, QoS, VPA)
-5. **5교시**: 재해 복구 (Backup, Disaster Recovery)
+1. **1교시**: 고가용성 아키텍처 [Multi-AZ, Pod Anti-Affinity, Load Balancer]
+2. **2교시**: 고급 모니터링 [Alerting, Logging, APM]
+3. **3교시**: 보안 강화 [RBAC, Network Policies, Secrets]
+4. **4교시**: 성능 최적화 [Resource Management, QoS, VPA]
+5. **5교시**: 재해 복구 [Backup, Disaster Recovery]
 
 ### 🎯 **핵심 학습 포인트**
 - **아키텍처 이해**: 각 단계별 시스템 구조 변화 시각화
@@ -440,67 +440,67 @@ echo "클러스터 상태: kubectl cluster-info"
 
 ### 5교시: 재해 복구 완료 후
 ```mermaid
-graph TB
+flowchart TB
     subgraph "GitHub"
         GH1[Repository<br/>sample-app]
         GH2[GitHub Actions<br/>CI/CD Pipeline]
     end
     
-    subgraph "GCP Cloud - Primary Region (asia-northeast3)"
+    subgraph "GCP Cloud - Primary Region [asia-northeast3]"
         PR1[GKE Cluster<br/>cloud-container-ha-cluster<br/>Multi-AZ]
         PR2[Sample App Pods<br/>6 replicas<br/>HPA + VPA]
         PR3[Load Balancer<br/>Multi-Zone]
         PR4[Persistent Volumes<br/>PostgreSQL]
-        PR5[Velero Backup<br/>정기 백업]
+        PR5["Velero Backup<br/>정기 백업"]
     end
     
-    subgraph "GCP Cloud - Secondary Region (asia-northeast1)"
-        SR1[GKE Cluster<br/>cloud-container-dr-cluster<br/>재해 복구]
-        SR2[Sample App Pods<br/>복원된 Pods]
+    subgraph "GCP Cloud - Secondary Region [asia-northeast1]"
+        SR1["GKE Cluster<br/>cloud-container-dr-cluster<br/>재해 복구"]
+        SR2["Sample App Pods<br/>복원된 Pods"]
         SR3[Load Balancer<br/>DR Load Balancer]
-        SR4[Persistent Volumes<br/>복원된 데이터]
-        SR5[Velero Restore<br/>자동 복원]
+        SR4["Persistent Volumes<br/>복원된 데이터"]
+        SR5["Velero Restore<br/>자동 복원"]
     end
     
     subgraph "External VM - Monitoring"
-        M1[Prometheus<br/>:9090<br/>메트릭 수집]
-        M2[Grafana<br/>:3000<br/>시각화]
-        M3[Alertmanager<br/>:9093<br/>알림 관리]
-        M4[ELK Stack<br/>로그 수집]
-        M5[Jaeger<br/>:16686<br/>분산 추적]
+        M1["Prometheus<br/>:9090<br/>메트릭 수집"]
+        M2["Grafana<br/>:3000<br/>시각화"]
+        M3["Alertmanager<br/>:9093<br/>알림 관리"]
+        M4["ELK Stack<br/>로그 수집"]
+        M5["Jaeger<br/>:16686<br/>분산 추적"]
     end
     
     subgraph "Backup & Recovery"
         BR1[Cloud Storage<br/>velero-backups]
         BR2[Cloud Storage<br/>velero-backups-secondary]
-        BR3[Disaster Recovery<br/>자동 복구]
-        BR4[Monitoring<br/>백업 상태]
+        BR3["Disaster Recovery<br/>자동 복구"]
+        BR4["Monitoring<br/>백업 상태"]
     end
     
-    GH1 --> GH2
-    GH2 --> PR1
+    GH1 -->> GH2
+    GH2 -->> PR1
     
-    PR1 --> PR2
-    PR2 --> PR3
-    PR2 --> PR4
-    PR4 --> PR5
-    PR5 --> BR1
-    BR1 --> BR2
-    BR2 --> SR5
-    SR5 --> SR4
-    SR4 --> SR2
-    SR2 --> SR3
+    PR1 -->> PR2
+    PR2 -->> PR3
+    PR2 -->> PR4
+    PR4 -->> PR5
+    PR5 -->> BR1
+    BR1 -->> BR2
+    BR2 -->> SR5
+    SR5 -->> SR4
+    SR4 -->> SR2
+    SR2 -->> SR3
     
-    M1 --> PR2
-    M2 --> M1
-    M3 --> M1
-    M4 --> PR2
-    M5 --> PR2
+    M1 -->> PR2
+    M2 -->> M1
+    M3 -->> M1
+    M4 -->> PR2
+    M5 -->> PR2
     
-    BR3 --> PR1
-    BR3 --> SR1
-    BR4 --> BR1
-    BR4 --> BR2
+    BR3 -->> PR1
+    BR3 -->> SR1
+    BR4 -->> BR1
+    BR4 -->> BR2
 ```
 
 **최종 적용된 기능:**
@@ -514,8 +514,8 @@ graph TB
 - ✅ **재해 복구**: Velero 백업 + 다중 지역 복구
 
 ### 📊 예상 결과
-- **성공률**: 95% (자동화 스크립트 활용)
-- **소요 시간**: 7시간 (자동화로 단축)
+- **성공률**: 95% ["자동화 스크립트 활용"]
+- **소요 시간**: 7시간 ["자동화로 단축"]
 - **주요 개선**: 통합 시나리오, 실시간 모니터링, 자동 스케일링, 보안 강화, 재해 복구
 
 ---
@@ -523,11 +523,11 @@ graph TB
 ## 🎯 2일차 수업 성과
 
 ### ✅ 달성한 학습 목표
-- [x] 고가용성 아키텍처 (Multi-AZ, Multi-Region)
-- [x] 고급 모니터링 (Alerting, Logging, APM)
-- [x] 보안 강화 (RBAC, Network Policies, Secrets)
-- [x] 성능 최적화 (Resource Management, Tuning)
-- [x] 재해 복구 (Backup, Disaster Recovery)
+- [x] 고가용성 아키텍처 [Multi-AZ, Multi-Region]
+- [x] 고급 모니터링 [Alerting, Logging, APM]
+- [x] 보안 강화 [RBAC, Network Policies, Secrets]
+- [x] 성능 최적화 [Resource Management, Tuning]
+- [x] 재해 복구 [Backup, Disaster Recovery]
 
 ### 🔍 주요 학습 포인트
 1. **고가용성**: Multi-AZ를 통한 장애 복구
@@ -588,7 +588,7 @@ graph TB
 ---
 
 **강의안 작성일**: 2024년 10월 2일  
-**예상 소요 시간**: 7시간 (9:00~17:00, 자동화로 단축)  
+**예상 소요 시간**: 7시간 ["9:00~17:00, 자동화로 단축"]  
 **실습 중심**: 90% 실습, 10% 이론  
 **자동화 활용**: 95% 자동화 스크립트 사용 권장  
 **통합 시나리오**: 고가용성 → 모니터링 → 보안 → 성능 → 복구 완전 연계

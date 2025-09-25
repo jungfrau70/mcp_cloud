@@ -3,13 +3,13 @@
 <details>
 <summary>📋 목차</summary>
 
-[📚 이론 학습](#이론-학습)
+["📚 이론 학습"]["#이론-학습"]
 
-[🛠️ 실습 학습](#실습-학습)
+["🛠️ 실습 학습"]["#실습-학습"]
 
-[📚 참고 자료](#참고-자료)
+["📚 참고 자료"]["#참고-자료"]
 
-[📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
+["📚 문제 해결 및 참고 자료"]["#문제-해결-및-참고-자료"]
 
 </details>
 
@@ -164,7 +164,7 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+      - '--collector.filesystem.mount-points-exclude=^/[sys|proc|dev|host|etc][$$|/]'
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
@@ -195,7 +195,7 @@ open http://localhost:9090
 **✅ 예상 결과:**
 - 3개 컨테이너 실행: prometheus, node-exporter, cadvisor
 - Prometheus 웹 UI: `http://localhost:9090` 접근 가능
-- 타겟 상태: `UP` (정상 수집 중)
+- 타겟 상태: `UP` ["정상 수집 중"]
 - 메트릭 수집: CPU, 메모리, 네트워크, 디스크 사용량
 
 </details>
@@ -224,7 +224,7 @@ open http://localhost:9090
 # Grafana 접근
 open http://localhost:3000
 
-# 로그인 (admin/admin)
+# 로그인 [admin/admin]
 # Prometheus 데이터소스 추가
 # 대시보드 임포트
 ```

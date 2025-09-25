@@ -36,15 +36,15 @@ GitHub Actions CI/CD 파이프라인을 자동으로 설정하는 스크립트�
 ```
 
 #### 옵션
-- `-n, --name NAME`: 프로젝트 이름 (기본값: github-actions-cicd-practice)
-- `-v, --node-version VER`: Node.js 버전 (기본값: 18)
+- `-n, --name NAME`: 프로젝트 이름 ["기본값: github-actions-cicd-practice"]
+- `-v, --node-version VER`: Node.js 버전 ["기본값: 18"]
 - `-d, --docker-user USER`: Docker Hub 사용자명
-- `-a, --aws-region REGION`: AWS 리전 (기본값: us-west-2)
-- `-g, --gcp-region REGION`: GCP 리전 (기본값: us-central1)
-- `-s, --skill-level LEVEL`: 실습 난이도 (초급/중급/고급)
-- `-b, --budget BUDGET`: 예산 한도 (USD)
-- `-c, --cloud-provider`: 클라우드 프로바이더 (aws/gcp/both)
-- `--setup-only`: 설정만 생성 (실행하지 않음)
+- `-a, --aws-region REGION`: AWS 리전 ["기본값: us-west-2"]
+- `-g, --gcp-region REGION`: GCP 리전 ["기본값: us-central1"]
+- `-s, --skill-level LEVEL`: 실습 난이도 ["초급/중급/고급"]
+- `-b, --budget BUDGET`: 예산 한도 [USD]
+- `-c, --cloud-provider`: 클라우드 프로바이더 [aws/gcp/both]
+- `--setup-only`: 설정만 생성 ["실행하지 않음"]
 - `--cleanup`: 생성된 리소스 정리
 - `-h, --help`: 도움말 표시
 
@@ -55,7 +55,7 @@ GitHub Actions CI/CD 파이프라인을 자동으로 설정하는 스크립트�
 
 #### 기능
 - 환경 설정 자동화
-- 인프라 자동 생성 (AWS/GCP)
+- 인프라 자동 생성 [AWS/GCP]
 - Kubernetes 클러스터 자동 생성
 - 애플리케이션 자동 배포
 - 모니터링 스택 자동 설정
@@ -95,7 +95,7 @@ GitHub Actions CI/CD 파이프라인을 자동으로 설정하는 스크립트�
 
 ### 1. 필수 도구 설치
 
-#### Windows (WSL2)
+#### Windows [WSL2]
 ```bash
 # WSL2 업데이트
 wsl --update
@@ -132,14 +132,14 @@ curl https://sdk.cloud.google.com | bash
 source ~/.bashrc
 
 # kubectl 설치
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https://dl.k8s.io/release/$[curl -L -s https://dl.k8s.io/release/stable.txt]/bin/linux/amd64/kubectl"
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 ```
 
 #### macOS
 ```bash
 # Homebrew 설치
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+/bin/bash -c "$[curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh]"
 
 # 필수 도구 설치
 brew install curl wget git unzip jq docker awscli google-cloud-sdk kubectl
@@ -346,22 +346,22 @@ gcloud container clusters list
 ## 📚 추가 자료
 
 ### 관련 문서
-- [GitHub Actions CI/CD 완전 가이드](../../textbook/Day1/practices/github-actions-cicd-guide.md)
-- [Cloud Master Day 1 가이드](../../textbook/Day1/README.md)
-- [Cloud Master Day 2 가이드](../../textbook/Day2/README.md)
-- [Cloud Master Day 3 가이드](../../textbook/Day3/README.md)
+- ["GitHub Actions CI/CD 완전 가이드"][../../textbook/Day1/practices/github-actions-cicd-guide.md]
+- ["Cloud Master Day 1 가이드"][../../textbook/Day1/README.md]
+- ["Cloud Master Day 2 가이드"][../../textbook/Day2/README.md]
+- ["Cloud Master Day 3 가이드"][../../textbook/Day3/README.md]
 
 ### 공식 문서
-- [GitHub Actions 공식 문서](https://docs.github.com/ko/actions)
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
-- [AWS 공식 문서](https://docs.aws.amazon.com/)
-- [GCP 공식 문서](https://cloud.google.com/docs)
+- ["GitHub Actions 공식 문서"][https://docs.github.com/ko/actions]
+- ["Docker 공식 문서"][https://docs.docker.com/]
+- ["Kubernetes 공식 문서"][https://kubernetes.io/docs/]
+- ["AWS 공식 문서"][https://docs.aws.amazon.com/]
+- ["GCP 공식 문서"][https://cloud.google.com/docs]
 
 ### 커뮤니티
-- [GitHub Actions Marketplace](https://github.com/marketplace?type=actions)
-- [Docker Hub](https://hub.docker.com/)
-- [Kubernetes 예제](https://kubernetes.io/examples/)
+- [GitHub Actions Marketplace][https://github.com/marketplace?type=actions]
+- [Docker Hub][https://hub.docker.com/]
+- ["Kubernetes 예제"][https://kubernetes.io/examples/]
 
 ## 🤝 기여하기
 
@@ -388,15 +388,15 @@ gcloud container clusters list
 
 ## 📄 라이선스
 
-이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 [LICENSE](../../LICENSE) 파일을 참조하세요.
+이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 [LICENSE][../../LICENSE] 파일을 참조하세요.
 
 ---
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](../../README.md) | 
-[📚 전체 커리큘럼](../../../curriculum.md) | 
-[🏠 학습 경로로 돌아가기](../../../index.md) | 
-[다음: Cloud Scripts →](../cloud-scripts/README.md)
+["← 이전: Cloud Master 메인"][../../README.md] | 
+["📚 전체 커리큘럼"][../../../curriculum.md] | 
+["🏠 학습 경로로 돌아가기"][../../../index.md] | 
+["다음: Cloud Scripts →"][../cloud-scripts/README.md]
 
 </div>

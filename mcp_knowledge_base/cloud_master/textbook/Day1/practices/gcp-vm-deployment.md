@@ -50,7 +50,7 @@ gcloud auth login
 
 ### 1단계: GCP VM 인스턴스 생성
 
-#### 방법 1: 자동화 스크립트 사용 (권장)
+#### 방법 1: 자동화 스크립트 사용 ["권장"]
 ```bash
 # GCP 설정 도우미 실행
 chmod +x cloud-scripts/gcp-setup-helper.sh
@@ -94,7 +94,7 @@ ssh-keygen -t rsa -b 4096 -f ~/.ssh/gcp-deployment-key -C "github-actions-demo"
 # 공개키를 GCP VM에 추가
 gcloud compute instances add-metadata github-actions-demo-gcp \
     --zone=us-central1-a \
-    --metadata-from-file ssh-keys=<(echo "ubuntu:$(cat ~/.ssh/gcp-deployment-key.pub)")
+    --metadata-from-file ssh-keys=<[echo "ubuntu:$[cat ~/.ssh/gcp-deployment-key.pub]"]
 ```
 
 #### SSH 접속 테스트
@@ -115,7 +115,7 @@ sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-relea
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $[lsb_release -cs] stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io
@@ -263,7 +263,7 @@ docker logs github-actions-demo
 
 ### 1. SSH 연결 실패
 - 방화벽 규칙 확인
-- SSH 키 권한 확인 (`chmod 600 ~/.ssh/gcp-deployment-key`)
+- SSH 키 권한 확인 [`chmod 600 ~/.ssh/gcp-deployment-key`]
 - GCP VM 상태 확인
 
 ### 2. Docker 권한 문제
@@ -279,7 +279,7 @@ newgrp docker
 ```
 
 ### 3. 애플리케이션 접속 불가
-- 방화벽 규칙 확인 (포트 3000)
+- 방화벽 규칙 확인 ["포트 3000"]
 - 컨테이너 실행 상태 확인
 - 애플리케이션 로그 확인
 
@@ -310,7 +310,7 @@ gcloud projects delete YOUR_PROJECT_ID
 
 ## 📚 참고 자료
 
-- [GCP Compute Engine 문서](https://cloud.google.com/compute/docs)
-- [Docker 설치 가이드](https://docs.docker.com/engine/install/ubuntu/)
-- [GitHub Actions 문서](https://docs.github.com/en/actions)
-- [SSH 키 관리 가이드](https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys)
+- ["GCP Compute Engine 문서"][https://cloud.google.com/compute/docs]
+- ["Docker 설치 가이드"][https://docs.docker.com/engine/install/ubuntu/]
+- ["GitHub Actions 문서"][https://docs.github.com/en/actions]
+- ["SSH 키 관리 가이드"][https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys]

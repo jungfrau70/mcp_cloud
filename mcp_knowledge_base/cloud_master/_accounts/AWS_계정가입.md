@@ -6,14 +6,14 @@
 이 문서는 개인 이메일로 AWS에 가입한 후, 조직용 관리자 계정을 생성하고 권한을 위임하는 전체 과정을 단계별로 안내합니다.
 
 ### 🎯 목표
-- **개인 이메일(AWS 계정 가입)** → **itadmin 계정 생성** → **IAM 및 AWS 리소스 전체 권한 위임**
+- **개인 이메일["AWS 계정 가입"]** → **itadmin 계정 생성** → **IAM 및 AWS 리소스 전체 권한 위임**
 
 ---
 
 ## 1️⃣ 기본 개념 정리
 
 ### 계정 유형 구분
-- **AWS 계정 가입 계정**: `hong.gildong@<domain-name>.com` (Root 계정)
+- **AWS 계정 가입 계정**: `hong.gildong@<domain-name>.com` ["Root 계정"]
   - AWS에 처음 가입한 계정
   - 기본적으로 **Root 사용자** 권한 보유
 - **itadmin 계정**: IAM에 새로 만든 조직 계정
@@ -27,9 +27,9 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 ## 2️⃣ itadmin 계정 생성
 
 ### 단계별 진행
-1. `hong.gildong@<domain-name>.com` 계정으로 [AWS Management Console](https:///console.aws.amazon.com) 로그인
-2. **IAM (Identity and Access Management)** 서비스 이동
-3. **사용자(Users)** → **사용자 생성(Create user)** 클릭
+1. `hong.gildong@<domain-name>.com` 계정으로 [AWS Management Console][https:///console.aws.amazon.com] 로그인
+2. **IAM [Identity and Access Management]** 서비스 이동
+3. **사용자[Users]** → **사용자 생성[Create user]** 클릭
 4. 계정 정보 입력:
    - 사용자 이름: `itadmin`
    - 액세스 유형: **프로그래밍 방식 액세스** + **AWS Management Console 액세스** 모두 선택
@@ -40,10 +40,10 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 ## 3️⃣ IAM 관리자 권한 부여
 
 ### AdministratorAccess 정책 연결
-1. **권한 설정(Permissions)** 단계에서
-2. **기존 정책 직접 연결(Attach existing policies directly)** 선택
+1. **권한 설정[Permissions]** 단계에서
+2. **기존 정책 직접 연결[Attach existing policies directly]** 선택
 3. **AdministratorAccess** 정책 검색 후 선택
-4. **다음: 태그(Next: Tags)** → **다음: 검토(Next: Review)** → **사용자 생성(Create user)**
+4. **다음: 태그[Next: Tags]** → **다음: 검토[Next: Review]** → **사용자 생성[Create user]**
 
 > ✅ 이렇게 하면 `itadmin`은 AWS 서비스 전체 관리 권한을 가집니다.
 
@@ -53,7 +53,7 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 
 **해결 방법:**
 1. **루트 계정으로 로그인**
-2. **계정 설정(Account Settings)** → **IAM 사용자 및 역할에 결제 정보 접근 허용(Activate IAM Access for Billing)** 체크
+2. **계정 설정[Account Settings]** → **IAM 사용자 및 역할에 결제 정보 접근 허용[Activate IAM Access for Billing]** 체크
 3. **화면 위치**: https:///console.aws.amazon.com/billing/home?#/account → "IAM 사용자 및 역할이 결제 정보에 접근할 수 있도록 활성화"
 4. **활성화 후** IAM 사용자에 Billing 관련 정책 할당
 
@@ -67,21 +67,21 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 > **⚠️ 사전 요구사항**: Root 계정에서 IAM 사용자의 Billing 접근을 먼저 활성화해야 합니다.
 
 #### 1단계: Root 계정에서 IAM Billing 접근 활성화
-1. **Root 계정으로 로그인** (hong.gildong@<domain-name>.com)
+1. **Root 계정으로 로그인** [hong.gildong@<domain-name>.com]
 2. **Billing 콘솔** 이동: https:///console.aws.amazon.com/billing/home
-3. **계정 설정(Account Settings)** 클릭
+3. **계정 설정[Account Settings]** 클릭
 4. **"IAM 사용자 및 역할이 결제 정보에 접근할 수 있도록 활성화"** 체크박스 선택
 5. **업데이트** 클릭
 
 #### 2단계: IAM 사용자에 Billing 권한 추가
-1. **IAM** → **사용자(Users)** → `itadmin` 선택
-2. **권한(Permissions)** 탭 → **권한 추가(Add permissions)**
+1. **IAM** → **사용자[Users]** → `itadmin` 선택
+2. **권한[Permissions]** 탭 → **권한 추가[Add permissions]**
 3. **기존 정책 직접 연결** 선택
 4. 다음 정책들 검색 후 선택:
-   - **Billing** (청구서 및 결제 정보 관리)
-   - **CostExplorerServiceFullAccess** (비용 분석 도구 접근)
+   - **Billing** ["청구서 및 결제 정보 관리"]
+   - **CostExplorerServiceFullAccess** ["비용 분석 도구 접근"]
 
-#### 3단계: 사용자 정의 정책 생성 (선택사항)
+#### 3단계: 사용자 정의 정책 생성 ["선택사항"]
 ```json
 {
     "Version": "2012-10-17",
@@ -114,13 +114,13 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 
 ---
 
-## 5️⃣ MFA(다중 인증) 설정
+## 5️⃣ MFA["다중 인증"] 설정
 
 ### 가상 MFA 디바이스 설정
-1. **IAM** → **사용자(Users)** → `itadmin` 선택
-2. **보안 자격 증명(Security credentials)** 탭
-3. **MFA 디바이스 할당(Assign MFA device)** 클릭
-4. **가상 MFA 디바이스(Virtual MFA device)** 선택
+1. **IAM** → **사용자[Users]** → `itadmin` 선택
+2. **보안 자격 증명[Security credentials]** 탭
+3. **MFA 디바이스 할당[Assign MFA device]** 클릭
+4. **가상 MFA 디바이스[Virtual MFA device]** 선택
 5. QR 코드를 스캔하여 Google Authenticator 등에 등록
 6. 연속된 두 개의 MFA 코드 입력
 
@@ -134,12 +134,12 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 `itadmin` 계정으로 로그인 후:
 
 1. **IAM 권한 확인**:
-   - IAM → 사용자 → `itadmin` → **권한(Permissions)**
+   - IAM → 사용자 → `itadmin` → **권한[Permissions]**
    - **AdministratorAccess** 표시 확인
 
 2. **비용 관리 권한 확인**:
-   - **비용 및 사용량(Cost and Usage)** 메뉴 접근 가능 여부 확인
-   - **비용 탐색기(Cost Explorer)** 접근 가능 여부 확인
+   - **비용 및 사용량[Cost and Usage]** 메뉴 접근 가능 여부 확인
+   - **비용 탐색기[Cost Explorer]** 접근 가능 여부 확인
 
 3. **서비스 접근 확인**:
    - EC2, S3, RDS 등 주요 서비스 접근 가능 여부 확인
@@ -158,7 +158,7 @@ AWS에서는 **Root 계정**과 **IAM 사용자**를 구분하며, 보안상 Roo
 - **Billing**: 청구서, 결제 정보, 크레딧 관리
 - **CostExplorerServiceFullAccess**: 비용 분석, 예산 설정, 알림 관리
 
-> 💡 **결과**: `hong.gildong@<domain-name>.com`은 Root 계정(백업 관리자)으로 두고, 실제 운영은 `itadmin`이 **AWS 서비스 + 비용 관리 풀 관리자** 권한으로 운영할 수 있습니다.
+> 💡 **결과**: `hong.gildong@<domain-name>.com`은 Root 계정["백업 관리자"]으로 두고, 실제 운영은 `itadmin`이 **AWS 서비스 + 비용 관리 풀 관리자** 권한으로 운영할 수 있습니다.
 
 ---
 
@@ -190,7 +190,7 @@ aws iam create-login-profile /
   --password 'YourSecurePassword123!' /
   --password-reset-required
 
-# 5. 액세스 키 생성 (선택사항)
+# 5. 액세스 키 생성 ["선택사항"]
 aws iam create-access-key --user-name itadmin
 ```
 
@@ -220,13 +220,13 @@ Register-IAMUserPolicy -UserName itadmin -PolicyArn "arn:aws:iam::aws:policy/Cos
 **A**: 네, 가능합니다. AWS IAM에서는 그룹 기반 권한 관리가 기본적으로 지원됩니다.
 
 #### 그룹 기반 권한 할당 방법:
-1. **IAM → 그룹(Groups)** → **그룹 생성(Create group)**
+1. **IAM → 그룹[Groups]** → **그룹 생성[Create group]**
    - 그룹 이름: `Administrators`
-2. **IAM → 그룹 → Administrators → 권한(Permissions)**
-   - **권한 추가(Add permissions)** 클릭
+2. **IAM → 그룹 → Administrators → 권한[Permissions]**
+   - **권한 추가[Add permissions]** 클릭
    - **AdministratorAccess** 정책 선택
-3. **IAM → 그룹 → Administrators → 사용자(Users)**
-   - **사용자 추가(Add users)** → `itadmin` 선택
+3. **IAM → 그룹 → Administrators → 사용자[Users]**
+   - **사용자 추가[Add users]** → `itadmin` 선택
 
 ### Q2: "액세스가 거부되었습니다" 오류가 발생해요
 
@@ -235,7 +235,7 @@ Register-IAMUserPolicy -UserName itadmin -PolicyArn "arn:aws:iam::aws:policy/Cos
 #### 해결 방법:
 1. **Root 계정으로 로그인** 확인
 2. **IAM 정책 권한** 확인
-3. **리전(Region) 설정** 확인 (일부 서비스는 특정 리전에서만 동작)
+3. **리전[Region] 설정** 확인 ["일부 서비스는 특정 리전에서만 동작"]
 
 ### Q3: Root 계정과 IAM 사용자의 차이는?
 
@@ -243,7 +243,7 @@ Register-IAMUserPolicy -UserName itadmin -PolicyArn "arn:aws:iam::aws:policy/Cos
 
 | 구분 | Root 계정 | IAM 사용자 |
 |------|-----------|------------|
-| **권한 범위** | AWS 계정 전체 (제한 불가) | 정책으로 제한 가능 |
+| **권한 범위** | AWS 계정 전체 ["제한 불가"] | 정책으로 제한 가능 |
 | **보안** | MFA만 가능 | MFA + 임시 자격 증명 |
 | **사용 권장** | 최소한으로 사용 | 일상적인 작업용 |
 | **계정 설정** | 결제 정보, 계정 설정 | 불가능 |
@@ -292,9 +292,9 @@ Register-IAMUserPolicy -UserName itadmin -PolicyArn "arn:aws:iam::aws:policy/Cos
 ## 🚀 다음 단계
 
 ### 추가 학습 자료
-- [AWS IAM 공식 문서](https:///docs.aws.amazon.com/iam/)
-- [AWS 비용 관리 가이드](https:///docs.aws.amazon.com/cost-management/)
-- [AWS CLI 사용법](https:///docs.aws.amazon.com/cli/latest/userguide/)
+- ["AWS IAM 공식 문서"][https:///docs.aws.amazon.com/iam/]
+- ["AWS 비용 관리 가이드"][https:///docs.aws.amazon.com/cost-management/]
+- ["AWS CLI 사용법"][https:///docs.aws.amazon.com/cli/latest/userguide/]
 
 ### 자동화 확장
 - CloudFormation을 이용한 IAM 정책 자동화
@@ -311,9 +311,9 @@ Register-IAMUserPolicy -UserName itadmin -PolicyArn "arn:aws:iam::aws:policy/Cos
 3. **리전 오류**: 서비스가 지원하는 리전 확인
 
 ### 지원 채널
-- [AWS 지원 센터](https:///console.aws.amazon.com/support/)
-- [AWS 커뮤니티 포럼](https:///forums.aws.amazon.com/)
-- [AWS 기술 문서](https:///docs.aws.amazon.com/)
+- ["AWS 지원 센터"][https:///console.aws.amazon.com/support/]
+- ["AWS 커뮤니티 포럼"][https:///forums.aws.amazon.com/]
+- ["AWS 기술 문서"][https:///docs.aws.amazon.com/]
 
 
 ---
@@ -321,7 +321,7 @@ Register-IAMUserPolicy -UserName itadmin -PolicyArn "arn:aws:iam::aws:policy/Cos
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -329,6 +329,6 @@ Register-IAMUserPolicy -UserName itadmin -PolicyArn "arn:aws:iam::aws:policy/Cos
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Master 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

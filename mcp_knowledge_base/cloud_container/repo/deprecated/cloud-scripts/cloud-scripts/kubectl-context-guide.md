@@ -56,7 +56,7 @@ gcloud container clusters get-credentials cloud-master-cluster \
     --project cloud-deployment-471606
 ```
 
-### 2. gke-gcloud-auth-plugin 설치 (필요한 경우)
+### 2. gke-gcloud-auth-plugin 설치 ["필요한 경우"]
 ```bash
 # Windows 환경
 curl -LO "https://storage.googleapis.com/gke-release/gke-gcloud-auth-plugin/v0.5.3/windows/amd64/gke-gcloud-auth-plugin.exe"
@@ -68,7 +68,7 @@ chmod +x "$HOME/.local/bin/gke-gcloud-auth-plugin.exe"
 gcloud components install gke-gcloud-auth-plugin
 ```
 
-### 3. PATH 설정 (Windows)
+### 3. PATH 설정 [Windows]
 ```bash
 # 현재 세션에서 PATH 설정
 set PATH=%USERPROFILE%\.local\bin;%PATH%
@@ -81,11 +81,11 @@ set PATH=%USERPROFILE%\.local\bin;%PATH%
 ### 1. gke-gcloud-auth-plugin 오류 해결
 ```bash
 # 오류: gke-gcloud-auth-plugin not found
-# 해결 방법 1: gcloud components로 설치 (관리자 권한 필요)
+# 해결 방법 1: gcloud components로 설치 ["관리자 권한 필요"]
 # Google Cloud SDK Shell을 관리자 권한으로 실행 후:
 gcloud components install gke-gcloud-auth-plugin
 
-# 해결 방법 2: 수동 다운로드 및 설치 (Windows)
+# 해결 방법 2: 수동 다운로드 및 설치 [Windows]
 # 1. 플러그인 다운로드
 curl -LO "https://storage.googleapis.com/gke-release/gke-gcloud-auth-plugin/v0.5.3/windows/amd64/gke-gcloud-auth-plugin.exe"
 
@@ -113,7 +113,7 @@ mkdir -p ~/.local/bin
 # 플러그인 이동
 mv gke-gcloud-auth-plugin ~/.local/bin/
 
-# PATH에 추가 (WSL)
+# PATH에 추가 [WSL]
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 
@@ -154,7 +154,7 @@ gcloud container clusters get-credentials <cluster-name> --zone <zone> --project
 gcloud container clusters describe <cluster-name> --zone <zone> --project <project-id>
 
 # 클러스터 노드 정보 확인
-gcloud container clusters describe <cluster-name> --zone <zone> --project <project-id> --format="table(nodePools[].instanceGroupUrls[].split('/')[-1]:label=NODE_POOL,nodePools[].config.machineType:label=MACHINE_TYPE,nodePools[].initialNodeCount:label=NODE_COUNT)"
+gcloud container clusters describe <cluster-name> --zone <zone> --project <project-id> --format="table[nodePools[].instanceGroupUrls[].split['/'][-1]:label=NODE_POOL,nodePools[].config.machineType:label=MACHINE_TYPE,nodePools[].initialNodeCount:label=NODE_COUNT]"
 
 # 클러스터 상태 확인
 gcloud container clusters list --filter="name:<cluster-name>"
@@ -247,7 +247,7 @@ kubectl config view --context=<context-name>
 ### 2. 연결 문제 진단
 ```bash
 # 클러스터 엔드포인트 확인
-kubectl cluster-info dump | grep -E "(server|endpoint)"
+kubectl cluster-info dump | grep -E "[server|endpoint]"
 
 # 인증 정보 확인
 kubectl config view --raw
@@ -285,10 +285,10 @@ cp ~/.kube/config.backup ~/.kube/config
 1. **프로덕션 환경**: 프로덕션 클러스터로 전환하기 전에 현재 context를 확인하세요.
 2. **권한 관리**: 각 context의 권한을 적절히 관리하세요.
 3. **백업**: 중요한 context 설정은 정기적으로 백업하세요.
-4. **보안**: kubeconfig 파일의 권한을 적절히 설정하세요 (600 권한 권장).
+4. **보안**: kubeconfig 파일의 권한을 적절히 설정하세요 ["600 권한 권장"].
 
 ## 🔗 관련 링크
 
-- [kubectl 공식 문서](https://kubernetes.io/docs/reference/kubectl/)
-- [GKE 클러스터 접근 가이드](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl)
-- [kubectl context 관리](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/)
+- ["kubectl 공식 문서"][https://kubernetes.io/docs/reference/kubectl/]
+- ["GKE 클러스터 접근 가이드"][https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl]
+- ["kubectl context 관리"][https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/]

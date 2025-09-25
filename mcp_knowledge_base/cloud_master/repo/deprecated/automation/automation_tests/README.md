@@ -72,13 +72,13 @@ python automation_tests/run_master_course_tests.py
 - **`vm_deployment.sh`** - VM 기반 웹 애플리케이션 배포
 
 ### Day 2: 고급 실습
-- **`docker_advanced.sh`** - Docker 고급 기법 (멀티스테이지 빌드, 최적화)
-- **`advanced_cicd.sh`** - 고급 CI/CD 파이프라인 (Matrix 빌드, 보안 스캔)
-- **`container_orchestration.sh`** - 컨테이너 오케스트레이션 (Docker Swarm, Kubernetes)
+- **`docker_advanced.sh`** - Docker 고급 기법 ["멀티스테이지 빌드, 최적화"]
+- **`advanced_cicd.sh`** - 고급 CI/CD 파이프라인 ["Matrix 빌드, 보안 스캔"]
+- **`container_orchestration.sh`** - 컨테이너 오케스트레이션 [Docker Swarm, Kubernetes]
 
 ### Day 3: 운영 실습
 - **`load_balancing.sh`** - 로드 밸런싱 및 Auto Scaling
-- **`monitoring.sh`** - 모니터링 및 로깅 (Prometheus, Grafana)
+- **`monitoring.sh`** - 모니터링 및 로깅 [Prometheus, Grafana]
 - **`cost_optimization.sh`** - 비용 최적화 및 분석
 
 ## 사용법
@@ -168,6 +168,6 @@ chmod +x *.sh
 
 <div align="center">
 
-[📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

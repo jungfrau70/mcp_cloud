@@ -15,14 +15,14 @@
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Code Push     │    │   Build & Test  │    │   Deploy        │
-│   (GitHub)      │───►│   (Actions)     │───►│   (Kubernetes)  │
+│   [GitHub]      │───►│   [Actions]     │───►│   [Kubernetes]  │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          │                       │                       │
          ▼                       ▼                       ▼
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Security      │    │   Performance   │    │   Monitoring    │
-│   (CodeQL)      │    │   (Load Test)   │    │   (Prometheus)  │
+│   [CodeQL]      │    │   [Load Test]   │    │   [Prometheus]  │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
@@ -30,8 +30,8 @@
 
 ### 필수 요구사항
 - GitHub 계정
-- Docker Hub 계정 (또는 GitHub Container Registry)
-- Kubernetes 클러스터 (GKE, EKS, 또는 로컬)
+- Docker Hub 계정 ["또는 GitHub Container Registry"]
+- Kubernetes 클러스터 ["GKE, EKS, 또는 로컬"]
 
 ### 설정
 
@@ -167,7 +167,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'production') || 'staging' }}
+    environment: ${{ github.event.inputs.environment || [github.ref == 'refs/heads/main' && 'production'] || 'staging' }}
     
     steps:
     - uses: actions/checkout@v3
@@ -189,7 +189,7 @@ jobs:
         export KUBECONFIG=kubeconfig
         
         # 환경별 설정 적용
-        envsubst < k8s/${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'prod') || 'staging' }}/deployment.yaml | kubectl apply -f -
+        envsubst < k8s/${{ github.event.inputs.environment || [github.ref == 'refs/heads/main' && 'prod'] || 'staging' }}/deployment.yaml | kubectl apply -f -
         kubectl rollout status deployment/my-app
 ```
 
@@ -300,18 +300,18 @@ export let options = {
     { duration: '2m', target: 0 },   // Ramp down
   ],
   thresholds: {
-    http_req_duration: ['p(95)<500'], // 95% of requests under 500ms
+    http_req_duration: ['p[95]<500'], // 95% of requests under 500ms
     http_req_failed: ['rate<0.1'],    // Error rate under 10%
   },
 };
 
 export default function() {
-  let response = http.get('http://localhost:8000/');
-  check(response, {
-    'status is 200': (r) => r.status === 200,
-    'response time < 500ms': (r) => r.timings.duration < 500,
-  });
-  sleep(1);
+  let response = http.get['http://localhost:8000/'];
+  check[response, {
+    'status is 200': [r] => r.status === 200,
+    'response time < 500ms': [r] => r.timings.duration < 500,
+  }];
+  sleep[1];
 }
 ```
 
@@ -332,17 +332,17 @@ export let options = {
     { duration: '5m', target: 0 },
   ],
   thresholds: {
-    http_req_duration: ['p(95)<1000'],
+    http_req_duration: ['p[95]<1000'],
     http_req_failed: ['rate<0.2'],
   },
 };
 
 export default function() {
-  let response = http.get('http://localhost:8000/');
-  check(response, {
-    'status is 200': (r) => r.status === 200,
-  });
-  sleep(1);
+  let response = http.get['http://localhost:8000/'];
+  check[response, {
+    'status is 200': [r] => r.status === 200,
+  }];
+  sleep[1];
 }
 ```
 
@@ -405,8 +405,8 @@ jobs:
 
 ## 🔗 관련 자료
 
-- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
-- [CodeQL 공식 문서](https:///codeql.github.com/)
-- [Trivy 보안 스캐너](https:///trivy.dev/)
-- [k6 성능 테스트](https:///k6.io/)
-- [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
+- ["GitHub Actions 공식 문서"][https:///docs.github.com/en/actions]
+- ["CodeQL 공식 문서"][https:///codeql.github.com/]
+- ["Trivy 보안 스캐너"][https:///trivy.dev/]
+- ["k6 성능 테스트"][https:///k6.io/]
+- ["Kubernetes 공식 문서"][https:///kubernetes.io/docs/]

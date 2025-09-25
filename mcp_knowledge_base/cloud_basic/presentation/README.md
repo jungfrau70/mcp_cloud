@@ -22,7 +22,7 @@ practice/
 │   ├── 실습3_bigquery_analysis.env   # BigQuery 분석 환경 변수
 │   ├── 실습4_aws_serverless.sh       # AWS 서버리스 시스템 자동화 스크립트
 │   └── 실습4_aws_serverless.env      # AWS 서버리스 환경 변수
-└── [기타 문서 파일들]
+└── ["기타 문서 파일들"]
 ```
 
 ---
@@ -38,7 +38,7 @@ practice/
 │                                                                 │
 │  ┌─────────────────┐    ┌─────────────────┐    ┌──────────────┐ │
 │  │   Azure AD      │    │  Management     │    │ Subscription │ │
-│  │   (Entra ID)    │    │    Group        │    │              │ │
+│  │   [Entra ID]    │    │    Group        │    │              │ │
 │  │                 │    │                 │    │              │ │
 │  │ ┌─────────────┐ │    │ ┌─────────────┐ │    │ ┌──────────┐ │ │
 │  │ │Finance User │ │    │ │MG-Company-  │ │    │ │Azure     │ │ │
@@ -87,14 +87,14 @@ practice/
 ```
 
 **구성 설명:**
-- **Azure AD (Entra ID)**: 사용자 및 역할 관리
+- **Azure AD [Entra ID]**: 사용자 및 역할 관리
   - Finance User: Cost Management Reader 역할
   - IT Admin: Contributor 역할  
   - IT Engineer: Storage Blob Data Contributor 역할
 - **Management Group**: 조직 구조화 및 정책 적용
 - **Resource Group**: 리소스 그룹화 및 태깅
 - **Storage Account**: 데이터 저장 및 Blob 컨테이너
-- **Policy**: 지역 제한 정책 (한국 리전만 허용)
+- **Policy**: 지역 제한 정책 ["한국 리전만 허용"]
 - **Lock**: 리소스 삭제 방지
 - **Cost Management**: 예산 설정 및 알림
 
@@ -148,7 +148,7 @@ practice/
 │  │                                                             │ │
 │  │  ┌─────────────────┐    ┌─────────────────┐    ┌──────────┐ │ │
 │  │  │   Website URL   │    │   CDN           │    │  HTTPS   │ │ │
-│  │  │                 │    │   (Optional)    │    │          │ │ │
+│  │  │                 │    │   [Optional]    │    │          │ │ │
 │  │  │ ┌─────────────┐ │    │ ┌─────────────┐ │    │ ┌──────┐ │ │ │
 │  │  │ │http://      │ │    │ │Global       │ │    │ │SSL   │ │ │ │
 │  │  │ │storage.     │ │    │ │Distribution │ │    │ │Cert  │ │ │ │
@@ -165,7 +165,7 @@ practice/
 - **Cloud Storage Bucket**: 정적 파일 저장
   - index.html: 메인 페이지
   - 404.html: 에러 페이지
-- **Website Configuration**: 웹사이트 설정 (메인/에러 페이지 지정)
+- **Website Configuration**: 웹사이트 설정 ["메인/에러 페이지 지정"]
 - **IAM Policy**: 퍼블릭 읽기 권한 설정
 - **Public Access**: 웹사이트 URL을 통한 접근
 
@@ -246,7 +246,7 @@ practice/
 - **BigQuery Dataset**: 데이터 조직화
 - **Tables**: 
   - sales: 기본 판매 데이터
-  - sales_partitioned: 파티셔닝된 테이블 (성능 최적화)
+  - sales_partitioned: 파티셔닝된 테이블 ["성능 최적화"]
 - **Views**: 분석용 뷰
 - **ML Models**: BigQuery ML을 통한 머신러닝 모델
 - **Data Pipeline**: 데이터 수집, 처리, 출력
@@ -288,7 +288,7 @@ practice/
 │  │  │                                                         │ │ │
 │  │  │  ┌─────────────────┐    ┌─────────────────┐             │ │ │
 │  │  │  │   /proposals    │    │   /health       │             │ │ │
-│  │  │  │   (POST)        │    │   (GET)         │             │ │ │
+│  │  │  │   [POST]        │    │   [GET]         │             │ │ │
 │  │  │  │                 │    │                 │             │ │ │
 │  │  │  │ ┌─────────────┐ │    │ ┌─────────────┐ │             │ │ │
 │  │  │  │ │Upload       │ │    │ │Status       │ │             │ │ │
@@ -405,7 +405,7 @@ practice/
 ### 공통 학습 목표
 1. **클라우드 네이티브 아키텍처** 이해
 2. **서버리스 서비스** 활용법 습득
-3. **IaC (Infrastructure as Code)** 실습
+3. **IaC [Infrastructure as Code]** 실습
 4. **보안 및 권한 관리** 경험
 5. **모니터링 및 로깅** 설정
 
@@ -437,7 +437,7 @@ practice/
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -445,6 +445,6 @@ practice/
 
 <div align="center">
 
-[📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

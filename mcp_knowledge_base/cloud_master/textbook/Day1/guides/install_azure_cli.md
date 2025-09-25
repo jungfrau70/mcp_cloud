@@ -4,17 +4,17 @@
 Azure CLI는 Microsoft Azure 클라우드 서비스와 상호작용하기 위한 명령줄 도구입니다. 이 가이드는 다양한 운영체제에서 Azure CLI를 설치하는 방법을 설명합니다.
 
 ## 목차
-- [Windows 설치](#windows-설치)
-- [macOS 설치](#macos-설치)
-- [Linux 설치](#linux-설치)
-- [Docker를 사용한 설치](#docker를-사용한-설치)
-- [설치 확인](#설치-확인)
-- [기본 설정](#기본-설정)
-- [문제 해결](#문제-해결)
+- ["Windows 설치"]["#windows-설치"]
+- ["macOS 설치"]["#macos-설치"]
+- ["Linux 설치"]["#linux-설치"]
+- ["Docker를 사용한 설치"]["#docker를-사용한-설치"]
+- ["설치 확인"]["#설치-확인"]
+- ["기본 설정"]["#기본-설정"]
+- ["문제 해결"]["#문제-해결"]
 
 ## Windows 설치
 
-### 방법 1: MSI 설치 프로그램 (권장)
+### 방법 1: MSI 설치 프로그램 ["권장"]
 
 1. **Azure CLI MSI 설치 프로그램 다운로드**
    ```bash
@@ -25,7 +25,7 @@ Azure CLI는 Microsoft Azure 클라우드 서비스와 상호작용하기 위한
 2. **설치 실행**
    - 다운로드한 MSI 파일을 더블클릭하여 실행
    - 설치 마법사의 지시를 따름
-   - 기본 설치 경로: `C:/Program Files (x86)/Microsoft SDKs/Azure/CLI2/`
+   - 기본 설치 경로: `C:/Program Files [x86]/Microsoft SDKs/Azure/CLI2/`
 
 3. **PATH 확인**
    - 설치 후 자동으로 PATH에 추가됨
@@ -53,7 +53,7 @@ winget install Microsoft.AzureCLI
 
 ## macOS 설치
 
-### 방법 1: Homebrew 사용 (권장)
+### 방법 1: Homebrew 사용 ["권장"]
 
 1. **Homebrew 설치 확인**
    ```bash
@@ -140,7 +140,7 @@ sudo zypper install azure-cli
 sudo pacman -S azure-cli
 ```
 
-### pip를 사용한 설치 (모든 Linux 배포판)
+### pip를 사용한 설치 ["모든 Linux 배포판"]
 
 1. **pip 설치**
    ```bash
@@ -206,7 +206,7 @@ azure-devops                      0.25.0
 Python location '/opt/az/bin/python3'
 Extensions directory '/home/user/.azure/cliextensions'
 
-Python (Linux) 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 9.4.0]
+Python [Linux] 3.10.12 [main, Nov 20 2023, 15:14:05] [GCC 9.4.0]
 ```
 
 ## 기본 설정
@@ -220,7 +220,7 @@ az login
 # 서비스 주체로 로그인
 az login --service-principal --username <app-id> --password <password> --tenant <tenant-id>
 
-# 관리 ID로 로그인 (Azure VM에서)
+# 관리 ID로 로그인 ["Azure VM에서"]
 az login --identity
 ```
 
@@ -345,10 +345,10 @@ az configure --defaults collect_telemetry=false
 
 ## 추가 리소스
 
-- [Azure CLI 공식 문서](https:///docs.microsoft.com/en-us/cli/azure/)
-- [Azure CLI 명령어 참조](https:///docs.microsoft.com/en-us/cli/azure/reference-index)
-- [Azure CLI 확장](https:///docs.microsoft.com/en-us/cli/azure/azure-cli-extensions-overview)
-- [Azure CLI 구성](https:///docs.microsoft.com/en-us/cli/azure/azure-cli-configuration)
+- ["Azure CLI 공식 문서"][https:///docs.microsoft.com/en-us/cli/azure/]
+- ["Azure CLI 명령어 참조"][https:///docs.microsoft.com/en-us/cli/azure/reference-index]
+- ["Azure CLI 확장"][https:///docs.microsoft.com/en-us/cli/azure/azure-cli-extensions-overview]
+- ["Azure CLI 구성"][https:///docs.microsoft.com/en-us/cli/azure/azure-cli-configuration]
 
 ## 버전 관리
 
@@ -356,7 +356,7 @@ az configure --defaults collect_telemetry=false
 # 현재 버전 확인
 az --version
 
-# 업데이트 (대부분의 설치 방법에서 자동)
+# 업데이트 ["대부분의 설치 방법에서 자동"]
 # 수동 업데이트가 필요한 경우:
 # Windows: MSI 재설치
 # macOS: brew upgrade azure-cli
@@ -375,7 +375,7 @@ az --version
 # 서비스 주체 생성
 az ad sp create-for-rbac --name "myApp" --role contributor --scopes /subscriptions/{subscription-id}/resourceGroups/{resource-group}
 
-# 관리 ID 사용 (권장)
+# 관리 ID 사용 ["권장"]
 az login --identity
 ```
 
@@ -428,7 +428,7 @@ az vm create `
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -436,6 +436,6 @@ az vm create `
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Master 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

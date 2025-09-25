@@ -1,0 +1,507 @@
+# Mermaid 10.9.4 문법 규칙
+
+> **📋 표준 규칙**: 
+> - 마크다운 문서 작성 시 Mermaid 다이어그램 표준은 [markdown-mermaid-standard.mdc](markdown-mermaid-standard.mdc)를 참고하세요.
+> - AI 응답 시 Mermaid 다이어그램 규칙은 [ai-mermaid-response.mdc](ai-mermaid-response.mdc)를 참고하세요.
+
+## 🎯 Mermaid 다이어그램 작성 원칙
+
+### **기본 문법 규칙**
+- **언어 지정**: 모든 Mermaid 다이어그램은 `mermaid` 언어로 지정
+- **버전 호환성**: Mermaid 10.9.4 버전 문법 준수
+- **구문 검증**: 작성 후 반드시 문법 검증 실행
+- **오류 처리**: 문법 오류 발생 시 즉시 수정
+
+### **다이어그램 타입별 규칙**
+
+#### **Flowchart (플로우차트)**
+```mermaid
+flowchart TD
+    A[시작] --> B{조건}
+    B -->|예| C[실행]
+    B -->|아니오| D[종료]
+    C --> D
+```
+
+#### **Sequence Diagram (시퀀스 다이어그램)**
+```mermaid
+sequenceDiagram
+    participant A as 사용자
+    participant B as 시스템
+    A->>B: 요청
+    B-->>A: 응답
+```
+
+#### **Class Diagram (클래스 다이어그램)**
+```mermaid
+classDiagram
+    class Animal {
+        +String name
+        +int age
+        +makeSound()
+    }
+    class Dog {
+        +bark()
+    }
+    Animal <|-- Dog
+```
+
+#### **State Diagram (상태 다이어그램)**
+```mermaid
+stateDiagram-v2
+    [*] --> 시작
+    시작 --> 진행중
+    진행중 --> 완료
+    완료 --> [*]
+```
+
+#### **ER Diagram (엔티티 관계도)**
+```mermaid
+erDiagram
+    USER ||--o{ ORDER : places
+    ORDER ||--|{ ORDER_ITEM : contains
+    PRODUCT ||--o{ ORDER_ITEM : "ordered in"
+```
+
+#### **Gantt Chart (간트 차트)**
+```mermaid
+gantt
+    title 프로젝트 일정
+    dateFormat  YYYY-MM-DD
+    section 설계
+    요구사항 분석    :done,    des1, 2024-01-01, 2024-01-05
+    시스템 설계      :active,  des2, 2024-01-06, 2024-01-15
+    section 개발
+    백엔드 개발      :         dev1, 2024-01-16, 2024-02-15
+    프론트엔드 개발   :         dev2, 2024-01-20, 2024-02-20
+```
+
+#### **Pie Chart (파이 차트)**
+```mermaid
+pie title 기술 스택 분포
+    "JavaScript" : 40
+    "Python" : 30
+    "Java" : 20
+    "기타" : 10
+```
+
+#### **Git Graph (깃 그래프)**
+```mermaid
+gitgraph
+    commit id: "초기 커밋"
+    branch develop
+    checkout develop
+    commit id: "개발 시작"
+    checkout main
+    merge develop
+    commit id: "릴리즈"
+```
+
+## 🎨 Mermaid 다이어그램 스타일링 규칙
+
+### **가독성 우선 스타일링**
+```mermaid
+flowchart TD
+    A["시작점"] --> B{"결정점"}
+    B -->|"옵션 1"| C["액션 1"]
+    B -->|"옵션 2"| D["액션 2"]
+    C --> E["종료점"]
+    D --> E
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#f57c00,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+    style D fill:#388e3c,color:#ffffff
+    style E fill:#d32f2f,color:#ffffff
+```
+
+### **색상 팔레트 규칙**
+- **시작점**: 파란색 (`#1976d2`) - 흰색 글씨
+- **결정점**: 주황색 (`#f57c00`) - 흰색 글씨
+- **액션/프로세스**: 초록색 (`#388e3c`) - 흰색 글씨
+- **종료점**: 빨간색 (`#d32f2f`) - 흰색 글씨
+- **특별한 노드**: 보라색 (`#7b1fa2`) - 흰색 글씨
+
+### **스타일링 템플릿**
+```mermaid
+flowchart TD
+    Start["시작"] --> Process1["프로세스 1"]
+    Process1 --> Decision{"결정"}
+    Decision -->|"예"| Process2["프로세스 2"]
+    Decision -->|"아니오"| Process3["프로세스 3"]
+    Process2 --> End["종료"]
+    Process3 --> End
+    
+    style Start fill:#1976d2,color:#ffffff
+    style Process1 fill:#388e3c,color:#ffffff
+    style Decision fill:#f57c00,color:#ffffff
+    style Process2 fill:#388e3c,color:#ffffff
+    style Process3 fill:#388e3c,color:#ffffff
+    style End fill:#d32f2f,color:#ffffff
+```
+
+### **한글 텍스트 처리 규칙**
+```mermaid
+flowchart TD
+    A["한글 텍스트는 따옴표로 감싸기"] --> B{"결정점도 따옴표 사용"}
+    B -->|"라벨도 따옴표로"| C["모든 텍스트 따옴표 처리"]
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#f57c00,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+```
+
+### **스타일링 적용 체크리스트**
+- [ ] 모든 노드에 적절한 색상 적용
+- [ ] 텍스트 색상을 흰색으로 설정 (`color:#ffffff`)
+- [ ] 한글 텍스트는 따옴표로 감싸기
+- [ ] 시작점은 파란색, 종료점은 빨간색 사용
+- [ ] 결정점은 주황색으로 구분
+- [ ] 프로세스 노드는 초록색으로 통일
+
+## 🚨 일반적인 문법 오류 및 해결책
+
+### **1. 잘못된 다이어그램 타입**
+```markdown
+<!-- ❌ 잘못된 예시 -->
+```graph
+graph TD
+    A --> B
+```
+
+<!-- ✅ 올바른 예시 -->
+```mermaid
+flowchart TD
+    A --> B
+```
+```
+
+### **2. 노드 정의 오류**
+```markdown
+<!-- ❌ 잘못된 예시 -->
+```mermaid
+flowchart TD
+    A[시작] --> B{조건}
+    B --> C(실행)  <!-- 잘못된 노드 타입 -->
+```
+
+<!-- ✅ 올바른 예시 -->
+```mermaid
+flowchart TD
+    A[시작] --> B{조건}
+    B --> C[실행]
+```
+```
+
+### **3. 화살표 문법 오류**
+```markdown
+<!-- ❌ 잘못된 예시 -->
+```mermaid
+sequenceDiagram
+    A->B: 요청
+    B->A: 응답  <!-- 잘못된 화살표 -->
+```
+
+<!-- ✅ 올바른 예시 -->
+```mermaid
+sequenceDiagram
+    A->>B: 요청
+    B-->>A: 응답
+```
+```
+
+### **4. 한글 텍스트 처리**
+```markdown
+<!-- ✅ 한글 텍스트는 따옴표로 감싸기 -->
+```mermaid
+flowchart TD
+    A["시작"] --> B{"조건 확인"}
+    B -->|"예"| C["실행"]
+    B -->|"아니오"| D["종료"]
+```
+```
+
+## 🔧 자동 검증 도구
+
+### **Mermaid 문법 검증 스크립트**
+```python
+#!/usr/bin/env python3
+"""
+Mermaid 문법 검증 도구
+Mermaid 10.9.4 버전 호환성 확인
+"""
+
+import re
+import os
+from pathlib import Path
+
+class MermaidValidator:
+    def __init__(self):
+        self.errors = []
+        self.warnings = []
+    
+    def validate_mermaid_block(self, content: str, line_number: int) -> bool:
+        """Mermaid 블록 문법 검증"""
+        is_valid = True
+        
+        # 1. 언어 지정 확인
+        if not content.strip().startswith('```mermaid'):
+            self.errors.append(f"라인 {line_number}: Mermaid 블록은 '```mermaid'로 시작해야 합니다.")
+            is_valid = False
+        
+        # 2. 다이어그램 타입 확인
+        mermaid_content = content.replace('```mermaid', '').replace('```', '').strip()
+        
+        # 잘못된 다이어그램 타입 검사
+        invalid_types = ['graph', 'sequence', 'class', 'state', 'er', 'gantt', 'pie', 'git']
+        for invalid_type in invalid_types:
+            if mermaid_content.startswith(invalid_type + ' '):
+                self.errors.append(f"라인 {line_number}: '{invalid_type}'는 더 이상 지원되지 않습니다. 올바른 타입을 사용하세요.")
+                is_valid = False
+        
+        # 3. 노드 문법 검사
+        if 'flowchart' in mermaid_content or 'graph' in mermaid_content:
+            is_valid &= self._validate_flowchart_syntax(mermaid_content, line_number)
+        
+        # 4. 시퀀스 다이어그램 검사
+        if 'sequenceDiagram' in mermaid_content:
+            is_valid &= self._validate_sequence_syntax(mermaid_content, line_number)
+        
+        return is_valid
+    
+    def _validate_flowchart_syntax(self, content: str, line_number: int) -> bool:
+        """플로우차트 문법 검증"""
+        is_valid = True
+        
+        # 잘못된 노드 타입 검사
+        invalid_nodes = ['(text)', '((text))', '>text]']
+        for invalid_node in invalid_nodes:
+            if invalid_node in content:
+                self.errors.append(f"라인 {line_number}: 잘못된 노드 타입 '{invalid_node}' 사용")
+                is_valid = False
+        
+        return is_valid
+    
+    def _validate_sequence_syntax(self, content: str, line_number: int) -> bool:
+        """시퀀스 다이어그램 문법 검증"""
+        is_valid = True
+        
+        # 잘못된 화살표 검사
+        invalid_arrows = ['->', '<-', '-->', '<--']
+        for invalid_arrow in invalid_arrows:
+            if invalid_arrow in content:
+                self.errors.append(f"라인 {line_number}: 잘못된 화살표 '{invalid_arrow}' 사용. '->>' 또는 '-->>' 사용하세요.")
+                is_valid = False
+        
+        return is_valid
+    
+    def validate_file(self, file_path: Path) -> dict:
+        """파일의 Mermaid 블록 검증"""
+        result = {
+            'file': str(file_path),
+            'is_valid': True,
+            'errors': [],
+            'warnings': []
+        }
+        
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # Mermaid 블록 찾기
+            mermaid_blocks = re.finditer(r'```mermaid\n(.*?)\n```', content, re.DOTALL)
+            
+            for match in mermaid_blocks:
+                block_content = match.group(0)
+                line_number = content[:match.start()].count('\n') + 1
+                
+                if not self.validate_mermaid_block(block_content, line_number):
+                    result['is_valid'] = False
+                    result['errors'].extend(self.errors)
+                    result['warnings'].extend(self.warnings)
+        
+        except Exception as e:
+            result['is_valid'] = False
+            result['errors'].append(f"파일 읽기 오류: {str(e)}")
+        
+        return result
+
+def main():
+    """메인 실행 함수"""
+    validator = MermaidValidator()
+    knowledge_base = Path("mcp_knowledge_base")
+    
+    if not knowledge_base.exists():
+        print("❌ mcp_knowledge_base 디렉토리를 찾을 수 없습니다.")
+        return
+    
+    # 모든 마크다운 파일 검사
+    md_files = list(knowledge_base.rglob("*.md"))
+    
+    print(f"🔍 {len(md_files)}개 마크다운 파일 검사 중...")
+    
+    total_errors = 0
+    for md_file in md_files:
+        result = validator.validate_file(md_file)
+        
+        if not result['is_valid']:
+            print(f"\n❌ {result['file']}")
+            for error in result['errors']:
+                print(f"  - {error}")
+                total_errors += 1
+        else:
+            print(f"✅ {result['file']}")
+    
+    print(f"\n📊 검사 완료: {total_errors}개 오류 발견")
+    
+    if total_errors > 0:
+        print("\n🔧 자동 수정을 실행하시겠습니까? (y/n)")
+        # 자동 수정 로직 추가 가능
+
+if __name__ == "__main__":
+    main()
+```
+
+## 📋 Mermaid 다이어그램 작성 체크리스트
+
+### **작성 전 확인사항**
+- [ ] Mermaid 10.9.4 버전 문법 사용
+- [ ] 올바른 다이어그램 타입 선택
+- [ ] 한글 텍스트는 따옴표로 감싸기
+- [ ] 노드와 화살표 문법 정확성 확인
+
+### **작성 후 확인사항**
+- [ ] 문법 검증 도구 실행
+- [ ] 브라우저에서 렌더링 확인
+- [ ] 오류 메시지 없음 확인
+- [ ] 다이어그램이 의도한 대로 표시되는지 확인
+
+### **일반적인 수정 패턴**
+- `graph` → `flowchart`
+- `sequence` → `sequenceDiagram`
+- `class` → `classDiagram`
+- `state` → `stateDiagram-v2`
+- `er` → `erDiagram`
+- `gantt` → `gantt`
+- `pie` → `pie`
+- `git` → `gitgraph`
+
+## 🚀 자동 수정 도구
+
+### **Mermaid 문법 자동 수정 스크립트**
+```python
+#!/usr/bin/env python3
+"""
+Mermaid 문법 자동 수정 도구
+Mermaid 10.9.4 버전으로 업그레이드
+"""
+
+import re
+import os
+from pathlib import Path
+
+class MermaidFixer:
+    def __init__(self):
+        self.fixes_applied = 0
+        self.files_modified = 0
+    
+    def fix_mermaid_blocks(self, content: str) -> str:
+        """Mermaid 블록 자동 수정"""
+        # 1. 잘못된 언어 지정 수정
+        content = re.sub(r'```graph\b', '```mermaid\nflowchart', content)
+        content = re.sub(r'```sequence\b', '```mermaid\nsequenceDiagram', content)
+        content = re.sub(r'```class\b', '```mermaid\nclassDiagram', content)
+        content = re.sub(r'```state\b', '```mermaid\nstateDiagram-v2', content)
+        content = re.sub(r'```er\b', '```mermaid\nerDiagram', content)
+        content = re.sub(r'```gantt\b', '```mermaid\ngantt', content)
+        content = re.sub(r'```pie\b', '```mermaid\npie', content)
+        content = re.sub(r'```git\b', '```mermaid\ngitgraph', content)
+        
+        # 2. 다이어그램 타입 수정
+        content = re.sub(r'^graph\s+', 'flowchart ', content, flags=re.MULTILINE)
+        content = re.sub(r'^sequence\s+', 'sequenceDiagram\n', content, flags=re.MULTILINE)
+        content = re.sub(r'^class\s+', 'classDiagram\n', content, flags=re.MULTILINE)
+        content = re.sub(r'^state\s+', 'stateDiagram-v2\n', content, flags=re.MULTILINE)
+        content = re.sub(r'^er\s+', 'erDiagram\n', content, flags=re.MULTILINE)
+        content = re.sub(r'^gantt\s+', 'gantt\n', content, flags=re.MULTILINE)
+        content = re.sub(r'^pie\s+', 'pie\n', content, flags=re.MULTILINE)
+        content = re.sub(r'^git\s+', 'gitgraph\n', content, flags=re.MULTILINE)
+        
+        # 3. 화살표 문법 수정
+        content = re.sub(r'->(?!>)', '->>', content)  # -> 를 ->> 로
+        content = re.sub(r'<-(?!<)', '<<-', content)  # <- 를 <<- 로
+        content = re.sub(r'-->(?!>)', '-->>', content)  # --> 를 -->> 로
+        content = re.sub(r'<--(?!<)', '<<--', content)  # <-- 를 <<-- 로
+        
+        # 4. 노드 문법 수정
+        content = re.sub(r'\(([^)]+)\)', r'[\1]', content)  # (text) 를 [text] 로
+        content = re.sub(r'\(\(([^)]+)\)\)', r'[(\1)]', content)  # ((text)) 를 [(text)] 로
+        
+        return content
+    
+    def fix_file(self, file_path: Path) -> bool:
+        """파일의 Mermaid 블록 수정"""
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                original_content = f.read()
+            
+            fixed_content = self.fix_mermaid_blocks(original_content)
+            
+            if original_content != fixed_content:
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    f.write(fixed_content)
+                
+                self.files_modified += 1
+                print(f"✅ 수정됨: {file_path}")
+                return True
+            else:
+                print(f"⏭️ 변경사항 없음: {file_path}")
+                return False
+        
+        except Exception as e:
+            print(f"❌ 오류: {file_path} - {str(e)}")
+            return False
+    
+    def fix_all_files(self, knowledge_base_path: Path):
+        """모든 마크다운 파일 수정"""
+        md_files = list(knowledge_base_path.rglob("*.md"))
+        
+        print(f"🔧 {len(md_files)}개 마크다운 파일 수정 중...")
+        
+        for md_file in md_files:
+            self.fix_file(md_file)
+        
+        print(f"\n📊 수정 완료: {self.files_modified}개 파일 수정됨")
+
+def main():
+    """메인 실행 함수"""
+    fixer = MermaidFixer()
+    knowledge_base = Path("mcp_knowledge_base")
+    
+    if not knowledge_base.exists():
+        print("❌ mcp_knowledge_base 디렉토리를 찾을 수 없습니다.")
+        return
+    
+    fixer.fix_all_files(knowledge_base)
+
+if __name__ == "__main__":
+    main()
+```
+
+## 📚 참고 자료
+
+### **Mermaid 10.9.4 공식 문서**
+- [Flowchart](https://mermaid.js.org/syntax/flowchart.html)
+- [Sequence Diagram](https://mermaid.js.org/syntax/sequenceDiagram.html)
+- [Class Diagram](https://mermaid.js.org/syntax/classDiagram.html)
+- [State Diagram](https://mermaid.js.org/syntax/stateDiagram.html)
+- [ER Diagram](https://mermaid.js.org/syntax/entityRelationshipDiagram.html)
+- [Gantt Chart](https://mermaid.js.org/syntax/gantt.html)
+- [Pie Chart](https://mermaid.js.org/syntax/pie.html)
+- [Git Graph](https://mermaid.js.org/syntax/gitgraph.html)
+
+### **마이그레이션 가이드**
+- [Mermaid 10.x 마이그레이션 가이드](https://mermaid.js.org/config/migration-guide.html)
+- [Breaking Changes](https://mermaid.js.org/config/breaking-changes.html)
+
+이 규칙을 통해 Mermaid 10.9.4 버전에 맞는 일관되고 정확한 다이어그램을 작성할 수 있습니다.

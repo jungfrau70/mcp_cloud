@@ -37,8 +37,8 @@ python3 --version
 ```bash
 # AWS 자격 증명 설정
 aws configure
-# AWS Access Key ID: [입력]
-# AWS Secret Access Key: [입력]
+# AWS Access Key ID: ["입력"]
+# AWS Secret Access Key: ["입력"]
 # Default region name: us-west-2
 # Default output format: json
 
@@ -75,7 +75,7 @@ python3 improved_basic_automation.py
 # ✅ GCP 서비스 실습: Compute Engine 및 Cloud Storage 생성 완료
 # ✅ Day1 실습: AWS & GCP 기초 서비스 실습 완료
 # ✅ 리소스 정리: Cloud Basic Day1 리소스 정리 완료
-# 🎉 basic Day1 자동화 완료 (소요시간: 120.50초)
+# 🎉 basic Day1 자동화 완료 ["소요시간: 120.50초"]
 ```
 
 #### 3. 교재 연계 확인
@@ -117,7 +117,7 @@ python3 improved_basic_automation.py
 # ✅ 데이터베이스 서비스 기초: RDS MySQL 인스턴스 생성
 # ✅ 종합 실습 및 비교 분석: 웹 서버 + 데이터베이스 구성
 # ✅ Day2 실습: 네트워크, 보안 및 데이터베이스 실습 완료
-# 🎉 basic Day2 자동화 완료 (소요시간: 180.30초)
+# 🎉 basic Day2 자동화 완료 ["소요시간: 180.30초"]
 ```
 
 #### 4. 교재 연계 확인
@@ -329,6 +329,6 @@ python3 improved_master_automation.py
 
 <div align="center">
 
-[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
+["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
 
 </div>

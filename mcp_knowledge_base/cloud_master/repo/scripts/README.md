@@ -35,15 +35,15 @@ scripts/
 ## 📋 스크립트별 상세 설명
 
 ### 1. cloud-master-advanced.sh
-**고도화된 통합 Helper 스크립트 (권장)**
+**고도화된 통합 Helper 스크립트 ["권장"]**
 
 ```bash
 ./cloud-master-advanced.sh
 ```
 
 **주요 기능:**
-- 종합 환경 체크 (AWS, GCP, Docker, Git)
-- 리소스 현황 모니터링 (AWS/GCP/Docker)
+- 종합 환경 체크 [AWS, GCP, Docker, Git]
+- 리소스 현황 모니터링 [AWS/GCP/Docker]
 - 비용 분석 및 최적화 제안
 - 모니터링 스택 자동 설정
 - Day별 실습 자동화
@@ -64,14 +64,14 @@ scripts/
 ```
 
 **주요 기능:**
-- 환경 체크 (AWS, GCP, Docker, Git 등)
+- 환경 체크 ["AWS, GCP, Docker, Git 등"]
 - AWS/GCP 리소스 상태 확인
 - Docker 컨테이너 상태 확인
 - Day1/Day2/Day3 실습 도구 통합 메뉴
 
 **사용 예시:**
 ```bash
-# 고도화된 스크립트 실행 (권장)
+# 고도화된 스크립트 실행 ["권장"]
 ./cloud-master-advanced.sh
 
 # 메뉴에서 선택하여 실행
@@ -116,8 +116,8 @@ scripts/
 
 **주요 기능:**
 - WSL 환경 설정 확인
-- AWS EC2 인스턴스 생성 (오류 수정됨)
-- GCP Compute 인스턴스 생성 (오류 수정됨)
+- AWS EC2 인스턴스 생성 ["오류 수정됨"]
+- GCP Compute 인스턴스 생성 ["오류 수정됨"]
 - Docker 기본 실습
 - GitHub Actions 설정
 
@@ -190,7 +190,7 @@ sh get-docker.sh
 # Git
 sudo apt update && sudo apt install git
 
-# jq (JSON 처리용)
+# jq ["JSON 처리용"]
 sudo apt install jq
 ```
 
@@ -232,11 +232,11 @@ export REDIS_PASSWORD=""
 
 ### 2. 실제 리소스 테스트
 ```bash
-# Day1 실습 (실제 인스턴스 생성)
+# Day1 실습 ["실제 인스턴스 생성"]
 ./day1-practice-improved.sh
 # 메뉴에서 "2. AWS EC2 인스턴스 생성" 선택
 
-# AWS 로드 밸런싱 (실제 리소스 생성)
+# AWS 로드 밸런싱 ["실제 리소스 생성"]
 ./aws-loadbalancing-improved.sh
 ```
 
@@ -257,13 +257,13 @@ export REDIS_PASSWORD=""
 
 ## 📊 개선 효과
 
-### Before (기존 스크립트)
+### Before ["기존 스크립트"]
 - ❌ 명령어 오류 빈발
 - ❌ 진행 상태 불명확
 - ❌ 오류 처리 부족
 - ❌ 중복된 스크립트 분산
 
-### After (개선된 스크립트)
+### After ["개선된 스크립트"]
 - ✅ WSL 히스토리 기반 오류 수정
 - ✅ Interactive 메뉴 시스템
 - ✅ 단계별 검증 및 복구

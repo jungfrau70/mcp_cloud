@@ -39,7 +39,7 @@ cd C:/Users/JIH/githubs/mcp_cloud/./automation_tests && python run_basic_course_
 
 ### 📊 테스트 세부 결과
 
-**1. BasicCourseAutomation 테스트 (10개)**
+**1. BasicCourseAutomation 테스트 ["10개"]**
 - ✅ 설정 초기화 테스트
 - ✅ 환경 변수 설정 테스트
 - ✅ 일일 계획 생성 테스트
@@ -51,7 +51,7 @@ cd C:/Users/JIH/githubs/mcp_cloud/./automation_tests && python run_basic_course_
 - ✅ Day 2 스크립트 생성 테스트
 - ✅ 결과 저장 테스트
 
-**2. 통합 테스트 (2개)**
+**2. 통합 테스트 ["2개"]**
 - ✅ 전체 자동화 성공 테스트
 - ✅ 누락된 도구가 있는 경우 테스트
 
@@ -76,14 +76,14 @@ cd C:/Users/JIH/githubs/mcp_cloud/./automation_tests && python run_basic_course_
 ### 🔧 Basic 과정 자동화 시스템 특징
 
 1. **완전한 테스트 커버리지**: 12개의 포괄적인 테스트
-2. **견고한 오류 처리**: 누락된 도구(gcloud-cli)가 있어도 계속 진행
+2. **견고한 오류 처리**: 누락된 도구[gcloud-cli]가 있어도 계속 진행
 3. **모듈화된 구조**: Day별로 분리된 스크립트 생성
 4. **입문자 중심**: AWS/GCP 기초 서비스, IAM, VM, 스토리지, 네트워킹, 보안, 데이터베이스 중심
 
 ### ⚠️ 주의사항
 
 **누락된 도구:**
-- `gcloud-cli` (GCP CLI)
+- `gcloud-cli` [GCP CLI]
 
 하지만 자동화 시스템이 부분적으로라도 계속 진행하도록 설계되어 있어서 성공적으로 완료되었습니다.
 
@@ -113,14 +113,14 @@ chmod +x *.sh
 
 **Day 1: AWS & GCP 기초 서비스 실습**
 - 클라우드 개념 및 계정 생성
-- IAM 기초 실습 (사용자, 그룹, 역할, 정책)
-- 가상머신 서비스 기초 (EC2, Compute Engine)
-- 스토리지 서비스 기초 (S3, Cloud Storage)
+- IAM 기초 실습 ["사용자, 그룹, 역할, 정책"]
+- 가상머신 서비스 기초 [EC2, Compute Engine]
+- 스토리지 서비스 기초 [S3, Cloud Storage]
 
 **Day 2: 네트워크, 보안 및 데이터베이스 실습**
-- 네트워킹 기초 실습 (VPC, 서브넷, 라우팅)
+- 네트워킹 기초 실습 ["VPC, 서브넷, 라우팅"]
 - 보안 그룹 및 방화벽 실습
-- 데이터베이스 서비스 기초 (RDS, Cloud SQL)
+- 데이터베이스 서비스 기초 [RDS, Cloud SQL]
 - 종합 실습 및 비교 분석
 
 **Basic 과정 실습 코드 수행 및 테스트가 성공적으로 완료되었습니다!** 🚀
@@ -134,6 +134,6 @@ chmod +x *.sh
 
 <div align="center">
 
-[📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

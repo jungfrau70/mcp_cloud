@@ -1,22 +1,22 @@
 # WSL 고급 설정 및 개발 환경 구성 가이드
 
-이 가이드는 Cloud Master 과정을 위한 WSL(Windows Subsystem for Linux) 환경의 고급 설정과 개발 환경 구성을 다룹니다. 기본 WSL 설치가 완료된 후 추가 설정이 필요한 경우를 위한 가이드입니다.
+이 가이드는 Cloud Master 과정을 위한 WSL[Windows Subsystem for Linux] 환경의 고급 설정과 개발 환경 구성을 다룹니다. 기본 WSL 설치가 완료된 후 추가 설정이 필요한 경우를 위한 가이드입니다.
 
 ## 📋 목차
 
-1. [사전 요구사항](#1-사전-요구사항)
-2. [WSL 고급 설정](#2-wsl-고급-설정)
-3. [개발 환경 구성](#3-개발-환경-구성)
-   - [자동화된 설치 스크립트](#31-자동화된-설치-스크립트-권장)
-   - [설치되는 도구들](#32-설치되는-도구들)
-   - [Git 설정](#33-git-설정)
-   - [설치 후 설정](#34-설치-후-설정)
-   - [작업 디렉토리](#35-작업-디렉토리)
-   - [사용법 예시](#36-사용법-예시)
-4. [성능 최적화](#4-성능-최적화)
-5. [GUI 애플리케이션 실행](#5-gui-애플리케이션-실행)
-6. [보안 모범 사례](#6-보안-모범-사례)
-7. [문제 해결](#7-문제-해결)
+1. ["사전 요구사항"]["#1-사전-요구사항"]
+2. ["WSL 고급 설정"]["#2-wsl-고급-설정"]
+3. ["개발 환경 구성"]["#3-개발-환경-구성"]
+   - ["자동화된 설치 스크립트"]["#31-자동화된-설치-스크립트-권장"]
+   - ["설치되는 도구들"]["#32-설치되는-도구들"]
+   - ["Git 설정"]["#33-git-설정"]
+   - ["설치 후 설정"]["#34-설치-후-설정"]
+   - ["작업 디렉토리"]["#35-작업-디렉토리"]
+   - ["사용법 예시"]["#36-사용법-예시"]
+4. ["성능 최적화"]["#4-성능-최적화"]
+5. ["GUI 애플리케이션 실행"]["#5-gui-애플리케이션-실행"]
+6. ["보안 모범 사례"]["#6-보안-모범-사례"]
+7. ["문제 해결"]["#7-문제-해결"]
 
 ---
 
@@ -28,10 +28,10 @@
 - 기본 Linux 배포판 설치 완료
 - 기본 사용자 계정 설정 완료
 
-> **📖 참고**: 기본 WSL 설치가 필요하다면 [wsl-install.md](wsl-install.md)를 먼저 참조하세요.
+> **📖 참고**: 기본 WSL 설치가 필요하다면 [wsl-install.md][wsl-install.md]를 먼저 참조하세요.
 
 ### 1.2 시스템 요구사항
-- **RAM**: 최소 8GB (16GB 권장)
+- **RAM**: 최소 8GB ["16GB 권장"]
 - **저장공간**: 최소 20GB 여유 공간
 - **CPU**: 64비트 프로세서
 - **가상화**: BIOS/UEFI에서 가상화 활성화 필요
@@ -75,13 +75,13 @@ wsl --unregister Ubuntu-20.04
 
 ```ini
 [wsl2]
-# 메모리 제한 (기본값: 시스템 RAM의 50%)
+# 메모리 제한 ["기본값: 시스템 RAM의 50%"]
 memory=8GB
 
-# CPU 코어 수 제한 (기본값: 시스템 CPU의 50%)
+# CPU 코어 수 제한 ["기본값: 시스템 CPU의 50%"]
 processors=4
 
-# 스왑 파일 크기 (기본값: 메모리의 25%)
+# 스왑 파일 크기 ["기본값: 메모리의 25%"]
 swap=2GB
 
 # 스왑 파일 위치
@@ -90,7 +90,7 @@ swapFile=C:\\temp\\wsl-swap.vhdx
 # 가상 디스크 위치
 vmIdleTimeout=60000
 
-# 네트워킹 모드 (mirrored, nat, none)
+# 네트워킹 모드 [mirrored, nat, none]
 networkingMode=mirrored
 
 # DNS 서버 설정
@@ -155,7 +155,7 @@ sudo apt install -y \
 
 ## 3. 개발 환경 구성
 
-### 3.1 자동화된 설치 스크립트 (권장)
+### 3.1 자동화된 설치 스크립트 ["권장"]
 
 Cloud Master 과정에 필요한 모든 도구를 한 번에 설치할 수 있는 자동화 스크립트를 제공합니다.
 
@@ -178,7 +178,7 @@ chmod +x check-environment.sh
 ./check-environment.sh
 ```
 
-#### 개별 도구 설치 (선택사항)
+#### 개별 도구 설치 ["선택사항"]
 ```bash
 # AWS CLI 설치
 chmod +x install-aws-cli-wsl.sh
@@ -229,7 +229,7 @@ chmod +x install-dev-tools-wsl.sh
 - **Go**: Go 프로그래밍 언어
 - **Rust**: Rust 프로그래밍 언어
 - **Git**: 버전 관리 시스템
-- **VS Code Server**: 웹 기반 코드 에디터 (선택사항)
+- **VS Code Server**: 웹 기반 코드 에디터 ["선택사항"]
 - **GitHub CLI**: GitHub 명령줄 도구
 
 #### 시스템 도구
@@ -244,7 +244,7 @@ chmod +x install-dev-tools-wsl.sh
 - **ripgrep**: grep 명령어 개선 버전
 
 #### 보안 도구
-- **SSH 키 관리**: 자동 권한 설정 (400)
+- **SSH 키 관리**: 자동 권한 설정 [400]
 - **GPG**: 암호화 및 서명
 - **pass**: 비밀번호 관리자
 
@@ -275,10 +275,10 @@ git config --list --global
 ssh-keygen -t ed25519 -C "your.email@example.com"
 
 # SSH 키를 SSH 에이전트에 추가
-eval "$(ssh-agent -s)"
+eval "$[ssh-agent -s]"
 ssh-add ~/.ssh/id_ed25519
 
-# 공개 키 확인 (GitHub/GitLab에 등록)
+# 공개 키 확인 ["GitHub/GitLab에 등록"]
 cat ~/.ssh/id_ed25519.pub
 ```
 
@@ -294,7 +294,7 @@ code-server --bind-addr 0.0.0.0:8080
 ```
 
 #### Docker Desktop WSL2 통합
-1. Docker Desktop 설치 (Windows)
+1. Docker Desktop 설치 [Windows]
 2. Docker Desktop 실행
 3. Settings → Resources → WSL Integration
 4. 'Enable integration with my default WSL distro' 체크
@@ -304,14 +304,14 @@ code-server --bind-addr 0.0.0.0:8080
 #### Kubernetes 개발 환경
 ```bash
 # kubectl 설치
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https://dl.k8s.io/release/$[curl -L -s https://dl.k8s.io/release/stable.txt]/bin/linux/amd64/kubectl"
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 
 # Helm 설치
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-# Minikube 설치 (로컬 Kubernetes)
+# Minikube 설치 ["로컬 Kubernetes"]
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
 ```
@@ -387,8 +387,8 @@ aws configure
 설정할 정보:
 - AWS Access Key ID
 - AWS Secret Access Key
-- Default region name (예: ap-northeast-2)
-- Default output format (예: json)
+- Default region name ["예: ap-northeast-2"]
+- Default output format ["예: json"]
 
 #### GCP 설정
 ```bash
@@ -401,8 +401,8 @@ gcloud auth list
 설정할 정보:
 - GCP 계정 로그인
 - 프로젝트 선택
-- 기본 리전 설정 (예: asia-northeast3)
-- 기본 존 설정 (예: asia-northeast3-a)
+- 기본 리전 설정 ["예: asia-northeast3"]
+- 기본 존 설정 ["예: asia-northeast3-a"]
 
 #### Docker 권한 설정
 ```bash
@@ -411,13 +411,13 @@ newgrp docker
 
 # 또는 로그아웃 후 다시 로그인
 
-# Docker 서비스 시작 (WSL에서)
+# Docker 서비스 시작 ["WSL에서"]
 sudo service docker start
 ```
 
 #### SSH 키 설정
 ```bash
-# SSH 키 생성 (없는 경우)
+# SSH 키 생성 ["없는 경우"]
 ssh-keygen -t ed25519 -C "your-email@example.com"
 
 # SSH 키 권한 자동 설정
@@ -449,7 +449,7 @@ aws s3 ls
 # IAM 사용자 정보
 aws sts get-caller-identity
 
-# AWS Vault 사용 (보안 강화)
+# AWS Vault 사용 ["보안 강화"]
 aws-vault exec default -- aws s3 ls
 ```
 
@@ -506,7 +506,7 @@ helm install my-app stable/nginx
 # SSH 키 생성
 ssh-keygen -t ed25519 -C "your-email@example.com"
 
-# SSH 키 권한 설정 (자동)
+# SSH 키 권한 설정 ["자동"]
 chmod 400 ~/.ssh/id_ed25519*
 
 # EC2 인스턴스 연결
@@ -577,7 +577,7 @@ nameserver 8.8.4.4
 nameserver 1.1.1.1
 EOF
 
-# DNS 설정 고정 (WSL 재시작 시에도 유지)
+# DNS 설정 고정 ["WSL 재시작 시에도 유지"]
 sudo chattr +i /etc/resolv.conf
 ```
 
@@ -603,8 +603,8 @@ sudo ufw enable
 
 ### 5.1 X 서버 설치 및 설정
 
-#### VcXsrv 설치 (Windows)
-1. [VcXsrv 다운로드](https://sourceforge.net/projects/vcxsrv/)
+#### VcXsrv 설치 [Windows]
+1. ["VcXsrv 다운로드"][https://sourceforge.net/projects/vcxsrv/]
 2. VcXsrv 설치 및 실행
 3. Display settings: Multiple windows
 4. Client startup: Start no client
@@ -613,15 +613,15 @@ sudo ufw enable
 #### WSL에서 X 서버 연결
 ```bash
 # DISPLAY 환경 변수 설정
-export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+export DISPLAY=$[cat /etc/resolv.conf | grep nameserver | awk '{print $2}']:0
 
 # .bashrc에 추가
-echo 'export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0' >> ~/.bashrc
+echo 'export DISPLAY=$[cat /etc/resolv.conf | grep nameserver | awk '{print $2}']:0' >> ~/.bashrc
 
 # X11 유틸리티 설치
 sudo apt install -y x11-apps
 
-# 테스트 (xeyes 실행)
+# 테스트 ["xeyes 실행"]
 xeyes
 ```
 
@@ -641,7 +641,7 @@ sudo apt install -y google-chrome-stable
 
 #### 개발 도구
 ```bash
-# Visual Studio Code (GUI)
+# Visual Studio Code [GUI]
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
 sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
@@ -657,8 +657,8 @@ sudo snap install intellij-idea-community --classic
 ## 6. 보안 모범 사례
 
 ### 6.1 SSH 키 관리
-- **키 파일 권한**: 항상 400 (소유자만 읽기)
-- **SSH 디렉토리 권한**: 700 (소유자만 접근)
+- **키 파일 권한**: 항상 400 ["소유자만 읽기"]
+- **SSH 디렉토리 권한**: 700 ["소유자만 접근"]
 - **키 생성**: ED25519 알고리즘 사용 권장
 - **키 백업**: 안전한 위치에 암호화하여 저장
 
@@ -845,14 +845,14 @@ kubectl version --client
 ## 📚 추가 자료
 
 ### 관련 문서
-- [WSL 기본 설치 가이드](wsl-install.md)
-- [Cloud Master 실습 가이드](../../execuise-guide.md)
-- [Docker 설치 가이드](../../repos/install/)
+- ["WSL 기본 설치 가이드"][wsl-install.md]
+- ["Cloud Master 실습 가이드"][../../execuise-guide.md]
+- ["Docker 설치 가이드"][../../repos/install/]
 
 ### 유용한 링크
-- [Microsoft WSL 공식 문서](https://docs.microsoft.com/ko-kr/windows/wsl/)
-- [WSL 2 릴리스 노트](https://docs.microsoft.com/ko-kr/windows/wsl/release-notes)
-- [Docker Desktop WSL2 백엔드](https://docs.docker.com/desktop/wsl/)
+- ["Microsoft WSL 공식 문서"][https://docs.microsoft.com/ko-kr/windows/wsl/]
+- ["WSL 2 릴리스 노트"][https://docs.microsoft.com/ko-kr/windows/wsl/release-notes]
+- ["Docker Desktop WSL2 백엔드"][https://docs.docker.com/desktop/wsl/]
 
 ---
 

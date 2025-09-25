@@ -1,7 +1,7 @@
 
 ## 🎯 실습 목표
 
-[🎯 실습 목표](#실습-목표)
+["🎯 실습 목표"]["#실습-목표"]
 
 이 실습을 통해 다음을 달성할 수 있습니다:
 
@@ -17,13 +17,13 @@
 
 ## 🎯 프로젝트 개요
 
-[🎯 프로젝트 개요](#프로젝트-개요)
+["🎯 프로젝트 개요"]["#프로젝트-개요"]
 
 이 종합 프로젝트를 통해 지금까지 학습한 모든 기술을 통합하여 **실제 서비스 시나리오**에 맞는 고가용성 클라우드 아키텍처를 구축합니다.
 
 ### 프로젝트 요구사항
 
-[프로젝트 요구사항](#프로젝트-요구사항)
+["프로젝트 요구사항"]["#프로젝트-요구사항"]
 
 - **고가용성**: 99.9% 가용성 보장
 - **확장성**: 트래픽 증가에 따른 자동 확장
@@ -33,16 +33,16 @@
 
 ## 🏗️ 아키텍처 설계
 
-[🏗️ 아키텍처 설계](#아키텍처-설계)
+["🏗️ 아키텍처 설계"]["#아키텍처-설계"]
 
 ### 전체 아키텍처
 
-[전체 아키텍처](#전체-아키텍처)
+["전체 아키텍처"]["#전체-아키텍처"]
 
 ```
 Internet
     ↓
-CloudFront (CDN)
+CloudFront [CDN]
     ↓
 Application Load Balancer
     ↓
@@ -54,24 +54,24 @@ RDS Multi-AZ
     ↓
 ElastiCache Redis
     ↓
-S3 (Static Assets)
+S3 [Static Assets]
 ```
 
 ### AWS 아키텍처
 
-[AWS 아키텍처](#aws-아키텍처)
+["AWS 아키텍처"]["#aws-아키텍처"]
 
 ```
 ┌─────────────────┐    ┌─────────────────┐
 │   CloudFront    │    │   Route 53      │
-│   (CDN)         │    │   (DNS)         │
+│   [CDN]         │    │   [DNS]         │
 └─────────────────┘    └─────────────────┘
          │                       │
          └───────────┬───────────┘
                      │
          ┌─────────────────┐
          │   ALB           │
-         │   (Load Balancer)│
+         │   [Load Balancer]│
          └─────────────────┘
                      │
     ┌────────────────┼────────────────┐
@@ -94,71 +94,71 @@ S3 (Static Assets)
 
 ## 🚀 1단계: 인프라 구성
 
-[🚀 1단계: 인프라 구성](#1단계-인프라-구성)
+["🚀 1단계: 인프라 구성"]["#1단계-인프라-구성"]
 
 ### 1.1 VPC 및 네트워킹 설정
 
-[1.1 VPC 및 네트워킹 설정](#11-vpc-및-네트워킹-설정)
+["1.1 VPC 및 네트워킹 설정"]["#11-vpc-및-네트워킹-설정"]
 
 ```bash
 #!/bin/bash
 # infrastructure-setup.sh
 
 # VPC 생성
-VPC_ID=$(aws ec2 create-vpc /
+VPC_ID=$[aws ec2 create-vpc /
     --cidr-block 10.0.0.0/16 /
     --tag-specifications 'ResourceType=vpc,Tags=[{Key=Name,Value=production-vpc}]' /
     --query 'Vpc.VpcId' /
-    --output text)
+    --output text]
 
 echo "VPC ID: $VPC_ID"
 
 # 인터넷 게이트웨이 생성
-IGW_ID=$(aws ec2 create-internet-gateway /
+IGW_ID=$[aws ec2 create-internet-gateway /
     --tag-specifications 'ResourceType=internet-gateway,Tags=[{Key=Name,Value=production-igw}]' /
     --query 'InternetGateway.InternetGatewayId' /
-    --output text)
+    --output text]
 
 # VPC에 인터넷 게이트웨이 연결
 aws ec2 attach-internet-gateway /
     --vpc-id $VPC_ID /
     --internet-gateway-id $IGW_ID
 
-# Public 서브넷 생성 (AZ-a)
-PUBLIC_SUBNET_1=$(aws ec2 create-subnet /
+# Public 서브넷 생성 [AZ-a]
+PUBLIC_SUBNET_1=$[aws ec2 create-subnet /
     --vpc-id $VPC_ID /
     --cidr-block 10.0.1.0/24 /
     --availability-zone ap-northeast-2a /
     --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=public-subnet-1}]' /
     --query 'Subnet.SubnetId' /
-    --output text)
+    --output text]
 
-# Public 서브넷 생성 (AZ-c)
-PUBLIC_SUBNET_2=$(aws ec2 create-subnet /
+# Public 서브넷 생성 [AZ-c]
+PUBLIC_SUBNET_2=$[aws ec2 create-subnet /
     --vpc-id $VPC_ID /
     --cidr-block 10.0.2.0/24 /
     --availability-zone ap-northeast-2c /
     --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=public-subnet-2}]' /
     --query 'Subnet.SubnetId' /
-    --output text)
+    --output text]
 
-# Private 서브넷 생성 (AZ-a)
-PRIVATE_SUBNET_1=$(aws ec2 create-subnet /
+# Private 서브넷 생성 [AZ-a]
+PRIVATE_SUBNET_1=$[aws ec2 create-subnet /
     --vpc-id $VPC_ID /
     --cidr-block 10.0.10.0/24 /
     --availability-zone ap-northeast-2a /
     --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=private-subnet-1}]' /
     --query 'Subnet.SubnetId' /
-    --output text)
+    --output text]
 
-# Private 서브넷 생성 (AZ-c)
-PRIVATE_SUBNET_2=$(aws ec2 create-subnet /
+# Private 서브넷 생성 [AZ-c]
+PRIVATE_SUBNET_2=$[aws ec2 create-subnet /
     --vpc-id $VPC_ID /
     --cidr-block 10.0.20.0/24 /
     --availability-zone ap-northeast-2c /
     --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=private-subnet-2}]' /
     --query 'Subnet.SubnetId' /
-    --output text)
+    --output text]
 
 echo "Public Subnets: $PUBLIC_SUBNET_1, $PUBLIC_SUBNET_2"
 echo "Private Subnets: $PRIVATE_SUBNET_1, $PRIVATE_SUBNET_2"
@@ -166,16 +166,16 @@ echo "Private Subnets: $PRIVATE_SUBNET_1, $PRIVATE_SUBNET_2"
 
 ### 1.2 보안 그룹 설정
 
-[1.2 보안 그룹 설정](#12-보안-그룹-설정)
+["1.2 보안 그룹 설정"]["#12-보안-그룹-설정"]
 
 ```bash
 # ALB 보안 그룹
-ALB_SG_ID=$(aws ec2 create-security-group /
+ALB_SG_ID=$[aws ec2 create-security-group /
     --group-name production-alb-sg /
     --description "Security group for ALB" /
     --vpc-id $VPC_ID /
     --query 'GroupId' /
-    --output text)
+    --output text]
 
 # HTTP/HTTPS 허용
 aws ec2 authorize-security-group-ingress /
@@ -191,12 +191,12 @@ aws ec2 authorize-security-group-ingress /
     --cidr 0.0.0.0/0
 
 # ECS 보안 그룹
-ECS_SG_ID=$(aws ec2 create-security-group /
+ECS_SG_ID=$[aws ec2 create-security-group /
     --group-name production-ecs-sg /
     --description "Security group for ECS" /
     --vpc-id $VPC_ID /
     --query 'GroupId' /
-    --output text)
+    --output text]
 
 # ALB에서 ECS로 트래픽 허용
 aws ec2 authorize-security-group-ingress /
@@ -206,12 +206,12 @@ aws ec2 authorize-security-group-ingress /
     --source-group $ALB_SG_ID
 
 # RDS 보안 그룹
-RDS_SG_ID=$(aws ec2 create-security-group /
+RDS_SG_ID=$[aws ec2 create-security-group /
     --group-name production-rds-sg /
     --description "Security group for RDS" /
     --vpc-id $VPC_ID /
     --query 'GroupId' /
-    --output text)
+    --output text]
 
 # ECS에서 RDS로 트래픽 허용
 aws ec2 authorize-security-group-ingress /
@@ -223,31 +223,31 @@ aws ec2 authorize-security-group-ingress /
 
 ## 🐳 2단계: 애플리케이션 컨테이너화
 
-[🐳 2단계: 애플리케이션 컨테이너화](#2단계-애플리케이션-컨테이너화)
+["🐳 2단계: 애플리케이션 컨테이너화"]["#2단계-애플리케이션-컨테이너화"]
 
 ### 2.1 Node.js 애플리케이션 생성
 
-[2.1 Node.js 애플리케이션 생성](#21-nodejs-애플리케이션-생성)
+["2.1 Node.js 애플리케이션 생성"]["#21-nodejs-애플리케이션-생성"]
 
 ```javascript
 // app.js
-const express = require('express');
-const mysql = require('mysql2/promise');
-const redis = require('redis');
-const cors = require('cors');
+const express = require['express'];
+const mysql = require['mysql2/promise'];
+const redis = require['redis'];
+const cors = require['cors'];
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 미들웨어
-app.use(cors());
-app.use(express.json());
+app.use[cors[]];
+app.use[express.json[]];
 
 // Redis 연결
-const redisClient = redis.createClient({
+const redisClient = redis.createClient[{
     host: process.env.REDIS_HOST || 'localhost',
     port: process.env.REDIS_PORT || 6379
-});
+}];
 
 // MySQL 연결
 const dbConfig = {
@@ -258,65 +258,65 @@ const dbConfig = {
 };
 
 // 헬스 체크 엔드포인트
-app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
-});
+app.get['/health', [req, res] => {
+    res.status[200].json[{ status: 'healthy', timestamp: new Date[].toISOString[] }];
+}];
 
 // 메인 API 엔드포인트
-app.get('/api/users', async (req, res) => {
+app.get['/api/users', async [req, res] => {
     try {
         // Redis에서 캐시 확인
         const cacheKey = 'users:all';
-        const cached = await redisClient.get(cacheKey);
+        const cached = await redisClient.get[cacheKey];
         
-        if (cached) {
-            return res.json(JSON.parse(cached));
+        if [cached] {
+            return res.json[JSON.parse[cached]];
         }
         
         // 데이터베이스에서 조회
-        const connection = await mysql.createConnection(dbConfig);
-        const [rows] = await connection.execute('SELECT * FROM users');
-        await connection.end();
+        const connection = await mysql.createConnection[dbConfig];
+        const [rows] = await connection.execute['SELECT * FROM users'];
+        await connection.end[];
         
-        // Redis에 캐시 저장 (5분)
-        await redisClient.setex(cacheKey, 300, JSON.stringify(rows));
+        // Redis에 캐시 저장 ["5분"]
+        await redisClient.setex[cacheKey, 300, JSON.stringify[rows]];
         
-        res.json(rows);
-    } catch (error) {
-        console.error('Error fetching users:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.json[rows];
+    } catch [error] {
+        console.error['Error fetching users:', error];
+        res.status[500].json[{ error: 'Internal server error' }];
     }
-});
+}];
 
-app.post('/api/users', async (req, res) => {
+app.post['/api/users', async [req, res] => {
     try {
         const { name, email } = req.body;
         
-        const connection = await mysql.createConnection(dbConfig);
-        const [result] = await connection.execute(
-            'INSERT INTO users (name, email) VALUES (?, ?)',
+        const connection = await mysql.createConnection[dbConfig];
+        const [result] = await connection.execute[
+            'INSERT INTO users [name, email] VALUES [?, ?]',
             [name, email]
-        );
-        await connection.end();
+        ];
+        await connection.end[];
         
         // 캐시 무효화
-        await redisClient.del('users:all');
+        await redisClient.del['users:all'];
         
-        res.status(201).json({ id: result.insertId, name, email });
-    } catch (error) {
-        console.error('Error creating user:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status[201].json[{ id: result.insertId, name, email }];
+    } catch [error] {
+        console.error['Error creating user:', error];
+        res.status[500].json[{ error: 'Internal server error' }];
     }
-});
+}];
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+app.listen[PORT, [] => {
+    console.log[`Server running on port ${PORT}`];
+}];
 ```
 
 ### 2.2 Dockerfile 생성
 
-[2.2 Dockerfile 생성](#22-dockerfile-생성)
+["2.2 Dockerfile 생성"]["#22-dockerfile-생성"]
 
 ```dockerfile
 # Dockerfile
@@ -362,7 +362,7 @@ CMD ["node", "app.js"]
 
 ### 2.3 Docker Compose 설정
 
-[2.3 Docker Compose 설정](#23-docker-compose-설정)
+["2.3 Docker Compose 설정"]["#23-docker-compose-설정"]
 
 ```yaml
 # docker-compose.yml
@@ -417,11 +417,11 @@ volumes:
 
 ## ☁️ 3단계: AWS 서비스 구성
 
-[☁️ 3단계: AWS 서비스 구성](#3단계-aws-서비스-구성)
+["☁️ 3단계: AWS 서비스 구성"]["#3단계-aws-서비스-구성"]
 
 ### 3.1 RDS 데이터베이스 생성
 
-[3.1 RDS 데이터베이스 생성](#31-rds-데이터베이스-생성)
+["3.1 RDS 데이터베이스 생성"]["#31-rds-데이터베이스-생성"]
 
 ```bash
 # DB 서브넷 그룹 생성
@@ -447,7 +447,7 @@ aws rds create-db-instance /
 
 ### 3.2 ElastiCache Redis 생성
 
-[3.2 ElastiCache Redis 생성](#32-elasticache-redis-생성)
+["3.2 ElastiCache Redis 생성"]["#32-elasticache-redis-생성"]
 
 ```bash
 # Redis 서브넷 그룹 생성
@@ -468,7 +468,7 @@ aws elasticache create-cache-cluster /
 
 ### 3.3 ECS 클러스터 및 서비스 생성
 
-[3.3 ECS 클러스터 및 서비스 생성](#33-ecs-클러스터-및-서비스-생성)
+["3.3 ECS 클러스터 및 서비스 생성"]["#33-ecs-클러스터-및-서비스-생성"]
 
 ```bash
 # ECS 클러스터 생성
@@ -548,11 +548,11 @@ aws ecs register-task-definition --cli-input-json file://task-definition.json
 
 ### 3.4 Application Load Balancer 생성
 
-[3.4 Application Load Balancer 생성](#34-application-load-balancer-생성)
+["3.4 Application Load Balancer 생성"]["#34-application-load-balancer-생성"]
 
 ```bash
 # ALB 생성
-ALB_ARN=$(aws elbv2 create-load-balancer /
+ALB_ARN=$[aws elbv2 create-load-balancer /
     --name production-alb /
     --subnets $PUBLIC_SUBNET_1 $PUBLIC_SUBNET_2 /
     --security-groups $ALB_SG_ID /
@@ -560,10 +560,10 @@ ALB_ARN=$(aws elbv2 create-load-balancer /
     --type application /
     --ip-address-type ipv4 /
     --query 'LoadBalancers[0].LoadBalancerArn' /
-    --output text)
+    --output text]
 
 # Target Group 생성
-TARGET_GROUP_ARN=$(aws elbv2 create-target-group /
+TARGET_GROUP_ARN=$[aws elbv2 create-target-group /
     --name production-targets /
     --protocol HTTP /
     --port 3000 /
@@ -575,7 +575,7 @@ TARGET_GROUP_ARN=$(aws elbv2 create-target-group /
     --healthy-threshold-count 2 /
     --unhealthy-threshold-count 3 /
     --query 'TargetGroups[0].TargetGroupArn' /
-    --output text)
+    --output text]
 
 # 리스너 생성
 aws elbv2 create-listener /
@@ -587,11 +587,11 @@ aws elbv2 create-listener /
 
 ## 📊 4단계: 모니터링 및 알림 설정
 
-[📊 4단계: 모니터링 및 알림 설정](#4단계-모니터링-및-알림-설정)
+["📊 4단계: 모니터링 및 알림 설정"]["#4단계-모니터링-및-알림-설정"]
 
 ### 4.1 CloudWatch 로그 그룹 생성
 
-[4.1 CloudWatch 로그 그룹 생성](#41-cloudwatch-로그-그룹-생성)
+["4.1 CloudWatch 로그 그룹 생성"]["#41-cloudwatch-로그-그룹-생성"]
 
 ```bash
 # 로그 그룹 생성
@@ -602,7 +602,7 @@ aws logs create-log-group /
 
 ### 4.2 CloudWatch 알람 설정
 
-[4.2 CloudWatch 알람 설정](#42-cloudwatch-알람-설정)
+["4.2 CloudWatch 알람 설정"]["#42-cloudwatch-알람-설정"]
 
 ```bash
 # CPU 사용률 알람
@@ -634,7 +634,7 @@ aws cloudwatch put-metric-alarm /
 
 ### 4.3 대시보드 생성
 
-[4.3 대시보드 생성](#43-대시보드-생성)
+["4.3 대시보드 생성"]["#43-대시보드-생성"]
 
 ```bash
 # 종합 대시보드 생성
@@ -674,20 +674,20 @@ aws cloudwatch put-dashboard /
 
 ## 🧪 5단계: 테스트 및 검증
 
-[🧪 5단계: 테스트 및 검증](#5단계-테스트-및-검증)
+["🧪 5단계: 테스트 및 검증"]["#5단계-테스트-및-검증"]
 
 ### 5.1 부하 테스트
 
-[5.1 부하 테스트](#51-부하-테스트)
+["5.1 부하 테스트"]["#51-부하-테스트"]
 
 ```bash
 #!/bin/bash
 # load-test.sh
 
-ALB_DNS=$(aws elbv2 describe-load-balancers /
+ALB_DNS=$[aws elbv2 describe-load-balancers /
     --names production-alb /
     --query 'LoadBalancers[0].DNSName' /
-    --output text)
+    --output text]
 
 echo "Testing load balancer: $ALB_DNS"
 
@@ -700,27 +700,27 @@ wrk -t12 -c400 -d30s http://$ALB_DNS/api/users
 
 ### 5.2 장애 복구 테스트
 
-[5.2 장애 복구 테스트](#52-장애-복구-테스트)
+["5.2 장애 복구 테스트"]["#52-장애-복구-테스트"]
 
 ```bash
 #!/bin/bash
 # failover-test.sh
 
 # ECS 서비스의 태스크 수 확인
-TASK_COUNT=$(aws ecs describe-services /
+TASK_COUNT=$[aws ecs describe-services /
     --cluster production-cluster /
     --services production-service /
     --query 'services[0].runningCount' /
-    --output text)
+    --output text]
 
 echo "Current task count: $TASK_COUNT"
 
-# 태스크 중지 (장애 시뮬레이션)
-TASK_ARN=$(aws ecs list-tasks /
+# 태스크 중지 ["장애 시뮬레이션"]
+TASK_ARN=$[aws ecs list-tasks /
     --cluster production-cluster /
     --service-name production-service /
     --query 'taskArns[0]' /
-    --output text)
+    --output text]
 
 aws ecs stop-task /
     --cluster production-cluster /
@@ -731,22 +731,22 @@ echo "Stopped task: $TASK_ARN"
 # Auto Scaling이 새로운 태스크를 생성하는지 확인
 sleep 60
 
-NEW_TASK_COUNT=$(aws ecs describe-services /
+NEW_TASK_COUNT=$[aws ecs describe-services /
     --cluster production-cluster /
     --services production-service /
     --query 'services[0].runningCount' /
-    --output text)
+    --output text]
 
 echo "New task count: $NEW_TASK_COUNT"
 ```
 
 ## 📈 6단계: 성능 최적화
 
-[📈 6단계: 성능 최적화](#6단계-성능-최적화)
+["📈 6단계: 성능 최적화"]["#6단계-성능-최적화"]
 
 ### 6.1 Auto Scaling 설정
 
-[6.1 Auto Scaling 설정](#61-auto-scaling-설정)
+["6.1 Auto Scaling 설정"]["#61-auto-scaling-설정"]
 
 ```bash
 # ECS 서비스 생성
@@ -786,7 +786,7 @@ aws application-autoscaling put-scaling-policy /
 
 ### 6.2 비용 최적화
 
-[6.2 비용 최적화](#62-비용-최적화)
+["6.2 비용 최적화"]["#62-비용-최적화"]
 
 ```bash
 # Spot 인스턴스 사용을 위한 용량 공급자 추가
@@ -811,11 +811,11 @@ aws budgets create-budget /
 
 ## 📝 7단계: 배포 자동화
 
-[📝 7단계: 배포 자동화](#7단계-배포-자동화)
+["📝 7단계: 배포 자동화"]["#7단계-배포-자동화"]
 
 ### 7.1 GitHub Actions 워크플로우
 
-[7.1 GitHub Actions 워크플로우](#71-github-actions-워크플로우)
+["7.1 GitHub Actions 워크플로우"]["#71-github-actions-워크플로우"]
 
 ```yaml
 # .github/workflows/deploy.yml
@@ -862,11 +862,11 @@ jobs:
 
 ## 📊 8단계: 모니터링 및 알림
 
-[📊 8단계: 모니터링 및 알림](#8단계-모니터링-및-알림)
+["📊 8단계: 모니터링 및 알림"]["#8단계-모니터링-및-알림"]
 
 ### 8.1 종합 모니터링 대시보드
 
-[8.1 종합 모니터링 대시보드](#81-종합-모니터링-대시보드)
+["8.1 종합 모니터링 대시보드"]["#81-종합-모니터링-대시보드"]
 
 ```bash
 # 종합 대시보드 생성
@@ -918,11 +918,11 @@ aws cloudwatch put-dashboard /
 
 ## 📝 실습 결과 확인
 
-[📝 실습 결과 확인](#실습-결과-확인)
+["📝 실습 결과 확인"]["#실습-결과-확인"]
 
 ### 체크리스트
 
-[체크리스트](#체크리스트)
+["체크리스트"]["#체크리스트"]
 
 - [ ] VPC 및 네트워킹 구성 완료
 - [ ] RDS Multi-AZ 데이터베이스 구성 완료
@@ -937,17 +937,17 @@ aws cloudwatch put-dashboard /
 
 ### 성능 지표
 
-[성능 지표](#성능-지표)
+["성능 지표"]["#성능-지표"]
 
 - **가용성**: 99.9% 이상
 - **응답 시간**: 95% 요청이 200ms 이내
 - **처리량**: 초당 1000 요청 처리
 - **복구 시간**: 장애 발생 시 5분 이내 복구
-- **비용**: 월 $100 이하 (Free Tier 활용)
+- **비용**: 월 $100 이하 ["Free Tier 활용"]
 
 ## 🎉 프로젝트 완료
 
-[🎉 프로젝트 완료](#프로젝트-완료)
+["🎉 프로젝트 완료"]["#프로젝트-완료"]
 
 이 종합 프로젝트를 통해 다음을 달성했습니다:
 
@@ -968,6 +968,6 @@ aws cloudwatch put-dashboard /
 
 <div align="center">
 
-[← 이전: Cloud Container 2일차 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Container 2일차 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

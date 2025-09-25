@@ -1,6 +1,6 @@
 # 📋 문서 네비게이션 템플릿
 
-## 🎯 표준 상단 링크 구조 (3단계 계층)
+## 🎯 표준 상단 링크 구조 ["3단계 계층"]
 
 ### Cloud Basic 템플릿
 ```markdown
@@ -14,7 +14,7 @@
 ```markdown
 ```
 
-## 🎯 표준 하단 링크 구조 (상단 + 관련 과정)
+## 🎯 표준 하단 링크 구조 ["상단 + 관련 과정"]
 
 ### Cloud Basic 하단 템플릿
 ```markdown
@@ -36,15 +36,15 @@
 
 ## 🎯 특수 문서 템플릿
 
-### 메인 인덱스 (index.md)
+### 메인 인덱스 [index.md]
 ```markdown
 ```
 
-### 커리큘럼 (curriculum.md)
+### 커리큘럼 [curriculum.md]
 ```markdown
 ```
 
-### 학습 경로 (learning-path.md)
+### 학습 경로 [learning-path.md]
 ```markdown
 ```
 
@@ -86,7 +86,7 @@
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -94,6 +94,6 @@
 
 <div align="center">
 
-[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
+["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
 
 </div>

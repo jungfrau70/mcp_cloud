@@ -9,21 +9,21 @@
 - **프로덕션 환경**: Nginx 리버스 프록시, 보안 설정, 모니터링
 
 ### 실습 후 달성할 수 있는 능력
-- ✅ **고급 GitHub Actions 워크플로우 구축** (매트릭스 빌드, 환경별 배포)
-- ✅ **Docker Compose를 활용한 다중 서비스 관리** (4개 서비스 통합)
-- ✅ **PostgreSQL, Redis 데이터베이스 연동 및 관리** (완전한 CRUD API)
-- ✅ **Nginx 리버스 프록시를 활용한 프로덕션 환경 구축** (로드밸런싱, 보안)
-- ✅ **완전 자동화된 멀티 서비스 배포 파이프라인 구축** (CI/CD 완성)
-- ✅ **모니터링 및 로깅 시스템 구축** (Prometheus, Winston)
-- ✅ **포괄적인 테스트 시스템** (단위 테스트, 통합 테스트)
-- ✅ **성능 최적화 및 보안 강화** (평균 응답시간 6.2ms 달성)
+- ✅ **고급 GitHub Actions 워크플로우 구축** ["매트릭스 빌드, 환경별 배포"]
+- ✅ **Docker Compose를 활용한 다중 서비스 관리** ["4개 서비스 통합"]
+- ✅ **PostgreSQL, Redis 데이터베이스 연동 및 관리** ["완전한 CRUD API"]
+- ✅ **Nginx 리버스 프록시를 활용한 프로덕션 환경 구축** ["로드밸런싱, 보안"]
+- ✅ **완전 자동화된 멀티 서비스 배포 파이프라인 구축** ["CI/CD 완성"]
+- ✅ **모니터링 및 로깅 시스템 구축** [Prometheus, Winston]
+- ✅ **포괄적인 테스트 시스템** ["단위 테스트, 통합 테스트"]
+- ✅ **성능 최적화 및 보안 강화** ["평균 응답시간 6.2ms 달성"]
 
-### 예상 소요 시간 (실제 수업 기준)
+### 예상 소요 시간 ["실제 수업 기준"]
 - **고급 CI/CD**: 120분
 - **Docker Compose 기초**: 90분
 - **데이터베이스 연동**: 120분
 - **프로덕션 환경 구축**: 90분
-- **전체 과정**: 6시간 (실제 수업 검증)
+- **전체 과정**: 6시간 ["실제 수업 검증"]
 
 ---
 
@@ -36,40 +36,40 @@
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   GitHub        │    │   Docker Hub    │    │   Cloud VMs     │
-│   Actions       │───►│   Registry      │───►│   (AWS/GCP)     │
-│   (CI/CD)       │    │   (Images)      │    │                 │
+│   Actions       │───►│   Registry      │───►│   [AWS/GCP]     │
+│   [CI/CD]       │    │   [Images]      │    │                 │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          │                       │                       ▼
          │                       │              ┌─────────────────┐
          │                       │              │   Nginx         │
-         │                       │              │   (Load Balancer│
-         │                       │              │    & Proxy)     │
+         │                       │              │   [Load Balancer│
+         │                       │              │    & Proxy]     │
          │                       │              └─────────────────┘
          │                       │                       │
          │                       │                       ▼
          │                       │              ┌─────────────────┐
          │                       │              │   Node.js App   │
-         │                       │              │   (Express +    │
-         │                       │              │    Monitoring)  │
+         │                       │              │   [Express +    │
+         │                       │              │    Monitoring]  │
          │                       │              └─────────────────┘
          │                       │                       │
          │                       │                       ▼
          │                       │              ┌─────────────────┐
          │                       │              │   PostgreSQL    │
          │                       │              │   + Redis       │
-         │                       │              │   (Database)    │
+         │                       │              │   [Database]    │
          │                       │              └─────────────────┘
 ```
 
-### 🔄 주요 개선사항 (Day1 대비)
+### 🔄 주요 개선사항 ["Day1 대비"]
 1. **고급 CI/CD**: 매트릭스 빌드, 환경별 배포, 고급 워크플로우
 2. **멀티 서비스**: Docker Compose를 활용한 다중 서비스 관리
 3. **데이터베이스 연동**: PostgreSQL, Redis 연동 및 데이터 관리
 4. **프로덕션 환경**: Nginx 리버스 프록시, 보안 설정, 모니터링
 
-### 📊 실제 배포 결과 (2024년 9월 22일 수업 검증)
-- **성공률**: 100% (모든 학습자 성공)
+### 📊 실제 배포 결과 ["2024년 9월 22일 수업 검증"]
+- **성공률**: 100% ["모든 학습자 성공"]
 - **주요 성과**: 멀티 서비스 환경에서 실제 운영 수준의 CI/CD 파이프라인 구축
 - **핵심 성공 요인**: Docker Compose를 활용한 서비스 오케스트레이션
 
@@ -78,20 +78,20 @@
 ## 🔧 실습 환경 준비
 
 ### 필수 계정
-- **AWS 계정**: Free Tier 계정 (Day1에서 설정 완료)
-- **GCP 계정**: Free Tier 계정 ($300 크레딧) (Day1에서 설정 완료)
-- **GitHub 계정**: 코드 저장소 및 CI/CD (Day1에서 설정 완료)
-- **Docker Hub 계정**: 컨테이너 이미지 저장소 (Day1에서 설정 완료)
+- **AWS 계정**: Free Tier 계정 ["Day1에서 설정 완료"]
+- **GCP 계정**: Free Tier 계정 ["$300 크레딧"] ["Day1에서 설정 완료"]
+- **GitHub 계정**: 코드 저장소 및 CI/CD ["Day1에서 설정 완료"]
+- **Docker Hub 계정**: 컨테이너 이미지 저장소 ["Day1에서 설정 완료"]
 
 ### 필수 도구
-- **Docker**: 컨테이너 실행 환경 (Day1에서 설치 완료)
+- **Docker**: 컨테이너 실행 환경 ["Day1에서 설치 완료"]
 - **Docker Compose**: 다중 컨테이너 관리
-- **AWS CLI**: AWS 서비스 관리 (Day1에서 설정 완료)
-- **GCP CLI**: GCP 서비스 관리 (Day1에서 설정 완료)
-- **Git**: 버전 관리 (Day1에서 설정 완료)
+- **AWS CLI**: AWS 서비스 관리 ["Day1에서 설정 완료"]
+- **GCP CLI**: GCP 서비스 관리 ["Day1에서 설정 완료"]
+- **Git**: 버전 관리 ["Day1에서 설정 완료"]
 - **Node.js**: 애플리케이션 개발 환경
 
-### 환경 설정 (Day1 연계)
+### 환경 설정 ["Day1 연계"]
 ```bash
 # Day1에서 설정한 환경 확인
 docker --version
@@ -126,9 +126,9 @@ ssh -i gcp-key ubuntu@[GCP-VM-IP]
 ## 📚 이론 학습
 
 <details>
-<summary>⚡ 고급 CI/CD (1교시: 120분)</summary>
+<summary>⚡ 고급 CI/CD ["1교시: 120분"]</summary>
 
-### 매트릭스 빌드 (Matrix Build)
+### 매트릭스 빌드 [Matrix Build]
 여러 환경에서 동시에 빌드하고 테스트하는 고급 CI/CD 패턴입니다.
 
 #### 매트릭스 빌드 예시
@@ -172,7 +172,7 @@ jobs:
         NODE_ENV: ${{ matrix.environment }}
 ```
 
-### 환경별 배포 (Environment-specific Deployment)
+### 환경별 배포 [Environment-specific Deployment]
 개발, 스테이징, 프로덕션 환경에 따라 다른 배포 전략을 적용합니다.
 
 #### 환경별 배포 워크플로우
@@ -244,7 +244,7 @@ jobs:
 </details>
 
 <details>
-<summary>🐳 Docker Compose 기초 (2교시: 90분)</summary>
+<summary>🐳 Docker Compose 기초 ["2교시: 90분"]</summary>
 
 ### Docker Compose란?
 여러 컨테이너로 구성된 애플리케이션을 정의하고 실행하는 도구입니다.
@@ -319,44 +319,44 @@ Docker Compose는 자동으로 서비스 이름을 호스트명으로 사용할 
 #### 애플리케이션 코드 예시
 ```javascript
 // app.js
-const express = require('express');
-const { Pool } = require('pg');
-const redis = require('redis');
+const express = require['express'];
+const { Pool } = require['pg'];
+const redis = require['redis'];
 
 const app = express();
 
-// PostgreSQL 연결 (서비스 이름: db)
-const pool = new Pool({
+// PostgreSQL 연결 ["서비스 이름: db"]
+const pool = new Pool["{
   host: 'db',  // Docker Compose 서비스 이름
   port: 5432,
   database: process.env.POSTGRES_DB,
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
-});
+}"];
 
-// Redis 연결 (서비스 이름: redis)
-const redisClient = redis.createClient({
+// Redis 연결 ["서비스 이름: redis"]
+const redisClient = redis.createClient["{
   host: 'redis',  // Docker Compose 서비스 이름
   port: 6379,
-});
+}"];
 
-app.get('/api/data', async (req, res) => {
+app.get['/api/data', async [req, res] => {
   try {
     // 데이터베이스에서 데이터 조회
-    const result = await pool.query('SELECT * FROM users');
+    const result = await pool.query['SELECT * FROM users'];
     
     // Redis에 캐시 저장
-    await redisClient.setex('users', 3600, JSON.stringify(result.rows));
+    await redisClient.setex['users', 3600, JSON.stringify[result.rows]];
     
-    res.json(result.rows);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.json[result.rows];
+  } catch [error] {
+    res.status[500].json[{ error: error.message }];
   }
-});
+}];
 
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
-});
+app.listen[3000, [] => {
+  console.log['Server running on port 3000'];
+}];
 ```
 
 ### 환경별 설정
@@ -396,7 +396,7 @@ services:
 </details>
 
 <details>
-<summary>🗄️ 데이터베이스 연동 (3교시: 120분)</summary>
+<summary>🗄️ 데이터베이스 연동 ["3교시: 120분"]</summary>
 
 ### PostgreSQL 연동
 PostgreSQL은 강력한 오픈소스 관계형 데이터베이스입니다.
@@ -422,29 +422,29 @@ db:
 #### 데이터베이스 초기화 스크립트
 ```sql
 -- init.sql
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS users [
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+    name VARCHAR[100] NOT NULL,
+    email VARCHAR[100] UNIQUE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+];
 
-CREATE TABLE IF NOT EXISTS posts (
+CREATE TABLE IF NOT EXISTS posts [
     id SERIAL PRIMARY KEY,
-    title VARCHAR(200) NOT NULL,
+    title VARCHAR[200] NOT NULL,
     content TEXT,
-    user_id INTEGER REFERENCES users(id),
+    user_id INTEGER REFERENCES users[id],
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+];
 
 -- 샘플 데이터 삽입
-INSERT INTO users (name, email) VALUES 
-('John Doe', 'john@example.com'),
-('Jane Smith', 'jane@example.com');
+INSERT INTO users [name, email] VALUES 
+['John Doe', 'john@example.com'],
+['Jane Smith', 'jane@example.com'];
 
-INSERT INTO posts (title, content, user_id) VALUES 
-('First Post', 'This is my first post', 1),
-('Second Post', 'This is my second post', 2);
+INSERT INTO posts [title, content, user_id] VALUES 
+['First Post', 'This is my first post', 1],
+['Second Post', 'This is my second post', 2];
 ```
 
 ### Redis 연동
@@ -466,35 +466,35 @@ redis:
 #### Redis 사용 예시
 ```javascript
 // redis-client.js
-const redis = require('redis');
+const redis = require['redis'];
 
 class RedisClient {
   constructor() {
-    this.client = redis.createClient({
+    this.client = redis.createClient[{
       host: process.env.REDIS_HOST || 'redis',
       port: process.env.REDIS_PORT || 6379,
-    });
+    }];
     
-    this.client.on('error', (err) => {
-      console.error('Redis Client Error:', err);
-    });
+    this.client.on['error', [err] => {
+      console.error['Redis Client Error:', err];
+    }];
   }
 
   async connect() {
     await this.client.connect();
   }
 
-  async set(key, value, ttl = 3600) {
-    await this.client.setEx(key, ttl, JSON.stringify(value));
+  async set[key, value, ttl = 3600] {
+    await this.client.setEx[key, ttl, JSON.stringify[value]];
   }
 
-  async get(key) {
-    const value = await this.client.get(key);
-    return value ? JSON.parse(value) : null;
+  async get[key] {
+    const value = await this.client.get[key];
+    return value ? JSON.parse[value] : null;
   }
 
-  async del(key) {
-    await this.client.del(key);
+  async del[key] {
+    await this.client.del[key];
   }
 }
 
@@ -507,21 +507,21 @@ module.exports = new RedisClient();
 #### 마이그레이션 스크립트
 ```javascript
 // migrations/001_create_users_table.js
-const { Pool } = require('pg');
+const { Pool } = require['pg'];
 
-async function up(pool) {
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS users (
+async function up[pool] {
+  await pool.query[`
+    CREATE TABLE IF NOT EXISTS users [
       id SERIAL PRIMARY KEY,
-      name VARCHAR(100) NOT NULL,
-      email VARCHAR(100) UNIQUE NOT NULL,
+      name VARCHAR[100] NOT NULL,
+      email VARCHAR[100] UNIQUE NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
+    ]
+  `];
 }
 
-async function down(pool) {
-  await pool.query('DROP TABLE IF EXISTS users');
+async function down[pool] {
+  await pool.query['DROP TABLE IF EXISTS users'];
 }
 
 module.exports = { up, down };
@@ -530,7 +530,7 @@ module.exports = { up, down };
 </details>
 
 <details>
-<summary>🌐 프로덕션 환경 구축 (4교시: 90분)</summary>
+<summary>🌐 프로덕션 환경 구축 ["4교시: 90분"]</summary>
 
 ### Nginx 리버스 프록시
 Nginx를 사용하여 로드 밸런싱과 SSL 터미네이션을 처리합니다.
@@ -574,61 +574,61 @@ http {
 #### 헬스 체크 엔드포인트
 ```javascript
 // health.js
-const express = require('express');
-const { Pool } = require('pg');
-const redis = require('redis');
+const express = require['express'];
+const { Pool } = require['pg'];
+const redis = require['redis'];
 
 const router = express.Router();
 
 // 데이터베이스 헬스 체크
-router.get('/db', async (req, res) => {
+router.get['/db', async [req, res] => {
   try {
-    const pool = new Pool({
+    const pool = new Pool[{
       host: 'db',
       port: 5432,
       database: process.env.POSTGRES_DB,
       user: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
-    });
+    }];
     
-    await pool.query('SELECT 1');
-    res.json({ status: 'healthy', service: 'database' });
-  } catch (error) {
-    res.status(500).json({ status: 'unhealthy', service: 'database', error: error.message });
+    await pool.query['SELECT 1'];
+    res.json[{ status: 'healthy', service: 'database' }];
+  } catch [error] {
+    res.status[500].json[{ status: 'unhealthy', service: 'database', error: error.message }];
   }
-});
+}];
 
 // Redis 헬스 체크
-router.get('/redis', async (req, res) => {
+router.get['/redis', async [req, res] => {
   try {
-    const client = redis.createClient({
+    const client = redis.createClient[{
       host: 'redis',
       port: 6379,
-    });
+    }];
     
-    await client.ping();
-    res.json({ status: 'healthy', service: 'redis' });
-  } catch (error) {
-    res.status(500).json({ status: 'unhealthy', service: 'redis', error: error.message });
+    await client.ping[];
+    res.json[{ status: 'healthy', service: 'redis' }];
+  } catch [error] {
+    res.status[500].json[{ status: 'unhealthy', service: 'redis', error: error.message }];
   }
-});
+}];
 
 // 전체 헬스 체크
-router.get('/', async (req, res) => {
+router.get['/', async [req, res] => {
   const checks = {
-    database: await checkDatabase(),
-    redis: await checkRedis(),
+    database: await checkDatabase[],
+    redis: await checkRedis[],
     application: 'healthy'
   };
   
-  const allHealthy = Object.values(checks).every(status => status === 'healthy');
+  const allHealthy = Object.values[checks].every[status => status === 'healthy'];
   const statusCode = allHealthy ? 200 : 500;
   
-  res.status(statusCode).json({
+  res.status[statusCode].json[{
     status: allHealthy ? 'healthy' : 'unhealthy',
     checks
-  });
-});
+  }];
+}];
 
 module.exports = router;
 ```
@@ -832,18 +832,18 @@ jobs:
 ## 🛠️ 실습 학습
 
 > 📚 **상세 실습 가이드**: 각 주제별 상세한 실습은 다음 파일들을 참조하세요.
-> - [고급 Docker 실습](practices/docker-advanced.md)
-> - [고급 CI/CD 실습](practices/cicd-advanced.md)
-> - [VM 기반 컨테이너 배포 실습](practices/vm-container-deployment.md)
-> - [Docker Compose 고급 실습](practices/docker-compose-advanced.md)
-> - [Repository Secrets 고급 활용](guides/github-repo-settings.md) - **Day1 연계!** Secrets 고급 활용법
+> - ["고급 Docker 실습"][practices/docker-advanced.md]
+> - ["고급 CI/CD 실습"][practices/cicd-advanced.md]
+> - ["VM 기반 컨테이너 배포 실습"][practices/vm-container-deployment.md]
+> - ["Docker Compose 고급 실습"][practices/docker-compose-advanced.md]
+> - ["Repository Secrets 고급 활용"][guides/github-repo-settings.md] - **Day1 연계!** Secrets 고급 활용법
 
 > 🚀 **자동화 스크립트**: 실습을 더 쉽게 하려면 다음 자동화 스크립트를 사용하세요.
-> - [WSL 자동 설정](../../repos/day1/cloud-scripts/wsl-auto-setup.sh) - WSL 환경 원클릭 구축
-> - [환경 체크 도구](../../repos/day1/cloud-scripts/environment-check-wsl.sh) - 실습 환경 자동 검증
-> - [통합 클러스터 정리](../../repos/day1/cloud-scripts/cluster-cleanup-interactive.sh) - 클러스터 선택적 정리
-> - [통합 VM 정리](../../repos/day1/cloud-scripts/vm-cleanup-interactive.sh) - VM 인스턴스 선택적 정리
-> - [리소스 정리 스크립트](../../repos/day1/cloud-scripts/README.md) - 생성된 리소스 자동 정리
+> - ["WSL 자동 설정"][../../repos/day1/cloud-scripts/wsl-auto-setup.sh] - WSL 환경 원클릭 구축
+> - ["환경 체크 도구"][../../repos/day1/cloud-scripts/environment-check-wsl.sh] - 실습 환경 자동 검증
+> - ["통합 클러스터 정리"][../../repos/day1/cloud-scripts/cluster-cleanup-interactive.sh] - 클러스터 선택적 정리
+> - ["통합 VM 정리"][../../repos/day1/cloud-scripts/vm-cleanup-interactive.sh] - VM 인스턴스 선택적 정리
+> - ["리소스 정리 스크립트"][../../repos/day1/cloud-scripts/README.md] - 생성된 리소스 자동 정리
 
 <details>
 <summary>🐳 고급 Docker 실습</summary>
@@ -1095,7 +1095,7 @@ docker-compose up -d --build
 <details>
 <summary>🚀 자동화된 배포 실습</summary>
 
-### 1단계: Day1 VM 활용 (연계 학습)
+### 1단계: Day1 VM 활용 ["연계 학습"]
 
 **Day1에서 생성한 VM 재사용**
 ```bash
@@ -1127,11 +1127,11 @@ cd /opt/my-app
 echo "📥 Pulling latest code..."
 git pull origin main
 
-# Docker 이미지 빌드 (멀티스테이지)
+# Docker 이미지 빌드 ["멀티스테이지"]
 echo "🔨 Building optimized Docker image..."
 docker build -t my-app:latest .
 
-# 기존 서비스 중지 (롤링 업데이트)
+# 기존 서비스 중지 ["롤링 업데이트"]
 echo "🔄 Rolling update in progress..."
 docker-compose up -d --no-deps --build web
 
@@ -1224,7 +1224,7 @@ EOF
 ## 💻 실습 가이드
 
 <details>
-<summary>⚡ 고급 CI/CD 실습 (1교시: 120분)</summary>
+<summary>⚡ 고급 CI/CD 실습 ["1교시: 120분"]</summary>
 
 ### 1단계: 매트릭스 빌드 워크플로우 생성
 ```bash
@@ -1347,15 +1347,15 @@ git push origin main
 # https://github.com/[username]/github-actions-demo/actions
 ```
 
-### ✅ 실제 수업 결과 (2024년 9월 22일)
-- **성공률**: 100% (모든 학습자 성공)
-- **소요 시간**: 120분 (예상 120분)
+### ✅ 실제 수업 결과 ["2024년 9월 22일"]
+- **성공률**: 100% ["모든 학습자 성공"]
+- **소요 시간**: 120분 ["예상 120분"]
 - **주요 성과**: 매트릭스 빌드와 환경별 배포 구현 완료
 
 </details>
 
 <details>
-<summary>🐳 Docker Compose 실습 (2교시: 90분)</summary>
+<summary>🐳 Docker Compose 실습 ["2교시: 90분"]</summary>
 
 ### 1단계: Docker Compose 파일 생성
 ```bash
@@ -1431,29 +1431,29 @@ EOF
 # 데이터베이스 초기화 스크립트 생성
 cat > init.sql << 'EOF'
 -- 데이터베이스 초기화 스크립트
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS users [
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+    name VARCHAR[100] NOT NULL,
+    email VARCHAR[100] UNIQUE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+];
 
-CREATE TABLE IF NOT EXISTS posts (
+CREATE TABLE IF NOT EXISTS posts [
     id SERIAL PRIMARY KEY,
-    title VARCHAR(200) NOT NULL,
+    title VARCHAR[200] NOT NULL,
     content TEXT,
-    user_id INTEGER REFERENCES users(id),
+    user_id INTEGER REFERENCES users[id],
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+];
 
 -- 샘플 데이터 삽입
-INSERT INTO users (name, email) VALUES 
-('John Doe', 'john@example.com'),
-('Jane Smith', 'jane@example.com');
+INSERT INTO users [name, email] VALUES 
+['John Doe', 'john@example.com'],
+['Jane Smith', 'jane@example.com'];
 
-INSERT INTO posts (title, content, user_id) VALUES 
-('First Post', 'This is my first post', 1),
-('Second Post', 'This is my second post', 2);
+INSERT INTO posts [title, content, user_id] VALUES 
+['First Post', 'This is my first post', 1],
+['Second Post', 'This is my second post', 2];
 EOF
 ```
 
@@ -1507,104 +1507,104 @@ docker-compose logs -f
 docker-compose down
 ```
 
-### ✅ 실제 수업 결과 (2024년 9월 22일)
-- **성공률**: 100% (모든 학습자 성공)
-- **소요 시간**: 90분 (예상 90분)
+### ✅ 실제 수업 결과 ["2024년 9월 22일"]
+- **성공률**: 100% ["모든 학습자 성공"]
+- **소요 시간**: 90분 ["예상 90분"]
 - **주요 성과**: 멀티 서비스 환경 구축 완료
 
 </details>
 
 <details>
-<summary>🗄️ 데이터베이스 연동 실습 (3교시: 120분)</summary>
+<summary>🗄️ 데이터베이스 연동 실습 ["3교시: 120분"]</summary>
 
 ### 1단계: 애플리케이션 코드 수정
 ```bash
 # 데이터베이스 연동 애플리케이션 코드 생성
 cat > app.js << 'EOF'
-const express = require('express');
-const { Pool } = require('pg');
-const redis = require('redis');
+const express = require['express'];
+const { Pool } = require['pg'];
+const redis = require['redis'];
 
 const app = express();
-app.use(express.json());
+app.use[express.json[]];
 
 // PostgreSQL 연결
-const pool = new Pool({
+const pool = new Pool[{
   host: 'db',
   port: 5432,
   database: process.env.POSTGRES_DB || 'mydb',
   user: process.env.POSTGRES_USER || 'user',
   password: process.env.POSTGRES_PASSWORD || 'password',
-});
+}];
 
 // Redis 연결
-const redisClient = redis.createClient({
+const redisClient = redis.createClient[{
   host: 'redis',
   port: 6379,
-});
+}];
 
-redisClient.on('error', (err) => {
-  console.error('Redis Client Error:', err);
-});
+redisClient.on['error', [err] => {
+  console.error['Redis Client Error:', err];
+}];
 
-// 사용자 목록 조회 (캐시 적용)
-app.get('/api/users', async (req, res) => {
+// 사용자 목록 조회 ["캐시 적용"]
+app.get['/api/users', async [req, res] => {
   try {
     // Redis에서 캐시 확인
-    const cached = await redisClient.get('users');
-    if (cached) {
-      return res.json(JSON.parse(cached));
+    const cached = await redisClient.get['users'];
+    if [cached] {
+      return res.json[JSON.parse[cached]];
     }
 
     // 데이터베이스에서 조회
-    const result = await pool.query('SELECT * FROM users ORDER BY created_at DESC');
+    const result = await pool.query['SELECT * FROM users ORDER BY created_at DESC'];
     
-    // Redis에 캐시 저장 (1시간)
-    await redisClient.setex('users', 3600, JSON.stringify(result.rows));
+    // Redis에 캐시 저장 ["1시간"]
+    await redisClient.setex['users', 3600, JSON.stringify[result.rows]];
     
-    res.json(result.rows);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.json[result.rows];
+  } catch [error] {
+    res.status[500].json[{ error: error.message }];
   }
-});
+}];
 
 // 새 사용자 생성
-app.post('/api/users', async (req, res) => {
+app.post['/api/users', async [req, res] => {
   try {
     const { name, email } = req.body;
-    const result = await pool.query(
-      'INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *',
+    const result = await pool.query[
+      'INSERT INTO users [name, email] VALUES [$1, $2] RETURNING *',
       [name, email]
-    );
+    ];
     
     // 캐시 무효화
-    await redisClient.del('users');
+    await redisClient.del['users'];
     
-    res.status(201).json(result.rows[0]);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status[201].json[result.rows[0]];
+  } catch [error] {
+    res.status[500].json[{ error: error.message }];
   }
-});
+}];
 
 // 헬스 체크
-app.get('/health', async (req, res) => {
+app.get['/health', async [req, res] => {
   try {
     // 데이터베이스 연결 확인
-    await pool.query('SELECT 1');
+    await pool.query['SELECT 1'];
     
     // Redis 연결 확인
-    await redisClient.ping();
+    await redisClient.ping[];
     
-    res.json({ status: 'healthy', timestamp: new Date().toISOString() });
-  } catch (error) {
-    res.status(500).json({ status: 'unhealthy', error: error.message });
+    res.json[{ status: 'healthy', timestamp: new Date[].toISOString[] }];
+  } catch [error] {
+    res.status[500].json[{ status: 'unhealthy', error: error.message }];
   }
-});
+}];
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen[PORT, [] => {
+  console.log[`Server running on port ${PORT}`];
+}];
 EOF
 ```
 
@@ -1679,15 +1679,15 @@ docker-compose exec db psql -U user -d mydb -c "SELECT * FROM users;"
 docker-compose exec redis redis-cli ping
 ```
 
-### ✅ 실제 수업 결과 (2024년 9월 22일)
-- **성공률**: 100% (모든 학습자 성공)
-- **소요 시간**: 120분 (예상 120분)
+### ✅ 실제 수업 결과 ["2024년 9월 22일"]
+- **성공률**: 100% ["모든 학습자 성공"]
+- **소요 시간**: 120분 ["예상 120분"]
 - **주요 성과**: PostgreSQL, Redis 연동 및 캐싱 구현 완료
 
 </details>
 
 <details>
-<summary>🌐 프로덕션 환경 구축 실습 (4교시: 90분)</summary>
+<summary>🌐 프로덕션 환경 구축 실습 ["4교시: 90분"]</summary>
 
 ### 1단계: 프로덕션용 Docker Compose 파일 생성
 ```bash
@@ -1840,7 +1840,7 @@ http {
         }
         
         # 정적 파일 캐싱
-        location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
+        location ~* \.[js|css|png|jpg|jpeg|gif|ico|svg]$ {
             expires 1y;
             add_header Cache-Control "public, immutable";
         }
@@ -1852,7 +1852,7 @@ EOF
 ### 4단계: 프로덕션 환경 배포
 ```bash
 # 프로덕션 환경 변수 로드
-export $(cat .env.prod | xargs)
+export $[cat .env.prod | xargs]
 
 # 프로덕션 환경으로 배포
 docker-compose -f docker-compose.prod.yml up -d
@@ -1868,9 +1868,9 @@ curl http://localhost/health
 curl http://localhost/api/users
 ```
 
-### ✅ 실제 수업 결과 (2024년 9월 22일)
-- **성공률**: 100% (모든 학습자 성공)
-- **소요 시간**: 90분 (예상 90분)
+### ✅ 실제 수업 결과 ["2024년 9월 22일"]
+- **성공률**: 100% ["모든 학습자 성공"]
+- **소요 시간**: 90분 ["예상 90분"]
 - **주요 성과**: 프로덕션 수준의 멀티 서비스 환경 구축 완료
 
 </details>
@@ -1881,7 +1881,7 @@ curl http://localhost/api/users
 
 ### 자동 정리
 
-**방법 1: 통합 정리 스크립트 사용 (권장)**
+**방법 1: 통합 정리 스크립트 사용 ["권장"]**
 ```bash
 # 통합 클러스터 정리 스크립트 실행
 chmod +x ../../repos/day1/cloud-scripts/cluster-cleanup-interactive.sh
@@ -1928,17 +1928,17 @@ gcloud compute instances delete my-vm --zone=us-central1-a
 ## 📚 참고 자료
 
 ### 상세 가이드
-- [종합 실습 가이드](cloud_master/textbook/Day2/guides/comprehensive-practice-guide.md) - 전체 과정 통합 실습
-- [모니터링 가이드](cloud_master/textbook/Day2/guides/monitoring-guide.md) - 클라우드 모니터링 설정
-- [비용 최적화 가이드](cloud_master/textbook/Day2/guides/cost-optimization-guide.md) - 클라우드 비용 관리
-- [트러블슈팅 가이드](cloud_master/textbook/Day2/guides/troubleshooting-guide.md) - 문제 해결 및 디버깅
+- ["종합 실습 가이드"][cloud_master/textbook/Day2/guides/comprehensive-practice-guide.md] - 전체 과정 통합 실습
+- ["모니터링 가이드"][cloud_master/textbook/Day2/guides/monitoring-guide.md] - 클라우드 모니터링 설정
+- ["비용 최적화 가이드"][cloud_master/textbook/Day2/guides/cost-optimization-guide.md] - 클라우드 비용 관리
+- ["트러블슈팅 가이드"][cloud_master/textbook/Day2/guides/troubleshooting-guide.md] - 문제 해결 및 디버깅
 
 ### 공식 문서
-- [Docker 멀티스테이지 빌드](https://docs.docker.com/develop/dev-best-practices/dockerfile_best-practices/#use-multi-stage-builds)
-- [GitHub Actions 매트릭스](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs)
-- [Docker 공식 문서](https://docs.docker.com/)
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [VM 배포 가이드](https://cloud.google.com/compute/docs/instances)
+- ["Docker 멀티스테이지 빌드"][https://docs.docker.com/develop/dev-best-practices/dockerfile_best-practices/#use-multi-stage-builds]
+- ["GitHub Actions 매트릭스"][https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs]
+- ["Docker 공식 문서"][https://docs.docker.com/]
+- ["GitHub Actions 공식 문서"][https://docs.github.com/en/actions]
+- ["VM 배포 가이드"][https://cloud.google.com/compute/docs/instances]
 
 ### 문제 해결
 
@@ -1948,7 +1948,7 @@ gcloud compute instances delete my-vm --zone=us-central1-a
    # 오류: "container name is already in use"
    # 해결: 기존 컨테이너 완전 정리
    docker-compose down
-   docker rm -f $(docker ps -a --filter "name=github-actions-demo" --format "{{.Names}}") 2>/dev/null || true
+   docker rm -f $[docker ps -a --filter "name=github-actions-demo" --format "{{.Names}}"] 2>/dev/null || true
    docker-compose up --build
    ```
 
@@ -1960,7 +1960,7 @@ gcloud compute instances delete my-vm --zone=us-central1-a
    # 수정 후: "timestamp" TIMESTAMP
    ```
 
-3. **Redis 연결 오류 (IPv6 vs IPv4)**
+3. **Redis 연결 오류 [IPv6 vs IPv4]**
    ```bash
    # 오류: "connect ECONNREFUSED ::1:6379"
    # 해결: Redis 클라이언트 설정을 최신 방식으로 변경
@@ -1984,12 +1984,12 @@ gcloud compute instances delete my-vm --zone=us-central1-a
 
 ---
 
-## 🎯 Day 2 수업 결과 요약 (2024년 9월 22일)
+## 🎯 Day 2 수업 결과 요약 ["2024년 9월 22일"]
 
 ### ✅ 전체 성과
 - **수강생 수**: 15명
-- **완료율**: 100% (모든 학습자 성공)
-- **총 소요 시간**: 6시간 (예상 6시간)
+- **완료율**: 100% ["모든 학습자 성공"]
+- **총 소요 시간**: 6시간 ["예상 6시간"]
 - **주요 성과**: 고급 CI/CD와 멀티 서비스 환경 구축 완료
 
 ### 📊 교시별 성과
@@ -2015,9 +2015,9 @@ gcloud compute instances delete my-vm --zone=us-central1-a
 
 <div align="center">
 
-[← 이전: Day 1](cloud_master/textbook/Day1/README.md) | 
-[📚 전체 커리큘럼](curriculum.md) | 
-[🏠 학습 경로로 돌아가기](index.md) | 
-[다음: Day 3 →](cloud_master/textbook/Day3/README.md)
+["← 이전: Day 1"][cloud_master/textbook/Day1/README.md] | 
+["📚 전체 커리큘럼"][curriculum.md] | 
+["🏠 학습 경로로 돌아가기"][index.md] | 
+["다음: Day 3 →"][cloud_master/textbook/Day3/README.md]
 
 </div>

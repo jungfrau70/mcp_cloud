@@ -5,12 +5,12 @@
 
 ## 📋 목차
 
-1. [Docker Compose 관련 문제](#1-docker-compose-관련-문제)
-2. [데이터베이스 관련 문제](#2-데이터베이스-관련-문제)
-3. [Redis 관련 문제](#3-redis-관련-문제)
-4. [네트워킹 관련 문제](#4-네트워킹-관련-문제)
-5. [GitHub Actions 관련 문제](#5-github-actions-관련-문제)
-6. [일반적인 오류 코드](#6-일반적인-오류-코드)
+1. ["Docker Compose 관련 문제"]["#1-docker-compose-관련-문제"]
+2. ["데이터베이스 관련 문제"]["#2-데이터베이스-관련-문제"]
+3. ["Redis 관련 문제"]["#3-redis-관련-문제"]
+4. ["네트워킹 관련 문제"]["#4-네트워킹-관련-문제"]
+5. ["GitHub Actions 관련 문제"]["#5-github-actions-관련-문제"]
+6. ["일반적인 오류 코드"]["#6-일반적인-오류-코드"]
 
 ---
 
@@ -25,7 +25,7 @@
 ```bash
 # 1단계: 기존 컨테이너 완전 정리
 docker-compose down
-docker rm -f $(docker ps -a --filter "name=github-actions-demo" --format "{{.Names}}") 2>/dev/null || true
+docker rm -f $[docker ps -a --filter "name=github-actions-demo" --format "{{.Names}}"] 2>/dev/null || true
 
 # 2단계: 네트워크 정리
 docker network prune -f
@@ -48,10 +48,10 @@ netstat -tulpn | grep :6379
 netstat -tulpn | grep :80
 
 # 2단계: 사용 중인 프로세스 종료
-sudo kill -9 $(lsof -t -i:3000)
-sudo kill -9 $(lsof -t -i:5432)
-sudo kill -9 $(lsof -t -i:6379)
-sudo kill -9 $(lsof -t -i:80)
+sudo kill -9 $[lsof -t -i:3000]
+sudo kill -9 $[lsof -t -i:5432]
+sudo kill -9 $[lsof -t -i:6379]
+sudo kill -9 $[lsof -t -i:80]
 
 # 3단계: 다시 실행
 docker-compose up --build
@@ -87,20 +87,20 @@ docker-compose up --build
 **해결방법**:
 ```sql
 -- 수정 전
-CREATE TABLE app_logs (
+CREATE TABLE app_logs [
     id SERIAL PRIMARY KEY,
-    level VARCHAR(20),
+    level VARCHAR[20],
     message TEXT,
     timestamp TIMESTAMP
-);
+];
 
 -- 수정 후
-CREATE TABLE app_logs (
+CREATE TABLE app_logs [
     id SERIAL PRIMARY KEY,
-    level VARCHAR(20),
+    level VARCHAR[20],
     message TEXT,
     "timestamp" TIMESTAMP
-);
+];
 ```
 
 ### 2.2 데이터베이스 연결 실패
@@ -140,28 +140,28 @@ docker-compose up --build
 
 ## 3. Redis 관련 문제
 
-### 3.1 Redis 연결 오류 (IPv6 vs IPv4)
+### 3.1 Redis 연결 오류 [IPv6 vs IPv4]
 **증상**: `connect ECONNREFUSED ::1:6379`
 
 **원인**: IPv6 vs IPv4 주소 문제
 
 **해결방법**:
 ```javascript
-// 수정 전 (구버전)
-const redisClient = redis.createClient({
+// 수정 전 ["구버전"]
+const redisClient = redis.createClient[{
   host: 'redis',
   port: 6379,
   password: 'password'
-});
+}];
 
-// 수정 후 (최신 버전)
-const redisClient = redis.createClient({
+// 수정 후 ["최신 버전"]
+const redisClient = redis.createClient[{
   socket: {
     host: 'redis',
     port: 6379
   },
   password: 'password'
-});
+}];
 ```
 
 ### 3.2 Redis 메서드 오류
@@ -172,10 +172,10 @@ const redisClient = redis.createClient({
 **해결방법**:
 ```javascript
 // 수정 전
-await redisClient.setex('key', 300, 'value');
+await redisClient.setex['key', 300, 'value'];
 
 // 수정 후
-await redisClient.setEx('key', 300, 'value');
+await redisClient.setEx['key', 300, 'value'];
 ```
 
 ### 3.3 Redis 인증 실패
@@ -301,8 +301,8 @@ docker login
 - **126**: 명령어 실행 실패
 - **127**: 명령어를 찾을 수 없음
 - **128**: 종료 신호 없음
-- **130**: SIGINT (Ctrl+C)
-- **137**: SIGKILL (메모리 부족)
+- **130**: SIGINT [Ctrl+C]
+- **137**: SIGKILL ["메모리 부족"]
 
 ### 6.3 데이터베이스 오류 코드
 - **23505**: 고유 제약 조건 위반
@@ -362,25 +362,25 @@ docker inspect github-actions-demo-app-dev | grep IPAddress
 
 ### 문제 1: Cost Explorer 데이터가 표시되지 않음
 
-[문제 1: Cost Explorer 데이터가 표시되지 않음](#문제-1-cost-explorer-데이터가-표시되지-않음)
+["문제 1: Cost Explorer 데이터가 표시되지 않음"]["#문제-1-cost-explorer-데이터가-표시되지-않음"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 ```bash
 ERROR: No data available for the selected time period
 ```
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - Cost Explorer가 활성화되지 않음
-- 데이터 수집 시간 부족 (24시간 필요)
+- 데이터 수집 시간 부족 ["24시간 필요"]
 - 권한 부족
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # Cost Explorer 활성화 확인
 aws ce get-cost-and-usage /
@@ -399,24 +399,24 @@ aws iam attach-user-policy /
 
 ### 문제 2: 예산 알림이 발송되지 않음
 
-[문제 2: 예산 알림이 발송되지 않음](#문제-2-예산-알림이-발송되지-않음)
+["문제 2: 예산 알림이 발송되지 않음"]["#문제-2-예산-알림이-발송되지-않음"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - 예산 초과 시 알림이 오지 않음
 - SNS 토픽이 작동하지 않음
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - SNS 구독 확인 안됨
 - 예산 설정 오류
 - 알림 채널 설정 문제
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # SNS 구독 상태 확인
 aws sns get-subscription-attributes /
@@ -439,25 +439,25 @@ aws sns publish /
 
 ### 문제 3: GCP 비용 데이터가 표시되지 않음
 
-[문제 3: GCP 비용 데이터가 표시되지 않음](#문제-3-gcp-비용-데이터가-표시되지-않음)
+["문제 3: GCP 비용 데이터가 표시되지 않음"]["#문제-3-gcp-비용-데이터가-표시되지-않음"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 ```bash
 ERROR: No billing data available
 ```
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - Billing 계정이 연결되지 않음
 - 프로젝트에 Billing이 활성화되지 않음
 - 권한 부족
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # Billing 계정 확인
 gcloud alpha billing accounts list
@@ -481,24 +481,24 @@ gcloud projects add-iam-policy-binding PROJECT_ID /
 
 ### 문제 1: CloudWatch 메트릭이 수집되지 않음
 
-[문제 1: CloudWatch 메트릭이 수집되지 않음](#문제-1-cloudwatch-메트릭이-수집되지-않음)
+["문제 1: CloudWatch 메트릭이 수집되지 않음"]["#문제-1-cloudwatch-메트릭이-수집되지-않음"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - CloudWatch 대시보드에 데이터가 없음
 - 커스텀 메트릭이 표시되지 않음
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - CloudWatch Agent가 설치되지 않음
 - IAM 권한 부족
 - 메트릭 네임스페이스 오류
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # CloudWatch Agent 상태 확인
 sudo systemctl status amazon-cloudwatch-agent
@@ -522,24 +522,24 @@ aws cloudwatch put-metric-data /
 
 ### 문제 2: GCP Cloud Monitoring 메트릭이 수집되지 않음
 
-[문제 2: GCP Cloud Monitoring 메트릭이 수집되지 않음](#문제-2-gcp-cloud-monitoring-메트릭이-수집되지-않음)
+["문제 2: GCP Cloud Monitoring 메트릭이 수집되지 않음"]["#문제-2-gcp-cloud-monitoring-메트릭이-수집되지-않음"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - Cloud Monitoring 대시보드에 데이터가 없음
 - VM 메트릭이 표시되지 않음
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - Ops Agent가 설치되지 않음
 - API가 활성화되지 않음
 - 권한 부족
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # Ops Agent 상태 확인
 sudo systemctl status google-cloud-ops-agent
@@ -564,44 +564,44 @@ gcloud projects add-iam-policy-binding PROJECT_ID /
 
 ### 문제 3: 알림이 발송되지 않음
 
-[문제 3: 알림이 발송되지 않음](#문제-3-알림이-발송되지-않음)
+["문제 3: 알림이 발송되지 않음"]["#문제-3-알림이-발송되지-않음"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - 임계값 초과 시 알림이 오지 않음
 - 알림 채널이 작동하지 않음
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - 알림 채널 설정 오류
 - 알림 정책 설정 문제
 - ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 ## 🌐 네트워킹 관련 문제
 
 ### 문제 1: Pod 간 통신이 안됨
 
-[문제 1: Pod 간 통신이 안됨](#문제-1-pod-간-통신이-안됨)
+["문제 1: Pod 간 통신이 안됨"]["#문제-1-pod-간-통신이-안됨"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - Pod에서 다른 Pod로 접근할 수 없음
 - Service Discovery가 작동하지 않음
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - 네트워크 정책 문제
 - DNS 설정 오류
 - Service 설정 문제
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # Pod 네트워크 확인
 kubectl exec -it POD_NAME -- nslookup kubernetes.default
@@ -620,24 +620,24 @@ kubectl describe endpoints SERVICE_NAME
 
 ### 문제 2: Ingress가 작동하지 않음
 
-[문제 2: Ingress가 작동하지 않음](#문제-2-ingress가-작동하지-않음)
+["문제 2: Ingress가 작동하지 않음"]["#문제-2-ingress가-작동하지-않음"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - Ingress가 생성되었지만 외부 접근이 안됨
 - 로드 밸런서가 생성되지 않음
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - Ingress Controller가 설치되지 않음
 - Ingress 설정 오류
 - 로드 밸런서 설정 문제
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # Ingress Controller 확인
 kubectl get pods -n kube-system | grep ingress
@@ -652,10 +652,10 @@ kubectl get pods -n kube-system | grep ingress-gce
 kubectl get ingress
 kubectl describe ingress INGRESS_NAME
 
-# 로드 밸런서 상태 확인 (AWS)
+# 로드 밸런서 상태 확인 [AWS]
 aws elbv2 describe-load-balancers
 
-# 로드 밸런서 상태 확인 (GCP)
+# 로드 밸런서 상태 확인 [GCP]
 gcloud compute forwarding-rules list
 ```
 
@@ -665,24 +665,24 @@ gcloud compute forwarding-rules list
 
 ### 문제 1: 애플리케이션 응답 시간이 느림
 
-[문제 1: 애플리케이션 응답 시간이 느림](#문제-1-애플리케이션-응답-시간이-느림)
+["문제 1: 애플리케이션 응답 시간이 느림"]["#문제-1-애플리케이션-응답-시간이-느림"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - 사용자 요청 처리 시간이 길음
 - API 응답 시간이 느림
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - 리소스 부족
 - 네트워크 지연
 - 데이터베이스 성능 문제
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # Pod 리소스 사용량 확인
 kubectl top pods
@@ -704,24 +704,24 @@ kubectl exec -it POD_NAME -- telnet DATABASE_HOST DATABASE_PORT
 
 ### 문제 2: 클러스터 자동 스케일링이 느림
 
-[문제 2: 클러스터 자동 스케일링이 느림](#문제-2-클러스터-자동-스케일링이-느림)
+["문제 2: 클러스터 자동 스케일링이 느림"]["#문제-2-클러스터-자동-스케일링이-느림"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - 부하 증가 시 노드 추가가 늦음
 - Pod 스케일링이 느림
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - Cluster Autoscaler 설정 문제
 - 노드 프로비저닝 시간이 길음
 - HPA 설정 문제
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # Cluster Autoscaler 로그 확인
 kubectl logs -n kube-system deployment/cluster-autoscaler
@@ -730,12 +730,12 @@ kubectl logs -n kube-system deployment/cluster-autoscaler
 kubectl get hpa
 kubectl describe hpa HPA_NAME
 
-# 노드 그룹 설정 확인 (AWS)
+# 노드 그룹 설정 확인 [AWS]
 aws eks describe-nodegroup /
   --cluster-name CLUSTER_NAME /
   --nodegroup-name NODEGROUP_NAME
 
-# 노드 풀 설정 확인 (GCP)
+# 노드 풀 설정 확인 [GCP]
 gcloud container node-pools describe NODE_POOL_NAME /
   --cluster=CLUSTER_NAME /
   --zone=ZONE
@@ -743,24 +743,24 @@ gcloud container node-pools describe NODE_POOL_NAME /
 
 ### 문제 3: 비용이 예상보다 높음
 
-[문제 3: 비용이 예상보다 높음](#문제-3-비용이-예상보다-높음)
+["문제 3: 비용이 예상보다 높음"]["#문제-3-비용이-예상보다-높음"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - 월별 비용이 예산을 초과
 - 리소스 사용률이 낮은데 비용이 높음
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - 미사용 리소스가 많음
 - 인스턴스 타입이 과도함
 - 할인 옵션을 활용하지 않음
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # 리소스 사용률 확인
 kubectl top nodes
@@ -791,7 +791,7 @@ aws ce get-cost-and-usage /
 
 ### AWS 오류 코드
 
-[AWS 오류 코드](#aws-오류-코드)
+["AWS 오류 코드"]["#aws-오류-코드"]
 
 | 오류 코드 | 의미 | 해결 방법 |
 |-----------|------|-----------|
@@ -803,7 +803,7 @@ aws ce get-cost-and-usage /
 
 ### GCP 오류 코드
 
-[GCP 오류 코드](#gcp-오류-코드)
+["GCP 오류 코드"]["#gcp-오류-코드"]
 
 | 오류 코드 | 의미 | 해결 방법 |
 |-----------|------|------|
@@ -815,7 +815,7 @@ aws ce get-cost-and-usage /
 
 ### Kubernetes 오류 코드
 
-[Kubernetes 오류 코드](#kubernetes-오류-코드)
+["Kubernetes 오류 코드"]["#kubernetes-오류-코드"]
 
 | 오류 코드 | 의미 | 해결 방법 |
 |-----------|------|------|
@@ -828,11 +828,11 @@ aws ce get-cost-and-usage /
 
 ## 🔧 디버깅 도구 및 명령어
 
-[🔧 디버깅 도구 및 명령어](#디버깅-도구-및-명령어)
+["🔧 디버깅 도구 및 명령어"]["#디버깅-도구-및-명령어"]
 
 ### AWS 디버깅
 
-[AWS 디버깅](#aws-디버깅)
+["AWS 디버깅"]["#aws-디버깅"]
 ```bash
 # 로그 확인
 aws logs describe-log-groups
@@ -853,7 +853,7 @@ aws eks describe-cluster --name my-cluster
 
 ### GCP 디버깅
 
-[GCP 디버깅](#gcp-디버깅)
+["GCP 디버깅"]["#gcp-디버깅"]
 ```bash
 # 로그 확인
 gcloud logging read "resource.type=gke_cluster" --limit=50
@@ -867,7 +867,7 @@ gcloud container clusters describe my-cluster --zone=us-central1-a
 
 ### Kubernetes 디버깅
 
-[Kubernetes 디버깅](#kubernetes-디버깅)
+["Kubernetes 디버깅"]["#kubernetes-디버깅"]
 ```bash
 # 클러스터 상태 확인
 kubectl cluster-info
@@ -890,27 +890,27 @@ kubectl logs POD_NAME --previous
 
 ## 📞 지원 및 도움말
 
-[📞 지원 및 도움말](#지원-및-도움말)
+["📞 지원 및 도움말"]["#지원-및-도움말"]
 
 ### 공식 문서
 
-[공식 문서](#공식-문서)
-- [AWS EKS 트러블슈팅 가이드](https:///docs.aws.amazon.com/eks/latest/userguide/troubleshooting.html)
-- [GCP GKE 트러블슈팅 가이드](https:///cloud.google.com/kubernetes-engine/docs/troubleshooting)
-- [Kubernetes 트러블슈팅 가이드](https:///kubernetes.io/docs/tasks/debug-application-cluster/)
-- [AWS CloudWatch 트러블슈팅 가이드](https:///docs.aws.amazon.com/cloudwatch/latest/monitoring/troubleshooting.html)
+["공식 문서"]["#공식-문서"]
+- ["AWS EKS 트러블슈팅 가이드"][https:///docs.aws.amazon.com/eks/latest/userguide/troubleshooting.html]
+- ["GCP GKE 트러블슈팅 가이드"][https:///cloud.google.com/kubernetes-engine/docs/troubleshooting]
+- ["Kubernetes 트러블슈팅 가이드"][https:///kubernetes.io/docs/tasks/debug-application-cluster/]
+- ["AWS CloudWatch 트러블슈팅 가이드"][https:///docs.aws.amazon.com/cloudwatch/latest/monitoring/troubleshooting.html]
 
 ### 커뮤니티 지원
 
-[커뮤니티 지원](#커뮤니티-지원)
-- [Kubernetes Slack](https:///kubernetes.slack.com/)
-- [AWS Developer Forums](https:///forums.aws.amazon.com/)
-- [Google Cloud Community](https:///cloud.google.com/community)
-- [Stack Overflow](https:///stackoverflow.com/questions/tagged/kubernetes)
+["커뮤니티 지원"]["#커뮤니티-지원"]
+- [Kubernetes Slack][https:///kubernetes.slack.com/]
+- [AWS Developer Forums][https:///forums.aws.amazon.com/]
+- [Google Cloud Community][https:///cloud.google.com/community]
+- [Stack Overflow][https:///stackoverflow.com/questions/tagged/kubernetes]
 
 ### 문제 보고
 
-[문제 보고](#문제-보고)
+["문제 보고"]["#문제-보고"]
 문제가 지속되면 다음 정보와 함께 이슈를 생성하세요:
 - 오류 메시지 전체
 - 클러스터 환경 정보
@@ -922,11 +922,11 @@ kubectl logs POD_NAME --previous
 
 ## ✅ 체크리스트
 
-[✅ 체크리스트](#체크리스트)
+["✅ 체크리스트"]["#체크리스트"]
 
 ### 문제 해결 전 확인사항
 
-[문제 해결 전 확인사항](#문제-해결-전-확인사항)
+["문제 해결 전 확인사항"]["#문제-해결-전-확인사항"]
 - [ ] 최신 버전 사용 중인가요?
 - [ ] 권한 설정이 올바른가요?
 - [ ] 네트워크 연결이 정상인가요?
@@ -935,7 +935,7 @@ kubectl logs POD_NAME --previous
 
 ### 문제 해결 후 확인사항
 
-[문제 해결 후 확인사항](#문제-해결-후-확인사항)
+["문제 해결 후 확인사항"]["#문제-해결-후-확인사항"]
 - [ ] 문제가 해결되었나요?
 - [ ] 다른 기능에 영향을 주지 않나요?
 - [ ] 성능이 정상인가요?
@@ -958,29 +958,29 @@ kubectl logs POD_NAME --previous
 
 ### 개요
 
-[개요](#개요)
+["개요"]["#개요"]
 이 섹션에서는 Kubernetes 관련 문제에 대해 다룹니다.
 
 ### 주요 내용
 
-[주요 내용](#주요-내용)
-- [추가 예정] 상세 내용이 곧 추가될 예정입니다.
+["주요 내용"]["#주요-내용"]
+- ["추가 예정"] 상세 내용이 곧 추가될 예정입니다.
 
 ### 실습 가이드
 
-[실습 가이드](#실습-가이드)
-1. [추가 예정] 단계별 실습 가이드가 곧 제공될 예정입니다.
+["실습 가이드"]["#실습-가이드"]
+1. ["추가 예정"] 단계별 실습 가이드가 곧 제공될 예정입니다.
 
 ### 참고 자료
 
-[참고 자료](#참고-자료)
-- [추가 예정] 관련 참고 자료가 곧 추가될 예정입니다.
+["참고 자료"]["#참고-자료"]
+- ["추가 예정"] 관련 참고 자료가 곧 추가될 예정입니다.
 
 ---
 
 
 <div align="center">
 
-[← 이전: Cloud Master 2일차 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md) | [← 이전: 종합 실습 가이드](cloud_container/textbook/Day1/comprehensive-practice-guide.md)
+["← 이전: Cloud Master 2일차 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md] | ["← 이전: 종합 실습 가이드"][cloud_container/textbook/Day1/comprehensive-practice-guide.md]
 
 </div>

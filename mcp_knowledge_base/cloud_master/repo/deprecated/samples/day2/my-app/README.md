@@ -101,7 +101,7 @@ kubectl get services -n my-app
 # GitHub Actions 워크플로우 설정
 cp .github/workflows/advanced-cicd.yml .github/workflows/
 
-# 시크릿 설정 (GitHub 저장소에서)
+# 시크릿 설정 ["GitHub 저장소에서"]
 # - AWS_ACCESS_KEY_ID
 # - AWS_SECRET_ACCESS_KEY
 # - GCP_SA_KEY
@@ -126,7 +126,7 @@ chmod +x ../../../repos/cloud-scripts/gcp-project-cleanup.sh
 ```
 
 ## 📚 참고 자료
-- [Cloud Master Day2 가이드](cloud_master/textbook/Day2/README.md)
-- [고급 Docker 실습](cloud_master/textbook/Day2/practices/docker-advanced.md)
-- [Kubernetes 기초 실습](cloud_master/textbook/Day2/practices/kubernetes-basics.md)
-- [cloud-scripts 가이드](cloud_master/repos/cloud-scripts/README.md)
+- ["Cloud Master Day2 가이드"][cloud_master/textbook/Day2/README.md]
+- ["고급 Docker 실습"][cloud_master/textbook/Day2/practices/docker-advanced.md]
+- ["Kubernetes 기초 실습"][cloud_master/textbook/Day2/practices/kubernetes-basics.md]
+- ["cloud-scripts 가이드"][cloud_master/repos/cloud-scripts/README.md]

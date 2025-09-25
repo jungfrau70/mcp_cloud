@@ -3,7 +3,7 @@
 ## 📋 실습 개요
 
 **목표**: 고급 CI/CD 파이프라인과 다중 서비스 환경 구축  
-**소요 시간**: 8시간 (9:00~17:00)  
+**소요 시간**: 8시간 [9:00~17:00]  
 **실습 중심**: 85% 실습, 15% 이론  
 **브랜치**: `day2-advanced` 사용
 
@@ -19,8 +19,8 @@
 3. **저장소 설정**:
    - Repository name: `github-actions-demo-day2`
    - Description: `GitHub Actions CI/CD 실습 프로젝트 - Day2 고급 기능`
-   - Visibility: Public (또는 Private)
-   - Initialize: ❌ 체크 해제 (기존 코드 사용)
+   - Visibility: Public ["또는 Private"]
+   - Initialize: ❌ 체크 해제 ["기존 코드 사용"]
 4. **저장소 생성**: "Create repository" 클릭
 
 #### 로컬에서 저장소 초기화
@@ -43,7 +43,7 @@ git checkout -b day2-advanced
 
 ```bash
 # Day2 프로젝트 코드를 현재 디렉토리로 복사
-# (실제 경로에 맞게 수정)
+# ["실제 경로에 맞게 수정"]
 cp -r /path/to/mcp_knowledge_base/cloud_master/textbook/Day2/project/* .
 
 # Git에 파일 추가
@@ -69,14 +69,14 @@ git push -u origin day2-advanced
 DOCKER_USERNAME: your-docker-username
 DOCKER_PASSWORD: your-docker-password
 
-# AWS VM (스테이징/프로덕션 공통)
+# AWS VM ["스테이징/프로덕션 공통"]
 AWS_VM_HOST: aws-vm-public-ip
 AWS_VM_USERNAME: ubuntu
 AWS_VM_SSH_KEY: aws-vm-ssh-private-key
 AWS_DB_PASSWORD: aws-db-password
 AWS_REDIS_PASSWORD: aws-redis-password
 
-# GCP VM (스테이징/프로덕션 공통)
+# GCP VM ["스테이징/프로덕션 공통"]
 GCP_VM_HOST: gcp-vm-public-ip
 GCP_VM_USERNAME: ubuntu
 GCP_VM_SSH_KEY: gcp-vm-ssh-private-key
@@ -84,26 +84,26 @@ GCP_DB_PASSWORD: gcp-db-password
 GCP_REDIS_PASSWORD: gcp-redis-password
 ```
 
-### 4. 프로젝트 클론 (다른 환경에서)
+### 4. 프로젝트 클론 ["다른 환경에서"]
 
 ```bash
 # GitHub 저장소 클론
 git clone https://github.com/YOUR_USERNAME/github-actions-demo-day2.git
 cd github-actions-demo-day2
 
-# 브랜치 전환 (Day2 실습용)
+# 브랜치 전환 ["Day2 실습용"]
 git checkout day2-advanced
 ```
 
 ---
 
-## 🕘 1교시: GitHub Actions (CI/CD) 이론 및 Docker Compose 기초 (9:00~10:30)
+## 🕘 1교시: GitHub Actions [CI/CD] 이론 및 Docker Compose 기초 [9:00~10:30]
 
-### 📚 이론 학습 (60분)
+### 📚 이론 학습 ["60분"]
 
 #### GitHub Actions CI/CD 핵심 개념
-- **CI (Continuous Integration)**: 코드 변경사항을 지속적으로 통합하고 테스트
-- **CD (Continuous Deployment)**: 테스트 통과한 코드를 자동으로 배포
+- **CI [Continuous Integration]**: 코드 변경사항을 지속적으로 통합하고 테스트
+- **CD [Continuous Deployment]**: 테스트 통과한 코드를 자동으로 배포
 - **워크플로우**: GitHub Actions의 핵심 구성 요소
 - **트리거**: push, pull_request, schedule, workflow_dispatch 등
 
@@ -120,7 +120,7 @@ git checkout day2-advanced
 - **네트워크 관리**: 서비스 간 통신을 위한 내부 네트워크 구성
 - **볼륨 관리**: 데이터 영속성을 위한 볼륨 마운트
 
-### 🛠️ 실습 (30분)
+### 🛠️ 실습 ["30분"]
 
 #### 1. 기본 Docker Compose 파일 작성
 ```yaml
@@ -173,103 +173,103 @@ docker-compose down
 ```
 
 ### 📊 예상 결과
-- **성공률**: 95% (단계별 가이드 제공)
+- **성공률**: 95% ["단계별 가이드 제공"]
 - **소요 시간**: 90분
 - **주요 성과**: 완전한 개발 환경 구축 및 기본 API 동작 확인
 
 ---
 
-## 🕘 2교시: 데이터베이스 연동 및 애플리케이션 수정 (10:45~12:00)
+## 🕘 2교시: 데이터베이스 연동 및 애플리케이션 수정 [10:45~12:00]
 
-### 📚 이론 학습 (15분)
+### 📚 이론 학습 ["15분"]
 #### 데이터베이스 연동 아키텍처
-- **PostgreSQL**: 메인 데이터베이스 (사용자 정보, 애플리케이션 데이터)
+- **PostgreSQL**: 메인 데이터베이스 ["사용자 정보, 애플리케이션 데이터"]
 - **Redis**: 캐시 및 세션 저장소
 - **애플리케이션**: Node.js + Express.js
 - **연결 관리**: Connection Pool, 재연결 로직
 
-### 🛠️ 실습 (60분)
+### 🛠️ 실습 ["60분"]
 
 #### 1. 데이터베이스 스키마 설계
 ```sql
 -- database/init.sql
-CREATE TABLE users (
+CREATE TABLE users [
     id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+    username VARCHAR[50] UNIQUE NOT NULL,
+    email VARCHAR[100] UNIQUE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+];
 
-CREATE TABLE app_logs (
+CREATE TABLE app_logs [
     id SERIAL PRIMARY KEY,
-    level VARCHAR(20) NOT NULL,
+    level VARCHAR[20] NOT NULL,
     message TEXT NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+];
 ```
 
 #### 2. 애플리케이션 코드 수정
 ```javascript
 // src/app.js 수정
-const express = require('express');
-const { Pool } = require('pg');
-const redis = require('redis');
+const express = require['express'];
+const { Pool } = require['pg'];
+const redis = require['redis'];
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // PostgreSQL 연결
-const pool = new Pool({
+const pool = new Pool[{
   host: process.env.DB_HOST || 'postgres',
   port: process.env.DB_PORT || 5432,
   database: process.env.DB_NAME || 'myapp',
   user: process.env.DB_USER || 'myapp_user',
   password: process.env.DB_PASSWORD || 'password'
-});
+}];
 
 // Redis 연결
-const redisClient = redis.createClient({
+const redisClient = redis.createClient[{
   host: process.env.REDIS_HOST || 'redis',
   port: process.env.REDIS_PORT || 6379,
   password: process.env.REDIS_PASSWORD || 'password'
-});
+}];
 
 // 헬스체크 엔드포인트
-app.get('/health', async (req, res) => {
+app.get['/health', async [req, res] => {
   try {
     // 데이터베이스 연결 확인
-    await pool.query('SELECT 1');
+    await pool.query['SELECT 1'];
     
     // Redis 연결 확인
-    await redisClient.ping();
+    await redisClient.ping[];
     
-    res.json({
+    res.json[{
       status: 'healthy',
       database: 'connected',
       redis: 'connected',
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    res.status(500).json({
+      timestamp: new Date[].toISOString[]
+    }];
+  } catch [error] {
+    res.status[500].json[{
       status: 'unhealthy',
       error: error.message
-    });
+    }];
   }
-});
+}];
 
 // 사용자 목록 API
-app.get('/api/users', async (req, res) => {
+app.get['/api/users', async [req, res] => {
   try {
-    const result = await pool.query('SELECT * FROM users ORDER BY created_at DESC');
-    res.json(result.rows);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    const result = await pool.query['SELECT * FROM users ORDER BY created_at DESC'];
+    res.json[result.rows];
+  } catch [error] {
+    res.status[500].json[{ error: error.message }];
   }
-});
+}];
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+app.listen[port, [] => {
+  console.log[`Server running on port ${port}`];
+}];
 ```
 
 #### 3. 환경 변수 설정
@@ -287,26 +287,26 @@ REDIS_PASSWORD=password
 ```
 
 ### 📊 예상 결과
-- **성공률**: 95% (단계별 가이드 제공)
+- **성공률**: 95% ["단계별 가이드 제공"]
 - **소요 시간**: 75분
 - **주요 성과**: 완전한 데이터베이스 연동 및 API 기능 구현
 
 ---
 
-## 🍽️ 점심 시간 (12:00~13:00)
+## 🍽️ 점심 시간 [12:00~13:00]
 
 ---
 
-## 🕘 3교시: 고급 GitHub Actions 워크플로우 (13:00~14:30)
+## 🕘 3교시: 고급 GitHub Actions 워크플로우 [13:00~14:30]
 
-### 📚 이론 학습 (15분)
+### 📚 이론 학습 ["15분"]
 #### 고급 CI/CD 개념
 - **멀티 환경 배포**: staging, production 환경 분리
 - **매트릭스 빌드**: 여러 Node.js 버전으로 테스트
 - **조건부 배포**: 브랜치별 자동 배포 전략
 - **롤백 전략**: 배포 실패 시 자동 롤백
 
-### 🛠️ 실습 (75분)
+### 🛠️ 실습 ["75분"]
 
 #### 1. 고급 워크플로우 파일 작성
 ```yaml
@@ -460,7 +460,7 @@ jobs:
           
           # Blue-Green 배포를 위한 백업
           docker-compose -f docker-compose.prod.yml down
-          docker tag ${{ env.REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest ${{ env.REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:backup-$(date +%Y%m%d-%H%M%S)
+          docker tag ${{ env.REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest ${{ env.REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:backup-$[date +%Y%m%d-%H%M%S]
           
           # 최신 이미지 풀
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
@@ -495,22 +495,22 @@ PROD_REDIS_PASSWORD: [prod-redis-password]
 ```
 
 ### 📊 예상 결과
-- **성공률**: 90% (단계별 가이드 제공)
+- **성공률**: 90% ["단계별 가이드 제공"]
 - **소요 시간**: 90분
 - **주요 성과**: 완전한 CI/CD 파이프라인 구축 및 자동 배포 시스템
 
 ---
 
-## 🕘 4교시: 프로덕션 환경 구축 (14:45~16:15)
+## 🕘 4교시: 프로덕션 환경 구축 [14:45~16:15]
 
-### 📚 이론 학습 (15분)
+### 📚 이론 학습 ["15분"]
 #### 프로덕션 환경 요구사항
 - **고가용성**: 서비스 중단 최소화
 - **확장성**: 트래픽 증가에 대응
 - **보안성**: 데이터 보호 및 접근 제어
 - **모니터링**: 실시간 상태 파악
 
-### 🛠️ 실습 (75분)
+### 🛠️ 실습 ["75분"]
 
 #### 1. 프로덕션 Docker Compose 파일 작성
 ```yaml
@@ -694,15 +694,15 @@ curl http://localhost/health
 ```
 
 ### 📊 예상 결과
-- **성공률**: 95% (단계별 가이드 제공)
+- **성공률**: 95% ["단계별 가이드 제공"]
 - **소요 시간**: 90분
 - **주요 성과**: 완전한 프로덕션 환경 구축 및 모니터링 시스템
 
 ---
 
-## 🕘 5교시: 통합 테스트 및 문제 해결 (16:30~17:00)
+## 🕘 5교시: 통합 테스트 및 문제 해결 [16:30~17:00]
 
-### 🛠️ 실습 (30분)
+### 🛠️ 실습 ["30분"]
 
 #### 1. 전체 시스템 테스트
 ```bash
@@ -724,7 +724,7 @@ curl http://localhost/api/users
 - **애플리케이션 오류**: 로그 확인, 의존성 설치
 
 ### 📊 예상 결과
-- **성공률**: 95% (단계별 가이드 제공)
+- **성공률**: 95% ["단계별 가이드 제공"]
 - **소요 시간**: 30분
 - **주요 성과**: 완전한 프로덕션 환경 검증 및 최적화
 
@@ -736,7 +736,7 @@ curl http://localhost/api/users
 - [ ] Docker Compose 다중 서비스 환경 구축
 - [ ] PostgreSQL + Redis 데이터베이스 연동
 - [ ] 고급 GitHub Actions 워크플로우 실행
-- [ ] 멀티 환경 배포 (staging, production)
+- [ ] 멀티 환경 배포 [staging, production]
 - [ ] 프로덕션 수준의 인프라 구축
 - [ ] 헬스체크 및 자동 재시작 설정
 - [ ] Nginx 로드밸런서 구성
@@ -744,7 +744,7 @@ curl http://localhost/api/users
 ### 🚀 예상 성과물
 - **완전한 프로젝트**: `github-actions-demo-day2` 저장소
 - **CI/CD 파이프라인**: 자동 테스트, 빌드, 배포 시스템
-- **프로덕션 스택**: 4개 서비스 (App, DB, Redis, Nginx)
+- **프로덕션 스택**: 4개 서비스 [App, DB, Redis, Nginx]
 - **모니터링**: 메트릭 수집 및 로그 관리 시스템
 - **성능**: 평균 응답시간 6.2ms 달성
 - **테스트**: 단위 테스트 + 통합 테스트 완성
@@ -796,11 +796,11 @@ curl http://localhost/api/users
 
 ## 📚 추가 학습 자료
 
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [Docker Compose 공식 문서](https://docs.docker.com/compose/)
-- [PostgreSQL 공식 문서](https://www.postgresql.org/docs/)
-- [Redis 공식 문서](https://redis.io/documentation)
-- [Nginx 공식 문서](https://nginx.org/en/docs/)
+- ["GitHub Actions 공식 문서"][https://docs.github.com/en/actions]
+- ["Docker Compose 공식 문서"][https://docs.docker.com/compose/]
+- ["PostgreSQL 공식 문서"][https://www.postgresql.org/docs/]
+- ["Redis 공식 문서"][https://redis.io/documentation]
+- ["Nginx 공식 문서"][https://nginx.org/en/docs/]
 
 ---
 
@@ -810,7 +810,7 @@ curl http://localhost/api/users
 - [x] Docker Compose를 활용한 다중 서비스 관리
 - [x] PostgreSQL + Redis + Nginx 통합 환경 구축
 - [x] 고급 GitHub Actions 워크플로우 구축
-- [x] 멀티 환경 배포 (staging, production)
+- [x] 멀티 환경 배포 [staging, production]
 - [x] 프로덕션 수준의 배포 환경 구축
 - [x] 헬스체크 및 자동 재시작 설정
 
@@ -822,7 +822,7 @@ curl http://localhost/api/users
 
 ### 📈 다음 수업 준비사항
 - [ ] Day3: 로드밸런싱, 모니터링, 비용 최적화
-- [ ] 모니터링 스택 구축 (Prometheus, Grafana)
+- [ ] 모니터링 스택 구축 [Prometheus, Grafana]
 - [ ] 클라우드 로드밸런서 설정
 - [ ] 비용 최적화 전략 수립
 
@@ -835,7 +835,7 @@ curl http://localhost/api/users
 ---
 
 **강의안 작성일**: 2024년 9월 24일  
-**예상 소요 시간**: 8시간 (9:00~17:00)  
+**예상 소요 시간**: 8시간 [9:00~17:00]  
 **실습 중심**: 85% 실습, 15% 이론  
 **다음 단계**: Day3 - 로드밸런싱 & 모니터링 & 비용 최적화
 

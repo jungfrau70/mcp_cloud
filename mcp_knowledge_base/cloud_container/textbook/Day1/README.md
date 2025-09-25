@@ -5,26 +5,26 @@
 
 ## 📚 이론 학습
 
-[📚 이론 학습](#이론-학습)
-1. [🎯 학습 목표](#학습-목표)
-2. [☸️ Kubernetes 고급 아키텍처](#kubernetes-고급-아키텍처)
-3. [🐳 컨테이너 오케스트레이션 고급 기법](#컨테이너-오케스트레이션-고급-기법)
-4. [🚀 AWS ECS 및 Fargate 심화](#aws-ecs-및-fargate-심화)
-5. [🔄 고급 CI/CD 파이프라인](#고급-cicd-파이프라인)
+["📚 이론 학습"]["#이론-학습"]
+1. ["🎯 학습 목표"]["#학습-목표"]
+2. ["☸️ Kubernetes 고급 아키텍처"]["#kubernetes-고급-아키텍처"]
+3. ["🐳 컨테이너 오케스트레이션 고급 기법"]["#컨테이너-오케스트레이션-고급-기법"]
+4. ["🚀 AWS ECS 및 Fargate 심화"]["#aws-ecs-및-fargate-심화"]
+5. ["🔄 고급 CI/CD 파이프라인"]["#고급-cicd-파이프라인"]
 
 ## 🛠️ 실습 학습
 
-[🛠️ 실습 학습](#실습-학습)
-6. [🔧 실습 환경 준비](#실습-환경-준비)
-7. [☸️ Kubernetes 고급 아키텍처 실습](#kubernetes-고급-아키텍처)
-8. [🐳 컨테이너 오케스트레이션 고급 기법 실습](#컨테이너-오케스트레이션-고급-기법)
-9. [🚀 AWS ECS 및 Fargate 심화 실습](#aws-ecs-및-fargate-심화)
-10. [🔄 고급 CI/CD 파이프라인 실습](#고급-cicd-파이프라인)
+["🛠️ 실습 학습"]["#실습-학습"]
+6. ["🔧 실습 환경 준비"]["#실습-환경-준비"]
+7. ["☸️ Kubernetes 고급 아키텍처 실습"]["#kubernetes-고급-아키텍처"]
+8. ["🐳 컨테이너 오케스트레이션 고급 기법 실습"]["#컨테이너-오케스트레이션-고급-기법"]
+9. ["🚀 AWS ECS 및 Fargate 심화 실습"]["#aws-ecs-및-fargate-심화"]
+10. ["🔄 고급 CI/CD 파이프라인 실습"]["#고급-cicd-파이프라인"]
 
 ## 📚 참고 자료
 
-[📚 참고 자료](#참고-자료)
-11. [📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
+["📚 참고 자료"]["#참고-자료"]
+11. ["📚 문제 해결 및 참고 자료"]["#문제-해결-및-참고-자료"]
 
 </details>
 
@@ -34,7 +34,7 @@
 
 ### 핵심 학습 목표
 
-[핵심 학습 목표](#핵심-학습-목표)
+["핵심 학습 목표"]["#핵심-학습-목표"]
 - **Kubernetes 고급 아키텍처** 클러스터 구성 및 컴포넌트 이해
 - **GKE 클러스터 관리** 고급 설정 및 운영
 - **컨테이너 오케스트레이션** Deployment, Service, Ingress 고급 설정
@@ -42,7 +42,7 @@
 
 ### 실습 후 달성할 수 있는 능력
 
-[실습 후 달성할 수 있는 능력](#실습-후-달성할-수-있는-능력)
+["실습 후 달성할 수 있는 능력"]["#실습-후-달성할-수-있는-능력"]
 - ✅ Kubernetes 클러스터 아키텍처 이해
 - ✅ GKE 클러스터 생성 및 고급 설정
 - ✅ 마이크로서비스 아키텍처 구성
@@ -50,7 +50,7 @@
 
 ### 예상 소요 시간
 
-[예상 소요 시간](#예상-소요-시간)
+["예상 소요 시간"]["#예상-소요-시간"]
 - **Kubernetes 고급**: 120-150분
 - **GKE 클러스터**: 90-120분
 - **컨테이너 오케스트레이션**: 120-150분
@@ -61,11 +61,11 @@
 
 ## 📚 이론 학습
 
-[📚 이론 학습](#이론-학습)
+["📚 이론 학습"]["#이론-학습"]
 
 ### 🚀 Kubernetes 고급 아키텍처 이론
 
-[🚀 Kubernetes 고급 아키텍처 이론](#kubernetes-고급-아키텍처-이론)
+["🚀 Kubernetes 고급 아키텍처 이론"]["#kubernetes-고급-아키텍처-이론"]
 
 <details>
 <summary>🚀 Kubernetes 기본 개념</summary>
@@ -76,11 +76,11 @@ Kubernetes는 컨테이너화된 애플리케이션의 배포, 확장, 관리를
 
 #### Kubernetes 핵심 개념
 
-- **클러스터 (Cluster)**: 노드들의 집합으로 구성된 Kubernetes 실행 환경
-- **노드 (Node)**: 워커 머신으로 Pod를 실행하는 물리적 또는 가상 머신
+- **클러스터 [Cluster]**: 노드들의 집합으로 구성된 Kubernetes 실행 환경
+- **노드 [Node]**: 워커 머신으로 Pod를 실행하는 물리적 또는 가상 머신
 - **Pod**: Kubernetes에서 배포 가능한 가장 작은 단위
-- **서비스 (Service)**: Pod 집합에 대한 네트워크 접근을 추상화
-- **네임스페이스 (Namespace)**: 클러스터 내 리소스의 논리적 분할
+- **서비스 [Service]**: Pod 집합에 대한 네트워크 접근을 추상화
+- **네임스페이스 [Namespace]**: 클러스터 내 리소스의 논리적 분할
 
 #### Kubernetes 아키텍처
 
@@ -89,7 +89,7 @@ Kubernetes는 컨테이너화된 애플리케이션의 배포, 확장, 관리를
 - **etcd**: 클러스터 상태를 저장하는 분산 키-값 저장소
 - **API Server**: Kubernetes API를 제공하는 중앙 관리 컴포넌트
 
-#### GKE (Google Kubernetes Engine)
+#### GKE [Google Kubernetes Engine]
 
 - **관리형 Kubernetes**: Google이 클러스터를 관리
 - **자동 업그레이드**: Kubernetes 버전 자동 업데이트
@@ -133,16 +133,16 @@ Kubernetes는 컨테이너화된 애플리케이션의 배포, 확장, 관리를
 <details>
 <summary>🚀 AWS ECS 및 Fargate 심화 이론</summary>
 
-#### ECS (Elastic Container Service)란?
+#### ECS [Elastic Container Service]란?
 
 AWS에서 제공하는 완전 관리형 컨테이너 오케스트레이션 서비스입니다.
 
 #### ECS 핵심 개념
 
-- **클러스터 (Cluster)**: 컨테이너 인스턴스의 논리적 그룹
-- **태스크 정의 (Task Definition)**: 컨테이너 실행을 위한 템플릿
-- **태스크 (Task)**: 태스크 정의의 실행 인스턴스
-- **서비스 (Service)**: 태스크의 원하는 개수를 유지하는 관리형 서비스
+- **클러스터 [Cluster]**: 컨테이너 인스턴스의 논리적 그룹
+- **태스크 정의 [Task Definition]**: 컨테이너 실행을 위한 템플릿
+- **태스크 [Task]**: 태스크 정의의 실행 인스턴스
+- **서비스 [Service]**: 태스크의 원하는 개수를 유지하는 관리형 서비스
 
 #### Fargate란?
 
@@ -207,26 +207,26 @@ Git을 단일 진실 소스로 사용하여 인프라와 애플리케이션을 �
 
 ## 🛠️ 실습 학습
 
-[🛠️ 실습 학습](#실습-학습)
+["🛠️ 실습 학습"]["#실습-학습"]
 
 ## 📚 실습 가이드
 
-[📚 실습 가이드](#실습-가이드)
+["📚 실습 가이드"]["#실습-가이드"]
 
 <details>
 <summary>📖 실습 가이드 개요</summary>
 
 ### 실습 구성
 
-[실습 구성](#실습-구성)
-1. **Kubernetes 고급 아키텍처** (150분)
-2. **컨테이너 오케스트레이션 고급 기법** (150분)
-3. **AWS ECS 및 Fargate 심화** (120분)
-4. **고급 CI/CD 파이프라인** (90분)
+["실습 구성"]["#실습-구성"]
+1. **Kubernetes 고급 아키텍처** ["150분"]
+2. **컨테이너 오케스트레이션 고급 기법** ["150분"]
+3. **AWS ECS 및 Fargate 심화** ["120분"]
+4. **고급 CI/CD 파이프라인** ["90분"]
 
 ### 실습 방식
 
-[실습 방식](#실습-방식)
+["실습 방식"]["#실습-방식"]
 - **Kubernetes**: 클러스터 아키텍처 및 고급 설정
 - **GKE**: Google Kubernetes Engine 관리
 - **ECS/Fargate**: AWS 서버리스 컨테이너 실행
@@ -234,7 +234,7 @@ Git을 단일 진실 소스로 사용하여 인프라와 애플리케이션을 �
 
 ### 실습 결과물
 
-[실습 결과물](#실습-결과물)
+["실습 결과물"]["#실습-결과물"]
 - Kubernetes 클러스터 아키텍처 이해
 - GKE 클러스터 및 마이크로서비스 구성
 - ECS Fargate 서비스 배포
@@ -247,23 +247,23 @@ Git을 단일 진실 소스로 사용하여 인프라와 애플리케이션을 �
 
 ### 📖 상세 실습 가이드
 
-[📖 상세 실습 가이드](#상세-실습-가이드)
-- 🔗 [Kubernetes 기초 실습](practice/kubernetes-basics.md)
-- 🔗 [컨테이너 기초 실습](practice/container-basics.md)
+["📖 상세 실습 가이드"]["#상세-실습-가이드"]
+- 🔗 ["Kubernetes 기초 실습"][practice/kubernetes-basics.md]
+- 🔗 ["컨테이너 기초 실습"][practice/container-basics.md]
 
 ### 🛠️ 문제 해결 가이드
 
-[🛠️ 문제 해결 가이드](#문제-해결-가이드)
-- 🔗 [종합 트러블슈팅 가이드](../Day2/troubleshooting/multi-az-issues.md)
+["🛠️ 문제 해결 가이드"]["#문제-해결-가이드"]
+- 🔗 ["종합 트러블슈팅 가이드"][../Day2/troubleshooting/multi-az-issues.md]
 
 ### 🔗 관련 과정 링크
 
-[🔗 관련 과정 링크](#관련-과정-링크)
+["🔗 관련 과정 링크"]["#관련-과정-링크"]
 - 🔗 Cloud Basic 과정 - AWS/GCP 기초 과정
 - 🔗 Cloud Master 과정 - Docker, CI/CD 심화 과정
-- 🔗 [전체 커리큘럼](../../curriculum.md) - 전체 과정 구조 및 학습 경로
-- 🔗 [통합 인덱스](../../index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](../../learning-path.md) - Cloud Container 학습 경로
+- 🔗 ["전체 커리큘럼"][../../curriculum.md] - 전체 과정 구조 및 학습 경로
+- 🔗 ["통합 인덱스"][../../index.md] - 전체 과정 인덱스
+- 🔗 ["학습 경로로 돌아가기"][../../learning-path.md] - Cloud Container 학습 경로
 
 ---
 
@@ -274,7 +274,7 @@ Git을 단일 진실 소스로 사용하여 인프라와 애플리케이션을 �
 
 ### 필수 계정
 
-[필수 계정](#필수-계정)
+["필수 계정"]["#필수-계정"]
 - **GCP 계정**: GKE 클러스터 생성용
 - **AWS 계정**: ECS/Fargate 서비스 배포용
 - **GitHub 계정**: GitOps 저장소 관리용
@@ -282,7 +282,7 @@ Git을 단일 진실 소스로 사용하여 인프라와 애플리케이션을 �
 
 ### 필수 도구
 
-[필수 도구](#필수-도구)
+["필수 도구"]["#필수-도구"]
 - **kubectl**: Kubernetes 클러스터 관리
 - **gcloud**: Google Cloud CLI
 - **aws**: AWS CLI
@@ -296,10 +296,10 @@ Git을 단일 진실 소스로 사용하여 인프라와 애플리케이션을 �
 
 ### kubectl 설치 및 설정
 
-[kubectl 설치 및 설정](#kubectl-설치-및-설정)
+["kubectl 설치 및 설정"]["#kubectl-설치-및-설정"]
 ```bash
 # kubectl 설치
-curl -LO "https:///dl.k8s.io/release/$(curl -L -s https:///dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https:///dl.k8s.io/release/$[curl -L -s https:///dl.k8s.io/release/stable.txt]/bin/linux/amd64/kubectl"
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 
@@ -309,7 +309,7 @@ kubectl version --client
 
 ### gcloud CLI 설정
 
-[gcloud CLI 설정](#gcloud-cli-설정)
+["gcloud CLI 설정"]["#gcloud-cli-설정"]
 ```bash
 # gcloud 설치
 curl https:///sdk.cloud.google.com | bash
@@ -324,7 +324,7 @@ gcloud container clusters get-credentials CLUSTER_NAME --zone ZONE
 
 ### Helm 설치
 
-[Helm 설치](#helm-설치)
+["Helm 설치"]["#helm-설치"]
 ```bash
 # Helm 설치
 curl https:///raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
@@ -341,7 +341,7 @@ helm version
 
 ### 📚 이론: Kubernetes 아키텍처 원리
 
-[📚 이론: Kubernetes 아키텍처 원리](#이론-kubernetes-아키텍처-원리)
+["📚 이론: Kubernetes 아키텍처 원리"]["#이론-kubernetes-아키텍처-원리"]
 
 #### Kubernetes의 설계 철학
 
@@ -369,7 +369,7 @@ helm version
 
 ### 클러스터 구성 요소
 
-[클러스터 구성 요소](#클러스터-구성-요소)
+["클러스터 구성 요소"]["#클러스터-구성-요소"]
 - **Control Plane**: 클러스터 관리 및 제어
 - **Worker Nodes**: 실제 워크로드 실행
 - **etcd**: 클러스터 상태 저장
@@ -377,7 +377,7 @@ helm version
 
 ### Control Plane 컴포넌트
 
-[Control Plane 컴포넌트](#control-plane-컴포넌트)
+["Control Plane 컴포넌트"]["#control-plane-컴포넌트"]
 | 컴포넌트 | 역할 | 특징 |
 |----------|------|------|
 | **API Server** | 클러스터 API 제공 | RESTful API, 인증/인가 |
@@ -387,7 +387,7 @@ helm version
 
 ### Worker Node 컴포넌트
 
-[Worker Node 컴포넌트](#worker-node-컴포넌트)
+["Worker Node 컴포넌트"]["#worker-node-컴포넌트"]
 | 컴포넌트 | 역할 | 특징 |
 |----------|------|------|
 | **kubelet** | Pod 관리 | 컨테이너 생명주기 관리 |
@@ -401,7 +401,7 @@ helm version
 
 ### GKE 클러스터 구성
 
-[GKE 클러스터 구성](#gke-클러스터-구성)
+["GKE 클러스터 구성"]["#gke-클러스터-구성"]
 - **Managed Control Plane**: Google이 관리하는 Control Plane
 - **Node Pools**: Worker Node 그룹
 - **Auto Scaling**: 자동 스케일링
@@ -409,7 +409,7 @@ helm version
 
 ### GKE 클러스터 타입
 
-[GKE 클러스터 타입](#gke-클러스터-타입)
+["GKE 클러스터 타입"]["#gke-클러스터-타입"]
 | 타입 | 설명 | 특징 |
 |------|------|------|
 | **Standard** | 일반 클러스터 | 완전 제어 가능 |
@@ -418,7 +418,7 @@ helm version
 
 ### GKE 클러스터 생성
 
-[GKE 클러스터 생성](#gke-클러스터-생성)
+["GKE 클러스터 생성"]["#gke-클러스터-생성"]
 ```bash
 # Standard 클러스터 생성
 gcloud container clusters create my-cluster /
@@ -453,7 +453,7 @@ gcloud container clusters create my-private-cluster /
 
 ### 클러스터 업그레이드
 
-[클러스터 업그레이드](#클러스터-업그레이드)
+["클러스터 업그레이드"]["#클러스터-업그레이드"]
 ```bash
 # 클러스터 버전 확인
 gcloud container clusters describe my-cluster --zone=asia-northeast3-a
@@ -472,7 +472,7 @@ gcloud container node-pools upgrade my-node-pool /
 
 ### 클러스터 모니터링
 
-[클러스터 모니터링](#클러스터-모니터링)
+["클러스터 모니터링"]["#클러스터-모니터링"]
 ```bash
 # 클러스터 상태 확인
 kubectl cluster-info
@@ -498,7 +498,7 @@ kubectl get events --sort-by=.metadata.creationTimestamp
 
 ### 핵심 리소스
 
-[핵심 리소스](#핵심-리소스)
+["핵심 리소스"]["#핵심-리소스"]
 - **Pod**: 컨테이너 실행 단위
 - **Deployment**: Pod 배포 및 관리
 - **Service**: 네트워크 서비스 제공
@@ -506,7 +506,7 @@ kubectl get events --sort-by=.metadata.creationTimestamp
 
 ### 고급 리소스
 
-[고급 리소스](#고급-리소스)
+["고급 리소스"]["#고급-리소스"]
 - **ConfigMap**: 설정 데이터 관리
 - **Secret**: 민감한 데이터 관리
 - **PersistentVolume**: 영구 스토리지
@@ -519,7 +519,7 @@ kubectl get events --sort-by=.metadata.creationTimestamp
 
 ### 고급 Deployment 설정
 
-[고급 Deployment 설정](#고급-deployment-설정)
+["고급 Deployment 설정"]["#고급-deployment-설정"]
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -616,7 +616,7 @@ spec:
 
 ### Service 설정
 
-[Service 설정](#service-설정)
+["Service 설정"]["#service-설정"]
 ```yaml
 apiVersion: v1
 kind: Service
@@ -649,7 +649,7 @@ spec:
 
 ### Ingress 설정
 
-[Ingress 설정](#ingress-설정)
+["Ingress 설정"]["#ingress-설정"]
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -687,7 +687,7 @@ spec:
 
 ### ConfigMap 설정
 
-[ConfigMap 설정](#configmap-설정)
+["ConfigMap 설정"]["#configmap-설정"]
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -712,7 +712,7 @@ data:
 
 ### Secret 설정
 
-[Secret 설정](#secret-설정)
+["Secret 설정"]["#secret-설정"]
 ```yaml
 apiVersion: v1
 kind: Secret
@@ -735,7 +735,7 @@ stringData:
 
 ### PersistentVolume 설정
 
-[PersistentVolume 설정](#persistentvolume-설정)
+["PersistentVolume 설정"]["#persistentvolume-설정"]
 ```yaml
 apiVersion: v1
 kind: PersistentVolume
@@ -755,7 +755,7 @@ spec:
 
 ### PersistentVolumeClaim 설정
 
-[PersistentVolumeClaim 설정](#persistentvolumeclaim-설정)
+["PersistentVolumeClaim 설정"]["#persistentvolumeclaim-설정"]
 ```yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -782,7 +782,7 @@ spec:
 
 ### ECS 구성 요소
 
-[ECS 구성 요소](#ecs-구성-요소)
+["ECS 구성 요소"]["#ecs-구성-요소"]
 - **Cluster**: 컨테이너 실행 환경
 - **Task Definition**: 컨테이너 실행 명세
 - **Service**: Task 관리 및 스케일링
@@ -790,7 +790,7 @@ spec:
 
 ### ECS vs Fargate
 
-[ECS vs Fargate](#ecs-vs-fargate)
+[ECS vs Fargate][#ecs-vs-fargate]
 | 구분 | ECS | Fargate |
 |------|-----|---------|
 | **인프라 관리** | 사용자 관리 | AWS 관리 |
@@ -805,7 +805,7 @@ spec:
 
 ### ECS 클러스터 생성
 
-[ECS 클러스터 생성](#ecs-클러스터-생성)
+["ECS 클러스터 생성"]["#ecs-클러스터-생성"]
 ```bash
 # ECS 클러스터 생성
 aws ecs create-cluster /
@@ -819,7 +819,7 @@ aws ecs describe-clusters --clusters my-ecs-cluster
 
 ### Task Definition 생성
 
-[Task Definition 생성](#task-definition-생성)
+["Task Definition 생성"]["#task-definition-생성"]
 ```json
 {
   "family": "my-app-task",
@@ -878,7 +878,7 @@ aws ecs describe-clusters --clusters my-ecs-cluster
 
 ### Fargate 서비스 생성
 
-[Fargate 서비스 생성](#fargate-서비스-생성)
+["Fargate 서비스 생성"]["#fargate-서비스-생성"]
 ```bash
 # Fargate 서비스 생성
 aws ecs create-service /
@@ -899,7 +899,7 @@ aws ecs describe-services /
 
 ### Auto Scaling 설정
 
-[Auto Scaling 설정](#auto-scaling-설정)
+["Auto Scaling 설정"]["#auto-scaling-설정"]
 ```bash
 # Auto Scaling 정책 생성
 aws application-autoscaling register-scalable-target /
@@ -933,7 +933,7 @@ aws application-autoscaling put-scaling-policy /
 
 ### CloudWatch 로그 설정
 
-[CloudWatch 로그 설정](#cloudwatch-로그-설정)
+["CloudWatch 로그 설정"]["#cloudwatch-로그-설정"]
 ```bash
 # 로그 그룹 생성
 aws logs create-log-group /
@@ -947,7 +947,7 @@ aws logs describe-log-streams /
 
 ### CloudWatch 메트릭 설정
 
-[CloudWatch 메트릭 설정](#cloudwatch-메트릭-설정)
+["CloudWatch 메트릭 설정"]["#cloudwatch-메트릭-설정"]
 ```bash
 # 커스텀 메트릭 전송
 aws cloudwatch put-metric-data /
@@ -966,7 +966,7 @@ aws cloudwatch put-metric-data /
 
 ### GitOps 개념
 
-[GitOps 개념](#gitops-개념)
+["GitOps 개념"]["#gitops-개념"]
 - **선언적 설정**: Git을 단일 진실 소스로 사용
 - **자동 동기화**: Git 변경사항을 클러스터에 자동 적용
 - **롤백 지원**: Git 히스토리를 통한 롤백
@@ -974,7 +974,7 @@ aws cloudwatch put-metric-data /
 
 ### GitOps 도구
 
-[GitOps 도구](#gitops-도구)
+["GitOps 도구"]["#gitops-도구"]
 - **ArgoCD**: Kubernetes GitOps 도구
 - **Flux**: GitOps 운영 도구
 - **Tekton**: Kubernetes 네이티브 CI/CD
@@ -986,7 +986,7 @@ aws cloudwatch put-metric-data /
 
 ### ArgoCD 설치
 
-[ArgoCD 설치](#argocd-설치)
+["ArgoCD 설치"]["#argocd-설치"]
 ```bash
 # ArgoCD 네임스페이스 생성
 kubectl create namespace argocd
@@ -1000,7 +1000,7 @@ kubectl get svc -n argocd
 
 ### ArgoCD 애플리케이션 설정
 
-[ArgoCD 애플리케이션 설정](#argocd-애플리케이션-설정)
+["ArgoCD 애플리케이션 설정"]["#argocd-애플리케이션-설정"]
 ```yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -1033,7 +1033,7 @@ spec:
 
 ### Tekton 설치
 
-[Tekton 설치](#tekton-설치)
+["Tekton 설치"]["#tekton-설치"]
 ```bash
 # Tekton 설치
 kubectl apply --filename https:///storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
@@ -1044,7 +1044,7 @@ kubectl get pods --namespace tekton-pipelines
 
 ### Tekton 파이프라인 설정
 
-[Tekton 파이프라인 설정](#tekton-파이프라인-설정)
+["Tekton 파이프라인 설정"]["#tekton-파이프라인-설정"]
 ```yaml
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
@@ -1064,9 +1064,9 @@ spec:
       name: git-clone
     params:
     - name: url
-      value: $(params.git-url)
+      value: $[params.git-url]
     - name: revision
-      value: $(params.git-revision)
+      value: $[params.git-revision]
   - name: build-image
     taskRef:
       name: buildah
@@ -1074,7 +1074,7 @@ spec:
     - fetch-source
     params:
     - name: IMAGE
-      value: my-app:$(params.image-tag)
+      value: my-app:$[params.image-tag]
   - name: deploy
     taskRef:
       name: kubectl
@@ -1096,7 +1096,7 @@ spec:
 
 ### Kubernetes 관련 문제
 
-[Kubernetes 관련 문제](#kubernetes-관련-문제)
+["Kubernetes 관련 문제"]["#kubernetes-관련-문제"]
 <details>
 <summary>❌ Pod 시작 실패</summary>
 
@@ -1145,7 +1145,7 @@ kubectl get networkpolicies
 
 ### ECS/Fargate 관련 문제
 
-[ECS/Fargate 관련 문제](#ecsfargate-관련-문제)
+["ECS/Fargate 관련 문제"]["#ecsfargate-관련-문제"]
 <details>
 <summary>❌ Task 시작 실패</summary>
 
@@ -1175,24 +1175,24 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 ### 공식 문서
 
-[공식 문서](#공식-문서)
-- [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
-- [GKE 공식 문서](https:///cloud.google.com/kubernetes-engine/docs)
-- [ECS 공식 문서](https:///docs.aws.amazon.com/ecs/)
-- [Fargate 공식 문서](https:///docs.aws.amazon.com/fargate/)
+["공식 문서"]["#공식-문서"]
+- ["Kubernetes 공식 문서"][https:///kubernetes.io/docs/]
+- ["GKE 공식 문서"][https:///cloud.google.com/kubernetes-engine/docs]
+- ["ECS 공식 문서"][https:///docs.aws.amazon.com/ecs/]
+- ["Fargate 공식 문서"][https:///docs.aws.amazon.com/fargate/]
 
 ### 유용한 리소스
 
-[유용한 리소스](#유용한-리소스)
-- [Kubernetes 예제](https:///github.com/kubernetes/examples)
-- [ArgoCD 공식 문서](https:///argo-cd.readthedocs.io/)
-- [Tekton 공식 문서](https:///tekton.dev/docs/)
+["유용한 리소스"]["#유용한-리소스"]
+- ["Kubernetes 예제"][https:///github.com/kubernetes/examples]
+- ["ArgoCD 공식 문서"][https:///argo-cd.readthedocs.io/]
+- ["Tekton 공식 문서"][https:///tekton.dev/docs/]
 
 ### 관련 프로젝트
 
-[관련 프로젝트](#관련-프로젝트)
-- [Kubernetes 샘플 프로젝트](https:///github.com/kubernetes/examples)
-- [ArgoCD 샘플](https:///github.com/argoproj/argo-cd)
+["관련 프로젝트"]["#관련-프로젝트"]
+- ["Kubernetes 샘플 프로젝트"][https:///github.com/kubernetes/examples]
+- ["ArgoCD 샘플"][https:///github.com/argoproj/argo-cd]
 
 </details>
 
@@ -1201,7 +1201,7 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 ### 2일차 준비
 
-[2일차 준비](#2일차-준비)
+["2일차 준비"]["#2일차-준비"]
 1. **고가용성 아키텍처**: Multi-AZ, Multi-Region
 2. **로드 밸런싱**: ELB, Cloud Load Balancing
 3. **모니터링**: CloudWatch, Cloud Monitoring
@@ -1209,7 +1209,7 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 ### 고급 기능
 
-[고급 기능](#고급-기능)
+["고급 기능"]["#고급-기능"]
 1. **서비스 메시**: Istio, Linkerd
 2. **보안**: Pod Security Policy, Network Policy
 3. **성능**: HPA, VPA, Cluster Autoscaler
@@ -1221,13 +1221,13 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 ## 🎉 완료!
 
-[🎉 완료!](#완료)
+["🎉 완료!"]["#완료"]
 
 축하합니다! Cloud Container 1일차 실습을 완료했습니다.
 
 ### 📚 학습 요약
 
-[📚 학습 요약](#학습-요약)
+["📚 학습 요약"]["#학습-요약"]
 
 이번 실습을 통해 다음을 배웠습니다:
 
@@ -1238,7 +1238,7 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 ### 📝 학습 피드백 수집
 
-[📝 학습 피드백 수집](#학습-피드백-수집)
+["📝 학습 피드백 수집"]["#학습-피드백-수집"]
 
 #### 실습 완료 체크리스트
 
@@ -1264,7 +1264,7 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 ### 🚀 다음 단계
 
-[🚀 다음 단계](#다음-단계)
+["🚀 다음 단계"]["#다음-단계"]
 
 - **2일차 실습**: 고가용성 아키텍처, 로드 밸런싱, 모니터링
 - **실제 프로젝트 적용**: 자신의 프로젝트에 컨테이너 오케스트레이션 적용
@@ -1272,12 +1272,12 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 ### 💡 추가 학습 자료
 
-[💡 추가 학습 자료](#추가-학습-자료)
+["💡 추가 학습 자료"]["#추가-학습-자료"]
 
-- [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
-- [GKE 공식 문서](https:///cloud.google.com/kubernetes-engine/docs)
+- ["Kubernetes 공식 문서"][https:///kubernetes.io/docs/]
+- ["GKE 공식 문서"][https:///cloud.google.com/kubernetes-engine/docs]
 - Cloud Container 2일차 실습
-- [피드백 제출](https:///forms.gle/example)
+- ["피드백 제출"][https:///forms.gle/example]
 
 ---
 
@@ -1285,11 +1285,11 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 ## 🎉 Day 1 실습을 시작하세요!
 
-[🎉 Day 1 실습을 시작하세요!](#day-1-실습을-시작하세요)
+["🎉 Day 1 실습을 시작하세요!"]["#day-1-실습을-시작하세요"]
 
-[🚀 실습 시작하기](practice/container-basics.md) | 
+["🚀 실습 시작하기"][practice/container-basics.md] | 
 📚 Cloud Container 과정 전체 |
-[🏠 홈으로 돌아가기](../../README.md)
+["🏠 홈으로 돌아가기"][../../README.md]
 
 </div>
 
@@ -1299,7 +1299,7 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 ## ⬅️ 이전/다음 네비게이션
 
-[⬅️ 이전/다음 네비게이션](#이전다음-네비게이션)
-← 이전: Cloud Container 메인 | [다음: Cloud Container 2일차 →](../Day2/README.md)
+["⬅️ 이전/다음 네비게이션"]["#이전다음-네비게이션"]
+← 이전: Cloud Container 메인 | ["다음: Cloud Container 2일차 →"][../Day2/README.md]
 
 </div>

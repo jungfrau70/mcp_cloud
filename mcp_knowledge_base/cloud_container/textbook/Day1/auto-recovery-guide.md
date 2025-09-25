@@ -3,7 +3,7 @@
 
 ## 🎯 학습 목표
 
-[🎯 학습 목표](#학습-목표)
+["🎯 학습 목표"]["#학습-목표"]
 
 이 가이드를 통해 다음을 학습합니다:
 - Kubernetes 자동 복구 메커니즘 이해
@@ -16,14 +16,14 @@
 
 ## 📋 목차
 
-[📋 목차](#목차)
+["📋 목차"]["#목차"]
 
-1. [Kubernetes 자동 복구 메커니즘](#kubernetes-자동-복구-메커니즘)
-2. [헬스체크 및 프로브 설정](#헬스체크-및-프로브-설정)
-3. [자동 스케일링 설정](#자동-스케일링-설정)
-4. [장애 시뮬레이션 및 복구](#장애-시뮬레이션-및-복구)
-5. [모니터링 기반 자동화](#모니터링-기반-자동화)
-6. [실습 시나리오](#실습-시나리오)
+1. ["Kubernetes 자동 복구 메커니즘"]["#kubernetes-자동-복구-메커니즘"]
+2. ["헬스체크 및 프로브 설정"]["#헬스체크-및-프로브-설정"]
+3. ["자동 스케일링 설정"]["#자동-스케일링-설정"]
+4. ["장애 시뮬레이션 및 복구"]["#장애-시뮬레이션-및-복구"]
+5. ["모니터링 기반 자동화"]["#모니터링-기반-자동화"]
+6. ["실습 시나리오"]["#실습-시나리오"]
 
 ---
 
@@ -31,11 +31,11 @@
 
 ### Pod 자동 복구
 
-[Pod 자동 복구](#pod-자동-복구)
+["Pod 자동 복구"]["#pod-자동-복구"]
 
 #### 기본 자동 복구
 
-[기본 자동 복구](#기본-자동-복구)
+["기본 자동 복구"]["#기본-자동-복구"]
 ```yaml
 # deployment-with-recovery.yaml
 apiVersion: apps/v1
@@ -89,7 +89,7 @@ spec:
 
 #### 고급 자동 복구 설정
 
-[고급 자동 복구 설정](#고급-자동-복구-설정)
+["고급 자동 복구 설정"]["#고급-자동-복구-설정"]
 ```yaml
 # advanced-recovery.yaml
 apiVersion: apps/v1
@@ -149,7 +149,7 @@ spec:
           timeoutSeconds: 3
           failureThreshold: 3
           successThreshold: 1
-        # 시작 프로브 (느린 시작 애플리케이션용)
+        # 시작 프로브 ["느린 시작 애플리케이션용"]
         startupProbe:
           httpGet:
             path: /startup
@@ -183,110 +183,110 @@ spec:
 
 ### 애플리케이션 헬스체크 엔드포인트
 
-[애플리케이션 헬스체크 엔드포인트](#애플리케이션-헬스체크-엔드포인트)
+["애플리케이션 헬스체크 엔드포인트"]["#애플리케이션-헬스체크-엔드포인트"]
 
 #### Node.js 애플리케이션 헬스체크
 
-[Node.js 애플리케이션 헬스체크](#nodejs-애플리케이션-헬스체크)
+["Node.js 애플리케이션 헬스체크"]["#nodejs-애플리케이션-헬스체크"]
 ```javascript
 // health-check.js
-const express = require('express');
+const express = require['express'];
 const app = express();
 
 // 헬스체크 엔드포인트
-app.get('/health', (req, res) => {
+app.get['/health', [req, res] => {
   try {
     // 데이터베이스 연결 확인
-    const dbStatus = checkDatabaseConnection();
+    const dbStatus = checkDatabaseConnection[];
     
     // Redis 연결 확인
-    const redisStatus = checkRedisConnection();
+    const redisStatus = checkRedisConnection[];
     
     // 메모리 사용량 확인
-    const memoryUsage = process.memoryUsage();
+    const memoryUsage = process.memoryUsage[];
     const memoryUsagePercent = memoryUsage.heapUsed / memoryUsage.heapTotal;
     
-    if (dbStatus && redisStatus && memoryUsagePercent < 0.9) {
-      res.status(200).json({
+    if [dbStatus && redisStatus && memoryUsagePercent < 0.9] {
+      res.status[200].json[{
         status: 'healthy',
-        timestamp: new Date().toISOString(),
+        timestamp: new Date[].toISOString[],
         checks: {
           database: dbStatus,
           redis: redisStatus,
           memory: memoryUsagePercent
         }
-      });
+      }];
     } else {
-      res.status(503).json({
+      res.status[503].json[{
         status: 'unhealthy',
-        timestamp: new Date().toISOString(),
+        timestamp: new Date[].toISOString[],
         checks: {
           database: dbStatus,
           redis: redisStatus,
           memory: memoryUsagePercent
         }
-      });
+      }];
     }
-  } catch (error) {
-    res.status(503).json({
+  } catch [error] {
+    res.status[503].json[{
       status: 'unhealthy',
       error: error.message,
-      timestamp: new Date().toISOString()
-    });
+      timestamp: new Date[].toISOString[]
+    }];
   }
-});
+}];
 
 // 준비 상태 체크
-app.get('/ready', (req, res) => {
+app.get['/ready', [req, res] => {
   try {
     // 애플리케이션 초기화 완료 확인
-    const isReady = checkApplicationReady();
+    const isReady = checkApplicationReady[];
     
-    if (isReady) {
-      res.status(200).json({
+    if [isReady] {
+      res.status[200].json[{
         status: 'ready',
-        timestamp: new Date().toISOString()
-      });
+        timestamp: new Date[].toISOString[]
+      }];
     } else {
-      res.status(503).json({
+      res.status[503].json[{
         status: 'not ready',
-        timestamp: new Date().toISOString()
-      });
+        timestamp: new Date[].toISOString[]
+      }];
     }
-  } catch (error) {
-    res.status(503).json({
+  } catch [error] {
+    res.status[503].json[{
       status: 'not ready',
       error: error.message,
-      timestamp: new Date().toISOString()
-    });
+      timestamp: new Date[].toISOString[]
+    }];
   }
-});
+}];
 
 // 시작 상태 체크
-app.get('/startup', (req, res) => {
+app.get['/startup', [req, res] => {
   try {
     // 애플리케이션 시작 완료 확인
-    const isStarted = checkApplicationStarted();
+    const isStarted = checkApplicationStarted[];
     
-    if (isStarted) {
-      res.status(200).json({
+    if [isStarted] {
+      res.status[200].json[{
         status: 'started',
-        timestamp: new Date().toISOString()
-      });
+        timestamp: new Date[].toISOString[]
+      }];
     } else {
-      res.status(503).json({
+      res.status[503].json[{
         status: 'starting',
-        timestamp: new Date().toISOString()
-      });
+        timestamp: new Date[].toISOString[]
+      }];
     }
-  } catch (error) {
-    res.status(503).json({
+  } catch [error] {
+    res.status[503].json[{
       status: 'starting',
       error: error.message,
-      timestamp: new Date().toISOString()
-    });
+      timestamp: new Date[].toISOString[]
+    }];
   }
-});
+}];
 
 // 데이터베이스 연결 확인
 function checkDatabaseConnection() {
@@ -317,11 +317,11 @@ module.exports = app;
 
 ### 고급 프로브 설정
 
-[고급 프로브 설정](#고급-프로브-설정)
+["고급 프로브 설정"]["#고급-프로브-설정"]
 
 #### TCP 소켓 프로브
 
-[TCP 소켓 프로브](#tcp-소켓-프로브)
+["TCP 소켓 프로브"]["#tcp-소켓-프로브"]
 ```yaml
 # tcp-probe.yaml
 apiVersion: apps/v1
@@ -363,7 +363,7 @@ spec:
 
 #### 명령어 실행 프로브
 
-[명령어 실행 프로브](#명령어-실행-프로브)
+["명령어 실행 프로브"]["#명령어-실행-프로브"]
 ```yaml
 # exec-probe.yaml
 apiVersion: apps/v1
@@ -413,13 +413,13 @@ spec:
 
 ## 📈 자동 스케일링 설정
 
-### Horizontal Pod Autoscaler (HPA)
+### Horizontal Pod Autoscaler [HPA]
 
-[Horizontal Pod Autoscaler (HPA)](#horizontal-pod-autoscaler-hpa)
+[Horizontal Pod Autoscaler (HPA)][#horizontal-pod-autoscaler-hpa]
 
 #### 기본 HPA 설정
 
-[기본 HPA 설정](#기본-hpa-설정)
+["기본 HPA 설정"]["#기본-hpa-설정"]
 ```yaml
 # hpa-basic.yaml
 apiVersion: autoscaling/v2
@@ -451,7 +451,7 @@ spec:
 
 #### 고급 HPA 설정
 
-[고급 HPA 설정](#고급-hpa-설정)
+["고급 HPA 설정"]["#고급-hpa-설정"]
 ```yaml
 # hpa-advanced.yaml
 apiVersion: autoscaling/v2
@@ -505,13 +505,13 @@ spec:
         averageValue: "100"
 ```
 
-### Vertical Pod Autoscaler (VPA)
+### Vertical Pod Autoscaler [VPA]
 
-[Vertical Pod Autoscaler (VPA)](#vertical-pod-autoscaler-vpa)
+[Vertical Pod Autoscaler (VPA)][#vertical-pod-autoscaler-vpa]
 
 #### VPA 설정
 
-[VPA 설정](#vpa-설정)
+["VPA 설정"]["#vpa-설정"]
 ```yaml
 # vpa.yaml
 apiVersion: autoscaling.k8s.io/v1
@@ -544,11 +544,11 @@ spec:
 
 ### 시나리오 1: Pod 장애 시뮬레이션
 
-[시나리오 1: Pod 장애 시뮬레이션](#시나리오-1-pod-장애-시뮬레이션)
+["시나리오 1: Pod 장애 시뮬레이션"]["#시나리오-1-pod-장애-시뮬레이션"]
 
 #### Pod 삭제 테스트
 
-[Pod 삭제 테스트](#pod-삭제-테스트)
+["Pod 삭제 테스트"]["#pod-삭제-테스트"]
 ```bash
 #!/bin/bash
 # pod-failure-test.sh
@@ -584,7 +584,7 @@ echo "🎉 Pod 장애 시뮬레이션 완료"
 
 #### 노드 장애 시뮬레이션
 
-[노드 장애 시뮬레이션](#노드-장애-시뮬레이션)
+["노드 장애 시뮬레이션"]["#노드-장애-시뮬레이션"]
 ```bash
 #!/bin/bash
 # node-failure-test.sh
@@ -595,15 +595,15 @@ echo "🧪 노드 장애 시뮬레이션 시작"
 echo "📊 현재 노드 상태:"
 kubectl get nodes
 
-# 노드 선택 (첫 번째 워커 노드)
-NODE_NAME=$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
+# 노드 선택 ["첫 번째 워커 노드"]
+NODE_NAME=$[kubectl get nodes -o jsonpath='{.items[0].metadata.name}']
 echo "🎯 대상 노드: $NODE_NAME"
 
 # 노드에 있는 Pod 확인
 echo "📋 노드의 Pod 목록:"
 kubectl get pods -o wide --field-selector spec.nodeName=$NODE_NAME -n container-demo
 
-# 노드 드레인 (Pod 이동)
+# 노드 드레인 ["Pod 이동"]
 echo "🚚 노드 드레인 중..."
 kubectl drain $NODE_NAME --ignore-daemonsets --delete-emptydir-data --force
 
@@ -632,11 +632,11 @@ echo "🎉 노드 장애 시뮬레이션 완료"
 
 ### 시나리오 2: 애플리케이션 장애 시뮬레이션
 
-[시나리오 2: 애플리케이션 장애 시뮬레이션](#시나리오-2-애플리케이션-장애-시뮬레이션)
+["시나리오 2: 애플리케이션 장애 시뮬레이션"]["#시나리오-2-애플리케이션-장애-시뮬레이션"]
 
 #### 메모리 누수 시뮬레이션
 
-[메모리 누수 시뮬레이션](#메모리-누수-시뮬레이션)
+["메모리 누수 시뮬레이션"]["#메모리-누수-시뮬레이션"]
 ```bash
 #!/bin/bash
 # memory-leak-test.sh
@@ -692,7 +692,7 @@ kubectl top pods -l app=memory-leak-test -n container-demo --watch
 
 #### CPU 스파이크 시뮬레이션
 
-[CPU 스파이크 시뮬레이션](#cpu-스파이크-시뮬레이션)
+["CPU 스파이크 시뮬레이션"]["#cpu-스파이크-시뮬레이션"]
 ```bash
 #!/bin/bash
 # cpu-spike-test.sh
@@ -752,11 +752,11 @@ kubectl top pods -l app=cpu-spike-test -n container-demo --watch
 
 ### Prometheus 알림 규칙
 
-[Prometheus 알림 규칙](#prometheus-알림-규칙)
+["Prometheus 알림 규칙"]["#prometheus-알림-규칙"]
 
 #### 자동 복구 알림
 
-[자동 복구 알림](#자동-복구-알림)
+["자동 복구 알림"]["#자동-복구-알림"]
 ```yaml
 # auto-recovery-alerts.yaml
 apiVersion: v1
@@ -800,7 +800,7 @@ data:
           description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has high memory usage"
       
       - alert: HighCPUUsage
-        expr: rate(container_cpu_usage_seconds_total[5m]) > 0.8
+        expr: rate[container_cpu_usage_seconds_total[5m]] > 0.8
         for: 3m
         labels:
           severity: warning
@@ -812,103 +812,103 @@ data:
 
 ### 자동 복구 웹훅
 
-[자동 복구 웹훅](#자동-복구-웹훅)
+["자동 복구 웹훅"]["#자동-복구-웹훅"]
 
 #### 웹훅 서버
 
-[웹훅 서버](#웹훅-서버)
+["웹훅 서버"]["#웹훅-서버"]
 ```javascript
 // auto-recovery-webhook.js
-const express = require('express');
-const { WebhookClient } = require('discord.js');
+const express = require['express'];
+const { WebhookClient } = require['discord.js'];
 const app = express();
 
-app.use(express.json());
+app.use[express.json[]];
 
 // Discord 웹훅 설정
-const webhook = new WebhookClient({
+const webhook = new WebhookClient[{
   url: process.env.DISCORD_WEBHOOK_URL
-});
+}];
 
 // Prometheus Alertmanager 웹훅 처리
-app.post('/webhook', async (req, res) => {
+app.post['/webhook', async [req, res] => {
   try {
     const alerts = req.body.alerts;
     
-    for (const alert of alerts) {
-      if (alert.labels.auto_recovery === 'true') {
-        await handleAutoRecovery(alert);
+    for [const alert of alerts] {
+      if [alert.labels.auto_recovery === 'true'] {
+        await handleAutoRecovery[alert];
       }
     }
     
-    res.status(200).send('OK');
-  } catch (error) {
-    console.error('Webhook 처리 오류:', error);
-    res.status(500).send('Internal Server Error');
+    res.status[200].send['OK'];
+  } catch [error] {
+    console.error["'Webhook 처리 오류:', error"];
+    res.status[500].send['Internal Server Error'];
   }
-});
+}];
 
 // 자동 복구 처리
-async function handleAutoRecovery(alert) {
+async function handleAutoRecovery[alert] {
   const { labels, annotations } = alert;
   
   try {
     // Discord 알림 전송
-    await webhook.send({
+    await webhook.send["{
       content: `🚨 **자동 복구 알림**/n` +
                `**알림**: ${annotations.summary}/n` +
                `**설명**: ${annotations.description}/n` +
                `**네임스페이스**: ${labels.namespace}/n` +
                `**Pod**: ${labels.pod}/n` +
-               `**시간**: ${new Date().toISOString()}`
-    });
+               `**시간**: ${new Date["].toISOString[]}`
+    }];
     
     // 자동 복구 액션 실행
-    if (labels.alertname === 'PodCrashLoopBackOff') {
-      await restartPod(labels.namespace, labels.pod);
-    } else if (labels.alertname === 'HighMemoryUsage') {
-      await scaleUpDeployment(labels.namespace, labels.pod);
+    if [labels.alertname === 'PodCrashLoopBackOff'] {
+      await restartPod[labels.namespace, labels.pod];
+    } else if [labels.alertname === 'HighMemoryUsage'] {
+      await scaleUpDeployment[labels.namespace, labels.pod];
     }
     
-  } catch (error) {
-    console.error('자동 복구 처리 오류:', error);
+  } catch [error] {
+    console.error["'자동 복구 처리 오류:', error"];
   }
 }
 
 // Pod 재시작
-async function restartPod(namespace, podName) {
-  const { exec } = require('child_process');
+async function restartPod[namespace, podName] {
+  const { exec } = require['child_process'];
   
-  return new Promise((resolve, reject) => {
-    exec(`kubectl delete pod ${podName} -n ${namespace}`, (error, stdout, stderr) => {
-      if (error) {
-        reject(error);
+  return new Promise[[resolve, reject] => {
+    exec[`kubectl delete pod ${podName} -n ${namespace}`, [error, stdout, stderr] => {
+      if [error] {
+        reject[error];
       } else {
-        resolve(stdout);
+        resolve[stdout];
       }
-    });
-  });
+    }];
+  }];
 }
 
 // Deployment 스케일 업
-async function scaleUpDeployment(namespace, podName) {
-  const { exec } = require('child_process');
+async function scaleUpDeployment[namespace, podName] {
+  const { exec } = require['child_process'];
   
-  return new Promise((resolve, reject) => {
-    exec(`kubectl scale deployment container-demo --replicas=+1 -n ${namespace}`, (error, stdout, stderr) => {
-      if (error) {
-        reject(error);
+  return new Promise[[resolve, reject] => {
+    exec[`kubectl scale deployment container-demo --replicas=+1 -n ${namespace}`, [error, stdout, stderr] => {
+      if [error] {
+        reject[error];
       } else {
-        resolve(stdout);
+        resolve[stdout];
       }
-    });
-  });
+    }];
+  }];
 }
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`자동 복구 웹훅 서버가 포트 ${PORT}에서 실행 중입니다.`);
-});
+app.listen[PORT, [] => {
+  console.log["`자동 복구 웹훅 서버가 포트 ${PORT}에서 실행 중입니다.`"];
+}];
 ```
 
 ---
@@ -917,11 +917,11 @@ app.listen(PORT, () => {
 
 ### 시나리오 1: 기본 자동 복구 테스트
 
-[시나리오 1: 기본 자동 복구 테스트](#시나리오-1-기본-자동-복구-테스트)
+["시나리오 1: 기본 자동 복구 테스트"]["#시나리오-1-기본-자동-복구-테스트"]
 
 #### 1단계: 환경 설정
 
-[1단계: 환경 설정](#1단계-환경-설정)
+["1단계: 환경 설정"]["#1단계-환경-설정"]
 ```bash
 # 자동 복구 테스트 환경 배포
 kubectl apply -f auto-recovery-guide/deployment-with-recovery.yaml
@@ -932,18 +932,18 @@ kubectl get pods -l app=container-demo -n container-demo -w
 
 #### 2단계: Pod 장애 시뮬레이션
 
-[2단계: Pod 장애 시뮬레이션](#2단계-pod-장애-시뮬레이션)
+["2단계: Pod 장애 시뮬레이션"]["#2단계-pod-장애-시뮬레이션"]
 ```bash
 # Pod 삭제
 kubectl delete pod -l app=container-demo -n container-demo
 
-# 자동 복구 확인 (약 30초 내)
+# 자동 복구 확인 ["약 30초 내"]
 kubectl get pods -l app=container-demo -n container-demo
 ```
 
 #### 3단계: 서비스 연속성 확인
 
-[3단계: 서비스 연속성 확인](#3단계-서비스-연속성-확인)
+["3단계: 서비스 연속성 확인"]["#3단계-서비스-연속성-확인"]
 ```bash
 # 서비스 접속 테스트
 kubectl port-forward svc/container-demo-service 8080:80 -n container-demo &
@@ -952,11 +952,11 @@ curl http://localhost:8080/health
 
 ### 시나리오 2: 고급 자동 복구 테스트
 
-[시나리오 2: 고급 자동 복구 테스트](#시나리오-2-고급-자동-복구-테스트)
+["시나리오 2: 고급 자동 복구 테스트"]["#시나리오-2-고급-자동-복구-테스트"]
 
 #### 1단계: HPA 설정
 
-[1단계: HPA 설정](#1단계-hpa-설정)
+["1단계: HPA 설정"]["#1단계-hpa-설정"]
 ```bash
 # HPA 배포
 kubectl apply -f auto-recovery-guide/hpa-advanced.yaml
@@ -967,18 +967,18 @@ kubectl get hpa -n container-demo
 
 #### 2단계: 부하 테스트
 
-[2단계: 부하 테스트](#2단계-부하-테스트)
+["2단계: 부하 테스트"]["#2단계-부하-테스트"]
 ```bash
 # 부하 생성기 실행
 kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh
 
-# 부하 생성 (load-generator pod 내에서)
+# 부하 생성 ["load-generator pod 내에서"]
 while true; do wget -q -O- http://container-demo-service:80; done
 ```
 
 #### 3단계: 자동 스케일링 확인
 
-[3단계: 자동 스케일링 확인](#3단계-자동-스케일링-확인)
+["3단계: 자동 스케일링 확인"]["#3단계-자동-스케일링-확인"]
 ```bash
 # HPA 동작 확인
 kubectl get hpa -n container-demo -w
@@ -989,11 +989,11 @@ kubectl get pods -l app=container-demo -n container-demo -w
 
 ### 시나리오 3: 모니터링 기반 자동화
 
-[시나리오 3: 모니터링 기반 자동화](#시나리오-3-모니터링-기반-자동화)
+["시나리오 3: 모니터링 기반 자동화"]["#시나리오-3-모니터링-기반-자동화"]
 
 #### 1단계: 모니터링 설정
 
-[1단계: 모니터링 설정](#1단계-모니터링-설정)
+["1단계: 모니터링 설정"]["#1단계-모니터링-설정"]
 ```bash
 # Prometheus 알림 규칙 배포
 kubectl apply -f auto-recovery-guide/auto-recovery-alerts.yaml
@@ -1028,7 +1028,7 @@ EOF
 
 #### 2단계: 장애 시뮬레이션
 
-[2단계: 장애 시뮬레이션](#2단계-장애-시뮬레이션)
+["2단계: 장애 시뮬레이션"]["#2단계-장애-시뮬레이션"]
 ```bash
 # 메모리 누수 시뮬레이션
 kubectl apply -f auto-recovery-guide/memory-leak-test.yaml
@@ -1039,7 +1039,7 @@ kubectl apply -f auto-recovery-guide/cpu-spike-test.yaml
 
 #### 3단계: 자동 복구 확인
 
-[3단계: 자동 복구 확인](#3단계-자동-복구-확인)
+["3단계: 자동 복구 확인"]["#3단계-자동-복구-확인"]
 ```bash
 # 웹훅 로그 확인
 kubectl logs -f deployment/auto-recovery-webhook -n container-demo
@@ -1052,11 +1052,11 @@ kubectl logs -f deployment/auto-recovery-webhook -n container-demo
 
 ## ✅ 체크리스트
 
-[✅ 체크리스트](#체크리스트)
+["✅ 체크리스트"]["#체크리스트"]
 
 ### 기본 자동 복구
 
-[기본 자동 복구](#기본-자동-복구)
+["기본 자동 복구"]["#기본-자동-복구"]
 - [ ] Pod 자동 재시작 설정
 - [ ] 헬스체크 및 프로브 설정
 - [ ] 리소스 제한 설정
@@ -1064,7 +1064,7 @@ kubectl logs -f deployment/auto-recovery-webhook -n container-demo
 
 ### 고급 자동 복구
 
-[고급 자동 복구](#고급-자동-복구)
+["고급 자동 복구"]["#고급-자동-복구"]
 - [ ] HPA 설정 및 테스트
 - [ ] VPA 설정 및 테스트
 - [ ] 다단계 헬스체크 설정
@@ -1086,21 +1086,21 @@ kubectl logs -f deployment/auto-recovery-webhook -n container-demo
 
 ## 📚 참고 자료
 
-[📚 참고 자료](#참고-자료)
+["📚 참고 자료"]["#참고-자료"]
 
 ### 공식 문서
 
-[공식 문서](#공식-문서)
-- [Kubernetes 프로브 공식 문서](https:///kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
-- [Kubernetes HPA 공식 문서](https:///kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
-- [Prometheus 알림 규칙 공식 문서](https:///prometheus.io/docs/prometheus/latest/configuration/alerting_rules/)
+["공식 문서"]["#공식-문서"]
+- ["Kubernetes 프로브 공식 문서"][https:///kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/]
+- ["Kubernetes HPA 공식 문서"][https:///kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/]
+- ["Prometheus 알림 규칙 공식 문서"][https:///prometheus.io/docs/prometheus/latest/configuration/alerting_rules/]
 
 ### 추가 학습 자료
 
-[추가 학습 자료](#추가-학습-자료)
-- [Kubernetes 고급 가이드](cloud_container/textbook/Day1/kubernetes-advanced-guide.md)
-- [종합 실습 가이드](cloud_container/textbook/Day1/comprehensive-practice-guide.md)
-- [모니터링 설정 가이드](cloud_container/textbook/Day2/monitoring-setup.md)
+["추가 학습 자료"]["#추가-학습-자료"]
+- ["Kubernetes 고급 가이드"][cloud_container/textbook/Day1/kubernetes-advanced-guide.md]
+- ["종합 실습 가이드"][cloud_container/textbook/Day1/comprehensive-practice-guide.md]
+- ["모니터링 설정 가이드"][cloud_container/textbook/Day2/monitoring-setup.md]
 
 ---
 
@@ -1112,9 +1112,9 @@ kubectl logs -f deployment/auto-recovery-webhook -n container-demo
 
 ### 📧 연락처
 
-[📧 연락처](#연락처)
+["📧 연락처"]["#연락처"]
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -1122,6 +1122,6 @@ kubectl logs -f deployment/auto-recovery-webhook -n container-demo
 
 <div align="center">
 
-[← 이전: Cloud Container 1일차 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Container 1일차 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

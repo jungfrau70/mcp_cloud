@@ -7,7 +7,7 @@
 
 ### 핵심 학습 목표
 - **AWS ELB 구성**: Application Load Balancer, Network Load Balancer 설정
-- **GCP Cloud Load Balancing**: HTTP(S) Load Balancing, TCP/UDP Load Balancing
+- **GCP Cloud Load Balancing**: HTTP[S] Load Balancing, TCP/UDP Load Balancing
 - **로드 밸런싱 알고리즘**: Round Robin, Least Connections, IP Hash 이해
 - **고가용성 구성**: Multi-AZ, Multi-Region 로드 밸런싱
 
@@ -21,15 +21,15 @@
 
 ## 📚 이론 학습
 
-### AWS Elastic Load Balancer (ELB)
+### AWS Elastic Load Balancer [ELB]
 
-#### Application Load Balancer (ALB)
+#### Application Load Balancer [ALB]
 - **7계층 로드 밸런싱**: HTTP/HTTPS 트래픽 처리
 - **Path-based Routing**: URL 경로 기반 라우팅
 - **Host-based Routing**: 도메인 기반 라우팅
 - **Target Groups**: 다양한 타겟 그룹 지원
 
-#### Network Load Balancer (NLB)
+#### Network Load Balancer [NLB]
 - **4계층 로드 밸런싱**: TCP/UDP 트래픽 처리
 - **고성능**: 초당 수백만 요청 처리
 - **정적 IP**: 고정 IP 주소 제공
@@ -37,7 +37,7 @@
 
 ### GCP Cloud Load Balancing
 
-#### HTTP(S) Load Balancing
+#### HTTP[S] Load Balancing
 - **글로벌 로드 밸런싱**: 전 세계 엣지 로케이션 활용
 - **SSL 종료**: SSL 인증서 관리
 - **CDN 통합**: Cloud CDN과 통합
@@ -78,27 +78,27 @@ gcloud config set project $PROJECT_ID
 #### 1단계: VPC 및 서브넷 생성
 ```bash
 # VPC 생성
-VPC_ID=$(aws ec2 create-vpc --cidr-block 10.0.0.0/16 --query 'Vpc.VpcId' --output text)
+VPC_ID=$[aws ec2 create-vpc --cidr-block 10.0.0.0/16 --query 'Vpc.VpcId' --output text]
 aws ec2 create-tags --resources $VPC_ID --tags Key=Name,Value=load-balancer-vpc
 
-# 서브넷 생성 (Multi-AZ)
-SUBNET_1=$(aws ec2 create-subnet --vpc-id $VPC_ID --cidr-block 10.0.1.0/24 --availability-zone ap-northeast-2a --query 'Subnet.SubnetId' --output text)
-SUBNET_2=$(aws ec2 create-subnet --vpc-id $VPC_ID --cidr-block 10.0.2.0/24 --availability-zone ap-northeast-2c --query 'Subnet.SubnetId' --output text)
+# 서브넷 생성 [Multi-AZ]
+SUBNET_1=$[aws ec2 create-subnet --vpc-id $VPC_ID --cidr-block 10.0.1.0/24 --availability-zone ap-northeast-2a --query 'Subnet.SubnetId' --output text]
+SUBNET_2=$[aws ec2 create-subnet --vpc-id $VPC_ID --cidr-block 10.0.2.0/24 --availability-zone ap-northeast-2c --query 'Subnet.SubnetId' --output text]
 
 # 인터넷 게이트웨이 생성
-IGW_ID=$(aws ec2 create-internet-gateway --query 'InternetGateway.InternetGatewayId' --output text)
+IGW_ID=$[aws ec2 create-internet-gateway --query 'InternetGateway.InternetGatewayId' --output text]
 aws ec2 attach-internet-gateway --vpc-id $VPC_ID --internet-gateway-id $IGW_ID
 ```
 
 #### 2단계: 보안 그룹 생성
 ```bash
 # ALB 보안 그룹
-ALB_SG=$(aws ec2 create-security-group --group-name alb-sg --description "ALB Security Group" --vpc-id $VPC_ID --query 'GroupId' --output text)
+ALB_SG=$[aws ec2 create-security-group --group-name alb-sg --description "ALB Security Group" --vpc-id $VPC_ID --query 'GroupId' --output text]
 aws ec2 authorize-security-group-ingress --group-id $ALB_SG --protocol tcp --port 80 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $ALB_SG --protocol tcp --port 443 --cidr 0.0.0.0/0
 
 # EC2 보안 그룹
-EC2_SG=$(aws ec2 create-security-group --group-name ec2-sg --description "EC2 Security Group" --vpc-id $VPC_ID --query 'GroupId' --output text)
+EC2_SG=$[aws ec2 create-security-group --group-name ec2-sg --description "EC2 Security Group" --vpc-id $VPC_ID --query 'GroupId' --output text]
 aws ec2 authorize-security-group-ingress --group-id $EC2_SG --protocol tcp --port 80 --source-group $ALB_SG
 aws ec2 authorize-security-group-ingress --group-id $EC2_SG --protocol tcp --port 22 --cidr 0.0.0.0/0
 ```
@@ -109,19 +109,19 @@ aws ec2 authorize-security-group-ingress --group-id $EC2_SG --protocol tcp --por
 aws ec2 create-key-pair --key-name load-balancer-key --query 'KeyMaterial' --output text > load-balancer-key.pem
 chmod 400 load-balancer-key.pem
 
-# EC2 인스턴스 생성 (2개)
-INSTANCE_1=$(aws ec2 run-instances --image-id ami-0c76973fbe0ee100c --count 1 --instance-type t2.micro --key-name load-balancer-key --security-group-ids $EC2_SG --subnet-id $SUBNET_1 --user-data file://user-data.sh --query 'Instances[0].InstanceId' --output text)
+# EC2 인스턴스 생성 ["2개"]
+INSTANCE_1=$[aws ec2 run-instances --image-id ami-0c76973fbe0ee100c --count 1 --instance-type t2.micro --key-name load-balancer-key --security-group-ids $EC2_SG --subnet-id $SUBNET_1 --user-data file://user-data.sh --query 'Instances[0].InstanceId' --output text]
 
-INSTANCE_2=$(aws ec2 run-instances --image-id ami-0c76973fbe0ee100c --count 1 --instance-type t2.micro --key-name load-balancer-key --security-group-ids $EC2_SG --subnet-id $SUBNET_2 --user-data file://user-data.sh --query 'Instances[0].InstanceId' --output text)
+INSTANCE_2=$[aws ec2 run-instances --image-id ami-0c76973fbe0ee100c --count 1 --instance-type t2.micro --key-name load-balancer-key --security-group-ids $EC2_SG --subnet-id $SUBNET_2 --user-data file://user-data.sh --query 'Instances[0].InstanceId' --output text]
 ```
 
 #### 4단계: Application Load Balancer 생성
 ```bash
 # Target Group 생성
-TARGET_GROUP_ARN=$(aws elbv2 create-target-group --name my-targets --protocol HTTP --port 80 --vpc-id $VPC_ID --query 'TargetGroups[0].TargetGroupArn' --output text)
+TARGET_GROUP_ARN=$[aws elbv2 create-target-group --name my-targets --protocol HTTP --port 80 --vpc-id $VPC_ID --query 'TargetGroups[0].TargetGroupArn' --output text]
 
 # ALB 생성
-ALB_ARN=$(aws elbv2 create-load-balancer --name my-load-balancer --subnets $SUBNET_1 $SUBNET_2 --security-groups $ALB_SG --query 'LoadBalancers[0].LoadBalancerArn' --output text)
+ALB_ARN=$[aws elbv2 create-load-balancer --name my-load-balancer --subnets $SUBNET_1 $SUBNET_2 --security-groups $ALB_SG --query 'LoadBalancers[0].LoadBalancerArn' --output text]
 
 # 타겟 등록
 aws elbv2 register-targets --target-group-arn $TARGET_GROUP_ARN --targets Id=$INSTANCE_1 Id=$INSTANCE_2
@@ -143,7 +143,7 @@ gcloud compute instance-templates create web-server-template /
     --metadata=startup-script='#!/bin/bash
 apt-get update
 apt-get install -y nginx
-echo "Hello from $(hostname)" > /var/www/html/index.html
+echo "Hello from $[hostname]" > /var/www/html/index.html
 systemctl restart nginx'
 ```
 
@@ -207,10 +207,10 @@ gcloud compute forwarding-rules create web-rule /
 
 ### SSL/TLS 종료
 ```bash
-# SSL 인증서 생성 (AWS)
+# SSL 인증서 생성 [AWS]
 aws acm request-certificate --domain-name example.com --validation-method DNS
 
-# SSL 인증서 생성 (GCP)
+# SSL 인증서 생성 [GCP]
 gcloud compute ssl-certificates create web-ssl-cert /
     --domains=example.com
 ```
@@ -300,16 +300,16 @@ done
 ## 📚 참고 자료
 
 ### AWS 공식 문서
-- [Application Load Balancer 가이드](https:///docs.aws.amazon.com/elasticloadbalancing/latest/application/)
-- [Network Load Balancer 가이드](https:///docs.aws.amazon.com/elasticloadbalancing/latest/network/)
+- ["Application Load Balancer 가이드"][https:///docs.aws.amazon.com/elasticloadbalancing/latest/application/]
+- ["Network Load Balancer 가이드"][https:///docs.aws.amazon.com/elasticloadbalancing/latest/network/]
 
 ### GCP 공식 문서
-- [Cloud Load Balancing 가이드](https:///cloud.google.com/load-balancing/docs)
-- [HTTP(S) Load Balancing 가이드](https:///cloud.google.com/load-balancing/docs/https)
+- ["Cloud Load Balancing 가이드"][https:///cloud.google.com/load-balancing/docs]
+- [HTTP[S] Load Balancing 가이드][https:///cloud.google.com/load-balancing/docs/https]
 
 ### 추가 학습 자료
-- [로드 밸런싱 알고리즘 비교](https:///www.nginx.com/resources/glossary/load-balancing/)
-- [고가용성 아키텍처 설계](https:///aws.amazon.com/architecture/well-architected/)
+- ["로드 밸런싱 알고리즘 비교"][https:///www.nginx.com/resources/glossary/load-balancing/]
+- ["고가용성 아키텍처 설계"][https:///aws.amazon.com/architecture/well-architected/]
 
 ---
 
@@ -317,6 +317,6 @@ done
 
 <div align="center">
 
-[← 이전: Cloud Master 3일차 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md)
+["← 이전: Cloud Master 3일차 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md]
 
 </div>

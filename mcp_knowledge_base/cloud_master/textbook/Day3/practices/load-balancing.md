@@ -64,7 +64,7 @@ docker --version
 # VPC 및 서브넷 생성
 aws ec2 create-vpc --cidr-block 10.0.0.0/16 --tag-specifications 'ResourceType=vpc,Tags=[{Key=Name,Value=my-vpc}]'
 
-# 서브넷 생성 (Multi-AZ)
+# 서브넷 생성 [Multi-AZ]
 aws ec2 create-subnet --vpc-id vpc-12345 --cidr-block 10.0.1.0/24 --availability-zone us-west-2a
 aws ec2 create-subnet --vpc-id vpc-12345 --cidr-block 10.0.2.0/24 --availability-zone us-west-2b
 
@@ -80,7 +80,7 @@ aws ec2 authorize-security-group-ingress --group-id sg-12345 --protocol tcp --po
 - VPC ID: `vpc-1234567890abcdef0` 생성
 - 서브넷 ID: `subnet-1234567890abcdef0`, `subnet-0987654321fedcba0` 생성
 - 보안 그룹 ID: `sg-1234567890abcdef0` 생성
-- HTTP(80), HTTPS(443) 포트 열림 확인
+- HTTP[80], HTTPS[443] 포트 열림 확인
 
 #### ALB 생성
 ```bash
@@ -115,7 +115,7 @@ aws elbv2 create-listener /
 
 **✅ 예상 결과:**
 - ALB DNS 이름: `my-alb-1234567890.us-west-2.elb.amazonaws.com`
-- ALB 상태: `active` (약 2-3분 소요)
+- ALB 상태: `active` ["약 2-3분 소요"]
 - 타겟 그룹 ARN: `arn:aws:elasticloadbalancing:us-west-2:123456789012:targetgroup/web-targets/1234567890123456`
 - 리스너 ARN: `arn:aws:elasticloadbalancing:us-west-2:123456789012:listener/app/my-alb/1234567890123456/1234567890123456`
 
@@ -212,7 +212,7 @@ gcloud compute instance-groups managed set-autoscaling web-group /
   --zone us-central1-a
 ```
 
-#### HTTP(S) 로드 밸런서 생성
+#### HTTP[S] 로드 밸런서 생성
 ```bash
 # 백엔드 서비스 생성
 gcloud compute backend-services create web-backend /
@@ -341,14 +341,14 @@ resource "aws_autoscaling_group" "app" {
 #### Multi-Region 구성
 ```yaml
 # terraform/multi-region.tf
-# Primary Region (us-west-2)
+# Primary Region [us-west-2]
 resource "aws_lb" "primary" {
   provider = aws.primary
   name     = "my-alb-primary"
   # ... configuration
 }
 
-# Secondary Region (us-east-1)
+# Secondary Region [us-east-1]
 resource "aws_lb" "secondary" {
   provider = aws.secondary
   name     = "my-alb-secondary"

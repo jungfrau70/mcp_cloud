@@ -22,10 +22,10 @@
 ```
 Day1 README
 ├── 📖 상세 실습 가이드
-│   ├── Docker 기초 실습 (practice/docker-basics)
-│   ├── Git/GitHub 기초 실습 (practice/git-github-basics)
-│   ├── GitHub Actions 기초 실습 (practice/github-actions-basics)
-│   └── VM 배포 실습 (practice/vm-deployment)
+│   ├── Docker 기초 실습 [practice/docker-basics]
+│   ├── Git/GitHub 기초 실습 [practice/git-github-basics]
+│   ├── GitHub Actions 기초 실습 [practice/github-actions-basics]
+│   └── VM 배포 실습 [practice/vm-deployment]
 ├── �� 개념 학습 가이드
 │   ├── Docker 고급 가이드
 │   ├── Docker Compose 가이드
@@ -95,7 +95,7 @@ Day3 README
 **작업 문서**
 
 ## 🔗 관련 과정
-[Cloud Basic 1일차](README.md) | [Cloud Master 1일차](README.md) | [Cloud Container 1일차](README.md)
+["Cloud Basic 1일차"][README.md] | ["Cloud Master 1일차"][README.md] | ["Cloud Container 1일차"][README.md]
 
 </div>
 
@@ -103,7 +103,7 @@ Day3 README
 
 <div align="center">
 
-[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
+["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
 
 </div>
 
@@ -113,12 +113,12 @@ Day3 README
 
 ## 🔍 Cloud Master 실습 자동화 코드 점검 진행 상황
 
-### ✅ 완료된 작업 (1분 경과)
+### ✅ 완료된 작업 ["1분 경과"]
 1. **cloud-scripts 디렉토리 구조 확인** - 완료
 2. **Day1 README.md에 자동화 스크립트 링크 추가** - 완료
 3. **Day2, Day3 README.md에 자동화 스크립트 링크 추가** - 완료
 
-### �� 현재 진행 중 (2분 경과)
+### �� 현재 진행 중 ["2분 경과"]
 **cloud-scripts 디렉토리 자동화 스크립트 목록 확인 중...**
 
 현재까지 확인된 자동화 스크립트들:
@@ -129,7 +129,7 @@ Day3 README
 - `aws-resource-cleanup.sh` - AWS 리소스 자동 정리
 - `gcp-project-cleanup.sh` - GCP 리소스 자동 정리
 
-### �� 다음 단계 (3분 예상)
+### �� 다음 단계 ["3분 예상"]
 1. **각 Day별 practices 파일들 확인**
 2. **실습별 자동화 스크립트 매핑 분석**
 3. **누락된 자동화 스크립트 식별**

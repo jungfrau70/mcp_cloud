@@ -1,0 +1,184 @@
+---
+alwaysApply: true
+---
+
+# AI 응답 시 Mermaid 다이어그램 규칙
+
+## 🤖 AI가 Mermaid 다이어그램을 제공할 때 필수 준수사항
+
+### **1. Mermaid 10.9.4 문법 준수**
+- **flowchart 키워드**: `graph` 대신 `flowchart` 사용
+- **화살표 문법**: `->>` 또는 `-->>` 사용 (단일 화살표 금지)
+- **한글 텍스트**: 모든 한글 텍스트 따옴표로 감싸기
+- **노드 문법**: `[텍스트]` 형태 사용
+
+### **2. 스타일링 필수 적용**
+모든 Mermaid 다이어그램에 다음 스타일링을 반드시 적용:
+
+```mermaid
+flowchart TD
+    A["AI 응답 예시"] --> B{"사용자 질문"}
+    B -->|"처리"| C["답변 생성"]
+    C --> D["결과 제공"]
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#f57c00,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+    style D fill:#d32f2f,color:#ffffff
+```
+
+### **3. 색상 팔레트 표준**
+- **시작점**: 파란색 (`#1976d2`) - 흰색 글씨
+- **결정점**: 주황색 (`#f57c00`) - 흰색 글씨
+- **프로세스/액션**: 초록색 (`#388e3c`) - 흰색 글씨
+- **종료점**: 빨간색 (`#d32f2f`) - 흰색 글씨
+- **특별한 노드**: 보라색 (`#7b1fa2`) - 흰색 글씨
+
+### **4. AI 응답 템플릿**
+
+#### **문제 해결 과정**
+```mermaid
+flowchart TD
+    Start["🎯 문제 분석"] --> Analyze["🔍 원인 파악"]
+    Analyze --> Solution["💡 해결책 제시"]
+    Solution --> Implement["⚙️ 구현 방법"]
+    Implement --> Result["📊 결과 확인"]
+    Result --> End["✅ 완료"]
+    
+    style Start fill:#1976d2,color:#ffffff
+    style Analyze fill:#388e3c,color:#ffffff
+    style Solution fill:#f57c00,color:#ffffff
+    style Implement fill:#388e3c,color:#ffffff
+    style Result fill:#388e3c,color:#ffffff
+    style End fill:#d32f2f,color:#ffffff
+```
+
+#### **학습 과정**
+```mermaid
+flowchart TD
+    Goal["🎯 학습 목표"] --> Theory["📚 이론 학습"]
+    Theory --> Practice["🔧 실습 진행"]
+    Practice --> Check{"✅ 이해 확인"}
+    Check -->|"부족"| Review["🔄 복습"]
+    Check -->|"충분"| Apply["🚀 적용"]
+    Review --> Practice
+    Apply --> Complete["🎉 완료"]
+    
+    style Goal fill:#1976d2,color:#ffffff
+    style Theory fill:#388e3c,color:#ffffff
+    style Practice fill:#388e3c,color:#ffffff
+    style Check fill:#f57c00,color:#ffffff
+    style Review fill:#7b1fa2,color:#ffffff
+    style Apply fill:#388e3c,color:#ffffff
+    style Complete fill:#d32f2f,color:#ffffff
+```
+
+#### **시스템 아키텍처**
+```mermaid
+flowchart TB
+    subgraph "Frontend"
+        F1["Vue.js"]
+        F2["Nuxt.js"]
+    end
+    
+    subgraph "Backend"
+        B1["FastAPI"]
+        B2["PostgreSQL"]
+    end
+    
+    subgraph "AI"
+        A1["OpenAI API"]
+        A2["Claude API"]
+    end
+    
+    F1 --> B1
+    F2 --> B1
+    B1 --> B2
+    B1 --> A1
+    B1 --> A2
+    
+    style F1 fill:#388e3c,color:#ffffff
+    style F2 fill:#388e3c,color:#ffffff
+    style B1 fill:#388e3c,color:#ffffff
+    style B2 fill:#388e3c,color:#ffffff
+    style A1 fill:#7b1fa2,color:#ffffff
+    style A2 fill:#7b1fa2,color:#ffffff
+```
+
+### **5. 한글 텍스트 처리 규칙**
+
+#### **올바른 한글 처리**
+```mermaid
+flowchart TD
+    A["한글 텍스트는 따옴표로 감싸기"] --> B{"결정점도 따옴표 사용"}
+    B -->|"라벨도 따옴표로"| C["모든 텍스트 따옴표 처리"]
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#f57c00,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+```
+
+#### **이모지 사용 규칙**
+```mermaid
+flowchart TD
+    A["🚀 시작"] --> B{"🤔 결정"}
+    B -->|"✅ 예"| C["⚙️ 처리"]
+    B -->|"❌ 아니오"| D["🛑 종료"]
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#f57c00,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+    style D fill:#d32f2f,color:#ffffff
+```
+
+### **6. AI 응답 시 체크리스트**
+
+#### **Mermaid 다이어그램 제공 전 확인사항**
+- [ ] Mermaid 10.9.4 문법 사용
+- [ ] `flowchart` 키워드 사용 (graph 대신)
+- [ ] 화살표 문법: `->>` 또는 `-->>` 사용
+- [ ] 한글 텍스트 따옴표로 감싸기
+- [ ] 모든 노드에 스타일링 적용
+- [ ] 텍스트 색상을 흰색으로 설정
+- [ ] 시작점은 파란색, 종료점은 빨간색 사용
+- [ ] 결정점은 주황색으로 구분
+- [ ] 프로세스 노드는 초록색으로 통일
+
+### **7. 금지사항**
+
+#### **절대 사용하지 말 것**
+- ❌ `graph` 키워드 (deprecated)
+- ❌ `->` 또는 `-->` 화살표
+- ❌ 한글 텍스트 따옴표 없이 사용
+- ❌ 스타일링 없는 다이어그램
+- ❌ 흰색 배경에 회색 글씨
+
+### **8. 예시 비교**
+
+#### **❌ 잘못된 예시**
+```mermaid
+graph TD
+    A[시작점] --> B{결정점}
+    B -->|옵션 1| C[액션 1]
+    B -->|옵션 2| D[액션 2]
+    C --> E[종료점]
+    D --> E
+```
+
+#### **✅ 올바른 예시**
+```mermaid
+flowchart TD
+    A["시작점"] -->> B{"결정점"}
+    B -->>|"옵션 1"| C["액션 1"]
+    B -->>|"옵션 2"| D["액션 2"]
+    C -->> E["종료점"]
+    D -->> E
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#f57c00,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+    style D fill:#388e3c,color:#ffffff
+    style E fill:#d32f2f,color:#ffffff
+```
+
+이 규칙을 통해 AI가 제공하는 모든 Mermaid 다이어그램이 Mermaid 10.9.4 버전에 완전히 호환되고 가독성이 뛰어나게 됩니다.

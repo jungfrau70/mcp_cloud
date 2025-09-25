@@ -2,11 +2,11 @@
 
 ## 🎯 개요
 
-이 문서는 WSL (Windows Subsystem for Linux) 환경에서 Docker를 사용하는 방법을 상세히 안내합니다. WSL은 `systemctl`을 지원하지 않기 때문에 일반적인 Linux 환경과는 다른 방식으로 Docker를 관리해야 합니다.
+이 문서는 WSL [Windows Subsystem for Linux] 환경에서 Docker를 사용하는 방법을 상세히 안내합니다. WSL은 `systemctl`을 지원하지 않기 때문에 일반적인 Linux 환경과는 다른 방식으로 Docker를 관리해야 합니다.
 
 ## 🚀 설치 방법
 
-### 자동 설치 (권장)
+### 자동 설치 ["권장"]
 
 ```bash
 # WSL에서 실행
@@ -26,7 +26,7 @@ apt install -y apt-transport-https ca-certificates curl gnupg lsb-release
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 # 3. Docker 저장소 추가
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+echo "deb [arch=$[dpkg --print-architecture] signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $[lsb_release -cs] stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 # 4. 패키지 목록 업데이트
 apt update
@@ -40,18 +40,18 @@ usermod -aG docker $USER
 
 ## 📋 설치되는 Docker 구성요소
 
-- **Docker Engine**: 완전한 Docker 데몬 (`dockerd`)
-- **Docker CLI**: Docker 명령어 도구 (`docker`)
+- **Docker Engine**: 완전한 Docker 데몬 [`dockerd`]
+- **Docker CLI**: Docker 명령어 도구 [`docker`]
 - **containerd**: 컨테이너 런타임
 - **Docker Buildx**: 멀티플랫폼 빌드 도구
 - **Docker Compose Plugin**: Docker Compose 통합
-- **Docker Compose (최신)**: `~/.local/bin`에 최신 버전
+- **Docker Compose ["최신"]**: `~/.local/bin`에 최신 버전
 
 ## 🔧 Docker 사용법
 
 ### 1. Docker 시작
 
-#### 자동 시작 (권장)
+#### 자동 시작 ["권장"]
 ```bash
 # 자동 시작 스크립트 사용
 start-docker
@@ -85,7 +85,7 @@ docker info
 # 기본 테스트
 docker run hello-world
 
-# 사용자 권한으로 테스트 (그룹 권한 적용 후)
+# 사용자 권한으로 테스트 ["그룹 권한 적용 후"]
 newgrp docker
 docker run hello-world
 ```
@@ -97,7 +97,7 @@ docker run hello-world
 pkill dockerd
 
 # 또는 특정 프로세스 ID로 중지
-kill $(pgrep dockerd)
+kill $[pgrep dockerd]
 ```
 
 ## 🐳 Docker Compose 사용법
@@ -181,7 +181,7 @@ ls -la
 # 자동 링크 생성 스크립트
 create_mcp_link() {
     local windows_path="C:\\Users\\JIH\\githubs\\mcp_cloud\\mcp_knowledge_base"
-    local wsl_path=$(wslpath "$windows_path")
+    local wsl_path=$[wslpath "$windows_path"]
     local link_name="mcp_knowledge_base"
     
     # Windows 경로가 존재하는지 확인
@@ -194,7 +194,7 @@ create_mcp_link() {
         
         # 새 심볼릭 링크 생성
         ln -s "$wsl_path" ~/$link_name
-        echo "심볼릭 링크가 생성되었습니다: ~/$link_name -> $wsl_path"
+        echo "심볼릭 링크가 생성되었습니다: ~/$link_name ->> $wsl_path"
         
         # 링크 테스트
         if [ -d ~/$link_name ]; then
@@ -373,7 +373,7 @@ docker run --cpus="0.5" hello-world
 # Docker 소켓 권한 확인
 ls -la /var/run/docker.sock
 
-# 권한 수정 (필요시)
+# 권한 수정 ["필요시"]
 chmod 666 /var/run/docker.sock
 ```
 

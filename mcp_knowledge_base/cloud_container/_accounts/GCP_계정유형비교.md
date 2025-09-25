@@ -9,12 +9,12 @@
 
 ## 1️⃣ 계정 유형 개요
 
-### 1.1 개인 계정 (Personal Account)
+### 1.1 개인 계정 [Personal Account]
 - **Gmail 계정** 또는 **Google 계정** 사용
 - **개인 사용자** 대상
 - **프로젝트 레벨** 관리만 가능
 
-### 1.2 조직 계정 (Organization Account)
+### 1.2 조직 계정 [Organization Account]
 - **Google Workspace** 또는 **Cloud Identity** 사용
 - **기업/조직** 대상
 - **조직 레벨** + **프로젝트 레벨** 관리 가능
@@ -120,7 +120,7 @@
 
 #### ✅ 권장 상황
 - **개인 학습** 및 **실험**
-- **소규모 프로젝트** (1-2명)
+- **소규모 프로젝트** ["1-2명"]
 - **비용 최소화** 필요
 - **빠른 시작** 필요
 
@@ -219,7 +219,7 @@ gcloud projects add-iam-policy-binding PROJECT_ID /
 ```yaml
 개인 계정 비용:
   - GCP 계정: 무료
-  - $300 무료 크레딧 (12개월)
+  - $300 무료 크레딧 ["12개월"]
   - Always Free 서비스: 무료
   - 사용량 기반 과금
 ```
@@ -283,15 +283,15 @@ Cloud Identity:
 ### 8.1 의사결정 트리
 
 ```mermaid
-graph TD
-    A[GCP 계정 필요] --> B{개인 vs 조직?}
-    B -->|개인 학습/실험| C[개인 계정]
-    B -->|기업/팀 사용| D{Google Workspace 필요?}
-    D -->|이메일/캘린더 필요| E[Google Workspace]
-    D -->|GCP 관리만 필요| F[Cloud Identity]
-    C --> G[Gmail 계정으로 시작]
-    E --> H[Google Workspace 설정]
-    F --> I[Cloud Identity 설정]
+flowchart TD
+    A["GCP 계정 필요"] -->> B{개인 vs 조직?}
+    B -->>|개인 학습/실험| C["개인 계정"]
+    B -->>|기업/팀 사용| D{Google Workspace 필요?}
+    D -->>|이메일/캘린더 필요| E[Google Workspace]
+    D -->>|GCP 관리만 필요| F[Cloud Identity]
+    C -->> G["Gmail 계정으로 시작"]
+    E -->> H["Google Workspace 설정"]
+    F -->> I["Cloud Identity 설정"]
 ```
 
 ### 8.2 상황별 권장사항
@@ -301,12 +301,12 @@ graph TD
 - **무료 크레딧** 활용
 - **Always Free** 서비스 사용
 
-#### 🏢 소규모 기업 (1-10명)
+#### 🏢 소규모 기업 ["1-10명"]
 - **Cloud Identity** 권장
 - **무료** 사용자 관리
 - **기본 보안 정책** 적용
 
-#### 🏭 중대규모 기업 (10명 이상)
+#### 🏭 중대규모 기업 ["10명 이상"]
 - **Google Workspace** 권장
 - **완전한 사용자 관리**
 - **고급 보안 정책** 적용
@@ -330,7 +330,7 @@ graph TD
 ### Q2: Google Workspace와 Cloud Identity 중 어떤 것을 선택해야 하나요?
 **A**: 
 - **Google Workspace**: 이메일, 캘린더 등 G Suite 기능이 필요한 경우
-- **Cloud Identity**: GCP 관리만 필요한 경우 (무료)
+- **Cloud Identity**: GCP 관리만 필요한 경우 ["무료"]
 
 ### Q3: 개인 계정으로도 팀 협업이 가능한가요?
 **A**: 제한적입니다. 프로젝트 멤버로 초대는 가능하지만, 그룹 관리나 조직 정책은 불가능합니다.
@@ -358,12 +358,12 @@ graph TD
 ## 🚀 다음 단계
 
 ### 개인 계정 사용자
-- [GCP 개인 계정 가입 가이드](cloud_basic/accounts/GCP_개인계정가입.md) 참조
+- ["GCP 개인 계정 가입 가이드"]["cloud_basic/accounts/GCP_개인계정가입.md"] 참조
 - **Always Free** 서비스 활용
 - **개인 프로젝트** 포트폴리오 구축
 
 ### 조직 계정 사용자
-- [GCP 조직 계정 가입 가이드](cloud_basic/accounts/GCP_조직계정가입.md) 참조
+- ["GCP 조직 계정 가입 가이드"]["cloud_basic/accounts/GCP_조직계정가입.md"] 참조
 - **조직 정책** 설정
 - **팀 협업** 워크플로 구축
 
@@ -372,14 +372,14 @@ graph TD
 ## 📞 지원 및 문의
 
 ### 공식 지원
-- [GCP 지원 센터](https:///cloud.google.com/support/)
-- [Google Workspace 지원](https:///support.google.com/a/)
-- [Cloud Identity 지원](https:///support.google.com/cloudidentity/)
+- ["GCP 지원 센터"][https:///cloud.google.com/support/]
+- ["Google Workspace 지원"][https:///support.google.com/a/]
+- ["Cloud Identity 지원"][https:///support.google.com/cloudidentity/]
 
 ### 커뮤니티 지원
-- [GCP 커뮤니티](https:///cloud.google.com/community/)
-- [Stack Overflow](https:///stackoverflow.com/questions/tagged/google-cloud-platform)
-- [Reddit r/googlecloud](https:///www.reddit.com/r/googlecloud/)
+- ["GCP 커뮤니티"][https:///cloud.google.com/community/]
+- [Stack Overflow][https:///stackoverflow.com/questions/tagged/google-cloud-platform]
+- [Reddit r/googlecloud][https:///www.reddit.com/r/googlecloud/]
 
 
 ---
@@ -387,7 +387,7 @@ graph TD
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -395,6 +395,6 @@ graph TD
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Master 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

@@ -1,6 +1,6 @@
 # Cloud Basic - 2일차 강의안
 
-> 📋 **강의 일시**: 2024년 9월 3일 (화) 9:00~17:00  
+> 📋 **강의 일시**: 2024년 9월 3일 ["화"] 9:00~17:00  
 > 📋 **강의 방식**: 오프라인 실습 중심  
 > 📋 **선수 학습**: Cloud Basic 1일차 완료
 
@@ -49,7 +49,7 @@ command -v curl && echo "✅ curl 설치됨" || echo "❌ curl 설치 필요"
 # 3. 리소스 상태 확인
 echo "=== 리소스 상태 확인 ==="
 aws ec2 describe-instances --filters "Name=tag:Name,Values=cloud-basic-instance" --query 'Reservations[0].Instances[0].State.Name' --output text
-gcloud compute instances list --filter="name=cloud-basic-instance" --format="value(status)"
+gcloud compute instances list --filter="name=cloud-basic-instance" --format="value[status]"
 ```
 
 ### 📋 **실습 전 체크리스트**
@@ -85,13 +85,13 @@ repo/automation/day2/
 
 ---
 
-## 🕘 1교시: 서비스 비교 분석 (9:00~10:30)
+## 🕘 1교시: 서비스 비교 분석 [9:00~10:30]
 
 ### 📚 학습 목표
-- 컴퓨팅 서비스 비교 (EC2 vs Compute Engine)
-- 스토리지 서비스 비교 (S3 vs Cloud Storage)
-- 데이터베이스 서비스 비교 (RDS vs Cloud SQL)
-- 네트워킹 서비스 비교 (VPC vs VPC)
+- 컴퓨팅 서비스 비교 [EC2 vs Compute Engine]
+- 스토리지 서비스 비교 [S3 vs Cloud Storage]
+- 데이터베이스 서비스 비교 [RDS vs Cloud SQL]
+- 네트워킹 서비스 비교 [VPC vs VPC]
 
 ### 🛠️ 주요 실습
 
@@ -101,7 +101,7 @@ repo/automation/day2/
 echo "=== 컴퓨팅 서비스 비교 시작 ==="
 ./repo/automation/day2/automation/01-service-comparison.sh setup
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 컴퓨팅 서비스 비교 ==="
 # 1. AWS EC2 인스턴스 정보 수집
 aws ec2 describe-instances --filters "Name=tag:Name,Values=cloud-basic-instance" \
@@ -110,7 +110,7 @@ aws ec2 describe-instances --filters "Name=tag:Name,Values=cloud-basic-instance"
 # 2. GCP Compute Engine 인스턴스 정보 수집
 gcloud compute instances describe cloud-basic-instance \
     --zone=asia-northeast3-a \
-    --format="table(name,machineType.basename(),status,networkInterfaces[0].accessConfigs[0].natIP)"
+    --format="table[name,machineType.basename[],status,networkInterfaces[0].accessConfigs[0].natIP]"
 
 # 3. 성능 테스트
 echo "=== 성능 테스트 ==="
@@ -170,7 +170,7 @@ gcloud sql instances create cloud-basic-mysql \
 
 ---
 
-## 🕘 2교시: 비용 최적화 실습 (10:45~12:00)
+## 🕘 2교시: 비용 최적화 실습 [10:45~12:00]
 
 ### 📚 학습 목표
 - 비용 분석 도구 사용
@@ -185,7 +185,7 @@ gcloud sql instances create cloud-basic-mysql \
 echo "=== 비용 분석 및 최적화 시작 ==="
 ./repo/automation/day2/automation/02-cost-optimization.sh setup
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 비용 분석 및 최적화 ==="
 # 1. AWS 비용 분석
 echo "=== AWS 비용 분석 ==="
@@ -196,12 +196,12 @@ aws ce get-cost-and-usage \
 
 # 2. GCP 비용 분석
 echo "=== GCP 비용 분석 ==="
-gcloud billing budgets list --billing-account=$(gcloud billing accounts list --format="value(name)")
+gcloud billing budgets list --billing-account=$[gcloud billing accounts list --format="value[name]"]
 
 # 3. 리소스 최적화 제안
 echo "=== 리소스 최적화 제안 ==="
 aws ec2 describe-instances --query 'Reservations[].Instances[].{InstanceId:InstanceId,InstanceType:InstanceType,State:State.Name}'
-gcloud compute instances list --format="table(name,machineType.basename(),status)"
+gcloud compute instances list --format="table[name,machineType.basename[],status]"
 ```
 
 #### 🏗️ **5단계: 예산 설정 및 모니터링**
@@ -209,7 +209,7 @@ gcloud compute instances list --format="table(name,machineType.basename(),status
 # 1. AWS 예산 설정
 echo "=== AWS 예산 설정 ==="
 aws budgets create-budget \
-    --account-id $(aws sts get-caller-identity --query Account --output text) \
+    --account-id $[aws sts get-caller-identity --query Account --output text] \
     --budget '{
         "BudgetName": "cloud-basic-budget",
         "BudgetLimit": {"Amount": "10", "Unit": "USD"},
@@ -220,10 +220,10 @@ aws budgets create-budget \
 # 2. GCP 예산 설정
 echo "=== GCP 예산 설정 ==="
 gcloud billing budgets create \
-    --billing-account=$(gcloud billing accounts list --format="value(name)") \
+    --billing-account=$[gcloud billing accounts list --format="value[name]"] \
     --display-name="Cloud Basic Budget" \
     --budget-amount=10USD \
-    --budget-filter-projects=$(gcloud config get-value project)
+    --budget-filter-projects=$[gcloud config get-value project]
 ```
 
 **✅ 예상 결과:**
@@ -234,11 +234,11 @@ gcloud billing budgets create \
 
 ---
 
-## 🍽️ 점심 시간 (12:00~13:00)
+## 🍽️ 점심 시간 [12:00~13:00]
 
 ---
 
-## 🕘 3교시: 보안 및 모니터링 기초 (13:00~14:30)
+## 🕘 3교시: 보안 및 모니터링 기초 [13:00~14:30]
 
 ### 📚 학습 목표
 - IAM 권한 관리
@@ -253,7 +253,7 @@ gcloud billing budgets create \
 echo "=== 보안 설정 강화 시작 ==="
 ./repo/automation/day2/automation/03-security-basics.sh setup
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 보안 설정 강화 ==="
 # 1. AWS IAM 사용자 권한 검토
 echo "=== AWS IAM 사용자 권한 검토 ==="
@@ -262,7 +262,7 @@ aws iam list-user-policies --user-name cloud-basic-user
 
 # 2. GCP IAM 권한 검토
 echo "=== GCP IAM 권한 검토 ==="
-gcloud projects get-iam-policy $(gcloud config get-value project)
+gcloud projects get-iam-policy $[gcloud config get-value project]
 
 # 3. 보안 그룹/방화벽 규칙 검토
 echo "=== 보안 그룹/방화벽 규칙 검토 ==="
@@ -298,7 +298,7 @@ gcloud alpha monitoring policies create \
 
 ---
 
-## 🕘 4교시: 종합 프로젝트 (14:45~16:15)
+## 🕘 4교시: 종합 프로젝트 [14:45~16:15]
 
 ### 📚 학습 목표
 - 웹 애플리케이션 배포
@@ -313,7 +313,7 @@ gcloud alpha monitoring policies create \
 echo "=== 웹 애플리케이션 배포 시작 ==="
 ./repo/automation/day2/automation/04-web-app-deployment.sh setup
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 웹 애플리케이션 배포 ==="
 # 1. 간단한 웹 애플리케이션 생성
 echo "=== 간단한 웹 애플리케이션 생성 ==="
@@ -401,8 +401,8 @@ cat > service-comparison.md << 'EOF'
 
 | 항목 | AWS | GCP | 선택 |
 |------|-----|-----|------|
-| 웹 호스팅 | S3 + CloudFront | Cloud Storage + CDN | AWS (비용) |
-| 데이터베이스 | RDS | Cloud SQL | GCP (성능) |
+| 웹 호스팅 | S3 + CloudFront | Cloud Storage + CDN | AWS ["비용"] |
+| 데이터베이스 | RDS | Cloud SQL | GCP ["성능"] |
 | 모니터링 | CloudWatch | Cloud Monitoring | 동일 |
 | 비용 | $45/월 | $42/월 | GCP |
 EOF
@@ -416,7 +416,7 @@ EOF
 
 ---
 
-## 🕘 5교시: 정리 및 다음 단계 (16:30~17:00)
+## 🕘 5교시: 정리 및 다음 단계 [16:30~17:00]
 
 ### 📚 학습 목표
 - 실습 결과 정리
@@ -431,11 +431,11 @@ EOF
 echo "=== 리소스 정리 및 비용 최적화 시작 ==="
 ./repo/automation/day2/automation/06-cleanup.sh setup
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 리소스 정리 및 비용 최적화 ==="
 # 1. AWS 리소스 정리
 echo "=== AWS 리소스 정리 ==="
-aws ec2 terminate-instances --instance-ids $(aws ec2 describe-instances --filters "Name=tag:Name,Values=cloud-basic-instance" --query 'Reservations[0].Instances[0].InstanceId' --output text)
+aws ec2 terminate-instances --instance-ids $[aws ec2 describe-instances --filters "Name=tag:Name,Values=cloud-basic-instance" --query 'Reservations[0].Instances[0].InstanceId' --output text]
 aws s3 rb s3://$BUCKET_NAME --force
 
 # 2. GCP 리소스 정리
@@ -446,7 +446,7 @@ gsutil rm -r gs://$BUCKET_NAME
 # 3. 최종 비용 확인
 echo "=== 최종 비용 확인 ==="
 aws ce get-cost-and-usage --time-period Start=2024-09-01,End=2024-09-03 --granularity DAILY --metrics BlendedCost
-gcloud billing budgets list --billing-account=$(gcloud billing accounts list --format="value(name)")
+gcloud billing budgets list --billing-account=$[gcloud billing accounts list --format="value[name]"]
 ```
 
 #### 🏗️ **11단계: 학습 결과 정리**
@@ -496,11 +496,11 @@ EOF
 5. **🌐 브라우저로 서비스 접근**: 실제 서비스에 접근하여 동작 확인
 
 ### 🚀 **실습 진행 순서**
-1. **1교시**: 서비스 비교 분석 (컴퓨팅, 스토리지, 데이터베이스, 네트워킹)
-2. **2교시**: 비용 최적화 실습 (비용 분석, 리소스 최적화, 예산 설정)
-3. **3교시**: 보안 및 모니터링 기초 (IAM, 보안 그룹, 모니터링)
-4. **4교시**: 종합 프로젝트 (웹 애플리케이션 배포, 서비스 선택)
-5. **5교시**: 정리 및 다음 단계 (리소스 정리, 학습 정리, 다음 과정 준비)
+1. **1교시**: 서비스 비교 분석 ["컴퓨팅, 스토리지, 데이터베이스, 네트워킹"]
+2. **2교시**: 비용 최적화 실습 ["비용 분석, 리소스 최적화, 예산 설정"]
+3. **3교시**: 보안 및 모니터링 기초 ["IAM, 보안 그룹, 모니터링"]
+4. **4교시**: 종합 프로젝트 ["웹 애플리케이션 배포, 서비스 선택"]
+5. **5교시**: 정리 및 다음 단계 ["리소스 정리, 학습 정리, 다음 과정 준비"]
 
 ### 🎯 **핵심 학습 포인트**
 - **아키텍처 이해**: 각 단계별 시스템 구조 변화 시각화
@@ -515,26 +515,26 @@ EOF
 
 ### 5교시: 정리 및 다음 단계 완료 후
 ```mermaid
-graph TB
+flowchart TB
     subgraph "Learning Outcomes"
-        L1[서비스 비교 분석<br/>AWS vs GCP]
-        L2[비용 최적화<br/>예산 관리]
-        L3[보안 설정<br/>기본 보안]
-        L4[웹 애플리케이션<br/>클라우드 배포]
-        L5[의사결정 능력<br/>서비스 선택]
+        L1["서비스 비교 분석<br/>AWS vs GCP"]
+        L2["비용 최적화<br/>예산 관리"]
+        L3["보안 설정<br/>기본 보안"]
+        L4["웹 애플리케이션<br/>클라우드 배포"]
+        L5["의사결정 능력<br/>서비스 선택"]
     end
     
     subgraph "Next Steps"
-        N1[Cloud Master 과정<br/>Docker, CI/CD]
-        N2[고급 배포 기술<br/>컨테이너 오케스트레이션]
-        N3[모니터링 및 로깅<br/>운영 관리]
+        N1["Cloud Master 과정<br/>Docker, CI/CD"]
+        N2["고급 배포 기술<br/>컨테이너 오케스트레이션"]
+        N3["모니터링 및 로깅<br/>운영 관리"]
     end
     
-    L1 --> N1
-    L2 --> N1
-    L3 --> N1
-    L4 --> N2
-    L5 --> N3
+    L1 -->> N1
+    L2 -->> N1
+    L3 -->> N1
+    L4 -->> N2
+    L5 -->> N3
 ```
 
 **최종 적용된 기능:**
@@ -545,8 +545,8 @@ graph TB
 - ✅ **의사결정**: 프로젝트 요구사항에 맞는 서비스 선택
 
 ### 📊 예상 결과
-- **성공률**: 95% (자동화 스크립트 활용)
-- **소요 시간**: 7시간 (자동화로 단축)
+- **성공률**: 95% ["자동화 스크립트 활용"]
+- **소요 시간**: 7시간 ["자동화로 단축"]
 - **주요 개선**: 서비스 비교 분석, 비용 최적화, 보안 강화
 
 ---
@@ -554,11 +554,11 @@ graph TB
 ## 🎯 2일차 수업 성과
 
 ### ✅ 달성한 학습 목표
-- [x] 서비스 비교 분석 (컴퓨팅, 스토리지, 데이터베이스, 네트워킹)
-- [x] 비용 최적화 실습 (비용 분석, 리소스 최적화, 예산 설정)
-- [x] 보안 및 모니터링 기초 (IAM, 보안 그룹, 모니터링)
-- [x] 종합 프로젝트 (웹 애플리케이션 배포, 서비스 선택)
-- [x] 정리 및 다음 단계 (리소스 정리, 학습 정리, 다음 과정 준비)
+- [x] 서비스 비교 분석 ["컴퓨팅, 스토리지, 데이터베이스, 네트워킹"]
+- [x] 비용 최적화 실습 ["비용 분석, 리소스 최적화, 예산 설정"]
+- [x] 보안 및 모니터링 기초 ["IAM, 보안 그룹, 모니터링"]
+- [x] 종합 프로젝트 ["웹 애플리케이션 배포, 서비스 선택"]
+- [x] 정리 및 다음 단계 ["리소스 정리, 학습 정리, 다음 과정 준비"]
 
 ### 🔍 주요 학습 포인트
 1. **서비스 비교**: AWS와 GCP 서비스의 장단점 체계적 분석
@@ -619,7 +619,7 @@ graph TB
 ---
 
 **강의안 작성일**: 2024년 9월 3일  
-**예상 소요 시간**: 7시간 (9:00~17:00, 자동화로 단축)  
+**예상 소요 시간**: 7시간 ["9:00~17:00, 자동화로 단축"]  
 **실습 중심**: 90% 실습, 10% 이론  
 **자동화 활용**: 95% 자동화 스크립트 사용 권장  
 **비교 분석**: AWS vs GCP 서비스 체계적 비교 실습

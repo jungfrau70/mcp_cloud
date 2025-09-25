@@ -1,15 +1,15 @@
 # GitHub Repository Secrets 설정 가이드
 
-> 📋 **실제 수업에서 검증된 방법**: 환경파일(.env) 대신 Repository Secrets 사용으로 100% 성공
+> 📋 **실제 수업에서 검증된 방법**: 환경파일[.env] 대신 Repository Secrets 사용으로 100% 성공
 
 ## 📋 목차
 
-1. [🔐 Repository Secrets란?](#repository-secrets란)
-2. [📝 필요한 Secrets 목록](#필요한-secrets-목록)
-3. [🛠️ Secrets 설정 방법](#secrets-설정-방법)
-4. [✅ 설정 확인하기](#설정-확인하기)
-5. [🐛 문제 해결](#문제-해결)
-6. [💡 실무 팁](#실무-팁)
+1. ["🔐 Repository Secrets란?"]["#repository-secrets란"]
+2. ["📝 필요한 Secrets 목록"]["#필요한-secrets-목록"]
+3. ["🛠️ Secrets 설정 방법"]["#secrets-설정-방법"]
+4. ["✅ 설정 확인하기"]["#설정-확인하기"]
+5. ["🐛 문제 해결"]["#문제-해결"]
+6. ["💡 실무 팁"]["#실무-팁"]
 
 ---
 
@@ -17,11 +17,11 @@
 
 ### Repository Secrets 소개
 
-**Repository Secrets**는 GitHub 저장소에서 민감한 정보(비밀번호, API 키, 토큰 등)를 안전하게 저장하고 GitHub Actions에서 사용할 수 있게 해주는 기능입니다.
+**Repository Secrets**는 GitHub 저장소에서 민감한 정보["비밀번호, API 키, 토큰 등"]를 안전하게 저장하고 GitHub Actions에서 사용할 수 있게 해주는 기능입니다.
 
-### 환경파일(.env) vs Repository Secrets
+### 환경파일[.env] vs Repository Secrets
 
-| 구분 | 환경파일(.env) | Repository Secrets |
+| 구분 | 환경파일[.env] | Repository Secrets |
 |------|----------------|-------------------|
 | **보안성** | ❌ 코드에 포함되어 노출 위험 | ✅ GitHub에서 암호화하여 안전하게 저장 |
 | **관리 편의성** | ❌ 각 환경마다 파일 관리 필요 | ✅ 웹 인터페이스에서 중앙 관리 |
@@ -50,24 +50,24 @@
 | `GCP_VM_SSH_KEY` | GCP VM SSH 개인키 | `-----BEGIN OPENSSH PRIVATE KEY-----` | ✅ 필수 |
 | `GCP_VM_USERNAME` | GCP VM 사용자명 | `ubuntu` | ✅ 필수 |
 | `AWS_VM_HOST` | AWS VM 공인 IP 주소 | `3.123.45.67` | ✅ 필수 |
-| `AWS_VM_SSH_KEY` | AWS VM SSH 개인키 (.pem 파일) | `-----BEGIN RSA PRIVATE KEY-----` | ✅ 필수 |
+| `AWS_VM_SSH_KEY` | AWS VM SSH 개인키 [".pem 파일"] | `-----BEGIN RSA PRIVATE KEY-----` | ✅ 필수 |
 | `AWS_VM_USERNAME` | AWS VM 사용자명 | `ubuntu` | ✅ 필수 |
 
 ### 각 Secret의 상세 설명
 
 #### 🐳 Docker Hub 관련
 - **`DOCKER_USERNAME`**: Docker Hub 계정의 사용자명
-- **`DOCKER_PASSWORD`**: Docker Hub Personal Access Token (비밀번호 아님!)
+- **`DOCKER_PASSWORD`**: Docker Hub Personal Access Token ["비밀번호 아님!"]
 
 #### ☁️ GCP VM 관련
 - **`GCP_VM_HOST`**: GCP Compute Engine 인스턴스의 공인 IP
 - **`GCP_VM_SSH_KEY`**: GCP VM에 접속하기 위한 OpenSSH 형식 개인키
-- **`GCP_VM_USERNAME`**: GCP VM의 사용자명 (보통 `ubuntu`)
+- **`GCP_VM_USERNAME`**: GCP VM의 사용자명 ["보통 `ubuntu`"]
 
 #### ☁️ AWS VM 관련
 - **`AWS_VM_HOST`**: AWS EC2 인스턴스의 공인 IP
 - **`AWS_VM_SSH_KEY`**: AWS VM에 접속하기 위한 .pem 형식 개인키
-- **`AWS_VM_USERNAME`**: AWS VM의 사용자명 (보통 `ubuntu`)
+- **`AWS_VM_USERNAME`**: AWS VM의 사용자명 ["보통 `ubuntu`"]
 
 ### 🔑 SSH 키 형식 차이점
 
@@ -127,7 +127,7 @@ cat gcp-key
 
 3. **DOCKER_PASSWORD 설정**
    - Name: `DOCKER_PASSWORD`
-   - Secret: `[your-docker-hub-token]` (비밀번호가 아닌 Personal Access Token!)
+   - Secret: `[your-docker-hub-token]` ["비밀번호가 아닌 Personal Access Token!"]
    - "Add secret" 클릭
 
 #### GCP VM Secrets 설정
@@ -139,7 +139,7 @@ cat gcp-key
 
 2. **GCP_VM_SSH_KEY 설정**
    - Name: `GCP_VM_SSH_KEY`
-   - Secret: `[gcp-vm-ssh-private-key]` (전체 개인키 내용)
+   - Secret: `[gcp-vm-ssh-private-key]` ["전체 개인키 내용"]
    - "Add secret" 클릭
 
 3. **GCP_VM_USERNAME 설정**
@@ -156,7 +156,7 @@ cat gcp-key
 
 2. **AWS_VM_SSH_KEY 설정**
    - Name: `AWS_VM_SSH_KEY`
-   - Secret: `[aws-vm-ssh-private-key.pem]` (전체 .pem 파일 내용)
+   - Secret: `[aws-vm-ssh-private-key.pem]` ["전체 .pem 파일 내용"]
    - "Add secret" 클릭
 
 3. **AWS_VM_USERNAME 설정**
@@ -170,14 +170,14 @@ cat gcp-key
 
 ```
 Repository secrets
-✅ DOCKER_PASSWORD (Last updated: 2 hours ago)
-✅ DOCKER_USERNAME (Last updated: 2 hours ago)
-✅ GCP_VM_HOST (Last updated: 2 hours ago)
-✅ GCP_VM_SSH_KEY (Last updated: 2 hours ago)
-✅ GCP_VM_USERNAME (Last updated: 2 hours ago)
-✅ AWS_VM_HOST (Last updated: 2 hours ago)
-✅ AWS_VM_SSH_KEY (Last updated: 2 hours ago)
-✅ AWS_VM_USERNAME (Last updated: 2 hours ago)
+✅ DOCKER_PASSWORD [Last updated: 2 hours ago]
+✅ DOCKER_USERNAME [Last updated: 2 hours ago]
+✅ GCP_VM_HOST [Last updated: 2 hours ago]
+✅ GCP_VM_SSH_KEY [Last updated: 2 hours ago]
+✅ GCP_VM_USERNAME [Last updated: 2 hours ago]
+✅ AWS_VM_HOST [Last updated: 2 hours ago]
+✅ AWS_VM_SSH_KEY [Last updated: 2 hours ago]
+✅ AWS_VM_USERNAME [Last updated: 2 hours ago]
 ```
 
 ---
@@ -220,11 +220,11 @@ Repository secrets
 **증상**: "unauthorized: authentication required" 오류
 **해결방법**:
 - `DOCKER_USERNAME`이 정확한지 확인
-- `DOCKER_PASSWORD`가 Personal Access Token인지 확인 (비밀번호 아님!)
+- `DOCKER_PASSWORD`가 Personal Access Token인지 확인 ["비밀번호 아님!"]
 - Docker Hub에서 Personal Access Token 재생성
 
 #### 2. SSH 연결 실패
-**증상**: "Permission denied (publickey)" 오류
+**증상**: "Permission denied [publickey]" 오류
 **해결방법**:
 - SSH 개인키가 올바른지 확인
 - 개인키에 불필요한 공백이나 줄바꿈이 없는지 확인
@@ -249,10 +249,10 @@ Repository secrets
 
 3. **VM 연결 테스트**
    ```bash
-   # AWS VM 연결 테스트 (.pem 파일 사용)
+   # AWS VM 연결 테스트 [".pem 파일 사용"]
    ssh -i aws-key.pem ubuntu@[AWS-VM-IP]
    
-   # GCP VM 연결 테스트 (OpenSSH private key 사용)
+   # GCP VM 연결 테스트 ["OpenSSH private key 사용"]
    ssh -i gcp-key ubuntu@[GCP-VM-IP]
    ```
 
@@ -303,23 +303,23 @@ Repository secrets
 ## 📚 관련 자료
 
 ### 추가 학습 자료
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
-- [Docker Hub Personal Access Token 가이드](https://docs.docker.com/docker-hub/access-tokens/)
-- [AWS EC2 SSH 키 관리](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html)
-- [GCP Compute Engine SSH 키 관리](https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys)
+- ["GitHub Actions 공식 문서"][https://docs.github.com/en/actions/security-guides/encrypted-secrets]
+- ["Docker Hub Personal Access Token 가이드"][https://docs.docker.com/docker-hub/access-tokens/]
+- ["AWS EC2 SSH 키 관리"][https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html]
+- ["GCP Compute Engine SSH 키 관리"][https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys]
 
 ### 실습 가이드
-- [Docker Hub 설정 가이드](docker-hub-setup-guide.md)
-- [GitHub Actions CI/CD 가이드](github-actions-guide.md)
-- [VM 배포 실습 가이드](../practices/vm-deployment.md)
+- ["Docker Hub 설정 가이드"][docker-hub-setup-guide.md]
+- ["GitHub Actions CI/CD 가이드"][github-actions-guide.md]
+- ["VM 배포 실습 가이드"][../practices/vm-deployment.md]
 
 ---
 
 <div align="center">
 
-[← 이전: GitHub Actions 기초](github-actions-guide.md) | 
-[📚 전체 가이드 목록](../README.md) | 
-[🏠 학습 경로로 돌아가기](../../../index.md) | 
-[다음: VM 배포 실습 →](../practices/vm-deployment.md)
+["← 이전: GitHub Actions 기초"][github-actions-guide.md] | 
+["📚 전체 가이드 목록"][../README.md] | 
+["🏠 학습 경로로 돌아가기"][../../../index.md] | 
+["다음: VM 배포 실습 →"][../practices/vm-deployment.md]
 
 </div>

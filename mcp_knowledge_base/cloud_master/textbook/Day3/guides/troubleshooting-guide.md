@@ -4,11 +4,11 @@
 
 ## 📋 목차
 
-[📋 목차](#목차)
-1. [로드 밸런싱 관련 문제](#로드-밸런싱-관련-문제)
-5. [모니터링 및 알림 문제](#모니터링-및-알림-문제)
-6. [성능 및 최적화 문제](#성능-및-최적화-문제)
-7. [일반적인 오류 코드](#일반적인-오류-코드)
+["📋 목차"]["#목차"]
+1. ["로드 밸런싱 관련 문제"]["#로드-밸런싱-관련-문제"]
+5. ["모니터링 및 알림 문제"]["#모니터링-및-알림-문제"]
+6. ["성능 및 최적화 문제"]["#성능-및-최적화-문제"]
+7. ["일반적인 오류 코드"]["#일반적인-오류-코드"]
 
 ---
 
@@ -16,25 +16,25 @@
 
 ### 문제 1: 로드 밸런서 생성 실패
 
-[문제 1: 로드 밸런서 생성 실패](#문제-1-로드-밸런서-생성-실패)
+["문제 1: 로드 밸런서 생성 실패"]["#문제-1-로드-밸런서-생성-실패"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 ```bash
 ERROR: You do not have permission to create load balancer
 ```
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - IAM 권한 부족
 - 서브넷 설정 문제
 - 보안 그룹 설정 문제
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # AWS IAM 권한 확인
 aws iam list-attached-user-policies --user-name your-username
@@ -53,25 +53,25 @@ aws ec2 describe-security-groups --group-ids sg-12345
 
 ### 문제 2: 로드 밸런서에 인스턴스 등록 실패
 
-[문제 2: 로드 밸런서에 인스턴스 등록 실패](#문제-2-로드-밸런서에-인스턴스-등록-실패)
+["문제 2: 로드 밸런서에 인스턴스 등록 실패"]["#문제-2-로드-밸런서에-인스턴스-등록-실패"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 ```bash
 ERROR: Instance is not in a valid state for registration
 ```
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - 인스턴스가 실행 중이 아님
 - 인스턴스가 다른 VPC에 있음
 - 인스턴스에 적절한 보안 그룹이 없음
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # 인스턴스 상태 확인
 aws ec2 describe-instances --instance-ids i-1234567890abcdef0
@@ -91,24 +91,24 @@ aws ec2 modify-instance-attribute /
 
 ### 문제 3: 트래픽이 분산되지 않음
 
-[문제 3: 트래픽이 분산되지 않음](#문제-3-트래픽이-분산되지-않음)
+["문제 3: 트래픽이 분산되지 않음"]["#문제-3-트래픽이-분산되지-않음"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - 모든 요청이 하나의 인스턴스로만 전달
 - 로드 밸런싱이 작동하지 않음
 
 #### 원인
 
-[원인](#원인)
-- 세션 고정(Session Affinity) 설정
+["원인"]["#원인"]
+- 세션 고정[Session Affinity] 설정
 - 인스턴스 상태 불일치
 - 로드 밸런싱 알고리즘 문제
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # Target Group 설정 확인
 aws elbv2 describe-target-groups /
@@ -128,29 +128,29 @@ aws elbv2 describe-target-health /
 
 ## 📈 오토 스케일링 관련 문제
 
-[📈 오토 스케일링 관련 문제](#오토-스케일링-관련-문제)
+["📈 오토 스케일링 관련 문제"]["#오토-스케일링-관련-문제"]
 
 ### 문제 1: Auto Scaling Group 생성 실패
 
-[문제 1: Auto Scaling Group 생성 실패](#문제-1-auto-scaling-group-생성-실패)
+["문제 1: Auto Scaling Group 생성 실패"]["#문제-1-auto-scaling-group-생성-실패"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 ```bash
 ERROR: Launch configuration not found
 ```
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - Launch Template/Configuration이 존재하지 않음
 - Launch Template/Configuration에 오류가 있음
 - 권한 부족
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # Launch Template 확인
 aws ec2 describe-launch-templates --launch-template-names web-server-template
@@ -176,24 +176,24 @@ aws autoscaling create-auto-scaling-group /
 
 ### 문제 2: 스케일링이 작동하지 않음
 
-[문제 2: 스케일링이 작동하지 않음](#문제-2-스케일링이-작동하지-않음)
+["문제 2: 스케일링이 작동하지 않음"]["#문제-2-스케일링이-작동하지-않음"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - CPU 사용률이 높아도 인스턴스가 추가되지 않음
 - 스케일링 정책이 실행되지 않음
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - 스케일링 정책이 설정되지 않음
 - CloudWatch 메트릭이 수집되지 않음
 - ASG 설정 문제
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # ASG 설정 확인
 aws autoscaling describe-auto-scaling-groups /
@@ -228,24 +228,24 @@ aws cloudwatch get-metric-statistics /
 
 ### 문제 3: 인스턴스가 자동으로 종료됨
 
-[문제 3: 인스턴스가 자동으로 종료됨](#문제-3-인스턴스가-자동으로-종료됨)
+["문제 3: 인스턴스가 자동으로 종료됨"]["#문제-3-인스턴스가-자동으로-종료됨"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - 인스턴스가 예상보다 빨리 종료됨
 - 스케일 인이 너무 빈번하게 발생
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - 스케일 인 정책이 너무 민감함
 - 쿨다운 시간이 짧음
 - 헬스체크 실패
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # 스케일링 정책 수정
 aws autoscaling put-scaling-policy /
@@ -272,22 +272,22 @@ aws autoscaling update-auto-scaling-group /
 
 ## 🏥 헬스체크 관련 문제
 
-[🏥 헬스체크 관련 문제](#헬스체크-관련-문제)
+["🏥 헬스체크 관련 문제"]["#헬스체크-관련-문제"]
 
 ### 문제 1: 헬스체크 실패
 
-[문제 1: 헬스체크 실패](#문제-1-헬스체크-실패)
+["문제 1: 헬스체크 실패"]["#문제-1-헬스체크-실패"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 ```bash
 ERROR: Health check failed
 ```
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - 애플리케이션이 실행되지 않음
 - 포트가 열려있지 않음
 - 방화벽 차단
@@ -295,7 +295,7 @@ ERROR: Health check failed
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # 애플리케이션 상태 확인
 systemctl status httpd
@@ -320,24 +320,24 @@ tail -f /var/log/nginx/error.log
 
 ### 문제 2: 헬스체크가 너무 느림
 
-[문제 2: 헬스체크가 너무 느림](#문제-2-헬스체크가-너무-느림)
+["문제 2: 헬스체크가 너무 느림"]["#문제-2-헬스체크가-너무-느림"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - 헬스체크 응답 시간이 길음
 - 인스턴스가 Unhealthy로 표시됨
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - 애플리케이션 응답 시간이 길음
 - 네트워크 지연
 - 헬스체크 설정 문제
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # 헬스체크 응답 시간 측정
 time curl -f http://localhost/health
@@ -366,24 +366,24 @@ chmod +x /var/www/html/health
 
 ### 문제 3: 헬스체크가 불안정함
 
-[문제 3: 헬스체크가 불안정함](#문제-3-헬스체크가-불안정함)
+["문제 3: 헬스체크가 불안정함"]["#문제-3-헬스체크가-불안정함"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - 인스턴스가 Healthy/Unhealthy 상태를 반복
 - 헬스체크 결과가 일관되지 않음
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - 애플리케이션 불안정
 - 리소스 부족
 - 헬스체크 임계값 설정 문제
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # 애플리케이션 안정성 확인
 journalctl -u httpd -f
@@ -410,15 +410,15 @@ aws elbv2 modify-target-group /
 
 ## 🌐 네트워크 및 연결 문제
 
-[🌐 네트워크 및 연결 문제](#네트워크-및-연결-문제)
+["🌐 네트워크 및 연결 문제"]["#네트워크-및-연결-문제"]
 
 ### 문제 1: 로드 밸런서에 접속할 수 없음
 
-[문제 1: 로드 밸런서에 접속할 수 없음](#문제-1-로드-밸런서에-접속할-수-없음)
+["문제 1: 로드 밸런서에 접속할 수 없음"]["#문제-1-로드-밸런서에-접속할-수-없음"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 ```bash
 ERROR: Connection refused
 ERROR: Connection timeout
@@ -426,14 +426,14 @@ ERROR: Connection timeout
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - 보안 그룹 설정 문제
 - 서브넷 라우팅 문제
 - DNS 설정 문제
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # 보안 그룹 확인
 aws ec2 describe-security-groups --group-ids sg-12345
@@ -455,24 +455,24 @@ dig my-load-balancer-1234567890.us-west-2.elb.amazonaws.com
 
 ### 문제 2: 인스턴스 간 통신 실패
 
-[문제 2: 인스턴스 간 통신 실패](#문제-2-인스턴스-간-통신-실패)
+["문제 2: 인스턴스 간 통신 실패"]["#문제-2-인스턴스-간-통신-실패"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - 인스턴스 간 통신이 안됨
 - 데이터베이스 연결 실패
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - 보안 그룹 규칙 문제
 - VPC 설정 문제
 - 네트워크 ACL 문제
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # 보안 그룹 규칙 확인
 aws ec2 describe-security-groups --group-ids sg-12345
@@ -497,24 +497,24 @@ aws ec2 describe-network-acls --filters "Name=vpc-id,Values=vpc-12345"
 
 ### 문제 1: CloudWatch 메트릭이 수집되지 않음
 
-[문제 1: CloudWatch 메트릭이 수집되지 않음](#문제-1-cloudwatch-메트릭이-수집되지-않음)
+["문제 1: CloudWatch 메트릭이 수집되지 않음"]["#문제-1-cloudwatch-메트릭이-수집되지-않음"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - CloudWatch 대시보드에 데이터가 없음
 - 알람이 작동하지 않음
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - CloudWatch 에이전트가 설치되지 않음
 - IAM 권한 부족
 - 메트릭 네임스페이스 오류
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # CloudWatch 에이전트 설치
 wget https:///s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
@@ -537,24 +537,24 @@ aws cloudwatch list-metrics --namespace AWS/EC2
 
 ### 문제 2: 알림이 발송되지 않음
 
-[문제 2: 알림이 발송되지 않음](#문제-2-알림이-발송되지-않음)
+["문제 2: 알림이 발송되지 않음"]["#문제-2-알림이-발송되지-않음"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - 알람이 발생해도 알림이 오지 않음
 - SNS 토픽이 작동하지 않음
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - SNS 토픽 설정 문제
 - 이메일 구독 확인 안됨
 - 알람 설정 오류
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # SNS 토픽 확인
 aws sns list-topics
@@ -582,24 +582,24 @@ aws sns publish /
 
 ### 문제 1: 로드 밸런서 응답 시간이 느림
 
-[문제 1: 로드 밸런서 응답 시간이 느림](#문제-1-로드-밸런서-응답-시간이-느림)
+["문제 1: 로드 밸런서 응답 시간이 느림"]["#문제-1-로드-밸런서-응답-시간이-느림"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - 로드 밸런서를 통한 응답 시간이 길음
 - 사용자 경험 저하
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - 백엔드 인스턴스 성능 문제
 - 로드 밸런서 설정 문제
 - 네트워크 지연
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # 백엔드 인스턴스 성능 확인
 ssh -i key.pem ec2-user@instance-ip "top"
@@ -623,24 +623,24 @@ aws elbv2 modify-target-group-attributes /
 
 ### 문제 2: 스케일링이 너무 느림
 
-[문제 2: 스케일링이 너무 느림](#문제-2-스케일링이-너무-느림)
+["문제 2: 스케일링이 너무 느림"]["#문제-2-스케일링이-너무-느림"]
 
 #### 증상
 
-[증상](#증상)
+["증상"]["#증상"]
 - 트래픽 증가 시 스케일링이 늦음
 - 서비스 성능 저하
 
 #### 원인
 
-[원인](#원인)
+["원인"]["#원인"]
 - 스케일링 정책 설정 문제
 - 인스턴스 시작 시간이 길음
 - 쿨다운 시간이 길음
 
 #### 해결 방법
 
-[해결 방법](#해결-방법)
+["해결 방법"]["#해결-방법"]
 ```bash
 # 스케일링 정책 최적화
 aws autoscaling put-scaling-policy /
@@ -683,7 +683,7 @@ aws autoscaling put-scaling-policy /
 
 ### AWS 오류 코드
 
-[AWS 오류 코드](#aws-오류-코드)
+["AWS 오류 코드"]["#aws-오류-코드"]
 
 | 오류 코드 | 의미 | 해결 방법 |
 |-----------|------|-----------|
@@ -695,7 +695,7 @@ aws autoscaling put-scaling-policy /
 
 ### GCP 오류 코드
 
-[GCP 오류 코드](#gcp-오류-코드)
+["GCP 오류 코드"]["#gcp-오류-코드"]
 
 | 오류 코드 | 의미 | 해결 방법 |
 |-----------|------|-----------|
@@ -709,11 +709,11 @@ aws autoscaling put-scaling-policy /
 
 ## 🔧 디버깅 도구 및 명령어
 
-[🔧 디버깅 도구 및 명령어](#디버깅-도구-및-명령어)
+["🔧 디버깅 도구 및 명령어"]["#디버깅-도구-및-명령어"]
 
 ### AWS 디버깅
 
-[AWS 디버깅](#aws-디버깅)
+["AWS 디버깅"]["#aws-디버깅"]
 ```bash
 # 로그 확인
 aws logs describe-log-groups
@@ -735,7 +735,7 @@ aws autoscaling describe-scaling-activities /
 
 ### GCP 디버깅
 
-[GCP 디버깅](#gcp-디버깅)
+["GCP 디버깅"]["#gcp-디버깅"]
 ```bash
 # 로그 확인
 gcloud logging read "resource.type=gce_instance" --limit=50
@@ -751,27 +751,27 @@ gcloud compute operations list --filter="operationType:insert"
 
 ## 📞 지원 및 도움말
 
-[📞 지원 및 도움말](#지원-및-도움말)
+["📞 지원 및 도움말"]["#지원-및-도움말"]
 
 ### 공식 문서
 
-[공식 문서](#공식-문서)
-- [AWS ELB 트러블슈팅 가이드](https:///docs.aws.amazon.com/elasticloadbalancing/latest/userguide/troubleshooting.html)
-- [AWS Auto Scaling 트러블슈팅 가이드](https:///docs.aws.amazon.com/autoscaling/ec2/userguide/troubleshooting.html)
-- [GCP Load Balancing 트러블슈팅 가이드](https:///cloud.google.com/load-balancing/docs/troubleshooting)
-- [GCP Managed Instance Groups 트러블슈팅 가이드](https:///cloud.google.com/compute/docs/instance-groups/troubleshooting)
+["공식 문서"]["#공식-문서"]
+- ["AWS ELB 트러블슈팅 가이드"][https:///docs.aws.amazon.com/elasticloadbalancing/latest/userguide/troubleshooting.html]
+- ["AWS Auto Scaling 트러블슈팅 가이드"][https:///docs.aws.amazon.com/autoscaling/ec2/userguide/troubleshooting.html]
+- ["GCP Load Balancing 트러블슈팅 가이드"][https:///cloud.google.com/load-balancing/docs/troubleshooting]
+- ["GCP Managed Instance Groups 트러블슈팅 가이드"][https:///cloud.google.com/compute/docs/instance-groups/troubleshooting]
 
 ### 커뮤니티 지원
 
-[커뮤니티 지원](#커뮤니티-지원)
-- [AWS Developer Forums](https:///forums.aws.amazon.com/)
-- [Google Cloud Community](https:///cloud.google.com/community)
-- [Stack Overflow](https:///stackoverflow.com/questions/tagged/aws)
-- [Reddit r/aws](https:///www.reddit.com/r/aws/)
+["커뮤니티 지원"]["#커뮤니티-지원"]
+- [AWS Developer Forums][https:///forums.aws.amazon.com/]
+- [Google Cloud Community][https:///cloud.google.com/community]
+- [Stack Overflow][https:///stackoverflow.com/questions/tagged/aws]
+- [Reddit r/aws][https:///www.reddit.com/r/aws/]
 
 ### 문제 보고
 
-[문제 보고](#문제-보고)
+["문제 보고"]["#문제-보고"]
 문제가 지속되면 다음 정보와 함께 이슈를 생성하세요:
 - 오류 메시지 전체
 - 실행 환경 정보
@@ -783,11 +783,11 @@ gcloud compute operations list --filter="operationType:insert"
 
 ## ✅ 체크리스트
 
-[✅ 체크리스트](#체크리스트)
+["✅ 체크리스트"]["#체크리스트"]
 
 ### 문제 해결 전 확인사항
 
-[문제 해결 전 확인사항](#문제-해결-전-확인사항)
+["문제 해결 전 확인사항"]["#문제-해결-전-확인사항"]
 - [ ] 최신 버전 사용 중인가요?
 - [ ] 권한 설정이 올바른가요?
 - [ ] 네트워크 연결이 정상인가요?
@@ -796,7 +796,7 @@ gcloud compute operations list --filter="operationType:insert"
 
 ### 문제 해결 후 확인사항
 
-[문제 해결 후 확인사항](#문제-해결-후-확인사항)
+["문제 해결 후 확인사항"]["#문제-해결-후-확인사항"]
 - [ ] 문제가 해결되었나요?
 - [ ] 다른 기능에 영향을 주지 않나요?
 - [ ] 성능이 정상인가요?
@@ -814,9 +814,9 @@ gcloud compute operations list --filter="operationType:insert"
 
 ### 📧 연락처
 
-[📧 연락처](#연락처)
+["📧 연락처"]["#연락처"]
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -824,6 +824,6 @@ gcloud compute operations list --filter="operationType:insert"
 
 <div align="center">
 
-[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
+["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
 
 </div>

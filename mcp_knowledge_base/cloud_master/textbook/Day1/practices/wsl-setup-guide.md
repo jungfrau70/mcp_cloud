@@ -2,7 +2,7 @@
 
 ## 🎯 개요
 
-이 가이드는 Windows 환경에서 WSL2를 사용하여 Cloud Master 실습 환경을 구축하는 방법을 단계별로 안내합니다. [GitHub 저장소](https://github.com/jungfrau70/github-actions-demo/tree/feature/cloud-master)에서 실습 코드를 클론받아 사용합니다.
+이 가이드는 Windows 환경에서 WSL2를 사용하여 Cloud Master 실습 환경을 구축하는 방법을 단계별로 안내합니다. ["GitHub 저장소"][https://github.com/jungfrau70/github-actions-demo/tree/feature/cloud-master]에서 실습 코드를 클론받아 사용합니다.
 
 ---
 
@@ -123,7 +123,7 @@ gcloud auth login
 #### kubectl 설치
 ```bash
 # kubectl 설치
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https://dl.k8s.io/release/$[curl -L -s https://dl.k8s.io/release/stable.txt]/bin/linux/amd64/kubectl"
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 # kubectl 설치 확인
@@ -147,7 +147,7 @@ npm --version
 chmod +x cloud-scripts/environment-check-wsl.sh
 ./cloud-scripts/environment-check-wsl.sh
 
-# 자동 수정 시도 (필요한 경우)
+# 자동 수정 시도 ["필요한 경우"]
 ./cloud-scripts/environment-check-wsl.sh --auto-fix
 ```
 
@@ -331,12 +331,12 @@ wsl
 - GitLens
 - Prettier
 - ESLint
-- Thunder Client (API 테스트)
+- Thunder Client ["API 테스트"]
 
 ### 유용한 리소스
-- [WSL 공식 문서](https://docs.microsoft.com/ko-kr/windows/wsl/)
-- [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/)
-- [VS Code WSL 확장](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
+- ["WSL 공식 문서"][https://docs.microsoft.com/ko-kr/windows/wsl/]
+- [Docker Desktop for Windows][https://www.docker.com/products/docker-desktop/]
+- ["VS Code WSL 확장"][https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl]
 
 ---
 
@@ -344,17 +344,17 @@ wsl
 
 WSL 환경 설정이 완료되면 다음 단계로 진행하세요:
 
-1. **Day 1 실습**: [GitHub Actions CI/CD 완전 가이드](github-actions-cicd-guide.md)
-2. **배포 확인**: [배포 후 체크포인트 가이드](deployment-checkpoints-guide.md)
-3. **자동화 스크립트**: [GitHub Actions CI/CD 자동화](../repos/automation/github-actions-cicd-automation.sh)
+1. **Day 1 실습**: ["GitHub Actions CI/CD 완전 가이드"][github-actions-cicd-guide.md]
+2. **배포 확인**: ["배포 후 체크포인트 가이드"][deployment-checkpoints-guide.md]
+3. **자동화 스크립트**: ["GitHub Actions CI/CD 자동화"][../repos/automation/github-actions-cicd-automation.sh]
 
 ---
 
 <div align="center">
 
-[← 이전: GitHub Actions 기초 실습](github-actions-basics.md) | 
-[📚 전체 커리큘럼](../../../curriculum.md) | 
-[🏠 학습 경로로 돌아가기](../../../index.md) | 
-[다음: GitHub Actions CI/CD 완전 가이드 →](github-actions-cicd-guide.md)
+["← 이전: GitHub Actions 기초 실습"][github-actions-basics.md] | 
+["📚 전체 커리큘럼"][../../../curriculum.md] | 
+["🏠 학습 경로로 돌아가기"][../../../index.md] | 
+["다음: GitHub Actions CI/CD 완전 가이드 →"][github-actions-cicd-guide.md]
 
 </div>

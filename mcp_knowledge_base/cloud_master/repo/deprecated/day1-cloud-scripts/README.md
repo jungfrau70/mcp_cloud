@@ -4,7 +4,7 @@
 
 Cloud Master 과정의 실습을 더 쉽고 효율적으로 진행할 수 있도록 자동화된 스크립트 모음입니다. 각 스크립트는 특정 클라우드 작업을 자동화하여 실습 시간을 단축하고 일관된 환경을 제공합니다.
 
-## 🚀 실행 순서 (필수)
+## 🚀 실행 순서 ["필수"]
 
 Cloud Master 과정을 시작하기 전에 **반드시** 다음 순서대로 실행하세요:
 
@@ -13,7 +13,7 @@ Cloud Master 과정을 시작하기 전에 **반드시** 다음 순서대로 실
 # WSL 환경 전체 설치
 mcp_knowledge_base/cloud_master/repos/install/install-all-wsl.sh
 
-# 환경 체크 (설치 확인)
+# 환경 체크 ["설치 확인"]
 mcp_knowledge_base/cloud_master/repos/cloud-scripts/environment-check-wsl.sh
 ```
 
@@ -35,7 +35,7 @@ mcp_knowledge_base/cloud_master/repos/cloud-scripts/gcp-setup-helper.sh
 mcp_knowledge_base/cloud_master/repos/cloud-scripts/gcp-compute-create.sh
 ```
 
-### **4단계: Kubernetes 클러스터 생성 (선택)**
+### **4단계: Kubernetes 클러스터 생성 ["선택"]**
 ```bash
 # GCP GKE 클러스터 생성
 mcp_knowledge_base/cloud_master/repos/cloud-scripts/k8s-cluster-create.sh
@@ -51,7 +51,7 @@ mcp_knowledge_base/cloud_master/repos/cloud-scripts/context-switch.sh help
 mcp_knowledge_base/cloud_master/repos/cloud-scripts/context-switch.bat help
 ```
 
-### **5단계: GitHub Actions CI/CD 파이프라인 설정 (필수)**
+### **5단계: GitHub Actions CI/CD 파이프라인 설정 ["필수"]**
 ```bash
 # GitHub Actions 워크플로우 활성화
 # .github/workflows/cloud-master-ci-cd.yml 파일이 자동으로 실행됩니다.
@@ -61,15 +61,15 @@ mcp_knowledge_base/cloud_master/repos/cloud-scripts/context-switch.bat help
 
 ## 🖥️ 실행 환경
 
-### **WSL (Windows Subsystem for Linux) - 권장** ⭐
-- **실행 위치**: WSL 내부 (Ubuntu 20.04+ 권장)
+### **WSL [Windows Subsystem for Linux] - 권장** ⭐
+- **실행 위치**: WSL 내부 ["Ubuntu 20.04+ 권장"]
 - **설치 방법**: `mcp_knowledge_base/cloud_master/repos/install/install-all-wsl.sh` 실행
 - **장점**: Windows와 Linux 환경 모두 활용 가능, 파일 공유 용이
 - **경로 변환**: Windows 경로를 WSL 경로로 자동 변환
 - **호환성**: Windows Git Bash 대비 높은 호환성
 
-### **VM (Virtual Machine)**
-- **실행 위치**: Linux VM 내부 (Ubuntu 20.04+ 권장)
+### **VM [Virtual Machine]**
+- **실행 위치**: Linux VM 내부 ["Ubuntu 20.04+ 권장"]
 - **설치 방법**: VM 내부에서 동일한 설치 스크립트 실행
 - **장점**: 완전한 Linux 환경, 격리된 실습 환경
 - **요구사항**: VirtualBox, VMware, Hyper-V 등
@@ -96,15 +96,15 @@ cloud-scripts/
 ├── environment-check.sh                # 환경 체크
 ├── startup-script.sh                   # GCP 초기화 스크립트
 ├── user-data.sh                        # AWS 초기화 스크립트
-├── k8s-cluster-create.sh               # Kubernetes 클러스터 자동 생성 (Day2)
-├── k8s-app-deploy.sh                   # Kubernetes 애플리케이션 자동 배포 (Day2)
-├── context-switch.sh                   # kubectl context 관리 및 전환 (Linux/macOS)
-├── context-switch.bat                  # kubectl context 관리 및 전환 (Windows)
+├── k8s-cluster-create.sh               # Kubernetes 클러스터 자동 생성 [Day2]
+├── k8s-app-deploy.sh                   # Kubernetes 애플리케이션 자동 배포 [Day2]
+├── context-switch.sh                   # kubectl context 관리 및 전환 [Linux/macOS]
+├── context-switch.bat                  # kubectl context 관리 및 전환 [Windows]
 ├── kubectl-context-guide.md            # kubectl context 설정 가이드 문서
-├── monitoring-stack-deploy.sh          # 모니터링 스택 자동 배포 (Day3)
-├── load-balancer-setup.sh              # 로드밸런서 자동 설정 (Day3)
-├── cost-optimization.sh                # 비용 최적화 자동화 (Day3)
-├── deploy-practice-environment.sh      # 실습 환경 자동 배포 (CI/CD 통합)
+├── monitoring-stack-deploy.sh          # 모니터링 스택 자동 배포 [Day3]
+├── load-balancer-setup.sh              # 로드밸런서 자동 설정 [Day3]
+├── cost-optimization.sh                # 비용 최적화 자동화 [Day3]
+├── deploy-practice-environment.sh      # 실습 환경 자동 배포 ["CI/CD 통합"]
 ├── monitoring-dashboard-setup.sh       # 모니터링 대시보드 자동 설정
 ├── alert-notification-system.sh        # 실시간 알림 시스템 설정
 ├── advanced-cost-optimization.sh       # 고급 비용 최적화 분석 및 실행
@@ -112,12 +112,12 @@ cloud-scripts/
 ├── ai-environment-generator.sh         # AI 기반 실습 환경 자동 생성
 ├── ai-learning-analyzer.sh             # AI 기반 학습 분석 및 추천 시스템
 ├── ai-qa-assistant.sh                  # AI 기반 실시간 질문 답변 시스템
-└── integrated-automation.sh            # 통합 자동화 스크립트 (모든 기능)
+└── integrated-automation.sh            # 통합 자동화 스크립트 ["모든 기능"]
 ```
 
 ## 🚀 빠른 시작
 
-### 0. GitHub Actions CI/CD 설정 (권장) ⭐
+### 0. GitHub Actions CI/CD 설정 ["권장"] ⭐
 
 #### **GitHub Actions 파이프라인 개요**
 Cloud Master 과정의 모든 실습을 자동화하는 포괄적인 CI/CD 파이프라인입니다.
@@ -135,28 +135,28 @@ Cloud Master 과정의 모든 실습을 자동화하는 포괄적인 CI/CD 파�
 ```bash
 # Repository Settings → Secrets and variables → Actions에서 설정
 
-# AWS 자격증명 (필수)
+# AWS 자격증명 ["필수"]
 AWS_ACCESS_KEY_ID: your-aws-access-key
 AWS_SECRET_ACCESS_KEY: your-aws-secret-key
 
-# GCP 자격증명 (필수)
+# GCP 자격증명 ["필수"]
 GCP_PROJECT_ID: your-gcp-project-id
 GCP_SERVICE_ACCOUNT_KEY: your-gcp-service-account-json
 
-# 알림 설정 (선택사항)
+# 알림 설정 ["선택사항"]
 SLACK_WEBHOOK_URL: your-slack-webhook-url
 EMAIL_NOTIFICATION: your-email@example.com
 EMAIL_USERNAME: your-email-username
 EMAIL_PASSWORD: your-email-password
 
-# Docker Hub (선택사항)
+# Docker Hub ["선택사항"]
 DOCKERHUB_USERNAME: your-dockerhub-username
 DOCKERHUB_TOKEN: your-dockerhub-access-token
 ```
 
 #### **CI/CD 파이프라인 실행 방법**
 
-##### **방법 1: GitHub CLI 사용 (권장)**
+##### **방법 1: GitHub CLI 사용 ["권장"]**
 ```bash
 # 1. GitHub CLI 설치 및 인증
 gh auth login
@@ -208,15 +208,15 @@ gh run cancel <run-id>
 ```
 
 #### **스케줄된 워크플로우**
-- **매일 오전 9시**: 정기 정리 실행 (`cleanup-schedule.yml`)
-- **매일 오후 6시**: 비용 최적화 실행 (`cost-optimization.yml`)
-- **매주 월요일 오전 2시**: 보안 스캔 실행 (`security-scan.yml`)
+- **매일 오전 9시**: 정기 정리 실행 [`cleanup-schedule.yml`]
+- **매일 오후 6시**: 비용 최적화 실행 [`cost-optimization.yml`]
+- **매주 월요일 오전 2시**: 보안 스캔 실행 [`security-scan.yml`]
 
-### 1. 환경 준비 (WSL 권장) ⭐
+### 1. 환경 준비 ["WSL 권장"] ⭐
 
 #### WSL 환경 구축
 
-##### 새로운 WSL 환경 생성 (권장)
+##### 새로운 WSL 환경 생성 ["권장"]
 ```bash
 # WSL 자동 설정 스크립트 실행
 ./wsl-auto-setup.sh
@@ -270,16 +270,16 @@ wsl --install -d Ubuntu-22.04
 ```
 
 ##### WSL 수동 설정
-상세한 WSL 환경 구축 방법은 [WSL 추가 생성 가이드](wsl-setup-guide.md)를 참조하세요.
+상세한 WSL 환경 구축 방법은 ["WSL 추가 생성 가이드"][wsl-setup-guide.md]를 참조하세요.
 
 #### WSL 환경에서 실행
 ```bash
 # WSL 터미널에서 실행
 # 방법 1: 직접 경로 입력
-cd /mnt/c/Users/[사용자명]/githubs/mcp_cloud/mcp_knowledge_base/cloud_master/repos/cloud-scripts
+cd /mnt/c/Users/["사용자명"]/githubs/mcp_cloud/mcp_knowledge_base/cloud_master/repos/cloud-scripts
 
-# 방법 2: Windows 경로를 WSL로 변환 (권장)
-cd $(wslpath "C:\Users\[사용자명]\githubs\mcp_cloud\mcp_knowledge_base\cloud_master\repos\cloud-scripts")
+# 방법 2: Windows 경로를 WSL로 변환 ["권장"]
+cd $[wslpath "C:\Users\["사용자명"]\githubs\mcp_cloud\mcp_knowledge_base\cloud_master\repos\cloud-scripts"]
 
 # 방법 3: Windows 탐색기에서 WSL로 열기
 # Windows 탐색기에서 폴더 우클릭 → "Linux에서 열기"
@@ -297,12 +297,12 @@ cd /path/to/mcp_knowledge_base/cloud_master/repos/cloud-scripts
 cd /home/ubuntu/mcp_knowledge_base/cloud_master/repos/cloud-scripts
 ```
 
-### 2. 통합 자동화 (권장)
+### 2. 통합 자동화 ["권장"]
 ```bash
 # 모든 스크립트 실행 권한 부여
 chmod +x *.sh
 
-# 통합 자동화 실행 (모든 기능)
+# 통합 자동화 실행 ["모든 기능"]
 ./integrated-automation.sh aws --full-deploy
 # 또는
 ./integrated-automation.sh gcp --full-deploy
@@ -317,20 +317,20 @@ chmod +x *.sh
 
 ### 3. 개별 스크립트 실행
 ```bash
-# 환경 설정 (WSL/VM에서 실행)
+# 환경 설정 ["WSL/VM에서 실행"]
 ./environment-check.sh
 ./aws-setup-helper.sh
 ./gcp-setup-helper.sh
 
-# Day1: VM 배포 (WSL/VM에서 실행)
+# Day1: VM 배포 ["WSL/VM에서 실행"]
 ./aws-ec2-create.sh
 ./gcp-compute-create.sh
 
-# Day2: Kubernetes (WSL/VM에서 실행)
+# Day2: Kubernetes ["WSL/VM에서 실행"]
 ./k8s-cluster-create.sh
 ./k8s-app-deploy.sh
 
-# Day3: 모니터링 & 비용 최적화 (WSL/VM에서 실행)
+# Day3: 모니터링 & 비용 최적화 ["WSL/VM에서 실행"]
 ./monitoring-stack-deploy.sh
 ./load-balancer-setup.sh
 ./cost-optimization.sh
@@ -338,22 +338,22 @@ chmod +x *.sh
 
 ### 4. 고급 자동화 기능
 ```bash
-# 실습 환경 자동 배포 (WSL/VM에서 실행)
+# 실습 환경 자동 배포 ["WSL/VM에서 실행"]
 ./deploy-practice-environment.sh aws
 
-# 모니터링 대시보드 설정 (WSL/VM에서 실행)
+# 모니터링 대시보드 설정 ["WSL/VM에서 실행"]
 ./monitoring-dashboard-setup.sh aws --dashboard-url
 
-# 실시간 알림 시스템 설정 (WSL/VM에서 실행)
+# 실시간 알림 시스템 설정 ["WSL/VM에서 실행"]
 ./alert-notification-system.sh aws --slack-webhook "YOUR_WEBHOOK_URL" --email "admin@example.com"
 
-# 고급 비용 최적화 (WSL/VM에서 실행)
+# 고급 비용 최적화 ["WSL/VM에서 실행"]
 ./advanced-cost-optimization.sh aws --report-only
 
-# 예산 관리 설정 (WSL/VM에서 실행)
+# 예산 관리 설정 ["WSL/VM에서 실행"]
 ./budget-monitoring.sh aws --create-budget --set-thresholds
 
-# AI 기반 기능 (WSL/VM에서 실행)
+# AI 기반 기능 ["WSL/VM에서 실행"]
 ./ai-environment-generator.sh aws --skill-level "중급" --budget 100 --duration 8
 ./ai-learning-analyzer.sh --analyze-progress --generate-recommendations
 ./ai-qa-assistant.sh --interactive
@@ -361,7 +361,7 @@ chmod +x *.sh
 
 ### 5. 클러스터 삭제 및 정리
 
-#### **통합 클러스터 정리 도구 (권장)**
+#### **통합 클러스터 정리 도구 ["권장"]**
 
 ##### 대화형 클러스터 정리
 ```bash
@@ -372,7 +372,7 @@ chmod +x *.sh
 **기능:**
 - EKS 클러스터 목록 보기 및 선택적 삭제
 - GKE 클러스터 목록 보기 및 선택적 삭제
-- 전체 클러스터 정리 (EKS + GKE)
+- 전체 클러스터 정리 [EKS + GKE]
 - 환경 상태 확인
 
 ##### VPC 정리 도구
@@ -393,7 +393,7 @@ chmod +x *.sh
 **기능:**
 - GCP VM 인스턴스 목록 보기 및 선택적 삭제
 - AWS EC2 인스턴스 목록 보기 및 선택적 삭제
-- 전체 VM 정리 (GCP + AWS)
+- 전체 VM 정리 [GCP + AWS]
 - 환경 상태 확인
 
 #### **GCP GKE 클러스터 삭제**
@@ -407,7 +407,7 @@ gcloud container clusters delete cloud-master-cluster --zone=asia-northeast3-a
 gcloud container clusters list
 
 # 특정 프로젝트의 모든 클러스터 삭제
-gcloud container clusters list --format="value(name,zone)" | while read name zone; do
+gcloud container clusters list --format="value[name,zone]" | while read name zone; do
     gcloud container clusters delete "$name" --zone="$zone" --quiet
 done
 ```
@@ -442,14 +442,14 @@ done
 
 #### **통합 정리 스크립트**
 ```bash
-# 모든 클러스터 정리 (GCP + AWS)
+# 모든 클러스터 정리 [GCP + AWS]
 ./cleanup-all-clusters.sh
 
 # 특정 클라우드만 정리
 ./cleanup-all-clusters.sh --gcp-only
 ./cleanup-all-clusters.sh --aws-only
 
-# 강제 삭제 (확인 없이)
+# 강제 삭제 ["확인 없이"]
 ./cleanup-all-clusters.sh --force
 ```
 
@@ -529,7 +529,7 @@ aws ce get-cost-and-usage --time-period Start=2024-01-01,End=2024-01-31 --granul
 - **기능**: 필수 도구 설치 확인, 권한 검증
 - **사용법**: `./environment-check.sh`
 
-### 🖥️ VM 배포 스크립트 (Day1)
+### 🖥️ VM 배포 스크립트 [Day1]
 
 #### `aws-ec2-create.sh`
 - **목적**: AWS EC2 인스턴스 자동 생성
@@ -541,7 +541,7 @@ aws ce get-cost-and-usage --time-period Start=2024-01-01,End=2024-01-31 --granul
 - **기능**: 방화벽 규칙, 인스턴스 템플릿, 인스턴스 생성
 - **사용법**: `./gcp-compute-create.sh`
 
-### 🔄 GitHub Actions CI/CD 파이프라인 (Day1)
+### 🔄 GitHub Actions CI/CD 파이프라인 [Day1]
 
 #### `.github/workflows/cloud-master-ci-cd.yml`
 - **목적**: Cloud Master 실습 환경 자동화 CI/CD 파이프라인
@@ -579,7 +579,7 @@ workflow_dispatch:
       - 중급
       - 고급
     budget_limit:
-      description: '예산 한도 (USD)'
+      description: '예산 한도 [USD]'
       required: false
       default: '50'
       type: string
@@ -595,13 +595,13 @@ workflow_dispatch:
    - VPC 및 서브넷 생성
    - 보안 그룹 설정
    - EC2 인스턴스 생성 및 설정
-   - RDS 데이터베이스 생성 (선택사항)
+   - RDS 데이터베이스 생성 ["선택사항"]
 
 3. **GCP 인프라 자동화**
    - VPC 네트워크 생성
    - 방화벽 규칙 설정
    - Compute Engine 인스턴스 생성
-   - Cloud SQL 인스턴스 생성 (선택사항)
+   - Cloud SQL 인스턴스 생성 ["선택사항"]
 
 4. **Kubernetes 클러스터 자동화**
    - EKS/GKE 클러스터 생성
@@ -650,8 +650,8 @@ AWS_ACCESS_KEY_ID=your_aws_access_key
 AWS_SECRET_ACCESS_KEY=your_aws_secret_key
 GCP_PROJECT_ID=your_gcp_project_id
 GCP_SERVICE_ACCOUNT_KEY=your_gcp_service_account_json
-SLACK_WEBHOOK_URL=your_slack_webhook_url (선택사항)
-EMAIL_NOTIFICATION=your_email@example.com (선택사항)
+SLACK_WEBHOOK_URL=your_slack_webhook_url ["선택사항"]
+EMAIL_NOTIFICATION=your_email@example.com ["선택사항"]
 ```
 
 #### **워크플로우 파일 위치**
@@ -664,7 +664,7 @@ EMAIL_NOTIFICATION=your_email@example.com (선택사항)
     └── cleanup-schedule.yml            # 정기 정리 워크플로우
 ```
 
-### ☸️ Kubernetes 스크립트 (Day2)
+### ☸️ Kubernetes 스크립트 [Day2]
 
 #### `k8s-cluster-create.sh`
 - **목적**: Kubernetes 클러스터 자동 생성
@@ -707,7 +707,7 @@ EMAIL_NOTIFICATION=your_email@example.com (선택사항)
   - Windows/Linux 환경별 설정 방법
   - Context 관리 모범 사례
 
-### 📊 모니터링 & 최적화 스크립트 (Day3)
+### 📊 모니터링 & 최적화 스크립트 [Day3]
 
 #### `monitoring-stack-deploy.sh`
 - **목적**: 모니터링 스택 자동 배포
@@ -763,16 +763,16 @@ ssh-keygen -t rsa -b 4096 -f gcp-key -C "mcp-cloud-master-gcp"
 # 3. Docker Hub 토큰 생성
 # Docker Hub → Account Settings → Security → New Access Token
 
-# 4. 코드 푸시 (자동 트리거)
+# 4. 코드 푸시 ["자동 트리거"]
 git add .
 git commit -m "feat: add CI/CD pipeline"
 git push origin main
 ```
 
-### 🚀 고급 자동화 스크립트 (장기개선)
+### 🚀 고급 자동화 스크립트 ["장기개선"]
 
 #### `deploy-practice-environment.sh`
-- **목적**: 실습 환경 자동 배포 (CI/CD 통합)
+- **목적**: 실습 환경 자동 배포 ["CI/CD 통합"]
 - **기능**: VPC, 인스턴스, 클러스터, 로드밸런서 자동 생성
 - **사용법**: `./deploy-practice-environment.sh [aws|gcp] [--dry-run]`
 
@@ -812,7 +812,7 @@ git push origin main
 - **사용법**: `./ai-qa-assistant.sh [--ask QUESTION] [--interactive] [--context CONTEXT] [--skill-level LEVEL]`
 
 #### `integrated-automation.sh`
-- **목적**: 통합 자동화 스크립트 (모든 기능)
+- **목적**: 통합 자동화 스크립트 ["모든 기능"]
 - **기능**: CI/CD + 모니터링 + 비용 최적화 + AI 통합 실행
 - **사용법**: `./integrated-automation.sh [aws|gcp] [--full-deploy] [--monitor-only] [--cost-only] [--ci-cd-only] [--ai-only] [--ai-enhanced]`
 
@@ -823,19 +823,19 @@ git push origin main
 #### WSL 환경에서 실행 ⭐
 ```bash
 # WSL 터미널에서 실행
-# 경로 이동 (Windows 경로를 WSL로 변환)
-cd $(wslpath "C:\Users\[사용자명]\githubs\mcp_cloud\mcp_knowledge_base\cloud_master\repos\cloud-scripts")
+# 경로 이동 ["Windows 경로를 WSL로 변환"]
+cd $[wslpath "C:\Users\["사용자명"]\githubs\mcp_cloud\mcp_knowledge_base\cloud_master\repos\cloud-scripts"]
 
-# 1. 환경 설정 (WSL에서 실행)
+# 1. 환경 설정 ["WSL에서 실행"]
 ./environment-check.sh
 ./aws-setup-helper.sh
 ./gcp-setup-helper.sh
 
-# 2. VM 생성 (WSL에서 실행)
+# 2. VM 생성 ["WSL에서 실행"]
 ./aws-ec2-create.sh
 ./gcp-compute-create.sh
 
-# 3. GitHub Actions CI/CD 설정 (선택사항)
+# 3. GitHub Actions CI/CD 설정 ["선택사항"]
 # 3-1. GitHub Secrets 설정
 # Repository Settings → Secrets and variables → Actions
 # DOCKERHUB_USERNAME, DOCKERHUB_TOKEN, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY 등 설정
@@ -845,17 +845,17 @@ ssh-keygen -t rsa -b 4096 -f aws-key -C "mcp-cloud-master-aws"
 ssh-keygen -t rsa -b 4096 -f gcp-key -C "mcp-cloud-master-gcp"
 # 생성된 키를 GitHub Secrets에 설정
 
-# 3-3. 코드 푸시 (GitHub Actions 자동 트리거)
+# 3-3. 코드 푸시 ["GitHub Actions 자동 트리거"]
 git add .
 git commit -m "feat: add Day1 application and CI/CD pipeline"
 git push origin main
 
-# 4. 수동 배포 (GitHub Actions 사용하지 않는 경우)
-# (WSL에서 생성된 VM에 SSH 연결 후 배포)
+# 4. 수동 배포 ["GitHub Actions 사용하지 않는 경우"]
+# ["WSL에서 생성된 VM에 SSH 연결 후 배포"]
 ssh -i ~/.ssh/aws-key.pem ubuntu@[EC2-PUBLIC-IP]
 ssh -i ~/.ssh/gcp-key.pem ubuntu@[GCP-EXTERNAL-IP]
 
-# 5. 정리 (WSL에서 실행)
+# 5. 정리 ["WSL에서 실행"]
 ./aws-resource-cleanup.sh
 ./gcp-project-cleanup.sh
 ```
@@ -891,20 +891,20 @@ cd /home/ubuntu/cloud-scripts
 #### WSL 환경에서 실행 ⭐
 ```bash
 # WSL 터미널에서 실행
-# 경로 이동 (Windows 경로를 WSL로 변환)
-cd $(wslpath "C:\Users\[사용자명]\githubs\mcp_cloud\mcp_knowledge_base\cloud_master\repos\cloud-scripts")
+# 경로 이동 ["Windows 경로를 WSL로 변환"]
+cd $[wslpath "C:\Users\["사용자명"]\githubs\mcp_cloud\mcp_knowledge_base\cloud_master\repos\cloud-scripts"]
 
-# 1. Kubernetes 클러스터 생성 (WSL에서 실행)
+# 1. Kubernetes 클러스터 생성 ["WSL에서 실행"]
 ./k8s-cluster-create.sh
 
-# 2. 애플리케이션 배포 (WSL에서 실행)
+# 2. 애플리케이션 배포 ["WSL에서 실행"]
 ./k8s-app-deploy.sh
 
-# 3. 테스트 및 모니터링 (WSL에서 실행)
+# 3. 테스트 및 모니터링 ["WSL에서 실행"]
 kubectl get pods
 kubectl get services
 
-# 4. 정리 (WSL에서 실행)
+# 4. 정리 ["WSL에서 실행"]
 kubectl delete namespace development
 ```
 
@@ -937,19 +937,19 @@ kubectl get services
 #### WSL 환경에서 실행 ⭐
 ```bash
 # WSL 터미널에서 실행
-# 경로 이동 (Windows 경로를 WSL로 변환)
-cd $(wslpath "C:\Users\[사용자명]\githubs\mcp_cloud\mcp_knowledge_base\cloud_master\repos\cloud-scripts")
+# 경로 이동 ["Windows 경로를 WSL로 변환"]
+cd $[wslpath "C:\Users\["사용자명"]\githubs\mcp_cloud\mcp_knowledge_base\cloud_master\repos\cloud-scripts"]
 
-# 1. 모니터링 스택 배포 (WSL에서 실행)
+# 1. 모니터링 스택 배포 ["WSL에서 실행"]
 ./monitoring-stack-deploy.sh
 
-# 2. 로드밸런서 설정 (WSL에서 실행)
+# 2. 로드밸런서 설정 ["WSL에서 실행"]
 ./load-balancer-setup.sh
 
-# 3. 비용 최적화 (WSL에서 실행)
+# 3. 비용 최적화 ["WSL에서 실행"]
 ./cost-optimization.sh
 
-# 4. 정리 (WSL에서 실행)
+# 4. 정리 ["WSL에서 실행"]
 ./aws-resource-cleanup.sh
 ./gcp-project-cleanup.sh
 ```
@@ -1009,10 +1009,10 @@ MACHINE_TYPE="e2-medium"
 #### 1. WSL 경로 변환 문제
 ```bash
 # Windows 경로를 WSL 경로로 변환
-wslpath "C:\Users\[사용자명]\githubs\mcp_cloud\mcp_knowledge_base\cloud_master\repos\cloud-scripts"
+wslpath "C:\Users\["사용자명"]\githubs\mcp_cloud\mcp_knowledge_base\cloud_master\repos\cloud-scripts"
 
 # WSL 경로를 Windows 경로로 변환
-wslpath -w "/mnt/c/Users/[사용자명]/githubs/mcp_cloud/mcp_knowledge_base/cloud_master/repos/cloud-scripts"
+wslpath -w "/mnt/c/Users/["사용자명"]/githubs/mcp_cloud/mcp_knowledge_base/cloud_master/repos/cloud-scripts"
 ```
 
 #### 2. WSL에서 Docker 권한 문제
@@ -1085,7 +1085,7 @@ kubectl config use-context <context-name>
 # GKE 클러스터 자격 증명 재설정
 gcloud container clusters get-credentials <cluster-name> --zone <zone> --project <project-id>
 
-# gke-gcloud-auth-plugin 설치 (Windows)
+# gke-gcloud-auth-plugin 설치 [Windows]
 curl -LO "https://storage.googleapis.com/gke-release/gke-gcloud-auth-plugin/v0.5.3/windows/amd64/gke-gcloud-auth-plugin.exe"
 mkdir -p "$HOME/.local/bin"
 mv gke-gcloud-auth-plugin.exe "$HOME/.local/bin/"
@@ -1171,14 +1171,14 @@ aws ce get-cost-and-usage --time-period Start=2024-01-01,End=2024-01-31
 
 ## 🖥️ 실행 위치별 가이드
 
-### WSL 환경 (권장) ⭐
-- **실행 위치**: WSL 내부 (Ubuntu 20.04+)
+### WSL 환경 ["권장"] ⭐
+- **실행 위치**: WSL 내부 [Ubuntu 20.04+]
 - **경로 변환**: `wslpath` 명령어 사용
 - **장점**: Windows와 Linux 환경 모두 활용, 파일 공유 용이
 - **설치**: `install-all-wsl.sh` 실행
 
 ### VM 환경
-- **실행 위치**: Linux VM 내부 (Ubuntu 20.04+)
+- **실행 위치**: Linux VM 내부 [Ubuntu 20.04+]
 - **경로**: VM 내부 절대 경로 사용
 - **장점**: 완전한 Linux 환경, 격리된 실습 환경
 - **설치**: VM 내부에서 동일한 설치 스크립트 실행
@@ -1192,51 +1192,51 @@ aws ce get-cost-and-usage --time-period Start=2024-01-01,End=2024-01-31
 ## 📚 추가 자료
 
 ### 공식 문서
-- [GitHub Actions 공식 자습서](https://docs.github.com/ko/actions/tutorials)
-- [GitHub Actions 워크플로우 구문](https://docs.github.com/ko/actions/using-workflows/workflow-syntax-for-github-actions)
-- [AWS CLI 공식 문서](https://docs.aws.amazon.com/cli/)
-- [Google Cloud CLI 공식 문서](https://cloud.google.com/sdk/docs)
-- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
-- [WSL 공식 문서](https://docs.microsoft.com/en-us/windows/wsl/)
-- [Docker Desktop WSL2 가이드](https://docs.docker.com/desktop/wsl/)
+- ["GitHub Actions 공식 자습서"][https://docs.github.com/ko/actions/tutorials]
+- ["GitHub Actions 워크플로우 구문"][https://docs.github.com/ko/actions/using-workflows/workflow-syntax-for-github-actions]
+- ["AWS CLI 공식 문서"][https://docs.aws.amazon.com/cli/]
+- ["Google Cloud CLI 공식 문서"][https://cloud.google.com/sdk/docs]
+- ["Kubernetes 공식 문서"][https://kubernetes.io/docs/]
+- ["WSL 공식 문서"][https://docs.microsoft.com/en-us/windows/wsl/]
+- ["Docker Desktop WSL2 가이드"][https://docs.docker.com/desktop/wsl/]
 
 ### Cloud Master 과정
-- [Day1: Docker & VM 배포](cloud_master/textbook/Day1/README.md)
-- [Day2: Kubernetes & 고급 CI/CD](cloud_master/textbook/Day2/README.md)
-- [Day3: 모니터링 & 비용 최적화](cloud_master/textbook/Day3/README.md)
+- ["Day1: Docker & VM 배포"][cloud_master/textbook/Day1/README.md]
+- ["Day2: Kubernetes & 고급 CI/CD"][cloud_master/textbook/Day2/README.md]
+- ["Day3: 모니터링 & 비용 최적화"][cloud_master/textbook/Day3/README.md]
 
 ### 실습 샘플
-- [Day1 실습 샘플](cloud_master/repos/samples/day1/my-app/README.md)
-- [Day2 실습 샘플](cloud_master/repos/samples/day2/my-app/README.md)
-- [Day3 실습 샘플](cloud_master/repos/samples/day3/my-app/README.md)
+- ["Day1 실습 샘플"][cloud_master/repos/samples/day1/my-app/README.md]
+- ["Day2 실습 샘플"][cloud_master/repos/samples/day2/my-app/README.md]
+- ["Day3 실습 샘플"][cloud_master/repos/samples/day3/my-app/README.md]
 
 ### 설치 가이드
-- [WSL 환경 설치 가이드](cloud_master/repos/install/README-wsl.md)
-- [WSL 추가 생성 가이드](wsl-setup-guide.md) - 상세한 WSL 환경 구축 가이드
-- [WSL 자동 설정 스크립트](wsl-auto-setup.sh) - 원클릭 WSL 환경 구축
-- [WSL 관리 도구](wsl-manager.sh) - WSL 배포판 생성/삭제/관리
-- [WSL 관리 도구 가이드](wsl-manager-guide.md) - 상세한 사용법 및 예제
-- [WSL 관리 도구 API 문서](wsl-manager-api.md) - 기술 문서 및 함수 참조
-- [WSL 관리 도구 사용 예제](wsl-manager-examples.md) - 실제 사용 시나리오
-- [전체 설치 스크립트](cloud_master/repos/install/install-all-wsl.sh)
+- ["WSL 환경 설치 가이드"][cloud_master/repos/install/README-wsl.md]
+- ["WSL 추가 생성 가이드"][wsl-setup-guide.md] - 상세한 WSL 환경 구축 가이드
+- ["WSL 자동 설정 스크립트"][wsl-auto-setup.sh] - 원클릭 WSL 환경 구축
+- ["WSL 관리 도구"][wsl-manager.sh] - WSL 배포판 생성/삭제/관리
+- ["WSL 관리 도구 가이드"][wsl-manager-guide.md] - 상세한 사용법 및 예제
+- ["WSL 관리 도구 API 문서"][wsl-manager-api.md] - 기술 문서 및 함수 참조
+- ["WSL 관리 도구 사용 예제"][wsl-manager-examples.md] - 실제 사용 시나리오
+- ["전체 설치 스크립트"][cloud_master/repos/install/install-all-wsl.sh]
 
 ### kubectl Context 관리
-- [kubectl Context 설정 가이드](kubectl-context-guide.md)
-- [Context 전환 스크립트 (Linux/macOS)](context-switch.sh)
-- [Context 전환 스크립트 (Windows)](context-switch.bat)
+- ["kubectl Context 설정 가이드"][kubectl-context-guide.md]
+- ["Context 전환 스크립트 [Linux/macOS]"][context-switch.sh]
+- ["Context 전환 스크립트 [Windows]"][context-switch.bat]
 
 ### 클러스터 정리 도구
-- [통합 클러스터 정리 스크립트](cluster-cleanup-interactive.sh) - EKS/GKE 클러스터 선택적 정리
-- [VPC 정리 스크립트](cleanup-vpcs.sh) - AWS VPC 선택적 삭제
-- [VPC 진단 스크립트](diagnose-vpc.sh) - VPC 종속성 진단
+- ["통합 클러스터 정리 스크립트"][cluster-cleanup-interactive.sh] - EKS/GKE 클러스터 선택적 정리
+- ["VPC 정리 스크립트"][cleanup-vpcs.sh] - AWS VPC 선택적 삭제
+- ["VPC 진단 스크립트"][diagnose-vpc.sh] - VPC 종속성 진단
 
 ### VM 정리 도구
-- [통합 VM 정리 스크립트](vm-cleanup-interactive.sh) - GCP/AWS VM 인스턴스 선택적 정리
+- ["통합 VM 정리 스크립트"][vm-cleanup-interactive.sh] - GCP/AWS VM 인스턴스 선택적 정리
 
 ### CI/CD 가이드
-- [GitHub Actions 워크플로우](.github/workflows/cloud-master-ci-cd.yml)
-- [GitHub Actions 설정 가이드](.github/workflows/README.md)
-- [Docker 이미지 빌드 가이드](cloud_master/repos/samples/day1/my-app/Dockerfile)
+- ["GitHub Actions 워크플로우"][.github/workflows/cloud-master-ci-cd.yml]
+- ["GitHub Actions 설정 가이드"][.github/workflows/README.md]
+- ["Docker 이미지 빌드 가이드"][cloud_master/repos/samples/day1/my-app/Dockerfile]
 
 ## 🤝 기여하기
 

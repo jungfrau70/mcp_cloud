@@ -3,7 +3,7 @@
 
 ## 📋 개요
 
-이 문서는 개인 Google 계정을 사용하여 GCP(Google Cloud Platform)에 가입하고 기본적인 프로젝트 관리를 하는 과정을 단계별로 안내합니다.
+이 문서는 개인 Google 계정을 사용하여 GCP[Google Cloud Platform]에 가입하고 기본적인 프로젝트 관리를 하는 과정을 단계별로 안내합니다.
 
 ### 🎯 목표
 - **개인 Google 계정**으로 GCP 가입
@@ -21,7 +21,7 @@
 - 신용카드 또는 결제 수단 준비
 
 ### 1.2 GCP 가입 과정
-1. [Google Cloud Console](https:///console.cloud.google.com) 접속
+1. [Google Cloud Console][https:///console.cloud.google.com] 접속
 2. **무료로 시작하기** 클릭
 3. Google 계정으로 로그인
 4. 약관 동의 및 개인정보 처리방침 확인
@@ -42,7 +42,7 @@
    - 연락처 정보
 
 ### 2.2 무료 크레딧 확인
-- **$300 무료 크레딧** 제공 (12개월간)
+- **$300 무료 크레딧** 제공 ["12개월간"]
 - **Always Free** 서비스 확인
 - 크레딧 사용량 모니터링 설정
 
@@ -56,7 +56,7 @@
 3. 프로젝트 정보 입력:
    - 프로젝트 이름: `my-first-project`
    - 프로젝트 ID: 자동 생성 또는 사용자 지정
-   - 조직: 없음 (개인 계정)
+   - 조직: 없음 ["개인 계정"]
 4. **만들기** 클릭
 
 ### 3.2 프로젝트 설정
@@ -77,7 +77,7 @@
 | **Billing Account User** | 결제 계정 사용 권한 |
 | **Project Creator** | 새 프로젝트 생성 권한 |
 
-### 4.2 추가 사용자 초대 (선택사항)
+### 4.2 추가 사용자 초대 ["선택사항"]
 1. **IAM 및 관리자** → **IAM**
 2. **+ 추가** 클릭
 3. 새 멤버 추가:
@@ -122,7 +122,7 @@ API 호출이나 자동화를 위한 서비스 계정을 생성합니다.
 2. **예산 만들기** 클릭
 3. 예산 정보 입력:
    - 예산 이름: `Monthly Budget`
-   - 예산 금액: `$50` (예시)
+   - 예산 금액: `$50` ["예시"]
    - 알림 임계값: `50%`, `90%`, `100%`
 4. **예산 만들기** 클릭
 
@@ -155,7 +155,7 @@ API 호출이나 자동화를 위한 서비스 계정을 생성합니다.
 
 ### 8.1 gcloud CLI 설정
 ```bash
-# 1. gcloud CLI 설치 (Windows)
+# 1. gcloud CLI 설치 [Windows]
 # https:///cloud.google.com/sdk/docs/install
 
 # 2. 인증 설정
@@ -178,7 +178,7 @@ gcloud compute instances create my-instance /
   --image-project=ubuntu-os-cloud
 
 # 2. Cloud Storage 버킷 생성
-gsutil mb gs://my-bucket-$(date +%s)
+gsutil mb gs://my-bucket-$[date +%s]
 
 # 3. 서비스 계정 생성
 gcloud iam service-accounts create my-service-account /
@@ -199,8 +199,8 @@ gcloud iam service-accounts create my-service-account /
 ### Q3: 서비스 계정 키를 어떻게 안전하게 보관하나요?
 **A**: 
 - 환경 변수로 설정
-- 비밀 관리 도구 사용 (AWS Secrets Manager, Azure Key Vault 등)
-- 정기적인 키 로테이션 (90일마다)
+- 비밀 관리 도구 사용 ["AWS Secrets Manager, Azure Key Vault 등"]
+- 정기적인 키 로테이션 ["90일마다"]
 
 ### Q4: 비용이 예상보다 많이 나왔어요
 **A**: 
@@ -233,9 +233,9 @@ gcloud iam service-accounts create my-service-account /
 ## 🚀 다음 단계
 
 ### 추가 학습
-- [GCP 개인 사용자 가이드](https:///cloud.google.com/docs/overview)
-- [gcloud CLI 참조](https:///cloud.google.com/sdk/docs)
-- [GCP 무료 서비스](https:///cloud.google.com/free)
+- ["GCP 개인 사용자 가이드"][https:///cloud.google.com/docs/overview]
+- ["gcloud CLI 참조"][https:///cloud.google.com/sdk/docs]
+- ["GCP 무료 서비스"][https:///cloud.google.com/free]
 
 ### 고급 기능
 - **Terraform**을 이용한 인프라 자동화
@@ -252,9 +252,9 @@ gcloud iam service-accounts create my-service-account /
 3. **할당량 초과**: 할당량 증가 요청
 
 ### 지원 채널
-- [GCP 지원 센터](https:///cloud.google.com/support/)
-- [GCP 커뮤니티](https:///cloud.google.com/community/)
-- [Stack Overflow](https:///stackoverflow.com/questions/tagged/google-cloud-platform)
+- ["GCP 지원 센터"][https:///cloud.google.com/support/]
+- ["GCP 커뮤니티"][https:///cloud.google.com/community/]
+- [Stack Overflow][https:///stackoverflow.com/questions/tagged/google-cloud-platform]
 
 
 ---
@@ -266,6 +266,6 @@ gcloud iam service-accounts create my-service-account /
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Master 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

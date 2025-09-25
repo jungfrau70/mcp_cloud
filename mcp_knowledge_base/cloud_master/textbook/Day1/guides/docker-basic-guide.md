@@ -4,14 +4,14 @@
 <details>
 <summary>📋 목차</summary>
 
-1. [🎯 학습 목표](#학습-목표)
-2. [📚 실습 가이드](#실습-가이드)
-3. [🔧 실습 환경 준비](#실습-환경-준비)
-4. [🐳 Docker 기초 및 컨테이너 기술](#docker-기초-및-컨테이너-기술)
-5. [📝 Git/GitHub 기초 및 협업](#gitgithub-기초-및-협업)
-6. [🚀 GitHub Actions CI/CD 파이프라인](#github-actions-cicd-파이프라인)
-7. [🚀 웹 애플리케이션 배포](#-)
-8. [📚 문제 해결 및 참고 자료](#문제-해결-및-참고-자료)
+1. ["🎯 학습 목표"]["#학습-목표"]
+2. ["📚 실습 가이드"]["#실습-가이드"]
+3. ["🔧 실습 환경 준비"]["#실습-환경-준비"]
+4. ["🐳 Docker 기초 및 컨테이너 기술"]["#docker-기초-및-컨테이너-기술"]
+5. ["📝 Git/GitHub 기초 및 협업"]["#gitgithub-기초-및-협업"]
+6. ["🚀 GitHub Actions CI/CD 파이프라인"]["#github-actions-cicd-파이프라인"]
+7. ["🚀 웹 애플리케이션 배포"][#-]
+8. ["📚 문제 해결 및 참고 자료"]["#문제-해결-및-참고-자료"]
 
 </details>
 
@@ -43,10 +43,10 @@
 ## 📚 실습 가이드
 
 ### 실습 구성
-1. **Docker 기초 및 컨테이너 기술** (120분)
-2. **Git/GitHub 기초 및 협업** (90분)
-3. **GitHub Actions CI/CD 파이프라인** (120분)
-4. **웹 애플리케이션 배포** (120분)
+1. **Docker 기초 및 컨테이너 기술** ["120분"]
+2. **Git/GitHub 기초 및 협업** ["90분"]
+3. **GitHub Actions CI/CD 파이프라인** ["120분"]
+4. **웹 애플리케이션 배포** ["120분"]
 
 ### 실습 방식
 - **Docker 기초**: 컨테이너 개념, Dockerfile 작성, Docker Compose
@@ -66,31 +66,31 @@
 <summary>🔗 관련 실습 가이드</summary>
 
 ### 📖 상세 실습 가이드
-- 🔗 [Docker 기초 실습](cloud_master/textbook/Day1/practices/docker-basics.md) - Docker 기본 개념 및 실습
-- 🔗 [Git/GitHub 기초 실습](cloud_master/textbook/Day1/practices/git-github-basics.md) - 버전 관리 및 협업
-- 🔗 [GitHub Actions 기초 실습](cloud_master/textbook/Day1/practices/github-actions-basics.md) - CI/CD 파이프라인 구축
-- 🔗 [VM 배포 실습](cloud_master/textbook/Day1/practices/vm-deployment.md) - AWS EC2, GCP Compute Engine 배포
-- 🔗 [K8s 배포 실습](cloud_master/textbook/Day1/practices/vm-deployment.md) - AWS EC2, GCP Compute Engine 배포
+- 🔗 ["Docker 기초 실습"][cloud_master/textbook/Day1/practices/docker-basics.md] - Docker 기본 개념 및 실습
+- 🔗 ["Git/GitHub 기초 실습"][cloud_master/textbook/Day1/practices/git-github-basics.md] - 버전 관리 및 협업
+- 🔗 ["GitHub Actions 기초 실습"][cloud_master/textbook/Day1/practices/github-actions-basics.md] - CI/CD 파이프라인 구축
+- 🔗 ["VM 배포 실습"][cloud_master/textbook/Day1/practices/vm-deployment.md] - AWS EC2, GCP Compute Engine 배포
+- 🔗 ["K8s 배포 실습"][cloud_master/textbook/Day1/practices/vm-deployment.md] - AWS EC2, GCP Compute Engine 배포
 
 ### 📚 개념 학습 가이드
-- 🔗 [Docker 기초 가이드](cloud_master/textbook/Day1/guides/docker-basic-guide.md) - ?
-- 🔗 [Docker 고급 가이드](cloud_master/textbook/Day1/guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
-- 🔗 [Docker Compose 가이드](cloud_master/textbook/Day1/guides/docker-compose-guide.md) - 다중 서비스 관리
-- 🔗 [GitHub Actions 가이드](cloud_master/textbook/Day1/guides/github-actions-guide.md) - CI/CD 파이프라인 구축
-- 🔗 [AWS & GCP 배포 가이드](cloud_master/textbook/Day1/guides/aws-gcp-deployment-guide.md) - 멀티클라우드 배포
+- 🔗 ["Docker 기초 가이드"][cloud_master/textbook/Day1/guides/docker-basic-guide.md] - ?
+- 🔗 ["Docker 고급 가이드"][cloud_master/textbook/Day1/guides/docker-advanced-guide.md] - 멀티스테이지 빌드, 이미지 최적화
+- 🔗 ["Docker Compose 가이드"][cloud_master/textbook/Day1/guides/docker-compose-guide.md] - 다중 서비스 관리
+- 🔗 ["GitHub Actions 가이드"][cloud_master/textbook/Day1/guides/github-actions-guide.md] - CI/CD 파이프라인 구축
+- 🔗 ["AWS & GCP 배포 가이드"][cloud_master/textbook/Day1/guides/aws-gcp-deployment-guide.md] - 멀티클라우드 배포
 
 ### 🛠️ 문제 해결 가이드
-- 🔗 [종합 트러블슈팅 가이드](cloud_basic/textbook/Day1/troubleshooting-guide.md) - Docker, GitHub Actions, AWS/GCP 문제 해결
-- 🔗 [AWS & GCP 권한 설정](cloud_master/textbook/Day1/practices/aws-gcp-permissions-setup.md) - IAM, 서비스 계정 설정
-- 🔗 [CI/CD 파이프라인 가이드](cloud_master/textbook/Day1/guides/cicd-pipeline-guide.md) - 전체 자동 배포 파이프라인
-- 🔗 [클라우드 배포 가이드](cloud_master/textbook/Day1/guides/cloud-deployment-guide.md) - VM 기반 웹 애플리케이션 배포
+- 🔗 ["종합 트러블슈팅 가이드"][cloud_basic/textbook/Day1/troubleshooting-guide.md] - Docker, GitHub Actions, AWS/GCP 문제 해결
+- 🔗 ["AWS & GCP 권한 설정"][cloud_master/textbook/Day1/practices/aws-gcp-permissions-setup.md] - IAM, 서비스 계정 설정
+- 🔗 ["CI/CD 파이프라인 가이드"][cloud_master/textbook/Day1/guides/cicd-pipeline-guide.md] - 전체 자동 배포 파이프라인
+- 🔗 ["클라우드 배포 가이드"][cloud_master/textbook/Day1/guides/cloud-deployment-guide.md] - VM 기반 웹 애플리케이션 배포
 
 ### 🔗 관련 과정 링크
-- 🔗 [Cloud Basic 과정](README.md) - AWS/GCP 기초 과정
-- 🔗 [Cloud Container 과정](README.md) - Kubernetes 고급 과정
-- 🔗 [전체 커리큘럼](curriculum.md) - 전체 과정 구조 및 학습 경로
-- 🔗 [통합 인덱스](index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](learning-path.md) - Cloud Master 학습 경로
+- 🔗 ["Cloud Basic 과정"][README.md] - AWS/GCP 기초 과정
+- 🔗 ["Cloud Container 과정"][README.md] - Kubernetes 고급 과정
+- 🔗 ["전체 커리큘럼"][curriculum.md] - 전체 과정 구조 및 학습 경로
+- 🔗 ["통합 인덱스"][index.md] - 전체 과정 인덱스
+- 🔗 ["학습 경로로 돌아가기"][learning-path.md] - Cloud Master 학습 경로
 
 ---
 
@@ -100,17 +100,17 @@
 <summary>📋 필수 계정 및 도구</summary>
 
 ### 필수 계정
-- **AWS 계정**: Free Tier 계정 (Cloud Basic에서 생성)
-- **GCP 계정**: $300 크레딧 계정 (Cloud Basic에서 생성)
+- **AWS 계정**: Free Tier 계정 ["Cloud Basic에서 생성"]
+- **GCP 계정**: $300 크레딧 계정 ["Cloud Basic에서 생성"]
 - **GitHub 계정**: 코드 저장소 및 Actions 사용
-- **Docker Hub 계정**: 컨테이너 이미지 저장소 (선택사항)
+- **Docker Hub 계정**: 컨테이너 이미지 저장소 ["선택사항"]
 
 ### 필수 도구
 - **Docker Desktop**: 컨테이너 실행 환경
 - **Git**: 버전 관리 도구
-- **VS Code**: 코드 편집기 (권장)
-- **AWS CLI**: AWS 서비스 관리 (Cloud Basic에서 설치)
-- **gcloud CLI**: Google Cloud 서비스 관리 (Cloud Basic에서 설치)
+- **VS Code**: 코드 편집기 ["권장"]
+- **AWS CLI**: AWS 서비스 관리 ["Cloud Basic에서 설치"]
+- **gcloud CLI**: Google Cloud 서비스 관리 ["Cloud Basic에서 설치"]
 
 </details>
 
@@ -151,14 +151,14 @@ git --version
 ### 📚 이론: 컨테이너 기술의 원리
 
 #### 컨테이너 기술의 역사와 발전
-- **LXC (Linux Containers)**: 2008년 처음 등장한 리눅스 컨테이너 기술
+- **LXC [Linux Containers]**: 2008년 처음 등장한 리눅스 컨테이너 기술
 - **Docker의 등장**: 2013년 컨테이너 기술을 대중화시킨 플랫폼
 - **Kubernetes**: 2014년 구글이 개발한 컨테이너 오케스트레이션 도구
 - **현재**: 클라우드 네이티브 애플리케이션의 표준 기술
 
 #### 컨테이너 vs 가상머신 아키텍처
 - **가상머신**: 하이퍼바이저 + 게스트 OS + 애플리케이션
-- **컨테이너**: 컨테이너 엔진 + 애플리케이션 (OS 커널 공유)
+- **컨테이너**: 컨테이너 엔진 + 애플리케이션 ["OS 커널 공유"]
 - **리소스 효율성**: 컨테이너가 VM보다 3-5배 가볍고 빠름
 - **격리 수준**: VM이 더 강하지만 컨테이너도 충분한 격리 제공
 
@@ -166,7 +166,7 @@ git --version
 - **Docker Engine**: 컨테이너를 실행하는 런타임
 - **Docker Daemon**: 백그라운드에서 실행되는 서비스
 - **Docker Client**: 사용자와 데몬 간의 인터페이스
-- **Docker Registry**: 이미지 저장소 (Docker Hub, AWS ECR, GCP GCR)
+- **Docker Registry**: 이미지 저장소 [Docker Hub, AWS ECR, GCP GCR]
 
 <details>
 <summary>📖 Docker 개념 이해</summary>
@@ -177,10 +177,10 @@ git --version
 - **vs 가상머신**: 더 가볍고 빠르며, 호스트 OS를 공유
 
 ### Docker 핵심 개념
-- **이미지 (Image)**: 컨테이너를 생성하기 위한 읽기 전용 템플릿
-- **컨테이너 (Container)**: 이미지의 실행 가능한 인스턴스
+- **이미지 [Image]**: 컨테이너를 생성하기 위한 읽기 전용 템플릿
+- **컨테이너 [Container]**: 이미지의 실행 가능한 인스턴스
 - **Dockerfile**: 이미지를 빌드하는 방법을 정의하는 텍스트 파일
-- **레지스트리 (Registry)**: Docker 이미지를 저장하고 배포하는 저장소
+- **레지스트리 [Registry]**: Docker 이미지를 저장하고 배포하는 저장소
 
 </details>
 
@@ -205,7 +205,7 @@ docker run hello-world
 # 실행 중인 컨테이너 확인
 docker ps
 
-# 모든 컨테이너 확인 (중지된 것 포함)
+# 모든 컨테이너 확인 ["중지된 것 포함"]
 docker ps -a
 
 # 이미지 목록 확인
@@ -234,7 +234,7 @@ FROM node:18
 # 작업 디렉토리 설정
 WORKDIR /app
 
-# 패키지 파일 복사 (캐시 최적화를 위해 의존성 설치를 먼저)
+# 패키지 파일 복사 ["캐시 최적화를 위해 의존성 설치를 먼저"]
 COPY package*.json ./
 
 # 의존성 설치
@@ -372,7 +372,7 @@ git init
 # 파일 상태 확인
 git status
 
-# 파일 추가 (Staging Area에)
+# 파일 추가 ["Staging Area에"]
 git add filename.txt
 git add .  # 모든 파일 추가
 
@@ -475,8 +475,8 @@ git push
 - **핵심 개념**: Workflow, Job, Step, Action
 
 ### CI/CD 파이프라인
-- **CI (Continuous Integration)**: 코드 변경사항을 자동으로 빌드하고 테스트
-- **CD (Continuous Deployment)**: 테스트 통과한 코드를 자동으로 배포
+- **CI [Continuous Integration]**: 코드 변경사항을 자동으로 빌드하고 테스트
+- **CD [Continuous Deployment]**: 테스트 통과한 코드를 자동으로 배포
 
 </details>
 
@@ -853,23 +853,23 @@ ssh -T git@github.com
 <summary>📖 추가 학습 자료</summary>
 
 ### 공식 문서
-- [Docker 공식 문서](https:///docs.docker.com/)
-- [Git 공식 문서](https:///git-scm.com/doc)
-- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
-- [AWS EC2 공식 문서](https:///docs.aws.amazon.com/ec2/)
-- [GCP Compute Engine 공식 문서](https:///cloud.google.com/compute/docs)
+- ["Docker 공식 문서"][https:///docs.docker.com/]
+- ["Git 공식 문서"][https:///git-scm.com/doc]
+- ["GitHub Actions 공식 문서"][https:///docs.github.com/en/actions]
+- ["AWS EC2 공식 문서"][https:///docs.aws.amazon.com/ec2/]
+- ["GCP Compute Engine 공식 문서"][https:///cloud.google.com/compute/docs]
 
 ### 유용한 리소스
-- [Docker Hub](https:///hub.docker.com/)
-- [GitHub Learning Lab](https:///lab.github.com/)
-- [AWS Free Tier](https:///aws.amazon.com/free/)
-- [GCP Free Tier](https:///cloud.google.com/free)
+- [Docker Hub][https:///hub.docker.com/]
+- [GitHub Learning Lab][https:///lab.github.com/]
+- [AWS Free Tier][https:///aws.amazon.com/free/]
+- [GCP Free Tier][https:///cloud.google.com/free]
 
 ### 관련 프로젝트
-- [Docker 샘플 프로젝트](https:///github.com/docker/awesome-compose)
-- [GitHub Actions 샘플](https:///github.com/actions/starter-workflows)
-- [AWS 샘플 프로젝트](https:///github.com/aws-samples)
-- [GCP 샘플 프로젝트](https:///github.com/GoogleCloudPlatform)
+- ["Docker 샘플 프로젝트"][https:///github.com/docker/awesome-compose]
+- ["GitHub Actions 샘플"][https:///github.com/actions/starter-workflows]
+- ["AWS 샘플 프로젝트"][https:///github.com/aws-samples]
+- ["GCP 샘플 프로젝트"][https:///github.com/GoogleCloudPlatform]
 
 </details>
 
@@ -913,15 +913,15 @@ ssh -T git@github.com
 
 ### 💡 추가 학습 자료
 
-- [Docker 공식 문서](https:///docs.docker.com/)
-- [Git 공식 문서](https:///git-scm.com/doc)
-- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
-- [Cloud Master 2일차](README.md)
+- ["Docker 공식 문서"][https:///docs.docker.com/]
+- ["Git 공식 문서"][https:///git-scm.com/doc]
+- ["GitHub Actions 공식 문서"][https:///docs.github.com/en/actions]
+- ["Cloud Master 2일차"][README.md]
 
 ---
 
 <div align="center">
 
-[← 이전: Cloud Master](README.md)
+["← 이전: Cloud Master"][README.md]
 
 </div>

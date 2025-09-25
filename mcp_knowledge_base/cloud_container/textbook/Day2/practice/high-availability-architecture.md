@@ -3,7 +3,7 @@
 
 ## 🎯 실습 목표
 
-[🎯 실습 목표](#실습-목표)
+["🎯 실습 목표"]["#실습-목표"]
 
 이 실습을 통해 다음을 학습합니다:
 - Multi-AZ 아키텍처 구성
@@ -13,19 +13,19 @@
 
 ## 📋 사전 준비사항
 
-[📋 사전 준비사항](#사전-준비사항)
+["📋 사전 준비사항"]["#사전-준비사항"]
 
-- AWS 계정 (Free Tier 가능)
-- GCP 계정 ($300 크레딧)
+- AWS 계정 ["Free Tier 가능"]
+- GCP 계정 ["$300 크레딧"]
 - 기본적인 클라우드 서비스 이해
 
 ## 🏗️ AWS Multi-AZ 아키텍처 구성
 
-[🏗️ AWS Multi-AZ 아키텍처 구성](#aws-multiaz-아키텍처-구성)
+["🏗️ AWS Multi-AZ 아키텍처 구성"]["#aws-multiaz-아키텍처-구성"]
 
 ### 1단계: VPC 및 서브넷 생성
 
-[1단계: VPC 및 서브넷 생성](#1단계-vpc-및-서브넷-생성)
+["1단계: VPC 및 서브넷 생성"]["#1단계-vpc-및-서브넷-생성"]
 
 ```bash
 # VPC 생성
@@ -36,28 +36,28 @@ aws ec2 create-vpc /
 # 가용 영역 확인
 aws ec2 describe-availability-zones --region ap-northeast-2
 
-# Public 서브넷 생성 (AZ-a)
+# Public 서브넷 생성 [AZ-a]
 aws ec2 create-subnet /
     --vpc-id $VPC_ID /
     --cidr-block 10.0.1.0/24 /
     --availability-zone ap-northeast-2a /
     --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=public-subnet-1}]'
 
-# Public 서브넷 생성 (AZ-c)
+# Public 서브넷 생성 [AZ-c]
 aws ec2 create-subnet /
     --vpc-id $VPC_ID /
     --cidr-block 10.0.2.0/24 /
     --availability-zone ap-northeast-2c /
     --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=public-subnet-2}]'
 
-# Private 서브넷 생성 (AZ-a)
+# Private 서브넷 생성 [AZ-a]
 aws ec2 create-subnet /
     --vpc-id $VPC_ID /
     --cidr-block 10.0.10.0/24 /
     --availability-zone ap-northeast-2a /
     --tag-specifications 'ResourceType=subnet,Tags=[{Key=Name,Value=private-subnet-1}]'
 
-# Private 서브넷 생성 (AZ-c)
+# Private 서브넷 생성 [AZ-c]
 aws ec2 create-subnet /
     --vpc-id $VPC_ID /
     --cidr-block 10.0.20.0/24 /
@@ -67,7 +67,7 @@ aws ec2 create-subnet /
 
 ### 2단계: 인터넷 게이트웨이 및 NAT 게이트웨이 설정
 
-[2단계: 인터넷 게이트웨이 및 NAT 게이트웨이 설정](#2단계-인터넷-게이트웨이-및-nat-게이트웨이-설정)
+["2단계: 인터넷 게이트웨이 및 NAT 게이트웨이 설정"]["#2단계-인터넷-게이트웨이-및-nat-게이트웨이-설정"]
 
 ```bash
 # 인터넷 게이트웨이 생성
@@ -79,7 +79,7 @@ aws ec2 attach-internet-gateway /
     --vpc-id $VPC_ID /
     --internet-gateway-id $IGW_ID
 
-# Elastic IP 생성 (NAT Gateway용)
+# Elastic IP 생성 ["NAT Gateway용"]
 aws ec2 allocate-address --domain vpc
 
 # NAT Gateway 생성
@@ -91,7 +91,7 @@ aws ec2 create-nat-gateway /
 
 ### 3단계: 라우팅 테이블 설정
 
-[3단계: 라우팅 테이블 설정](#3단계-라우팅-테이블-설정)
+["3단계: 라우팅 테이블 설정"]["#3단계-라우팅-테이블-설정"]
 
 ```bash
 # Public 라우팅 테이블 생성
@@ -119,11 +119,11 @@ aws ec2 create-route /
 
 ## ☁️ GCP Multi-Region 아키텍처 구성
 
-[☁️ GCP Multi-Region 아키텍처 구성](#gcp-multiregion-아키텍처-구성)
+["☁️ GCP Multi-Region 아키텍처 구성"]["#gcp-multiregion-아키텍처-구성"]
 
 ### 1단계: VPC 네트워크 생성
 
-[1단계: VPC 네트워크 생성](#1단계-vpc-네트워크-생성)
+["1단계: VPC 네트워크 생성"]["#1단계-vpc-네트워크-생성"]
 
 ```bash
 # VPC 네트워크 생성
@@ -146,7 +146,7 @@ gcloud compute networks subnets create tokyo-subnet /
 
 ### 2단계: 방화벽 규칙 설정
 
-[2단계: 방화벽 규칙 설정](#2단계-방화벽-규칙-설정)
+["2단계: 방화벽 규칙 설정"]["#2단계-방화벽-규칙-설정"]
 
 ```bash
 # HTTP/HTTPS 허용 규칙
@@ -166,11 +166,11 @@ gcloud compute firewall-rules create allow-ssh /
 
 ## 🔄 고가용성 테스트
 
-[🔄 고가용성 테스트](#고가용성-테스트)
+["🔄 고가용성 테스트"]["#고가용성-테스트"]
 
 ### 1단계: 애플리케이션 배포
 
-[1단계: 애플리케이션 배포](#1단계-애플리케이션-배포)
+["1단계: 애플리케이션 배포"]["#1단계-애플리케이션-배포"]
 
 ```bash
 # 서울 리전에 인스턴스 생성
@@ -194,7 +194,7 @@ gcloud compute instances create tokyo-app-1 /
 
 ### 2단계: 로드 밸런서 설정
 
-[2단계: 로드 밸런서 설정](#2단계-로드-밸런서-설정)
+["2단계: 로드 밸런서 설정"]["#2단계-로드-밸런서-설정"]
 
 ```bash
 # 백엔드 서비스 생성
@@ -204,11 +204,11 @@ gcloud compute backend-services create ha-backend /
     --health-checks=ha-health-check /
     --global
 
-# 인스턴스 그룹 생성 (서울)
+# 인스턴스 그룹 생성 ["서울"]
 gcloud compute instance-groups unmanaged create seoul-group /
     --zone=asia-northeast3-a
 
-# 인스턴스 그룹 생성 (도쿄)
+# 인스턴스 그룹 생성 ["도쿄"]
 gcloud compute instance-groups unmanaged create tokyo-group /
     --zone=asia-northeast1-a
 
@@ -224,11 +224,11 @@ gcloud compute instance-groups unmanaged add-instances tokyo-group /
 
 ## 📊 모니터링 설정
 
-[📊 모니터링 설정](#모니터링-설정)
+["📊 모니터링 설정"]["#모니터링-설정"]
 
 ### 1단계: CloudWatch 알람 설정
 
-[1단계: CloudWatch 알람 설정](#1단계-cloudwatch-알람-설정)
+["1단계: CloudWatch 알람 설정"]["#1단계-cloudwatch-알람-설정"]
 
 ```bash
 # CPU 사용률 알람 생성
@@ -258,7 +258,7 @@ aws cloudwatch put-metric-alarm /
 
 ### 2단계: GCP 모니터링 설정
 
-[2단계: GCP 모니터링 설정](#2단계-gcp-모니터링-설정)
+["2단계: GCP 모니터링 설정"]["#2단계-gcp-모니터링-설정"]
 
 ```bash
 # 알림 정책 생성
@@ -272,11 +272,11 @@ gcloud alpha monitoring dashboards create /
 
 ## 🧪 장애 복구 테스트
 
-[🧪 장애 복구 테스트](#장애-복구-테스트)
+["🧪 장애 복구 테스트"]["#장애-복구-테스트"]
 
 ### 1단계: 인스턴스 중지 테스트
 
-[1단계: 인스턴스 중지 테스트](#1단계-인스턴스-중지-테스트)
+["1단계: 인스턴스 중지 테스트"]["#1단계-인스턴스-중지-테스트"]
 
 ```bash
 # 서울 리전 인스턴스 중지
@@ -288,7 +288,7 @@ curl -I http://LOAD_BALANCER_IP
 
 ### 2단계: 자동 복구 테스트
 
-[2단계: 자동 복구 테스트](#2단계-자동-복구-테스트)
+["2단계: 자동 복구 테스트"]["#2단계-자동-복구-테스트"]
 
 ```bash
 # 인스턴스 재시작
@@ -300,11 +300,11 @@ curl -I http://LOAD_BALANCER_IP
 
 ## 📝 실습 결과 확인
 
-[📝 실습 결과 확인](#실습-결과-확인)
+["📝 실습 결과 확인"]["#실습-결과-확인"]
 
 ### 체크리스트
 
-[체크리스트](#체크리스트)
+["체크리스트"]["#체크리스트"]
 
 - [ ] Multi-AZ VPC 구성 완료
 - [ ] Multi-Region GCP 구성 완료
@@ -314,7 +314,7 @@ curl -I http://LOAD_BALANCER_IP
 
 ### 성능 지표
 
-[성능 지표](#성능-지표)
+["성능 지표"]["#성능-지표"]
 
 - **가용성**: 99.9% 이상
 - **복구 시간**: 5분 이내
@@ -322,11 +322,11 @@ curl -I http://LOAD_BALANCER_IP
 
 ## 🔧 문제 해결
 
-[🔧 문제 해결](#문제-해결)
+["🔧 문제 해결"]["#문제-해결"]
 
 ### 자주 발생하는 문제
 
-[자주 발생하는 문제](#자주-발생하는-문제)
+["자주 발생하는 문제"]["#자주-발생하는-문제"]
 
 1. **Health Check 실패**
    - 보안 그룹/방화벽 규칙 확인
@@ -342,20 +342,20 @@ curl -I http://LOAD_BALANCER_IP
 
 ## 📚 추가 학습 자료
 
-[📚 추가 학습 자료](#추가-학습-자료)
+["📚 추가 학습 자료"]["#추가-학습-자료"]
 
-- [AWS Well-Architected Framework](https:///aws.amazon.com/architecture/well-architected/)
-- [GCP Architecture Center](https:///cloud.google.com/architecture)
-- [고가용성 모범 사례](https:///docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/high-availability.html)
+- [AWS Well-Architected Framework][https:///aws.amazon.com/architecture/well-architected/]
+- [GCP Architecture Center][https:///cloud.google.com/architecture]
+- ["고가용성 모범 사례"][https:///docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/high-availability.html]
 
 ---
 
 
 ### 📧 연락처
 
-[📧 연락처](#연락처)
+["📧 연락처"]["#연락처"]
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -363,6 +363,6 @@ curl -I http://LOAD_BALANCER_IP
 
 <div align="center">
 
-[← 이전: Cloud Container 2일차 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Container 2일차 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

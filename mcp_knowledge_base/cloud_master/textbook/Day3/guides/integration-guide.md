@@ -23,13 +23,13 @@
 
 ### 통합 아키텍처의 핵심 구성요소
 
-#### 1. 로드 밸런서 (Traffic Distribution)
+#### 1. 로드 밸런서 [Traffic Distribution]
 - **트래픽 분산**: 여러 인스턴스에 요청 분산
 - **Health Check**: 인스턴스 상태 모니터링
 - **SSL 종료**: HTTPS 트래픽 처리
-- **Sticky Session**: 세션 유지 (필요시)
+- **Sticky Session**: 세션 유지 ["필요시"]
 
-#### 2. Auto Scaling Group (Instance Management)
+#### 2. Auto Scaling Group [Instance Management]
 - **자동 확장**: 부하 증가 시 인스턴스 추가
 - **자동 축소**: 부하 감소 시 인스턴스 제거
 - **Health Check**: 인스턴스 상태 모니터링
@@ -98,10 +98,10 @@ cat > /var/www/html/index.html << 'HTML'
         <h1>Integrated Web Application</h1>
         <div class="status">
             <h2>Server Information</h2>
-            <p><strong>Hostname:</strong> $(hostname)</p>
-            <p><strong>Instance ID:</strong> $(curl -s http://169.254.169.254/latest/meta-data/instance-id 2>/dev/null || echo "N/A")</p>
-            <p><strong>Availability Zone:</strong> $(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone 2>/dev/null || echo "N/A")</p>
-            <p><strong>Timestamp:</strong> $(date)</p>
+            <p><strong>Hostname:</strong> $[hostname]</p>
+            <p><strong>Instance ID:</strong> $[curl -s http://169.254.169.254/latest/meta-data/instance-id 2>/dev/null || echo "N/A"]</p>
+            <p><strong>Availability Zone:</strong> $[curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone 2>/dev/null || echo "N/A"]</p>
+            <p><strong>Timestamp:</strong> $[date]</p>
         </div>
     </div>
 </body>
@@ -118,20 +118,20 @@ EOF
 #### 1단계: VPC 및 네트워크 구성
 ```bash
 # VPC 생성
-VPC_ID=$(aws ec2 create-vpc --cidr-block $VPC_CIDR --query 'Vpc.VpcId' --output text)
+VPC_ID=$[aws ec2 create-vpc --cidr-block $VPC_CIDR --query 'Vpc.VpcId' --output text]
 aws ec2 create-tags --resources $VPC_ID --tags Key=Name,Value=$PROJECT_NAME-vpc
 
 # 인터넷 게이트웨이 생성 및 연결
-IGW_ID=$(aws ec2 create-internet-gateway --query 'InternetGateway.InternetGatewayId' --output text)
+IGW_ID=$[aws ec2 create-internet-gateway --query 'InternetGateway.InternetGatewayId' --output text]
 aws ec2 attach-internet-gateway --vpc-id $VPC_ID --internet-gateway-id $IGW_ID
 aws ec2 create-tags --resources $IGW_ID --tags Key=Name,Value=$PROJECT_NAME-igw
 
-# 서브넷 생성 (Multi-AZ)
-SUBNET_1=$(aws ec2 create-subnet --vpc-id $VPC_ID --cidr-block $SUBNET_1_CIDR --availability-zone ap-northeast-2a --query 'Subnet.SubnetId' --output text)
-SUBNET_2=$(aws ec2 create-subnet --vpc-id $VPC_ID --cidr-block $SUBNET_2_CIDR --availability-zone ap-northeast-2c --query 'Subnet.SubnetId' --output text)
+# 서브넷 생성 [Multi-AZ]
+SUBNET_1=$[aws ec2 create-subnet --vpc-id $VPC_ID --cidr-block $SUBNET_1_CIDR --availability-zone ap-northeast-2a --query 'Subnet.SubnetId' --output text]
+SUBNET_2=$[aws ec2 create-subnet --vpc-id $VPC_ID --cidr-block $SUBNET_2_CIDR --availability-zone ap-northeast-2c --query 'Subnet.SubnetId' --output text]
 
 # 라우팅 테이블 생성 및 설정
-RT_ID=$(aws ec2 create-route-table --vpc-id $VPC_ID --query 'RouteTable.RouteTableId' --output text)
+RT_ID=$[aws ec2 create-route-table --vpc-id $VPC_ID --query 'RouteTable.RouteTableId' --output text]
 aws ec2 create-route --route-table-id $RT_ID --destination-cidr-block 0.0.0.0/0 --gateway-id $IGW_ID
 aws ec2 associate-route-table --subnet-id $SUBNET_1 --route-table-id $RT_ID
 aws ec2 associate-route-table --subnet-id $SUBNET_2 --route-table-id $RT_ID
@@ -140,12 +140,12 @@ aws ec2 associate-route-table --subnet-id $SUBNET_2 --route-table-id $RT_ID
 #### 2단계: 보안 그룹 구성
 ```bash
 # ALB 보안 그룹
-ALB_SG=$(aws ec2 create-security-group --group-name $PROJECT_NAME-alb-sg --description "ALB Security Group" --vpc-id $VPC_ID --query 'GroupId' --output text)
+ALB_SG=$[aws ec2 create-security-group --group-name $PROJECT_NAME-alb-sg --description "ALB Security Group" --vpc-id $VPC_ID --query 'GroupId' --output text]
 aws ec2 authorize-security-group-ingress --group-id $ALB_SG --protocol tcp --port 80 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $ALB_SG --protocol tcp --port 443 --cidr 0.0.0.0/0
 
 # EC2 보안 그룹
-EC2_SG=$(aws ec2 create-security-group --group-name $PROJECT_NAME-ec2-sg --description "EC2 Security Group" --vpc-id $VPC_ID --query 'GroupId' --output text)
+EC2_SG=$[aws ec2 create-security-group --group-name $PROJECT_NAME-ec2-sg --description "EC2 Security Group" --vpc-id $VPC_ID --query 'GroupId' --output text]
 aws ec2 authorize-security-group-ingress --group-id $EC2_SG --protocol tcp --port 80 --source-group $ALB_SG
 aws ec2 authorize-security-group-ingress --group-id $EC2_SG --protocol tcp --port 22 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $EC2_SG --protocol tcp --port 80 --cidr 10.0.0.0/16
@@ -158,26 +158,26 @@ aws ec2 create-key-pair --key-name $PROJECT_NAME-key --query 'KeyMaterial' --out
 chmod 400 $PROJECT_NAME-key.pem
 
 # Launch Template 생성
-LAUNCH_TEMPLATE_ID=$(aws ec2 create-launch-template /
+LAUNCH_TEMPLATE_ID=$[aws ec2 create-launch-template /
     --launch-template-name $PROJECT_NAME-template /
     --launch-template-data '{
         "ImageId": "ami-0c76973fbe0ee100c",
         "InstanceType": "t2.micro",
         "KeyName": "'$PROJECT_NAME'-key",
         "SecurityGroupIds": ["'$EC2_SG'"],
-        "UserData": "'$(base64 -w 0 user-data.sh)'",
+        "UserData": "'$[base64 -w 0 user-data.sh]'",
         "TagSpecifications": [{
             "ResourceType": "instance",
             "Tags": [{"Key": "Name", "Value": "'$PROJECT_NAME'-instance"}]
         }]
     }' /
-    --query 'LaunchTemplate.LaunchTemplateId' --output text)
+    --query 'LaunchTemplate.LaunchTemplateId' --output text]
 ```
 
 #### 4단계: Target Group 및 ALB 생성
 ```bash
 # Target Group 생성
-TARGET_GROUP_ARN=$(aws elbv2 create-target-group /
+TARGET_GROUP_ARN=$[aws elbv2 create-target-group /
     --name $PROJECT_NAME-targets /
     --protocol HTTP /
     --port 80 /
@@ -187,17 +187,17 @@ TARGET_GROUP_ARN=$(aws elbv2 create-target-group /
     --health-check-timeout-seconds 5 /
     --healthy-threshold-count 2 /
     --unhealthy-threshold-count 3 /
-    --query 'TargetGroups[0].TargetGroupArn' --output text)
+    --query 'TargetGroups[0].TargetGroupArn' --output text]
 
 # ALB 생성
-ALB_ARN=$(aws elbv2 create-load-balancer /
+ALB_ARN=$[aws elbv2 create-load-balancer /
     --name $PROJECT_NAME-alb /
     --subnets $SUBNET_1 $SUBNET_2 /
     --security-groups $ALB_SG /
-    --query 'LoadBalancers[0].LoadBalancerArn' --output text)
+    --query 'LoadBalancers[0].LoadBalancerArn' --output text]
 
 # ALB DNS 이름 확인
-ALB_DNS=$(aws elbv2 describe-load-balancers --load-balancer-arns $ALB_ARN --query 'LoadBalancers[0].DNSName' --output text)
+ALB_DNS=$[aws elbv2 describe-load-balancers --load-balancer-arns $ALB_ARN --query 'LoadBalancers[0].DNSName' --output text]
 echo "ALB DNS: http://$ALB_DNS"
 
 # 리스너 생성
@@ -272,9 +272,9 @@ cat > /var/www/html/index.html << "HTML"
         <h1>Integrated Web Application</h1>
         <div class="status">
             <h2>Server Information</h2>
-            <p><strong>Hostname:</strong> $(hostname)</p>
-            <p><strong>Zone:</strong> $(curl -s http://metadata.google.internal/computeMetadata/v1/instance/zone -H "Metadata-Flavor: Google" | cut -d/ -f4)</p>
-            <p><strong>Timestamp:</strong> $(date)</p>
+            <p><strong>Hostname:</strong> $[hostname]</p>
+            <p><strong>Zone:</strong> $[curl -s http://metadata.google.internal/computeMetadata/v1/instance/zone -H "Metadata-Flavor: Google" | cut -d/ -f4]</p>
+            <p><strong>Timestamp:</strong> $[date]</p>
         </div>
     </div>
 </body>
@@ -340,7 +340,7 @@ gcloud compute forwarding-rules create $PROJECT_NAME-rule /
     --ports=80
 
 # Load Balancer IP 확인
-LB_IP=$(gcloud compute forwarding-rules describe $PROJECT_NAME-rule --global --format="value(IPAddress)")
+LB_IP=$[gcloud compute forwarding-rules describe $PROJECT_NAME-rule --global --format="value[IPAddress]"]
 echo "Load Balancer IP: http://$LB_IP"
 ```
 
@@ -370,7 +370,7 @@ gcloud compute instance-groups managed set-autohealing $PROJECT_NAME-mig /
 # Apache Bench를 사용한 부하 테스트
 ab -n 1000 -c 10 http://$ALB_DNS/
 
-# 지속적인 부하 테스트 (스케일링 확인용)
+# 지속적인 부하 테스트 ["스케일링 확인용"]
 while true; do
     ab -n 100 -c 5 http://$ALB_DNS/ > /dev/null 2>&1
     sleep 10
@@ -384,8 +384,8 @@ aws cloudwatch get-metric-statistics /
     --namespace AWS/ApplicationELB /
     --metric-name RequestCount /
     --dimensions Name=LoadBalancer,Value=$ALB_ARN /
-    --start-time $(date -u -d '1 hour ago' +%Y-%m-%dT%H:%M:%S) /
-    --end-time $(date -u +%Y-%m-%dT%H:%M:%S) /
+    --start-time $[date -u -d '1 hour ago' +%Y-%m-%dT%H:%M:%S] /
+    --end-time $[date -u +%Y-%m-%dT%H:%M:%S] /
     --period 300 /
     --statistics Sum
 
@@ -400,7 +400,7 @@ cat > check-status.sh << 'EOF'
 #!/bin/bash
 
 echo "=== Integrated Web App Status ==="
-echo "Timestamp: $(date)"
+echo "Timestamp: $[date]"
 echo ""
 
 # AWS 상태 확인
@@ -422,7 +422,7 @@ if command -v gcloud &> /dev/null; then
     echo "MIG Instances:"
     gcloud compute instance-groups managed list-instances $PROJECT_NAME-mig /
         --zone=$ZONE /
-        --format="table(instance,status,healthState)"
+        --format="table[instance,status,healthState]"
     echo ""
 fi
 
@@ -494,16 +494,16 @@ chmod +x check-status.sh
 ## 📚 참고 자료
 
 ### AWS 통합 아키텍처
-- [ELB + Auto Scaling 가이드](https:///docs.aws.amazon.com/autoscaling/ec2/userguide/autoscaling-load-balancer.html)
-- [Target Tracking Scaling 정책](https:///docs.aws.amazon.com/autoscaling/ec2/userguide/target-tracking-scaling-policy.html)
+- ["ELB + Auto Scaling 가이드"][https:///docs.aws.amazon.com/autoscaling/ec2/userguide/autoscaling-load-balancer.html]
+- ["Target Tracking Scaling 정책"][https:///docs.aws.amazon.com/autoscaling/ec2/userguide/target-tracking-scaling-policy.html]
 
 ### GCP 통합 아키텍처
-- [Cloud Load Balancing + MIG 가이드](https:///cloud.google.com/compute/docs/load-balancing/http/backend-service)
-- [Auto Scaling 가이드](https:///cloud.google.com/compute/docs/autoscaler/)
+- ["Cloud Load Balancing + MIG 가이드"][https:///cloud.google.com/compute/docs/load-balancing/http/backend-service]
+- ["Auto Scaling 가이드"][https:///cloud.google.com/compute/docs/autoscaler/]
 
 ### 모니터링 및 최적화
-- [CloudWatch 메트릭 가이드](https:///docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html)
-- [Cloud Monitoring 가이드](https:///cloud.google.com/monitoring/docs)
+- ["CloudWatch 메트릭 가이드"][https:///docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html]
+- ["Cloud Monitoring 가이드"][https:///cloud.google.com/monitoring/docs]
 
 ---
 
@@ -511,6 +511,6 @@ chmod +x check-status.sh
 
 <div align="center">
 
-[← 이전: Auto Scaling 가이드](cloud_master/textbook/Day3/guides/auto-scaling-guide.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md)
+["← 이전: Auto Scaling 가이드"][cloud_master/textbook/Day3/guides/auto-scaling-guide.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md]
 
 </div>

@@ -2,13 +2,13 @@
 
 
 ## 📋 목차
-1. [GitHub Actions 소개](#github-actions-소개)
-2. [Git 기초 및 GitHub 연동](#git-기초-및-github-연동)
-3. [GitHub Actions 기본 개념](#github-actions-기본-개념)
-4. [워크플로우 문법 및 구조](#워크플로우-문법-및-구조)
-5. [실습 예제](#실습-예제)
-6. [고급 기능](#고급-기능)
-7. [모범 사례](#모범-사례)
+1. ["GitHub Actions 소개"]["#github-actions-소개"]
+2. ["Git 기초 및 GitHub 연동"]["#git-기초-및-github-연동"]
+3. ["GitHub Actions 기본 개념"]["#github-actions-기본-개념"]
+4. ["워크플로우 문법 및 구조"]["#워크플로우-문법-및-구조"]
+5. ["실습 예제"]["#실습-예제"]
+6. ["고급 기능"]["#고급-기능"]
+7. ["모범 사례"]["#모범-사례"]
 
 ---
 
@@ -16,7 +16,7 @@
 
 ### 🎯 GitHub Actions란?
 
-GitHub Actions는 GitHub에서 제공하는 **CI/CD(지속적 통합/지속적 배포) 플랫폼**입니다. 코드 저장소에서 발생하는 이벤트(예: 코드 푸시, Pull Request 생성)를 기반으로 자동화된 워크플로우를 실행할 수 있습니다.
+GitHub Actions는 GitHub에서 제공하는 **CI/CD["지속적 통합/지속적 배포"] 플랫폼**입니다. 코드 저장소에서 발생하는 이벤트["예: 코드 푸시, Pull Request 생성"]를 기반으로 자동화된 워크플로우를 실행할 수 있습니다.
 
 ### 💡 주요 장점
 
@@ -29,13 +29,13 @@ GitHub Actions는 GitHub에서 제공하는 **CI/CD(지속적 통합/지속적 �
 ### 🔄 CI/CD 파이프라인
 
 ```mermaid
-graph LR
-    A[코드 작성] --> B[Git Push]
-    B --> C[GitHub Actions 트리거]
-    C --> D[자동 테스트]
-    D --> E[빌드]
-    E --> F[배포]
-    F --> G[알림]
+flowchart LR
+    A["코드 작성"] -->> B[Git Push]
+    B -->> C["GitHub Actions 트리거"]
+    C -->> D["자동 테스트"]
+    D -->> E["빌드"]
+    E -->> F["배포"]
+    F -->> G["알림"]
 ```
 
 ---
@@ -55,7 +55,7 @@ git config --global user.name "Your Name"
 git config --global user.email "your.email@example.com"
 ```
 
-### 2️⃣ SSH 키 설정 (권장)
+### 2️⃣ SSH 키 설정 ["권장"]
 
 #### SSH 키 생성
 ```bash
@@ -64,7 +64,7 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 
 #### SSH Agent에 키 추가
 ```bash
-eval "$(ssh-agent -s)"
+eval "$[ssh-agent -s]"
 ssh-add ~/.ssh/id_ed25519
 ```
 
@@ -119,27 +119,27 @@ git push origin main
 
 ### 🏗️ 핵심 구성 요소
 
-#### 1. **Workflow (워크플로우)**
+#### 1. **Workflow ["워크플로우"]**
 - 하나 이상의 Job으로 구성된 자동화된 프로세스
 - `.github/workflows/` 폴더에 YAML 파일로 정의
 
-#### 2. **Event (이벤트)**
+#### 2. **Event ["이벤트"]**
 - 워크플로우를 실행시키는 특정 활동
 - 예: `push`, `pull_request`, `schedule`
 
-#### 3. **Job (작업)**
+#### 3. **Job ["작업"]**
 - 워크플로우 내에서 실행되는 단위
 - 병렬 또는 순차적으로 실행 가능
 
-#### 4. **Step (단계)**
+#### 4. **Step ["단계"]**
 - Job 내에서 실행되는 개별 작업
 - 명령어 실행 또는 Action 사용
 
-#### 5. **Action (액션)**
+#### 5. **Action ["액션"]**
 - 재사용 가능한 작업 단위
 - GitHub 마켓플레이스에서 제공
 
-#### 6. **Runner (러너)**
+#### 6. **Runner ["러너"]**
 - 워크플로우를 실행하는 서버
 - GitHub 호스팅 또는 Self-hosted
 
@@ -166,7 +166,7 @@ git push origin main
 ```yaml
 name: 워크플로우 이름
 
-on: [이벤트]
+on: ["이벤트"]
 
 jobs:
   job-name:
@@ -183,7 +183,7 @@ jobs:
 name: CI/CD Pipeline
 ```
 
-#### 2. **on (트리거 이벤트)**
+#### 2. **on ["트리거 이벤트"]**
 
 ##### 기본 이벤트
 ```yaml
@@ -202,7 +202,7 @@ on:
     branches: [main]
 ```
 
-##### 스케줄 (Cron)
+##### 스케줄 [Cron]
 ```yaml
 on:
   schedule:
@@ -244,7 +244,7 @@ jobs:
     steps: [...]
 ```
 
-##### 순차 실행 (의존성)
+##### 순차 실행 ["의존성"]
 ```yaml
 jobs:
   test:
@@ -257,7 +257,7 @@ jobs:
     steps: [...]
 ```
 
-#### 4. **runs-on (실행 환경)**
+#### 4. **runs-on ["실행 환경"]**
 
 ```yaml
 runs-on: ubuntu-latest      # Ubuntu 22.04
@@ -266,7 +266,7 @@ runs-on: windows-latest     # Windows Server 2022
 runs-on: macos-latest       # macOS 12
 runs-on: macos-11           # macOS 11
 
-# 매트릭스 (여러 환경)
+# 매트릭스 ["여러 환경"]
 strategy:
   matrix:
     os: [ubuntu-latest, windows-latest, macos-latest]
@@ -355,7 +355,7 @@ steps:
     uses: actions/cache@v3
     with:
       path: ~/.npm
-      key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      key: ${{ runner.os }}-node-${{ hashFiles['**/package-lock.json'] }}
 ```
 
 ---
@@ -477,7 +477,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles['**/requirements.txt'] }}
       
       - name: Install dependencies
         run: |
@@ -616,7 +616,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            await github.rest.actions.createWorkflowDispatch({
+            await github.rest.actions.createWorkflowDispatch[{
               owner: context.repo.owner,
               repo: context.repo.repo,
               workflow_id: 'deploy.yml',
@@ -624,7 +624,7 @@ jobs:
               inputs: {
                 environment: 'production'
               }
-            });
+            }];
 ```
 
 ### 📊 상태 확인 및 알림
@@ -750,9 +750,9 @@ jobs:
 
 ### 📚 추가 학습 자료
 
-- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
-- [Actions 마켓플레이스](https:///github.com/marketplace?type=actions)
-- [워크플로우 예제 모음](https:///github.com/actions/starter-workflows)
+- ["GitHub Actions 공식 문서"][https:///docs.github.com/en/actions]
+- ["Actions 마켓플레이스"][https:///github.com/marketplace?type=actions]
+- ["워크플로우 예제 모음"][https:///github.com/actions/starter-workflows]
 
 ---
 
@@ -772,6 +772,6 @@ GitHub Actions는 현대적인 소프트웨어 개발에서 필수적인 도구�
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Master 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

@@ -14,7 +14,7 @@ wsl --install
 ### 2단계: 통합 설정 실행
 ```bash
 # WSL 환경으로 이동
-cd /mnt/c/Users/[사용자명]/githubs/mcp_cloud/mcp_knowledge_base/cloud_master/_setup_wsl
+cd /mnt/c/Users/["사용자명"]/githubs/mcp_cloud/mcp_knowledge_base/cloud_master/_setup_wsl
 
 # 실행 권한 부여
 chmod +x setup-wsl-environment.sh
@@ -71,7 +71,7 @@ aws configure
 ### GCP CLI 설정
 ```bash
 gcloud auth login
-gcloud config set project [프로젝트ID]
+gcloud config set project ["프로젝트ID"]
 ```
 
 ---

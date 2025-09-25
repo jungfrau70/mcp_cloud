@@ -21,7 +21,7 @@ Kubernetes, 고가용성 아키텍처, 고급 모니터링 등
 - **Docker 기본 지식**: 컨테이너 기술에 대한 기본적인 이해
 - **Kubernetes 기초**: Kubernetes의 기본 개념과 용어에 대한 이해
 - **클라우드 경험**: AWS나 GCP에서 실제 서비스를 운영해본 경험
-- **학습 시간**: 일일 4-5시간의 학습 시간 확보 (총 2일 과정)
+- **학습 시간**: 일일 4-5시간의 학습 시간 확보 ["총 2일 과정"]
 - **고급 실습 환경**: AWS와 GCP의 고급 서비스 사용을 위한 계정과 권한
 ## 🎯 과정 소개
 
@@ -30,8 +30,8 @@ Kubernetes, 고가용성 아키텍처, 고급 모니터링 등
 
 ### 📋 과정 정보
 - **대상자**: Cloud Master 완료자, DevOps 엔지니어, 클라우드 아키텍트, SRE
-- **예상 소요시간**: 2일 (총 16시간)
-- **난이도**: 고급 (Advanced)
+- **예상 소요시간**: 2일 ["총 16시간"]
+- **난이도**: 고급 [Advanced]
 - **선수 요구사항**: 
   - Cloud Master 과정 완료 또는 동등한 수준
   - Docker 기본 사용법 숙지
@@ -57,29 +57,29 @@ Kubernetes, 고가용성 아키텍처, 고급 모니터링 등
 
 ## 📋 과정 개요
 
-### 📅 Day 1: Kubernetes 및 GKE 고급 오케스트레이션 (8시간)
+### 📅 Day 1: Kubernetes 및 GKE 고급 오케스트레이션 ["8시간"]
 **목표**: Kubernetes의 고급 기능을 학습하고 GKE를 활용한 클러스터를 구축합니다
 
-#### 🌅 오전 (4시간)
+#### 🌅 오전 ["4시간"]
 - **09:00-10:00**: Kubernetes 고급 개념 및 아키텍처
 - **10:00-11:00**: GKE 클러스터 생성 및 설정
 - **11:00-12:00**: Pod, Service, Ingress 고급 설정
 
-#### 🌆 오후 (4시간)
+#### 🌆 오후 ["4시간"]
 - **13:00-14:00**: ConfigMap, Secret, PersistentVolume 관리
 - **14:00-15:00**: 네트워크 정책 및 보안 설정
 - **15:00-16:00**: 고급 스케줄링 및 리소스 관리
 - **16:00-17:00**: 종합 실습 및 정리
 
-### 📅 Day 2: 고가용성 및 확장성 아키텍처 (8시간)
+### 📅 Day 2: 고가용성 및 확장성 아키텍처 ["8시간"]
 **목표**: 고가용성과 확장성을 갖춘 고급 아키텍처를 구축합니다
 
-#### 🌅 오전 (4시간)
+#### 🌅 오전 ["4시간"]
 - **09:00-10:00**: Multi-AZ 클러스터 구성
 - **10:00-11:00**: 고급 로드 밸런싱 및 트래픽 관리
 - **11:00-12:00**: 자동 스케일링 및 HPA 설정
 
-#### 🌆 오후 (4시간)
+#### 🌆 오후 ["4시간"]
 - **13:00-14:00**: 고급 모니터링 시스템 구축
 - **14:00-15:00**: 로그 수집 및 분석 시스템
 - **15:00-16:00**: 종합 프로젝트
@@ -92,7 +92,7 @@ Kubernetes, 고가용성 아키텍처, 고급 모니터링 등
 
 - **Cloud Master 완료**: Docker, CI/CD 기본 지식
 - **개발 환경**: kubectl, Helm, VS Code
-- **클라우드 계정**: GCP 계정 (GKE 사용)
+- **클라우드 계정**: GCP 계정 ["GKE 사용"]
 - **GitHub 계정**: 코드 저장 및 협업용
 
 ### 2️⃣ 환경 설정
@@ -103,23 +103,23 @@ Kubernetes, 고가용성 아키텍처, 고급 모니터링 등
 # Helm 설치
 # https:///helm.sh/docs/intro/install/
 
-# GCP CLI 설치 (이미 설치되어 있다면 생략)
+# GCP CLI 설치 ["이미 설치되어 있다면 생략"]
 # https:///cloud.google.com/sdk/docs/install
 ```
 
 ### 3️⃣ 자동화 스크립트
 Cloud Container 과정의 통합 스크립트들을 활용하세요:
 
-- [통합 컨테이너 도우미](repo/scripts/cloud-container-helper.sh) - 모든 컨테이너 실습 통합 관리
-- [Day1 실습 스크립트](repo/scripts/day1-practice-improved.sh) - GKE, CI/CD, 모니터링 실습
-- [Day2 실습 스크립트](repo/scripts/day2-practice-improved.sh) - 고가용성, 보안, 성능 최적화 실습
-- [클러스터 생성](repo/deprecated/cloud-scripts/cloud-scripts/k8s-cluster-create.sh) - 로컬 K8s 클러스터 자동 생성
-- [클러스터 정리](repo/deprecated/cloud-scripts/cloud-scripts/cluster-cleanup-interactive.sh) - 클러스터 선택적 정리
+- ["통합 컨테이너 도우미"][repo/scripts/cloud-container-helper.sh] - 모든 컨테이너 실습 통합 관리
+- ["Day1 실습 스크립트"][repo/scripts/day1-practice-improved.sh] - GKE, CI/CD, 모니터링 실습
+- ["Day2 실습 스크립트"][repo/scripts/day2-practice-improved.sh] - 고가용성, 보안, 성능 최적화 실습
+- ["클러스터 생성"][repo/deprecated/cloud-scripts/cloud-scripts/k8s-cluster-create.sh] - 로컬 K8s 클러스터 자동 생성
+- ["클러스터 정리"][repo/deprecated/cloud-scripts/cloud-scripts/cluster-cleanup-interactive.sh] - 클러스터 선택적 정리
 
 ### 4️⃣ 첫 번째 실습 시작
 1. Day 1 실습 가이드로 이동
-2. [Kubernetes 기초](textbook/Day1/practice/kubernetes-basics.md) 따라하기
-3. [GKE 클러스터 생성](textbook/Day1/container-orchestration-guide.md) 따라하기
+2. ["Kubernetes 기초"][textbook/Day1/practice/kubernetes-basics.md] 따라하기
+3. ["GKE 클러스터 생성"][textbook/Day1/container-orchestration-guide.md] 따라하기
 
 ## 📚 학습 자료
 
@@ -128,16 +128,16 @@ Cloud Container 과정의 통합 스크립트들을 활용하세요:
 - Day 2: 고가용성 및 확장성 아키텍처
 
 ### 🔧 실습 가이드
-- [Kubernetes 기초](textbook/Day1/practice/kubernetes-basics.md)
-- [컨테이너 오케스트레이션 가이드](textbook/Day1/container-orchestration-guide.md)
-- [보안 정책 가이드](textbook/Day1/security-policies-guide.md)
-- [고가용성 아키텍처](textbook/Day2/high-availability-architecture.md)
-- [고급 모니터링](textbook/Day2/monitoring-setup.md)
+- ["Kubernetes 기초"][textbook/Day1/practice/kubernetes-basics.md]
+- ["컨테이너 오케스트레이션 가이드"][textbook/Day1/container-orchestration-guide.md]
+- ["보안 정책 가이드"][textbook/Day1/security-policies-guide.md]
+- ["고가용성 아키텍처"][textbook/Day2/high-availability-architecture.md]
+- ["고급 모니터링"][textbook/Day2/monitoring-setup.md]
 
 ### 🛠️ 설치 가이드
-- [kubectl 설치](_setup_wsl/install-all-wsl.sh)
-- [Helm 설치](repo/deprecated/cloud-scripts/cloud-scripts/automation_tests/get_helm.sh)
-- [GKE 클러스터 설정](_setup_wsl/install-gcp-cli-wsl.sh)
+- ["kubectl 설치"][_setup_wsl/install-all-wsl.sh]
+- ["Helm 설치"][repo/deprecated/cloud-scripts/cloud-scripts/automation_tests/get_helm.sh]
+- ["GKE 클러스터 설정"][_setup_wsl/install-gcp-cli-wsl.sh]
 
 ## ✅ 학습 체크리스트
 
@@ -155,7 +155,7 @@ Cloud Container 과정의 통합 스크립트들을 활용하세요:
 - [ ] 고급 모니터링 시스템 구축 완료
 - [ ] 로그 수집 시스템 구축 완료
 
-## ❓ 자주 묻는 질문 (FAQ)
+## ❓ 자주 묻는 질문 [FAQ]
 
 ### Q1: Cloud Master를 완료하지 않았는데 수강할 수 있나요?
 **A**: Cloud Master 과정을 먼저 완료하는 것을 강력히 권장합니다. 이 과정은 고급 수준의 내용으로 구성되어 있어 기본 지식이 필요합니다.
@@ -167,20 +167,20 @@ Cloud Container 과정의 통합 스크립트들을 활용하세요:
 **A**: 네, 가능합니다! 이 과정의 모든 내용은 실제 프로덕션 환경에서 사용되는 기술들입니다.
 
 ### Q4: 이 과정을 완료하면 어떤 자격을 얻을 수 있나요?
-**A**: 이 과정을 완료하면 Kubernetes 관리자 수준의 역량을 갖추게 되며, CKA(Certified Kubernetes Administrator) 시험 준비에도 도움이 됩니다.
+**A**: 이 과정을 완료하면 Kubernetes 관리자 수준의 역량을 갖추게 되며, CKA[Certified Kubernetes Administrator] 시험 준비에도 도움이 됩니다.
 
 ## 🔗 관련 과정
 
 ### 📚 전체 커리큘럼
-- [전체 커리큘럼 보기](curriculum.md)
-- [학습 경로 안내](learning-path.md)
+- ["전체 커리큘럼 보기"][curriculum.md]
+- ["학습 경로 안내"][learning-path.md]
 
 ### 🚀 이전 단계
 - Cloud Basic 과정 - 클라우드 기초
 - Cloud Master 과정 - Docker, CI/CD
 
 ### 🏠 홈으로
-- [통합 인덱스](index.md)
+- ["통합 인덱스"][index.md]
 
 ## 📞 문의 및 지원
 
@@ -191,12 +191,12 @@ Cloud Container 과정의 통합 스크립트들을 활용하세요:
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 ## 🎉 Cloud Container 과정을 시작하세요!
 
 🚀 Day 1 실습 시작하기 |
-[📚 전체 커리큘럼 보기](curriculum.md) | 
-[🏠 홈으로 돌아가기](index.md)
+["📚 전체 커리큘럼 보기"][curriculum.md] | 
+["🏠 홈으로 돌아가기"][index.md]
 
 </div>
 
@@ -208,6 +208,6 @@ Cloud Container 과정의 통합 스크립트들을 활용하세요:
 
 <div align="center">
 
-[🏠 홈으로 돌아가기](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
+["🏠 홈으로 돌아가기"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
 
 </div>

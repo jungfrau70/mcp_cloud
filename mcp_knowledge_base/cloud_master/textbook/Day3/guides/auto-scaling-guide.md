@@ -21,7 +21,7 @@
 
 ## 📚 이론 학습
 
-### AWS Auto Scaling Group (ASG)
+### AWS Auto Scaling Group [ASG]
 
 #### 기본 개념
 - **Auto Scaling Group**: EC2 인스턴스의 자동 확장/축소 관리
@@ -35,7 +35,7 @@
 - **Step Scaling**: 단계별 스케일링
 - **Predictive Scaling**: 예측 기반 스케일링
 
-### GCP Managed Instance Group (MIG)
+### GCP Managed Instance Group [MIG]
 
 #### 기본 개념
 - **Managed Instance Group**: VM 인스턴스의 자동 관리
@@ -78,16 +78,16 @@ gcloud config set project $PROJECT_ID
 #### 1단계: Launch Template 생성
 ```bash
 # Launch Template 생성
-LAUNCH_TEMPLATE_ID=$(aws ec2 create-launch-template /
+LAUNCH_TEMPLATE_ID=$[aws ec2 create-launch-template /
     --launch-template-name web-server-template /
     --launch-template-data '{
         "ImageId": "ami-0c76973fbe0ee100c",
         "InstanceType": "t2.micro",
         "KeyName": "load-balancer-key",
         "SecurityGroupIds": ["'$EC2_SG'"],
-        "UserData": "'$(base64 -w 0 user-data.sh)'"
+        "UserData": "'$[base64 -w 0 user-data.sh]'"
     }' /
-    --query 'LaunchTemplate.LaunchTemplateId' --output text)
+    --query 'LaunchTemplate.LaunchTemplateId' --output text]
 ```
 
 #### 2단계: Auto Scaling Group 생성
@@ -107,7 +107,7 @@ aws autoscaling create-auto-scaling-group /
 
 #### 3단계: 스케일링 정책 생성
 ```bash
-# Scale-out 정책 (CPU 사용률 70% 초과 시)
+# Scale-out 정책 ["CPU 사용률 70% 초과 시"]
 aws autoscaling put-scaling-policy /
     --auto-scaling-group-name web-server-asg /
     --policy-name scale-out-policy /
@@ -119,7 +119,7 @@ aws autoscaling put-scaling-policy /
         }
     }'
 
-# Scale-in 정책 (CPU 사용률 30% 미만 시)
+# Scale-in 정책 ["CPU 사용률 30% 미만 시"]
 aws autoscaling put-scaling-policy /
     --auto-scaling-group-name web-server-asg /
     --policy-name scale-in-policy /
@@ -159,7 +159,7 @@ gcloud compute instance-templates create web-server-template /
     --metadata=startup-script='#!/bin/bash
 apt-get update
 apt-get install -y nginx stress-ng
-echo "Hello from $(hostname)" > /var/www/html/index.html
+echo "Hello from $[hostname]" > /var/www/html/index.html
 systemctl restart nginx'
 ```
 
@@ -240,7 +240,7 @@ gcloud compute instance-groups managed set-autoscaling web-server-mig /
     --custom-metric-utilization metric=custom.googleapis.com/active_connections,utilization-target=0.8,utilization-target-type=GAUGE
 ```
 
-### 예측 기반 스케일링 (AWS)
+### 예측 기반 스케일링 [AWS]
 
 ```bash
 # 예측 스케일링 활성화
@@ -277,7 +277,7 @@ gcloud compute instance-groups managed list-instances web-server-mig --zone=asia
 
 ### 부하 테스트 및 스케일링 확인
 ```bash
-# CPU 부하 생성 (stress-ng 사용)
+# CPU 부하 생성 ["stress-ng 사용"]
 stress-ng --cpu 4 --timeout 300s
 
 # 메모리 부하 생성
@@ -342,16 +342,16 @@ watch -n 5 'aws autoscaling describe-auto-scaling-groups --auto-scaling-group-na
 ## 📚 참고 자료
 
 ### AWS 공식 문서
-- [Auto Scaling Group 가이드](https:///docs.aws.amazon.com/autoscaling/ec2/userguide/)
-- [Target Tracking Scaling 정책](https:///docs.aws.amazon.com/autoscaling/ec2/userguide/target-tracking-scaling-policy.html)
+- ["Auto Scaling Group 가이드"][https:///docs.aws.amazon.com/autoscaling/ec2/userguide/]
+- ["Target Tracking Scaling 정책"][https:///docs.aws.amazon.com/autoscaling/ec2/userguide/target-tracking-scaling-policy.html]
 
 ### GCP 공식 문서
-- [Managed Instance Groups 가이드](https:///cloud.google.com/compute/docs/instance-groups/)
-- [Auto Scaling 가이드](https:///cloud.google.com/compute/docs/autoscaler/)
+- ["Managed Instance Groups 가이드"][https:///cloud.google.com/compute/docs/instance-groups/]
+- ["Auto Scaling 가이드"][https:///cloud.google.com/compute/docs/autoscaler/]
 
 ### 추가 학습 자료
-- [Auto Scaling 모범 사례](https:///aws.amazon.com/autoscaling/faqs/)
-- [비용 최적화를 위한 스케일링 전략](https:///cloud.google.com/compute/docs/autoscaler/optimizing-costs)
+- ["Auto Scaling 모범 사례"][https:///aws.amazon.com/autoscaling/faqs/]
+- ["비용 최적화를 위한 스케일링 전략"][https:///cloud.google.com/compute/docs/autoscaler/optimizing-costs]
 
 ---
 
@@ -359,6 +359,6 @@ watch -n 5 'aws autoscaling describe-auto-scaling-groups --auto-scaling-group-na
 
 <div align="center">
 
-[← 이전: 로드 밸런싱 가이드](cloud_master/textbook/Day3/guides/load-balancing-guide.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md)
+["← 이전: 로드 밸런싱 가이드"][cloud_master/textbook/Day3/guides/load-balancing-guide.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md]
 
 </div>

@@ -18,12 +18,12 @@
 - ✅ 클라우드 비용 분석 및 최적화 전략 수립
 - ✅ 고가용성 아키텍처 설계 및 장애 복구 시뮬레이션
 
-### 예상 소요 시간 (실제 수업 기준)
+### 예상 소요 시간 ["실제 수업 기준"]
 - **로드밸런싱**: 120분
 - **오토스케일링**: 90분
 - **모니터링**: 150분
 - **비용 최적화**: 90분
-- **전체 과정**: 6시간 (실제 수업 검증)
+- **전체 과정**: 6시간 ["실제 수업 검증"]
 
 ---
 
@@ -36,21 +36,21 @@
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Load Balancer │    │   Auto Scaling  │    │   Monitoring    │
-│   (AWS ELB/     │───►│   (AWS ASG/     │───►│   (Prometheus/  │
-│    GCP CLB)     │    │    GCP MIG)     │    │    Grafana)     │
+│   [AWS ELB/     │───►│   [AWS ASG/     │───►│   [Prometheus/  │
+│    GCP CLB]     │    │    GCP MIG]     │    │    Grafana]     │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          │                       │                       ▼
          │                       │              ┌─────────────────┐
          │                       │              │   Logging       │
-         │                       │              │   (ELK Stack)   │
+         │                       │              │   [ELK Stack]   │
          │                       │              └─────────────────┘
          │                       │                       │
          ▼                       ▼                       ▼
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Application   │    │   Application   │    │   Application   │
 │   Instance 1    │    │   Instance 2    │    │   Instance 3    │
-│   (Auto Scaled) │    │   (Auto Scaled) │    │   (Auto Scaled) │
+│   [Auto Scaled] │    │   [Auto Scaled] │    │   [Auto Scaled] │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          └───────────────────────┼───────────────────────┘
@@ -58,12 +58,12 @@
                                  ▼
                     ┌─────────────────┐
                     │   Database      │
-                    │   (PostgreSQL/  │
-                    │    Redis)       │
+                    │   [PostgreSQL/  │
+                    │    Redis]       │
                     └─────────────────┘
 ```
 
-### 🔄 주요 개선사항 (Day2 대비)
+### 🔄 주요 개선사항 ["Day2 대비"]
 1. **로드밸런싱**: 트래픽 분산 및 고가용성 보장
 2. **오토스케일링**: 자동 확장/축소로 비용 최적화
 3. **모니터링**: Prometheus, Grafana를 활용한 실시간 모니터링
@@ -71,8 +71,8 @@
 5. **로그 분석**: ELK Stack을 활용한 중앙화된 로그 관리
 6. **비용 최적화**: 클라우드 리소스 최적화 및 비용 절감
 
-### 📊 실제 배포 결과 (2024년 9월 22일 수업 검증)
-- **성공률**: 100% (모든 학습자 성공)
+### 📊 실제 배포 결과 ["2024년 9월 22일 수업 검증"]
+- **성공률**: 100% ["모든 학습자 성공"]
 - **주요 성과**: 프로덕션 수준의 고가용성 및 모니터링 시스템 구축
 - **핵심 성공 요인**: 로드밸런싱과 오토스케일링을 통한 고가용성 아키텍처 구현
 
@@ -81,20 +81,20 @@
 ## 🔧 실습 환경 준비
 
 ### 필수 계정
-- **AWS 계정**: Free Tier 계정 (Day1에서 설정 완료)
-- **GCP 계정**: Free Tier 계정 ($300 크레딧) (Day1에서 설정 완료)
-- **GitHub 계정**: 코드 저장소 및 CI/CD (Day1에서 설정 완료)
-- **Docker Hub 계정**: 컨테이너 이미지 저장소 (Day1에서 설정 완료)
+- **AWS 계정**: Free Tier 계정 ["Day1에서 설정 완료"]
+- **GCP 계정**: Free Tier 계정 ["$300 크레딧"] ["Day1에서 설정 완료"]
+- **GitHub 계정**: 코드 저장소 및 CI/CD ["Day1에서 설정 완료"]
+- **Docker Hub 계정**: 컨테이너 이미지 저장소 ["Day1에서 설정 완료"]
 
 ### 필수 도구
-- **AWS CLI**: AWS 서비스 관리 (Day1에서 설정 완료)
-- **GCP CLI**: GCP 서비스 관리 (Day1에서 설정 완료)
-- **Docker**: 컨테이너 실행 환경 (Day1에서 설정 완료)
-- **Docker Compose**: 다중 컨테이너 관리 (Day2에서 설정 완료)
-- **Git**: 버전 관리 (Day1에서 설정 완료)
-- **kubectl**: Kubernetes 클러스터 관리 (선택사항)
+- **AWS CLI**: AWS 서비스 관리 ["Day1에서 설정 완료"]
+- **GCP CLI**: GCP 서비스 관리 ["Day1에서 설정 완료"]
+- **Docker**: 컨테이너 실행 환경 ["Day1에서 설정 완료"]
+- **Docker Compose**: 다중 컨테이너 관리 ["Day2에서 설정 완료"]
+- **Git**: 버전 관리 ["Day1에서 설정 완료"]
+- **kubectl**: Kubernetes 클러스터 관리 ["선택사항"]
 
-### 환경 설정 (Day1, Day2 연계)
+### 환경 설정 ["Day1, Day2 연계"]
 ```bash
 # Day1, Day2에서 설정한 환경 확인
 aws --version
@@ -133,22 +133,22 @@ curl http://localhost/health
 ## 📚 이론 학습
 
 <details>
-<summary>⚖️ 로드밸런싱 (1교시: 120분)</summary>
+<summary>⚖️ 로드밸런싱 ["1교시: 120분"]</summary>
 
-### AWS ELB (Elastic Load Balancing)
+### AWS ELB [Elastic Load Balancing]
 AWS의 로드밸런싱 서비스로 다양한 트래픽 유형에 최적화된 로드밸런서를 제공합니다.
 
-#### ALB (Application Load Balancer)
+#### ALB [Application Load Balancer]
 - **용도**: HTTP/HTTPS 트래픽 처리
-- **특징**: 7계층(애플리케이션 계층) 로드밸런싱
+- **특징**: 7계층["애플리케이션 계층"] 로드밸런싱
 - **장점**: 컨텐츠 기반 라우팅, 마이크로서비스 지원
 
-#### NLB (Network Load Balancer)
+#### NLB [Network Load Balancer]
 - **용도**: TCP/UDP 트래픽 처리
-- **특징**: 4계층(전송 계층) 로드밸런싱
+- **특징**: 4계층["전송 계층"] 로드밸런싱
 - **장점**: 초고성능, 초저지연
 
-#### CLB (Classic Load Balancer)
+#### CLB [Classic Load Balancer]
 - **용도**: 레거시 애플리케이션 지원
 - **특징**: 4계층 및 7계층 로드밸런싱
 - **장점**: 간단한 설정, 기존 애플리케이션 호환성
@@ -156,7 +156,7 @@ AWS의 로드밸런싱 서비스로 다양한 트래픽 유형에 최적화된 �
 ### GCP Cloud Load Balancing
 Google Cloud의 로드밸런싱 서비스로 글로벌 및 지역 로드밸런싱을 제공합니다.
 
-#### HTTP(S) Load Balancing
+#### HTTP[S] Load Balancing
 - **용도**: HTTP/HTTPS 트래픽 처리
 - **특징**: 글로벌 로드밸런싱, CDN 통합
 - **장점**: 자동 스케일링, SSL 터미네이션
@@ -194,7 +194,7 @@ Google Cloud의 로드밸런싱 서비스로 글로벌 및 지역 로드밸런�
 - **장점**: 서버 성능에 따른 분산
 - **단점**: 가중치 설정 복잡성
 
-### 헬스 체크 (Health Check)
+### 헬스 체크 [Health Check]
 로드밸런서가 백엔드 서버의 상태를 확인하는 메커니즘입니다.
 
 #### 헬스 체크 설정
@@ -211,7 +211,7 @@ health_check:
   protocol: HTTP
   matcher: "200"
 
-# GCP HTTP(S) Load Balancer 헬스 체크 설정
+# GCP HTTP[S] Load Balancer 헬스 체크 설정
 health_check:
   check_interval_sec: 10
   timeout_sec: 5
@@ -234,12 +234,12 @@ health_check:
 </details>
 
 <details>
-<summary>📈 오토스케일링 (2교시: 90분)</summary>
+<summary>📈 오토스케일링 ["2교시: 90분"]</summary>
 
 ### AWS Auto Scaling
 AWS의 자동 확장/축소 서비스로 애플리케이션의 부하에 따라 인스턴스 수를 자동으로 조정합니다.
 
-#### Auto Scaling Group (ASG)
+#### Auto Scaling Group [ASG]
 - **용도**: EC2 인스턴스 자동 관리
 - **특징**: 최소/최대/원하는 용량 설정
 - **장점**: 비용 최적화, 가용성 보장
@@ -266,7 +266,7 @@ scaling_policy:
 - **네트워크 트래픽**: 네트워크 집약적 애플리케이션
 - **커스텀 메트릭**: 애플리케이션별 특화 메트릭
 
-### GCP Managed Instance Group (MIG)
+### GCP Managed Instance Group [MIG]
 Google Cloud의 자동 확장/축소 서비스로 Compute Engine 인스턴스를 자동으로 관리합니다.
 
 #### MIG 설정
@@ -294,12 +294,12 @@ managed_instance_group:
 ### 스케일링 전략
 효과적인 자동 확장/축소를 위한 전략입니다.
 
-#### 수평 스케일링 (Horizontal Scaling)
+#### 수평 스케일링 [Horizontal Scaling]
 - **원리**: 인스턴스 수를 늘리거나 줄임
 - **장점**: 무제한 확장 가능
 - **단점**: 상태 공유 복잡성
 
-#### 수직 스케일링 (Vertical Scaling)
+#### 수직 스케일링 [Vertical Scaling]
 - **원리**: 인스턴스 사양을 높이거나 낮춤
 - **장점**: 간단한 구현
 - **단점**: 확장 한계 존재
@@ -322,7 +322,7 @@ managed_instance_group:
 </details>
 
 <details>
-<summary>📊 모니터링 (3교시: 150분)</summary>
+<summary>📊 모니터링 ["3교시: 150분"]</summary>
 
 ### Prometheus
 오픈소스 모니터링 및 알림 시스템으로 메트릭 수집과 저장을 담당합니다.
@@ -379,7 +379,7 @@ scrape_configs:
         "type": "graph",
         "targets": [
           {
-            "expr": "100 - (avg(irate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
+            "expr": "100 - [avg[irate[node_cpu_seconds_total{mode=\"idle\"}[5m]]] * 100]",
             "legendFormat": "CPU Usage %"
           }
         ]
@@ -490,7 +490,7 @@ services:
 </details>
 
 <details>
-<summary>💰 비용 최적화 (4교시: 90분)</summary>
+<summary>💰 비용 최적화 ["4교시: 90분"]</summary>
 
 ### 클라우드 비용 분석
 클라우드 리소스 사용량과 비용을 분석하여 최적화 방안을 도출합니다.
@@ -597,7 +597,7 @@ services:
 
 ## 🛠️ 실습 가이드
 
-### 1단계: 로드밸런서 설정 (1교시: 120분)
+### 1단계: 로드밸런서 설정 ["1교시: 120분"]
 
 #### AWS ALB 설정
 ```bash
@@ -627,7 +627,7 @@ aws elbv2 create-listener \
   --default-actions Type=forward,TargetGroupArn=arn:aws:elasticloadbalancing:region:account:targetgroup/my-targets/1234567890123456
 ```
 
-#### GCP HTTP(S) Load Balancer 설정
+#### GCP HTTP[S] Load Balancer 설정
 ```bash
 # Backend Service 생성
 gcloud compute backend-services create my-backend-service \
@@ -654,7 +654,7 @@ gcloud compute forwarding-rules create my-lb-rule \
 ```bash
 # 로드밸런서 DNS 확인
 aws elbv2 describe-load-balancers --names my-alb --query 'LoadBalancers[0].DNSName'
-gcloud compute forwarding-rules describe my-lb-rule --global --format="value(IPAddress)"
+gcloud compute forwarding-rules describe my-lb-rule --global --format="value[IPAddress]"
 
 # 헬스 체크 테스트
 curl -I http://my-alb-1234567890.us-west-2.elb.amazonaws.com/health
@@ -667,7 +667,7 @@ for i in {1..10}; do
 done
 ```
 
-### 2단계: 오토스케일링 설정 (2교시: 120분)
+### 2단계: 오토스케일링 설정 ["2교시: 120분"]
 
 #### AWS Auto Scaling 설정
 ```bash
@@ -735,9 +735,9 @@ gcloud compute instance-groups managed set-autoscaling my-mig \
 
 #### 오토스케일링 테스트
 ```bash
-# CPU 부하 생성 (스케일 아웃 테스트)
+# CPU 부하 생성 ["스케일 아웃 테스트"]
 for i in {1..5}; do
-  ssh -i my-key.pem ubuntu@$(aws ec2 describe-instances --query 'Reservations[0].Instances[0].PublicIpAddress' --output text) \
+  ssh -i my-key.pem ubuntu@$[aws ec2 describe-instances --query 'Reservations[0].Instances[0].PublicIpAddress' --output text] \
     "yes > /dev/null &"
 done
 
@@ -748,7 +748,7 @@ aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names my-asg \
 gcloud compute instance-groups managed list-instances my-mig --zone us-central1-a
 ```
 
-### 3단계: 모니터링 설정 (3교시: 150분)
+### 3단계: 모니터링 설정 ["3교시: 150분"]
 
 #### Prometheus 설정
 ```bash
@@ -781,7 +781,7 @@ EOF
 docker run -d \
   --name prometheus \
   -p 9090:9090 \
-  -v $(pwd)/prometheus.yml:/etc/prometheus/prometheus.yml \
+  -v $[pwd]/prometheus.yml:/etc/prometheus/prometheus.yml \
   prom/prometheus
 ```
 
@@ -852,7 +852,7 @@ EOF
 docker-compose -f docker-compose.elk.yml up -d
 ```
 
-### 4단계: 비용 최적화 (4교시: 90분)
+### 4단계: 비용 최적화 ["4교시: 90분"]
 
 #### AWS 비용 분석
 ```bash
@@ -937,12 +937,12 @@ ab -n 1000 -c 10 http://my-alb-1234567890.us-west-2.elb.amazonaws.com/
 curl -w "@curl-format.txt" -o /dev/null -s http://my-alb-1234567890.us-west-2.elb.amazonaws.com/
 ```
 
-## 🎯 Day 3 수업 결과 요약 (2024년 9월 22일)
+## 🎯 Day 3 수업 결과 요약 ["2024년 9월 22일"]
 
 ### ✅ 전체 성과
 - **수강생 수**: 15명
-- **완료율**: 100% (모든 학습자 성공)
-- **총 소요 시간**: 8시간 (예상 8시간)
+- **완료율**: 100% ["모든 학습자 성공"]
+- **총 소요 시간**: 8시간 ["예상 8시간"]
 - **주요 성과**: 프로덕션 수준의 고가용성 아키텍처 구축 완료
 
 ### 📊 교시별 성과
@@ -969,7 +969,7 @@ curl -w "@curl-format.txt" -o /dev/null -s http://my-alb-1234567890.us-west-2.el
 
 ### 1단계: AWS ALB 생성
 
-**방법 1: 자동화 스크립트 사용 (권장)**
+**방법 1: 자동화 스크립트 사용 ["권장"]**
 ```bash
 # 로드밸런서 자동 설정
 chmod +x ../../repos/day1/cloud-scripts/load-balancer-setup.sh
@@ -1004,7 +1004,7 @@ aws elbv2 create-listener \
   --default-actions Type=forward,TargetGroupArn=arn:aws:elasticloadbalancing:region:account:targetgroup/my-targets/1234567890123456
 ```
 
-### 2단계: GCP HTTP(S) Load Balancing
+### 2단계: GCP HTTP[S] Load Balancing
 ```bash
 # 인스턴스 그룹 생성
 gcloud compute instance-groups unmanaged create my-instance-group \
@@ -1115,7 +1115,7 @@ gcloud compute instance-groups managed set-autoscaling my-mig \
 
 ### 3단계: 스케일링 테스트
 ```bash
-# CPU 사용률 증가 (스케일링 트리거)
+# CPU 사용률 증가 ["스케일링 트리거"]
 stress --cpu 1 --timeout 300
 
 # Auto Scaling Group 상태 확인
@@ -1217,7 +1217,7 @@ gcloud alpha monitoring policies create \
 
 ### 5단계: 모니터링 테스트
 ```bash
-# CPU 사용률 증가 (알림 트리거)
+# CPU 사용률 증가 ["알림 트리거"]
 stress --cpu 1 --timeout 300
 
 # CloudWatch 메트릭 확인
@@ -1242,7 +1242,7 @@ gcloud monitoring metrics list \
 
 ### 1단계: AWS 비용 분석
 
-**방법 1: 자동화 스크립트 사용 (권장)**
+**방법 1: 자동화 스크립트 사용 ["권장"]**
 ```bash
 # 비용 최적화 스크립트 실행
 chmod +x ../../repos/day1/cloud-scripts/cost-optimization.sh
@@ -1306,7 +1306,7 @@ aws ec2 describe-spot-price-history \
 
 ### 자동 정리
 
-**방법 1: 통합 정리 스크립트 사용 (권장)**
+**방법 1: 통합 정리 스크립트 사용 ["권장"]**
 ```bash
 # 통합 클러스터 정리 스크립트 실행
 chmod +x ../../repos/day1/cloud-scripts/cluster-cleanup-interactive.sh
@@ -1353,24 +1353,24 @@ docker rm prometheus grafana node-exporter alertmanager
 ## 📚 참고 자료
 
 ### 상세 가이드
-- [GitHub Actions 실습 가이드](cloud_master/textbook/Day3/guides/github-actions-tutorial.md) - GitHub Actions CI/CD 파이프라인
-- [Cloud Scripts 동작 원리 가이드](cloud_master/textbook/Day3/guides/cloud-scripts-operation-guide.md) - 스크립트 동작 원리 상세 설명
-- [로드 밸런싱 가이드](cloud_master/textbook/Day3/guides/load-balancing-guide.md) - 고급 로드 밸런싱 설정
-- [오토스케일링 가이드](cloud_master/textbook/Day3/guides/auto-scaling-guide.md) - 자동 스케일링 정책 설정
-- [모니터링 설정 가이드](cloud_master/textbook/Day3/guides/monitoring-setup-guide.md) - Prometheus & Grafana 설정
-- [비용 최적화 가이드](cloud_master/textbook/Day3/guides/cost-optimization-guide.md) - 클라우드 비용 관리
-- [통합 가이드](cloud_master/textbook/Day3/guides/integration-guide.md) - 전체 시스템 통합
-- [재해 복구 가이드](cloud_master/textbook/Day3/guides/disaster-recovery-guide.md) - 고가용성 아키텍처
-- [트러블슈팅 가이드](cloud_master/textbook/Day3/guides/troubleshooting-guide.md) - 문제 해결 및 디버깅
+- ["GitHub Actions 실습 가이드"][cloud_master/textbook/Day3/guides/github-actions-tutorial.md] - GitHub Actions CI/CD 파이프라인
+- ["Cloud Scripts 동작 원리 가이드"][cloud_master/textbook/Day3/guides/cloud-scripts-operation-guide.md] - 스크립트 동작 원리 상세 설명
+- ["로드 밸런싱 가이드"][cloud_master/textbook/Day3/guides/load-balancing-guide.md] - 고급 로드 밸런싱 설정
+- ["오토스케일링 가이드"][cloud_master/textbook/Day3/guides/auto-scaling-guide.md] - 자동 스케일링 정책 설정
+- ["모니터링 설정 가이드"][cloud_master/textbook/Day3/guides/monitoring-setup-guide.md] - Prometheus & Grafana 설정
+- ["비용 최적화 가이드"][cloud_master/textbook/Day3/guides/cost-optimization-guide.md] - 클라우드 비용 관리
+- ["통합 가이드"][cloud_master/textbook/Day3/guides/integration-guide.md] - 전체 시스템 통합
+- ["재해 복구 가이드"][cloud_master/textbook/Day3/guides/disaster-recovery-guide.md] - 고가용성 아키텍처
+- ["트러블슈팅 가이드"][cloud_master/textbook/Day3/guides/troubleshooting-guide.md] - 문제 해결 및 디버깅
 
 ### 공식 문서
-- [GitHub Actions 공식 자습서](https://docs.github.com/ko/actions/tutorials)
-- [GitHub Actions 워크플로우 구문](https://docs.github.com/ko/actions/using-workflows/workflow-syntax-for-github-actions)
-- [AWS ELB 공식 문서](https://docs.aws.amazon.com/elasticloadbalancing/)
-- [AWS Auto Scaling 공식 문서](https://docs.aws.amazon.com/autoscaling/)
-- [GCP Load Balancing 공식 문서](https://cloud.google.com/load-balancing/docs)
-- [Prometheus 공식 문서](https://prometheus.io/docs/)
-- [Grafana 공식 문서](https://grafana.com/docs/)
+- ["GitHub Actions 공식 자습서"][https://docs.github.com/ko/actions/tutorials]
+- ["GitHub Actions 워크플로우 구문"][https://docs.github.com/ko/actions/using-workflows/workflow-syntax-for-github-actions]
+- ["AWS ELB 공식 문서"][https://docs.aws.amazon.com/elasticloadbalancing/]
+- ["AWS Auto Scaling 공식 문서"][https://docs.aws.amazon.com/autoscaling/]
+- ["GCP Load Balancing 공식 문서"][https://cloud.google.com/load-balancing/docs]
+- ["Prometheus 공식 문서"][https://prometheus.io/docs/]
+- ["Grafana 공식 문서"][https://grafana.com/docs/]
 
 ### 문제 해결
 1. **로드밸런싱 실패**: 보안 그룹 및 타겟 그룹 설정 확인
@@ -1382,9 +1382,9 @@ docker rm prometheus grafana node-exporter alertmanager
 
 <div align="center">
 
-[← 이전: Day 2](../Day2/README.md) | 
-[📚 전체 커리큘럼](../../../curriculum.md) | 
-[🏠 학습 경로로 돌아가기](../../../index.md) | 
-[다음: Cloud Container 과정 →](../../../cloud_container/README.md)
+["← 이전: Day 2"][../Day2/README.md] | 
+["📚 전체 커리큘럼"][../../../curriculum.md] | 
+["🏠 학습 경로로 돌아가기"][../../../index.md] | 
+["다음: Cloud Container 과정 →"][../../../cloud_container/README.md]
 
 </div>

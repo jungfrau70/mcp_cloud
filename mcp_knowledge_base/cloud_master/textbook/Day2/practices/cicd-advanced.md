@@ -605,7 +605,7 @@ docker-compose -f docker-compose.ci.yml up test  # CI 테스트 실행
 ### 수동 정리
 ```bash
 # GitHub Actions 아티팩트 정리
-gh api repos/:owner/:repo/actions/artifacts --jq '.artifacts[] | select(.expired == true) | .id' | xargs -I {} gh api -X DELETE repos/:owner/:repo/actions/artifacts/{}
+gh api repos/:owner/:repo/actions/artifacts --jq '.artifacts[] | select[.expired == true] | .id' | xargs -I {} gh api -X DELETE repos/:owner/:repo/actions/artifacts/{}
 
 # Docker 리소스 정리
 docker system prune -a

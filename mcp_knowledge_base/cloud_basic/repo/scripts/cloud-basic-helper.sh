@@ -3,6 +3,20 @@
 # Cloud Basic Helper Script
 # 통합된 Cloud Basic 실습 도구
 
+# 오류 처리 설정
+set -e  # 오류 발생 시 스크립트 종료
+set -u  # 정의되지 않은 변수 사용 시 오류
+set -o pipefail  # 파이프라인에서 오류 발생 시 종료
+
+# 스크립트 종료 시 정리 함수
+cleanup() {
+    echo "스크립트가 종료됩니다. 정리 작업을 수행합니다..."
+    # 필요한 정리 작업 추가
+}
+
+# 신호 트랩 설정
+trap cleanup EXIT INT TERM
+
 # Color codes
 RED='\033[0;31m'
 GREEN='\033[0;32m'

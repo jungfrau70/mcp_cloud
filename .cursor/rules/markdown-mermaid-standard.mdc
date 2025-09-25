@@ -1,0 +1,302 @@
+---
+alwaysApply: true
+---
+
+# 마크다운 문서 Mermaid 다이어그램 표준 규칙
+
+## 🎯 마크다운 문서 작성 시 Mermaid 다이어그램 표준
+
+### **필수 적용 규칙**
+- **모든 마크다운 문서**: Mermaid 다이어그램 사용 시 이 표준 규칙 준수
+- **AI 응답 및 문의**: 모든 Mermaid 다이어그램은 Mermaid 10.9.4 문법 준수
+- **Mermaid 10.9.4 버전**: 최신 문법 사용 필수
+- **가독성 우선**: 모든 다이어그램에 스타일링 적용
+- **한글 지원**: 한글 텍스트 완벽 지원
+
+## 📋 Mermaid 다이어그램 작성 표준
+
+### **1. 기본 문법 규칙**
+```markdown
+<!-- ✅ DO: 올바른 Mermaid 블록 -->
+```mermaid
+flowchart TD
+    A["시작점"] -->> B{"결정점"}
+    B -->>|"옵션 1"| C["액션 1"]
+    B -->>|"옵션 2"| D["액션 2"]
+    C -->> E["종료점"]
+    D -->> E
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#f57c00,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+    style D fill:#388e3c,color:#ffffff
+    style E fill:#d32f2f,color:#ffffff
+```
+
+<!-- ❌ DON'T: 잘못된 문법 -->
+```graph
+graph TD
+    A[시작점] --> B{결정점}
+    B -->|옵션 1| C[액션 1]
+```
+
+### **2. 다이어그램 타입별 표준**
+
+#### **Flowchart (플로우차트) - 가장 많이 사용**
+```mermaid
+flowchart TD
+    Start["시작"] --> Process1["프로세스 1"]
+    Process1 --> Decision{"결정"}
+    Decision -->|"예"| Process2["프로세스 2"]
+    Decision -->|"아니오"| Process3["프로세스 3"]
+    Process2 --> End["종료"]
+    Process3 --> End
+    
+    style Start fill:#1976d2,color:#ffffff
+    style Process1 fill:#388e3c,color:#ffffff
+    style Decision fill:#f57c00,color:#ffffff
+    style Process2 fill:#388e3c,color:#ffffff
+    style Process3 fill:#388e3c,color:#ffffff
+    style End fill:#d32f2f,color:#ffffff
+```
+
+#### **Sequence Diagram (시퀀스 다이어그램)**
+```mermaid
+sequenceDiagram
+    participant A as 사용자
+    participant B as 시스템
+    participant C as 데이터베이스
+    
+    A->>B: 요청
+    B->>C: 데이터 조회
+    C-->>B: 응답
+    B-->>A: 결과 반환
+```
+
+#### **Class Diagram (클래스 다이어그램)**
+```mermaid
+classDiagram
+    class User {
+        +String name
+        +String email
+        +login()
+        +logout()
+    }
+    class Admin {
+        +String role
+        +manageUsers()
+    }
+    User <|-- Admin
+```
+
+### **3. 색상 팔레트 표준**
+
+#### **노드 타입별 색상 규칙**
+- **시작점**: 파란색 (`#1976d2`) - 흰색 글씨
+- **결정점**: 주황색 (`#f57c00`) - 흰색 글씨  
+- **프로세스/액션**: 초록색 (`#388e3c`) - 흰색 글씨
+- **종료점**: 빨간색 (`#d32f2f`) - 흰색 글씨
+- **특별한 노드**: 보라색 (`#7b1fa2`) - 흰색 글씨
+
+#### **스타일링 템플릿**
+```mermaid
+flowchart TD
+    A["노드명"] --> B{"결정점"}
+    B -->|"라벨"| C["액션"]
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#f57c00,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+```
+
+### **4. 한글 텍스트 처리 표준**
+
+#### **한글 텍스트 규칙**
+```mermaid
+flowchart TD
+    A["한글 텍스트는 따옴표로 감싸기"] --> B{"결정점도 따옴표 사용"}
+    B -->|"라벨도 따옴표로"| C["모든 텍스트 따옴표 처리"]
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#f57c00,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+```
+
+#### **이모지 사용 규칙**
+```mermaid
+flowchart TD
+    A["🚀 시작"] --> B{"🤔 결정"}
+    B -->|"✅ 예"| C["⚙️ 처리"]
+    B -->|"❌ 아니오"| D["🛑 종료"]
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#f57c00,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+    style D fill:#d32f2f,color:#ffffff
+```
+
+## 🤖 AI 응답 시 Mermaid 다이어그램 규칙
+
+### **AI가 Mermaid 다이어그램을 제공할 때 필수 준수사항**
+
+#### **1. 문법 검증**
+- **Mermaid 10.9.4 문법**: 반드시 최신 문법 사용
+- **flowchart 키워드**: `graph` 대신 `flowchart` 사용
+- **화살표 문법**: `->>` 또는 `-->>` 사용
+- **한글 텍스트**: 모든 한글 텍스트 따옴표로 감싸기
+
+#### **2. 스타일링 필수 적용**
+```mermaid
+flowchart TD
+    A["AI 응답 예시"] --> B{"사용자 질문"}
+    B -->|"처리"| C["답변 생성"]
+    C --> D["결과 제공"]
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#f57c00,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+    style D fill:#d32f2f,color:#ffffff
+```
+
+#### **3. 가독성 우선 원칙**
+- **색상 대비**: 진한 배경색에 흰색 글씨
+- **노드 구분**: 의미에 따른 색상 구분
+- **이모지 활용**: 시각적 구분 강화
+- **한글 지원**: 완벽한 한글 텍스트 처리
+
+#### **4. AI 응답 템플릿**
+```mermaid
+flowchart TD
+    Start["🎯 시작"] --> Analyze["🔍 분석"]
+    Analyze --> Process["⚙️ 처리"]
+    Process --> Result["📊 결과"]
+    Result --> End["✅ 완료"]
+    
+    style Start fill:#1976d2,color:#ffffff
+    style Analyze fill:#388e3c,color:#ffffff
+    style Process fill:#388e3c,color:#ffffff
+    style Result fill:#388e3c,color:#ffffff
+    style End fill:#d32f2f,color:#ffffff
+```
+
+## 🛠️ 자동화 도구 사용법
+
+### **문서 작성 후 자동 검증**
+```bash
+# Mermaid 문법 자동 수정
+python3 fix_mermaid_syntax.py
+
+# Mermaid 문법 검증
+python3 validate_mermaid_syntax.py
+```
+
+### **새 문서 작성 시 체크리스트**
+- [ ] Mermaid 10.9.4 문법 사용
+- [ ] `flowchart` 키워드 사용 (graph 대신)
+- [ ] 화살표 문법: `->>` 또는 `-->>` 사용
+- [ ] 한글 텍스트 따옴표로 감싸기
+- [ ] 모든 노드에 스타일링 적용
+- [ ] 텍스트 색상을 흰색으로 설정
+- [ ] 시작점은 파란색, 종료점은 빨간색 사용
+
+## 📚 교육 자료 특화 규칙
+
+### **교육 과정 다이어그램 표준**
+```mermaid
+flowchart TD
+    A["🎯 학습 목표"] --> B["📚 이론 학습"]
+    B --> C["🔧 실습 환경 준비"]
+    C --> D{"💻 실습 진행"}
+    D -->|"성공"| E["📊 결과 확인"]
+    D -->|"실패"| F["🛠️ 문제 해결"]
+    F --> D
+    E --> G["✅ 학습 완료"]
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#388e3c,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+    style D fill:#f57c00,color:#ffffff
+    style E fill:#388e3c,color:#ffffff
+    style F fill:#7b1fa2,color:#ffffff
+    style G fill:#d32f2f,color:#ffffff
+```
+
+### **아키텍처 다이어그램 표준**
+```mermaid
+flowchart TB
+    subgraph "AWS Cloud"
+        A1["EC2 Instance"]
+        A2["RDS Database"]
+        A3["S3 Storage"]
+    end
+    
+    subgraph "GCP Cloud"
+        G1["Compute Engine"]
+        G2["Cloud SQL"]
+        G3["Cloud Storage"]
+    end
+    
+    subgraph "Local"
+        L1["개발자 머신"]
+    end
+    
+    L1 -->> A1
+    L1 -->> G1
+    A1 -->> A2
+    A1 -->> A3
+    G1 -->> G2
+    G1 -->> G3
+    
+    style A1 fill:#388e3c,color:#ffffff
+    style A2 fill:#388e3c,color:#ffffff
+    style A3 fill:#388e3c,color:#ffffff
+    style G1 fill:#388e3c,color:#ffffff
+    style G2 fill:#388e3c,color:#ffffff
+    style G3 fill:#388e3c,color:#ffffff
+    style L1 fill:#1976d2,color:#ffffff
+```
+
+## 🚨 주의사항
+
+### **절대 금지사항**
+- ❌ `graph` 키워드 사용 (Mermaid 10.9.4에서 deprecated)
+- ❌ `->` 또는 `-->` 화살표 사용
+- ❌ 한글 텍스트 따옴표 없이 사용
+- ❌ 스타일링 없는 다이어그램
+- ❌ 흰색 배경에 회색 글씨
+
+### **권장사항**
+- ✅ 모든 다이어그램에 스타일링 적용
+- ✅ 일관된 색상 팔레트 사용
+- ✅ 이모지로 시각적 구분 강화
+- ✅ 한글 텍스트 완벽 지원
+- ✅ 자동화 도구 활용
+
+## 📊 품질 지표
+
+### **목표 수준**
+- **Mermaid 문법 정확도**: 100%
+- **스타일링 적용률**: 100%
+- **가독성 점수**: 최고 수준
+- **한글 지원률**: 100%
+
+### **모니터링 방법**
+- 자동화된 문법 검증 도구 실행
+- 시각적 가독성 검토
+- 사용자 피드백 수집
+
+## 🔄 업데이트 가이드
+
+### **새로운 Mermaid 기능 추가 시**
+1. 표준 규칙에 새 기능 추가
+2. 색상 팔레트 확장
+3. 자동화 도구 업데이트
+4. 템플릿 라이브러리 확장
+
+### **기존 다이어그램 업그레이드 시**
+1. 자동 수정 도구 실행
+2. 수동 검토 및 개선
+3. 스타일링 적용 확인
+4. 가독성 테스트
+
+이 표준 규칙을 통해 모든 마크다운 문서와 AI 응답에서 일관되고 가독성이 뛰어난 Mermaid 다이어그램을 작성할 수 있습니다.

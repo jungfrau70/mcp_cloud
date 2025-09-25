@@ -111,7 +111,7 @@ choco install kubernetes-cli
 brew install kubectl
 
 # 또는 직접 설치
-curl -LO "https:///dl.k8s.io/release/$(curl -L -s https:///dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl"
+curl -LO "https:///dl.k8s.io/release/$[curl -L -s https:///dl.k8s.io/release/stable.txt]/bin/darwin/amd64/kubectl"
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 ```
@@ -119,7 +119,7 @@ sudo mv kubectl /usr/local/bin/
 #### Linux
 ```bash
 # Ubuntu/Debian
-curl -LO "https:///dl.k8s.io/release/$(curl -L -s https:///dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https:///dl.k8s.io/release/$[curl -L -s https:///dl.k8s.io/release/stable.txt]/bin/linux/amd64/kubectl"
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 
@@ -320,7 +320,7 @@ gh auth status
 
 ### 1. 권한 문제
 ```bash
-# Docker 권한 문제 (Linux)
+# Docker 권한 문제 [Linux]
 sudo usermod -aG docker $USER
 newgrp docker
 
@@ -330,7 +330,7 @@ chmod 600 ~/.kube/config
 
 ### 2. 네트워크 문제
 ```bash
-# 프록시 설정 (필요한 경우)
+# 프록시 설정 ["필요한 경우"]
 export http_proxy=http://proxy.company.com:8080
 export https_proxy=http://proxy.company.com:8080
 
@@ -356,18 +356,18 @@ pip install package_name
 ## 📚 추가 리소스
 
 ### 공식 문서
-- [AWS CLI 문서](https:///docs.aws.amazon.com/cli/)
-- [Google Cloud CLI 문서](https:///cloud.google.com/sdk/docs)
-- [Docker 문서](https:///docs.docker.com/)
-- [Kubernetes 문서](https:///kubernetes.io/docs/)
-- [Helm 문서](https:///helm.sh/docs/)
-- [Terraform 문서](https:///www.terraform.io/docs/)
+- ["AWS CLI 문서"][https:///docs.aws.amazon.com/cli/]
+- ["Google Cloud CLI 문서"][https:///cloud.google.com/sdk/docs]
+- ["Docker 문서"][https:///docs.docker.com/]
+- ["Kubernetes 문서"][https:///kubernetes.io/docs/]
+- ["Helm 문서"][https:///helm.sh/docs/]
+- ["Terraform 문서"][https:///www.terraform.io/docs/]
 
 ### 학습 자료
-- [AWS 학습 경로](https:///aws.amazon.com/training/)
-- [Google Cloud 학습 경로](https:///cloud.google.com/training)
-- [Kubernetes 학습 경로](https:///kubernetes.io/docs/tutorials/)
-- [Docker 학습 경로](https:///docs.docker.com/get-started/)
+- ["AWS 학습 경로"][https:///aws.amazon.com/training/]
+- ["Google Cloud 학습 경로"][https:///cloud.google.com/training]
+- ["Kubernetes 학습 경로"][https:///kubernetes.io/docs/tutorials/]
+- ["Docker 학습 경로"][https:///docs.docker.com/get-started/]
 
 ---
 
@@ -394,7 +394,7 @@ pip install package_name
 **통합 자동화**
 
 ## 🔗 관련 과정
-[Cloud Basic 1일차](README.md) | [Cloud Master 1일차](README.md) | [Cloud Container 1일차](README.md)
+["Cloud Basic 1일차"][README.md] | ["Cloud Master 1일차"][README.md] | ["Cloud Container 1일차"][README.md]
 
 </div>
 
@@ -402,6 +402,6 @@ pip install package_name
 
 <div align="center">
 
-[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
+["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
 
 </div>

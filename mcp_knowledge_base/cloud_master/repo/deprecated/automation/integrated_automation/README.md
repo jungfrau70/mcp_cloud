@@ -1,27 +1,27 @@
 # 통합 클라우드 과정 자동화 시스템
 
 ## 📋 목차
-- [🎯 개요](#개요)
-- [🏗️ 시스템 아키텍처](#시스템-아키텍처)
-- [🚀 주요 기능](#주요-기능)
-- [📋 사용 방법](#사용-방법)
-- [⚙️ 설정](#설정)
-- [🔧 과정별 연계 흐름](#과정별-연계-흐름)
-- [📊 모니터링 및 보고서](#모니터링-및-보고서)
-- [🛠️ 문제 해결](#문제-해결)
-- [🔄 업데이트 및 유지보수](#업데이트-및-유지보수)
-- [📈 성능 최적화](#성능-최적화)
-- [🤝 기여하기](#기여하기)
-- [📞 지원](#지원)
+- ["🎯 개요"]["#개요"]
+- ["🏗️ 시스템 아키텍처"]["#시스템-아키텍처"]
+- ["🚀 주요 기능"]["#주요-기능"]
+- ["📋 사용 방법"]["#사용-방법"]
+- ["⚙️ 설정"]["#설정"]
+- ["🔧 과정별 연계 흐름"]["#과정별-연계-흐름"]
+- ["📊 모니터링 및 보고서"]["#모니터링-및-보고서"]
+- ["🛠️ 문제 해결"]["#문제-해결"]
+- ["🔄 업데이트 및 유지보수"]["#업데이트-및-유지보수"]
+- ["📈 성능 최적화"]["#성능-최적화"]
+- ["🤝 기여하기"]["#기여하기"]
+- ["📞 지원"]["#지원"]
 
 ## 🎯 개요
 
 이 시스템은 Cloud Basic → Cloud Master → Cloud Container 과정을 연계하여 자동화하는 통합 시스템입니다. 각 과정이 독립적으로 실행되는 기존 방식에서 벗어나, 과정 간 리소스 공유와 진행 상황 추적을 통해 효율적인 학습 경험을 제공합니다.
 
 ### 📚 교재 연계성
-- **Cloud Basic**: 클라우드 기초 서비스 실습 (AWS/GCP 계정, IAM, EC2/Compute Engine, S3/Cloud Storage)
-- **Cloud Master**: Docker 컨테이너화 및 CI/CD 파이프라인 (Docker, Git/GitHub, GitHub Actions, VM 배포)
-- **Cloud Container**: Kubernetes 오케스트레이션 (GKE, ECS/Fargate, 고급 CI/CD, 고가용성 아키텍처)
+- **Cloud Basic**: 클라우드 기초 서비스 실습 ["AWS/GCP 계정, IAM, EC2/Compute Engine, S3/Cloud Storage"]
+- **Cloud Master**: Docker 컨테이너화 및 CI/CD 파이프라인 ["Docker, Git/GitHub, GitHub Actions, VM 배포"]
+- **Cloud Container**: Kubernetes 오케스트레이션 ["GKE, ECS/Fargate, 고급 CI/CD, 고가용성 아키텍처"]
 
 ### 🔄 학습 시나리오 연계
 1. **Basic → Master**: 기초 클라우드 서비스 → 컨테이너화 및 자동화
@@ -59,7 +59,7 @@ mcp_knowledge_base/integrated_automation/
 ## 🚀 주요 기능
 
 ### 1. **통합 과정 실행**
-- Cloud Basic (2일) → Cloud Master (3일) → Cloud Container (2일) 순차 실행
+- Cloud Basic ["2일"] → Cloud Master ["3일"] → Cloud Container ["2일"] 순차 실행
 - 각 과정의 완료 여부 확인 후 다음 과정 진행
 - 실패 시 적절한 오류 처리 및 복구
 
@@ -80,8 +80,8 @@ mcp_knowledge_base/integrated_automation/
 - 공유 리소스 테스트
 
 ### 5. **검증 도구**
-- 통합 시스템 검증 (`validate_integration.py`)
-- 과정 간 연결성 검증 (`validate_course_connections.py`)
+- 통합 시스템 검증 [`validate_integration.py`]
+- 과정 간 연결성 검증 [`validate_course_connections.py`]
 - 자동화된 문제 진단 및 해결 제안
 
 ### 6. **모니터링 및 보고서**
@@ -136,7 +136,7 @@ cat USAGE_GUIDE.md
 
 ## ⚙️ 설정
 
-### 기본 설정 (integrated_config.json)
+### 기본 설정 [integrated_config.json]
 ```json
 {
   "total_duration_days": 7,
@@ -208,7 +208,7 @@ tail -f ../cloud_container/automation_tests/container_course_automation.log
 ### 백업 및 복구
 ```bash
 # 전체 설정 백업
-tar -czf integrated_automation_backup_$(date +%Y%m%d).tar.gz .
+tar -czf integrated_automation_backup_$[date +%Y%m%d].tar.gz .
 
 # 특정 과정만 복구
 python run_integrated_automation.py --start-from basic
@@ -261,7 +261,7 @@ python run_integrated_automation.py --start-from basic
 **통합 자동화**
 
 ## 🔗 관련 과정
-Cloud Basic 1일차 | [Cloud Master 1일차](README.md) | [Cloud Container 1일차](README.md)
+Cloud Basic 1일차 | ["Cloud Master 1일차"][README.md] | ["Cloud Container 1일차"][README.md]
 
 </div>
 
@@ -269,6 +269,6 @@ Cloud Basic 1일차 | [Cloud Master 1일차](README.md) | [Cloud Container 1일�
 
 <div align="center">
 
-[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
+["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
 
 </div>

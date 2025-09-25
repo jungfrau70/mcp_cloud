@@ -6,7 +6,7 @@
 
 ## 📚 과정별 학습 시나리오
 
-### 🟢 Cloud Basic (2일) - 클라우드 기초
+### 🟢 Cloud Basic ["2일"] - 클라우드 기초
 **목표**: 클라우드 컴퓨팅의 기본 개념과 AWS/GCP 서비스 기초 습득
 
 #### 1일차: AWS & GCP 기초 서비스 실습
@@ -27,7 +27,7 @@
   - 웹 서버 + 데이터베이스 연동
 - **실습 결과물**: 데이터베이스와 연동된 웹 애플리케이션
 
-### 🟡 Cloud Master (3일) - 고급 CI/CD 및 VM 기반 컨테이너 배포
+### 🟡 Cloud Master ["3일"] - 고급 CI/CD 및 VM 기반 컨테이너 배포
 **목표**: Docker 컨테이너화와 CI/CD 파이프라인을 통한 자동화된 배포 시스템 구축
 
 #### 1일차: Docker, Git/GitHub, GitHub Actions 기초
@@ -57,7 +57,7 @@
   - 장애 복구 시뮬레이션
 - **실습 결과물**: 고가용성 아키텍처의 프로덕션 레디 시스템
 
-### 🔵 Cloud Container (2일) - 컨테이너 심화 과정
+### 🔵 Cloud Container ["2일"] - 컨테이너 심화 과정
 **목표**: Kubernetes 오케스트레이션과 고급 컨테이너 기술을 통한 엔터프라이즈급 시스템 구축
 
 #### 1일차: Kubernetes 및 GKE 고급 오케스트레이션
@@ -136,6 +136,6 @@
 
 <div align="center">
 
-[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
+["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
 
 </div>

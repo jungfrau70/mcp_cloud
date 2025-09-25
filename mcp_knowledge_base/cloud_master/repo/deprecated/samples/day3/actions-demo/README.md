@@ -16,14 +16,14 @@
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Code Push     │    │   Build & Test  │    │   Deploy        │
-│   (GitHub)      │───►│   (Actions)     │───►│   (K8s + LB)    │
+│   [GitHub]      │───►│   [Actions]     │───►│   [K8s + LB]    │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          │                       │                       │
          ▼                       ▼                       ▼
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Security      │    │   Performance   │    │   Monitoring    │
-│   (CodeQL)      │    │   (Load Test)   │    │   (Prometheus)  │
+│   [CodeQL]      │    │   [Load Test]   │    │   [Prometheus]  │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          │                       │                       │
@@ -38,9 +38,9 @@
 
 ### 필수 요구사항
 - GitHub 계정
-- AWS 계정 (ELB, Auto Scaling)
-- GCP 계정 (Cloud Load Balancing, MIG)
-- Kubernetes 클러스터 (EKS, GKE, 또는 로컬)
+- AWS 계정 [ELB, Auto Scaling]
+- GCP 계정 [Cloud Load Balancing, MIG]
+- Kubernetes 클러스터 ["EKS, GKE, 또는 로컬"]
 
 ### 환경 설정
 
@@ -371,25 +371,25 @@ export let options = {
     { duration: '2m', target: 0 },
   ],
   thresholds: {
-    http_req_duration: ['p(95)<1000'],
+    http_req_duration: ['p[95]<1000'],
     http_req_failed: ['rate<0.1'],
   },
 };
 
 export default function() {
   // 정상 요청
-  let response = http.get('http://load-balancer/');
-  check(response, {
-    'status is 200': (r) => r.status === 200,
-  });
+  let response = http.get['http://load-balancer/'];
+  check[response, {
+    'status is 200': [r] => r.status === 200,
+  }];
   
-  // 장애 시뮬레이션 (10% 확률)
-  if (Math.random() < 0.1) {
+  // 장애 시뮬레이션 ["10% 확률"]
+  if [Math.random[] < 0.1] {
     // 네트워크 지연 시뮬레이션
-    sleep(2);
+    sleep[2];
   }
   
-  sleep(1);
+  sleep[1];
 }
 ```
 
@@ -410,18 +410,18 @@ export let options = {
     { duration: '5m', target: 0 },
   ],
   thresholds: {
-    http_req_duration: ['p(95)<500'],
+    http_req_duration: ['p[95]<500'],
     http_req_failed: ['rate<0.05'],
   },
 };
 
 export default function() {
-  let response = http.get('http://load-balancer/');
-  check(response, {
-    'status is 200': (r) => r.status === 200,
-    'response time < 500ms': (r) => r.timings.duration < 500,
-  });
-  sleep(1);
+  let response = http.get['http://load-balancer/'];
+  check[response, {
+    'status is 200': [r] => r.status === 200,
+    'response time < 500ms': [r] => r.timings.duration < 500,
+  }];
+  sleep[1];
 }
 ```
 
@@ -442,17 +442,17 @@ export let options = {
     { duration: '5m', target: 0 },
   ],
   thresholds: {
-    http_req_duration: ['p(95)<1000'],
+    http_req_duration: ['p[95]<1000'],
     http_req_failed: ['rate<0.2'],
   },
 };
 
 export default function() {
-  let response = http.get('http://load-balancer/');
-  check(response, {
-    'status is 200': (r) => r.status === 200,
-  });
-  sleep(1);
+  let response = http.get['http://load-balancer/'];
+  check[response, {
+    'status is 200': [r] => r.status === 200,
+  }];
+  sleep[1];
 }
 ```
 
@@ -465,7 +465,7 @@ groups:
 - name: my-app
   rules:
   - alert: HighErrorRate
-    expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
+    expr: rate[http_requests_total{status=~"5.."}[5m]] > 0.1
     for: 2m
     labels:
       severity: critical
@@ -474,7 +474,7 @@ groups:
       description: "Error rate is {{ $value }} errors per second"
   
   - alert: HighResponseTime
-    expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 1
+    expr: histogram_quantile[0.95, rate[http_request_duration_seconds_bucket[5m]]] > 1
     for: 2m
     labels:
       severity: warning
@@ -483,7 +483,7 @@ groups:
       description: "95th percentile response time is {{ $value }} seconds"
   
   - alert: PodCrashLooping
-    expr: rate(kube_pod_container_status_restarts_total[15m]) > 0
+    expr: rate[kube_pod_container_status_restarts_total[15m]] > 0
     for: 2m
     labels:
       severity: critical
@@ -503,7 +503,7 @@ groups:
         "type": "graph",
         "targets": [
           {
-            "expr": "rate(http_requests_total[5m])",
+            "expr": "rate[http_requests_total[5m]]",
             "legendFormat": "{{instance}}"
           }
         ]
@@ -513,7 +513,7 @@ groups:
         "type": "graph",
         "targets": [
           {
-            "expr": "rate(http_requests_total{status=~/"5../"}[5m])",
+            "expr": "rate[http_requests_total{status=~/"5../"}[5m]]",
             "legendFormat": "5xx Errors"
           }
         ]
@@ -523,7 +523,7 @@ groups:
         "type": "graph",
         "targets": [
           {
-            "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))",
+            "expr": "histogram_quantile[0.95, rate[http_request_duration_seconds_bucket[5m]]]",
             "legendFormat": "95th percentile"
           }
         ]
@@ -545,9 +545,9 @@ groups:
 
 ## 🔗 관련 자료
 
-- [GitHub Actions 공식 문서](https:///docs.github.com/en/actions)
-- [Kubernetes 공식 문서](https:///kubernetes.io/docs/)
-- [Istio 공식 문서](https:///istio.io/latest/docs/)
-- [Prometheus 공식 문서](https:///prometheus.io/docs/)
-- [Grafana 공식 문서](https:///grafana.com/docs/)
-- [k6 성능 테스트](https:///k6.io/)
+- ["GitHub Actions 공식 문서"][https:///docs.github.com/en/actions]
+- ["Kubernetes 공식 문서"][https:///kubernetes.io/docs/]
+- ["Istio 공식 문서"][https:///istio.io/latest/docs/]
+- ["Prometheus 공식 문서"][https:///prometheus.io/docs/]
+- ["Grafana 공식 문서"][https:///grafana.com/docs/]
+- ["k6 성능 테스트"][https:///k6.io/]

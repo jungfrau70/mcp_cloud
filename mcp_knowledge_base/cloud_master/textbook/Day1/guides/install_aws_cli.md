@@ -1,23 +1,23 @@
 # AWS CLI 설치 가이드
 
 
-AWS CLI(Command Line Interface)는 AWS 서비스와 상호작용하기 위한 통합 도구입니다. 이 가이드는 다양한 운영체제에서 AWS CLI를 설치하는 방법을 설명합니다.
+AWS CLI[Command Line Interface]는 AWS 서비스와 상호작용하기 위한 통합 도구입니다. 이 가이드는 다양한 운영체제에서 AWS CLI를 설치하는 방법을 설명합니다.
 
 ## 목차
-- [Windows 설치](#windows-설치)
-- [macOS 설치](#macos-설치)
-- [Linux 설치](#linux-설치)
-- [설치 확인](#설치-확인)
-- [기본 설정](#기본-설정)
-- [문제 해결](#문제-해결)
+- ["Windows 설치"]["#windows-설치"]
+- ["macOS 설치"]["#macos-설치"]
+- ["Linux 설치"]["#linux-설치"]
+- ["설치 확인"]["#설치-확인"]
+- ["기본 설정"]["#기본-설정"]
+- ["문제 해결"]["#문제-해결"]
 
 ## Windows 설치
 
-### 방법 1: MSI 설치 프로그램 (권장)
+### 방법 1: MSI 설치 프로그램 ["권장"]
 
 1. **AWS CLI MSI 설치 프로그램 다운로드**
    ```bash
-   # 최신 버전 다운로드 (64비트)
+   # 최신 버전 다운로드 ["64비트"]
    https:///awscli.amazonaws.com/AWSCLIV2.msi
    ```
 
@@ -54,7 +54,7 @@ choco install awscli
 
 ## macOS 설치
 
-### 방법 1: Homebrew 사용 (권장)
+### 방법 1: Homebrew 사용 ["권장"]
 
 1. **Homebrew 설치 확인**
    ```bash
@@ -107,17 +107,17 @@ sudo installer -pkg AWSCLIV2.pkg -target /
 
 ### CentOS/RHEL/Fedora
 
-1. **yum 사용 (CentOS/RHEL)**
+1. **yum 사용 [CentOS/RHEL]**
    ```bash
    sudo yum install awscli
    ```
 
-2. **dnf 사용 (Fedora)**
+2. **dnf 사용 [Fedora]**
    ```bash
    sudo dnf install awscli
    ```
 
-### pip를 사용한 설치 (모든 Linux 배포판)
+### pip를 사용한 설치 ["모든 Linux 배포판"]
 
 1. **pip 설치**
    ```bash
@@ -163,8 +163,8 @@ aws configure
 다음 정보를 입력합니다:
 - **AWS Access Key ID**: IAM 사용자의 액세스 키
 - **AWS Secret Access Key**: IAM 사용자의 시크릿 키
-- **Default region name**: 기본 리전 (예: `ap-northeast-2`)
-- **Default output format**: 출력 형식 (예: `json`)
+- **Default region name**: 기본 리전 ["예: `ap-northeast-2`"]
+- **Default output format**: 출력 형식 ["예: `json`"]
 
 ### 2. 설정 파일 위치
 
@@ -230,10 +230,10 @@ aws s3 ls --debug
 
 ## 추가 리소스
 
-- [AWS CLI 공식 문서](https:///docs.aws.amazon.com/cli/)
-- [AWS CLI 명령어 참조](https:///docs.aws.amazon.com/cli/latest/reference/)
-- [AWS CLI 구성 파일](https:///docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
-- [AWS CLI 환경 변수](https:///docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html)
+- ["AWS CLI 공식 문서"][https:///docs.aws.amazon.com/cli/]
+- ["AWS CLI 명령어 참조"][https:///docs.aws.amazon.com/cli/latest/reference/]
+- ["AWS CLI 구성 파일"][https:///docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html]
+- ["AWS CLI 환경 변수"][https:///docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html]
 
 ## 버전 관리
 
@@ -241,10 +241,10 @@ aws s3 ls --debug
 # 현재 버전 확인
 aws --version
 
-# 업데이트 (pip 사용 시)
+# 업데이트 ["pip 사용 시"]
 pip3 install --upgrade awscli
 
-# 업데이트 (Homebrew 사용 시)
+# 업데이트 ["Homebrew 사용 시"]
 brew upgrade awscli
 ```
 
@@ -267,7 +267,7 @@ aws sts get-session-token --serial-number arn:aws:iam::123456789012:mfa/user --t
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -275,6 +275,6 @@ aws sts get-session-token --serial-number arn:aws:iam::123456789012:mfa/user --t
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Master 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

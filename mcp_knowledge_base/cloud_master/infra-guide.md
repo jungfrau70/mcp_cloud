@@ -13,9 +13,9 @@
 - ✅ 멀티 클라우드 VM 인스턴스 자동 배포
 - ✅ VM 기반 컨테이너 오케스트레이션 구축
 - ✅ 인프라 모니터링 및 성능 최적화
-- ✅ 프로덕션 레벨 모니터링 스택 구축 (8개 서비스)
+- ✅ 프로덕션 레벨 모니터링 스택 구축 ["8개 서비스"]
 - ✅ 보안 스캔 및 취약점 관리 시스템
-- ✅ 고성능 인프라 운영 (평균 응답시간 6.2ms)
+- ✅ 고성능 인프라 운영 ["평균 응답시간 6.2ms"]
 
 ### 예상 소요 시간
 - **환경 설정**: 60-90분
@@ -29,14 +29,14 @@
 ## 📚 기존 문서와의 연계
 
 ### 관련 실습 가이드
-- [CI/CD 파이프라인 가이드](cicd-guide.md) - 자동화된 배포 및 모니터링
-- [실습 가이드](execuise-guide.md) - 전체 과정 실습 가이드
-- [Day별 실습](../textbook/Day1/README.md) - 단계별 실습 진행
+- ["CI/CD 파이프라인 가이드"][cicd-guide.md] - 자동화된 배포 및 모니터링
+- ["실습 가이드"][execuise-guide.md] - 전체 과정 실습 가이드
+- ["Day별 실습"][../textbook/Day1/README.md] - 단계별 실습 진행
 
 ### 자동화 스크립트
-- [통합 자동화 스크립트](../repos/automation/integrated-practice-automation.sh) - 전체 과정 자동화
-- [환경 체크 도구](../repos/cloud-scripts/environment-check-wsl.sh) - 실습 환경 검증
-- [VM 배포 스크립트](../repos/cloud-scripts/vm-deployment.sh) - VM 기반 컨테이너 자동 배포
+- ["통합 자동화 스크립트"][../repos/automation/integrated-practice-automation.sh] - 전체 과정 자동화
+- ["환경 체크 도구"][../repos/cloud-scripts/environment-check-wsl.sh] - 실습 환경 검증
+- ["VM 배포 스크립트"][../repos/cloud-scripts/vm-deployment.sh] - VM 기반 컨테이너 자동 배포
 
 ---
 
@@ -99,7 +99,7 @@ aws sts get-caller-identity
 ```
 
 **설정 단계:**
-1. AWS 계정 생성 (Free Tier 권장)
+1. AWS 계정 생성 ["Free Tier 권장"]
 2. IAM 사용자 생성 및 권한 설정
 3. AWS CLI 설정
 4. 리전 및 가용 영역 확인
@@ -121,7 +121,7 @@ cat gcp-environment.env
 ```
 
 **설정 단계:**
-1. GCP 계정 생성 ($300 크레딧 제공)
+1. GCP 계정 생성 ["$300 크레딧 제공"]
 2. 프로젝트 생성 및 설정
 3. GCP CLI 설정
 4. 서비스 계정 및 키 생성
@@ -161,7 +161,7 @@ aws ec2 terminate-instances --instance-ids i-1234567890abcdef0
 ./gcp-compute-create.sh
 
 # 인스턴스 목록 확인
-gcloud compute instances list --format="table(name,zone,machineType,status)"
+gcloud compute instances list --format="table[name,zone,machineType,status]"
 ```
 
 #### Compute Engine 인스턴스 관리
@@ -260,7 +260,7 @@ aws ce get-cost-and-usage --time-period Start=2024-01-01,End=2024-01-31
 #### GCP 리소스 모니터링
 ```bash
 # Compute Engine 인스턴스 상태 확인
-gcloud compute instances list --format="table(name,zone,machineType,status)"
+gcloud compute instances list --format="table[name,zone,machineType,status]"
 
 # Compute Engine 인스턴스 상세 정보 확인
 gcloud compute instances describe INSTANCE_NAME --zone=ZONE
@@ -426,26 +426,26 @@ docker image prune -a
 
 ### ✅ 환경 설정 완료
 - [ ] WSL 환경 설정
-- [ ] 모든 도구 설치 (`./install-all-wsl.sh`)
-- [ ] Docker 실행 (`start-docker`)
-- [ ] 환경 검증 (`./environment-check-wsl.sh`)
+- [ ] 모든 도구 설치 [`./install-all-wsl.sh`]
+- [ ] Docker 실행 [`start-docker`]
+- [ ] 환경 검증 [`./environment-check-wsl.sh`]
 
 ### ✅ 클라우드 설정 완료
-- [ ] AWS CLI 설정 (`aws configure`)
-- [ ] GCP 초기화 (`gcloud init`)
-- [ ] AWS 환경 도우미 (`./aws-setup-helper.sh`)
-- [ ] GCP 환경 도우미 (`./gcp-setup-helper.sh`)
+- [ ] AWS CLI 설정 [`aws configure`]
+- [ ] GCP 초기화 [`gcloud init`]
+- [ ] AWS 환경 도우미 [`./aws-setup-helper.sh`]
+- [ ] GCP 환경 도우미 [`./gcp-setup-helper.sh`]
 
 ### ✅ VM 배포 완료
-- [ ] AWS EC2 배포 (`./aws-ec2-create.sh`)
-- [ ] GCP Compute 배포 (`./gcp-compute-create.sh`)
+- [ ] AWS EC2 배포 [`./aws-ec2-create.sh`]
+- [ ] GCP Compute 배포 [`./gcp-compute-create.sh`]
 - [ ] VM 상태 확인
 
 ### ✅ VM 기반 컨테이너 배포 완료
-- [ ] Docker Compose 환경 구성 (`./vm-container-deploy.sh`)
+- [ ] Docker Compose 환경 구성 [`./vm-container-deploy.sh`]
 - [ ] AWS EC2 + Docker Compose 배포
 - [ ] GCP Compute Engine + Docker Compose 배포
-- [ ] 컨테이너 상태 확인 (`docker-compose ps`)
+- [ ] 컨테이너 상태 확인 [`docker-compose ps`]
 
 ### ✅ 모니터링 설정 완료
 - [ ] 리소스 모니터링 설정
@@ -480,24 +480,24 @@ docker-compose ps
 ## 📚 참고 자료
 
 ### 공식 문서
-- [WSL 공식 문서](https://docs.microsoft.com/ko-kr/windows/wsl/)
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Docker Compose 공식 문서](https://docs.docker.com/compose/)
-- [AWS 공식 문서](https://docs.aws.amazon.com/)
-- [GCP 공식 문서](https://cloud.google.com/docs)
+- ["WSL 공식 문서"][https://docs.microsoft.com/ko-kr/windows/wsl/]
+- ["Docker 공식 문서"][https://docs.docker.com/]
+- ["Docker Compose 공식 문서"][https://docs.docker.com/compose/]
+- ["AWS 공식 문서"][https://docs.aws.amazon.com/]
+- ["GCP 공식 문서"][https://cloud.google.com/docs]
 
 ### 추가 학습 자료
-- [AWS 예제](https://github.com/aws-samples)
-- [GCP 예제](https://github.com/GoogleCloudPlatform)
-- [Docker Compose 예제](https://github.com/docker/awesome-compose)
+- ["AWS 예제"][https://github.com/aws-samples]
+- ["GCP 예제"][https://github.com/GoogleCloudPlatform]
+- ["Docker Compose 예제"][https://github.com/docker/awesome-compose]
 
 ---
 
 <div align="center">
 
-[← 이전: CI/CD 파이프라인 가이드](cicd-guide.md) | 
-[📚 전체 커리큘럼](../curriculum.md) | 
-[🏠 학습 경로로 돌아가기](../index.md) | 
-[다음: 실습 가이드 →](execuise-guide.md)
+["← 이전: CI/CD 파이프라인 가이드"][cicd-guide.md] | 
+["📚 전체 커리큘럼"][../curriculum.md] | 
+["🏠 학습 경로로 돌아가기"][../index.md] | 
+["다음: 실습 가이드 →"][execuise-guide.md]
 
 </div>

@@ -1,8 +1,8 @@
 # Cloud Container - 1일차 강의안
 
-> 📋 **강의 일시**: 2024년 10월 1일 (화) 9:00~17:00  
+> 📋 **강의 일시**: 2024년 10월 1일 ["화"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
-> 📋 **선수 학습**: Cloud Master 과정 완료 (Docker, CI/CD 기본)
+> 📋 **선수 학습**: Cloud Master 과정 완료 ["Docker, CI/CD 기본"]
 
 ---
 
@@ -77,43 +77,43 @@ repo/scripts/
 
 ---
 
-## 🕘 1교시: GKE 클러스터 구축 (9:00~10:30)
+## 🕘 1교시: GKE 클러스터 구축 [9:00~10:30]
 
-### 📚 이론 학습 (15분)
+### 📚 이론 학습 ["15분"]
 #### Kubernetes 아키텍처
 - **클러스터 구성**: Control Plane + Worker Nodes
 - **Pod**: 가장 작은 배포 단위
 - **Service**: Pod 집합에 대한 네트워크 접근
 - **Ingress**: HTTP/HTTPS 트래픽 라우팅
 
-#### GKE (Google Kubernetes Engine)
+#### GKE [Google Kubernetes Engine]
 - **관리형 Kubernetes**: Google이 Control Plane 관리
 - **자동 업그레이드**: Kubernetes 버전 자동 업데이트
 - **자동 스케일링**: 노드 자동 확장/축소
 - **통합 모니터링**: Google Cloud 모니터링과 통합
 
-### 🛠️ 실습 (75분)
+### 🛠️ 실습 ["75분"]
 
 #### 🏗️ **1단계: GKE 클러스터 생성**
 
-**목표 아키텍처 (1단계 완료 후)**
+**목표 아키텍처 ["1단계 완료 후"]**
 ```mermaid
-graph TB
+flowchart TB
     subgraph "GCP Cloud"
         G1[GKE Cluster<br/>cloud-container-cluster]
         G2[Node Pool<br/>3 nodes]
-        G3[VPC Network<br/>기본 네트워크]
-        G4[Firewall Rules<br/>Kubernetes 규칙]
+        G3["VPC Network<br/>기본 네트워크"]
+        G4["Firewall Rules<br/>Kubernetes 규칙"]
     end
     
     subgraph "Local"
-        L1[개발자 머신<br/>kubectl]
+        L1["개발자 머신<br/>kubectl"]
     end
     
-    L1 --> G1
-    G1 --> G2
-    G2 --> G3
-    G3 --> G4
+    L1 -->> G1
+    G1 -->> G2
+    G2 -->> G3
+    G3 -->> G4
 ```
 
 **🔍 명령 실행: GKE 클러스터 생성**
@@ -122,7 +122,7 @@ graph TB
 echo "=== GKE 클러스터 생성 시작 ==="
 ./repo/scripts/day1-practice-improved.sh
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 GKE 클러스터 생성 ==="
 # 1. GKE 클러스터 생성
 gcloud container clusters create cloud-container-cluster \
@@ -149,7 +149,7 @@ kubectl get nodes
 
 **✅ 예상 결과:**
 - GKE 클러스터: `cloud-container-cluster` 생성
-- 노드 수: 3개 (e2-medium)
+- 노드 수: 3개 [e2-medium]
 - 자동 스케일링: 1-5개 노드
 - 클러스터 상태: `RUNNING`
 
@@ -158,26 +158,26 @@ kubectl get nodes
 
 ---
 
-## 🕘 2교시: GitHub Actions CI/CD 파이프라인 (10:45~12:00)
+## 🕘 2교시: GitHub Actions CI/CD 파이프라인 [10:45~12:00]
 
-### 📚 이론 학습 (15분)
+### 📚 이론 학습 ["15분"]
 #### GitHub Actions CI/CD
 - **Workflow**: 자동화된 CI/CD 파이프라인
 - **Container Registry**: GCP Container Registry 연동
 - **Kubernetes 배포**: kubectl을 통한 자동 배포
 - **환경별 배포**: Dev, Staging, Production 분리
 
-### 🛠️ 실습 (60분)
+### 🛠️ 실습 ["60분"]
 
 #### 🏗️ **2단계: GitHub Actions CI/CD 구축**
 
-**목표 아키텍처 (2단계 완료 후)**
+**목표 아키텍처 ["2단계 완료 후"]**
 ```mermaid
-graph TB
+flowchart TB
     subgraph "GitHub"
         GH1[Repository<br/>sample-app]
         GH2[GitHub Actions<br/>CI/CD Pipeline]
-        GH3[Container Registry<br/>GCR 연동]
+        GH3["Container Registry<br/>GCR 연동"]
     end
     
     subgraph "GCP Cloud"
@@ -187,15 +187,15 @@ graph TB
     end
     
     subgraph "Local"
-        L1[개발자 머신<br/>Git Push]
+        L1["개발자 머신<br/>Git Push"]
     end
     
-    L1 --> GH1
-    GH1 --> GH2
-    GH2 --> GH3
-    GH3 --> G2
-    G2 --> G1
-    G1 --> G3
+    L1 -->> GH1
+    GH1 -->> GH2
+    GH2 -->> GH3
+    GH3 -->> G2
+    G2 -->> G1
+    G1 -->> G3
 ```
 
 **🔍 명령 실행: GitHub Actions 설정**
@@ -204,7 +204,7 @@ graph TB
 echo "=== GitHub Actions CI/CD 설정 시작 ==="
 ./repo/scripts/day1-practice-improved.sh
 
-# 또는 수동 설정 (참고용)
+# 또는 수동 설정 ["참고용"]
 echo "=== 수동 GitHub Actions 설정 ==="
 # 1. 샘플 애플리케이션 생성
 mkdir sample-app
@@ -239,33 +239,33 @@ EOF
 
 # 4. Express 서버 생성
 cat > server.js << 'EOF'
-const express = require('express');
+const express = require['express'];
 const app = express();
 const port = 3000;
 
-app.get('/', (req, res) => {
-  res.json({
+app.get['/', [req, res] => {
+  res.json[{
     message: 'Hello from Kubernetes!',
-    timestamp: new Date().toISOString(),
+    timestamp: new Date[].toISOString[],
     pod: process.env.HOSTNAME || 'unknown'
-  });
+  }];
+}];
+
+app.get['/health', [req, res] => {
+  res.status[200].json[{ status: 'healthy' }];
+}];
+
+app.get['/metrics', [req, res] => {
+  res.json[{
+    requests: Math.floor[Math.random[] * 1000],
+    cpu_usage: Math.random[] * 100,
+    memory_usage: Math.random(] * 100
+  }];
 });
 
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'healthy' });
-});
-
-app.get('/metrics', (req, res) => {
-  res.json({
-    requests: Math.floor(Math.random() * 1000),
-    cpu_usage: Math.random() * 100,
-    memory_usage: Math.random() * 100
-  });
-});
-
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server running on port ${port}`);
-});
+app.listen[port, '0.0.0.0', [] => {
+  console.log[`Server running on port ${port}`];
+}];
 EOF
 
 # 5. GitHub Actions Workflow 생성
@@ -404,26 +404,26 @@ git push -u origin main
 
 ---
 
-## 🍽️ 점심 시간 (12:00~13:00)
+## 🍽️ 점심 시간 [12:00~13:00]
 
 ---
 
-## 🕘 3교시: 외부 VM 모니터링 스택 구축 (13:00~14:30)
+## 🕘 3교시: 외부 VM 모니터링 스택 구축 [13:00~14:30]
 
-### 📚 이론 학습 (15분)
+### 📚 이론 학습 ["15분"]
 #### 모니터링 아키텍처
 - **Prometheus**: 메트릭 수집 및 저장
 - **Grafana**: 시각화 및 대시보드
 - **Node Exporter**: 시스템 메트릭 수집
 - **외부 모니터링**: VM에서 Kubernetes 클러스터 모니터링
 
-### 🛠️ 실습 (75분)
+### 🛠️ 실습 ["75분"]
 
 #### 🏗️ **3단계: 외부 VM 모니터링 스택 구축**
 
-**목표 아키텍처 (3단계 완료 후)**
+**목표 아키텍처 ["3단계 완료 후"]**
 ```mermaid
-graph TB
+flowchart TB
     subgraph "GCP Cloud - GKE"
         G1[GKE Cluster<br/>cloud-container-cluster]
         G2[Sample App Pods<br/>3 replicas]
@@ -432,26 +432,26 @@ graph TB
     end
     
     subgraph "External VM - Monitoring"
-        M1[Prometheus<br/>:9090<br/>메트릭 수집]
-        M2[Grafana<br/>:3000<br/>시각화]
-        M3[Node Exporter<br/>:9100<br/>시스템 메트릭]
-        M4[Kube State Metrics<br/>K8s 상태 메트릭]
+        M1["Prometheus<br/>:9090<br/>메트릭 수집"]
+        M2["Grafana<br/>:3000<br/>시각화"]
+        M3["Node Exporter<br/>:9100<br/>시스템 메트릭"]
+        M4["Kube State Metrics<br/>K8s 상태 메트릭"]
     end
     
     subgraph "Local"
-        L1[개발자 머신]
+        L1["개발자 머신"]
     end
     
-    L1 --> G4
-    G4 --> G3
-    G3 --> G2
+    L1 -->> G4
+    G4 -->> G3
+    G3 -->> G2
     
-    M1 --> G2
-    M1 --> G3
-    M3 --> G2
-    M4 --> G1
-    M2 --> M1
-    L1 --> M2
+    M1 -->> G2
+    M1 -->> G3
+    M3 -->> G2
+    M4 -->> G1
+    M2 -->> M1
+    L1 -->> M2
 ```
 
 **🔍 명령 실행: 외부 VM 모니터링 스택 구축**
@@ -460,12 +460,12 @@ graph TB
 echo "=== 외부 VM 모니터링 스택 구축 시작 ==="
 ./repo/scripts/day1-practice-improved.sh
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 모니터링 스택 구축 ==="
 # 1. 모니터링 디렉토리 생성
 mkdir -p monitoring/{prometheus,grafana/dashboards,grafana/provisioning/datasources}
 
-# 2. Prometheus 설정 파일 생성 (Kubernetes 클러스터 모니터링 포함)
+# 2. Prometheus 설정 파일 생성 ["Kubernetes 클러스터 모니터링 포함"]
 cat > monitoring/prometheus/prometheus.yml << 'EOF'
 global:
   scrape_interval: 15s
@@ -491,10 +491,10 @@ scrape_configs:
     - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
       action: replace
       target_label: __metrics_path__
-      regex: (.+)
+      regex: [.+]
     - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
       action: replace
-      regex: ([^:]+)(?::\d+)?;(\d+)
+      regex: [[^:]+][?::\d+]?;[\d+]
       replacement: $1:$2
       target_label: __address__
   
@@ -521,11 +521,11 @@ scrape_configs:
     bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
     relabel_configs:
     - action: labelmap
-      regex: __meta_kubernetes_node_label_(.+)
+      regex: __meta_kubernetes_node_label_[.+]
     - target_label: __address__
       replacement: kubernetes.default.svc:443
     - source_labels: [__meta_kubernetes_node_name]
-      regex: (.+)
+      regex: [.+]
       target_label: __metrics_path__
       replacement: /api/v1/nodes/${1}/proxy/metrics
 EOF
@@ -573,7 +573,7 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+      - '--collector.filesystem.mount-points-exclude=^/[sys|proc|dev|host|etc][$$|/]'
 
 volumes:
   prometheus_data:
@@ -624,7 +624,7 @@ curl -f http://localhost:9100 && echo "✅ Node Exporter 정상"
 ```bash
 echo "=== 모니터링 서비스 접속 URL ==="
 echo "Prometheus: http://localhost:9090"
-echo "Grafana: http://localhost:3000 (admin/admin)"
+echo "Grafana: http://localhost:3000 [admin/admin]"
 echo "Node Exporter: http://localhost:9100"
 echo ""
 echo "브라우저에서 각 URL에 접속하여 확인하세요!"
@@ -632,24 +632,24 @@ echo "브라우저에서 각 URL에 접속하여 확인하세요!"
 
 ---
 
-## 🕘 4교시: 로드밸런서 및 Ingress 설정 (14:45~16:15)
+## 🕘 4교시: 로드밸런서 및 Ingress 설정 [14:45~16:15]
 
-### 📚 이론 학습 (15분)
+### 📚 이론 학습 ["15분"]
 #### 로드밸런싱 개념
 - **Ingress**: HTTP/HTTPS 트래픽 라우팅
 - **Load Balancer**: 외부 트래픽을 서비스로 분산
 - **Service**: Pod 집합에 대한 안정적인 엔드포인트
 - **Health Check**: 서비스 상태 모니터링
 
-### 🛠️ 실습 (75분)
+### 🛠️ 실습 ["75분"]
 
 #### 🏗️ **4단계: 로드밸런서 및 Ingress 설정**
 
-**목표 아키텍처 (4단계 완료 후)**
+**목표 아키텍처 ["4단계 완료 후"]**
 ```mermaid
-graph TB
+flowchart TB
     subgraph "Internet"
-        I1[사용자 요청]
+        I1["사용자 요청"]
     end
     
     subgraph "GCP Cloud - Load Balancer"
@@ -669,14 +669,14 @@ graph TB
         M2[Grafana<br/>:3000]
     end
     
-    I1 --> LB1
-    LB1 --> LB2
-    LB2 --> G4
-    G4 --> G3
-    G3 --> G2
+    I1 -->> LB1
+    LB1 -->> LB2
+    LB2 -->> G4
+    G4 -->> G3
+    G3 -->> G2
     
-    M1 --> G2
-    M2 --> M1
+    M1 -->> G2
+    M2 -->> M1
 ```
 
 **🔍 명령 실행: 로드밸런서 및 Ingress 설정**
@@ -685,9 +685,9 @@ graph TB
 echo "=== 로드밸런서 및 Ingress 설정 시작 ==="
 ./repo/scripts/day1-practice-improved.sh
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 로드밸런서 및 Ingress 설정 ==="
-# 1. Ingress Controller 설치 (nginx-ingress)
+# 1. Ingress Controller 설치 [nginx-ingress]
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/cloud/deploy.yaml
 
 # 2. Ingress Controller 상태 확인
@@ -719,7 +719,7 @@ spec:
             name: sample-app-service
             port:
               number: 80
-  - http:  # 기본 호스트 (모든 요청)
+  - http:  # 기본 호스트 ["모든 요청"]
     paths:
     - path: /
       pathType: Prefix
@@ -736,7 +736,7 @@ kubectl apply -f k8s/ingress.yaml
 # 5. Load Balancer IP 확인
 echo "Load Balancer IP 확인 중..."
 kubectl get service ingress-nginx-controller -n ingress-nginx
-EXTERNAL_IP=$(kubectl get service ingress-nginx-controller -n ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+EXTERNAL_IP=$[kubectl get service ingress-nginx-controller -n ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}']
 echo "External IP: $EXTERNAL_IP"
 
 # 6. 로드밸런서 헬스체크 확인
@@ -744,7 +744,7 @@ echo "로드밸런서 헬스체크 확인..."
 curl -I http://$EXTERNAL_IP/health
 
 # 7. 트래픽 분산 테스트
-echo "트래픽 분산 테스트 (10회 요청):"
+echo "트래픽 분산 테스트 ["10회 요청"]:"
 for i in {1..10}; do
     echo -n "요청 $i: "
     curl -s http://$EXTERNAL_IP/ | grep -o '"pod":"[^"]*"' || echo "응답 없음"
@@ -770,24 +770,24 @@ echo "브라우저에서 접속하여 확인하세요!"
 
 ---
 
-## 🕘 5교시: 자동 스케일링 및 스트레스 테스트 (16:30~17:00)
+## 🕘 5교시: 자동 스케일링 및 스트레스 테스트 [16:30~17:00]
 
-### 📚 이론 학습 (10분)
+### 📚 이론 학습 ["10분"]
 #### 자동 스케일링
-- **HPA (Horizontal Pod Autoscaler)**: Pod 수평 확장
-- **VPA (Vertical Pod Autoscaler)**: Pod 리소스 수직 확장
+- **HPA [Horizontal Pod Autoscaler]**: Pod 수평 확장
+- **VPA [Vertical Pod Autoscaler]**: Pod 리소스 수직 확장
 - **Cluster Autoscaler**: 노드 자동 확장
 - **메트릭 기반 스케일링**: CPU, 메모리, 커스텀 메트릭
 
-### 🛠️ 실습 (20분)
+### 🛠️ 실습 ["20분"]
 
 #### 🏗️ **5단계: 자동 스케일링 설정**
 
-**목표 아키텍처 (5단계 완료 후)**
+**목표 아키텍처 ["5단계 완료 후"]**
 ```mermaid
-graph TB
+flowchart TB
     subgraph "Internet"
-        I1[사용자 요청<br/>고부하]
+        I1["사용자 요청<br/>고부하"]
     end
     
     subgraph "GCP Cloud - Load Balancer"
@@ -796,11 +796,11 @@ graph TB
     
     subgraph "GCP Cloud - GKE"
         G1[GKE Cluster<br/>cloud-container-cluster]
-        G2[Sample App Pods<br/>1-10 replicas<br/>HPA 관리]
+        G2["Sample App Pods<br/>1-10 replicas<br/>HPA 관리"]
         G3[Service<br/>sample-app-service]
         G4[Ingress<br/>sample-app-ingress]
-        G5[HPA<br/>CPU 70% 기준]
-        G6[Cluster Autoscaler<br/>노드 자동 확장]
+        G5["HPA<br/>CPU 70% 기준"]
+        G6["Cluster Autoscaler<br/>노드 자동 확장"]
     end
     
     subgraph "External VM - Monitoring"
@@ -808,15 +808,15 @@ graph TB
         M2[Grafana<br/>:3000]
     end
     
-    I1 --> LB1
-    LB1 --> G4
-    G4 --> G3
-    G3 --> G2
-    G5 --> G2
-    G6 --> G1
+    I1 -->> LB1
+    LB1 -->> G4
+    G4 -->> G3
+    G3 -->> G2
+    G5 -->> G2
+    G6 -->> G1
     
-    M1 --> G2
-    M2 --> M1
+    M1 -->> G2
+    M2 -->> M1
 ```
 
 **🔍 명령 실행: 자동 스케일링 설정**
@@ -825,9 +825,9 @@ graph TB
 echo "=== 자동 스케일링 설정 시작 ==="
 ./repo/scripts/day1-practice-improved.sh
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 자동 스케일링 설정 ==="
-# 1. HPA (Horizontal Pod Autoscaler) 생성
+# 1. HPA [Horizontal Pod Autoscaler] 생성
 cat > k8s/hpa.yaml << 'EOF'
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -858,7 +858,7 @@ EOF
 # 2. HPA 적용
 kubectl apply -f k8s/hpa.yaml
 
-# 3. Cluster Autoscaler 활성화 (GKE에서 자동 활성화됨)
+# 3. Cluster Autoscaler 활성화 ["GKE에서 자동 활성화됨"]
 echo "Cluster Autoscaler 상태 확인..."
 kubectl get nodes
 kubectl describe node | grep -i "autoscaler"
@@ -885,10 +885,10 @@ kubectl get pods -l app=sample-app
 echo "=== 스트레스 테스트 시작 ==="
 ./repo/scripts/day1-practice-improved.sh
 
-# 또는 수동 실행 (참고용)
+# 또는 수동 실행 ["참고용"]
 echo "=== 수동 스트레스 테스트 ==="
 # 1. Load Balancer IP 가져오기
-EXTERNAL_IP=$(kubectl get service ingress-nginx-controller -n ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+EXTERNAL_IP=$[kubectl get service ingress-nginx-controller -n ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}']
 echo "Target URL: http://$EXTERNAL_IP"
 
 # 2. CPU 부하 생성 스크립트 생성
@@ -904,14 +904,14 @@ if ! command -v ab &> /dev/null; then
     sudo apt update && sudo apt install -y apache2-utils
 fi
 
-# 스트레스 테스트 실행 (1000 요청, 동시 50개)
-echo "고부하 테스트 시작 (1000 요청, 동시 50개)..."
+# 스트레스 테스트 실행 ["1000 요청, 동시 50개"]
+echo "고부하 테스트 시작 ["1000 요청, 동시 50개"]..."
 ab -n 1000 -c 50 http://$EXTERNAL_IP/ > stress-test-results.log 2>&1 &
 
 # 테스트 진행 중 모니터링
 echo "모니터링 시작..."
 for i in {1..20}; do
-    echo "--- 모니터링 $i/20 (10초 간격) ---"
+    echo "--- 모니터링 $i/20 ["10초 간격"] ---"
     
     # HPA 상태 확인
     echo "HPA 상태:"
@@ -947,7 +947,7 @@ chmod +x stress-test.sh
 # 4. 결과 분석
 echo "=== 스트레스 테스트 결과 분석 ==="
 echo "Apache Bench 결과:"
-grep -E "(Requests per second|Time per request|Failed requests)" stress-test-results.log
+grep -E "[Requests per second|Time per request|Failed requests]" stress-test-results.log
 
 echo "최종 HPA 상태:"
 kubectl get hpa sample-app-hpa
@@ -968,7 +968,7 @@ kubectl get nodes
 **🌐 브라우저로 모니터링 확인:**
 ```bash
 echo "=== 모니터링 대시보드 확인 ==="
-echo "1. Grafana: http://localhost:3000 (admin/admin)"
+echo "1. Grafana: http://localhost:3000 [admin/admin]"
 echo "2. Prometheus: http://localhost:9090"
 echo "3. Sample App: http://$EXTERNAL_IP"
 echo ""
@@ -1008,7 +1008,7 @@ echo "- 응답 시간 그래프"
 
 #### 5단계: 자동 스케일링 및 스트레스 테스트 완료 후
 ```mermaid
-graph TB
+flowchart TB
     subgraph "GitHub"
         GH1[Repository<br/>sample-app]
         GH2[GitHub Actions<br/>CI/CD Pipeline]
@@ -1021,43 +1021,43 @@ graph TB
     
     subgraph "GCP Cloud - GKE"
         G1[GKE Cluster<br/>cloud-container-cluster<br/>1-5 nodes]
-        G2[Sample App Pods<br/>1-10 replicas<br/>HPA 관리]
+        G2["Sample App Pods<br/>1-10 replicas<br/>HPA 관리"]
         G3[Service<br/>sample-app-service]
         G4[Ingress<br/>sample-app-ingress]
-        G5[HPA<br/>CPU/Memory 기반]
-        G6[Cluster Autoscaler<br/>노드 자동 확장]
+        G5["HPA<br/>CPU/Memory 기반"]
+        G6["Cluster Autoscaler<br/>노드 자동 확장"]
     end
     
     subgraph "External VM - Monitoring"
-        M1[Prometheus<br/>:9090<br/>메트릭 수집]
-        M2[Grafana<br/>:3000<br/>시각화]
-        M3[Node Exporter<br/>:9100<br/>시스템 메트릭]
-        M4[Kube State Metrics<br/>K8s 상태 메트릭]
+        M1["Prometheus<br/>:9090<br/>메트릭 수집"]
+        M2["Grafana<br/>:3000<br/>시각화"]
+        M3["Node Exporter<br/>:9100<br/>시스템 메트릭"]
+        M4["Kube State Metrics<br/>K8s 상태 메트릭"]
     end
     
     subgraph "Local"
-        L1[개발자 머신]
+        L1["개발자 머신"]
     end
     
-    L1 --> GH1
-    GH1 --> GH2
-    GH2 --> G1
+    L1 -->> GH1
+    GH1 -->> GH2
+    GH2 -->> G1
     
-    L1 --> LB1
-    LB1 --> LB2
-    LB2 --> G4
-    G4 --> G3
-    G3 --> G2
+    L1 -->> LB1
+    LB1 -->> LB2
+    LB2 -->> G4
+    G4 -->> G3
+    G3 -->> G2
     
-    G5 --> G2
-    G6 --> G1
+    G5 -->> G2
+    G6 -->> G1
     
-    M1 --> G2
-    M1 --> G3
-    M3 --> G2
-    M4 --> G1
-    M2 --> M1
-    L1 --> M2
+    M1 -->> G2
+    M1 -->> G3
+    M3 -->> G2
+    M4 -->> G1
+    M2 -->> M1
+    L1 -->> M2
 ```
 
 **최종 적용된 기능:**
@@ -1069,8 +1069,8 @@ graph TB
 - ✅ **스트레스 테스트**: 부하 테스트를 통한 스케일링 검증
 
 ### 📊 예상 결과
-- **성공률**: 95% (자동화 스크립트 활용)
-- **소요 시간**: 7시간 (자동화로 단축)
+- **성공률**: 95% ["자동화 스크립트 활용"]
+- **소요 시간**: 7시간 ["자동화로 단축"]
 - **주요 개선**: 통합 시나리오, 실시간 모니터링, 자동 스케일링
 
 ---
@@ -1104,7 +1104,7 @@ graph TB
 ---
 
 **강의안 작성일**: 2024년 10월 1일  
-**예상 소요 시간**: 7시간 (9:00~17:00, 자동화로 단축)  
+**예상 소요 시간**: 7시간 ["9:00~17:00, 자동화로 단축"]  
 **실습 중심**: 90% 실습, 10% 이론  
 **자동화 활용**: 95% 자동화 스크립트 사용 권장  
 **통합 시나리오**: CI/CD → 배포 → 모니터링 → 스케일링 완전 연계

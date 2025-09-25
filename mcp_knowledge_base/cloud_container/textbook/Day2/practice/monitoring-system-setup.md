@@ -3,7 +3,7 @@
 
 ## 🎯 실습 목표
 
-[🎯 실습 목표](#실습-목표)
+["🎯 실습 목표"]["#실습-목표"]
 
 이 실습을 통해 다음을 학습합니다:
 - AWS CloudWatch 고급 설정
@@ -13,20 +13,20 @@
 
 ## 📋 사전 준비사항
 
-[📋 사전 준비사항](#사전-준비사항)
+["📋 사전 준비사항"]["#사전-준비사항"]
 
-- AWS 계정 (Free Tier 가능)
-- GCP 계정 ($300 크레딧)
+- AWS 계정 ["Free Tier 가능"]
+- GCP 계정 ["$300 크레딧"]
 - Docker 및 Docker Compose 설치
 - 기본적인 모니터링 개념 이해
 
 ## 📊 AWS CloudWatch 고급 설정
 
-[📊 AWS CloudWatch 고급 설정](#aws-cloudwatch-고급-설정)
+["📊 AWS CloudWatch 고급 설정"]["#aws-cloudwatch-고급-설정"]
 
 ### 1단계: 커스텀 메트릭 설정
 
-[1단계: 커스텀 메트릭 설정](#1단계-커스텀-메트릭-설정)
+["1단계: 커스텀 메트릭 설정"]["#1단계-커스텀-메트릭-설정"]
 
 ```bash
 # 커스텀 메트릭 전송
@@ -47,7 +47,7 @@ aws cloudwatch put-metric-data /
 
 ### 2단계: CloudWatch 대시보드 생성
 
-[2단계: CloudWatch 대시보드 생성](#2단계-cloudwatch-대시보드-생성)
+["2단계: CloudWatch 대시보드 생성"]["#2단계-cloudwatch-대시보드-생성"]
 
 ```bash
 # 대시보드 생성
@@ -89,7 +89,7 @@ aws cloudwatch put-dashboard /
 
 ### 3단계: 알람 설정
 
-[3단계: 알람 설정](#3단계-알람-설정)
+["3단계: 알람 설정"]["#3단계-알람-설정"]
 
 ```bash
 # CPU 사용률 알람 생성
@@ -121,11 +121,11 @@ aws cloudwatch put-metric-alarm /
 
 ## ☁️ GCP Cloud Monitoring 설정
 
-[☁️ GCP Cloud Monitoring 설정](#gcp-cloud-monitoring-설정)
+["☁️ GCP Cloud Monitoring 설정"]["#gcp-cloud-monitoring-설정"]
 
 ### 1단계: 커스텀 메트릭 생성
 
-[1단계: 커스텀 메트릭 생성](#1단계-커스텀-메트릭-생성)
+["1단계: 커스텀 메트릭 생성"]["#1단계-커스텀-메트릭-생성"]
 
 ```bash
 # 커스텀 메트릭 생성
@@ -145,7 +145,7 @@ gcloud monitoring time-series create /
 
 ### 2단계: 알림 정책 생성
 
-[2단계: 알림 정책 생성](#2단계-알림-정책-생성)
+["2단계: 알림 정책 생성"]["#2단계-알림-정책-생성"]
 
 ```yaml
 # alert-policy.yaml
@@ -172,7 +172,7 @@ gcloud alpha monitoring policies create /
 
 ### 3단계: 대시보드 생성
 
-[3단계: 대시보드 생성](#3단계-대시보드-생성)
+["3단계: 대시보드 생성"]["#3단계-대시보드-생성"]
 
 ```bash
 # 대시보드 생성
@@ -182,11 +182,11 @@ gcloud alpha monitoring dashboards create /
 
 ## 🔍 Prometheus + Grafana 모니터링 스택
 
-[🔍 Prometheus + Grafana 모니터링 스택](#prometheus-grafana-모니터링-스택)
+["🔍 Prometheus + Grafana 모니터링 스택"]["#prometheus-grafana-모니터링-스택"]
 
 ### 1단계: Docker Compose 설정
 
-[1단계: Docker Compose 설정](#1단계-docker-compose-설정)
+["1단계: Docker Compose 설정"]["#1단계-docker-compose-설정"]
 
 ```yaml
 # docker-compose.monitoring.yml
@@ -234,7 +234,7 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+      - '--collector.filesystem.mount-points-exclude=^/[sys|proc|dev|host|etc][$$|/]'
 
 volumes:
   prometheus_data:
@@ -243,7 +243,7 @@ volumes:
 
 ### 2단계: Prometheus 설정
 
-[2단계: Prometheus 설정](#2단계-prometheus-설정)
+["2단계: Prometheus 설정"]["#2단계-prometheus-설정"]
 
 ```yaml
 # prometheus.yml
@@ -286,7 +286,7 @@ scrape_configs:
 
 ### 3단계: Grafana 대시보드 설정
 
-[3단계: Grafana 대시보드 설정](#3단계-grafana-대시보드-설정)
+["3단계: Grafana 대시보드 설정"]["#3단계-grafana-대시보드-설정"]
 
 ```json
 {
@@ -303,7 +303,7 @@ scrape_configs:
         "type": "graph",
         "targets": [
           {
-            "expr": "100 - (avg(rate(node_cpu_seconds_total{mode=/"idle/"}[5m])) * 100)",
+            "expr": "100 - [avg[rate[node_cpu_seconds_total{mode=/"idle/"}[5m]]] * 100]",
             "legendFormat": "CPU Usage %"
           }
         ],
@@ -321,7 +321,7 @@ scrape_configs:
         "type": "graph",
         "targets": [
           {
-            "expr": "100 - ((node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100)",
+            "expr": "100 - [[node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes] * 100]",
             "legendFormat": "Memory Usage %"
           }
         ],
@@ -339,7 +339,7 @@ scrape_configs:
         "type": "graph",
         "targets": [
           {
-            "expr": "rate(http_requests_total[5m])",
+            "expr": "rate[http_requests_total[5m]]",
             "legendFormat": "Requests/sec"
           }
         ]
@@ -356,11 +356,11 @@ scrape_configs:
 
 ## 📝 ELK Stack 로깅 시스템
 
-[📝 ELK Stack 로깅 시스템](#elk-stack-로깅-시스템)
+["📝 ELK Stack 로깅 시스템"]["#elk-stack-로깅-시스템"]
 
 ### 1단계: Elasticsearch 설정
 
-[1단계: Elasticsearch 설정](#1단계-elasticsearch-설정)
+["1단계: Elasticsearch 설정"]["#1단계-elasticsearch-설정"]
 
 ```yaml
 # docker-compose.logging.yml
@@ -415,7 +415,7 @@ volumes:
 
 ### 2단계: Logstash 설정
 
-[2단계: Logstash 설정](#2단계-logstash-설정)
+["2단계: Logstash 설정"]["#2단계-logstash-설정"]
 
 ```ruby
 # logstash.conf
@@ -452,7 +452,7 @@ output {
 
 ### 3단계: Filebeat 설정
 
-[3단계: Filebeat 설정](#3단계-filebeat-설정)
+["3단계: Filebeat 설정"]["#3단계-filebeat-설정"]
 
 ```yaml
 # filebeat.yml
@@ -477,24 +477,24 @@ output.logstash:
 
 ## 🧪 모니터링 테스트
 
-[🧪 모니터링 테스트](#모니터링-테스트)
+["🧪 모니터링 테스트"]["#모니터링-테스트"]
 
 ### 1단계: 메트릭 생성 테스트
 
-[1단계: 메트릭 생성 테스트](#1단계-메트릭-생성-테스트)
+["1단계: 메트릭 생성 테스트"]["#1단계-메트릭-생성-테스트"]
 
 ```bash
 # 커스텀 메트릭 전송 스크립트
 #!/bin/bash
 while true; do
     # CPU 사용률 시뮬레이션
-    cpu_usage=$(shuf -i 10-90 -n 1)
+    cpu_usage=$[shuf -i 10-90 -n 1]
     aws cloudwatch put-metric-data /
         --namespace "MyApp/Test" /
         --metric-data MetricName=CPUUsage,Value=$cpu_usage,Unit=Percent
     
     # 메모리 사용률 시뮬레이션
-    memory_usage=$(shuf -i 20-80 -n 1)
+    memory_usage=$[shuf -i 20-80 -n 1]
     aws cloudwatch put-metric-data /
         --namespace "MyApp/Test" /
         --metric-data MetricName=MemoryUsage,Value=$memory_usage,Unit=Percent
@@ -505,21 +505,21 @@ done
 
 ### 2단계: 로그 생성 테스트
 
-[2단계: 로그 생성 테스트](#2단계-로그-생성-테스트)
+["2단계: 로그 생성 테스트"]["#2단계-로그-생성-테스트"]
 
 ```bash
 # 로그 생성 스크립트
 #!/bin/bash
 while true; do
-    echo "$(date -Iseconds) INFO Application is running normally" >> /var/log/myapp.log
-    echo "$(date -Iseconds) ERROR Something went wrong" >> /var/log/myapp.log
+    echo "$[date -Iseconds] INFO Application is running normally" >> /var/log/myapp.log
+    echo "$[date -Iseconds] ERROR Something went wrong" >> /var/log/myapp.log
     sleep 10
 done
 ```
 
 ### 3단계: 알람 테스트
 
-[3단계: 알람 테스트](#3단계-알람-테스트)
+["3단계: 알람 테스트"]["#3단계-알람-테스트"]
 
 ```bash
 # CPU 사용률을 90%로 설정하여 알람 트리거
@@ -534,11 +534,11 @@ aws cloudwatch describe-alarms /
 
 ## 📊 대시보드 구성
 
-[📊 대시보드 구성](#대시보드-구성)
+["📊 대시보드 구성"]["#대시보드-구성"]
 
 ### 1단계: CloudWatch 대시보드
 
-[1단계: CloudWatch 대시보드](#1단계-cloudwatch-대시보드)
+["1단계: CloudWatch 대시보드"]["#1단계-cloudwatch-대시보드"]
 
 ```bash
 # 종합 대시보드 생성
@@ -575,7 +575,7 @@ aws cloudwatch put-dashboard /
 
 ### 2단계: Grafana 대시보드
 
-[2단계: Grafana 대시보드](#2단계-grafana-대시보드)
+["2단계: Grafana 대시보드"]["#2단계-grafana-대시보드"]
 
 ```bash
 # Grafana 대시보드 가져오기
@@ -588,11 +588,11 @@ curl -X POST /
 
 ## 📝 실습 결과 확인
 
-[📝 실습 결과 확인](#실습-결과-확인)
+["📝 실습 결과 확인"]["#실습-결과-확인"]
 
 ### 체크리스트
 
-[체크리스트](#체크리스트)
+["체크리스트"]["#체크리스트"]
 
 - [ ] CloudWatch 커스텀 메트릭 설정 완료
 - [ ] CloudWatch 대시보드 생성 완료
@@ -604,7 +604,7 @@ curl -X POST /
 
 ### 성능 지표
 
-[성능 지표](#성능-지표)
+["성능 지표"]["#성능-지표"]
 
 - **메트릭 수집**: 1분 이내
 - **알람 응답**: 5분 이내
@@ -613,11 +613,11 @@ curl -X POST /
 
 ## 🔧 문제 해결
 
-[🔧 문제 해결](#문제-해결)
+["🔧 문제 해결"]["#문제-해결"]
 
 ### 자주 발생하는 문제
 
-[자주 발생하는 문제](#자주-발생하는-문제)
+["자주 발생하는 문제"]["#자주-발생하는-문제"]
 
 1. **메트릭이 표시되지 않음**
    - IAM 권한 확인
@@ -641,22 +641,22 @@ curl -X POST /
 
 ## 📚 추가 학습 자료
 
-[📚 추가 학습 자료](#추가-학습-자료)
+["📚 추가 학습 자료"]["#추가-학습-자료"]
 
-- [AWS CloudWatch 공식 문서](https:///docs.aws.amazon.com/cloudwatch/)
-- [GCP Cloud Monitoring 공식 문서](https:///cloud.google.com/monitoring/docs)
-- [Prometheus 공식 문서](https:///prometheus.io/docs/)
-- [Grafana 공식 문서](https:///grafana.com/docs/)
-- [ELK Stack 공식 문서](https:///www.elastic.co/guide/)
+- ["AWS CloudWatch 공식 문서"][https:///docs.aws.amazon.com/cloudwatch/]
+- ["GCP Cloud Monitoring 공식 문서"][https:///cloud.google.com/monitoring/docs]
+- ["Prometheus 공식 문서"][https:///prometheus.io/docs/]
+- ["Grafana 공식 문서"][https:///grafana.com/docs/]
+- ["ELK Stack 공식 문서"][https:///www.elastic.co/guide/]
 
 ---
 
 
 ### 📧 연락처
 
-[📧 연락처](#연락처)
+["📧 연락처"]["#연락처"]
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -664,6 +664,6 @@ curl -X POST /
 
 <div align="center">
 
-[← 이전: Cloud Container 2일차 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Container 2일차 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

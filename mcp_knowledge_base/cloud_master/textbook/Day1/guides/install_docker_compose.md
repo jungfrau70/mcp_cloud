@@ -4,13 +4,13 @@
 Docker Compose는 다중 컨테이너 Docker 애플리케이션을 정의하고 실행하기 위한 도구입니다. 이 가이드는 다양한 운영체제에서 Docker Compose를 설치하는 방법을 설명합니다.
 
 ## 목차
-- [Docker Compose란?](#docker-compose란)
-- [Windows 설치](#windows-설치)
-- [macOS 설치](#macos-설치)
-- [Linux 설치](#linux-설치)
-- [설치 확인](#설치-확인)
-- [기본 사용법](#기본-사용법)
-- [문제 해결](#문제-해결)
+- ["Docker Compose란?"]["#docker-compose란"]
+- ["Windows 설치"]["#windows-설치"]
+- ["macOS 설치"]["#macos-설치"]
+- ["Linux 설치"]["#linux-설치"]
+- ["설치 확인"]["#설치-확인"]
+- ["기본 사용법"]["#기본-사용법"]
+- ["문제 해결"]["#문제-해결"]
 
 ## Docker Compose란?
 
@@ -23,7 +23,7 @@ Docker Compose는 YAML 파일을 사용하여 다중 컨테이너 애플리케�
 
 ## Windows 설치
 
-### 방법 1: Docker Desktop 포함 (권장)
+### 방법 1: Docker Desktop 포함 ["권장"]
 
 Docker Desktop을 설치하면 Docker Compose가 자동으로 포함됩니다.
 
@@ -37,20 +37,20 @@ docker compose version
 1. **Docker Compose 바이너리 다운로드**
    ```powershell
    # PowerShell에서 실행
-   $latest = (Invoke-RestMethod -Uri "https:///api.github.com/repos/docker/compose/releases/latest").tag_name
+   $latest = [Invoke-RestMethod -Uri "https:///api.github.com/repos/docker/compose/releases/latest"].tag_name
    Invoke-WebRequest -Uri "https:///github.com/docker/compose/releases/download/$latest/docker-compose-Windows-x86_64.exe" -OutFile "docker-compose.exe"
    ```
 
 2. **PATH에 추가**
    ```powershell
-   # C:/bin 디렉토리 생성 (없는 경우)
+   # C:/bin 디렉토리 생성 ["없는 경우"]
    New-Item -ItemType Directory -Path "C:/bin" -Force
    
    # docker-compose.exe를 C:/bin으로 이동
    Move-Item docker-compose.exe C:/bin/
    
    # PATH에 C:/bin 추가
-   [Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:/bin", [EnvironmentVariableTarget]::User)
+   [Environment]::SetEnvironmentVariable["Path", $env:Path + ";C:/bin", [EnvironmentVariableTarget]::User]
    ```
 
 ### 방법 3: Chocolatey 사용
@@ -67,7 +67,7 @@ winget install Docker.Compose
 
 ## macOS 설치
 
-### 방법 1: Docker Desktop 포함 (권장)
+### 방법 1: Docker Desktop 포함 ["권장"]
 
 Docker Desktop을 설치하면 Docker Compose가 자동으로 포함됩니다.
 
@@ -90,12 +90,12 @@ brew install docker-compose
 
 ```bash
 # 최신 버전 다운로드
-sudo curl -L "https:///github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https:///github.com/docker/compose/releases/latest/download/docker-compose-$[uname -s]-$[uname -m]" -o /usr/local/bin/docker-compose
 
 # 실행 권한 부여
 sudo chmod +x /usr/local/bin/docker-compose
 
-# 심볼릭 링크 생성 (선택사항)
+# 심볼릭 링크 생성 ["선택사항"]
 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 ```
 
@@ -113,7 +113,7 @@ pip3 install docker-compose
 
 ### Ubuntu/Debian
 
-#### 방법 1: Docker Compose 플러그인 (권장)
+#### 방법 1: Docker Compose 플러그인 ["권장"]
 
 Docker Engine과 함께 설치됩니다:
 
@@ -121,7 +121,7 @@ Docker Engine과 함께 설치됩니다:
 # Docker 설치 시 함께 설치됨
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# 사용법: docker compose (공백 포함)
+# 사용법: docker compose ["공백 포함"]
 docker compose version
 ```
 
@@ -129,10 +129,10 @@ docker compose version
 
 ```bash
 # 최신 버전 확인
-COMPOSE_VERSION=$(curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
+COMPOSE_VERSION=$[curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4]
 
 # Docker Compose 다운로드
-sudo curl -L "https:///github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https:///github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$[uname -s]-$[uname -m]" -o /usr/local/bin/docker-compose
 
 # 실행 권한 부여
 sudo chmod +x /usr/local/bin/docker-compose
@@ -144,7 +144,7 @@ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 #### 방법 3: pip 사용
 
 ```bash
-# pip 설치 (없는 경우)
+# pip 설치 ["없는 경우"]
 sudo apt-get install -y python3-pip
 
 # Docker Compose 설치
@@ -153,7 +153,7 @@ pip3 install docker-compose
 
 ### CentOS/RHEL/Rocky Linux
 
-#### 방법 1: Docker Compose 플러그인 (권장)
+#### 방법 1: Docker Compose 플러그인 ["권장"]
 
 ```bash
 # Docker 설치 시 함께 설치됨
@@ -167,9 +167,9 @@ docker compose version
 
 ```bash
 # 최신 버전 다운로드
-COMPOSE_VERSION=$(curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
+COMPOSE_VERSION=$[curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4]
 
-sudo curl -L "https:///github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https:///github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$[uname -s]-$[uname -m]" -o /usr/local/bin/docker-compose
 
 sudo chmod +x /usr/local/bin/docker-compose
 ```
@@ -181,8 +181,8 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo dnf install -y docker-compose
 
 # 또는 최신 버전 바이너리 설치
-COMPOSE_VERSION=$(curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
-sudo curl -L "https:///github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+COMPOSE_VERSION=$[curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4]
+sudo curl -L "https:///github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$[uname -s]-$[uname -m]" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
@@ -193,8 +193,8 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo zypper install docker-compose
 
 # 또는 바이너리 설치
-COMPOSE_VERSION=$(curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
-sudo curl -L "https:///github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+COMPOSE_VERSION=$[curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4]
+sudo curl -L "https:///github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$[uname -s]-$[uname -m]" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
@@ -213,7 +213,7 @@ yay -S docker-compose
 설치가 완료된 후 다음 명령어로 확인할 수 있습니다:
 
 ```bash
-# Docker Compose 버전 확인 (플러그인)
+# Docker Compose 버전 확인 ["플러그인"]
 docker compose version
 
 # 또는 독립 바이너리
@@ -259,7 +259,7 @@ volumes:
 ### 2. 기본 명령어
 
 ```bash
-# 서비스 시작 (백그라운드)
+# 서비스 시작 ["백그라운드"]
 docker compose up -d
 
 # 서비스 중지
@@ -287,7 +287,7 @@ docker compose --env-file .env up
 ### 3. 환경별 설정
 
 ```yaml
-# docker-compose.override.yml (개발 환경)
+# docker-compose.override.yml ["개발 환경"]
 version: '3.8'
 
 services:
@@ -301,7 +301,7 @@ services:
 ```
 
 ```yaml
-# docker-compose.prod.yml (프로덕션 환경)
+# docker-compose.prod.yml ["프로덕션 환경"]
 version: '3.8'
 
 services:
@@ -477,10 +477,10 @@ volumes:
 
 ## 추가 리소스
 
-- [Docker Compose 공식 문서](https:///docs.docker.com/compose/)
-- [Docker Compose 명령어 참조](https:///docs.docker.com/compose/reference/)
-- [Docker Compose 파일 참조](https:///docs.docker.com/compose/compose-file/)
-- [Docker Compose 환경 변수](https:///docs.docker.com/compose/environment-variables/)
+- ["Docker Compose 공식 문서"][https:///docs.docker.com/compose/]
+- ["Docker Compose 명령어 참조"][https:///docs.docker.com/compose/reference/]
+- ["Docker Compose 파일 참조"][https:///docs.docker.com/compose/compose-file/]
+- ["Docker Compose 환경 변수"][https:///docs.docker.com/compose/environment-variables/]
 
 ## 버전 관리
 
@@ -536,12 +536,12 @@ set -e
 echo "Docker Compose 설치 시작..."
 
 # 최신 버전 확인
-COMPOSE_VERSION=$(curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)
+COMPOSE_VERSION=$[curl -s https:///api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4]
 
 echo "Docker Compose 버전: $COMPOSE_VERSION"
 
 # Docker Compose 다운로드
-sudo curl -L "https:///github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https:///github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$[uname -s]-$[uname -m]" -o /usr/local/bin/docker-compose
 
 # 실행 권한 부여
 sudo chmod +x /usr/local/bin/docker-compose
@@ -592,6 +592,6 @@ echo "테스트 완료!"
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Master 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

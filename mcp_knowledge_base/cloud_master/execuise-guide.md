@@ -4,28 +4,28 @@ Cloud Master 과정 실습을 위한 완전한 가이드입니다. WSL 환경 �
 
 ## 📋 목차
 
-1. [환경 준비](#1-환경-준비)
-   - [WSL 설치 및 설정](#11-wsl-설치-및-설정)
-   - [필수 도구 설치](#12-필수-도구-설치)
-   - [클라우드 계정 설정](#13-클라우드-계정-설정)
+1. ["환경 준비"]["#1-환경-준비"]
+   - ["WSL 설치 및 설정"]["#11-wsl-설치-및-설정"]
+   - ["필수 도구 설치"]["#12-필수-도구-설치"]
+   - ["클라우드 계정 설정"]["#13-클라우드-계정-설정"]
 
-2. [학습 자료 구조](#2-학습-자료-구조)
-   - [메인 학습 경로](#21-메인-학습-경로)
-   - [Day별 실습 자료](#22-day별-실습-자료)
-   - [자동화 스크립트](#23-자동화-스크립트)
+2. ["학습 자료 구조"]["#2-학습-자료-구조"]
+   - ["메인 학습 경로"]["#21-메인-학습-경로"]
+   - ["Day별 실습 자료"]["#22-day별-실습-자료"]
+   - ["자동화 스크립트"]["#23-자동화-스크립트"]
 
-3. [실습 진행 방법](#3-실습-진행-방법)
-   - [Day 1: GitHub Actions CI/CD 기본 실습](#31-day-1-github-actions-cicd-기본-실습)
-   - [Day 2: 고급 CI/CD 및 Docker Compose 실습](#32-day-2-고급-cicd-및-docker-compose-실습)
-   - [Day 3: 프로덕션 레벨 모니터링 및 보안 실습](#33-day-3-프로덕션-레벨-모니터링-및-보안-실습)
+3. ["실습 진행 방법"]["#3-실습-진행-방법"]
+   - ["Day 1: GitHub Actions CI/CD 기본 실습"]["#31-day-1-github-actions-cicd-기본-실습"]
+   - ["Day 2: 고급 CI/CD 및 Docker Compose 실습"]["#32-day-2-고급-cicd-및-docker-compose-실습"]
+   - ["Day 3: 프로덕션 레벨 모니터링 및 보안 실습"]["#33-day-3-프로덕션-레벨-모니터링-및-보안-실습"]
 
-4. [고급 기능](#4-고급-기능)
-   - [AI 기반 학습 지원](#41-ai-기반-학습-지원)
-   - [인프라 관리](#42-인프라-관리)
-   - [CI/CD 파이프라인](#43-cicd-파이프라인)
-   - [모니터링 및 최적화](#44-모니터링-및-최적화)
+4. ["고급 기능"]["#4-고급-기능"]
+   - ["AI 기반 학습 지원"]["#41-ai-기반-학습-지원"]
+   - ["인프라 관리"]["#42-인프라-관리"]
+   - ["CI/CD 파이프라인"]["#43-cicd-파이프라인"]
+   - ["모니터링 및 최적화"]["#44-모니터링-및-최적화"]
 
-5. [문제 해결](#5-문제-해결)
+5. ["문제 해결"]["#5-문제-해결"]
 
 ---
 
@@ -33,7 +33,7 @@ Cloud Master 과정 실습을 위한 완전한 가이드입니다. WSL 환경 �
 
 ### 1.1 WSL 설치 및 설정
 
-Cloud Master 과정의 모든 실습은 WSL(Windows Subsystem for Linux) 환경에서 진행됩니다. 먼저 WSL을 설치하고 설정해야 합니다.
+Cloud Master 과정의 모든 실습은 WSL[Windows Subsystem for Linux] 환경에서 진행됩니다. 먼저 WSL을 설치하고 설정해야 합니다.
 
 #### 📖 WSL 설치 가이드
 ```
@@ -43,7 +43,7 @@ mcp_knowledge_base/cloud_master/repos/cloud-scripts/wsl-install.md
 **주요 설치 단계:**
 1. **Windows 기능 활성화**
    - Windows Subsystem for Linux
-   - 가상 머신 플랫폼 (Virtual Machine Platform)
+   - 가상 머신 플랫폼 [Virtual Machine Platform]
 
 2. **WSL 2 설치 및 설정**
    ```powershell
@@ -83,7 +83,7 @@ mcp_knowledge_base/cloud_master/repos/install/
 - **AWS CLI**: AWS 서비스 관리
 - **GCP CLI**: Google Cloud 서비스 관리
 - **Docker**: 컨테이너 실행 환경
-- **Kubernetes (kubectl)**: 쿠버네티스 클러스터 관리
+- **Kubernetes [kubectl]**: 쿠버네티스 클러스터 관리
 - **Terraform**: 인프라 자동화
 - **Git**: 버전 관리
 
@@ -102,7 +102,7 @@ mcp_knowledge_base/cloud_master/accounts/AWS계정가입.md
 ```
 
 **설정 단계:**
-1. AWS 계정 생성 (Free Tier 권장)
+1. AWS 계정 생성 ["Free Tier 권장"]
 2. IAM 사용자 생성 및 권한 설정
 3. AWS CLI 설정
 4. 리전 및 가용 영역 확인
@@ -113,7 +113,7 @@ mcp_knowledge_base/cloud_master/accounts/GCP_개인계정가입.md
 ```
 
 **설정 단계:**
-1. GCP 계정 생성 ($300 크레딧 제공)
+1. GCP 계정 생성 ["$300 크레딧 제공"]
 2. 프로젝트 생성 및 설정
 3. GCP CLI 설정
 4. 서비스 계정 및 키 생성
@@ -332,9 +332,9 @@ mcp_knowledge_base/cloud_master/infra-guide.md
 
 **포함 내용:**
 - WSL 환경 설정 및 도구 설치
-- 클라우드 계정 설정 (AWS, GCP)
-- VM 인프라 배포 (EC2, Compute Engine)
-- Kubernetes 클러스터 구축 (로컬, EKS, GKE)
+- 클라우드 계정 설정 [AWS, GCP]
+- VM 인프라 배포 [EC2, Compute Engine]
+- Kubernetes 클러스터 구축 ["로컬, EKS, GKE"]
 - 인프라 모니터링 및 최적화
 
 #### 인프라 자동화 실행
@@ -501,17 +501,17 @@ cat mcp_knowledge_base/cloud_master/textbook/Day3/README.md
 ## 📚 전문 분야별 가이드
 
 ### 🏗️ 인프라 관리
-- **문서**: [infra-guide.md](infra-guide.md)
+- **문서**: [infra-guide.md][infra-guide.md]
 - **내용**: WSL 환경 설정, 클라우드 계정 구성, VM 배포, Kubernetes 클러스터 구축
 - **대상**: 인프라 엔지니어, DevOps 엔지니어
 
 ### 🚀 CI/CD 파이프라인
-- **문서**: [cicd-guide.md](cicd-guide.md)
+- **문서**: [cicd-guide.md][cicd-guide.md]
 - **내용**: GitHub Actions, Docker, 자동 배포, 모니터링 시스템
 - **대상**: 개발자, CI/CD 엔지니어, SRE
 
 ### 📖 전체 실습 가이드
-- **문서**: [execuise-guide.md](execuise-guide.md) (현재 문서)
+- **문서**: [execuise-guide.md][execuise-guide.md] ["현재 문서"]
 - **내용**: 전체 과정 개요, 학습 자료 구조, 실습 진행 방법
 - **대상**: 모든 학습자
 

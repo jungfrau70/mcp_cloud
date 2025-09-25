@@ -3,13 +3,13 @@
 
 ## 🎯 학습 목표
 
-[🎯 학습 목표](#학습-목표)
+["🎯 학습 목표"]["#학습-목표"]
 
 이 가이드를 통해 다음을 학습합니다:
 - Kubernetes 보안 모델 이해
-- Pod Security Policy (PSP) 설정
+- Pod Security Policy [PSP] 설정
 - Network Policy 구성
-- RBAC (Role-Based Access Control) 설정
+- RBAC [Role-Based Access Control] 설정
 - 시크릿 관리 및 암호화
 - 실제 보안 시나리오 구현
 
@@ -17,15 +17,15 @@
 
 ## 📋 목차
 
-[📋 목차](#목차)
+["📋 목차"]["#목차"]
 
-1. [Kubernetes 보안 모델](#kubernetes-보안-모델)
-2. [Pod Security Policy 설정](#pod-security-policy-설정)
-3. [Network Policy 구성](#network-policy-구성)
-4. [RBAC 설정](#rbac-설정)
-5. [시크릿 관리 및 암호화](#시크릿-관리-및-암호화)
-6. [보안 모니터링](#보안-모니터링)
-7. [실습 시나리오](#실습-시나리오)
+1. ["Kubernetes 보안 모델"]["#kubernetes-보안-모델"]
+2. ["Pod Security Policy 설정"]["#pod-security-policy-설정"]
+3. ["Network Policy 구성"]["#network-policy-구성"]
+4. ["RBAC 설정"]["#rbac-설정"]
+5. ["시크릿 관리 및 암호화"]["#시크릿-관리-및-암호화"]
+6. ["보안 모니터링"]["#보안-모니터링"]
+7. ["실습 시나리오"]["#실습-시나리오"]
 
 ---
 
@@ -33,11 +33,11 @@
 
 ### 보안 계층 구조
 
-[보안 계층 구조](#보안-계층-구조)
+["보안 계층 구조"]["#보안-계층-구조"]
 
 #### 1. 클러스터 보안
 
-[1. 클러스터 보안](#1-클러스터-보안)
+["1. 클러스터 보안"]["#1-클러스터-보안"]
 - API 서버 보안
 - etcd 암호화
 - 네트워크 정책
@@ -45,32 +45,32 @@
 
 #### 2. 노드 보안
 
-[2. 노드 보안](#2-노드-보안)
+["2. 노드 보안"]["#2-노드-보안"]
 - 컨테이너 런타임 보안
 - 호스트 네트워크 격리
 - 파일시스템 보안
 
 #### 3. Pod 보안
 
-[3. Pod 보안](#3-pod-보안)
+["3. Pod 보안"]["#3-pod-보안"]
 - Pod Security Policy
 - Security Context
 - 리소스 제한
 
 #### 4. 컨테이너 보안
 
-[4. 컨테이너 보안](#4-컨테이너-보안)
+["4. 컨테이너 보안"]["#4-컨테이너-보안"]
 - 이미지 보안
 - 실행 권한 제한
 - 네트워크 격리
 
 ### 보안 컨텍스트 설정
 
-[보안 컨텍스트 설정](#보안-컨텍스트-설정)
+["보안 컨텍스트 설정"]["#보안-컨텍스트-설정"]
 
 #### 기본 보안 컨텍스트
 
-[기본 보안 컨텍스트](#기본-보안-컨텍스트)
+["기본 보안 컨텍스트"]["#기본-보안-컨텍스트"]
 ```yaml
 # security-context-basic.yaml
 apiVersion: apps/v1
@@ -118,7 +118,7 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
-        # 볼륨 마운트 (읽기 전용 파일시스템용)
+        # 볼륨 마운트 ["읽기 전용 파일시스템용"]
         volumeMounts:
         - name: tmp-volume
           mountPath: /tmp
@@ -133,7 +133,7 @@ spec:
 
 #### 고급 보안 컨텍스트
 
-[고급 보안 컨텍스트](#고급-보안-컨텍스트)
+["고급 보안 컨텍스트"]["#고급-보안-컨텍스트"]
 ```yaml
 # security-context-advanced.yaml
 apiVersion: apps/v1
@@ -219,11 +219,11 @@ spec:
 
 ### PSP 활성화
 
-[PSP 활성화](#psp-활성화)
+["PSP 활성화"]["#psp-활성화"]
 
-#### PSP 활성화 (GKE)
+#### PSP 활성화 [GKE]
 
-[PSP 활성화 (GKE)](#psp-활성화-gke)
+["PSP 활성화 [GKE]"]["#psp-활성화-gke"]
 ```bash
 # GKE 클러스터에 PSP 활성화
 gcloud container clusters create secure-cluster /
@@ -233,9 +233,9 @@ gcloud container clusters create secure-cluster /
   --enable-pod-security-policy
 ```
 
-#### PSP 활성화 (EKS)
+#### PSP 활성화 [EKS]
 
-[PSP 활성화 (EKS)](#psp-활성화-eks)
+["PSP 활성화 [EKS]"]["#psp-활성화-eks"]
 ```bash
 # EKS 클러스터에 PSP 활성화
 eksctl create cluster /
@@ -249,11 +249,11 @@ eksctl create cluster /
 
 ### PSP 정책 정의
 
-[PSP 정책 정의](#psp-정책-정의)
+["PSP 정책 정의"]["#psp-정책-정의"]
 
 #### 기본 PSP
 
-[기본 PSP](#기본-psp)
+["기본 PSP"]["#기본-psp"]
 ```yaml
 # psp-basic.yaml
 apiVersion: policy/v1beta1
@@ -282,7 +282,7 @@ spec:
 
 #### 고급 PSP
 
-[고급 PSP](#고급-psp)
+["고급 PSP"]["#고급-psp"]
 ```yaml
 # psp-advanced.yaml
 apiVersion: policy/v1beta1
@@ -319,11 +319,11 @@ spec:
 
 ### PSP RBAC 설정
 
-[PSP RBAC 설정](#psp-rbac-설정)
+["PSP RBAC 설정"]["#psp-rbac-설정"]
 
 #### PSP ClusterRole
 
-[PSP ClusterRole](#psp-clusterrole)
+[PSP ClusterRole][#psp-clusterrole]
 ```yaml
 # psp-rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -357,11 +357,11 @@ subjects:
 
 ### 기본 Network Policy
 
-[기본 Network Policy](#기본-network-policy)
+["기본 Network Policy"]["#기본-network-policy"]
 
 #### 모든 트래픽 차단
 
-[모든 트래픽 차단](#모든-트래픽-차단)
+["모든 트래픽 차단"]["#모든-트래픽-차단"]
 ```yaml
 # network-policy-deny-all.yaml
 apiVersion: networking.k8s.io/v1
@@ -378,7 +378,7 @@ spec:
 
 #### 특정 Pod만 허용
 
-[특정 Pod만 허용](#특정-pod만-허용)
+["특정 Pod만 허용"]["#특정-pod만-허용"]
 ```yaml
 # network-policy-allow-specific.yaml
 apiVersion: networking.k8s.io/v1
@@ -422,11 +422,11 @@ spec:
 
 ### 고급 Network Policy
 
-[고급 Network Policy](#고급-network-policy)
+["고급 Network Policy"]["#고급-network-policy"]
 
 #### 마이크로서비스 간 통신 제어
 
-[마이크로서비스 간 통신 제어](#마이크로서비스-간-통신-제어)
+["마이크로서비스 간 통신 제어"]["#마이크로서비스-간-통신-제어"]
 ```yaml
 # network-policy-microservices.yaml
 apiVersion: networking.k8s.io/v1
@@ -488,7 +488,7 @@ spec:
       port: 53
     - protocol: UDP
       port: 53
-  # 외부 API 접근 (HTTPS만)
+  # 외부 API 접근 ["HTTPS만"]
   - to: []
     ports:
     - protocol: TCP
@@ -497,7 +497,7 @@ spec:
 
 #### 환경별 Network Policy
 
-[환경별 Network Policy](#환경별-network-policy)
+["환경별 Network Policy"]["#환경별-network-policy"]
 ```yaml
 # network-policy-environment.yaml
 apiVersion: networking.k8s.io/v1
@@ -549,11 +549,11 @@ spec:
 
 ### 기본 RBAC
 
-[기본 RBAC](#기본-rbac)
+["기본 RBAC"]["#기본-rbac"]
 
 #### ServiceAccount 생성
 
-[ServiceAccount 생성](#serviceaccount-생성)
+["ServiceAccount 생성"]["#serviceaccount-생성"]
 ```yaml
 # service-account.yaml
 apiVersion: v1
@@ -576,7 +576,7 @@ type: kubernetes.io/service-account-token
 
 #### Role 정의
 
-[Role 정의](#role-정의)
+["Role 정의"]["#role-정의"]
 ```yaml
 # role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -598,7 +598,7 @@ rules:
 
 #### RoleBinding
 
-[RoleBinding](#rolebinding)
+[RoleBinding][#rolebinding]
 ```yaml
 # role-binding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -618,11 +618,11 @@ roleRef:
 
 ### 고급 RBAC
 
-[고급 RBAC](#고급-rbac)
+["고급 RBAC"]["#고급-rbac"]
 
 #### ClusterRole 정의
 
-[ClusterRole 정의](#clusterrole-정의)
+["ClusterRole 정의"]["#clusterrole-정의"]
 ```yaml
 # cluster-role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -643,7 +643,7 @@ rules:
 
 #### ClusterRoleBinding
 
-[ClusterRoleBinding](#clusterrolebinding)
+[ClusterRoleBinding][#clusterrolebinding]
 ```yaml
 # cluster-role-binding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -666,11 +666,11 @@ roleRef:
 
 ### 시크릿 생성 및 관리
 
-[시크릿 생성 및 관리](#시크릿-생성-및-관리)
+["시크릿 생성 및 관리"]["#시크릿-생성-및-관리"]
 
 #### 기본 시크릿
 
-[기본 시크릿](#기본-시크릿)
+["기본 시크릿"]["#기본-시크릿"]
 ```yaml
 # secrets-basic.yaml
 apiVersion: v1
@@ -687,7 +687,7 @@ data:
 
 #### TLS 시크릿
 
-[TLS 시크릿](#tls-시크릿)
+["TLS 시크릿"]["#tls-시크릿"]
 ```yaml
 # tls-secret.yaml
 apiVersion: v1
@@ -703,11 +703,11 @@ data:
 
 ### 시크릿 암호화
 
-[시크릿 암호화](#시크릿-암호화)
+["시크릿 암호화"]["#시크릿-암호화"]
 
 #### etcd 암호화 설정
 
-[etcd 암호화 설정](#etcd-암호화-설정)
+["etcd 암호화 설정"]["#etcd-암호화-설정"]
 ```yaml
 # encryption-config.yaml
 apiVersion: apiserver.config.k8s.io/v1
@@ -725,11 +725,11 @@ resources:
 
 ### 시크릿 사용
 
-[시크릿 사용](#시크릿-사용)
+["시크릿 사용"]["#시크릿-사용"]
 
 #### Pod에서 시크릿 사용
 
-[Pod에서 시크릿 사용](#pod에서-시크릿-사용)
+["Pod에서 시크릿 사용"]["#pod에서-시크릿-사용"]
 ```yaml
 # pod-with-secrets.yaml
 apiVersion: apps/v1
@@ -785,11 +785,11 @@ spec:
 
 ### 보안 이벤트 모니터링
 
-[보안 이벤트 모니터링](#보안-이벤트-모니터링)
+["보안 이벤트 모니터링"]["#보안-이벤트-모니터링"]
 
 #### Falco 설정
 
-[Falco 설정](#falco-설정)
+["Falco 설정"]["#falco-설정"]
 ```yaml
 # falco-config.yaml
 apiVersion: v1
@@ -818,7 +818,7 @@ data:
 
 #### 보안 알림 규칙
 
-[보안 알림 규칙](#보안-알림-규칙)
+["보안 알림 규칙"]["#보안-알림-규칙"]
 ```yaml
 # security-alerts.yaml
 apiVersion: v1
@@ -850,7 +850,7 @@ data:
           description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is running as root"
       
       - alert: NetworkPolicyViolation
-        expr: increase(kube_networkpolicy_spec_egress_rules[5m]) > 0
+        expr: increase[kube_networkpolicy_spec_egress_rules[5m]] > 0
         for: 1m
         labels:
           severity: warning
@@ -865,11 +865,11 @@ data:
 
 ### 시나리오 1: 기본 보안 설정
 
-[시나리오 1: 기본 보안 설정](#시나리오-1-기본-보안-설정)
+["시나리오 1: 기본 보안 설정"]["#시나리오-1-기본-보안-설정"]
 
 #### 1단계: 보안 컨텍스트 설정
 
-[1단계: 보안 컨텍스트 설정](#1단계-보안-컨텍스트-설정)
+["1단계: 보안 컨텍스트 설정"]["#1단계-보안-컨텍스트-설정"]
 ```bash
 # 보안 컨텍스트가 적용된 Pod 배포
 kubectl apply -f security-policies-guide/security-context-basic.yaml
@@ -883,28 +883,28 @@ kubectl describe pod -l app=container-demo -n container-demo
 
 #### 2단계: 보안 테스트
 
-[2단계: 보안 테스트](#2단계-보안-테스트)
+["2단계: 보안 테스트"]["#2단계-보안-테스트"]
 ```bash
 # Pod 내부 접속
 kubectl exec -it deployment/container-demo-secure -n container-demo -- /bin/sh
 
-# 사용자 확인 (root가 아닌지 확인)
+# 사용자 확인 ["root가 아닌지 확인"]
 whoami
 
 # 권한 확인
 id
 
-# 파일시스템 확인 (읽기 전용인지 확인)
+# 파일시스템 확인 ["읽기 전용인지 확인"]
 touch /test
 ```
 
 ### 시나리오 2: Network Policy 테스트
 
-[시나리오 2: Network Policy 테스트](#시나리오-2-network-policy-테스트)
+["시나리오 2: Network Policy 테스트"]["#시나리오-2-network-policy-테스트"]
 
 #### 1단계: Network Policy 적용
 
-[1단계: Network Policy 적용](#1단계-network-policy-적용)
+["1단계: Network Policy 적용"]["#1단계-network-policy-적용"]
 ```bash
 # 모든 트래픽 차단
 kubectl apply -f security-policies-guide/network-policy-deny-all.yaml
@@ -915,12 +915,12 @@ kubectl apply -f security-policies-guide/network-policy-allow-specific.yaml
 
 #### 2단계: 네트워크 테스트
 
-[2단계: 네트워크 테스트](#2단계-네트워크-테스트)
+["2단계: 네트워크 테스트"]["#2단계-네트워크-테스트"]
 ```bash
 # 테스트 Pod 생성
 kubectl run -i --tty test-pod --rm --image=busybox --restart=Never -- /bin/sh
 
-# 허용되지 않은 접근 시도 (test-pod 내에서)
+# 허용되지 않은 접근 시도 ["test-pod 내에서"]
 wget -q -O- http://container-demo-service:80
 
 # 허용된 접근 확인
@@ -929,11 +929,11 @@ wget -q -O- http://mysql-service:3306
 
 ### 시나리오 3: RBAC 테스트
 
-[시나리오 3: RBAC 테스트](#시나리오-3-rbac-테스트)
+["시나리오 3: RBAC 테스트"]["#시나리오-3-rbac-테스트"]
 
 #### 1단계: RBAC 설정
 
-[1단계: RBAC 설정](#1단계-rbac-설정)
+["1단계: RBAC 설정"]["#1단계-rbac-설정"]
 ```bash
 # ServiceAccount 및 Role 생성
 kubectl apply -f security-policies-guide/service-account.yaml
@@ -943,7 +943,7 @@ kubectl apply -f security-policies-guide/role-binding.yaml
 
 #### 2단계: 권한 테스트
 
-[2단계: 권한 테스트](#2단계-권한-테스트)
+["2단계: 권한 테스트"]["#2단계-권한-테스트"]
 ```bash
 # ServiceAccount 토큰 확인
 kubectl get secret container-demo-sa-secret -n container-demo -o jsonpath='{.data.token}' | base64 -d
@@ -957,11 +957,11 @@ kubectl auth can-i delete pods --as=system:serviceaccount:container-demo:contain
 
 ## ✅ 체크리스트
 
-[✅ 체크리스트](#체크리스트)
+["✅ 체크리스트"]["#체크리스트"]
 
 ### 기본 보안 설정
 
-[기본 보안 설정](#기본-보안-설정)
+["기본 보안 설정"]["#기본-보안-설정"]
 - [ ] 보안 컨텍스트 설정
 - [ ] 리소스 제한 설정
 - [ ] 읽기 전용 파일시스템 설정
@@ -969,7 +969,7 @@ kubectl auth can-i delete pods --as=system:serviceaccount:container-demo:contain
 
 ### 고급 보안 설정
 
-[고급 보안 설정](#고급-보안-설정)
+["고급 보안 설정"]["#고급-보안-설정"]
 - [ ] Pod Security Policy 설정
 - [ ] Network Policy 구성
 - [ ] RBAC 설정
@@ -983,7 +983,7 @@ kubectl auth can-i delete pods --as=system:serviceaccount:container-demo:contain
 
 ### 보안 테스트
 
-[보안 테스트](#보안-테스트)
+["보안 테스트"]["#보안-테스트"]
 - [ ] 권한 테스트
 - [ ] 네트워크 격리 테스트
 - [ ] 시크릿 접근 테스트
@@ -993,21 +993,21 @@ kubectl auth can-i delete pods --as=system:serviceaccount:container-demo:contain
 
 ## 📚 참고 자료
 
-[📚 참고 자료](#참고-자료)
+["📚 참고 자료"]["#참고-자료"]
 
 ### 공식 문서
 
-[공식 문서](#공식-문서)
-- [Kubernetes 보안 공식 문서](https:///kubernetes.io/docs/concepts/security/)
-- [Network Policy 공식 문서](https:///kubernetes.io/docs/concepts/services-networking/network-policies/)
-- [RBAC 공식 문서](https:///kubernetes.io/docs/reference/access-authn-authz/rbac/)
+["공식 문서"]["#공식-문서"]
+- ["Kubernetes 보안 공식 문서"][https:///kubernetes.io/docs/concepts/security/]
+- ["Network Policy 공식 문서"][https:///kubernetes.io/docs/concepts/services-networking/network-policies/]
+- ["RBAC 공식 문서"][https:///kubernetes.io/docs/reference/access-authn-authz/rbac/]
 
 ### 추가 학습 자료
 
-[추가 학습 자료](#추가-학습-자료)
-- [Kubernetes 고급 가이드](cloud_container/textbook/Day1/kubernetes-advanced-guide.md)
-- [자동 복구 가이드](cloud_container/textbook/Day1/auto-recovery-guide.md)
-- [종합 실습 가이드](cloud_container/textbook/Day1/comprehensive-practice-guide.md)
+["추가 학습 자료"]["#추가-학습-자료"]
+- ["Kubernetes 고급 가이드"][cloud_container/textbook/Day1/kubernetes-advanced-guide.md]
+- ["자동 복구 가이드"][cloud_container/textbook/Day1/auto-recovery-guide.md]
+- ["종합 실습 가이드"][cloud_container/textbook/Day1/comprehensive-practice-guide.md]
 
 ---
 
@@ -1019,9 +1019,9 @@ kubectl auth can-i delete pods --as=system:serviceaccount:container-demo:contain
 
 ### 📧 연락처
 
-[📧 연락처](#연락처)
+["📧 연락처"]["#연락처"]
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -1029,6 +1029,6 @@ kubectl auth can-i delete pods --as=system:serviceaccount:container-demo:contain
 
 <div align="center">
 
-[← 이전: Cloud Container 1일차 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Container 1일차 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

@@ -16,13 +16,13 @@
 echo "🔍 GitHub Actions 워크플로우 확인 방법:"
 echo "1. GitHub 저장소 페이지에서 'Actions' 탭 클릭"
 echo "2. 'CI Pipeline' 워크플로우 클릭"
-echo "3. 최신 실행 결과 확인 (초록색 체크마크 = 성공)"
+echo "3. 최신 실행 결과 확인 ["초록색 체크마크 = 성공"]"
 ```
 
 **수동 확인 방법:**
 1. GitHub 저장소 페이지에서 'Actions' 탭 클릭
 2. 'CI Pipeline' 워크플로우 클릭
-3. 최신 실행 결과 확인 (초록색 체크마크 = 성공)
+3. 최신 실행 결과 확인 ["초록색 체크마크 = 성공"]
 
 #### 체크포인트 2: 워크플로우 로그 확인
 ```bash
@@ -32,13 +32,13 @@ echo "3. 최신 실행 결과 확인 (초록색 체크마크 = 성공)"
 # 수동 확인 방법
 echo "📊 워크플로우 로그 확인 방법:"
 echo "1. Actions 탭에서 실행 중인 워크플로우 클릭"
-echo "2. 각 Job (test, build, security-scan) 클릭"
+echo "2. 각 Job [test, build, security-scan] 클릭"
 echo "3. 실패한 경우 빨간색 X 표시와 함께 오류 메시지 확인"
 ```
 
 **수동 확인 방법:**
 1. Actions 탭에서 실행 중인 워크플로우 클릭
-2. 각 Job (test, build, security-scan) 클릭
+2. 각 Job [test, build, security-scan] 클릭
 3. 실패한 경우 빨간색 X 표시와 함께 오류 메시지 확인
 
 ### 2단계: Docker 이미지 빌드 확인
@@ -47,9 +47,9 @@ echo "3. 실패한 경우 빨간색 X 표시와 함께 오류 메시지 확인"
 ```bash
 # Docker Hub에서 이미지 확인
 echo "🐳 Docker 이미지 확인 방법:"
-echo "1. Docker Hub (https://hub.docker.com) 로그인"
+echo "1. Docker Hub [https://hub.docker.com] 로그인"
 echo "2. 저장소 목록에서 'YOUR_USERNAME/app' 확인"
-echo "3. 최신 태그 (latest, main-COMMIT_SHA) 확인"
+echo "3. 최신 태그 [latest, main-COMMIT_SHA] 확인"
 
 # 로컬에서 이미지 테스트
 docker pull YOUR_USERNAME/app:latest
@@ -58,9 +58,9 @@ curl http://localhost:3000
 ```
 
 **수동 확인 방법:**
-1. Docker Hub (https://hub.docker.com) 로그인
+1. Docker Hub [https://hub.docker.com] 로그인
 2. 저장소 목록에서 'YOUR_USERNAME/app' 확인
-3. 최신 태그 (latest, main-COMMIT_SHA) 확인
+3. 최신 태그 [latest, main-COMMIT_SHA] 확인
 
 #### 체크포인트 4: Docker 이미지 품질 확인
 ```bash
@@ -91,14 +91,14 @@ curl http://YOUR_EC2_IP:3000/health
 
 **수동 확인 방법:**
 1. AWS Management Console → EC2 → Instances
-2. 인스턴스 상태 확인 (running)
+2. 인스턴스 상태 확인 [running]
 3. 퍼블릭 IP 주소 확인
 4. 웹 브라우저에서 `http://YOUR_EC2_IP:3000` 접속
 
 #### 체크포인트 6: GCP Compute Engine 확인
 ```bash
 # GCP CLI로 인스턴스 상태 확인
-gcloud compute instances list --format="table(name,zone,machineType,status,EXTERNAL_IP)"
+gcloud compute instances list --format="table[name,zone,machineType,status,EXTERNAL_IP]"
 
 # SSH 연결 테스트
 gcloud compute ssh YOUR_INSTANCE_NAME --zone=YOUR_ZONE
@@ -110,7 +110,7 @@ curl http://YOUR_GCP_IP:3000/health
 
 **수동 확인 방법:**
 1. GCP Console → Compute Engine → VM instances
-2. 인스턴스 상태 확인 (running)
+2. 인스턴스 상태 확인 [running]
 3. 외부 IP 주소 확인
 4. 웹 브라우저에서 `http://YOUR_GCP_IP:3000` 접속
 
@@ -151,8 +151,8 @@ echo "✅ Day 1 확인 완료!"
 # 매트릭스 빌드 결과 확인
 echo "🔧 매트릭스 빌드 확인 방법:"
 echo "1. GitHub Actions에서 'Advanced CI/CD Pipeline' 워크플로우 확인"
-echo "2. 각 Node.js 버전 (16, 18, 20)별 빌드 결과 확인"
-echo "3. 각 OS (Ubuntu, Windows, macOS)별 빌드 결과 확인"
+echo "2. 각 Node.js 버전 [16, 18, 20]별 빌드 결과 확인"
+echo "3. 각 OS [Ubuntu, Windows, macOS]별 빌드 결과 확인"
 echo "4. 모든 조합이 성공했는지 확인"
 ```
 
@@ -287,7 +287,7 @@ kubectl get services -n monitoring
 # Grafana 접속 확인
 kubectl port-forward service/grafana 3000:3000 -n monitoring
 echo "📈 Grafana 접속: http://localhost:3000"
-echo "1. Grafana 웹 UI 접속 (admin/admin)"
+echo "1. Grafana 웹 UI 접속 [admin/admin]"
 echo "2. Data Sources에서 Prometheus 연결 확인"
 echo "3. 대시보드에서 메트릭 시각화 확인"
 ```
@@ -303,7 +303,7 @@ aws elbv2 describe-load-balancers --query 'LoadBalancers[*].[LoadBalancerName,St
 aws elbv2 describe-target-groups --query 'TargetGroups[*].[TargetGroupName,HealthCheckPath,Port]' --output table
 
 # 로드밸런서 접속 테스트
-ALB_DNS=$(aws elbv2 describe-load-balancers --query 'LoadBalancers[0].DNSName' --output text)
+ALB_DNS=$[aws elbv2 describe-load-balancers --query 'LoadBalancers[0].DNSName' --output text]
 curl http://$ALB_DNS
 ```
 
@@ -314,7 +314,7 @@ gcloud compute forwarding-rules list --global
 gcloud compute backend-services list --global
 
 # 로드밸런서 접속 테스트
-LB_IP=$(gcloud compute forwarding-rules describe my-forwarding-rule --global --format="value(IPAddress)")
+LB_IP=$[gcloud compute forwarding-rules describe my-forwarding-rule --global --format="value[IPAddress]"]
 curl http://$LB_IP
 ```
 
@@ -339,7 +339,7 @@ gcloud billing budgets list
 gcloud compute instances list --filter="status=TERMINATED"
 
 # 비용 최적화 권장사항 확인
-gcloud compute instances list --format="table(name,machineType,status,zone)"
+gcloud compute instances list --format="table[name,machineType,status,zone]"
 ```
 
 ### Day 3 자동 확인 스크립트
@@ -494,9 +494,9 @@ echo "- Kubernetes: ./cloud-scripts/cleanup-k8s.sh"
 
 <div align="center">
 
-[← 이전: GitHub Actions CI/CD 완전 가이드](github-actions-cicd-guide.md) | 
-[📚 전체 커리큘럼](../../../curriculum.md) | 
-[🏠 학습 경로로 돌아가기](../../../index.md) | 
-[다음: VM 배포 실습 →](vm-deployment.md)
+["← 이전: GitHub Actions CI/CD 완전 가이드"][github-actions-cicd-guide.md] | 
+["📚 전체 커리큘럼"][../../../curriculum.md] | 
+["🏠 학습 경로로 돌아가기"][../../../index.md] | 
+["다음: VM 배포 실습 →"][vm-deployment.md]
 
 </div>

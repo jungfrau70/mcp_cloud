@@ -39,7 +39,7 @@ cd C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/cloud_container/automation_
 
 ### 📊 테스트 세부 결과
 
-**1. ContainerCourseAutomation 테스트 (10개)**
+**1. ContainerCourseAutomation 테스트 ["10개"]**
 - ✅ 설정 초기화 테스트
 - ✅ 환경 변수 설정 테스트
 - ✅ 일일 계획 생성 테스트
@@ -51,7 +51,7 @@ cd C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/cloud_container/automation_
 - ✅ Day 2 스크립트 생성 테스트
 - ✅ 결과 저장 테스트
 
-**2. 통합 테스트 (2개)**
+**2. 통합 테스트 ["2개"]**
 - ✅ 전체 자동화 성공 테스트
 - ✅ 누락된 도구가 있는 경우 테스트
 
@@ -75,16 +75,16 @@ mcp_knowledge_base/cloud_container/automation/
 ### 🔧 Container 과정 자동화 시스템 특징
 
 1. **완전한 테스트 커버리지**: 12개의 포괄적인 테스트
-2. **견고한 오류 처리**: 누락된 도구(gcloud-cli, kubectl, helm)가 있어도 계속 진행
+2. **견고한 오류 처리**: 누락된 도구[gcloud-cli, kubectl, helm]가 있어도 계속 진행
 3. **모듈화된 구조**: Day별로 분리된 스크립트 생성
 4. **실무 중심**: Kubernetes, GKE, ECS, Fargate 등 컨테이너 오케스트레이션 중심
 
 ### ⚠️ 주의사항
 
 **누락된 도구들:**
-- `gcloud-cli` (GCP CLI)
-- `kubectl` (Kubernetes CLI)  
-- `helm` (Kubernetes 패키지 관리자)
+- `gcloud-cli` [GCP CLI]
+- `kubectl` [Kubernetes CLI]  
+- `helm` ["Kubernetes 패키지 관리자"]
 
 하지만 자동화 시스템이 부분적으로라도 계속 진행하도록 설계되어 있어서 성공적으로 완료되었습니다.
 
@@ -120,6 +120,6 @@ chmod +x *.sh
 
 <div align="center">
 
-[📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

@@ -2,7 +2,7 @@
 
 > **5분 만에 클라우드 학습 자동화 시작하기**
 
-## 🚀 **1단계: 환경 준비 (2분)**
+## 🚀 **1단계: 환경 준비 ["2분"]**
 
 ### 필수 도구 설치
 ```bash
@@ -24,8 +24,8 @@ sudo usermod -aG docker $USER
 ```bash
 # AWS 설정
 aws configure
-# AWS Access Key ID: [입력]
-# AWS Secret Access Key: [입력]
+# AWS Access Key ID: ["입력"]
+# AWS Secret Access Key: ["입력"]
 # Default region name: us-west-2
 # Default output format: json
 
@@ -34,7 +34,7 @@ gcloud auth login
 gcloud config set project [YOUR_PROJECT_ID]
 ```
 
-## 🎯 **2단계: 첫 번째 실습 실행 (3분)**
+## 🎯 **2단계: 첫 번째 실습 실행 ["3분"]**
 
 ### Cloud Basic Day1 실행
 ```bash
@@ -62,7 +62,7 @@ python3 improved_basic_automation.py
 # ✅ 가상머신 서비스 기초: t2.micro 인스턴스 생성 완료
 # ✅ 스토리지 서비스 기초: S3 버킷 생성 완료
 # ✅ GCP 서비스 실습: Compute Engine 및 Cloud Storage 생성 완료
-# 🎉 basic Day1 자동화 완료 (소요시간: 120.50초)
+# 🎉 basic Day1 자동화 완료 ["소요시간: 120.50초"]
 ```
 
 ### 결과 파일 확인
@@ -171,7 +171,7 @@ python3 improved_container_automation.py
 
 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 
 ---
 
@@ -179,6 +179,6 @@ python3 improved_container_automation.py
 
 <div align="center">
 
-[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
+["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
 
 </div>

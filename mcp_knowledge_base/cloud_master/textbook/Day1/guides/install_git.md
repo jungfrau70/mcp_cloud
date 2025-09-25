@@ -4,16 +4,16 @@
 Git은 분산 버전 관리 시스템으로, 소스 코드의 변경사항을 추적하고 협업을 지원합니다. 이 가이드는 다양한 운영체제에서 Git을 설치하는 방법을 설명합니다.
 
 ## 목차
-- [Windows 설치](#windows-설치)
-- [macOS 설치](#macos-설치)
-- [Linux 설치](#linux-설치)
-- [설치 확인](#설치-확인)
-- [기본 설정](#기본-설정)
-- [문제 해결](#문제-해결)
+- ["Windows 설치"]["#windows-설치"]
+- ["macOS 설치"]["#macos-설치"]
+- ["Linux 설치"]["#linux-설치"]
+- ["설치 확인"]["#설치-확인"]
+- ["기본 설정"]["#기본-설정"]
+- ["문제 해결"]["#문제-해결"]
 
 ## Windows 설치
 
-### 방법 1: Git for Windows (권장)
+### 방법 1: Git for Windows ["권장"]
 
 1. **Git for Windows 다운로드**
    ```bash
@@ -35,8 +35,8 @@ Git은 분산 버전 관리 시스템으로, 소스 코드의 변경사항을 �
 ### 방법 2: Chocolatey 사용
 
 ```cmd
-# Chocolatey 설치 (없는 경우)
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https:///community.chocolatey.org/install.ps1'))
+# Chocolatey 설치 ["없는 경우"]
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex [[New-Object System.Net.WebClient].DownloadString['https:///community.chocolatey.org/install.ps1']]
 
 # Git 설치
 choco install git
@@ -51,7 +51,7 @@ winget install Git.Git
 ### 방법 4: Scoop 사용
 
 ```powershell
-# Scoop 설치 (없는 경우)
+# Scoop 설치 ["없는 경우"]
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 irm get.scoop.sh | iex
 
@@ -68,7 +68,7 @@ https:///desktop.github.com/
 
 ## macOS 설치
 
-### 방법 1: Xcode Command Line Tools (권장)
+### 방법 1: Xcode Command Line Tools ["권장"]
 
 ```bash
 # Xcode Command Line Tools 설치
@@ -119,7 +119,7 @@ https:///desktop.github.com/
 
 ### Ubuntu/Debian
 
-#### 방법 1: APT 패키지 매니저 (권장)
+#### 방법 1: APT 패키지 매니저 ["권장"]
 
 ```bash
 # 패키지 업데이트
@@ -128,7 +128,7 @@ sudo apt update
 # Git 설치
 sudo apt install git
 
-# 최신 버전 설치 (PPA 사용)
+# 최신 버전 설치 ["PPA 사용"]
 sudo add-apt-repository ppa:git-core/ppa
 sudo apt update
 sudo apt install git
@@ -164,7 +164,7 @@ sudo yum install git
 # CentOS/RHEL 8+ / Rocky Linux
 sudo dnf install git
 
-# 최신 버전 설치 (EPEL 리포지토리)
+# 최신 버전 설치 ["EPEL 리포지토리"]
 sudo yum install epel-release
 sudo yum install git
 ```
@@ -266,7 +266,7 @@ git config --global user.name "Your Name"
 
 # 전역 ### 📧 연락처
 - **이메일**: inhwan.jung@gmail.com
-- **GitHub**: [프로젝트 저장소](https:///github.com/jungfrau70/aws_gcp.git)
+- **GitHub**: ["프로젝트 저장소"][https:///github.com/jungfrau70/aws_gcp.git]
 ### 6. 자격 증명 관리
 
 ```bash
@@ -306,7 +306,7 @@ git config --global credential.helper osxkeychain
 
 3. **SSL 인증서 오류**
    ```bash
-   # SSL 검증 비활성화 (권장하지 않음)
+   # SSL 검증 비활성화 ["권장하지 않음"]
    git config --global http.sslVerify false
    
    # 또는 인증서 파일 지정
@@ -352,7 +352,7 @@ git config --global index.threads 0
 
 ## 추가 도구
 
-### Git LFS (Large File Storage)
+### Git LFS [Large File Storage]
 
 ```bash
 # Git LFS 설치
@@ -371,26 +371,26 @@ git lfs track "*.zip"
 ### Git GUI 도구
 
 ```bash
-# GitKraken (크로스 플랫폼)
+# GitKraken ["크로스 플랫폼"]
 # https:///www.gitkraken.com/
 
-# SourceTree (Windows/macOS)
+# SourceTree [Windows/macOS]
 # https:///www.sourcetreeapp.com/
 
-# GitHub Desktop (Windows/macOS)
+# GitHub Desktop [Windows/macOS]
 # https:///desktop.github.com/
 
-# Git Cola (Linux)
+# Git Cola [Linux]
 sudo apt install git-cola
 ```
 
 ## 추가 리소스
 
-- [Git 공식 문서](https:///git-scm.com/doc)
-- [Pro Git 책](https:///git-scm.com/book)
-- [GitHub Docs](https:///docs.github.com/)
-- [GitLab Docs](https:///docs.gitlab.com/)
-- [Atlassian Git 튜토리얼](https:///www.atlassian.com/git/tutorials)
+- ["Git 공식 문서"][https:///git-scm.com/doc]
+- ["Pro Git 책"][https:///git-scm.com/book]
+- [GitHub Docs][https:///docs.github.com/]
+- [GitLab Docs][https:///docs.gitlab.com/]
+- ["Atlassian Git 튜토리얼"][https:///www.atlassian.com/git/tutorials]
 
 ## 버전 관리
 
@@ -481,7 +481,7 @@ fi
 # Git 설치
 sudo $PACKAGE_MANAGER install -y git
 
-# Git LFS 설치 (EPEL 필요)
+# Git LFS 설치 ["EPEL 필요"]
 sudo $PACKAGE_MANAGER install -y epel-release
 sudo $PACKAGE_MANAGER install -y git-lfs
 
@@ -534,7 +534,7 @@ fi
 echo "Git 저장소 테스트..."
 
 # 임시 디렉토리 생성
-TEMP_DIR=$(mktemp -d)
+TEMP_DIR=$[mktemp -d]
 cd "$TEMP_DIR"
 
 # Git 저장소 초기화
@@ -620,6 +620,6 @@ EOF
 
 <div align="center">
 
-[← 이전: Cloud Master 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Master 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>

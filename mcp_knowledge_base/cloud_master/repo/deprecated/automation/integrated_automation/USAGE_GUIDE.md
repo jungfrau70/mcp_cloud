@@ -20,7 +20,7 @@ docker --version
 
 ### 2. 기본 실행
 ```bash
-# 전체 과정 실행 (Basic → Master → Container)
+# 전체 과정 실행 [Basic → Master → Container]
 python run_integrated_automation.py
 
 # 특정 과정부터 시작
@@ -52,7 +52,7 @@ python run_integrated_automation.py --validate-connections
 
 ## ⚙️ 설정 파일 관리
 
-### 통합 설정 (integrated_config.json)
+### 통합 설정 [integrated_config.json]
 ```json
 {
   "total_duration_days": 7,
@@ -153,7 +153,7 @@ curl https:///sdk.cloud.google.com | bash
 # Linux: docker.io 패키지
 
 # kubectl 설치
-curl -LO "https:///dl.k8s.io/release/$(curl -L -s https:///dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https:///dl.k8s.io/release/$[curl -L -s https:///dl.k8s.io/release/stable.txt]/bin/linux/amd64/kubectl"
 ```
 
 #### 2. 권한 문제
@@ -205,10 +205,10 @@ grep "resource" shared_resources/shared_state.json
 ### 백업 생성
 ```bash
 # 전체 설정 백업
-tar -czf integrated_automation_backup_$(date +%Y%m%d).tar.gz .
+tar -czf integrated_automation_backup_$[date +%Y%m%d].tar.gz .
 
 # 공유 리소스만 백업
-tar -czf shared_resources_backup_$(date +%Y%m%d).tar.gz shared_resources/
+tar -czf shared_resources_backup_$[date +%Y%m%d].tar.gz shared_resources/
 ```
 
 ### 복구
@@ -255,7 +255,7 @@ python run_integrated_automation.py --cache-resources
 
 ### 테스트 케이스 추가
 1. `test_integrated_automation.py`에 새로운 테스트 추가
-2. 모의 객체(Mock) 활용
+2. 모의 객체[Mock] 활용
 3. 통합 테스트 시나리오 작성
 
 ## 📞 지원 및 문의
@@ -300,7 +300,7 @@ python run_integrated_automation.py --cache-resources
 **통합 자동화**
 
 ## 🔗 관련 과정
-[Cloud Basic 1일차](README.md) | [Cloud Master 1일차](README.md) | [Cloud Container 1일차](README.md)
+["Cloud Basic 1일차"][README.md] | ["Cloud Master 1일차"][README.md] | ["Cloud Container 1일차"][README.md]
 
 </div>
 
@@ -308,6 +308,6 @@ python run_integrated_automation.py --cache-resources
 
 <div align="center">
 
-[🏠 홈](index.md) | [📚 전체 커리큘럼](curriculum.md) | [🔗 학습 경로](learning-path.md)
+["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
 
 </div>

@@ -9,10 +9,10 @@
 
 ## 📚 참고 자료
 
-- [GitHub Actions 공식 자습서](https://docs.github.com/ko/actions/tutorials)
-- [AWS CLI 공식 문서](https://docs.aws.amazon.com/cli/)
-- [GCP CLI 공식 문서](https://cloud.google.com/sdk/docs)
-- [Docker WSL2 가이드](https://docs.docker.com/desktop/wsl/)
+- ["GitHub Actions 공식 자습서"][https://docs.github.com/ko/actions/tutorials]
+- ["AWS CLI 공식 문서"][https://docs.aws.amazon.com/cli/]
+- ["GCP CLI 공식 문서"][https://cloud.google.com/sdk/docs]
+- ["Docker WSL2 가이드"][https://docs.docker.com/desktop/wsl/]
 
 ## 🚀 전체 시스템 아키텍처
 
@@ -23,10 +23,10 @@
 ├─────────────────────────────────────────────────────────────┤
 │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────┐  │
 │  │   Docker        │  │   AWS CLI       │  │   GCP CLI   │  │
-│  │   Desktop       │  │   (Windows)     │  │  (Windows)  │  │
+│  │   Desktop       │  │   [Windows]     │  │  [Windows]  │  │
 │  └─────────────────┘  └─────────────────┘  └─────────────┘  │
 ├─────────────────────────────────────────────────────────────┤
-│                    WSL2 (Ubuntu 24.04)                     │
+│                    WSL2 [Ubuntu 24.04]                     │
 ├─────────────────────────────────────────────────────────────┤
 │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────┐  │
 │  │   Cloud         │  │   Environment   │  │   GitHub    │  │
@@ -37,7 +37,7 @@
 ├─────────────────────────────────────────────────────────────┤
 │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────┐  │
 │  │   AWS           │  │   GCP           │  │   GitHub    │  │
-│  │   (EC2, S3)     │  │   (Compute)     │  │   (CI/CD)   │  │
+│  │   [EC2, S3]     │  │   [Compute]     │  │   [CI/CD]   │  │
 │  └─────────────────┘  └─────────────────┘  └─────────────┘  │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -74,10 +74,10 @@ check_command() {
     
     # Linux 바이너리 확인
     if command -v "$command" &> /dev/null; then
-        log_success "✅ $tool_name: 설치됨 (Linux)"
+        log_success "✅ $tool_name: 설치됨 [Linux]"
     # Windows 바이너리 확인
     elif command -v "${command}.exe" &> /dev/null; then
-        log_success "✅ $tool_name: 설치됨 (Windows)"
+        log_success "✅ $tool_name: 설치됨 [Windows]"
     else
         log_error "❌ $tool_name: 설치되지 않음"
     fi
@@ -126,7 +126,7 @@ create_ssh_key() {
 
 # 3. EC2 인스턴스 생성
 create_ec2_instance() {
-    local instance_id=$(aws ec2 run-instances \
+    local instance_id=$[aws ec2 run-instances \
         --image-id ami-0c02fb55956c7d316 \
         --instance-type t2.micro \
         --key-name "$KEY_NAME" \
@@ -134,7 +134,7 @@ create_ec2_instance() {
         --subnet-id "$SUBNET_ID" \
         --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=CloudMaster}]' \
         --query 'Instances[0].InstanceId' \
-        --output text)
+        --output text]
     
     log_success "✅ EC2 인스턴스 생성: $instance_id"
 }
@@ -143,7 +143,7 @@ create_ec2_instance() {
 #### **핵심 기능**
 - **자격 증명 검증**: AWS CLI를 통한 인증 상태 확인
 - **SSH 키 관리**: RSA 4096비트 키 생성 및 권한 설정
-- **보안 그룹 생성**: 필요한 포트(SSH, HTTP, HTTPS) 열기
+- **보안 그룹 생성**: 필요한 포트[SSH, HTTP, HTTPS] 열기
 - **인스턴스 생성**: AMI 기반 EC2 인스턴스 자동 생성
 - **태그 관리**: 리소스 식별을 위한 태그 자동 설정
 
@@ -256,16 +256,16 @@ jobs:
 
 ### **1. 파일 시스템 통합**
 ```
-Windows 파일 시스템 (C:\) ←→ WSL 파일 시스템 (/mnt/c/)
-├── /mnt/c/Program Files/Amazon/AWSCLIV2/     (AWS CLI)
-├── /mnt/c/Program Files/Docker/Docker/       (Docker Desktop)
-└── /mnt/c/Users/JIH/githubs/mcp_cloud/       (프로젝트)
+Windows 파일 시스템 [C:\] ←→ WSL 파일 시스템 [/mnt/c/]
+├── /mnt/c/Program Files/Amazon/AWSCLIV2/     [AWS CLI]
+├── /mnt/c/Program Files/Docker/Docker/       [Docker Desktop]
+└── /mnt/c/Users/JIH/githubs/mcp_cloud/       ["프로젝트"]
 ```
 
 ### **2. 네트워킹 통합**
 ```
 WSL2 ←→ Windows Host ←→ Internet
-├── localhost:3000 (WSL) → localhost:3000 (Windows)
+├── localhost:3000 [WSL] → localhost:3000 [Windows]
 ├── Docker Desktop 통합
 └── Windows 방화벽 통과
 ```
@@ -284,16 +284,16 @@ bash -c "ls -la /home/jih"
 
 ### **1. 전체 실행 순서**
 ```mermaid
-graph TD
-    A[코드 변경] --> B[GitHub Push]
-    B --> C[GitHub Actions 트리거]
-    C --> D[환경 체크]
-    D --> E{환경 OK?}
-    E -->|Yes| F[AWS 배포]
-    E -->|No| G[실패 알림]
-    F --> H[GCP 배포]
-    H --> I[통합 테스트]
-    I --> J[성공 알림]
+flowchart TD
+    A["코드 변경"] -->> B[GitHub Push]
+    B -->> C["GitHub Actions 트리거"]
+    C -->> D["환경 체크"]
+    D -->> E{환경 OK?}
+    E -->>|Yes| F["AWS 배포"]
+    E -->>|No| G["실패 알림"]
+    F -->> H["GCP 배포"]
+    H -->> I["통합 테스트"]
+    I -->> J["성공 알림"]
 ```
 
 ### **2. 개별 스크립트 실행**
@@ -375,7 +375,7 @@ for attempt in {1..3}; do
         log_success "AWS 연결 성공"
         break
     else
-        log_warning "AWS 연결 실패 (시도 $attempt/3)"
+        log_warning "AWS 연결 실패 ["시도 $attempt/3"]"
         sleep 5
     fi
 done
@@ -401,8 +401,8 @@ aws ec2 describe-instances --query 'Reservations[].Instances[].InstanceId' --out
 ```bash
 # 사용하지 않는 리소스 자동 정리
 cleanup_resources() {
-    aws ec2 terminate-instances --instance-ids $(cat /tmp/instances.txt)
-    gcloud compute instances delete $(gcloud compute instances list --format="value(name)") --quiet
+    aws ec2 terminate-instances --instance-ids $[cat /tmp/instances.txt]
+    gcloud compute instances delete $[gcloud compute instances list --format="value[name]"] --quiet
 }
 ```
 
@@ -440,10 +440,10 @@ monitor_deployment() {
 
 ## 🔗 추가 학습 자료
 
-- [WSL2 공식 문서](https://docs.microsoft.com/ko-kr/windows/wsl/)
-- [Docker Desktop WSL2 가이드](https://docs.docker.com/desktop/wsl/)
-- [AWS CLI 사용법](https://docs.aws.amazon.com/cli/latest/userguide/)
-- [GCP CLI 사용법](https://cloud.google.com/sdk/docs)
-- [GitHub Actions 워크플로우](https://docs.github.com/ko/actions/using-workflows)
+- ["WSL2 공식 문서"][https://docs.microsoft.com/ko-kr/windows/wsl/]
+- ["Docker Desktop WSL2 가이드"][https://docs.docker.com/desktop/wsl/]
+- ["AWS CLI 사용법"][https://docs.aws.amazon.com/cli/latest/userguide/]
+- ["GCP CLI 사용법"][https://cloud.google.com/sdk/docs]
+- ["GitHub Actions 워크플로우"][https://docs.github.com/ko/actions/using-workflows]
 
 이 가이드를 통해 Cloud Scripts의 동작 원리를 깊이 있게 이해하고, 실무에서 효과적으로 활용할 수 있습니다.

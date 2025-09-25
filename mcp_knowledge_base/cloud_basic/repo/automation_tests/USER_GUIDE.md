@@ -71,7 +71,7 @@ aws configure
 export PROJECT_ID=your-project-id
 gcloud config set project $PROJECT_ID
 
-# 서비스 계정 키 설정 (선택사항)
+# 서비스 계정 키 설정 ["선택사항"]
 export GOOGLE_APPLICATION_CREDENTIALS=path/to/service-account-key.json
 ```
 
@@ -94,7 +94,7 @@ ls -la ./automation/day2/
 
 ## 🆘 도움이 필요하신가요?
 
-- **상세 문서**: [README.md](README.md)
+- **상세 문서**: [README.md][README.md]
 - **문제 해결**: 로그 파일 확인
 - **지원 요청**: GitHub Issues
 
@@ -108,6 +108,6 @@ ls -la ./automation/day2/
 
 <div align="center">
 
-[← 이전: Cloud Basic 메인](README.md) | [📚 전체 커리큘럼](curriculum.md) | [🏠 학습 경로로 돌아가기](index.md) | [📋 학습 경로](learning-path.md)
+["← 이전: Cloud Basic 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
 
 </div>
