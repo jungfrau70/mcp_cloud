@@ -981,8 +981,10 @@ const handleFileClick = async (path) => {
             // PPTX/PPT 파일인 경우 다운로드 링크 제공
             const blob = await response.blob()
             const downloadUrl = URL.createObjectURL(blob)
-            tbContent.value = `# ${path.split('/').pop()}\n\n## 📊 PowerPoint 프레젠테이션\n\n이 문서는 PowerPoint 프레젠테이션입니다.\n\n### 📥 다운로드\n\n[${path.split('/').pop()} 다운로드](${downloadUrl})\n\n### 💡 참고사항\n\n- 브라우저에서 직접 보려면 PowerPoint나 호환 프로그램이 필요합니다.\n- 다운로드 후 로컬에서 열어보세요.`
-            tbSlide.value = { type: 'pptx', url: downloadUrl, filename: path.split('/').pop() }
+            const fileExt = path.split('.').pop()?.toLowerCase()
+            const fileType = fileExt === 'ppt' ? 'PPT' : 'PPTX'
+            tbContent.value = `# ${path.split('/').pop()}\n\n## 📊 PowerPoint 프레젠테이션 (${fileType})\n\n이 문서는 PowerPoint 프레젠테이션입니다.\n\n### 📥 다운로드\n\n[${path.split('/').pop()} 다운로드](${downloadUrl})\n\n### 💡 참고사항\n\n- 브라우저에서 직접 보려면 PowerPoint나 호환 프로그램이 필요합니다.\n- 다운로드 후 로컬에서 열어보세요.`
+            tbSlide.value = { type: fileExt === 'ppt' ? 'ppt' : 'pptx', url: downloadUrl, filename: path.split('/').pop() }
           } else {
             tbContent.value = await response.text()
             tbSlide.value = null
