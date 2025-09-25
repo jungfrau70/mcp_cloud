@@ -3,6 +3,7 @@
 > 📋 **강의 일시**: 2024년 9월 23일 ["화"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Day1 완료 ["WSL, 클라우드 설정, GitHub Actions 배포"]
+> 📋 **참고 코드**: https://github.com/jungfrau70/cloud-master.git
 
 ---
 

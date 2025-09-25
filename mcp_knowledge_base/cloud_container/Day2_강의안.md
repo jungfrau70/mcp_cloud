@@ -3,6 +3,7 @@
 > 📋 **강의 일시**: 2024년 10월 2일 ["수"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Cloud Container 1일차 완료
+> 📋 **참고 코드**: https://github.com/jungfrau70/cloud-container.git
 
 ---
 

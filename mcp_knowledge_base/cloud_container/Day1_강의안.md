@@ -3,6 +3,7 @@
 > 📋 **강의 일시**: 2024년 10월 1일 ["화"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Cloud Master 과정 완료 ["Docker, CI/CD 기본"]
+> 📋 **참고 코드**: https://github.com/jungfrau70/cloud-container.git
 
 ---
 
