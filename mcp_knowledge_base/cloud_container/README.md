@@ -108,18 +108,18 @@ Kubernetes, 고가용성 아키텍처, 고급 모니터링 등
 ```
 
 ### 3️⃣ 자동화 스크립트
-Cloud Master 과정에서 이동된 Kubernetes 관련 스크립트들을 활용하세요:
+Cloud Container 과정의 통합 스크립트들을 활용하세요:
 
-- [Kubernetes 클러스터 생성](repos/cloud-scripts/k8s-cluster-create.sh) - 로컬 K8s 클러스터 자동 생성
-- [EKS 클러스터 생성](repos/cloud-scripts/eks-cluster-create.sh) - AWS EKS 클러스터 자동 생성
-- [클러스터 정리](repos/cloud-scripts/cluster-cleanup-interactive.sh) - 클러스터 선택적 정리
-- [K8s 앱 배포](repos/cloud-scripts/k8s-app-deploy.sh) - Kubernetes 애플리케이션 자동 배포
-- [클러스터 연결 테스트](repos/cloud-scripts/test-cluster-connection.sh) - 클러스터 연결 상태 확인
+- [통합 컨테이너 도우미](repo/scripts/cloud-container-helper.sh) - 모든 컨테이너 실습 통합 관리
+- [Day1 실습 스크립트](repo/scripts/day1-practice-improved.sh) - GKE, CI/CD, 모니터링 실습
+- [Day2 실습 스크립트](repo/scripts/day2-practice-improved.sh) - 고가용성, 보안, 성능 최적화 실습
+- [클러스터 생성](repo/deprecated/cloud-scripts/cloud-scripts/k8s-cluster-create.sh) - 로컬 K8s 클러스터 자동 생성
+- [클러스터 정리](repo/deprecated/cloud-scripts/cloud-scripts/cluster-cleanup-interactive.sh) - 클러스터 선택적 정리
 
 ### 4️⃣ 첫 번째 실습 시작
 1. Day 1 실습 가이드로 이동
-2. [Kubernetes 기초](cloud_container/textbook/Day1/practice/kubernetes-basics.md) 따라하기
-3. [GKE 클러스터 생성](cloud_container/textbook/Day1/container-orchestration-guide.md) 따라하기
+2. [Kubernetes 기초](textbook/Day1/practice/kubernetes-basics.md) 따라하기
+3. [GKE 클러스터 생성](textbook/Day1/container-orchestration-guide.md) 따라하기
 
 ## 📚 학습 자료
 
@@ -128,16 +128,16 @@ Cloud Master 과정에서 이동된 Kubernetes 관련 스크립트들을 활용�
 - Day 2: 고가용성 및 확장성 아키텍처
 
 ### 🔧 실습 가이드
-- [Kubernetes 기초](cloud_container/textbook/Day1/practice/kubernetes-basics.md)
-- [컨테이너 오케스트레이션 가이드](cloud_container/textbook/Day1/container-orchestration-guide.md)
-- [보안 정책 가이드](cloud_container/textbook/Day1/security-policies-guide.md)
-- [고가용성 아키텍처](cloud_container/textbook/Day2/high-availability-architecture.md)
-- [고급 모니터링](cloud_container/textbook/Day2/monitoring-setup.md)
+- [Kubernetes 기초](textbook/Day1/practice/kubernetes-basics.md)
+- [컨테이너 오케스트레이션 가이드](textbook/Day1/container-orchestration-guide.md)
+- [보안 정책 가이드](textbook/Day1/security-policies-guide.md)
+- [고가용성 아키텍처](textbook/Day2/high-availability-architecture.md)
+- [고급 모니터링](textbook/Day2/monitoring-setup.md)
 
 ### 🛠️ 설치 가이드
-- [kubectl 설치](cloud_container/automation_tests/get_helm.sh)
-- [Helm 설치](cloud_container/automation_tests/get_helm.sh)
-- [GKE 클러스터 설정](cloud_basic/textbook/Day1/guides/install_glcoud_cli.md)
+- [kubectl 설치](_setup_wsl/install-all-wsl.sh)
+- [Helm 설치](repo/deprecated/cloud-scripts/cloud-scripts/automation_tests/get_helm.sh)
+- [GKE 클러스터 설정](_setup_wsl/install-gcp-cli-wsl.sh)
 
 ## ✅ 학습 체크리스트
 

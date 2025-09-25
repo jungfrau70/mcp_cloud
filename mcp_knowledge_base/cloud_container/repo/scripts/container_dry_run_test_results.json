@@ -1,0 +1,254 @@
+{
+  "bash_scripts": {
+    "day1-practice-improved.sh": {
+      "script": "day1-practice-improved.sh",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    "day2-practice-improved.sh": {
+      "script": "day2-practice-improved.sh",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    "cloud-container-helper.sh": {
+      "script": "cloud-container-helper.sh",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    }
+  },
+  "python_scripts": {
+    "../deprecated/cloud-scripts/cloud-scripts/automation_tests/cloud_container_course_automation.py": {
+      "script": "../deprecated/cloud-scripts/cloud-scripts/automation_tests/cloud_container_course_automation.py",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    "../deprecated/cloud-scripts/cloud-scripts/automation_tests/improved_container_automation.py": {
+      "script": "../deprecated/cloud-scripts/cloud-scripts/automation_tests/improved_container_automation.py",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    "../deprecated/cloud-scripts/cloud-scripts/automation_tests/test_container_course_automation.py": {
+      "script": "../deprecated/cloud-scripts/cloud-scripts/automation_tests/test_container_course_automation.py",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    }
+  },
+  "kubernetes_commands": {
+    "k8s_commands": [
+      {
+        "command": "kubectl cluster-info",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "kubectl get nodes",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "kubectl get pods --all-namespaces",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "kubectl create deployment nginx --image=nginx",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "kubectl expose deployment nginx --port=80 --type=LoadBalancer",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "kubectl apply -f deployment.yaml",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "kubectl get services",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "kubectl scale deployment nginx --replicas=3",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "kubectl autoscale deployment nginx --cpu-percent=50 --min=1 --max=10",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "kubectl get hpa",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      }
+    ],
+    "status": "success",
+    "errors": []
+  },
+  "docker_commands": {
+    "docker_commands": [
+      {
+        "command": "docker --version",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "docker build -t my-app .",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "docker run -d -p 8080:80 my-app",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "docker ps",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "docker images",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "docker push gcr.io/project/my-app",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "docker-compose up -d",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "docker-compose down",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      }
+    ],
+    "status": "success",
+    "errors": []
+  },
+  "gcp_commands": {
+    "gcp_commands": [
+      {
+        "command": "gcloud container clusters create my-cluster --zone=asia-northeast3-a",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "gcloud container clusters get-credentials my-cluster --zone=asia-northeast3-a",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "gcloud container clusters list",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "gcloud container clusters describe my-cluster --zone=asia-northeast3-a",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "gcloud container clusters resize my-cluster --num-nodes=3 --zone=asia-northeast3-a",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "gcloud container clusters delete my-cluster --zone=asia-northeast3-a --quiet",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "gcloud container images list",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "gcloud container images build --tag gcr.io/project/my-app .",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "gcloud container images push gcr.io/project/my-app",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      }
+    ],
+    "status": "success",
+    "errors": []
+  },
+  "overall_status": "completed",
+  "dependencies": {
+    "dependencies": [
+      {
+        "name": "docker",
+        "type": "cli",
+        "status": "available",
+        "required": true
+      },
+      {
+        "name": "kubectl",
+        "type": "cli",
+        "status": "available",
+        "required": true
+      },
+      {
+        "name": "gcloud",
+        "type": "cli",
+        "status": "available",
+        "required": true
+      },
+      {
+        "name": "helm",
+        "type": "cli",
+        "status": "available",
+        "required": false
+      },
+      {
+        "name": "docker-compose",
+        "type": "cli",
+        "status": "available",
+        "required": true
+      },
+      {
+        "name": "kubernetes",
+        "type": "python_package",
+        "status": "missing",
+        "required": true
+      },
+      {
+        "name": "docker",
+        "type": "python_package",
+        "status": "missing",
+        "required": true
+      },
+      {
+        "name": "google-cloud-container",
+        "type": "python_package",
+        "status": "missing",
+        "required": true
+      }
+    ],
+    "status": "success",
+    "errors": [
+      "필수 의존성 누락: kubernetes",
+      "필수 의존성 누락: docker",
+      "필수 의존성 누락: google-cloud-container"
+    ]
+  }
+}

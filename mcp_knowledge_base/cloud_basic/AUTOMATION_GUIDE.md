@@ -52,7 +52,7 @@ gcloud config set project [YOUR_PROJECT_ID]
 #### 1. 자동화 실행
 ```bash
 # 1. 디렉토리 이동
-cd mcp_knowledge_base/cloud_basic/automation_tests
+cd ./automation_tests
 
 # 2. 자동화 실행
 python3 improved_basic_automation.py

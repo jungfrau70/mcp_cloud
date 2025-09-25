@@ -46,8 +46,8 @@
 - **실습 환경**: AWS Free Tier + GCP Free Tier ($300 크레딧)
 
 ### 과정 상세 정보
-- [과정명 상세](cloud_basic/과정명.md)
-- [과정 상세 정보](cloud_basic/과정상세.md)
+- [과정명 상세](과정명.md)
+- [과정 상세 정보](과정상세.md)
 
 ### 학습 목표
 - 클라우드 컴퓨팅의 기본 개념 이해
@@ -66,13 +66,13 @@
 #### 1. 클라우드 개념 및 계정 생성 이론 (30분)
 
 **📖 이론 학습 자료**
-- [클라우드 개념 및 계정 생성 가이드](cloud_basic/textbook/Day1/aws-gcp-account-setup.md)
-- [AWS 계정 가입 가이드](cloud_basic/accounts/AWS계정가입.md)
-- [Azure 계정 가입 가이드](cloud_basic/accounts/Azure계정가입.md)
-- [GCP 개인계정 가입 가이드](cloud_basic/accounts/GCP_개인계정가입.md)
-- [GCP 조직계정 가입 가이드](cloud_basic/accounts/GCP_조직계정가입.md)
-- [GCP 계정유형비교](cloud_basic/accounts/GCP_계정유형비교.md)
-- [클라우드계정관리비교](cloud_basic/accounts/클라우드계정관리비교.md)
+- [클라우드 개념 및 계정 생성 가이드](textbook/Day1/aws-gcp-account-setup.md)
+- [AWS 계정 가입 가이드](_accounts/AWS계정가입.md)
+- [Azure 계정 가입 가이드](_accounts/Azure계정가입.md)
+- [GCP 개인계정 가입 가이드](_accounts/GCP_개인계정가입.md)
+- [GCP 조직계정 가입 가이드](_accounts/GCP_조직계정가입.md)
+- [GCP 계정유형비교](_accounts/GCP_계정유형비교.md)
+- [클라우드계정관리비교](_accounts/클라우드계정관리비교.md)
 
 **🎯 이론 학습 내용**
 - 클라우드 컴퓨팅 개요와 장점
@@ -83,7 +83,7 @@
 #### 2. IAM 기초 이론 (30분)
 
 **📖 이론 학습 자료**
-- [IAM 기초 가이드](cloud_basic/textbook/Day1/iam-basics-guide.md)
+- [IAM 기초 가이드](textbook/Day1/iam-basics-guide.md)
 
 **🎯 이론 학습 내용**
 - AWS IAM: 사용자, 그룹, 역할, 정책 개념
@@ -94,8 +94,8 @@
 #### 3. 가상머신 서비스 기초 이론 (30분)
 
 **📖 이론 학습 자료**
-- [VM 서비스 가이드](cloud_basic/textbook/Day1/vm-services-guide.md)
-- [AWS EC2 vs GCP Compute Engine 비교](cloud_basic/textbook/Day2/compute_comparison.md)
+- [VM 서비스 가이드](textbook/Day1/vm-services-guide.md)
+- [AWS EC2 vs GCP Compute Engine 비교](textbook/Day2/compute_comparison.md)
 
 **🎯 이론 학습 내용**
 - AWS EC2 vs GCP Compute Engine 비교
@@ -109,8 +109,8 @@
 
 **🔧 실습 가이드**
 - [1일차 실습 가이드](README.md)
-- [AWS 기초 실습](cloud_basic/textbook/Day1/practice/aws_basic_practice.md)
-- [GCP 기초 실습](cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
+- [AWS 기초 실습](textbook/Day1/practice/aws_basic_practice.md)
+- [GCP 기초 실습](textbook/Day1/practice/gcp_basic_practice.md)
 
 **🎯 실습 내용**
 - AWS Free Tier 계정 생성 및 콘솔 탐색
@@ -142,8 +142,8 @@
 #### 📚 이론 학습 (30분)
 
 **📖 이론 학습 자료**
-- [스토리지 서비스 가이드](cloud_basic/textbook/Day1/storage-services-guide.md)
-- [AWS S3 vs GCP Cloud Storage 비교](cloud_basic/textbook/Day2/storage_comparison.md)
+- [스토리지 서비스 가이드](textbook/Day1/storage-services-guide.md)
+- [AWS S3 vs GCP Cloud Storage 비교](textbook/Day2/storage_comparison.md)
 
 **🎯 이론 학습 내용**
 - AWS S3 vs GCP Cloud Storage 비교
@@ -165,23 +165,23 @@
 
 #### 실습 가이드
 - [1일차 실습 가이드](README.md)
-- [AWS 기본 실습](cloud_basic/textbook/Day1/practice/aws_basic_practice.md)
-- [GCP 기본 실습](cloud_basic/textbook/Day1/practice/gcp_basic_practice.md)
-- [실습1 AWS GCP](cloud_basic/textbook/Day1/practice/실습1_aws_gcp.md)
+- [AWS 기본 실습](textbook/Day1/practice/aws_basic_practice.md)
+- [GCP 기본 실습](textbook/Day1/practice/gcp_basic_practice.md)
+- [실습1 AWS GCP](textbook/Day1/practice/실습1_aws_gcp.md)
 
 #### 핵심 가이드 문서
-- [IAM 기초 가이드](cloud_basic/textbook/Day1/iam-basics-guide.md)
-- [스토리지 서비스 가이드](cloud_basic/textbook/Day1/storage-services-guide.md)
-- [VM 서비스 가이드](cloud_basic/textbook/Day1/vm-services-guide.md)
-- [문제 해결 가이드](cloud_basic/textbook/Day1/troubleshooting-guide.md)
+- [IAM 기초 가이드](textbook/Day1/iam-basics-guide.md)
+- [스토리지 서비스 가이드](textbook/Day1/storage-services-guide.md)
+- [VM 서비스 가이드](textbook/Day1/vm-services-guide.md)
+- [문제 해결 가이드](textbook/Day1/troubleshooting-guide.md)
 
 #### 자동화 스크립트
-- [AWS GCP 설정 스크립트](cloud_basic/textbook/Day1/guides/aws-gcp-setup.sh)
-- [AWS 설정 도우미](cloud_basic/textbook/Day1/guides/aws-setup-helper.sh)
-- [GCP 설정 도우미](cloud_basic/textbook/Day1/guides/gcp-setup-helper.sh)
+- [AWS GCP 설정 스크립트](textbook/Day1/guides/aws-gcp-setup.sh)
+- [AWS 설정 도우미](textbook/Day1/guides/aws-setup-helper.sh)
+- [GCP 설정 도우미](textbook/Day1/guides/gcp-setup-helper.sh)
 
 #### 문제 해결
-- [문제 해결 가이드](cloud_basic/textbook/Day1/troubleshooting-guide.md)
+- [문제 해결 가이드](textbook/Day1/troubleshooting-guide.md)
 
 ---
 
@@ -193,7 +193,7 @@
 
 **📖 이론 학습 자료**
 - [네트워킹 기본 개념](README.md)
-- [AWS VPC vs GCP VPC 비교](cloud_basic/textbook/Day2/network_comparison.md)
+- [AWS VPC vs GCP VPC 비교](textbook/Day2/network_comparison.md)
 
 **🎯 이론 학습 내용**
 - AWS VPC vs GCP VPC 개념 및 비교
@@ -215,7 +215,7 @@
 #### 3. 데이터베이스 서비스 기초 이론 (30분)
 
 **📖 이론 학습 자료**
-- [AWS RDS vs GCP Cloud SQL 비교](cloud_basic/textbook/Day2/database_comparison.md)
+- [AWS RDS vs GCP Cloud SQL 비교](textbook/Day2/database_comparison.md)
 
 **🎯 이론 학습 내용**
 - AWS RDS vs GCP Cloud SQL 비교
@@ -229,7 +229,7 @@
 
 **🔧 실습 가이드**
 - [2일차 실습 가이드](README.md)
-- [2일차 계정 설정 가이드](cloud_basic/textbook/Day1/aws-gcp-account-setup.md)
+- [2일차 계정 설정 가이드](textbook/Day1/aws-gcp-account-setup.md)
 
 **🎯 실습 내용**
 - AWS VPC 및 서브넷 구성
@@ -263,7 +263,7 @@
 
 **🔧 실습 가이드**
 - [웹 서버 + 데이터베이스 구성 종합 실습](README.md)
-- [Basic to Master 연계 가이드](cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
+- [Basic to Master 연계 가이드](textbook/Day2/practice/basic-to-master-bridge.md)
 
 **🎯 실습 내용**
 - 간단한 웹 애플리케이션을 AWS와 GCP에 각각 배포
@@ -277,36 +277,36 @@
 - [2일차 실습 가이드](README.md)
 
 #### 비교 분석 문서
-- [컴퓨팅 서비스 비교](cloud_basic/textbook/Day2/compute_comparison.md)
-- [데이터베이스 서비스 비교](cloud_basic/textbook/Day2/database_comparison.md)
-- [네트워킹 서비스 비교](cloud_basic/textbook/Day2/network_comparison.md)
-- [스토리지 서비스 비교](cloud_basic/textbook/Day2/storage_comparison.md)
-- [Basic to Master 연계 가이드](cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
+- [컴퓨팅 서비스 비교](textbook/Day2/compute_comparison.md)
+- [데이터베이스 서비스 비교](textbook/Day2/database_comparison.md)
+- [네트워킹 서비스 비교](textbook/Day2/network_comparison.md)
+- [스토리지 서비스 비교](textbook/Day2/storage_comparison.md)
+- [Basic to Master 연계 가이드](textbook/Day2/practice/basic-to-master-bridge.md)
 
 #### 자동화 스크립트
-- [AWS 설정 도우미](cloud_basic/textbook/Day1/guides/aws-setup-helper.sh)
-- [GCP 설정 도우미](cloud_basic/textbook/Day1/guides/gcp-setup-helper.sh)
+- [AWS 설정 도우미](textbook/Day1/guides/aws-setup-helper.sh)
+- [GCP 설정 도우미](textbook/Day1/guides/gcp-setup-helper.sh)
 
 ---
 
 ## 🛠️ 설치 및 도구 가이드
 
 ### 필수 도구 설치
-- [AWS CLI 설치](cloud_basic/textbook/Day1/guides/install_aws_cli.md)
-- [Azure CLI 설치](cloud_basic/textbook/Day1/guides/install_azure_cli.md)
-- [GCP CLI 설치](cloud_basic/textbook/Day1/guides/install_glcoud_cli.md)
-- [Docker 설치](cloud_basic/textbook/Day1/guides/install_docker.md)
-- [Docker Compose 설치](cloud_basic/textbook/Day1/guides/install_docker_compose.md)
-- [Git 설치](cloud_basic/textbook/Day1/guides/install_git.md)
-- [GitHub Actions 완전 가이드](cloud_basic/textbook/Day1/guides/github-actions-complete-guide.md)
+- [AWS CLI 설치](textbook/Day1/guides/install_aws_cli.md)
+- [Azure CLI 설치](textbook/Day1/guides/install_azure_cli.md)
+- [GCP CLI 설치](textbook/Day1/guides/install_glcoud_cli.md)
+- [Docker 설치](textbook/Day1/guides/install_docker.md)
+- [Docker Compose 설치](textbook/Day1/guides/install_docker_compose.md)
+- [Git 설치](textbook/Day1/guides/install_git.md)
+- [GitHub Actions 완전 가이드](textbook/Day1/guides/github-actions-complete-guide.md)
 
 ### 클라우드별 설치 스크립트
-- [AWS Docker Compose 설치](cloud_basic/textbook/Day1/guides/install_docker_compose_aws.sh)
-- [Azure Docker Compose 설치](cloud_basic/textbook/Day1/guides/install_docker_compose_azure.sh)
-- [GCP Docker Compose 설치](cloud_basic/textbook/Day1/guides/install_docker_compose_gcp.sh)
-- [AWS Git 설치](cloud_basic/textbook/Day1/guides/install_git_aws.sh)
-- [Azure Git 설치](cloud_basic/textbook/Day1/guides/install_git_azure.sh)
-- [GCP Git 설치](cloud_basic/textbook/Day1/guides/install_git_gcp.sh)
+- [AWS Docker Compose 설치](textbook/Day1/guides/install_docker_compose_aws.sh)
+- [Azure Docker Compose 설치](textbook/Day1/guides/install_docker_compose_azure.sh)
+- [GCP Docker Compose 설치](textbook/Day1/guides/install_docker_compose_gcp.sh)
+- [AWS Git 설치](textbook/Day1/guides/install_git_aws.sh)
+- [Azure Git 설치](textbook/Day1/guides/install_git_azure.sh)
+- [GCP Git 설치](textbook/Day1/guides/install_git_gcp.sh)
 
 ---
 
@@ -317,15 +317,15 @@
 - [자동화 테스트 README](README.md)
 
 ### 자동화 스크립트
-- [1일차 자동화 스크립트](cloud_basic/automation/day1/cloud_basics.sh)
-- [2일차 자동화 스크립트](cloud_basic/automation_tests/basic_course_day2_scripts.py)
-- [자동화 결과](cloud_basic/automation/results/automation_results.json)
+- [1일차 자동화 스크립트](automation/day1/cloud_basics.sh)
+- [2일차 자동화 스크립트](automation_tests/basic_course_day2_scripts.py)
+- [자동화 결과](automation/results/automation_results.json)
 
 ### 자동화 테스트
-- [기본 과정 자동화](cloud_basic/automation_tests/cloud_basic_course_automation.py)
-- [2일차 스크립트 자동화](cloud_basic/automation_tests/basic_course_day2_scripts.py)
-- [자동화 테스트 실행](cloud_basic/automation_tests/run_basic_course_tests.py)
-- [자동화 테스트 검증](cloud_basic/automation_tests/test_basic_course_automation.py)
+- [기본 과정 자동화](automation_tests/cloud_basic_course_automation.py)
+- [2일차 스크립트 자동화](automation_tests/basic_course_day2_scripts.py)
+- [자동화 테스트 실행](automation_tests/run_basic_course_tests.py)
+- [자동화 테스트 검증](automation_tests/test_basic_course_automation.py)
 - [사용자 가이드](USER_GUIDE.md)
 
 ---
@@ -378,7 +378,7 @@
 ### Cloud Master 과정 준비
 - [Cloud Master 과정 상세](cloud_master/과정상세.md)
 - [Cloud Master 1일차 실습 가이드](README.md)
-- [Basic to Master 연계 가이드](cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
+- [Basic to Master 연계 가이드](textbook/Day2/practice/basic-to-master-bridge.md)
 
 ### 통합 학습 경로
 - [전체 커리큘럼](curriculum.md)

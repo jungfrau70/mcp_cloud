@@ -1,0 +1,187 @@
+{
+  "bash_scripts": {
+    "day1/cloud_basics.sh": {
+      "script": "../automation/day1/cloud_basics.sh",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    "day1/iam_basics.sh": {
+      "script": "../automation/day1/iam_basics.sh",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    "day1/vm_services.sh": {
+      "script": "../automation/day1/vm_services.sh",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    "day1/storage_services.sh": {
+      "script": "../automation/day1/storage_services.sh",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    "day2/comprehensive_practice.sh": {
+      "script": "../automation/day2/comprehensive_practice.sh",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    "day2/database_services.sh": {
+      "script": "../automation/day2/database_services.sh",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    "day2/networking_basics.sh": {
+      "script": "../automation/day2/networking_basics.sh",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    "day2/security_basics.sh": {
+      "script": "../automation/day2/security_basics.sh",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    }
+  },
+  "python_scripts": {
+    "cloud_basic_course_automation.py": {
+      "script": "cloud_basic_course_automation.py",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    "improved_basic_automation.py": {
+      "script": "improved_basic_automation.py",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    },
+    "test_basic_course_automation.py": {
+      "script": "test_basic_course_automation.py",
+      "syntax_valid": true,
+      "errors": [],
+      "warnings": []
+    }
+  },
+  "overall_status": "completed",
+  "aws_commands": {
+    "aws_commands": [
+      {
+        "command": "aws sts get-caller-identity",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "aws ec2 describe-regions",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "aws iam list-users",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "aws s3 ls",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "aws ec2 run-instances",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "aws s3 mb s3://test-bucket",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      }
+    ],
+    "status": "success",
+    "errors": []
+  },
+  "gcp_commands": {
+    "gcp_commands": [
+      {
+        "command": "gcloud auth list",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "gcloud config list",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "gcloud compute instances list",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "gcloud iam service-accounts list",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "gcloud compute instances create",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      },
+      {
+        "command": "gsutil ls",
+        "status": "success",
+        "mock_result": "명령어가 정상적으로 실행될 것으로 예상됩니다"
+      }
+    ],
+    "status": "success",
+    "errors": []
+  },
+  "dependencies": {
+    "dependencies": [
+      {
+        "name": "aws",
+        "type": "cli",
+        "status": "available",
+        "required": true
+      },
+      {
+        "name": "gcloud",
+        "type": "cli",
+        "status": "available",
+        "required": true
+      },
+      {
+        "name": "gsutil",
+        "type": "cli",
+        "status": "available",
+        "required": true
+      },
+      {
+        "name": "boto3",
+        "type": "python_package",
+        "status": "available",
+        "required": true
+      },
+      {
+        "name": "google-auth",
+        "type": "python_package",
+        "status": "available",
+        "required": true
+      },
+      {
+        "name": "google-api-python-client",
+        "type": "python_package",
+        "status": "available",
+        "required": true
+      }
+    ],
+    "status": "success",
+    "errors": []
+  }
+}

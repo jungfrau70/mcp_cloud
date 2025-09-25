@@ -1,0 +1,24 @@
+# Cloud Container 과정 필수 Python 패키지
+# 생성일: 2024-09-25
+
+# Kubernetes Python 클라이언트
+kubernetes
+
+# Docker Python SDK
+docker
+
+# GCP Container Python 클라이언트
+google-cloud-container
+
+# GCP Storage Python 클라이언트
+google-cloud-storage
+
+# YAML 파일 처리
+pyyaml
+
+# HTTP 요청 처리
+requests
+
+# 템플릿 엔진
+jinja2
+

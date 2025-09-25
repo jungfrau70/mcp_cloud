@@ -59,7 +59,7 @@ gcloud compute instances list --format="table(name,zone,status,EXTERNAL_IP)"
 #### **해결 방안**
 ```bash
 # 옵션 1: Day2 모니터링 스택 중지 (권장)
-cd mcp_knowledge_base/cloud_master/repos/samples/day2/my-app
+cd repo/day2/samples/my-app
 docker-compose down
 
 # 옵션 2: Day3 모니터링 스택 포트 변경
@@ -81,7 +81,7 @@ docker network create day3-monitoring
 #### **자동 체크 (권장)**
 ```bash
 # 환경 체크 스크립트 실행
-cd /mnt/c/Users/[사용자명]/mcp_cloud/mcp_knowledge_base/cloud_master/repos/day3/scripts
+cd repo/day3/scripts
 ./environment-check.sh
 ```
 
@@ -99,7 +99,7 @@ cd /mnt/c/Users/[사용자명]/mcp_cloud/mcp_knowledge_base/cloud_master/repos/d
 
 ### **새로운 디렉토리 구조**
 ```
-mcp_knowledge_base/cloud_master/repos/day3/
+repo/day3/
 ├── automation/          # 자동화 스크립트
 │   ├── 01-aws-loadbalancing.sh
 │   ├── 02-gcp-loadbalancing.sh
@@ -140,7 +140,7 @@ mcp_knowledge_base/cloud_master/repos/day3/
 ##### **방법 1: 자동화 스크립트 사용 (권장)**
 ```bash
 # WSL에서 자동화 스크립트 실행
-cd /mnt/c/Users/[사용자명]/mcp_cloud/mcp_knowledge_base/cloud_master/repos/day3/automation
+cd /mnt/c/Users/[사용자명]/mcp_cloud/repo/day3/automation
 ./create-git-repo.sh
 
 # GitHub 사용자명 입력 후 자동으로 Repository 생성 및 설정
@@ -159,7 +159,7 @@ git config user.name "Cloud Master Student"
 git config user.email "student@cloudmaster.com"
 
 # 실습 코드 복사 및 커밋
-cp -r /mnt/c/Users/[사용자명]/mcp_cloud/mcp_knowledge_base/cloud_master/repos/day3/automation/* .
+cp -r /mnt/c/Users/[사용자명]/mcp_cloud/repo/day3/automation/* .
 git add .
 git commit -m "Initial commit: Day3 practice automation scripts"
 
@@ -461,7 +461,7 @@ graph TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== AWS ALB 로드밸런싱 구축 시작 ==="
-./mcp_knowledge_base/cloud_master/repos/automation/day3/01-aws-loadbalancing.sh setup
+./repo/scripts/aws-loadbalancing-improved.sh setup
 
 # 또는 수동 실행 (참고용)
 echo "=== 수동 ALB 구축 ==="
@@ -582,7 +582,7 @@ graph TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== GCP Load Balancing 구축 시작 ==="
-./mcp_knowledge_base/cloud_master/repos/automation/day3/02-gcp-loadbalancing.sh setup
+./repo/scripts/cloud-master-helper.sh
 
 # 또는 수동 실행 (참고용)
 echo "=== 수동 GCP Load Balancing 구축 ==="
@@ -849,7 +849,7 @@ echo "- Backend Services: https://console.cloud.google.com/net-services/loadbala
 #### 🚀 **GCP MIG 자동 스케일링 자동화 스크립트**
 ```bash
 # GCP Managed Instance Group 자동 스케일링 설정
-./mcp_knowledge_base/cloud_master/repos/automation/day3/gcp-autoscaling-practice-automation.sh setup
+./repo/scripts/cloud-master-helper.sh
 
 # 자동화 장점:
 # ✅ 인스턴스 템플릿 자동 생성
@@ -862,7 +862,7 @@ echo "- Backend Services: https://console.cloud.google.com/net-services/loadbala
 #### 💰 **GCP 비용 최적화 자동화 스크립트**
 ```bash
 # GCP 비용 최적화 분석 실행
-./mcp_knowledge_base/cloud_master/repos/automation/day3/gcp-cost-optimization-practice-automation.sh analyze
+./repo/scripts/cloud-master-helper.sh
 
 # 자동화 장점:
 # ✅ 사용하지 않는 리소스 자동 검색
@@ -874,7 +874,7 @@ echo "- Backend Services: https://console.cloud.google.com/net-services/loadbala
 #### 🚀 **GCP 자동화 스크립트 상세 가이드**
 ```bash
 # GCP Cloud Load Balancing 자동화 스크립트 사용법
-./mcp_knowledge_base/cloud_master/repos/automation/day3/02-gcp-loadbalancing.sh setup
+./repo/scripts/cloud-master-helper.sh
 
 # GCP MIG 자동 스케일링 자동화 스크립트 사용법
 ./mcp_knowledge_base/cloud_master/repos/automation/day3/04-autoscaling.sh setup
@@ -896,7 +896,7 @@ echo "- Backend Services: https://console.cloud.google.com/net-services/loadbala
 ```
 
 # 1. GCP 전용 로드밸런싱 실습
-./mcp_knowledge_base/cloud_master/repos/automation/day3/02-gcp-loadbalancing.sh setup
+./repo/scripts/cloud-master-helper.sh
 
 # 2. GCP 모니터링 스택 자동 구축
 ./mcp_knowledge_base/cloud_master/repos/automation/day3/03-monitoring-stack.sh setup
@@ -1319,10 +1319,10 @@ echo "- Node Exporter: 시스템 메트릭이 정상적으로 수집되는지"
 # AWS/GCP VM 실습 스크립트에 포함되어 있음
 
 # 1. AWS 통합 실습 실행 (모니터링 포함)
-./mcp_knowledge_base/cloud_master/repos/automation/day3/01-aws-loadbalancing.sh setup
+./repo/scripts/aws-loadbalancing-improved.sh setup
 
 # 2. GCP 통합 실습 실행 (모니터링 포함)
-./mcp_knowledge_base/cloud_master/repos/automation/day3/02-gcp-loadbalancing.sh setup
+./repo/scripts/cloud-master-helper.sh
 
 # 3. 멀티 클라우드 모니터링 통합 실행
 ./mcp_knowledge_base/cloud_master/repos/automation/day3/03-monitoring-stack.sh setup
@@ -3125,10 +3125,10 @@ echo "- Monitoring: https://console.cloud.google.com/monitoring"
 #### 🔢 **실습 순서**
 ```bash
 # 1. AWS 로드밸런싱 구축 (권장)
-./mcp_knowledge_base/cloud_master/repos/automation/day3/01-aws-loadbalancing.sh setup
+./repo/scripts/aws-loadbalancing-improved.sh setup
 
 # 2. GCP 로드밸런싱 구축
-./mcp_knowledge_base/cloud_master/repos/automation/day3/02-gcp-loadbalancing.sh setup
+./repo/scripts/cloud-master-helper.sh
 
 # 3. 모니터링 스택 구축
 ./mcp_knowledge_base/cloud_master/repos/automation/day3/03-monitoring-stack.sh setup
@@ -3335,7 +3335,7 @@ echo "- GCP Billing: https://console.cloud.google.com/billing"
 #### **WSL에서 (개발 환경)**
 ```bash
 # 1단계: Git Repository 생성
-cd /mnt/c/Users/[사용자명]/mcp_cloud/mcp_knowledge_base/cloud_master/repos/day3/automation
+cd /mnt/c/Users/[사용자명]/mcp_cloud/repo/day3/automation
 ./create-git-repo.sh
 
 # 2단계: 코드 수정 및 동기화

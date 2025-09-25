@@ -11,8 +11,8 @@
 ### 1단계: 환경 준비
 - [AWS Free Tier 계정](https://aws.amazon.com/free/) 생성
 - [GCP Free Tier 계정](https://cloud.google.com/free) 생성
-- [Docker 설치](cloud_basic/textbook/Day1/guides/install_docker.md)
-- [Git 설정](cloud_basic/textbook/Day1/guides/install_git.md)
+- [Docker 설치](_setup_wsl/install-docker-wsl.sh)
+- [Git 설정](_setup_wsl/install-all-wsl.sh)
 
 ### 2단계: 학습 시작
 - [Day 1: Docker & Git/GitHub & GitHub Actions](textbook/Day1/README.md)

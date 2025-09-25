@@ -1,0 +1,73 @@
+{
+  "python_packages": {
+    "kubernetes": {
+      "package": "kubernetes",
+      "description": "Kubernetes Python 클라이언트",
+      "installed": true,
+      "error": null
+    },
+    "docker": {
+      "package": "docker",
+      "description": "Docker Python SDK",
+      "installed": true,
+      "error": null
+    },
+    "google-cloud-container": {
+      "package": "google-cloud-container",
+      "description": "GCP Container Python 클라이언트",
+      "installed": true,
+      "error": null
+    },
+    "google-cloud-storage": {
+      "package": "google-cloud-storage",
+      "description": "GCP Storage Python 클라이언트",
+      "installed": true,
+      "error": null
+    },
+    "pyyaml": {
+      "package": "pyyaml",
+      "description": "YAML 파일 처리",
+      "installed": true,
+      "error": null
+    },
+    "requests": {
+      "package": "requests",
+      "description": "HTTP 요청 처리",
+      "installed": true,
+      "error": null
+    },
+    "jinja2": {
+      "package": "jinja2",
+      "description": "템플릿 엔진",
+      "installed": true,
+      "error": null
+    }
+  },
+  "cli_tools": {
+    "helm": {
+      "tool": "helm",
+      "description": "Helm 차트 관리 (CLI 도구)",
+      "installed": false,
+      "install_guide": "\n# Helm 설치 (Windows)\n# 1. Chocolatey 사용\nchoco install kubernetes-helm\n\n# 2. 직접 다운로드\n# https://github.com/helm/helm/releases 에서 최신 버전 다운로드\n# 압축 해제 후 PATH에 추가\n\n# 3. 설치 확인\nhelm version\n                "
+    },
+    "kubectl": {
+      "tool": "kubectl",
+      "description": "Kubernetes CLI (CLI 도구)",
+      "installed": false,
+      "install_guide": "\n# kubectl 설치 (Windows)\n# 1. Chocolatey 사용\nchoco install kubernetes-cli\n\n# 2. 직접 다운로드\n# https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/\n# kubectl.exe를 PATH에 추가\n\n# 3. 설치 확인\nkubectl version --client\n                "
+    },
+    "docker": {
+      "tool": "docker",
+      "description": "Docker CLI (CLI 도구)",
+      "installed": true,
+      "install_guide": ""
+    },
+    "gcloud": {
+      "tool": "gcloud",
+      "description": "GCP CLI (CLI 도구)",
+      "installed": false,
+      "install_guide": "\n# GCP CLI 설치 (Windows)\n# 1. Google Cloud SDK 다운로드\n# https://cloud.google.com/sdk/docs/install\n\n# 2. 설치 후 초기화\ngcloud init\n\n# 3. 설치 확인\ngcloud version\n                "
+    }
+  },
+  "overall_status": "completed"
+}

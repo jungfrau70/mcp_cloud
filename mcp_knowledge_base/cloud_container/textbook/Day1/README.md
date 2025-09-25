@@ -248,22 +248,22 @@ Git을 단일 진실 소스로 사용하여 인프라와 애플리케이션을 �
 ### 📖 상세 실습 가이드
 
 [📖 상세 실습 가이드](#상세-실습-가이드)
-- 🔗 [Kubernetes 기초 실습](cloud_container/textbook/Day1/practice/kubernetes-basics.md)
-- 🔗 [컨테이너 기초 실습](cloud_container/textbook/Day1/practice/container-basics.md)
+- 🔗 [Kubernetes 기초 실습](practice/kubernetes-basics.md)
+- 🔗 [컨테이너 기초 실습](practice/container-basics.md)
 
 ### 🛠️ 문제 해결 가이드
 
 [🛠️ 문제 해결 가이드](#문제-해결-가이드)
-- 🔗 [종합 트러블슈팅 가이드](cloud_container/textbook/Day2/troubleshooting/multi-az-issues.md)
+- 🔗 [종합 트러블슈팅 가이드](../Day2/troubleshooting/multi-az-issues.md)
 
 ### 🔗 관련 과정 링크
 
 [🔗 관련 과정 링크](#관련-과정-링크)
 - 🔗 Cloud Basic 과정 - AWS/GCP 기초 과정
 - 🔗 Cloud Master 과정 - Docker, CI/CD 심화 과정
-- 🔗 [전체 커리큘럼](curriculum.md) - 전체 과정 구조 및 학습 경로
-- 🔗 [통합 인덱스](index.md) - 전체 과정 인덱스
-- 🔗 [학습 경로로 돌아가기](learning-path.md) - Cloud Container 학습 경로
+- 🔗 [전체 커리큘럼](../../curriculum.md) - 전체 과정 구조 및 학습 경로
+- 🔗 [통합 인덱스](../../index.md) - 전체 과정 인덱스
+- 🔗 [학습 경로로 돌아가기](../../learning-path.md) - Cloud Container 학습 경로
 
 ---
 
@@ -1287,9 +1287,9 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 
 [🎉 Day 1 실습을 시작하세요!](#day-1-실습을-시작하세요)
 
-[🚀 실습 시작하기](cloud_container/textbook/Day1/practice/container-basics.md) | 
-📚 Cloud Basic 과정 전체 |
-[🏠 홈으로 돌아가기](index.md)
+[🚀 실습 시작하기](practice/container-basics.md) | 
+📚 Cloud Container 과정 전체 |
+[🏠 홈으로 돌아가기](../../README.md)
 
 </div>
 
@@ -1300,6 +1300,6 @@ aws logs get-log-events --log-group-name /ecs/my-app --log-stream-name LOG_STREA
 ## ⬅️ 이전/다음 네비게이션
 
 [⬅️ 이전/다음 네비게이션](#이전다음-네비게이션)
-← 이전: Cloud Container 메인 | [다음: Cloud Container 2일차 →](README.md)
+← 이전: Cloud Container 메인 | [다음: Cloud Container 2일차 →](../Day2/README.md)
 
 </div>

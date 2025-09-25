@@ -221,7 +221,7 @@ mkdir -p src database nginx scripts tests/{unit,integration} logs
 #### Step 2: package.json 설정 (5분)
 ```bash
 # package.json 파일 생성 (프로젝트 폴더에서 복사)
-cp /path/to/mcp_knowledge_base/cloud_master/textbook/Day2/project/package.json .
+cp textbook/Day2/project/package.json .
 
 # 의존성 설치
 npm install
@@ -276,7 +276,7 @@ EOF
 #### Step 4: 애플리케이션 코드 설정 (15분)
 ```bash
 # src/app.js 파일 생성 (프로젝트 폴더에서 복사)
-cp /path/to/mcp_knowledge_base/cloud_master/textbook/Day2/project/src/app.js ./src/
+cp textbook/Day2/project/src/app.js ./src/
 
 # 환경 변수 파일 생성
 cat > .env << 'EOF'
@@ -297,7 +297,7 @@ EOF
 #### Step 5: Docker Compose 개발 환경 설정 (10분)
 ```bash
 # docker-compose.yml 파일 생성 (프로젝트 폴더에서 복사)
-cp /path/to/mcp_knowledge_base/cloud_master/textbook/Day2/project/docker-compose.yml .
+cp textbook/Day2/project/docker-compose.yml .
 
 # Nginx 설정 파일 생성
 mkdir -p nginx
@@ -1095,7 +1095,7 @@ LOG_LEVEL=info
 EOF
 
 # Dockerfile 생성 (프로젝트 폴더에서 복사)
-cp /path/to/mcp_knowledge_base/cloud_master/textbook/Day2/project/Dockerfile .
+cp textbook/Day2/project/Dockerfile .
 
 # .dockerignore 파일 생성
 cat > .dockerignore << 'EOF'
