@@ -24,15 +24,15 @@ class MermaidFixer:
         if content != original_content:
             blocks_fixed += content.count('flowchart ') - original_content.count('flowchart ')
         
-        # 2. 잘못된 화살표 문법 수정
-        # -> 를 ->> 로 (단, 이미 ->> 인 경우는 제외)
-        content = re.sub(r'->(?!>)', '->>', content)
-        # <- 를 <<- 로 (단, 이미 <<- 인 경우는 제외)
-        content = re.sub(r'<-(?!<)', '<<-', content)
-        # --> 를 -->> 로 (단, 이미 -->> 인 경우는 제외)
-        content = re.sub(r'-->(?!>)', '-->>', content)
-        # <-- 를 <<-- 로 (단, 이미 <<-- 인 경우는 제외)
-        content = re.sub(r'<--(?!<)', '<<--', content)
+        # 2. 화살표 문법 수정 (굵은 화살표로 가독성 향상)
+        # -> 를 ==> 로 (단, 이미 ==> 인 경우는 제외)
+        content = re.sub(r'->(?!>)', '==>', content)
+        # <- 를 <== 로 (단, 이미 <== 인 경우는 제외)
+        content = re.sub(r'<-(?!<)', '<==', content)
+        # --> 를 ==> 로 (단, 이미 ==> 인 경우는 제외)
+        content = re.sub(r'-->(?!>)', '==>', content)
+        # <-- 를 <== 로 (단, 이미 <== 인 경우는 제외)
+        content = re.sub(r'<--(?!<)', '<==', content)
         
         # 3. 노드 문법 수정
         # (text) 를 [text] 로 (단, 이미 [text] 인 경우는 제외)

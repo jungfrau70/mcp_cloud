@@ -259,9 +259,9 @@ app.get['/metrics', [req, res] => {
   res.json[{
     requests: Math.floor[Math.random[] * 1000],
     cpu_usage: Math.random[] * 100,
-    memory_usage: Math.random(] * 100
+    memory_usage: Math.random[] * 100
   }];
-});
+}];
 
 app.listen[port, '0.0.0.0', [] => {
   console.log[`Server running on port ${port}`];

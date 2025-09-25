@@ -1,8 +1,8 @@
 # Cloud Intermediate - 2일차 강의안
 
-> 📋 **강의 일시**: 2024년 10월 2일 (목) 9:00~17:00  
+> 📋 **강의 일시**: 2024년 10월 2일 ["목"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
-> 📋 **선수 학습**: Day1 완료 (Docker, Kubernetes, 클라우드 컨테이너 서비스)  
+> 📋 **선수 학습**: Day1 완료 ["Docker, Kubernetes, 클라우드 컨테이너 서비스"]  
 > 📋 **참고 코드**: https://github.com/jungfrau70/cloud-intermediate.git
 
 ---
@@ -43,7 +43,7 @@ git config --global user.email && echo "✅ Git 이메일 설정됨" || echo "�
 
 ### 📋 **실습 전 체크리스트**
 
-#### **자동 체크 (권장)**
+#### **자동 체크 ["권장"]**
 ```bash
 # 환경 체크 스크립트 실행
 cd mcp_knowledge_base/cloud_intermediate/repo/scripts
@@ -84,9 +84,9 @@ mcp_knowledge_base/cloud_intermediate/
 
 ## 📅 **2일차 강의 일정**
 
-### 🌅 **오전 (4시간) - CI/CD 및 모니터링**
+### 🌅 **오전 ["4시간"] - CI/CD 및 모니터링**
 
-#### **1교시: GitHub Actions CI/CD 파이프라인 (90분)**
+#### **1교시: GitHub Actions CI/CD 파이프라인 ["90분"]**
 - **목표**: 자동화된 빌드, 테스트, 배포 파이프라인 구축
 - **실습**: GitHub Actions 워크플로우 작성 및 실행
 
@@ -120,7 +120,7 @@ docker build -t cicd-practice-app:latest .
 - ✅ 자동화된 테스트 및 빌드 파이프라인
 - ✅ 보안 스캔 및 품질 검증 자동화
 
-#### **2교시: Prometheus + Grafana 모니터링 스택 (90분)**
+#### **2교시: Prometheus + Grafana 모니터링 스택 ["90분"]**
 - **목표**: 통합 모니터링 시스템 구축 및 활용
 - **실습**: Prometheus, Grafana, Node Exporter 설정
 
@@ -151,9 +151,9 @@ docker build -t cicd-practice-app:latest .
 - ✅ 실시간 메트릭 수집 및 시각화
 - ✅ 애플리케이션 모니터링 설정
 
-### 🌆 **오후 (4시간) - 클라우드 배포 및 통합**
+### 🌆 **오후 ["4시간"] - 클라우드 배포 및 통합**
 
-#### **3교시: AWS ECS 고급 배포 (90분)**
+#### **3교시: AWS ECS 고급 배포 ["90분"]**
 - **목표**: AWS ECS를 활용한 프로덕션 배포 전략
 - **실습**: ECS 서비스, 로드밸런서, 자동 스케일링 설정
 
@@ -183,7 +183,7 @@ docker build -t cicd-practice-app:latest .
 - ✅ Application Load Balancer 설정
 - ✅ 자동 스케일링 및 헬스 체크
 
-#### **4교시: GCP Cloud Run 고급 배포 (90분)**
+#### **4교시: GCP Cloud Run 고급 배포 ["90분"]**
 - **목표**: GCP Cloud Run을 활용한 서버리스 배포 전략
 - **실습**: Cloud Run 서비스, 도메인 매핑, 트래픽 분할
 
@@ -327,16 +327,16 @@ gcloud logging read "resource.type=cloud_run_revision" --limit 50
 ## 📚 **추가 학습 자료**
 
 ### **공식 문서**
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [Prometheus 공식 문서](https://prometheus.io/docs/)
-- [Grafana 공식 문서](https://grafana.com/docs/)
-- [AWS ECS 공식 문서](https://docs.aws.amazon.com/ecs/)
-- [GCP Cloud Run 공식 문서](https://cloud.google.com/run/docs)
+- ["GitHub Actions 공식 문서"][https://docs.github.com/en/actions]
+- ["Prometheus 공식 문서"][https://prometheus.io/docs/]
+- ["Grafana 공식 문서"][https://grafana.com/docs/]
+- ["AWS ECS 공식 문서"][https://docs.aws.amazon.com/ecs/]
+- ["GCP Cloud Run 공식 문서"][https://cloud.google.com/run/docs]
 
 ### **실습 코드 저장소**
-- [GitHub Repository](https://github.com/jungfrau70/cloud-intermediate.git)
-- [실습 샘플 코드](mcp_knowledge_base/cloud_intermediate/repo/samples/day2/)
-- [자동화 스크립트](mcp_knowledge_base/cloud_intermediate/repo/scripts/)
+- [GitHub Repository][https://github.com/jungfrau70/cloud-intermediate.git]
+- ["실습 샘플 코드"][mcp_knowledge_base/cloud_intermediate/repo/samples/day2/]
+- ["자동화 스크립트"][mcp_knowledge_base/cloud_intermediate/repo/scripts/]
 
 ## 🎯 **다음 단계 안내**
 

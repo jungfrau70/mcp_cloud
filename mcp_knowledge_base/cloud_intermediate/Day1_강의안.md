@@ -1,8 +1,8 @@
 # Cloud Intermediate - 1일차 강의안
 
-> 📋 **강의 일시**: 2024년 10월 1일 (수) 9:00~17:00  
+> 📋 **강의 일시**: 2024년 10월 1일 ["수"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
-> 📋 **선수 학습**: Cloud Basic 완료 (AWS/GCP 기초 서비스)  
+> 📋 **선수 학습**: Cloud Basic 완료 ["AWS/GCP 기초 서비스"]  
 > 📋 **참고 코드**: https://github.com/jungfrau70/cloud-intermediate.git
 
 ---
@@ -44,7 +44,7 @@ docker ps
 
 ### 📋 **실습 전 체크리스트**
 
-#### **자동 체크 (권장)**
+#### **자동 체크 ["권장"]**
 ```bash
 # 환경 체크 스크립트 실행
 cd mcp_knowledge_base/cloud_intermediate/repo/scripts
@@ -83,9 +83,9 @@ mcp_knowledge_base/cloud_intermediate/
 
 ## 📅 **1일차 강의 일정**
 
-### 🌅 **오전 (4시간) - 컨테이너 기초**
+### 🌅 **오전 ["4시간"] - 컨테이너 기초**
 
-#### **1교시: Docker 고급 활용 (90분)**
+#### **1교시: Docker 고급 활용 ["90분"]**
 - **목표**: 멀티스테이지 빌드와 최적화 기법 학습
 - **실습**: 최적화된 Dockerfile 작성 및 이미지 빌드
 
@@ -113,7 +113,7 @@ cd mcp_knowledge_base/cloud_intermediate/repo/scripts
 - ✅ Prometheus 메트릭 엔드포인트 구현
 - ✅ 보안 강화된 컨테이너 이미지 생성
 
-#### **2교시: Kubernetes 기초 (90분)**
+#### **2교시: Kubernetes 기초 ["90분"]**
 - **목표**: Pod, Service, Deployment 기본 개념 학습
 - **실습**: Kubernetes 리소스 생성 및 관리
 
@@ -141,9 +141,9 @@ kubectl apply -f repo/samples/day1/kubernetes-basics/configmap-secret.yaml
 - ✅ ConfigMap과 Secret을 활용한 설정 관리
 - ✅ 네임스페이스와 리소스 쿼터 관리
 
-### 🌆 **오후 (4시간) - 클라우드 컨테이너 서비스**
+### 🌆 **오후 ["4시간"] - 클라우드 컨테이너 서비스**
 
-#### **3교시: AWS ECS 기초 (90분)**
+#### **3교시: AWS ECS 기초 ["90분"]**
 - **목표**: AWS ECS를 활용한 컨테이너 서비스 배포
 - **실습**: ECS 클러스터 생성 및 태스크 정의
 
@@ -176,7 +176,7 @@ aws ecs create-service \
 - ✅ Fargate를 활용한 서버리스 컨테이너 실행
 - ✅ 태스크 정의를 통한 컨테이너 설정
 
-#### **4교시: GCP Cloud Run 기초 (90분)**
+#### **4교시: GCP Cloud Run 기초 ["90분"]**
 - **목표**: GCP Cloud Run을 활용한 서버리스 컨테이너 배포
 - **실습**: Cloud Run 서비스 생성 및 배포
 
@@ -305,15 +305,15 @@ gcloud run services list
 ## 📚 **추가 학습 자료**
 
 ### **공식 문서**
-- [Docker 공식 문서](https://docs.docker.com/)
-- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
-- [AWS ECS 공식 문서](https://docs.aws.amazon.com/ecs/)
-- [GCP Cloud Run 공식 문서](https://cloud.google.com/run/docs)
+- ["Docker 공식 문서"][https://docs.docker.com/]
+- ["Kubernetes 공식 문서"][https://kubernetes.io/docs/]
+- ["AWS ECS 공식 문서"][https://docs.aws.amazon.com/ecs/]
+- ["GCP Cloud Run 공식 문서"][https://cloud.google.com/run/docs]
 
 ### **실습 코드 저장소**
-- [GitHub Repository](https://github.com/jungfrau70/cloud-intermediate.git)
-- [실습 샘플 코드](mcp_knowledge_base/cloud_intermediate/repo/samples/day1/)
-- [자동화 스크립트](mcp_knowledge_base/cloud_intermediate/repo/scripts/)
+- [GitHub Repository][https://github.com/jungfrau70/cloud-intermediate.git]
+- ["실습 샘플 코드"][mcp_knowledge_base/cloud_intermediate/repo/samples/day1/]
+- ["자동화 스크립트"][mcp_knowledge_base/cloud_intermediate/repo/scripts/]
 
 ## 🎯 **다음 단계 안내**
 
@@ -321,7 +321,7 @@ gcloud run services list
 - [ ] Day1 실습 완료 확인
 - [ ] GitHub Actions 워크플로우 준비
 - [ ] CI/CD 파이프라인 설계
-- [ ] 모니터링 스택 준비 (Prometheus + Grafana)
+- [ ] 모니터링 스택 준비 [Prometheus + Grafana]
 
 ### **실무 적용 방안**
 - [ ] 회사 프로젝트에 Docker 최적화 적용

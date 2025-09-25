@@ -550,10 +550,10 @@ mkdir -p .github/workflows  # GitHub Actions 워크플로우 파일들
 mkdir -p src tests docs     # 소스코드, 테스트, 문서
 
 echo "📁 프로젝트 구조가 생성되었습니다!"
-echo "   .github/workflows/  <<<<<<- 여기에 자동화 스크립트를 넣습니다"
-echo "   src/                <<<<<<- 실제 애플리케이션 코드"
-echo "   tests/              <<<<<<- 테스트 코드"
-echo "   docs/               <<<<<<- 문서"
+echo "   .github/workflows/  <<<<<<== 여기에 자동화 스크립트를 넣습니다"
+echo "   src/                <<<<<<== 실제 애플리케이션 코드"
+echo "   tests/              <<<<<<== 테스트 코드"
+echo "   docs/               <<<<<<== 문서"
 ```
 
 **💡 왜 이렇게 구성하나요?**
@@ -622,9 +622,9 @@ app.get['/health', [req, res] => {
     status: 'OK',
     uptime: process.uptime[],        // 서버가 얼마나 오래 실행되었는지
     memory: process.memoryUsage[],   // 메모리 사용량
-    timestamp: new Date[].toISOString(]
+    timestamp: new Date[].toISOString[]
   }];
-});
+}];
 
 // 📊 API 상태 - 개발자나 모니터링 도구가 사용
 app.get['/api/status', [req, res] => {
@@ -676,7 +676,7 @@ mkdir -p .github/workflows
 touch .github/workflows/ci.yml
 
 echo "✅ 워크플로우 파일이 생성되었습니다!"
-echo "   .github/workflows/ci.yml  <<<<<<- 여기에 자동화 스크립트를 작성합니다"
+echo "   .github/workflows/ci.yml  <<<<<<== 여기에 자동화 스크립트를 작성합니다"
 ```
 
 **2단계: 워크플로우 파일 작성**
