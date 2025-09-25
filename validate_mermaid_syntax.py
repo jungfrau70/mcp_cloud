@@ -60,10 +60,22 @@ class MermaidValidator:
                 self.errors.append(f"{file_path}:{line_number} - 잘못된 노드 타입: {invalid_node}")
                 is_valid = False
         
-        # 잘못된 화살표 확인
+        # 잘못된 화살표 확인 (Mermaid 10.9.4 기준)
+        # ->, -->, <-, <-- 는 deprecated, ->>, -->>, <<-, <<-- 사용해야 함
         invalid_arrows = ['->', '<-', '-->', '<--']
         for invalid_arrow in invalid_arrows:
+            # 단, -->>나 ->>가 아닌 경우에만 오류로 처리
             if invalid_arrow in content:
+                # -->>나 ->>가 포함된 경우는 제외
+                if invalid_arrow == '-->' and '-->>' in content:
+                    continue
+                if invalid_arrow == '->' and '->>' in content:
+                    continue
+                if invalid_arrow == '<--' and '<<--' in content:
+                    continue
+                if invalid_arrow == '<-' and '<<-' in content:
+                    continue
+                
                 self.errors.append(f"{file_path}:{line_number} - 잘못된 화살표: {invalid_arrow}")
                 is_valid = False
         
@@ -73,10 +85,22 @@ class MermaidValidator:
         """Sequence diagram 문법 검증"""
         is_valid = True
         
-        # 잘못된 화살표 확인
+        # 잘못된 화살표 확인 (Mermaid 10.9.4 기준)
+        # ->, -->, <-, <-- 는 deprecated, ->>, -->>, <<-, <<-- 사용해야 함
         invalid_arrows = ['->', '<-', '-->', '<--']
         for invalid_arrow in invalid_arrows:
+            # 단, -->>나 ->>가 아닌 경우에만 오류로 처리
             if invalid_arrow in content:
+                # -->>나 ->>가 포함된 경우는 제외
+                if invalid_arrow == '-->' and '-->>' in content:
+                    continue
+                if invalid_arrow == '->' and '->>' in content:
+                    continue
+                if invalid_arrow == '<--' and '<<--' in content:
+                    continue
+                if invalid_arrow == '<-' and '<<-' in content:
+                    continue
+                
                 self.errors.append(f"{file_path}:{line_number} - 잘못된 화살표: {invalid_arrow}")
                 is_valid = False
         

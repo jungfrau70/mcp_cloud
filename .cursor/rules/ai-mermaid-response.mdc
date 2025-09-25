@@ -8,7 +8,7 @@ alwaysApply: true
 
 ### **1. Mermaid 10.9.4 문법 준수**
 - **flowchart 키워드**: `graph` 대신 `flowchart` 사용
-- **화살표 문법**: `->>` 또는 `-->>` 사용 (단일 화살표 금지)
+- **화살표 문법**: `==>` 사용 (굵은 화살표로 가독성 향상)
 - **한글 텍스트**: 모든 한글 텍스트 따옴표로 감싸기
 - **노드 문법**: `[텍스트]` 형태 사용
 
@@ -17,9 +17,9 @@ alwaysApply: true
 
 ```mermaid
 flowchart TD
-    A["AI 응답 예시"] --> B{"사용자 질문"}
-    B -->|"처리"| C["답변 생성"]
-    C --> D["결과 제공"]
+    A["AI 응답 예시"] ==> B{"사용자 질문"}
+    B ==>|"처리"| C["답변 생성"]
+    C ==> D["결과 제공"]
     
     style A fill:#1976d2,color:#ffffff
     style B fill:#f57c00,color:#ffffff

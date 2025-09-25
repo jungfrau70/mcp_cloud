@@ -9,7 +9,7 @@ alwaysApply: true
 ### **필수 적용 규칙**
 - **모든 마크다운 문서**: Mermaid 다이어그램 사용 시 이 표준 규칙 준수
 - **AI 응답 및 문의**: 모든 Mermaid 다이어그램은 Mermaid 10.9.4 문법 준수
-- **Mermaid 10.9.4 버전**: 최신 문법 사용 필수
+- **Mermaid 호환성**: Cursor 렌더러와 호환되는 문법 사용
 - **가독성 우선**: 모든 다이어그램에 스타일링 적용
 - **한글 지원**: 한글 텍스트 완벽 지원
 
@@ -20,11 +20,11 @@ alwaysApply: true
 <!-- ✅ DO: 올바른 Mermaid 블록 -->
 ```mermaid
 flowchart TD
-    A["시작점"] -->> B{"결정점"}
-    B -->>|"옵션 1"| C["액션 1"]
-    B -->>|"옵션 2"| D["액션 2"]
-    C -->> E["종료점"]
-    D -->> E
+    A["시작점"] ==> B{"결정점"}
+    B ==>|"옵션 1"| C["액션 1"]
+    B ==>|"옵션 2"| D["액션 2"]
+    C ==> E["종료점"]
+    D ==> E
     
     style A fill:#1976d2,color:#ffffff
     style B fill:#f57c00,color:#ffffff
