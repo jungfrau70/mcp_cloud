@@ -1,4 +1,26 @@
 // DEPRECATED: processKnowledgeBasePath()로 통합됨
+export function cleanPath(path: string): string {
+  if (!path) return ''
+  
+  // 기본 경로 정리
+  let cleaned = path.replace(/\\/g, '/').replace(/^\/+/, '').replace(/\/+$/, '')
+  
+  // 중복 세그먼트 제거
+  const segments = cleaned.split('/').filter(segment => segment !== '')
+  const uniqueSegments: string[] = []
+  let lastSegment = ''
+  
+  for (const segment of segments) {
+    if (segment && segment !== lastSegment) {
+      uniqueSegments.push(segment)
+      lastSegment = segment
+    }
+  }
+  
+  return uniqueSegments.join('/')
+}
+
+// DEPRECATED: processKnowledgeBasePath()로 통합됨
 export function stripBasePath(path: string, basePath = 'mcp_knowledge_base'): string {
   // Normalize path separators and leading slashes
   const normalized = path.replace(/\\/g, '/').replace(/^\/+/, '')

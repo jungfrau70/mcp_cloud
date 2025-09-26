@@ -1109,9 +1109,9 @@ const handleFileClick = async (path) => {
     }
     // 텍스트 계열은 중앙 패널에 표시 (셸 스크립트 포함)
     if(ext === 'md' || ['txt','log','json','yaml','yml','csv','sh','bash','zsh'].includes(ext) || ext === ''){
-      console.log('Making API call to curriculum endpoint with path:', cleanPath)
+      console.log('Making API call to curriculum endpoint with path:', preparedPath)
       console.log('apiBase:', apiBase, 'apiKey:', apiKey)
-      const apiUrl = `${apiBase}/api/v1/curriculum?curriculum_path=${encodeURIComponent(cleanPath)}`
+      const apiUrl = `${apiBase}/api/v1/curriculum?curriculum_path=${encodeURIComponent(preparedPath)}`
       console.log('API URL:', apiUrl)
       
       const s = await fetch(apiUrl, { headers: { 'X-API-Key': apiKey } })
