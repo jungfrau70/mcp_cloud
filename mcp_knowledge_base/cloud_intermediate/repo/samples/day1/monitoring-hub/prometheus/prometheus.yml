@@ -1,0 +1,47 @@
+global:
+  scrape_interval: 15s
+  external_labels:
+    environment: 'production'
+    region: 'global'
+
+scrape_configs:
+  # AWS VM 로컬 메트릭 수집
+  - job_name: 'aws-vm-local'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 15s
+
+  # Push Gateway 메트릭 수집
+  - job_name: 'pushgateway'
+    static_configs:
+      - targets: ['pushgateway:9091']
+    honor_labels: true
+    scrape_interval: 5s
+
+  # GCP 클러스터 메트릭 수집 (Federation) - 나중에 추가
+  - job_name: 'gcp-cluster-federation'
+    scrape_interval: 30s
+    honor_labels: true
+    metrics_path: /federate
+    params:
+      'match[]':
+        - '{job=~"gcp-.*"}'
+    static_configs:
+      - targets: ['gcp-prometheus.example.com:9090']
+    basic_auth:
+      username: 'prometheus'
+      password: 'secure-password'
+
+  # AWS 클러스터 메트릭 수집 (Federation) - 나중에 추가
+  - job_name: 'aws-cluster-federation'
+    scrape_interval: 30s
+    honor_labels: true
+    metrics_path: /federate
+    params:
+      'match[]':
+        - '{job=~"aws-.*"}'
+    static_configs:
+      - targets: ['aws-prometheus.example.com:9090']
+    basic_auth:
+      username: 'prometheus'
+      password: 'secure-password'

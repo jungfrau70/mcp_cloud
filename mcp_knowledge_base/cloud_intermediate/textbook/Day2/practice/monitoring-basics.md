@@ -1,48 +1,50 @@
-# 📊 모니터링 기초
+# 📊 멀티 클라우드 통합 모니터링 시스템
 
 ## 🎯 학습 목표
 
 ### 핵심 학습 목표
-- **Prometheus + Grafana** 모니터링 스택 구축 및 활용
-- **AWS CloudWatch** 로그 수집, 메트릭 모니터링, 알림 설정
-- **GCP Cloud Monitoring** 메트릭 수집, 대시보드 구성, 알림 정책 설정
+- **멀티 클라우드 환경** 이해 및 통합 모니터링 시스템 구축
+- **Infrastructure/Platform/Application** 3계층 모니터링 구현
+- **AWS + GCP** 환경에서의 통합 모니터링 시스템 운영
+- **실제 운영 환경** 수준의 모니터링 시스템 구축
 
 ### 실습 후 달성할 수 있는 능력
-- ✅ Prometheus + Grafana 모니터링 스택 구축
-- ✅ AWS CloudWatch를 활용한 애플리케이션 모니터링
-- ✅ GCP Cloud Monitoring을 활용한 시스템 모니터링
-- ✅ 로그 기반 모니터링 및 알림 시스템 구축
+- ✅ 멀티 클라우드 통합 모니터링 시스템 설계 및 구축
+- ✅ Infrastructure/Platform/Application 3계층 모니터링 구현
+- ✅ Global Dashboard를 통한 통합 시각화
+- ✅ 실제 운영 환경 수준의 모니터링 시스템 운영
 
 ### 예상 소요 시간
-- **Prometheus + Grafana**: 120-150분
-- **AWS CloudWatch**: 90-120분
-- **GCP Cloud Monitoring**: 90-120분
-- **전체 과정**: 5-6시간
+- **Phase 1**: 통합 모니터링 허브 구축 (2-3시간)
+- **Phase 2**: AWS 클러스터 모니터링 (3-4시간)
+- **Phase 3**: AWS Application 모니터링 (2-3시간)
+- **Phase 4**: GCP 클러스터 모니터링 (3-4시간)
+- **전체 과정**: 10-14시간
 
 ---
 
 ## 🛠️ 실습 학습
 
 ### 📁 실습 코드 및 자동화
+- **통합 시나리오**: `./cloud_intermediate/통합모니터링시나리오.md`
 - **실습 코드**: `./cloud_intermediate/samples/day2/monitoring-basics/`
-- **자동화 스크립트**: `./cloud_intermediate/scripts/monitoring-basics-practice.sh`
+- **자동화 스크립트**: `./cloud_intermediate/scripts/monitoring-stack.sh`
 - **클라우드 스크립트**: `./cloud_intermediate/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
 
 #### 필수 도구
-- **Docker & Docker Compose**: 컨테이너 환경
 - **AWS CLI**: AWS 서비스 관리
 - **GCP CLI**: GCP 서비스 관리
-- **kubectl**: Kubernetes 클러스터 관리 ["선택사항"]
+- **kubectl**: Kubernetes 클러스터 관리
+- **eksctl**: AWS EKS 클러스터 관리
+- **gcloud**: GCP GKE 클러스터 관리
+- **Docker & Docker Compose**: 컨테이너 환경
+- **Helm**: Kubernetes 패키지 관리
 
 #### 환경 설정
 ```bash
-# Docker 및 Docker Compose 확인
-docker --version
-docker-compose --version
-
 # AWS CLI 설정 확인
 aws --version
 aws configure list
@@ -51,73 +53,162 @@ aws configure list
 gcloud --version
 gcloud auth list
 
-# kubectl 설치 확인 ["선택사항"]
+# Kubernetes 도구 확인
 kubectl version --client
+eksctl version
+helm version
+
+# Docker 환경 확인
+docker --version
+docker-compose --version
+```
+
+#### 클라우드 계정 설정
+```bash
+# AWS 계정 설정
+aws sts get-caller-identity
+
+# GCP 프로젝트 설정
+gcloud config get-value project
+gcloud auth application-default login
 ```
 
 </details>
 
+---
+
+## 🏗️ Phase 1: 통합 모니터링 허브 구축
+
+### 📋 **Phase 1 개요**
+- **목표**: AWS VM에 통합 모니터링 허브 구축
+- **구성**: Global Prometheus + Grafana + AlertManager
+- **예상 소요 시간**: 2-3시간
+
+### 🔧 **1-1. AWS EC2 인스턴스 생성**
+
 <details>
-<summary>🔧 1단계: Prometheus + Grafana 모니터링 스택</summary>
+<summary>📋 클릭하여 코드 복사</summary>
 
-#### Prometheus + Grafana 스택 구축
 ```bash
+# AWS EC2 인스턴스 생성
+aws ec2 run-instances \
+  --image-id ami-0c02fb55956c7d316 \
+  --instance-type t3.medium \
+  --key-name monitoring-key \
+  --security-group-ids sg-monitoring \
+  --subnet-id subnet-monitoring \
+  --associate-public-ip-address \
+  --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=global-monitoring-hub}]'
+
+# 인스턴스 ID 확인
+aws ec2 describe-instances --filters "Name=tag:Name,Values=global-monitoring-hub" --query 'Reservations[*].Instances[*].[InstanceId,State.Name]' --output table
+```
+
+</details>
+
+### 🔧 **1-2. Elastic IP 할당**
+
+<details>
+<summary>📋 클릭하여 코드 복사</summary>
+
+```bash
+# Elastic IP 할당
+aws ec2 allocate-address --domain vpc
+
+# 할당된 Elastic IP를 인스턴스에 연결
+aws ec2 associate-address \
+  --instance-id i-1234567890abcdef0 \
+  --allocation-id eipalloc-12345678
+
+# Public IP 확인
+aws ec2 describe-addresses --query 'Addresses[*].[PublicIp,InstanceId]' --output table
+```
+
+</details>
+
+### 🔧 **1-3. 보안 그룹 설정**
+
+<details>
+<summary>📋 클릭하여 코드 복사</summary>
+
+```bash
+# 보안 그룹 생성
+aws ec2 create-security-group \
+  --group-name global-monitoring-sg \
+  --description "Security group for global monitoring hub"
+
+# 인바운드 규칙 설정
+aws ec2 authorize-security-group-ingress \
+  --group-id sg-12345678 \
+  --protocol tcp \
+  --port 22 \
+  --cidr 0.0.0.0/0
+
+aws ec2 authorize-security-group-ingress \
+  --group-id sg-12345678 \
+  --protocol tcp \
+  --port 9090 \
+  --cidr 0.0.0.0/0
+
+aws ec2 authorize-security-group-ingress \
+  --group-id sg-12345678 \
+  --protocol tcp \
+  --port 3000 \
+  --cidr 0.0.0.0/0
+```
+
+</details>
+
+### 🔧 **1-4. 모니터링 스택 설치**
+
+<details>
+<summary>📋 클릭하여 코드 복사</summary>
+
+```bash
+# AWS VM에 SSH 접속
+ssh -i monitoring-key.pem ubuntu@3.123.45.67
+
+# 시스템 업데이트
+sudo apt-get update && sudo apt-get upgrade -y
+
+# Docker 설치
+sudo apt-get install -y docker.io docker-compose
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker ubuntu
+
 # 모니터링 디렉토리 생성
-mkdir -p monitoring-stack/{prometheus,grafana}
-cd monitoring-stack
+mkdir -p /home/ubuntu/monitoring/{prometheus,grafana,alertmanager,dashboards}
+cd /home/ubuntu/monitoring
+```
 
-# Prometheus 설정 파일 생성
-cat > prometheus/prometheus.yml << 'EOF'
-global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
+</details>
 
-scrape_configs:
-  - job_name: 'prometheus'
-    static_configs:
-      - targets: ['localhost:9090']
-  
-  - job_name: 'node-exporter'
-    static_configs:
-      - targets: ['node-exporter:9100']
-  
-  - job_name: 'application'
-    static_configs:
-      - targets: ['application:3000']
-    metrics_path: /metrics
-    scrape_interval: 5s
-EOF
+### 🔧 **1-5. Docker Compose 설정**
 
-# Grafana 데이터 소스 설정
-cat > grafana/datasources.yml << 'EOF'
-apiVersion: 1
+<details>
+<summary>📋 클릭하여 코드 복사</summary>
 
-datasources:
-  - name: Prometheus
-    type: prometheus
-    access: proxy
-    url: http://prometheus:9090
-    isDefault: true
-    editable: true
-EOF
-
+```bash
 # Docker Compose 파일 생성
-cat > docker-compose.yml << 'EOF'
+cat > /home/ubuntu/monitoring/docker-compose.yml << 'EOF'
 version: '3.8'
 
 services:
-  # Prometheus
+  # Global Prometheus
   prometheus:
     image: prom/prometheus:latest
-    container_name: prometheus
+    container_name: global-prometheus
     ports:
       - "9090:9090"
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
     networks:
       - monitoring
 
@@ -141,506 +232,615 @@ services:
   # Grafana
   grafana:
     image: grafana/grafana:latest
-    container_name: grafana
+    container_name: global-grafana
     ports:
       - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
     volumes:
-      - ./grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - grafana_data:/var/lib/grafana
     networks:
       - monitoring
 
-  # 샘플 애플리케이션
-  application:
-    build: ../samples/day1/docker-advanced
-    container_name: sample-app
+  # Push Gateway
+  pushgateway:
+    image: prom/pushgateway:latest
+    container_name: pushgateway
     ports:
-      - "3001:3000"
+      - "9091:9091"
     networks:
       - monitoring
+
+  # AlertManager
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    networks:
+      - monitoring
+
+volumes:
+  prometheus_data:
+  grafana_data:
 
 networks:
   monitoring:
     driver: bridge
 EOF
+```
 
+</details>
+
+### 🔧 **1-6. 모니터링 스택 실행**
+
+<details>
+<summary>📋 클릭하여 코드 복사</summary>
+
+```bash
 # 모니터링 스택 실행
+cd /home/ubuntu/monitoring
 docker-compose up -d
 
 # 서비스 상태 확인
 docker-compose ps
-```
 
-#### Prometheus 메트릭 확인
-```bash
-# Prometheus 타겟 상태 확인
-curl http://localhost:9090/api/v1/targets
-
-# 메트릭 쿼리 테스트
-curl "http://localhost:9090/api/v1/query?query=up"
-
-# Prometheus 웹 UI 접속
-echo "Prometheus: http://localhost:9090"
-```
-
-#### Grafana 대시보드 설정
-```bash
-# Grafana 접속 정보
-echo "Grafana: http://localhost:3000 [admin/admin]"
-
-# 대시보드 생성 [Node Exporter]
-# 1. Grafana 웹 UI 접속
-# 2. "+" > "Import" 클릭
-# 3. Dashboard ID: 1860 [Node Exporter Full]
-# 4. "Load" 클릭
-# 5. Prometheus 데이터 소스 선택
-# 6. "Import" 클릭
-```
-
-#### 애플리케이션 메트릭 확인
-```bash
-# 애플리케이션 메트릭 엔드포인트 확인
-curl http://localhost:3001/metrics
-
-# Prometheus에서 애플리케이션 메트릭 쿼리
-curl "http://localhost:9090/api/v1/query?query=nodejs_heap_size_total_bytes"
+# 접속 정보 확인
+echo "=== 모니터링 스택 접속 정보 ==="
+echo "Grafana: http://$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4):3000 (admin/admin123)"
+echo "Prometheus: http://$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4):9090"
+echo "AlertManager: http://$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4):9093"
 ```
 
 </details>
 
+**✅ Phase 1 완료 확인**:
+- [ ] AWS VM 통합 모니터링 허브 구축 완료
+- [ ] Global Prometheus + Grafana 정상 동작 확인
+- [ ] Node Exporter 메트릭 수집 확인
+- [ ] 멀티 클라우드 모니터링 기반 환경 준비 완료
+
+---
+
+## ☸️ Phase 2: AWS 클러스터 Infrastructure/Platform 모니터링
+
+### 📋 **Phase 2 개요**
+- **목표**: AWS EKS 클러스터 구축 및 Infrastructure/Platform 모니터링 설정
+- **구성**: AWS EKS + Prometheus 스택 + Global 연동
+- **예상 소요 시간**: 3-4시간
+
+### 🔧 **2-1. AWS EKS 클러스터 생성**
+
 <details>
-<summary>🔧 2단계: AWS CloudWatch 모니터링</summary>
+<summary>📋 클릭하여 코드 복사</summary>
 
-#### CloudWatch 로그 그룹 생성
 ```bash
-# 로그 그룹 생성
-aws logs create-log-group \
-  --log-group-name /aws/ecs/myapp \
-  --retention-in-days 30
+# EKS 클러스터 생성
+eksctl create cluster \
+  --name aws-monitoring-cluster \
+  --region us-west-2 \
+  --nodegroup-name worker-nodes \
+  --node-type t3.medium \
+  --nodes 3 \
+  --nodes-min 1 \
+  --nodes-max 5 \
+  --managed
 
-# 로그 스트림 생성
-aws logs create-log-stream \
-  --log-group-name /aws/ecs/myapp \
-  --log-stream-name myapp-stream
-
-# 로그 이벤트 전송
-aws logs put-log-events \
-  --log-group-name /aws/ecs/myapp \
-  --log-stream-name myapp-stream \
-  --log-events timestamp=$[date +%s]000,message="Application started"
-```
-
-#### CloudWatch 메트릭 및 알람 설정
-```bash
-# 커스텀 메트릭 전송
-aws cloudwatch put-metric-data \
-  --namespace "MyApp/Performance" \
-  --metric-data MetricName=ResponseTime,Value=150,Unit=Milliseconds
-
-# 알람 생성
-aws cloudwatch put-metric-alarm \
-  --alarm-name "High CPU Usage" \
-  --alarm-description "Alarm when CPU exceeds 80%" \
-  --metric-name CPUUtilization \
-  --namespace AWS/ECS \
-  --statistic Average \
-  --period 300 \
-  --threshold 80 \
-  --comparison-operator GreaterThanThreshold \
-  --evaluation-periods 2 \
-  --alarm-actions arn:aws:sns:us-west-2:123456789012:myapp-alerts
-
-# SNS 토픽 생성
-aws sns create-topic --name myapp-alerts
-
-# SNS 구독 생성
-aws sns subscribe \
-  --topic-arn arn:aws:sns:us-west-2:123456789012:myapp-alerts \
-  --protocol email \
-  --notification-endpoint admin@example.com
-```
-
-#### CloudWatch 대시보드 생성
-```json
-{
-  "widgets": [
-    {
-      "type": "metric",
-      "x": 0,
-      "y": 0,
-      "width": 12,
-      "height": 6,
-      "properties": {
-        "metrics": [
-          ["AWS/ECS", "CPUUtilization", "ServiceName", "myapp-service", "ClusterName", "my-ecs-cluster"],
-          [".", "MemoryUtilization", ".", ".", ".", "."]
-        ],
-        "view": "timeSeries",
-        "stacked": false,
-        "region": "us-west-2",
-        "title": "ECS Service Metrics",
-        "period": 300
-      }
-    },
-    {
-      "type": "log",
-      "x": 0,
-      "y": 6,
-      "width": 12,
-      "height": 6,
-      "properties": {
-        "query": "SOURCE '/aws/ecs/myapp' | fields @timestamp, @message\n| filter @message like /ERROR/\n| sort @timestamp desc\n| limit 20",
-        "region": "us-west-2",
-        "title": "Error Logs",
-        "view": "table"
-      }
-    }
-  ]
-}
-```
-
-#### CloudWatch 대시보드 배포
-```bash
-# 대시보드 생성
-aws cloudwatch put-dashboard \
-  --dashboard-name "MyApp Dashboard" \
-  --dashboard-body file://dashboard.json
-
-# 대시보드 확인
-aws cloudwatch get-dashboard --dashboard-name "MyApp Dashboard"
+# 클러스터 상태 확인
+eksctl get cluster --region us-west-2
 ```
 
 </details>
 
+### 🔧 **2-2. Prometheus 스택 배포**
+
 <details>
-<summary>🔧 2단계: GCP Cloud Monitoring</summary>
+<summary>📋 클릭하여 코드 복사</summary>
 
-#### Cloud Monitoring 메트릭 수집
 ```bash
-# 커스텀 메트릭 생성
-gcloud monitoring metrics-descriptors create \
-  --config-from-file=metric-descriptor.yaml
+# kubectl 설정
+aws eks update-kubeconfig --name aws-monitoring-cluster --region us-west-2
 
-# 메트릭 데이터 전송
-gcloud monitoring time-series create \
-  --config-from-file=time-series.yaml
+# Helm 설치
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-# 알림 정책 생성
-gcloud alpha monitoring policies create \
-  --policy-from-file=alert-policy.yaml
-```
+# Prometheus 스택 설치
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
 
-#### Cloud Monitoring 대시보드 생성
-```json
-{
-  "displayName": "MyApp Dashboard",
-  "mosaicLayout": {
-    "tiles": [
-      {
-        "width": 6,
-        "height": 4,
-        "widget": {
-          "title": "CPU Usage",
-          "xyChart": {
-            "dataSets": [
-              {
-                "timeSeriesQuery": {
-                  "timeSeriesFilter": {
-                    "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\"",
-                    "aggregation": {
-                      "alignmentPeriod": "60s",
-                      "perSeriesAligner": "ALIGN_MEAN"
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        }
-      },
-      {
-        "width": 6,
-        "height": 4,
-        "widget": {
-          "title": "Memory Usage",
-          "xyChart": {
-            "dataSets": [
-              {
-                "timeSeriesQuery": {
-                  "timeSeriesFilter": {
-                    "filter": "metric.type=\"compute.googleapis.com/instance/memory/utilization\"",
-                    "aggregation": {
-                      "alignmentPeriod": "60s",
-                      "perSeriesAligner": "ALIGN_MEAN"
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        }
-      }
-    ]
-  }
-}
-```
-
-#### Cloud Monitoring 대시보드 배포
-```bash
-# 대시보드 생성
-gcloud monitoring dashboards create \
-  --config-from-file=dashboard.json
-
-# 대시보드 목록 확인
-gcloud monitoring dashboards list
-```
-
-#### Cloud Logging 설정
-```bash
-# 로그 기반 메트릭 생성
-gcloud logging metrics create myapp_errors \
-  --description="Count of error logs" \
-  --log-filter="severity>=ERROR"
-
-# 로그 기반 알림 정책 생성
-gcloud alpha monitoring policies create \
-  --policy-from-file=log-based-alert-policy.yaml
+helm install prometheus prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  --create-namespace \
+  --set prometheus.prometheusSpec.retention=30d \
+  --set grafana.adminPassword=admin123 \
+  --wait
 ```
 
 </details>
 
+### 🔧 **2-3. Global Prometheus 연동 설정**
+
 <details>
-<summary>🔧 3단계: 통합 모니터링 시스템</summary>
+<summary>📋 클릭하여 코드 복사</summary>
 
-#### Prometheus + Grafana 설정 ["선택사항"]
-```yaml
-# prometheus-config.yaml
-global:
-  scrape_interval: 15s
+```bash
+# AWS 클러스터의 Prometheus 서비스 엔드포인트 확인
+kubectl get svc -n monitoring | grep prometheus-server
 
-scrape_configs:
-  - job_name: 'myapp'
+# Global Prometheus 설정에 AWS 클러스터 Federation 추가
+cat >> /home/ubuntu/monitoring/prometheus/prometheus.yml << 'EOF'
+
+  # AWS 클러스터 메트릭 수집 (Federation)
+  - job_name: 'aws-cluster-federation'
+    scrape_interval: 30s
+    honor_labels: true
+    metrics_path: /federate
+    params:
+      'match[]':
+        - '{job=~"kubernetes-.*"}'
+        - '{job=~"kube-.*"}'
     static_configs:
-      - targets: ['myapp:3000']
-    metrics_path: /metrics
-    scrape_interval: 5s
+      - targets: ['aws-prometheus-endpoint:9090']
+    basic_auth:
+      username: 'prometheus'
+      password: 'secure-password'
+EOF
 
-  - job_name: 'kubernetes-pods'
-    kubernetes_sd_configs:
-      - role: pod
-    relabel_configs:
-      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-        action: keep
-        regex: true
-      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
-        action: replace
-        target_label: __metrics_path__
-        regex: [.+]
+# Global Prometheus 재시작
+cd /home/ubuntu/monitoring
+docker-compose restart prometheus
 ```
 
-#### Grafana 대시보드 설정
-```json
+</details>
+
+**✅ Phase 2 완료 확인**:
+- [ ] AWS EKS 클러스터가 정상적으로 생성됨
+- [ ] Prometheus 스택이 클러스터에 배포됨
+- [ ] Global Prometheus에서 AWS 클러스터 메트릭 수집 확인
+- [ ] Infrastructure/Platform 모니터링 대시보드 구성
+
+---
+
+## 🚀 Phase 3: AWS Application 모니터링
+
+### 📋 **Phase 3 개요**
+- **목표**: GitHub Actions를 통한 AWS EKS 애플리케이션 배포 및 Application 모니터링
+- **구성**: GitHub Actions + Kubernetes + Application 메트릭
+- **예상 소요 시간**: 2-3시간
+
+### 🔧 **3-1. GitHub Actions 워크플로우 생성**
+
+<details>
+<summary>📋 클릭하여 코드 복사</summary>
+
+```yaml
+# .github/workflows/deploy-aws-app.yml
+name: Deploy to AWS EKS
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+    
+    - name: Build and push Docker image
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$GITHUB_SHA .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$GITHUB_SHA
+    
+    - name: Deploy to EKS
+      run: |
+        aws eks update-kubeconfig --name aws-monitoring-cluster --region us-west-2
+        kubectl apply -f k8s/aws-app-deployment.yml
+        kubectl apply -f k8s/aws-app-service.yml
+        kubectl apply -f k8s/aws-app-monitoring.yml
+```
+
+</details>
+
+### 🔧 **3-2. 애플리케이션 배포 매니페스트 생성**
+
+<details>
+<summary>📋 클릭하여 코드 복사</summary>
+
+```bash
+# 애플리케이션 배포 매니페스트 생성
+mkdir -p k8s
+
+# Deployment 매니페스트
+cat > k8s/aws-app-deployment.yml << 'EOF'
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-monitoring-app
+  namespace: default
+  labels:
+    app: aws-monitoring-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: aws-monitoring-app
+  template:
+    metadata:
+      labels:
+        app: aws-monitoring-app
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3000"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+      - name: aws-monitoring-app
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        - containerPort: 3000
+        env:
+        - name: APP_NAME
+          value: "aws-monitoring-app"
+        - name: ENVIRONMENT
+          value: "production"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+EOF
+```
+
+</details>
+
+### 🔧 **3-3. 애플리케이션 배포 및 모니터링 확인**
+
+<details>
+<summary>📋 클릭하여 코드 복사</summary>
+
+```bash
+# 애플리케이션 배포
+kubectl apply -f k8s/aws-app-deployment.yml
+kubectl apply -f k8s/aws-app-service.yml
+kubectl apply -f k8s/aws-app-monitoring.yml
+
+# 배포 상태 확인
+kubectl get pods -l app=aws-monitoring-app
+kubectl get svc aws-monitoring-app-service
+
+# Prometheus에서 애플리케이션 메트릭 확인
+curl "http://localhost:9090/api/v1/query?query=up{job=\"aws-monitoring-app\"}"
+```
+
+</details>
+
+**✅ Phase 3 완료 확인**:
+- [ ] GitHub Actions CI/CD 파이프라인 구축
+- [ ] AWS EKS 애플리케이션 자동 배포
+- [ ] Application 모니터링 설정
+- [ ] 실시간 애플리케이션 성능 모니터링
+
+---
+
+## ☁️ Phase 4: GCP 클러스터 Infrastructure/Platform 모니터링
+
+### 📋 **Phase 4 개요**
+- **목표**: GCP GKE 클러스터 구축 및 멀티 클라우드 통합 모니터링 완성
+- **구성**: GCP GKE + Prometheus 스택 + Global 연동
+- **예상 소요 시간**: 3-4시간
+
+### 🔧 **4-1. GCP GKE 클러스터 생성**
+
+<details>
+<summary>📋 클릭하여 코드 복사</summary>
+
+```bash
+# GCP GKE 클러스터 생성
+gcloud container clusters create gcp-monitoring-cluster \
+  --zone=us-central1-a \
+  --num-nodes=3 \
+  --machine-type=e2-medium \
+  --enable-autoscaling \
+  --min-nodes=1 \
+  --max-nodes=5 \
+  --enable-autorepair \
+  --enable-autoupgrade
+
+# 클러스터 상태 확인
+gcloud container clusters list
+```
+
+</details>
+
+### 🔧 **4-2. GCP Prometheus 스택 배포**
+
+<details>
+<summary>📋 클릭하여 코드 복사</summary>
+
+```bash
+# kubectl 설정
+gcloud container clusters get-credentials gcp-monitoring-cluster --zone=us-central1-a
+
+# Helm 설치
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+# Prometheus 스택 설치
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+helm install prometheus prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  --create-namespace \
+  --set prometheus.prometheusSpec.retention=30d \
+  --set grafana.adminPassword=admin123 \
+  --wait
+```
+
+</details>
+
+### 🔧 **4-3. Global Prometheus에 GCP 클러스터 연동**
+
+<details>
+<summary>📋 클릭하여 코드 복사</summary>
+
+```bash
+# GCP 클러스터의 Prometheus 서비스 엔드포인트 확인
+kubectl get svc -n monitoring | grep prometheus-server
+
+# Global Prometheus 설정에 GCP 클러스터 Federation 추가
+cat >> /home/ubuntu/monitoring/prometheus/prometheus.yml << 'EOF'
+
+  # GCP 클러스터 메트릭 수집 (Federation)
+  - job_name: 'gcp-cluster-federation'
+    scrape_interval: 30s
+    honor_labels: true
+    metrics_path: /federate
+    params:
+      'match[]':
+        - '{job=~"kubernetes-.*"}'
+        - '{job=~"kube-.*"}'
+    static_configs:
+      - targets: ['gcp-prometheus-endpoint:9090']
+    basic_auth:
+      username: 'prometheus'
+      password: 'secure-password'
+EOF
+
+# Global Prometheus 재시작
+cd /home/ubuntu/monitoring
+docker-compose restart prometheus
+```
+
+</details>
+
+**✅ Phase 4 완료 확인**:
+- [ ] GCP GKE 클러스터가 정상적으로 생성됨
+- [ ] Prometheus 스택이 클러스터에 배포됨
+- [ ] Global Prometheus에서 GCP 클러스터 메트릭 수집 확인
+- [ ] 멀티 클라우드 통합 모니터링 시스템 완성
+
+---
+
+## 🎯 **통합 모니터링 대시보드 구성**
+
+### 📊 **Global Dashboard 설정**
+
+<details>
+<summary>📋 클릭하여 코드 복사</summary>
+
+```bash
+# 통합 모니터링 대시보드 생성
+cat > /home/ubuntu/monitoring/dashboards/global-monitoring-dashboard.json << 'EOF'
 {
   "dashboard": {
-    "title": "MyApp Monitoring",
+    "title": "Global Multi-Cloud Monitoring Dashboard",
     "panels": [
       {
-        "title": "Request Rate",
-        "type": "graph",
+        "title": "AWS Infrastructure Overview",
+        "type": "stat",
         "targets": [
           {
-            "expr": "rate[http_requests_total[5m]]",
-            "legendFormat": "{{method}} {{endpoint}}"
+            "expr": "up{job=~\"aws-.*\"}",
+            "legendFormat": "AWS Services"
           }
         ]
       },
       {
-        "title": "Response Time",
+        "title": "GCP Infrastructure Overview", 
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "up{job=~\"gcp-.*\"}",
+            "legendFormat": "GCP Services"
+          }
+        ]
+      },
+      {
+        "title": "Cross-Cloud Resource Usage",
         "type": "graph",
         "targets": [
           {
-            "expr": "histogram_quantile[0.95, rate[http_request_duration_seconds_bucket[5m]]]",
-            "legendFormat": "95th percentile"
+            "expr": "100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
+            "legendFormat": "CPU Usage %"
+          },
+          {
+            "expr": "(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100",
+            "legendFormat": "Memory Usage %"
           }
         ]
       }
     ]
   }
 }
-```
-
-#### 모니터링 자동화
-```bash
-# 모니터링 스크립트
-#!/bin/bash
-
-# AWS CloudWatch 메트릭 수집
-aws cloudwatch get-metric-statistics \
-  --namespace AWS/ECS \
-  --metric-name CPUUtilization \
-  --dimensions Name=ServiceName,Value=myapp-service \
-  --start-time $[date -u -d '1 hour ago' +%Y-%m-%dT%H:%M:%S] \
-  --end-time $[date -u +%Y-%m-%dT%H:%M:%S] \
-  --period 300 \
-  --statistics Average
-
-# GCP Cloud Monitoring 메트릭 수집
-gcloud monitoring time-series list \
-  --filter="metric.type=\"compute.googleapis.com/instance/cpu/utilization\"" \
-  --interval="1h"
-
-# 알림 상태 확인
-aws cloudwatch describe-alarms --state-value ALARM
-gcloud alpha monitoring policies list --filter="enabled=true"
+EOF
 ```
 
 </details>
+
+### 🔍 **모니터링 쿼리 예시**
 
 <details>
-<summary>🔧 4단계: 로그 분석 및 알림</summary>
+<summary>📋 클릭하여 코드 복사</summary>
 
-#### CloudWatch Insights 쿼리
-```sql
--- 에러 로그 분석
-fields @timestamp, @message
-| filter @message like /ERROR/
-| sort @timestamp desc
-| limit 100
+```bash
+# 통합 모니터링 쿼리 테스트
+# 1. 전체 클러스터 상태 확인
+curl "http://localhost:9090/api/v1/query?query=up"
 
--- 응답 시간 분석
-fields @timestamp, @message
-| filter @message like /response_time/
-| stats avg[response_time] by bin[5m]
+# 2. AWS 클러스터 메트릭 확인
+curl "http://localhost:9090/api/v1/query?query=up{cluster=\"aws-eks-cluster\"}"
 
--- 사용자 활동 분석
-fields @timestamp, @message
-| filter @message like /user_activity/
-| stats count() by user_id
-```
+# 3. GCP 클러스터 메트릭 확인  
+curl "http://localhost:9090/api/v1/query?query=up{cluster=\"gcp-gke-cluster\"}"
 
-#### Cloud Logging 쿼리
-```sql
--- 에러 로그 분석
-resource.type="gce_instance"
-severity>=ERROR
-timestamp>="2023-01-01T00:00:00Z"
-
--- 응답 시간 분석
-resource.type="gce_instance"
-jsonPayload.response_time>1000
-timestamp>="2023-01-01T00:00:00Z"
-
--- 사용자 활동 분석
-resource.type="gce_instance"
-jsonPayload.event="user_login"
-timestamp>="2023-01-01T00:00:00Z"
-```
-
-#### 알림 정책 설정
-```yaml
-# AWS CloudWatch 알림 정책
-displayName: "High Error Rate"
-conditions:
-  - displayName: "Error rate > 5%"
-    conditionThreshold:
-      filter: "metric.type=\"custom.googleapis.com/error_rate\""
-      comparison: COMPARISON_GREATER_THAN
-      thresholdValue: 0.05
-      duration: "300s"
-notificationChannels:
-  - "projects/my-project/notificationChannels/1234567890123456789"
+# 4. 애플리케이션 메트릭 확인
+curl "http://localhost:9090/api/v1/query?query=up{job=~\"aws-monitoring-app\"}"
 ```
 
 </details>
 
 ---
 
-## 📚 참고 자료
+## 🧹 **실습 정리 및 비용 최적화**
 
-### 유용한 명령어
+### 💰 **예상 비용 요약**
+
+| 구성 요소 | AWS | GCP | 월 예상 비용 |
+|-----------|-----|-----|-------------|
+| **통합 모니터링 허브** | EC2 t3.medium | - | $30-40 |
+| **AWS EKS 클러스터** | 3 nodes (t3.medium) | - | $150-200 |
+| **GCP GKE 클러스터** | - | 3 nodes (e2-medium) | $100-150 |
+| **데이터 전송** | - | - | $10-20 |
+| **총 예상 비용** | | | **$290-410/월** |
+
+### 🔧 **비용 최적화 방법**
+
+<details>
+<summary>📋 클릭하여 코드 복사</summary>
+
 ```bash
-# AWS CloudWatch 명령어
-aws logs describe-log-groups
-aws logs describe-log-streams --log-group-name /aws/ecs/myapp
-aws cloudwatch list-metrics --namespace AWS/ECS
-aws cloudwatch describe-alarms
+# 1. 클러스터 자동 스케일링 설정
+kubectl apply -f - << 'EOF'
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: aws-cluster-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: aws-monitoring-app
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+EOF
 
-# GCP Cloud Monitoring 명령어
-gcloud monitoring metrics-descriptors list
-gcloud monitoring time-series list
-gcloud alpha monitoring policies list
-gcloud monitoring dashboards list
+# 2. 불필요한 리소스 정리
+# AWS 리소스 정리
+aws eks delete-cluster --name aws-monitoring-cluster --region us-west-2
+aws ec2 terminate-instances --instance-id i-1234567890abcdef0
 
-# 로그 분석 명령어
-aws logs start-query --log-group-name /aws/ecs/myapp --start-time $[date -d '1 hour ago' +%s] --end-time $[date +%s] --query-string "fields @timestamp, @message | filter @message like /ERROR/"
-gcloud logging read "resource.type=\"gce_instance\" AND severity>=ERROR" --limit=50
+# GCP 리소스 정리  
+gcloud container clusters delete gcp-monitoring-cluster --zone=us-central1-a
 ```
 
-### 문제 해결
-1. **CloudWatch 로그 수집 실패**
-   - IAM 권한 확인
-   - 로그 그룹 존재 여부 확인
-   - 네트워크 연결 상태 확인
+</details>
 
-2. **Cloud Monitoring 메트릭 수집 실패**
-   - API 활성화 확인
-   - 권한 설정 확인
-   - 메트릭 타입 확인
+### 📊 **실습 완료 체크리스트**
 
-3. **알림 전송 실패**
-   - SNS 토픽 설정 확인
-   - 이메일 구독 확인
-   - 알림 정책 설정 확인
+**✅ Phase 1 완료**:
+- [ ] AWS VM 통합 모니터링 허브 구축
+- [ ] Global Prometheus + Grafana 정상 동작
+- [ ] Node Exporter 메트릭 수집 확인
+
+**✅ Phase 2 완료**:
+- [ ] AWS EKS 클러스터 구축
+- [ ] Infrastructure/Platform 모니터링 설정
+- [ ] AWS 클러스터 메트릭 수집 확인
+
+**✅ Phase 3 완료**:
+- [ ] GitHub Actions CI/CD 파이프라인 구축
+- [ ] AWS EKS 애플리케이션 배포
+- [ ] Application 모니터링 설정
+
+**✅ Phase 4 완료**:
+- [ ] GCP GKE 클러스터 구축
+- [ ] GCP Infrastructure/Platform 모니터링 설정
+- [ ] GCP 클러스터 메트릭 수집 확인
+
+**✅ 통합 모니터링 완료**:
+- [ ] 멀티 클라우드 통합 모니터링 시스템 구축
+- [ ] Global Dashboard에서 모든 환경 모니터링 확인
+- [ ] 알림 규칙 및 대시보드 구성 완료
 
 ---
 
-## 🧹 실습 정리
+## 🎓 **학습 성과 및 다음 단계**
 
-### 자동 정리
-```bash
-# 모니터링 기초 실습 자동 정리
-./cloud_intermediate/scripts/monitoring-basics-practice.sh --cleanup
-```
+### 🏆 **달성한 학습 목표**
+- ✅ **멀티 클라우드 환경** 이해 및 구축
+- ✅ **통합 모니터링 시스템** 설계 및 구현
+- ✅ **Infrastructure/Platform/Application** 3계층 모니터링
+- ✅ **실제 운영 환경** 수준의 모니터링 시스템 구축
 
-### 수동 정리
-```bash
-# AWS CloudWatch 리소스 정리
-aws logs delete-log-group --log-group-name /aws/ecs/myapp
-aws cloudwatch delete-alarms --alarm-names "High CPU Usage"
-aws cloudwatch delete-dashboards --dashboard-names "MyApp Dashboard"
-aws sns delete-topic --topic-arn arn:aws:sns:us-west-2:123456789012:myapp-alerts
+### 🚀 **다음 단계 학습 제안**
+1. **고급 모니터링**: APM (Application Performance Monitoring) 도구 도입
+2. **로그 분석**: ELK Stack 또는 Fluentd를 활용한 로그 분석 시스템
+3. **보안 모니터링**: Falco, OPA Gatekeeper를 활용한 보안 모니터링
+4. **ML 기반 모니터링**: Anomaly Detection 및 Predictive Monitoring
 
-# GCP Cloud Monitoring 리소스 정리
-gcloud alpha monitoring policies delete <policy-id>
-gcloud monitoring dashboards delete <dashboard-id>
-gcloud logging metrics delete myapp_errors
-```
-
-### 정리 확인
-- [ ] AWS CloudWatch 리소스 정리 완료
-- [ ] GCP Cloud Monitoring 리소스 정리 완료
-- [ ] 알림 정책 정리 완료
-- [ ] 대시보드 정리 완료
+### 💡 **실무 적용 팁**
+- **점진적 도입**: 단계별로 모니터링 범위 확장
+- **팀 교육**: 모니터링 도구 사용법 및 대응 절차 교육
+- **지속적 개선**: 메트릭 및 알림 규칙 지속적 최적화
+- **문서화**: 모니터링 시스템 운영 가이드 작성
 
 ---
 
-## 🔗 관련 자료
+## 📚 **참고 자료 및 추가 학습**
 
-### 📚 실습 가이드
-- ["CI/CD 파이프라인"](cicd-pipeline.md)
-- ["클라우드 배포"](cloud-deployment.md)
+### **공식 문서**
+- [Prometheus 공식 문서](https://prometheus.io/docs/)
+- [Grafana 공식 문서](https://grafana.com/docs/)
+- [AWS EKS 가이드](https://docs.aws.amazon.com/eks/)
+- [GCP GKE 가이드](https://cloud.google.com/kubernetes-engine/docs)
 
-### 🛠️ 설치 가이드
-- ["AWS CLI 설정"][_setup_wsl/install-aws-cli-wsl.sh]
-- ["GCP CLI 설정"][_setup_wsl/install-gcp-cli-wsl.sh]
+### **추가 실습 자료**
+- [Kubernetes 모니터링 베스트 프랙티스](https://kubernetes.io/docs/tasks/debug-application-cluster/resource-usage-monitoring/)
+- [멀티 클라우드 모니터링 전략](https://www.cncf.io/blog/2021/03/15/multi-cloud-monitoring-strategies/)
 
-### 🏠 네비게이션
-<div align="center">
-
-["← 이전: 클라우드 배포"](cloud-deployment.md) | 
-["📚 전체 커리큘럼"](../../../curriculum.md) | 
-["🏠 학습 경로로 돌아가기"](../../../index.md) | 
-["다음: Cloud Master 과정 →"](../../../cloud_master/README.md)
-
-</div>
+이제 **Cloud Intermediate 과정**의 학습자들이 이 실습 가이드를 따라하면서 **실제 멀티 클라우드 환경에서의 통합 모니터링 시스템**을 완전히 구축할 수 있습니다! 🎉

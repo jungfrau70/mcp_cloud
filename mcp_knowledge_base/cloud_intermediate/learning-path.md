@@ -13,7 +13,7 @@ CI/CD 파이프라인과 클라우드 배포까지 완전한 실무 역량을 �
 - **Kubernetes 기초**: Pod, Service, Deployment, ConfigMap, Secret 관리
 - **클라우드 컨테이너 서비스**: AWS ECS, GCP Cloud Run, EKS, GKE 활용
 - **CI/CD 파이프라인**: GitHub Actions를 활용한 자동화된 배포 시스템
-- **모니터링 기초**: CloudWatch, Cloud Monitoring을 활용한 기본 모니터링
+- **멀티 클라우드 통합 모니터링**: AWS + GCP 환경에서의 통합 모니터링 시스템 구축
 
 ### 🚀 실무 적용 목표
 - **컨테이너 기반 개발**: 실제 프로젝트에서 컨테이너 기술 활용
@@ -46,7 +46,7 @@ CI/CD 파이프라인과 클라우드 배포까지 완전한 실무 역량을 �
 #### 🌆 오후 ["4시간"]
 - **13:00-14:00**: AWS ECS, GCP Cloud Run 배포 실습
 - **14:00-15:00**: 로드 밸런싱, 도메인, SSL 설정
-- **15:00-16:00**: 모니터링 및 로깅 시스템 구축
+- **15:00-16:00**: 멀티 클라우드 통합 모니터링 시스템 구축
 - **16:00-17:00**: 종합 프로젝트 및 다음 단계 안내
 
 ## 🗂️ 학습 자료 구조
@@ -59,7 +59,7 @@ CI/CD 파이프라인과 클라우드 배포까지 완전한 실무 역량을 �
 ### 📖 Day 2: CI/CD 및 클라우드 배포
 - ["CI/CD 파이프라인"](textbook/Day2/practice/cicd-pipeline.md)
 - ["클라우드 배포"](textbook/Day2/practice/cloud-deployment.md)
-- ["모니터링 기초"](textbook/Day2/practice/monitoring-basics.md)
+- ["멀티 클라우드 통합 모니터링"](textbook/Day2/practice/monitoring-basics.md)
 
 ## 🛠️ 실습 환경
 
@@ -98,7 +98,7 @@ CI/CD 파이프라인과 클라우드 배포까지 완전한 실무 역량을 �
 ### 4️⃣ Day 2 시작
 - ["CI/CD 파이프라인"](textbook/Day2/practice/cicd-pipeline.md)
 - ["클라우드 배포"](textbook/Day2/practice/cloud-deployment.md)
-- ["모니터링 기초"](textbook/Day2/practice/monitoring-basics.md)
+- ["멀티 클라우드 통합 모니터링"](textbook/Day2/practice/monitoring-basics.md)
 
 ## ✅ 학습 체크리스트
 
@@ -116,7 +116,7 @@ CI/CD 파이프라인과 클라우드 배포까지 완전한 실무 역량을 �
 - [ ] 환경별 배포 전략 구현
 - [ ] AWS ECS, GCP Cloud Run 배포 완료
 - [ ] 로드 밸런싱 및 SSL 설정 완료
-- [ ] 모니터링 및 로깅 시스템 구축 완료
+- [ ] 멀티 클라우드 통합 모니터링 시스템 구축 완료
 
 ## 🔗 관련 과정
 

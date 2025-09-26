@@ -626,7 +626,7 @@ const setupLinkIntercepts = async () => {
 
     // 통합된 지식베이스 경로 처리 사용
     const pathResult = processKnowledgeBasePath(targetPath, {
-      addPrefix: true,
+      addPrefix: false,  // 중복 방지를 위해 false로 변경
       encode: true,
       fixWindowsPaths: true
     })
@@ -817,7 +817,7 @@ const slideHtml = ref('');
 const slidePdfUrl = ref('');
 const config = useRuntimeConfig();
 function resolveApiBase(){
-  const configured = (config.public?.apiBaseUrl) || '/api'
+  const configured = (config.public?.apiBaseUrl) || 'http://localhost:8000'
   if (typeof window !== 'undefined'){
     try{
       const u = new URL(configured)
@@ -843,7 +843,7 @@ const slideTitle = computed(() => {
 const openSlides = async () => {
   if (!props.path) return;
   try {
-    const url = `${apiBase}/v1/slides?curriculum_path=${encodeURIComponent(cleanApiPath(props.path))}`;
+    const url = `${apiBase}/api/v1/slides?curriculum_path=${encodeURIComponent(cleanApiPath(props.path))}`;
     const res = await fetch(url, { headers: { 'X-API-Key': API_KEY } });
     if (!res.ok) throw new Error(`Failed to load slides: ${res.status}`);
     const ct = (res.headers.get('content-type') || '').toLowerCase();

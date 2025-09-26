@@ -9,12 +9,14 @@ services:
       context: ./backend
       dockerfile: Dockerfile.app
     container_name: mcp_backend_prod
-    env_file: ./backend/env/.env
+    env_file: 
+      - ./.env
+      - ./backend/env/.env
     environment:
       - ENV=production
       - DEBUG=false
-      - DATABASE_URL=postgresql://mcpuser:mcppassword@mcp_postgres:5432/mcp_db
-      - REDIS_URL=redis://mcp_redis:6379
+      - DATABASE_URL=${DATABASE_URL:-postgresql://mcpuser:changeme@mcp_postgres:5432/mcp_db}
+      - REDIS_URL=${REDIS_URL:-redis://mcp_redis:6379}
       - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
       - GOOGLE_APPLICATION_CREDENTIALS=/app/gcp-sa-key.json
       - CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=/app/gcp-sa-key.json
@@ -34,6 +36,7 @@ services:
       - WATCHFILES_IGNORE_PATTERNS=*.db,*.db-journal,*.sqlite,*.sqlite-journal
       # Neo4j 연동 환경 변수
       - NEO4J_URI=bolt://mcp_neo4j:7687
+      - NEO4J_AUTH=${NEO4J_AUTH:-neo4j/changeme}
       - TEST_MODE=false
     expose:
       - "8000"
@@ -70,14 +73,18 @@ services:
       context: ./backend
       dockerfile: Dockerfile.app
     container_name: mcp_celery_prod
-    env_file: ./backend/env/.env
+    env_file: 
+      - ./.env
+      - ./backend/env/.env
     environment:
       - ENV=production
       - DEBUG=false
-      - CELERY_BROKER_URL=redis://mcp_redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://mcp_redis:6379/0
+      - CELERY_BROKER_URL=${REDIS_URL:-redis://mcp_redis:6379}/0
+      - CELERY_RESULT_BACKEND=${REDIS_URL:-redis://mcp_redis:6379}/0
       - OTEL_SERVICE_NAME=mcp-backend-prod
       - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
+      - NEO4J_URI=bolt://mcp_neo4j:7687
+      - NEO4J_AUTH=${NEO4J_AUTH:-neo4j/changeme}
     volumes:
       - ./backend:/app
       - terraform_modules_data:/app/terraform_modules
@@ -101,14 +108,18 @@ services:
       context: ./backend
       dockerfile: Dockerfile.app
     container_name: mcp_celery_beat_prod
-    env_file: ./backend/env/.env
+    env_file: 
+      - ./.env
+      - ./backend/env/.env
     environment:
       - ENV=production
       - DEBUG=false
-      - CELERY_BROKER_URL=redis://mcp_redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://mcp_redis:6379/0
+      - CELERY_BROKER_URL=${REDIS_URL:-redis://mcp_redis:6379}/0
+      - CELERY_RESULT_BACKEND=${REDIS_URL:-redis://mcp_redis:6379}/0
       - OTEL_SERVICE_NAME=mcp-backend-prod
       - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
+      - NEO4J_URI=bolt://mcp_neo4j:7687
+      - NEO4J_AUTH=${NEO4J_AUTH:-neo4j/changeme}
     volumes:
       - ./backend:/app
     depends_on:
@@ -146,7 +157,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    command: ["sh", "-lc", "rm -rf .nuxt .output && yarn install --frozen-lockfile --production=false || yarn install --production=false && yarn build && node .output/server/index.mjs"]
+    command: ["sh", "-lc", "yarn install --frozen-lockfile --production=false && yarn build && node .output/server/index.mjs"]
     depends_on:
       - mcp_backend_prod
     networks:

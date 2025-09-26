@@ -132,7 +132,7 @@ const showHiddenFiles = ref(true); // 기본값을 true로 설정하여 숨김�
 // 관리자 설정 UI는 지식베이스로 이동
 
 const config = useRuntimeConfig()
-const apiBase = (config.public?.apiBaseUrl) || '/api'
+const apiBase = (config.public?.apiBaseUrl) || 'http://localhost:8000'
 const apiKey = (useRuntimeConfig().public?.apiKey) || 'my_mcp_eagle_tiger'
 const curriculumLoading = ref(false)
 
@@ -272,7 +272,7 @@ function openCurriculumSettings() {
 async function loadSelectedCurriculumDirs() {
   curriculumDirsLoading.value = true
   try {
-    const response = await fetch(`${apiBase}/v1/curriculum/selection`, {
+    const response = await fetch(`${apiBase}/api/v1/curriculum/selection`, {
       headers: { 'X-API-Key': apiKey }
     })
     if (response.ok) {

@@ -69,7 +69,7 @@ cd ./cloud_intermediate/scripts
 ├── samples/day2/
 │   ├── cicd-pipeline/             # CI/CD 파이프라인 실습
 │   ├── cloud-deployment/          # 클라우드 배포 실습
-│   └── monitoring-basics/         # 모니터링 기초 실습
+│   └── monitoring-basics/         # 멀티 클라우드 통합 모니터링 실습
 ├── scripts/
 │   ├── day2-practice.sh           # Day2 실습 자동화
 │   ├── monitoring-stack.sh        # 모니터링 스택 자동화
@@ -120,40 +120,96 @@ docker build -t cicd-practice-app:latest .
 - ✅ 자동화된 테스트 및 빌드 파이프라인
 - ✅ 보안 스캔 및 품질 검증 자동화
 
-#### **2교시: Prometheus + Grafana 모니터링 스택 ["90분"]**
-- **목표**: 통합 모니터링 시스템 구축 및 활용
-- **실습**: Prometheus, Grafana, Node Exporter 설정
+#### **2교시: 멀티 클라우드 통합 모니터링 시스템 ["90분"]**
+- **목표**: AWS/GCP 멀티 클라우드 환경에서의 통합 모니터링 시스템 구축
+- **실습**: Phase 1-2 (통합 모니터링 허브 + AWS 클러스터 모니터링)
 
 **🔍 실습 코드 위치**
-- **샘플 코드**: `cloud_intermediate/samples/day2/monitoring-basics/`
+- **통합 시나리오**: `cloud_intermediate/통합모니터링시나리오.md`
 - **자동화 스크립트**: `cloud_intermediate/scripts/monitoring-stack.sh`
 
 **📋 실습 단계**
 ```bash
-# 1. 모니터링 스택 실습 선택
-# 메뉴에서 "3. 모니터링 실습" 선택
+# 1. 통합 모니터링 시나리오 확인
+cat cloud_intermediate/통합모니터링시나리오.md
 
-# 2. 모니터링 스택 설정
-./monitoring-stack.sh setup
+# 2. Phase 1: 통합 모니터링 허브 구축
+# AWS VM 생성 및 Global Prometheus + Grafana 설정
 
-# 3. 서비스 상태 확인
-./monitoring-stack.sh status
+# 3. Phase 2: AWS 클러스터 모니터링
+# AWS EKS 클러스터 구축 및 Infrastructure/Platform 모니터링
 
-# 4. Prometheus 타겟 확인
-./monitoring-stack.sh targets
-
-# 5. 메트릭 쿼리 테스트
-./monitoring-stack.sh test
+# 4. 통합 대시보드 구성
+# 멀티 클라우드 환경 모니터링 시각화
 ```
 
 **🎯 학습 결과**
-- ✅ Prometheus + Grafana 모니터링 스택 구축
-- ✅ 실시간 메트릭 수집 및 시각화
-- ✅ 애플리케이션 모니터링 설정
+- ✅ 멀티 클라우드 통합 모니터링 시스템 구축
+- ✅ Infrastructure/Platform 3계층 모니터링
+- ✅ Global Dashboard를 통한 통합 시각화
+- ✅ 실제 운영 환경 수준의 모니터링 시스템
 
-### 🌆 **오후 ["4시간"] - 클라우드 배포 및 통합**
+### 🌆 **오후 ["4시간"] - 애플리케이션 모니터링 및 GCP 통합**
 
-#### **3교시: AWS ECS 고급 배포 ["90분"]**
+#### **3교시: AWS Application 모니터링 ["90분"]**
+- **목표**: GitHub Actions를 통한 AWS EKS 애플리케이션 배포 및 Application 모니터링
+- **실습**: Phase 3 (AWS Application 모니터링)
+
+**🔍 실습 코드 위치**
+- **통합 시나리오**: `cloud_intermediate/통합모니터링시나리오.md`
+- **GitHub Actions**: `.github/workflows/deploy-aws-app.yml`
+
+**📋 실습 단계**
+```bash
+# 1. Phase 3: AWS Application 모니터링
+# GitHub Actions 워크플로우 생성
+
+# 2. 애플리케이션 배포 매니페스트 생성
+# Kubernetes Deployment, Service, ServiceMonitor 설정
+
+# 3. 애플리케이션 배포 및 모니터링 확인
+# Prometheus에서 애플리케이션 메트릭 수집 확인
+
+# 4. Application Dashboard 구성
+# 애플리케이션 성능 모니터링 시각화
+```
+
+**🎯 학습 결과**
+- ✅ GitHub Actions CI/CD 파이프라인 구축
+- ✅ AWS EKS 애플리케이션 자동 배포
+- ✅ Application 모니터링 설정
+- ✅ 실시간 애플리케이션 성능 모니터링
+
+#### **4교시: GCP 클러스터 통합 모니터링 ["90분"]**
+- **목표**: GCP GKE 클러스터 구축 및 멀티 클라우드 통합 모니터링 완성
+- **실습**: Phase 4 (GCP 클러스터 모니터링)
+
+**🔍 실습 코드 위치**
+- **통합 시나리오**: `cloud_intermediate/통합모니터링시나리오.md`
+- **GCP 설정**: GCP Console 및 gcloud CLI
+
+**📋 실습 단계**
+```bash
+# 1. Phase 4: GCP 클러스터 모니터링
+# GCP GKE 클러스터 생성
+
+# 2. GCP Infrastructure/Platform 모니터링 설정
+# Prometheus 스택 배포 및 메트릭 수집
+
+# 3. Global Prometheus에 GCP 클러스터 연동
+# 멀티 클라우드 통합 모니터링 완성
+
+# 4. 통합 모니터링 대시보드 구성
+# AWS + GCP 통합 시각화
+```
+
+**🎯 학습 결과**
+- ✅ GCP GKE 클러스터 구축
+- ✅ GCP Infrastructure/Platform 모니터링
+- ✅ 멀티 클라우드 통합 모니터링 시스템 완성
+- ✅ Global Dashboard를 통한 통합 시각화
+
+#### **5교시: AWS ECS 고급 배포 ["90분"]**
 - **목표**: AWS ECS를 활용한 프로덕션 배포 전략
 - **실습**: ECS 서비스, 로드밸런서, 자동 스케일링 설정
 
@@ -268,23 +324,95 @@ docker build -t cicd-practice-app:latest .
 - [ ] Docker 이미지 빌드 및 푸시 자동화
 - [ ] 보안 스캔 및 품질 검증 설정
 
+### **1교시 테스트 과정**
+```bash
+# GitHub Actions 워크플로우 테스트
+cd samples/day2/ci-cd-pipeline/
+# GitHub에 푸시하여 Actions 실행 확인
+
+# 로컬에서 워크플로우 테스트
+act -j build-and-test
+
+# Docker 이미지 빌드 테스트
+docker build -t test-app:latest .
+
+# 보안 스캔 테스트
+trivy image test-app:latest
+```
+
 ### **2교시 완료 확인**
-- [ ] Prometheus + Grafana 모니터링 스택 구축
-- [ ] Node Exporter를 통한 시스템 메트릭 수집
-- [ ] 애플리케이션 메트릭 수집 설정
-- [ ] Grafana 대시보드 구성 및 시각화
+- [ ] 멀티 클라우드 통합 모니터링 시스템 구축
+- [ ] AWS 클러스터 Infrastructure/Platform 모니터링 설정
+- [ ] Global Dashboard를 통한 통합 시각화
+- [ ] 실제 운영 환경 수준의 모니터링 시스템 구축
+
+### **2교시 테스트 과정**
+```bash
+# 통합 모니터링 스택 테스트
+cd cloud_intermediate/repo/
+bash scripts/test-monitoring-stack.sh
+
+# Phase 2-4 클라우드 테스트
+bash scripts/test-phase2-4-cloud.sh
+
+# 모니터링 스택 상태 확인
+bash scripts/monitoring-stack.sh status
+
+# Prometheus 메트릭 확인
+curl http://localhost:9090/api/v1/query?query=up
+
+# Grafana 대시보드 확인
+curl http://localhost:3000/api/health
+```
 
 ### **3교시 완료 확인**
-- [ ] AWS ECS 클러스터 및 서비스 생성
-- [ ] Application Load Balancer 설정 완료
-- [ ] 자동 스케일링 및 헬스 체크 설정
-- [ ] ECS 서비스 정상 동작 확인
+- [ ] GitHub Actions CI/CD 파이프라인 구축
+- [ ] AWS EKS 애플리케이션 자동 배포
+- [ ] Application 모니터링 설정
+- [ ] 실시간 애플리케이션 성능 모니터링
+
+### **3교시 테스트 과정**
+```bash
+# AWS EKS 클러스터 연결 확인
+aws eks update-kubeconfig --name aws-monitoring-cluster --region us-west-2
+
+# 애플리케이션 배포 테스트
+kubectl apply -f samples/day2/monitoring-basics/k8s/aws-app-deployment.yml
+kubectl apply -f samples/day2/monitoring-basics/k8s/aws-app-service.yml
+
+# 배포 상태 확인
+kubectl get pods
+kubectl get services
+
+# 애플리케이션 모니터링 확인
+kubectl logs -l app=aws-monitoring-app
+```
 
 ### **4교시 완료 확인**
-- [ ] GCP Cloud Run 서비스 배포 성공
-- [ ] 도메인 매핑 및 SSL 인증서 설정
-- [ ] 트래픽 분할 및 카나리 배포 설정
-- [ ] Cloud Run 서비스 모니터링 설정
+- [ ] GCP GKE 클러스터 구축
+- [ ] GCP Infrastructure/Platform 모니터링
+- [ ] 멀티 클라우드 통합 모니터링 시스템 완성
+- [ ] Global Dashboard를 통한 통합 시각화
+
+### **4교시 테스트 과정**
+```bash
+# GCP GKE 클러스터 연결 확인
+gcloud container clusters get-credentials gcp-monitoring-cluster --zone us-central1-a
+
+# GCP 애플리케이션 배포 테스트
+kubectl apply -f samples/day2/monitoring-basics/k8s/gcp-app-deployment.yml
+kubectl apply -f samples/day2/monitoring-basics/k8s/gcp-app-service.yml
+
+# 배포 상태 확인
+kubectl get pods
+kubectl get services
+
+# 통합 모니터링 테스트
+bash scripts/run-all-tests.sh
+
+# 최종 통합 테스트
+bash scripts/test-monitoring-stack.sh
+```
 
 ## 🚨 **문제 해결 가이드**
 

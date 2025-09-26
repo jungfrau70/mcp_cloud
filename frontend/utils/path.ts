@@ -1,77 +1,77 @@
 // DEPRECATED: processKnowledgeBasePath()로 통합됨
-// export function stripBasePath(path: string, basePath = 'mcp_knowledge_base'): string {
-//   // Normalize path separators and leading slashes
-//   const normalized = path.replace(/\\/g, '/').replace(/^\/+/, '')
-//   
-//   // Remove basePath prefix if present
-//   const prefix = basePath.endsWith('/') ? basePath : basePath + '/'
-//   if (normalized.startsWith(prefix)) {
-//     return normalized.substring(prefix.length)
-//   }
-//   
-//   // If path already doesn't have basePath, return as is
-//   return normalized
-// }
+export function stripBasePath(path: string, basePath = 'mcp_knowledge_base'): string {
+  // Normalize path separators and leading slashes
+  const normalized = path.replace(/\\/g, '/').replace(/^\/+/, '')
+  
+  // Remove basePath prefix if present
+  const prefix = basePath.endsWith('/') ? basePath : basePath + '/'
+  if (normalized.startsWith(prefix)) {
+    return normalized.substring(prefix.length)
+  }
+  
+  // If path already doesn't have basePath, return as is
+  return normalized
+}
 
 // DEPRECATED: processKnowledgeBasePath()로 통합됨
-// export function normalizePath(path: string): string {
-//   // Remove any duplicate path segments and normalize
-//   const segments = path.split('/').filter(segment => segment !== '')
-//   const normalized: string[] = []
-//   
-//   for (const segment of segments) {
-//     if (segment === '..') {
-//       normalized.pop()
-//     } else if (segment !== '.') {
-//       normalized.push(segment)
-//     }
-//   }
-//   
-//   return normalized.join('/')
-// }
+export function normalizePath(path: string): string {
+  // Remove any duplicate path segments and normalize
+  const segments = path.split('/').filter(segment => segment !== '')
+  const normalized: string[] = []
+  
+  for (const segment of segments) {
+    if (segment === '..') {
+      normalized.pop()
+    } else if (segment !== '.') {
+      normalized.push(segment)
+    }
+  }
+  
+  return normalized.join('/')
+}
 
 // DEPRECATED: processKnowledgeBasePath()로 통합됨
-// export function cleanApiPath(path: string): string {
-//   if (!path) return ''
-//   
-//   // First strip base path, then normalize
-//   const stripped = stripBasePath(path)
-//   const normalized = normalizePath(stripped)
-//   
-//   // Additional check to prevent duplication
-//   // If the path contains repeated segments, remove them
-//   const segments = normalized.split('/')
-//   const cleaned: string[] = []
-//   let lastSegment = ''
-//   
-//   for (const segment of segments) {
-//     if (segment && segment !== lastSegment) {
-//       cleaned.push(segment)
-//       lastSegment = segment
-//     }
-//   }
-//   
-//   // Final check: if the path still contains repeated patterns, remove them
-//   let result = cleaned.join('/')
-//   
-//   // Remove repeated patterns like "cloud_master/textbook/Day3/cloud_master/textbook/Day3/"
-//   const pattern = /(cloud_(?:basic|master|container)\/textbook\/Day\d+\/)(\1)+/g
-//   result = result.replace(pattern, '$1')
-//   
-//   // Remove any remaining duplicate segments
-//   const finalSegments = result.split('/')
-//   const finalCleaned: string[] = []
-//   let lastFinalSegment = ''
-//   
-//   for (const segment of finalSegments) {
-//     if (segment && segment !== lastFinalSegment) {
-//       finalCleaned.push(segment)
-//       lastFinalSegment = segment
-//     }
-//   }
-//   
-//   return finalCleaned.join('/')
-// }
+export function cleanApiPath(path: string): string {
+  if (!path) return ''
+  
+  // First strip base path, then normalize
+  const stripped = stripBasePath(path)
+  const normalized = normalizePath(stripped)
+  
+  // Additional check to prevent duplication
+  // If the path contains repeated segments, remove them
+  const segments = normalized.split('/')
+  const cleaned: string[] = []
+  let lastSegment = ''
+  
+  for (const segment of segments) {
+    if (segment && segment !== lastSegment) {
+      cleaned.push(segment)
+      lastSegment = segment
+    }
+  }
+  
+  // Final check: if the path still contains repeated patterns, remove them
+  let result = cleaned.join('/')
+  
+  // Remove repeated patterns like "cloud_master/textbook/Day3/cloud_master/textbook/Day3/"
+  const pattern = /(cloud_(?:basic|master|container)\/textbook\/Day\d+\/)(\1)+/g
+  result = result.replace(pattern, '$1')
+  
+  // Remove any remaining duplicate segments
+  const finalSegments = result.split('/')
+  const finalCleaned: string[] = []
+  let lastFinalSegment = ''
+  
+  for (const segment of finalSegments) {
+    if (segment && segment !== lastFinalSegment) {
+      finalCleaned.push(segment)
+      lastFinalSegment = segment
+    }
+  }
+  
+  return finalCleaned.join('/')
+}
 
 // More aggressive path cleaning function for problematic cases
 export function deepCleanApiPath(path: string): string {
@@ -291,18 +291,18 @@ export function decodeKoreanPath(path: string): string {
 
 // API 요청용 경로 정리 함수 (한글 파일명 지원)
 // DEPRECATED: processKnowledgeBasePath()로 통합됨
-// export function prepareApiPath(path: string): string {
-//   if (!path) return ''
-//   
-//   // 먼저 경로 정리
-//   const cleaned = cleanApiPath(path)
-//   
-//   // 절대경로로 변환 (cloud_master 기준)
-//   const absolutePath = convertToAbsolutePath(cleaned)
-//   
-//   // 한글 파일명 인코딩
-//   return encodeKoreanPath(absolutePath)
-// }
+export function prepareApiPath(path: string): string {
+  if (!path) return ''
+  
+  // 먼저 경로 정리
+  const cleaned = cleanApiPath(path)
+  
+  // 절대경로로 변환 (cloud_master 기준)
+  const absolutePath = convertToAbsolutePath(cleaned)
+  
+  // 한글 파일명 인코딩
+  return encodeKoreanPath(absolutePath)
+}
 
 // 상대경로를 절대경로로 변환하는 함수
 export function convertToAbsolutePath(path: string): string {
@@ -500,24 +500,24 @@ export function processKoreanPathSegments(path: string): string {
 
 // API 요청용 경로를 안전하게 준비하는 함수 (개선된 버전)
 // DEPRECATED: processKnowledgeBasePath()로 통합됨
-// export function prepareSafeApiPath(path: string): string {
-//   if (!path) return ''
-//   
-//   // 1. 기본 경로 정리
-//   const cleaned = cleanApiPath(path)
-//   
-//   // 2. mcp_knowledge_base prefix 추가 (중복 방지)
-//   let processedPath = cleaned
-//   if (!processedPath.startsWith('mcp_knowledge_base/')) {
-//     processedPath = `mcp_knowledge_base/${processedPath}`
-//   }
-//   
-//   // 3. 한글 파일명 처리
-//   const koreanProcessed = processKoreanPathSegments(processedPath)
-//   
-//   // 4. 최종 검증
-//   return koreanProcessed
-// }
+export function prepareSafeApiPath(path: string): string {
+  if (!path) return ''
+  
+  // 1. 기본 경로 정리
+  const cleaned = cleanApiPath(path)
+  
+  // 2. mcp_knowledge_base prefix 추가 (중복 방지)
+  let processedPath = cleaned
+  if (!processedPath.startsWith('mcp_knowledge_base/')) {
+    processedPath = `mcp_knowledge_base/${processedPath}`
+  }
+  
+  // 3. 한글 파일명 처리
+  const koreanProcessed = processKoreanPathSegments(processedPath)
+  
+  // 4. 최종 검증
+  return koreanProcessed
+}
 
 // URI를 사용자에게 표시할 때 읽기 쉽게 만드는 함수
 export function makeUriDisplayFriendly(uri: string): string {
@@ -1095,7 +1095,7 @@ export function processKnowledgeBasePath(path: string, options: {
   errors: string[]
 } {
   const {
-    addPrefix = true,
+    addPrefix = false,  // 기본값을 false로 변경하여 중복 방지
     encode = true,
     fixWindowsPaths = true,
     customPathFixes = [],

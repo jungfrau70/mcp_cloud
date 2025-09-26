@@ -481,7 +481,7 @@ const currentFileInfo = ref({
 // API configuration (browser-safe host resolution)
 const config = useRuntimeConfig();
 function resolveApiBase(){
-  const configured = (config.public?.apiBaseUrl) || '/api'
+  const configured = (config.public?.apiBaseUrl) || 'http://localhost:8000'
   if (typeof window !== 'undefined'){
     try{
       const u = new URL(configured)
@@ -1241,7 +1241,7 @@ const handleKbFileSelect = async (path) => {
   
   // 통합된 지식베이스 경로 처리 사용
   const pathResult = processKnowledgeBasePath(path, {
-    addPrefix: true,
+    addPrefix: false,  // 중복 방지를 위해 false로 변경
     encode: false, // docStore.open에서 인코딩 처리
     fixWindowsPaths: true
   })
@@ -1304,7 +1304,7 @@ const handleKbSave = async ({ path, content, message, force }) => {
     try {
       const config = useRuntimeConfig();
       const apiBase = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us/api' : 'http://localhost:8000/api';
-      await fetch(`${apiBase}/v1/knowledge-base/item`, { method:'PATCH', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path, content, message }) })
+      await fetch(`${apiBase}/api/v1/knowledge-base/item`, { method:'PATCH', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path, content, message }) })
       toast.push('success','강제 저장 완료')
     } catch(e){ toast.push('error','강제 저장 실패') }
     return
@@ -1498,7 +1498,7 @@ async function ensureKbIndex(){
     kbTab.value = 'markdown'
   }catch{
     try{
-      await fetch(`${apiBase}/v1/knowledge-base/item`, {
+      await fetch(`${apiBase}/api/v1/knowledge-base/item`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
         body: JSON.stringify({ path: 'index.md', type: 'file', content: '# Knowledge Base\n\n시작 문서입니다.' })

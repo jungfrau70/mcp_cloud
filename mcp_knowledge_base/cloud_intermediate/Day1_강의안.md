@@ -69,7 +69,8 @@ cd ./cloud_intermediate/scripts
 ├── samples/day1/
 │   ├── docker-advanced/          # Docker 고급 실습
 │   ├── kubernetes-basics/        # Kubernetes 기초 실습
-│   └── cloud-container-services/ # 클라우드 컨테이너 서비스
+│   ├── cloud-container-services/ # 클라우드 컨테이너 서비스
+│   └── monitoring-hub/           # 통합 모니터링 허브 구축 실습
 ├── scripts/
 │   ├── day1-practice.sh          # Day1 실습 자동화
 │   └── cloud-intermediate-helper.sh # 통합 헬퍼
@@ -141,7 +142,7 @@ kubectl apply -f cloud_intermediate/samples/day1/kubernetes-basics/configmap-sec
 - ✅ ConfigMap과 Secret을 활용한 설정 관리
 - ✅ 네임스페이스와 리소스 쿼터 관리
 
-### 🌆 **오후 ["4시간"] - 클라우드 컨테이너 서비스**
+### 🌆 **오후 ["4시간"] - 클라우드 컨테이너 서비스 및 모니터링 기초**
 
 #### **3교시: AWS ECS 기초 ["90분"]**
 - **목표**: AWS ECS를 활용한 컨테이너 서비스 배포
@@ -176,38 +177,35 @@ aws ecs create-service \
 - ✅ Fargate를 활용한 서버리스 컨테이너 실행
 - ✅ 태스크 정의를 통한 컨테이너 설정
 
-#### **4교시: GCP Cloud Run 기초 ["90분"]**
-- **목표**: GCP Cloud Run을 활용한 서버리스 컨테이너 배포
-- **실습**: Cloud Run 서비스 생성 및 배포
+#### **4교시: 통합 모니터링 허브 구축 ["90분"]**
+- **목표**: 멀티 클라우드 환경을 위한 통합 모니터링 허브 구축
+- **실습**: Phase 1 (AWS VM 기반 Global Prometheus + Grafana 설정)
 
 **🔍 실습 코드 위치**
-- **샘플 코드**: `cloud_intermediate/samples/day1/cloud-container-services/gcp-cloud-run.yaml`
+- **통합 시나리오**: `cloud_intermediate/통합모니터링시나리오.md`
+- **실습 코드**: `cloud_intermediate/samples/day1/monitoring-hub/`
+- **자동화 스크립트**: `cloud_intermediate/scripts/monitoring-stack.sh`
 
 **📋 실습 단계**
 ```bash
-# 1. GCP Cloud Run 실습 선택
-# 메뉴에서 "3. 클라우드 컨테이너 서비스 실습" 선택
+# 1. 통합 모니터링 시나리오 확인
+cat cloud_intermediate/통합모니터링시나리오.md
 
-# 2. Docker 이미지 빌드 및 푸시
-docker build -t gcr.io/my-project/cloud-intermediate-app:latest .
-docker push gcr.io/my-project/cloud-intermediate-app:latest
+# 2. Phase 1: 통합 모니터링 허브 구축
+# AWS EC2 인스턴스 생성 및 Elastic IP 할당
 
-# 3. Cloud Run 서비스 배포
-gcloud run deploy cloud-intermediate-app \
-  --image gcr.io/my-project/cloud-intermediate-app:latest \
-  --platform managed \
-  --region us-central1 \
-  --allow-unauthenticated
+# 3. Global Prometheus + Grafana 설정
+# Docker Compose를 활용한 모니터링 스택 구축
 
-# 4. 서비스 설정 확인
-gcloud run services describe cloud-intermediate-app \
-  --region us-central1
+# 4. 모니터링 스택 실행 및 확인
+# Prometheus, Grafana, Node Exporter 정상 동작 확인
 ```
 
 **🎯 학습 결과**
-- ✅ GCP Cloud Run 서비스 생성 및 배포
-- ✅ 자동 스케일링 및 트래픽 관리
-- ✅ 서버리스 컨테이너 운영
+- ✅ AWS VM 기반 통합 모니터링 허브 구축
+- ✅ Global Prometheus + Grafana 정상 동작
+- ✅ Node Exporter를 통한 시스템 메트릭 수집
+- ✅ 멀티 클라우드 모니터링 기반 환경 준비
 
 ## 🛠️ **실습 자동화 도구**
 
@@ -245,11 +243,53 @@ gcloud run services describe cloud-intermediate-app \
 - [ ] 최적화된 Docker 이미지 빌드 성공
 - [ ] 이미지 크기 50% 이상 감소 확인
 
+### **1교시 테스트 과정**
+```bash
+# Docker 이미지 빌드 테스트
+cd samples/day1/docker-advanced/
+docker build -t test-optimized .
+
+# 이미지 크기 확인
+docker images test-optimized
+
+# 컨테이너 실행 테스트
+docker run -d --name test-container -p 8080:80 test-optimized
+
+# 컨테이너 상태 확인
+docker ps
+docker logs test-container
+
+# 정리
+docker stop test-container
+docker rm test-container
+```
+
 ### **2교시 완료 확인**
 - [ ] Kubernetes 네임스페이스 생성
 - [ ] Deployment 및 Service 생성 성공
 - [ ] ConfigMap과 Secret 설정 완료
 - [ ] Pod 상태 정상 확인
+
+### **2교시 테스트 과정**
+```bash
+# Kubernetes 리소스 상태 확인
+kubectl get all --all-namespaces
+
+# 네임스페이스 확인
+kubectl get namespaces
+
+# Pod 상태 확인
+kubectl get pods -n default
+
+# Service 확인
+kubectl get services
+
+# ConfigMap 확인
+kubectl get configmaps
+
+# Secret 확인
+kubectl get secrets
+```
 
 ### **3교시 완료 확인**
 - [ ] AWS ECS 클러스터 생성 성공
@@ -257,11 +297,43 @@ gcloud run services describe cloud-intermediate-app \
 - [ ] ECS 서비스 실행 및 상태 확인
 - [ ] Fargate 태스크 정상 동작
 
+### **3교시 테스트 과정**
+```bash
+# AWS ECS 클러스터 상태 확인
+aws ecs describe-clusters --clusters cloud-intermediate-cluster
+
+# 태스크 정의 확인
+aws ecs list-task-definitions
+
+# ECS 서비스 상태 확인
+aws ecs describe-services --cluster cloud-intermediate-cluster --services cloud-intermediate-service
+
+# 태스크 상태 확인
+aws ecs list-tasks --cluster cloud-intermediate-cluster
+```
+
 ### **4교시 완료 확인**
-- [ ] GCP Cloud Run 서비스 배포 성공
-- [ ] 자동 스케일링 설정 확인
-- [ ] 서비스 URL 접근 가능
-- [ ] 트래픽 분할 설정 완료
+- [ ] AWS VM 통합 모니터링 허브 구축 완료
+- [ ] Global Prometheus + Grafana 정상 동작 확인
+- [ ] Node Exporter 메트릭 수집 확인
+- [ ] 멀티 클라우드 모니터링 기반 환경 준비 완료
+
+### **4교시 테스트 과정**
+```bash
+# Phase 1 로컬 테스트 실행
+cd cloud_intermediate/repo/
+bash scripts/test-phase1-local.sh
+
+# 테스트 결과 확인
+cat test-results/phase1_*.log
+
+# 모니터링 스택 상태 확인
+bash scripts/monitoring-stack.sh status
+
+# 서비스 접근성 확인
+curl http://localhost:9090/api/v1/query?query=up
+curl http://localhost:3000/api/health
+```
 
 ## 🚨 **문제 해결 가이드**
 

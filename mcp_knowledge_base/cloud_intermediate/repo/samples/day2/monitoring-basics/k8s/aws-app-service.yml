@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: aws-monitoring-app-service
+  namespace: default
+  labels:
+    app: aws-monitoring-app
+spec:
+  selector:
+    app: aws-monitoring-app
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    protocol: TCP
+  - name: metrics
+    port: 3000
+    targetPort: 3000
+    protocol: TCP
+  type: ClusterIP

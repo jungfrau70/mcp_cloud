@@ -27,7 +27,7 @@
 ## 🎯 과정 소개
 
 **Cloud Intermediate**는 컨테이너 기술과 Kubernetes를 중심으로 한 중급 실무 과정입니다. 
-Prometheus + Grafana 모니터링 스택과 함께 실제 프로덕션 환경에서 사용되는 기술들을 단계별로 학습하며, 
+**멀티 클라우드 통합 모니터링 시스템**과 함께 실제 프로덕션 환경에서 사용되는 기술들을 단계별로 학습하며, 
 CI/CD 파이프라인과 클라우드 배포까지 완전한 실무 역량을 기를 수 있습니다.
 
 ### 📋 과정 정보
@@ -49,7 +49,7 @@ CI/CD 파이프라인과 클라우드 배포까지 완전한 실무 역량을 �
 - **Kubernetes 기초**: Pod, Service, Deployment, ConfigMap, Secret 관리
 - **클라우드 컨테이너 서비스**: AWS ECS, GCP Cloud Run, EKS, GKE 활용
 - **CI/CD 파이프라인**: GitHub Actions를 활용한 자동화된 배포 시스템
-- **모니터링 기초**: CloudWatch, Cloud Monitoring을 활용한 기본 모니터링
+- **멀티 클라우드 통합 모니터링**: AWS + GCP 환경에서의 통합 모니터링 시스템 구축
 
 ### 🚀 실무 적용 목표
 - **컨테이너 기반 개발**: 실제 프로젝트에서 컨테이너 기술 활용
@@ -73,14 +73,14 @@ CI/CD 파이프라인과 클라우드 배포까지 완전한 실무 역량을 �
 - **15:00-16:00**: 클라우드 Kubernetes [EKS, GKE] 기초
 - **16:00-17:00**: 종합 실습 및 정리
 
-### 📅 Day 2: CI/CD, 클라우드 배포 및 모니터링 ["8시간"]
-**목표**: CI/CD 파이프라인, 클라우드 배포, Prometheus + Grafana 모니터링을 학습합니다
+### 📅 Day 2: CI/CD, 클라우드 배포 및 통합 모니터링 ["8시간"]
+**목표**: CI/CD 파이프라인, 클라우드 배포, 멀티 클라우드 통합 모니터링 시스템을 학습합니다
 
 #### 🌅 오전 ["4시간"]
 - **09:00-10:00**: GitHub Actions 고급 워크플로우
 - **10:00-11:00**: 자동화된 Docker 이미지 빌드 및 푸시
 - **11:00-12:00**: 환경별 배포 전략 및 보안 스캔
-- **12:00-13:00**: Prometheus + Grafana 모니터링 스택 구축
+- **12:00-13:00**: 멀티 클라우드 통합 모니터링 시스템 구축
 
 #### 🌆 오후 ["4시간"]
 - **13:00-14:00**: AWS ECS, GCP Cloud Run 배포 실습
@@ -143,7 +143,7 @@ Cloud Intermediate 과정의 통합 스크립트들을 활용하세요:
 - ["클라우드 컨테이너 서비스"](textbook/Day1/practice/cloud-container-services.md)
 - ["CI/CD 파이프라인"](textbook/Day2/practice/cicd-pipeline.md)
 - ["클라우드 배포"](textbook/Day2/practice/cloud-deployment.md)
-- ["모니터링 기초"](textbook/Day2/practice/monitoring-basics.md) ["Prometheus + Grafana 포함"]
+- ["멀티 클라우드 통합 모니터링"](textbook/Day2/practice/monitoring-basics.md) ["AWS + GCP 통합 모니터링 시스템"]
 
 ### 🛠️ 설치 가이드
 - ["Docker Desktop 설치"][_setup_wsl/install-docker-wsl.sh]
@@ -165,7 +165,7 @@ Cloud Intermediate 과정의 통합 스크립트들을 활용하세요:
 - [ ] GitHub Actions 고급 워크플로우 구축
 - [ ] 자동화된 Docker 이미지 빌드 및 푸시
 - [ ] 환경별 배포 전략 구현
-- [ ] Prometheus + Grafana 모니터링 스택 구축
+- [ ] 멀티 클라우드 통합 모니터링 시스템 구축
 - [ ] AWS ECS, GCP Cloud Run 배포 완료
 - [ ] 로드 밸런싱 및 SSL 설정 완료
 - [ ] AWS CloudWatch, GCP Cloud Monitoring 설정 완료
