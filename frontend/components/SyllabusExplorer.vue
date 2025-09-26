@@ -515,13 +515,38 @@ async function loadcurriculumTreeIfCurriculum(){
     const r3 = await fetch(`${apiBase}/api/v1/curriculum/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
     if (r3.ok) {
       curriculumTree.value = await r3.json();
-      console.log('🌳 커리큘럼 트리 로드 완료:', curriculumTree.value)
+      console.log('🌳 커리큘럼 트리 로드 완료 (지연 로딩):', curriculumTree.value)
       // 진척률 업데이트
       updateProgress();
     } else {
       console.error('❌ 커리큘럼 트리 로드 실패:', r3.status, r3.statusText)
     }
   } finally { curriculumLoading.value = false }
+}
+
+// 지연 로딩: 디렉토리 클릭 시 하위 내용 로드
+async function loadDirectoryChildren(path: string) {
+  try {
+    console.log('📁 디렉토리 하위 내용 로드:', path)
+    const response = await fetch(`${apiBase}/api/v1/curriculum/tree/${path}?show_hidden=${showHiddenFiles.value}`, { 
+      headers: { 'X-API-Key': apiKey } 
+    })
+    
+    if (response.ok) {
+      const children = await response.json()
+      console.log('📁 하위 내용 로드 완료:', children)
+      
+      // 트리에 하위 내용 추가
+      if (curriculumTree.value[path]) {
+        curriculumTree.value[path].children = children
+        curriculumTree.value[path].expanded = true
+      }
+    } else {
+      console.error('❌ 하위 내용 로드 실패:', response.status, response.statusText)
+    }
+  } catch (error) {
+    console.error('❌ 하위 내용 로드 오류:', error)
+  }
 }
 
 onMounted(async () => {

@@ -18,6 +18,7 @@ if not KB_ROOT.exists():
     # 절대 경로로 시도
     KB_ROOT = Path('/mcp_knowledge_base').resolve()
 SELECTION_FILE = KB_ROOT / 'shared_configs' / '.slides_selection.json'  # 올바른 경로
+
 try:
     from utils.doc_convert import convert_pptx_to_pdf  # correct import within backend package
 except Exception:
@@ -107,31 +108,20 @@ def _clean_anchor_links_for_pdf(markdown_content: str) -> str:
 
 
 def _build_tree(show_hidden: bool = False) -> Dict[str, Any]:
-    # Simple merge of selected dirs under KB_ROOT
+    # 최상위 디렉토리만 반환 (지연 로딩)
     data: Dict[str, Any] = {}
     selected = get_selection().get('selected_dirs', [])
-
-    def build(d: Path) -> Dict[str, Any]:
-        tree: Dict[str, Any] = {}
-        files = []
-        for child in sorted(d.iterdir()):
-            # Skip hidden files/directories unless show_hidden is True
-            if not show_hidden and child.name.startswith('.'):
-                continue
-                
-            if child.is_dir():
-                tree[child.name] = build(child)
-            else:
-                files.append({"name": child.name, "path": str(child.relative_to(KB_ROOT)).replace('\\','/')})
-        if files:
-            tree['files'] = files
-        return tree
 
     for rel in selected:
         p = (KB_ROOT / rel).resolve()
         if p.exists() and str(p).startswith(str(KB_ROOT)):
-            # 전체 경로를 키로 사용하여 중복 방지
-            data[rel] = build(p)
+            # 최상위 디렉토리만 표시 (하위는 클릭 시 로드)
+            data[rel] = {
+                "type": "directory",
+                "expanded": False,
+                "children": []  # 클릭 시 로드될 예정
+            }
+    
     return data
 
 @router.get('/tree')
@@ -142,25 +132,59 @@ def curriculum_tree(show_hidden: bool = True):
     """
     return _build_tree(show_hidden=show_hidden)
 
+@router.get('/tree/{path:path}')
+def curriculum_tree_path(path: str, show_hidden: bool = True):
+    """
+    특정 경로의 하위 디렉토리와 파일을 반환합니다.
+    """
+    try:
+        # 경로 보안 검사
+        safe_path = _safe_path(path)
+        
+        # 디렉토리 내용 스캔
+        tree: Dict[str, Any] = {}
+        files = []
+        
+        for child in sorted(safe_path.iterdir()):
+            # Skip hidden files/directories unless show_hidden is True
+            if not show_hidden and child.name.startswith('.'):
+                continue
+            
+            if child.is_dir():
+                tree[child.name] = {
+                    "type": "directory",
+                    "expanded": False,
+                    "children": []
+                }
+            else:
+                files.append({
+                    "name": child.name, 
+                    "path": str(child.relative_to(KB_ROOT)).replace('\\','/')
+                })
+        
+        if files:
+            tree['files'] = files
+            
+        return tree
+        
+    except Exception as e:
+        print(f"ERROR: Failed to scan directory {path}: {e}")
+        return {"error": str(e)}
+
 
 @router.get('/selection')
 def get_selection():
-    print(f"DEBUG: SELECTION_FILE path: {SELECTION_FILE}")
-    print(f"DEBUG: SELECTION_FILE absolute path: {SELECTION_FILE.absolute()}")
-    print(f"DEBUG: SELECTION_FILE exists: {SELECTION_FILE.exists()}")
-    print(f"DEBUG: Current working directory: {Path.cwd()}")
+    # 파일이 존재하지 않으면 빈 리스트 반환
     if not SELECTION_FILE.exists():
-        print("DEBUG: SELECTION_FILE does not exist, returning empty list")
         return {"selected_dirs": []}
+    
     try:
         import json
-        content = SELECTION_FILE.read_text()
-        print(f"DEBUG: SELECTION_FILE content: {content}")
+        content = SELECTION_FILE.read_text(encoding='utf-8')
         result = json.loads(content)
-        print(f"DEBUG: Parsed result: {result}")
         return {"selected_dirs": result}
     except Exception as e:
-        print(f"DEBUG: Exception reading SELECTION_FILE: {e}")
+        print(f"ERROR: Exception reading SELECTION_FILE: {e}")
         return {"selected_dirs": []}
 
 @router.post('/selection', dependencies=[Depends(get_api_key)])
