@@ -1,9 +1,21 @@
 #!/bin/bash
-# Neo4j healthcheck script
 
-# 환경변수에서 사용자명과 비밀번호 추출
-USER=$(echo "$NEO4J_AUTH" | cut -d'/' -f1)
-PASS=$(echo "$NEO4J_AUTH" | cut -d'/' -f2)
+# Neo4j 헬스 체크 스크립트
+# Neo4j가 완전히 시작되었는지 확인
 
-# Neo4j 연결 테스트
-cypher-shell -a bolt://localhost:7687 -u "$USER" -p "$PASS" 'RETURN 1' > /dev/null 2>&1 || exit 1
+set -e
+
+# Neo4j HTTP API 엔드포인트 확인
+if curl -f -s http://localhost:7474/db/data/ > /dev/null 2>&1; then
+    echo "Neo4j HTTP API is ready"
+    exit 0
+fi
+
+# Neo4j Bolt 프로토콜 확인 (대안)
+if timeout 5 cypher-shell -u neo4j -p "${NEO4J_AUTH#*/}" "RETURN 1" > /dev/null 2>&1; then
+    echo "Neo4j Bolt protocol is ready"
+    exit 0
+fi
+
+echo "Neo4j is not ready yet"
+exit 1
