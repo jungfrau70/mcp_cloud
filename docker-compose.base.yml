@@ -11,7 +11,7 @@ services:
       - ./.env
     environment:
       - NEO4J_AUTH=${NEO4J_AUTH}
-      - NEO4J_PLUGINS=['apoc']
+      - NEO4J_PLUGINS=["apoc"]
       - NEO4J_dbms_security_procedures_unrestricted=apoc.*
       - NEO4J_dbms_security_procedures_allowlist=apoc.*
     ports:
@@ -24,9 +24,10 @@ services:
       - mcp_cloud_network
     healthcheck:
       test: ["CMD-SHELL", "/scripts/neo4j-healthcheck.sh"]
-      interval: 10s
-      timeout: 5s
+      interval: 15s
+      timeout: 10s
       retries: 10
+      start_period: 30s
 
   # PostgreSQL Database (공통 사용)
   mcp_postgres:
