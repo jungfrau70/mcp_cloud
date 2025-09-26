@@ -26,6 +26,6 @@ git commit -m "$COMMIT_MSG"
 
 # 푸시 실행
 echo "🚀 푸시 중..."
-git push origin v1.0.9
+git push origin v1.1.0
 
 echo "✅ 완료!"
