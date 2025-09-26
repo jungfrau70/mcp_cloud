@@ -1,31 +1,9 @@
 #!/bin/bash
+# Neo4j healthcheck script
 
-# Neo4j 헬스 체크 스크립트
-# Neo4j가 완전히 시작되었는지 확인
+# 환경변수에서 사용자명과 비밀번호 추출
+USER=$(echo "$NEO4J_AUTH" | cut -d'/' -f1)
+PASS=$(echo "$NEO4J_AUTH" | cut -d'/' -f2)
 
-set -e
-
-# Neo4j HTTP API 엔드포인트 확인 (가장 안정적인 방법)
-if curl -f -s http://localhost:7474/db/data/ > /dev/null 2>&1; then
-    echo "Neo4j HTTP API is ready"
-    exit 0
-fi
-
-# Neo4j 서버 상태 확인 (대안)
-if curl -f -s http://localhost:7474/ > /dev/null 2>&1; then
-    echo "Neo4j server is ready"
-    exit 0
-fi
-
-# Neo4j Bolt 프로토콜 확인 (마지막 대안)
-# NEO4J_AUTH 환경변수에서 비밀번호 추출
-if [ -n "$NEO4J_AUTH" ]; then
-    PASSWORD="${NEO4J_AUTH#*/}"
-    if timeout 5 cypher-shell -u neo4j -p "$PASSWORD" "RETURN 1 AS test" > /dev/null 2>&1; then
-        echo "Neo4j Bolt protocol is ready"
-        exit 0
-    fi
-fi
-
-echo "Neo4j is not ready yet"
-exit 1
+# Neo4j 연결 테스트
+cypher-shell -a bolt://localhost:7687 -u "$USER" -p "$PASS" 'RETURN 1' > /dev/null 2>&1 || exit 1
