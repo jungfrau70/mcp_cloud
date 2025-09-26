@@ -262,7 +262,7 @@ async function fetchCurrentUser(){
       'Authorization': `Bearer ${auth.token}`
     }
 
-    const base = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000'
+    const base = config.public.apiBaseUrl || 'http://localhost:8000'
     const { data: fetchedUser, error } = await useFetch(`${base}/api/v1/profile/me`, {
       key: auth.token,
       lazy: false,
@@ -1303,7 +1303,7 @@ const handleKbSave = async ({ path, content, message, force }) => {
     // force bypass optimistic (call API directly)
     try {
       const config = useRuntimeConfig();
-      const apiBase = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us/api' : 'http://localhost:8000/api';
+      const apiBase = config.public.apiBaseUrl || 'http://localhost:8000/api';
       await fetch(`${apiBase}/api/v1/knowledge-base/item`, { method:'PATCH', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path, content, message }) })
       toast.push('success','강제 저장 완료')
     } catch(e){ toast.push('error','강제 저장 실패') }

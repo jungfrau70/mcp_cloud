@@ -43,7 +43,9 @@ if ENV == "production":
         "https://app.goldencircle.us",  # 프론트엔드 앱 도메인
         "https://api.goldencircle.us",
         "http://localhost:3000",  # 개발 환경 호환성
-        "http://127.0.0.1:3000"   # 로컬 개발 환경
+        "http://127.0.0.1:3000",  # 로컬 개발 환경
+        "http://localhost:3001",  # 추가 포트 지원
+        "http://127.0.0.1:3001"   # 추가 포트 지원
     ]
 else:
     ALLOWED_ORIGINS = ["*"]  # 개발 환경에서는 모든 origin 허용

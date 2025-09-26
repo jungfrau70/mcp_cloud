@@ -102,7 +102,7 @@ const retryCount = ref(0)
 async function onSubmit(){
   if (isLoading.value) return // 중복 요청 방지
   
-  const base = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000'
+  const base = config.public.apiBaseUrl || 'http://localhost:8000'
   showVerifyNotice.value = false
   loginError.value = '' // 이전 오류 메시지 초기화
   isLoading.value = true
@@ -193,7 +193,7 @@ function showPasswordReset() {
 async function resendVerification(){
   try{
     sending.value = true
-    const base = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000'
+    const base = config.public.apiBaseUrl || 'http://localhost:8000'
     await $fetch(`${base}/api/v1/auth/resend-verification`, {
       method: 'POST',
       body: { email: email.value }

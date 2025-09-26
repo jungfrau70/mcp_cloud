@@ -525,7 +525,7 @@ async function loadcurriculumTreeIfCurriculum(){
 }
 
 // 지연 로딩: 디렉토리 클릭 시 하위 내용 로드
-async function loadDirectoryChildren(path: string) {
+const loadDirectoryChildren = async (path) => {
   try {
     console.log('📁 디렉토리 하위 내용 로드:', path)
     const response = await fetch(`${apiBase}/api/v1/curriculum/tree/${path}?show_hidden=${showHiddenFiles.value}`, { 

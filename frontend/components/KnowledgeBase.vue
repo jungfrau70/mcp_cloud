@@ -496,7 +496,7 @@ import { ref, reactive, watch, onMounted, computed } from 'vue';
 import AIDocumentGenerator from './AIDocumentGenerator.vue';
 
 const config = useRuntimeConfig()
-const apiBase = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000'
+const apiBase = config.public.apiBaseUrl || 'http://localhost:8000'
 const apiKey = 'my_mcp_eagle_tiger'
 
 // 탭 상태

@@ -21,7 +21,7 @@ export const useGeminiApiKey = () => {
       isLoading.value = true
       error.value = null
       
-      const base = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000'
+      const base = config.public.apiBaseUrl || 'http://localhost:8000'
       
       console.log('Fetching profile from:', `${base}/api/v1/profile/me`)
       const response = await $fetch(`${base}/api/v1/profile/me`, {

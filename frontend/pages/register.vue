@@ -65,7 +65,7 @@ async function onSubmit(){
   }
   
   try {
-    const base = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000'
+    const base = config.public.apiBaseUrl || 'http://localhost:8000'
     const res = await $fetch(`${base}/api/v1/auth/register`, {
       method: 'POST',
       body: { email: email.value, password: password.value, full_name: fullName.value || null },

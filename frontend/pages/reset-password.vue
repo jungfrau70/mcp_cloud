@@ -140,7 +140,7 @@ async function handleResetPassword() {
   message.value = ''
 
   try {
-    const base = process.env.NODE_ENV === 'production' ? 'https://api.goldencircle.us' : 'http://localhost:8000'
+    const base = config.public.apiBaseUrl || 'http://localhost:8000'
     
     await $fetch(`${base}/api/v1/auth/reset-password`, {
       method: 'POST',
