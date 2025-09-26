@@ -23,7 +23,7 @@ services:
     networks:
       - mcp_cloud_network
     healthcheck:
-      test: ["CMD-SHELL", "/scripts/neo4j-healthcheck.sh"]
+      test: ["CMD-SHELL", "chmod +x /scripts/neo4j-healthcheck.sh && /scripts/neo4j-healthcheck.sh"]
       interval: 15s
       timeout: 10s
       retries: 10
