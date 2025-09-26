@@ -1076,8 +1076,8 @@ EOF
 ### 추가 학습 자료
 
 ["추가 학습 자료"]["#추가-학습-자료"]
-- ["고가용성 아키텍처 가이드"][cloud_container/textbook/Day2/high-availability-architecture.md]
-- ["종합 프로젝트 실습"][cloud_container/textbook/Day2/practice/comprehensive-project.md]
+- ["고가용성 아키텍처 가이드"](cloud_container/textbook/Day2/high-availability-architecture.md)
+- ["종합 프로젝트 실습"](cloud_container/textbook/Day2/practice/comprehensive-project.md)
 
 ---
 
@@ -1099,6 +1099,6 @@ EOF
 
 <div align="center">
 
-["← 이전: Cloud Container 2일차 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
+["← 이전: Cloud Container 2일차 메인"](README.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🏠 학습 경로로 돌아가기"](index.md) | ["📋 학습 경로"](learning-path.md)
 
 </div>

@@ -3,7 +3,8 @@
 > 📋 **강의 일시**: 2024년 10월 1일 ["수"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Cloud Basic 완료 ["AWS/GCP 기초 서비스"]  
-> 📋 **참고 코드**: https://github.com/jungfrau70/cloud-intermediate.git
+> 📋 **WSL 환경설정**: [./cloud_intermediate/_setup_wsl/README.md](../_setup_wsl/README.md)
+> 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-intermediate.git cloud_intermediate`
 
 ---
 
@@ -47,7 +48,7 @@ docker ps
 #### **자동 체크 ["권장"]**
 ```bash
 # 환경 체크 스크립트 실행
-cd mcp_knowledge_base/cloud_intermediate/repo/scripts
+cd ./cloud_intermediate/scripts
 ./cloud-intermediate-helper.sh check-environment
 ```
 
@@ -64,15 +65,14 @@ cd mcp_knowledge_base/cloud_intermediate/repo/scripts
 
 ### **새로운 디렉토리 구조**
 ```
-mcp_knowledge_base/cloud_intermediate/
-├── repo/
-│   ├── samples/day1/
-│   │   ├── docker-advanced/          # Docker 고급 실습
-│   │   ├── kubernetes-basics/        # Kubernetes 기초 실습
-│   │   └── cloud-container-services/ # 클라우드 컨테이너 서비스
-│   └── scripts/
-│       ├── day1-practice.sh          # Day1 실습 자동화
-│       └── cloud-intermediate-helper.sh # 통합 헬퍼
+./cloud_intermediate/
+├── samples/day1/
+│   ├── docker-advanced/          # Docker 고급 실습
+│   ├── kubernetes-basics/        # Kubernetes 기초 실습
+│   └── cloud-container-services/ # 클라우드 컨테이너 서비스
+├── scripts/
+│   ├── day1-practice.sh          # Day1 실습 자동화
+│   └── cloud-intermediate-helper.sh # 통합 헬퍼
 └── textbook/Day1/
     ├── README.md                     # Day1 개요
     └── practice/                     # 실습 가이드
@@ -90,13 +90,13 @@ mcp_knowledge_base/cloud_intermediate/
 - **실습**: 최적화된 Dockerfile 작성 및 이미지 빌드
 
 **🔍 실습 코드 위치**
-- **샘플 코드**: `repo/samples/day1/docker-advanced/`
-- **자동화 스크립트**: `repo/scripts/day1-practice.sh`
+- **샘플 코드**: `cloud_intermediate/samples/day1/docker-advanced/`
+- **자동화 스크립트**: `cloud_intermediate/scripts/day1-practice.sh`
 
 **📋 실습 단계**
 ```bash
 # 1. 실습 환경 준비
-cd mcp_knowledge_base/cloud_intermediate/repo/scripts
+cd ./cloud_intermediate/scripts
 ./day1-practice.sh
 
 # 2. Docker 고급 실습 선택
@@ -118,7 +118,7 @@ cd mcp_knowledge_base/cloud_intermediate/repo/scripts
 - **실습**: Kubernetes 리소스 생성 및 관리
 
 **🔍 실습 코드 위치**
-- **샘플 코드**: `repo/samples/day1/kubernetes-basics/`
+- **샘플 코드**: `cloud_intermediate/samples/day1/kubernetes-basics/`
 - **YAML 파일**: nginx-deployment.yaml, configmap-secret.yaml, namespace.yaml
 
 **📋 실습 단계**
@@ -127,13 +127,13 @@ cd mcp_knowledge_base/cloud_intermediate/repo/scripts
 # 메뉴에서 "2. Kubernetes 기초 실습" 선택
 
 # 2. 네임스페이스 생성
-kubectl apply -f repo/samples/day1/kubernetes-basics/namespace.yaml
+kubectl apply -f cloud_intermediate/samples/day1/kubernetes-basics/namespace.yaml
 
 # 3. Deployment 및 Service 생성
-kubectl apply -f repo/samples/day1/kubernetes-basics/nginx-deployment.yaml
+kubectl apply -f cloud_intermediate/samples/day1/kubernetes-basics/nginx-deployment.yaml
 
 # 4. ConfigMap 및 Secret 실습
-kubectl apply -f repo/samples/day1/kubernetes-basics/configmap-secret.yaml
+kubectl apply -f cloud_intermediate/samples/day1/kubernetes-basics/configmap-secret.yaml
 ```
 
 **🎯 학습 결과**
@@ -148,7 +148,7 @@ kubectl apply -f repo/samples/day1/kubernetes-basics/configmap-secret.yaml
 - **실습**: ECS 클러스터 생성 및 태스크 정의
 
 **🔍 실습 코드 위치**
-- **샘플 코드**: `repo/samples/day1/cloud-container-services/aws-ecs-task-definition.json`
+- **샘플 코드**: `cloud_intermediate/samples/day1/cloud-container-services/aws-ecs-task-definition.json`
 
 **📋 실습 단계**
 ```bash
@@ -160,7 +160,7 @@ aws ecs create-cluster --cluster-name cloud-intermediate-cluster
 
 # 3. 태스크 정의 등록
 aws ecs register-task-definition \
-  --cli-input-json file://repo/samples/day1/cloud-container-services/aws-ecs-task-definition.json
+  --cli-input-json file://cloud_intermediate/samples/day1/cloud-container-services/aws-ecs-task-definition.json
 
 # 4. 서비스 생성 및 실행
 aws ecs create-service \
@@ -181,7 +181,7 @@ aws ecs create-service \
 - **실습**: Cloud Run 서비스 생성 및 배포
 
 **🔍 실습 코드 위치**
-- **샘플 코드**: `repo/samples/day1/cloud-container-services/gcp-cloud-run.yaml`
+- **샘플 코드**: `cloud_intermediate/samples/day1/cloud-container-services/gcp-cloud-run.yaml`
 
 **📋 실습 단계**
 ```bash
@@ -312,8 +312,8 @@ gcloud run services list
 
 ### **실습 코드 저장소**
 - [GitHub Repository][https://github.com/jungfrau70/cloud-intermediate.git]
-- ["실습 샘플 코드"][mcp_knowledge_base/cloud_intermediate/repo/samples/day1/]
-- ["자동화 스크립트"][mcp_knowledge_base/cloud_intermediate/repo/scripts/]
+- ["실습 코드"][./cloud_intermediate/samples/day1/]
+- ["자동화 스크립트"][./cloud_intermediate/scripts/]
 
 ## 🎯 **다음 단계 안내**
 

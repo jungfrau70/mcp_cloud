@@ -650,7 +650,7 @@ git push -u origin main
 2. Docker Hub에서 이미지 확인: `https:///hub.docker.com/r/YOUR_USERNAME/actions-demo`
 3. 로컬에서 테스트: `docker run -p 3000:3000 YOUR_USERNAME/actions-demo:main-COMMIT_SHA`
 
-**📖 Docker Hub 설정이 필요하다면**: ["Docker Hub 가입 및 토큰 설정 가이드"][cloud_master/textbook/Day1/guides/docker-hub-setup-guide.md]
+**📖 Docker Hub 설정이 필요하다면**: ["Docker Hub 가입 및 토큰 설정 가이드"](cloud_master/textbook/Day1/guides/docker-hub-setup-guide.md)
 
 ---
 
@@ -1233,7 +1233,7 @@ docker rm actions-demo-prod
 - ["워크플로우 예제 모음"][https:///github.com/actions/starter-workflows]
 - ["YAML 문법 가이드"][https:///docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions]
 
-다음 단계: ["3교시: 클라우드 배포 기초 실습"][cloud_master/textbook/Day1/guides/cloud-deployment-guide.md]
+다음 단계: ["3교시: 클라우드 배포 기초 실습"](cloud_master/textbook/Day1/guides/cloud-deployment-guide.md)
 
 ---
 
@@ -1249,6 +1249,6 @@ docker rm actions-demo-prod
 
 <div align="center">
 
-["← 이전: Cloud Master 1일차 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md] | ["← 이전: Docker 고급 가이드"][cloud_master/textbook/Day1/guides/docker-advanced-guide.md] | ["다음: 클라우드 배포 가이드 →"][cloud_master/textbook/Day1/guides/cloud-deployment-guide.md]
+["← 이전: Cloud Master 1일차 메인"](README.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🏠 학습 경로로 돌아가기"](index.md) | ["📋 학습 경로"](learning-path.md) | ["← 이전: Docker 고급 가이드"](cloud_master/textbook/Day1/guides/docker-advanced-guide.md) | ["다음: 클라우드 배포 가이드 →"](cloud_master/textbook/Day1/guides/cloud-deployment-guide.md)
 
 </div>

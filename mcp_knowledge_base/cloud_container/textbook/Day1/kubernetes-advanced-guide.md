@@ -880,6 +880,6 @@ kubectl apply -f security/
 
 <div align="center">
 
-["← 이전: Cloud Container 1일차 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
+["← 이전: Cloud Container 1일차 메인"](README.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🏠 학습 경로로 돌아가기"](index.md) | ["📋 학습 경로"](learning-path.md)
 
 </div>

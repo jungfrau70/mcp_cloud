@@ -923,7 +923,7 @@ echo "=== 부하 테스트 및 스케일링 확인 완료 ==="
 - ["Kubernetes 공식 문서"][https:///kubernetes.io/docs/]
 - ["컨테이너 오케스트레이션 모범 사례"][https:///kubernetes.io/docs/concepts/]
 
-다음 단계: ["트러블슈팅 가이드"][cloud_basic/textbook/Day1/troubleshooting-guide.md]
+다음 단계: ["트러블슈팅 가이드"](cloud_basic/textbook/Day1/troubleshooting-guide.md)
 
 ---
 
@@ -938,6 +938,6 @@ echo "=== 부하 테스트 및 스케일링 확인 완료 ==="
 
 <div align="center">
 
-["← 이전: Cloud Master 2일차 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md] | ["← 이전: 모니터링 가이드"][cloud_master/textbook/Day2/guides/monitoring-guide.md]
+["← 이전: Cloud Master 2일차 메인"](README.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🏠 학습 경로로 돌아가기"](index.md) | ["📋 학습 경로"](learning-path.md) | ["← 이전: 모니터링 가이드"](cloud_master/textbook/Day2/guides/monitoring-guide.md)
 
 </div>

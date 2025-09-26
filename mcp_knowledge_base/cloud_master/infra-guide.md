@@ -29,9 +29,9 @@
 ## 📚 기존 문서와의 연계
 
 ### 관련 실습 가이드
-- ["CI/CD 파이프라인 가이드"][cicd-guide.md] - 자동화된 배포 및 모니터링
-- ["실습 가이드"][execuise-guide.md] - 전체 과정 실습 가이드
-- ["Day별 실습"][../textbook/Day1/README.md] - 단계별 실습 진행
+- ["CI/CD 파이프라인 가이드"](cicd-guide.md) - 자동화된 배포 및 모니터링
+- ["실습 가이드"](execuise-guide.md) - 전체 과정 실습 가이드
+- ["Day별 실습"](../textbook/Day1/README.md) - 단계별 실습 진행
 
 ### 자동화 스크립트
 - ["통합 자동화 스크립트"][../repos/automation/integrated-practice-automation.sh] - 전체 과정 자동화
@@ -495,9 +495,9 @@ docker-compose ps
 
 <div align="center">
 
-["← 이전: CI/CD 파이프라인 가이드"][cicd-guide.md] | 
-["📚 전체 커리큘럼"][../curriculum.md] | 
-["🏠 학습 경로로 돌아가기"][../index.md] | 
-["다음: 실습 가이드 →"][execuise-guide.md]
+["← 이전: CI/CD 파이프라인 가이드"](cicd-guide.md) | 
+["📚 전체 커리큘럼"](../curriculum.md) | 
+["🏠 학습 경로로 돌아가기"](../index.md) | 
+["다음: 실습 가이드 →"](execuise-guide.md)
 
 </div>

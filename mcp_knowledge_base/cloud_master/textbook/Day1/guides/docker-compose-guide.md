@@ -644,7 +644,7 @@ app.listen[port, [] => {
 - [Docker Hub][https:///hub.docker.com/]
 - ["Dockerfile 모범 사례"][https:///docs.docker.com/develop/dev-best-practices/]
 
-다음 단계: ["2교시: GitHub Actions로 CI/CD 구성"][cloud_master/textbook/Day1/guides/github-actions-guide.md]
+다음 단계: ["2교시: GitHub Actions로 CI/CD 구성"](cloud_master/textbook/Day1/guides/github-actions-guide.md)
 
 ---
 
@@ -660,6 +660,6 @@ app.listen[port, [] => {
 
 <div align="center">
 
-["← 이전: Cloud Master 1일차 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md] | ["← 이전: Docker 고급 가이드"][cloud_master/textbook/Day1/guides/docker-advanced-guide.md] | ["다음: GitHub Actions 가이드 →"][cloud_master/textbook/Day1/guides/github-actions-guide.md]
+["← 이전: Cloud Master 1일차 메인"](README.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🏠 학습 경로로 돌아가기"](index.md) | ["📋 학습 경로"](learning-path.md) | ["← 이전: Docker 고급 가이드"](cloud_master/textbook/Day1/guides/docker-advanced-guide.md) | ["다음: GitHub Actions 가이드 →"](cloud_master/textbook/Day1/guides/github-actions-guide.md)
 
 </div>

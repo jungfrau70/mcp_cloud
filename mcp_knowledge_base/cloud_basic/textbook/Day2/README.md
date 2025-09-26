@@ -35,27 +35,27 @@
 
 #### 1단계: 컴퓨팅 서비스 비교 ["1시간"]
 
-- ["EC2 vs Compute Engine 비교"][cloud_basic/textbook/Day2/compute_comparison.md]
-- ["인스턴스 유형 분석"][cloud_basic/textbook/Day2/compute_comparison.md]
-- ["가격 비교"][cloud_basic/textbook/Day2/compute_comparison.md]
+- ["EC2 vs Compute Engine 비교"](cloud_basic/textbook/Day2/compute_comparison.md)
+- ["인스턴스 유형 분석"](cloud_basic/textbook/Day2/compute_comparison.md)
+- ["가격 비교"](cloud_basic/textbook/Day2/compute_comparison.md)
 
 #### 2단계: 스토리지 서비스 비교 ["1시간"]
 
-- ["S3 vs Cloud Storage 비교"][cloud_basic/textbook/Day2/storage_comparison.md]
-- ["스토리지 클래스 분석"][cloud_basic/textbook/Day2/storage_comparison.md]
-- ["성능 및 가격 비교"][cloud_basic/textbook/Day2/storage_comparison.md]
+- ["S3 vs Cloud Storage 비교"](cloud_basic/textbook/Day2/storage_comparison.md)
+- ["스토리지 클래스 분석"](cloud_basic/textbook/Day2/storage_comparison.md)
+- ["성능 및 가격 비교"](cloud_basic/textbook/Day2/storage_comparison.md)
 
 #### 3단계: 데이터베이스 서비스 비교 ["1시간"]
 
-- ["RDS vs Cloud SQL 비교"][cloud_basic/textbook/Day2/database_comparison.md]
-- ["NoSQL 서비스 비교"][cloud_basic/textbook/Day2/database_comparison.md]
-- ["관리형 서비스 장단점"][cloud_basic/textbook/Day2/database_comparison.md]
+- ["RDS vs Cloud SQL 비교"](cloud_basic/textbook/Day2/database_comparison.md)
+- ["NoSQL 서비스 비교"](cloud_basic/textbook/Day2/database_comparison.md)
+- ["관리형 서비스 장단점"](cloud_basic/textbook/Day2/database_comparison.md)
 
 #### 4단계: 네트워킹 서비스 비교 ["1시간"]
 
-- ["VPC vs VPC 비교"][cloud_basic/textbook/Day2/network_comparison.md]
-- ["로드 밸런서 비교"][cloud_basic/textbook/Day2/network_comparison.md]
-- ["CDN 서비스 비교"][cloud_basic/textbook/Day2/network_comparison.md]
+- ["VPC vs VPC 비교"](cloud_basic/textbook/Day2/network_comparison.md)
+- ["로드 밸런서 비교"](cloud_basic/textbook/Day2/network_comparison.md)
+- ["CDN 서비스 비교"](cloud_basic/textbook/Day2/network_comparison.md)
 
 ### 🌆 오후 ["4시간"]
 
@@ -63,21 +63,21 @@
 
 #### 5단계: 비용 최적화 실습 ["2시간"]
 
-- ["비용 분석 도구 사용"][cloud_basic/textbook/Day2/compute_comparison.md]
-- ["리소스 최적화"][cloud_basic/textbook/Day2/storage_comparison.md]
-- ["예산 설정 및 모니터링"][cloud_basic/textbook/Day2/database_comparison.md]
+- ["비용 분석 도구 사용"](cloud_basic/textbook/Day2/compute_comparison.md)
+- ["리소스 최적화"](cloud_basic/textbook/Day2/storage_comparison.md)
+- ["예산 설정 및 모니터링"](cloud_basic/textbook/Day2/database_comparison.md)
 
 #### 6단계: 보안 및 모니터링 기초 ["1시간"]
 
-- ["IAM 권한 관리"][cloud_basic/textbook/Day1/iam-basics-guide.md]
-- ["보안 그룹 설정"][cloud_basic/textbook/Day1/iam-basics-guide.md]
-- ["기본 모니터링 설정"][cloud_basic/textbook/Day2/compute_comparison.md]
+- ["IAM 권한 관리"](cloud_basic/textbook/Day1/iam-basics-guide.md)
+- ["보안 그룹 설정"](cloud_basic/textbook/Day1/iam-basics-guide.md)
+- ["기본 모니터링 설정"](cloud_basic/textbook/Day2/compute_comparison.md)
 
 #### 7단계: 종합 프로젝트 ["1시간"]
 
-- ["프로젝트 요구사항 분석"][cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md]
-- ["서비스 선택 및 설계"][cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md]
-- ["비용 예상 및 최적화"][cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md]
+- ["프로젝트 요구사항 분석"](cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
+- ["서비스 선택 및 설계"](cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
+- ["비용 예상 및 최적화"](cloud_basic/textbook/Day2/practice/basic-to-master-bridge.md)
 
 ## 💻 실습 가이드
 
@@ -97,8 +97,8 @@
    - [GCP Billing Console][https:///console.cloud.google.com/billing]
 
 3. **비교 분석 템플릿**
-   - ["서비스 비교 체크리스트"][cloud_basic/textbook/Day2/compute_comparison.md]
-   - ["비용 분석 템플릿"][cloud_basic/textbook/Day2/storage_comparison.md]
+   - ["서비스 비교 체크리스트"](cloud_basic/textbook/Day2/compute_comparison.md)
+   - ["비용 분석 템플릿"](cloud_basic/textbook/Day2/storage_comparison.md)
 
 ### 📝 실습 체크리스트
 
@@ -194,9 +194,9 @@
 ### 📞 추가 도움
 
 ["📞 추가 도움"]["#추가-도움"]
-- ["종합 문제해결 가이드"][cloud_basic/textbook/Day1/troubleshooting-guide.md]
-- ["비용 최적화 가이드"][cloud_basic/textbook/Day2/compute_comparison.md]
-- ["보안 모범 사례"][cloud_basic/textbook/Day1/iam-basics-guide.md]
+- ["종합 문제해결 가이드"](cloud_basic/textbook/Day1/troubleshooting-guide.md)
+- ["비용 최적화 가이드"](cloud_basic/textbook/Day2/compute_comparison.md)
+- ["보안 모범 사례"](cloud_basic/textbook/Day1/iam-basics-guide.md)
 
 ## ➡️ 다음 단계
 
@@ -214,8 +214,8 @@ Cloud Basic을 성공적으로 완료했다면, 다음 단계인 Cloud Master �
 
 ["🔗 관련 자료"]["#관련-자료"]
 - Cloud Basic 과정 전체
-- ["학습 경로"][learning-path.md]
-- ["전체 커리큘럼"][curriculum.md]
+- ["학습 경로"](learning-path.md)
+- ["전체 커리큘럼"](curriculum.md)
 
 ### 🎯 다음 단계 학습 목표
 
@@ -235,9 +235,9 @@ Cloud Master 과정에서는 다음 내용을 학습하게 됩니다:
 
 ["🎉 Day 2 실습을 시작하세요!"]["#day-2-실습을-시작하세요"]
 
-["🚀 실습 시작하기"][cloud_basic/textbook/Day2/compute_comparison.md] | 
+["🚀 실습 시작하기"](cloud_basic/textbook/Day2/compute_comparison.md) | 
 📚 Cloud Basic 과정 전체 |
-["🏠 홈으로 돌아가기"][index.md]
+["🏠 홈으로 돌아가기"](index.md)
 
 </div>
 
@@ -245,6 +245,6 @@ Cloud Master 과정에서는 다음 내용을 학습하게 됩니다:
 
 <div align="center">
 
-["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
+["🏠 홈"](index.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🔗 학습 경로"](learning-path.md)
 
 </div>

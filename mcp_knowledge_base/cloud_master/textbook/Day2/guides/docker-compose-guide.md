@@ -464,9 +464,9 @@ services:
 - ["Redis 공식 문서"][https://redis.io/documentation]
 
 ### 관련 가이드
-- ["Docker 기본 실습 가이드"][docker-basic-guide.md]
-- ["데이터베이스 연동 가이드"][database-integration-guide.md]
-- ["Nginx 설정 가이드"][nginx-configuration-guide.md]
-- ["모니터링 설정 가이드"][monitoring-setup-guide.md]
+- ["Docker 기본 실습 가이드"](docker-basic-guide.md)
+- ["데이터베이스 연동 가이드"](database-integration-guide.md)
+- ["Nginx 설정 가이드"](nginx-configuration-guide.md)
+- ["모니터링 설정 가이드"](monitoring-setup-guide.md)
 
 이 가이드를 통해 Docker Compose의 모든 기능을 마스터하고, 실제 프로덕션 환경에서 안정적으로 운영할 수 있습니다! 🚀

@@ -21,9 +21,9 @@
 ## 🛠️ 실습 학습
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/samples/day1/kubernetes-basics/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/scripts/kubernetes-basics-practice.sh`
-- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/cloud-scripts/`
+- **실습 코드**: `./cloud_intermediate/samples/day1/kubernetes-basics/`
+- **자동화 스크립트**: `./cloud_intermediate/scripts/kubernetes-basics-practice.sh`
+- **클라우드 스크립트**: `./cloud_intermediate/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -385,7 +385,7 @@ kubectl top pods  # Pod 리소스 사용량
 ### 자동 정리
 ```bash
 # Kubernetes 기초 실습 자동 정리
-./mcp_knowledge_base/cloud_intermediate/repo/scripts/kubernetes-basics-practice.sh --cleanup
+./cloud_intermediate/scripts/kubernetes-basics-practice.sh --cleanup
 ```
 
 ### 수동 정리
@@ -414,8 +414,8 @@ kubectl get all
 ## 🔗 관련 자료
 
 ### 📚 실습 가이드
-- ["Docker 고급 활용"][docker-advanced.md]
-- ["클라우드 컨테이너 서비스"][cloud-container-services.md]
+- ["Docker 고급 활용"](docker-advanced.md)
+- ["클라우드 컨테이너 서비스"](cloud-container-services.md)
 
 ### 🛠️ 설치 가이드
 - ["kubectl 설치"][_setup_wsl/install-kubectl-wsl.sh]
@@ -424,9 +424,9 @@ kubectl get all
 ### 🏠 네비게이션
 <div align="center">
 
-["← 이전: Docker 고급 활용"][docker-advanced.md] | 
-["📚 전체 커리큘럼"][../../../curriculum.md] | 
-["🏠 학습 경로로 돌아가기"][../../../index.md] | 
-["다음: 클라우드 컨테이너 서비스 →"][cloud-container-services.md]
+["← 이전: Docker 고급 활용"](docker-advanced.md) | 
+["📚 전체 커리큘럼"](../../../curriculum.md) | 
+["🏠 학습 경로로 돌아가기"](../../../index.md) | 
+["다음: 클라우드 컨테이너 서비스 →"](cloud-container-services.md)
 
 </div>

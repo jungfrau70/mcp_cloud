@@ -24,9 +24,9 @@
 ## 🛠️ 실습 학습
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/samples/day2/monitoring-basics/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/scripts/monitoring-basics-practice.sh`
-- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/cloud-scripts/`
+- **실습 코드**: `./cloud_intermediate/samples/day2/monitoring-basics/`
+- **자동화 스크립트**: `./cloud_intermediate/scripts/monitoring-basics-practice.sh`
+- **클라우드 스크립트**: `./cloud_intermediate/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -600,7 +600,7 @@ gcloud logging read "resource.type=\"gce_instance\" AND severity>=ERROR" --limit
 ### 자동 정리
 ```bash
 # 모니터링 기초 실습 자동 정리
-./mcp_knowledge_base/cloud_intermediate/repo/scripts/monitoring-basics-practice.sh --cleanup
+./cloud_intermediate/scripts/monitoring-basics-practice.sh --cleanup
 ```
 
 ### 수동 정리
@@ -628,8 +628,8 @@ gcloud logging metrics delete myapp_errors
 ## 🔗 관련 자료
 
 ### 📚 실습 가이드
-- ["CI/CD 파이프라인"][cicd-pipeline.md]
-- ["클라우드 배포"][cloud-deployment.md]
+- ["CI/CD 파이프라인"](cicd-pipeline.md)
+- ["클라우드 배포"](cloud-deployment.md)
 
 ### 🛠️ 설치 가이드
 - ["AWS CLI 설정"][_setup_wsl/install-aws-cli-wsl.sh]
@@ -638,9 +638,9 @@ gcloud logging metrics delete myapp_errors
 ### 🏠 네비게이션
 <div align="center">
 
-["← 이전: 클라우드 배포"][cloud-deployment.md] | 
-["📚 전체 커리큘럼"][../../../curriculum.md] | 
-["🏠 학습 경로로 돌아가기"][../../../index.md] | 
-["다음: Cloud Master 과정 →"][../../../cloud_master/README.md]
+["← 이전: 클라우드 배포"](cloud-deployment.md) | 
+["📚 전체 커리큘럼"](../../../curriculum.md) | 
+["🏠 학습 경로로 돌아가기"](../../../index.md) | 
+["다음: Cloud Master 과정 →"](../../../cloud_master/README.md)
 
 </div>

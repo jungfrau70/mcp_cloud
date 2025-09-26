@@ -151,7 +151,7 @@ tail -f basic_course_automation.log
 
 ## 📞 지원
 
-- **문서**: [USER_GUIDE.md][USER_GUIDE.md]
+- **문서**: (USER_GUIDE.md)(USER_GUIDE.md)
 - **이슈**: GitHub Issues
 - **문의**: 프로젝트 관리자
 
@@ -169,6 +169,6 @@ tail -f basic_course_automation.log
 
 <div align="center">
 
-["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
+["📚 전체 커리큘럼"](curriculum.md) | ["🏠 학습 경로로 돌아가기"](index.md) | ["📋 학습 경로"](learning-path.md)
 
 </div>

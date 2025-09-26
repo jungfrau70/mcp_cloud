@@ -1,9 +1,9 @@
 <template>
   <div class="h-screen flex flex-col">
     <!-- Top Navigation Bar -->
-    <nav class="bg-white shadow-sm border-b z-50 sticky top-0">
+    <nav class="bg-white shadow-sm border-b z-50 sticky top-0 relative" :style="{ height: topNavHeight + 'px' }">
       <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between items-center" :style="{ height: topNavHeight + 'px' }">
           <div class="flex items-center">
             <button v-if="isLoggedIn" @click="toggleSidebar" class="mr-3 p-2 rounded hover:bg-gray-100 focus:outline-none" title="Toggle sidebar">
               <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,7 +60,7 @@
     </nav>
 
     <!-- Main IDE Layout -->
-    <div class="flex flex-grow overflow-hidden bg-gray-100 relative" style="height: calc(100vh - 64px);">
+    <div class="flex flex-grow overflow-hidden bg-gray-100 relative" :style="{ height: mainContentHeight }">
       <!-- Left Panel: hidden entirely on knowledge-base when Markdown tab active, or for guest users -->
       <aside
         v-if="!isKnowledgeBase && isLoggedIn"
@@ -192,13 +192,13 @@
         </div>
       </div>
     </div>
-  <TaskStatusBar v-if="isKnowledgeBase" />
   <ToastStack />
+  <TaskStatusBar v-if="isKnowledgeBase" />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useRuntimeConfig } from '#app'
 import SyllabusExplorer from '~/components/SyllabusExplorer.vue'
@@ -212,7 +212,7 @@ import { useToastStore } from '~/stores/toast'
 import { useAuthStore } from '~/stores/auth'
 import { useProgressStore } from '~/stores/progress'
 import { useGeminiApiKey } from '~/composables/useGeminiApiKey'
-import { cleanApiPath, deepCleanApiPath, preventPathDuplication, prepareApiPath, prepareSafeApiPath, makeUriDisplayFriendly } from '~/utils/path'
+import { cleanApiPath, deepCleanApiPath, preventPathDuplication, prepareApiPath, prepareSafeApiPath, makeUriDisplayFriendly, processKnowledgeBasePath } from '~/utils/path'
 const toast = useToastStore()
 
 // User authentication state
@@ -352,6 +352,24 @@ onMounted(async () => {
           console.warn('Failed to parse saved file info:', e)
         }
       }
+    }
+    
+    // 지식베이스 인덱스 파일 확인
+    await ensureKbIndex()
+    
+    // kb:open 이벤트 리스너 추가
+    if (typeof window !== 'undefined') {
+      window.addEventListener('kb:open', (event) => {
+        console.log('kb:open event received:', event.detail)
+        const { path, container, isDirectory, originalPath } = event.detail || {}
+        
+        if (path) {
+          // 지식베이스로 이동
+          if (container === 'knowledge-base' || !container) {
+            handleKbFileSelect(path)
+          }
+        }
+      })
     }
   } catch (e) {
     user.value = null;
@@ -618,11 +636,74 @@ const isProfileRoute = computed(() => {
   return route.path.startsWith('/profile');
 })
 
+// 상단 네비게이션 높이 계산
+const topNavHeight = computed(() => {
+  if (!isClient) return 64;
+  
+  const viewportHeight = windowHeight.value || window.innerHeight;
+  
+  // 화면이 작을 때 높이 조정
+  if (viewportHeight <= 500) {
+    return 40; // 2.5rem
+  } else if (viewportHeight <= 600) {
+    return 48; // 3rem
+  }
+  
+  return 64; // 기본 높이
+})
+
+// 하단 바 높이 계산
+const bottomBarHeight = computed(() => {
+  if (!isClient) return 0;
+  
+  const viewportHeight = windowHeight.value || window.innerHeight;
+  
+  if (!isKnowledgeBase.value) return 0;
+  
+  // 화면이 작을 때 높이 조정
+  if (viewportHeight <= 500) {
+    return 16; // 1rem
+  } else if (viewportHeight <= 600) {
+    return 20; // 1.25rem
+  }
+  
+  return 24; // 기본 높이
+})
+
+// 동적 높이 계산 - 상단 메뉴와 하단 메뉴 겹침 방지
+const mainContentHeight = computed(() => {
+  if (!isClient) return 'calc(100vh - 64px)';
+  
+  const viewportHeight = windowHeight.value || window.innerHeight;
+  const minHeight = Math.max(300, viewportHeight * 0.3); // 최소 높이를 화면 높이의 30% 또는 300px 중 큰 값
+  const calculatedHeight = viewportHeight - topNavHeight.value - bottomBarHeight.value;
+  const finalHeight = Math.max(calculatedHeight, minHeight);
+  
+  return `${finalHeight}px`;
+})
+
 // 상단 메뉴 안정성을 위한 추가 상태
 const isLayoutStable = ref(true)
+
+// 창 크기 변경 감지를 위한 상태
+const windowHeight = ref(0)
+
+// 창 크기 업데이트 함수
+const updateWindowHeight = () => {
+  if (isClient) {
+    windowHeight.value = window.innerHeight
+  }
+}
+
 onMounted(async () => {
   // 클라이언트 사이드에서만 실행
   if (!isClient) return;
+  
+  // 초기 창 크기 설정
+  updateWindowHeight()
+  
+  // 창 크기 변경 이벤트 리스너 추가
+  window.addEventListener('resize', updateWindowHeight)
   
   // 드롭다운 메뉴가 자동으로 열리지 않도록 보장
   userMenuOpen.value = false
@@ -764,6 +845,13 @@ onMounted(async () => {
     })
   }
 });
+
+// 컴포넌트 언마운트 시 이벤트 리스너 정리
+onUnmounted(() => {
+  if (isClient) {
+    window.removeEventListener('resize', updateWindowHeight)
+  }
+})
 
 // 라우트 변경 시 커리큘럼 페이지로 전환되면 마지막 경로 복원
 watch(() => route.path, async (p) => {
@@ -914,11 +1002,22 @@ const handleFileClick = async (path) => {
   // 레이아웃 안정성 즉시 보장
   isLayoutStable.value = true
   
-  // Clean the path to prevent duplication and handle Korean filenames
-  const cleanPath = preventPathDuplication(path)
-  const preparedPath = prepareSafeApiPath(cleanPath) // 개선된 한글 URI 처리 사용
+  // 통합된 지식베이스 경로 처리 사용 (커리큘럼용)
+  const pathResult = processKnowledgeBasePath(path, {
+    addPrefix: false, // 커리큘럼은 prefix 없음
+    encode: true,     // 즉시 인코딩
+    fixWindowsPaths: true
+  })
   
-  console.log('handleFileClick - cleanPath:', cleanPath, 'preparedPath:', preparedPath)
+  if (!pathResult.success) {
+    console.warn('Path processing failed for curriculum:', pathResult.errors)
+    toast.push('error', '경로 처리 중 오류가 발생했습니다: ' + pathResult.errors.join(', '))
+    return
+  }
+  
+  const preparedPath = pathResult.result
+  
+  console.log('handleFileClick - original path:', path, 'preparedPath:', preparedPath)
   
   // 현재 페이지를 referrer로 저장
   if (tbPath.value) {
@@ -1140,47 +1239,53 @@ const handleKbFileSelect = async (path) => {
   activeSlide.value = null
   if(activePath.value && activePath.value !== path){ kbHistory.value.push(activePath.value) }
   
-  // 한글 파일명 처리: 이미 인코딩된 경로인 경우 디코딩
-  let decodedPath = path
-  try {
-    // URL 인코딩된 경로인지 확인하고 디코딩
-    if (path.includes('%')) {
-      decodedPath = decodeURIComponent(path)
-    }
-  } catch (e) {
-    console.warn('Failed to decode path:', path, e)
-    // 디코딩 실패 시 원본 경로 사용
-    decodedPath = path
+  // 통합된 지식베이스 경로 처리 사용
+  const pathResult = processKnowledgeBasePath(path, {
+    addPrefix: true,
+    encode: false, // docStore.open에서 인코딩 처리
+    fixWindowsPaths: true
+  })
+  
+  if (!pathResult.success) {
+    console.warn('Path processing failed:', pathResult.errors)
+    toast.push('error', '경로 처리 중 오류가 발생했습니다: ' + pathResult.errors.join(', '))
+    return
   }
   
-  // Windows 경로 구분자(\\)를 Unix 경로 구분자(/)로 정규화
-  decodedPath = decodedPath.replace(/\\/g, '/')
+  const decodedPath = pathResult.result
   
   console.log('handleKbFileSelect - original path:', path, 'decoded path:', decodedPath)
   
-  await docStore.open(decodedPath)
-  
-  // 현재 파일 정보 저장 (커리큘럼 ↔ 지식베이스 공유용)
-  if (!docStore.error && docStore.content) {
-    currentFileInfo.value = {
-      path: decodedPath, // 디코딩된 경로 사용
-      content: docStore.content,
-      title: getDocumentTitle(docStore.content) || decodedPath.split('/').pop()?.replace(/\.md$/i, '') || '',
-      source: 'knowledge-base'
+  try {
+    await docStore.open(decodedPath)
+    
+    // 현재 파일 정보 저장 (커리큘럼 ↔ 지식베이스 공유용)
+    if (!docStore.error && docStore.content) {
+      currentFileInfo.value = {
+        path: decodedPath, // 디코딩된 경로 사용
+        content: docStore.content,
+        title: getDocumentTitle(docStore.content) || decodedPath.split('/').pop()?.replace(/\.md$/i, '') || '',
+        source: 'knowledge-base'
+      }
+      
+      // localStorage에 저장
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('currentFileInfo', JSON.stringify(currentFileInfo.value))
+      }
+      
+      // 파일 선택 시 마크다운 탭으로 전환
+      kbTab.value = 'markdown'
     }
     
-    // localStorage에 저장
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('currentFileInfo', JSON.stringify(currentFileInfo.value))
+    if(docStore.error) {
+      console.error('Document load error:', docStore.error)
+      toast.push('error','로드 실패: ' + docStore.error)
+      // 문서 로딩 실패 시 FileTree 탭으로 전환
+      kbTab.value = 'tree'
     }
-    
-    // 파일 선택 시 마크다운 탭으로 전환
-    kbTab.value = 'markdown'
-  }
-  
-  if(docStore.error) {
-    toast.push('error','로드 실패: ' + docStore.error)
-    // 문서 로딩 실패 시 FileTree 탭으로 전환
+  } catch (error) {
+    console.error('Error in handleKbFileSelect:', error)
+    toast.push('error','파일 로드 중 오류가 발생했습니다: ' + (error instanceof Error ? error.message : 'Unknown error'))
     kbTab.value = 'tree'
   }
 }
@@ -1436,5 +1541,35 @@ html, body, #__nuxt {
   margin: 0;
   padding: 0;
   overflow: hidden; /* Prevent scrollbars on html/body */
+}
+
+/* 반응형 레이아웃 개선 */
+@media (max-height: 600px) {
+  .h-16 {
+    height: 3rem; /* 48px */
+  }
+  
+  .h-6 {
+    height: 1.25rem; /* 20px */
+  }
+}
+
+@media (max-height: 500px) {
+  .h-16 {
+    height: 2.5rem; /* 40px */
+  }
+  
+  .h-6 {
+    height: 1rem; /* 16px */
+  }
+}
+
+/* TaskStatusBar 고정 위치 스타일 */
+.fixed.bottom-0 {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
 }
 </style>

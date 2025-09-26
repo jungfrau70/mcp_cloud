@@ -1,7 +1,7 @@
 // Nuxt runtime import (type may be unresolved in isolated TS tooling outside Nuxt context)
 // @ts-ignore - Nuxt provides this at runtime / via nuxt.d.ts generation
 import { useRuntimeConfig } from '#app'
-import { processPathSafely } from '~/utils/path'
+import { processPathSafely, processKnowledgeBasePath } from '~/utils/path'
 
 // Types for KB API responses (aligned with backend models)
 export interface KbSaveResponse { success?: boolean; version_id?: number; version_no: number; updated_at?: string }
@@ -39,13 +39,23 @@ export function useKbApi(){
   }
 
 async function getItem(path: string): Promise<any>{
-  // 개선된 안전한 경로 처리
-  const result = processPathSafely(path, 'encode')
-  if (!result.success) {
-    console.warn('Path processing failed for getItem:', path, result.errors)
+  // 통합된 지식베이스 경로 처리 사용
+  const pathResult = processKnowledgeBasePath(path, {
+    addPrefix: true,
+    encode: true,
+    fixWindowsPaths: true
+  })
+  
+  if (!pathResult.success) {
+    console.warn('Path processing failed for getItem:', pathResult.errors)
+    // 처리 실패 시 원본 경로 사용
+    const fallbackPath = path.startsWith('mcp_knowledge_base/') ? path : `mcp_knowledge_base/${path}`
+    return request<any>(`${apiBase}/v1/knowledge-base/item?path=${fallbackPath}`, { headers: { 'X-API-Key': apiKey }}, 'getItem failed')
   }
   
-  return request<any>(`${apiBase}/v1/knowledge-base/item?path=${result.result}`, { headers: { 'X-API-Key': apiKey }}, 'getItem failed')
+  console.log('getItem - original path:', path, 'processed path:', pathResult.result)
+  
+  return request<any>(`${apiBase}/v1/knowledge-base/item?path=${pathResult.result}`, { headers: { 'X-API-Key': apiKey }}, 'getItem failed')
 }
 
   async function saveItem(path: string, content: string, message?: string, expectedVersion?: number): Promise<KbSaveResponse>{

@@ -30,22 +30,25 @@
           v-if="path && !isSlideView && isMarkdownFile"
           @click="downloadPdf"
           class="px-3 py-1 text-sm rounded bg-gray-500 text-white hover:bg-gray-600 transition-colors"
+          title="PDF 다운로드"
         >
-          PDF
+          📄
         </button>
         <button
           v-if="path && !isSlideView && isMarkdownFile"
           @click="downloadMarkdown"
           class="px-3 py-1 text-sm rounded bg-gray-500 text-white hover:bg-gray-600 transition-colors"
+          title="Markdown 다운로드"
         >
-          MD
+          📝
         </button>
         <button
           v-if="path && !isSlideView && !isMarkdownFile"
           @click="downloadFile"
           class="px-3 py-1 text-sm rounded bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+          :title="`${getFileExtension(path).toUpperCase()} 파일 다운로드`"
         >
-          {{ getFileExtension(path).toUpperCase() }} 다운로드
+          💾
         </button>
       </div>
     </div>
@@ -139,7 +142,8 @@ import {
   prepareApiPath, 
   handleKoreanFilename,
   prepareDisplayPath,
-  processPathSafely
+  processPathSafely,
+  processKnowledgeBasePath
 } from '~/utils/path'
 import { handleAnchorLink, toggleAllDetails as toggleAllDetailsUtil } from '~/utils/anchor-utils'
 
@@ -435,7 +439,11 @@ const setupCodeBlockHandlers = () => {
     // Create copy button
     const copyButton = document.createElement('button');
     copyButton.className = 'copy-button';
-    copyButton.innerHTML = 'Copy';
+    copyButton.innerHTML = '📋 복사';
+    copyButton.setAttribute('aria-label', '코드 복사');
+    copyButton.setAttribute('title', '클릭하여 코드를 클립보드에 복사');
+    copyButton.setAttribute('tabindex', '0');
+    copyButton.setAttribute('role', 'button');
 
     // Copy functionality
     copyButton.addEventListener('click', async (e) => {
@@ -448,12 +456,14 @@ const setupCodeBlockHandlers = () => {
         
         // Visual feedback
         const originalText = copyButton.innerHTML;
-        copyButton.innerHTML = 'Copied!';
+        copyButton.innerHTML = '✅ 복사됨!';
         copyButton.style.background = '#10b981';
+        copyButton.style.color = '#ffffff';
         
         setTimeout(() => {
           copyButton.innerHTML = originalText;
           copyButton.style.background = '#374151';
+          copyButton.style.color = '#f9fafb';
         }, 2000);
       } catch (err) {
         console.error('Failed to copy text: ', err);
@@ -467,13 +477,23 @@ const setupCodeBlockHandlers = () => {
         
         // Visual feedback
         const originalText = copyButton.innerHTML;
-        copyButton.innerHTML = 'Copied!';
+        copyButton.innerHTML = '✅ 복사됨!';
         copyButton.style.background = '#10b981';
+        copyButton.style.color = '#ffffff';
         
         setTimeout(() => {
           copyButton.innerHTML = originalText;
           copyButton.style.background = '#374151';
+          copyButton.style.color = '#f9fafb';
         }, 2000);
+      }
+    });
+
+    // Keyboard support
+    copyButton.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        copyButton.click();
       }
     });
 
@@ -481,49 +501,28 @@ const setupCodeBlockHandlers = () => {
   });
 };
 
-// FileTree로 네비게이션하는 함수
+// FileTree로 네비게이션하는 함수 (통합된 경로 처리 사용)
 const getDisplayPath = (filePath) => {
   if (!filePath) return 'Unknown'
   
   // 디버깅을 위한 로그 추가
   console.log('ContentView getDisplayPath input:', filePath)
   
-  // Windows 경로 구분자(\\)를 Unix 경로 구분자(/)로 변환
-  let normalizedPath = filePath.replace(/\\/g, '/')
+  // 통합된 지식베이스 경로 처리 사용 (표시용이므로 인코딩하지 않음)
+  const pathResult = processKnowledgeBasePath(filePath, {
+    addPrefix: false, // 표시용이므로 prefix 제거
+    encode: false,    // 표시용이므로 인코딩하지 않음
+    fixWindowsPaths: true
+  })
   
-  // cloud_masterepos 같은 문제를 수정 (Windows 경로 구분자로 인한 문제)
-  if (normalizedPath.includes('masterepos')) {
-    normalizedPath = normalizedPath.replace(/masterepos/g, 'master/repos')
-    console.log('ContentView getDisplayPath: fixed masterepos from', filePath, 'to', normalizedPath)
+  if (!pathResult.success) {
+    console.warn('Path processing failed for display:', pathResult.errors)
+    // 처리 실패 시 기본 정규화만 수행
+    return filePath.replace(/\\/g, '/')
   }
   
-  // 다른 유사한 패턴들도 수정
-  if (normalizedPath.includes('containerepos')) {
-    normalizedPath = normalizedPath.replace(/containerepos/g, 'container/repos')
-    console.log('ContentView getDisplayPath: fixed containerepos from', filePath, 'to', normalizedPath)
-  }
-  
-  // 이미 디코딩된 경로인지 확인 (한글이 포함되어 있으면 이미 디코딩됨)
-  if (/[가-힣]/.test(normalizedPath)) {
-    console.log('ContentView getDisplayPath: Korean detected, returning normalized path')
-    return normalizedPath
-  }
-  
-  // URL 인코딩된 문자가 있는 경우에만 디코딩 시도
-  if (/%[0-9A-Fa-f]{2}/.test(normalizedPath)) {
-    try {
-      const decoded = decodeURIComponent(normalizedPath)
-      console.log('ContentView getDisplayPath: decoded from', normalizedPath, 'to', decoded)
-      return decoded
-    } catch (error) {
-      console.warn('Failed to decode display path:', normalizedPath, error)
-      return normalizedPath
-    }
-  }
-  
-  // 인코딩된 문자가 없으면 정규화된 경로 반환
-  console.log('ContentView getDisplayPath: returning normalized path:', normalizedPath)
-  return normalizedPath
+  console.log('ContentView getDisplayPath: processed from', filePath, 'to', pathResult.result)
+  return pathResult.result
 }
 
 const navigateToFileTree = () => {
@@ -625,9 +624,21 @@ const setupLinkIntercepts = async () => {
       targetPath = resolveRelativePath(props.path || '', targetPath);
     }
 
-    // Clean the path to prevent duplication and handle Korean filenames
-    targetPath = preventPathDuplication(targetPath);
-    targetPath = prepareApiPath(targetPath);
+    // 통합된 지식베이스 경로 처리 사용
+    const pathResult = processKnowledgeBasePath(targetPath, {
+      addPrefix: true,
+      encode: true,
+      fixWindowsPaths: true
+    })
+    
+    if (!pathResult.success) {
+      console.warn('Path processing failed for link:', pathResult.errors)
+      // 처리 실패 시 기본 처리
+      targetPath = preventPathDuplication(targetPath)
+      targetPath = prepareApiPath(targetPath)
+    } else {
+      targetPath = pathResult.result
+    }
     
     // 레이아웃 안정성 보장을 위한 이벤트 발생
     window.dispatchEvent(new CustomEvent('layout:stabilize'));
@@ -1293,21 +1304,40 @@ watch(() => props.content, (c) => {
   right: 0.5rem;
   background: #374151;
   color: #f9fafb;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
   font-size: 0.75rem;
+  font-weight: 500;
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.2s ease;
-  border: none;
+  transition: all 0.2s ease;
+  border: 1px solid #4b5563;
   z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  user-select: none;
 }
 
 .prose pre:hover .copy-button {
-  opacity: 0.7;
+  opacity: 0.8;
+  transform: translateY(-1px);
 }
 
 .prose pre .copy-button:hover {
+  opacity: 1;
+  background: #4b5563;
+  border-color: #6b7280;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.prose pre .copy-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.prose pre .copy-button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
   opacity: 1;
 }
 

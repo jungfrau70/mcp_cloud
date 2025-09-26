@@ -3,7 +3,8 @@
 > 📋 **강의 일시**: 2024년 10월 2일 ["수"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Cloud Container 1일차 완료
-> 📋 **참고 코드**: https://github.com/jungfrau70/cloud-container.git
+> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_container/_setup_wsl/README.md](../_setup_wsl/README.md)
+> 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-container.git cloud_container`
 
 ---
 
@@ -36,11 +37,11 @@
 ## 🛠️ 실습 학습
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `repo/scripts/samples/`
-- **자동화 스크립트**: `repo/scripts/automation/`
-- **보안 설정**: `repo/scripts/security/`
-- **성능 튜닝**: `repo/scripts/performance/`
-- **백업 복구**: `repo/scripts/backup/`
+- **실습 샘플 코드**: `cloud_container/scripts/samples/`
+- **자동화 스크립트**: `cloud_container/scripts/automation/`
+- **보안 설정**: `cloud_container/scripts/security/`
+- **성능 튜닝**: `cloud_container/scripts/performance/`
+- **백업 복구**: `cloud_container/scripts/backup/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -79,7 +80,7 @@ gcloud container clusters get-credentials cloud-container-ha-cluster --zone=asia
 #### 🏗️ **1단계: Multi-AZ 클러스터 구축**
 ```bash
 # 자동화 스크립트 실행
-./repo/scripts/day2-practice-improved.sh
+./cloud_container/scripts/day2-practice-improved.sh
 
 # 또는 수동 실행
 gcloud container clusters create cloud-container-ha-cluster \
@@ -136,7 +137,7 @@ echo "Health Check: http://$EXTERNAL_IP/health"
 #### 🏗️ **4단계: 고급 Alerting 시스템 구축**
 ```bash
 # 자동화 스크립트 실행
-.repo/scripts/automation/02-advanced-alerting.sh setup
+.cloud_container/scripts/automation/02-advanced-alerting.sh setup
 
 # Alertmanager 설정 적용
 kubectl apply -f monitoring/prometheus/alertmanager.yml
@@ -196,7 +197,7 @@ echo "Jaeger: http://localhost:16686"
 #### 🏗️ **7단계: RBAC 설정**
 ```bash
 # 자동화 스크립트 실행
-.repo/scripts/automation/03-rbac-setup.sh setup
+.cloud_container/scripts/automation/03-rbac-setup.sh setup
 
 # RBAC 매니페스트 적용
 kubectl apply -f k8s/rbac/
@@ -263,7 +264,7 @@ echo "Secrets: kubectl get secrets"
 #### 🏗️ **11단계: Resource Management 및 QoS 설정**
 ```bash
 # 자동화 스크립트 실행
-.repo/scripts/automation/04-resource-management.sh setup
+.cloud_container/scripts/automation/04-resource-management.sh setup
 
 # QoS Pod들 적용
 kubectl apply -f k8s/performance/
@@ -338,7 +339,7 @@ echo "성능 메트릭: kubectl top pods --sort-by=cpu"
 #### 🏗️ **16단계: 데이터 백업 시스템 구축**
 ```bash
 # 자동화 스크립트 실행
-.repo/scripts/automation/05-backup-system.sh setup
+.cloud_container/scripts/automation/05-backup-system.sh setup
 
 # Velero 설치
 velero install \
@@ -553,33 +554,33 @@ flowchart TB
 
 #### **1교시: 고가용성 아키텍처**
 - **상세 가이드**: `textbook/Day2/guides/01-high-availability.md`
-- **자동화 스크립트**: `repo/scripts/day2-practice-improved.sh`
-- **샘플 코드**: `repo/samples/day2/01-multi-az/`
+- **자동화 스크립트**: `cloud_container/scripts/day2-practice-improved.sh`
+- **샘플 코드**: `cloud_container/samples/day2/01-multi-az/`
 
 #### **2교시: 고급 모니터링**
 - **상세 가이드**: `textbook/Day2/guides/02-advanced-monitoring.md`
-- **자동화 스크립트**: `repo/scripts/day2-practice-improved.sh`
-- **샘플 코드**: `repo/samples/day2/02-monitoring/`
+- **자동화 스크립트**: `cloud_container/scripts/day2-practice-improved.sh`
+- **샘플 코드**: `cloud_container/samples/day2/02-monitoring/`
 
 #### **3교시: 보안 강화**
 - **상세 가이드**: `textbook/Day2/guides/03-security-enhancement.md`
-- **자동화 스크립트**: `repo/scripts/day2-practice-improved.sh`
-- **샘플 코드**: `repo/samples/day2/03-security/`
+- **자동화 스크립트**: `cloud_container/scripts/day2-practice-improved.sh`
+- **샘플 코드**: `cloud_container/samples/day2/03-security/`
 
 #### **4교시: 성능 최적화**
 - **상세 가이드**: `textbook/Day2/guides/04-performance-optimization.md`
-- **자동화 스크립트**: `repo/scripts/day2-practice-improved.sh`
-- **샘플 코드**: `repo/samples/day2/04-performance/`
+- **자동화 스크립트**: `cloud_container/scripts/day2-practice-improved.sh`
+- **샘플 코드**: `cloud_container/samples/day2/04-performance/`
 
 #### **5교시: 재해 복구**
 - **상세 가이드**: `textbook/Day2/guides/05-disaster-recovery.md`
-- **자동화 스크립트**: `repo/scripts/day2-practice-improved.sh`
-- **샘플 코드**: `repo/samples/day2/05-backup/`
+- **자동화 스크립트**: `cloud_container/scripts/day2-practice-improved.sh`
+- **샘플 코드**: `cloud_container/samples/day2/05-backup/`
 
 ### 🛠️ **자동화 도구**
-- **통합 환경 체크**: `repo/scripts/cloud-container-helper.sh`
-- **성능 테스트**: `repo/scripts/day2-practice-improved.sh`
-- **재해 복구 테스트**: `repo/scripts/day2-practice-improved.sh`
+- **통합 환경 체크**: `cloud_container/scripts/cloud-container-helper.sh`
+- **성능 테스트**: `cloud_container/scripts/day2-practice-improved.sh`
+- **재해 복구 테스트**: `cloud_container/scripts/day2-practice-improved.sh`
 
 ### 📋 **문제 해결 가이드**
 - **일반적인 문제**: `textbook/Day2/troubleshooting/troubleshooting.md`

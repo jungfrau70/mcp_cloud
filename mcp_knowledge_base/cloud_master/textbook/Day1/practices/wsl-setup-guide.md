@@ -344,17 +344,17 @@ wsl
 
 WSL 환경 설정이 완료되면 다음 단계로 진행하세요:
 
-1. **Day 1 실습**: ["GitHub Actions CI/CD 완전 가이드"][github-actions-cicd-guide.md]
-2. **배포 확인**: ["배포 후 체크포인트 가이드"][deployment-checkpoints-guide.md]
+1. **Day 1 실습**: ["GitHub Actions CI/CD 완전 가이드"](github-actions-cicd-guide.md)
+2. **배포 확인**: ["배포 후 체크포인트 가이드"](deployment-checkpoints-guide.md)
 3. **자동화 스크립트**: ["GitHub Actions CI/CD 자동화"][../repos/automation/github-actions-cicd-automation.sh]
 
 ---
 
 <div align="center">
 
-["← 이전: GitHub Actions 기초 실습"][github-actions-basics.md] | 
-["📚 전체 커리큘럼"][../../../curriculum.md] | 
-["🏠 학습 경로로 돌아가기"][../../../index.md] | 
-["다음: GitHub Actions CI/CD 완전 가이드 →"][github-actions-cicd-guide.md]
+["← 이전: GitHub Actions 기초 실습"](github-actions-basics.md) | 
+["📚 전체 커리큘럼"](../../../curriculum.md) | 
+["🏠 학습 경로로 돌아가기"](../../../index.md) | 
+["다음: GitHub Actions CI/CD 완전 가이드 →"](github-actions-cicd-guide.md)
 
 </div>

@@ -118,8 +118,8 @@ Cloud Container 과정의 통합 스크립트들을 활용하세요:
 
 ### 4️⃣ 첫 번째 실습 시작
 1. Day 1 실습 가이드로 이동
-2. ["Kubernetes 기초"][textbook/Day1/practice/kubernetes-basics.md] 따라하기
-3. ["GKE 클러스터 생성"][textbook/Day1/container-orchestration-guide.md] 따라하기
+2. ["Kubernetes 기초"](textbook/Day1/practice/kubernetes-basics.md) 따라하기
+3. ["GKE 클러스터 생성"](textbook/Day1/container-orchestration-guide.md) 따라하기
 
 ## 📚 학습 자료
 
@@ -128,11 +128,11 @@ Cloud Container 과정의 통합 스크립트들을 활용하세요:
 - Day 2: 고가용성 및 확장성 아키텍처
 
 ### 🔧 실습 가이드
-- ["Kubernetes 기초"][textbook/Day1/practice/kubernetes-basics.md]
-- ["컨테이너 오케스트레이션 가이드"][textbook/Day1/container-orchestration-guide.md]
-- ["보안 정책 가이드"][textbook/Day1/security-policies-guide.md]
-- ["고가용성 아키텍처"][textbook/Day2/high-availability-architecture.md]
-- ["고급 모니터링"][textbook/Day2/monitoring-setup.md]
+- ["Kubernetes 기초"](textbook/Day1/practice/kubernetes-basics.md)
+- ["컨테이너 오케스트레이션 가이드"](textbook/Day1/container-orchestration-guide.md)
+- ["보안 정책 가이드"](textbook/Day1/security-policies-guide.md)
+- ["고가용성 아키텍처"](textbook/Day2/high-availability-architecture.md)
+- ["고급 모니터링"](textbook/Day2/monitoring-setup.md)
 
 ### 🛠️ 설치 가이드
 - ["kubectl 설치"][_setup_wsl/install-all-wsl.sh]
@@ -172,15 +172,15 @@ Cloud Container 과정의 통합 스크립트들을 활용하세요:
 ## 🔗 관련 과정
 
 ### 📚 전체 커리큘럼
-- ["전체 커리큘럼 보기"][curriculum.md]
-- ["학습 경로 안내"][learning-path.md]
+- ["전체 커리큘럼 보기"](curriculum.md)
+- ["학습 경로 안내"](learning-path.md)
 
 ### 🚀 이전 단계
 - Cloud Basic 과정 - 클라우드 기초
 - Cloud Master 과정 - Docker, CI/CD
 
 ### 🏠 홈으로
-- ["통합 인덱스"][index.md]
+- ["통합 인덱스"](index.md)
 
 ## 📞 문의 및 지원
 
@@ -195,8 +195,8 @@ Cloud Container 과정의 통합 스크립트들을 활용하세요:
 ## 🎉 Cloud Container 과정을 시작하세요!
 
 🚀 Day 1 실습 시작하기 |
-["📚 전체 커리큘럼 보기"][curriculum.md] | 
-["🏠 홈으로 돌아가기"][index.md]
+["📚 전체 커리큘럼 보기"](curriculum.md) | 
+["🏠 홈으로 돌아가기"](index.md)
 
 </div>
 
@@ -208,6 +208,6 @@ Cloud Container 과정의 통합 스크립트들을 활용하세요:
 
 <div align="center">
 
-["🏠 홈으로 돌아가기"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
+["🏠 홈으로 돌아가기"](index.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🔗 학습 경로"](learning-path.md)
 
 </div>

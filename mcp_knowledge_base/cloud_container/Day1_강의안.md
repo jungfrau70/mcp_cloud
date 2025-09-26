@@ -3,7 +3,8 @@
 > 📋 **강의 일시**: 2024년 10월 1일 ["화"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Cloud Master 과정 완료 ["Docker, CI/CD 기본"]
-> 📋 **참고 코드**: https://github.com/jungfrau70/cloud-container.git
+> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_container/_setup_wsl/README.md](../_setup_wsl/README.md)
+> 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-container.git cloud_container`
 
 ---
 
@@ -55,7 +56,7 @@ echo "- Packages: Container registry 푸시 권한"
 
 ### **새로운 디렉토리 구조**
 ```
-repo/scripts/
+cloud_container/scripts/
 ├── automation/          # 자동화 스크립트
 │   ├── 01-gke-cluster.sh
 │   ├── 02-github-actions-setup.sh
@@ -121,7 +122,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== GKE 클러스터 생성 시작 ==="
-./repo/scripts/day1-practice-improved.sh
+./cloud_container/scripts/day1-practice-improved.sh
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 GKE 클러스터 생성 ==="
@@ -203,7 +204,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== GitHub Actions CI/CD 설정 시작 ==="
-./repo/scripts/day1-practice-improved.sh
+./cloud_container/scripts/day1-practice-improved.sh
 
 # 또는 수동 설정 ["참고용"]
 echo "=== 수동 GitHub Actions 설정 ==="
@@ -459,7 +460,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== 외부 VM 모니터링 스택 구축 시작 ==="
-./repo/scripts/day1-practice-improved.sh
+./cloud_container/scripts/day1-practice-improved.sh
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 모니터링 스택 구축 ==="
@@ -684,7 +685,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== 로드밸런서 및 Ingress 설정 시작 ==="
-./repo/scripts/day1-practice-improved.sh
+./cloud_container/scripts/day1-practice-improved.sh
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 로드밸런서 및 Ingress 설정 ==="
@@ -824,7 +825,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== 자동 스케일링 설정 시작 ==="
-./repo/scripts/day1-practice-improved.sh
+./cloud_container/scripts/day1-practice-improved.sh
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 자동 스케일링 설정 ==="
@@ -884,7 +885,7 @@ kubectl get pods -l app=sample-app
 ```bash
 # 자동화 스크립트 실행
 echo "=== 스트레스 테스트 시작 ==="
-./repo/scripts/day1-practice-improved.sh
+./cloud_container/scripts/day1-practice-improved.sh
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 스트레스 테스트 ==="

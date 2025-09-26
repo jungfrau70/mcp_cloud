@@ -359,6 +359,6 @@ watch -n 5 'aws autoscaling describe-auto-scaling-groups --auto-scaling-group-na
 
 <div align="center">
 
-["← 이전: 로드 밸런싱 가이드"][cloud_master/textbook/Day3/guides/load-balancing-guide.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md]
+["← 이전: 로드 밸런싱 가이드"](cloud_master/textbook/Day3/guides/load-balancing-guide.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🏠 학습 경로로 돌아가기"](index.md)
 
 </div>

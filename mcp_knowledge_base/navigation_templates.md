@@ -36,15 +36,15 @@
 
 ## 🎯 특수 문서 템플릿
 
-### 메인 인덱스 [index.md]
+### 메인 인덱스 (index.md)
 ```markdown
 ```
 
-### 커리큘럼 [curriculum.md]
+### 커리큘럼 (curriculum.md)
 ```markdown
 ```
 
-### 학습 경로 [learning-path.md]
+### 학습 경로 (learning-path.md)
 ```markdown
 ```
 
@@ -94,6 +94,6 @@
 
 <div align="center">
 
-["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
+["🏠 홈"](index.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🔗 학습 경로"](learning-path.md)
 
 </div>

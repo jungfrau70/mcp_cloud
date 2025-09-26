@@ -868,7 +868,7 @@ EOF
 - ["장애 시뮬레이션 모범 사례"][https:///www.gremlin.com/chaos-engineering/]
 - ["자가 치유 시스템 설계"][https:///cloud.google.com/architecture/self-healing-applications]
 
-다음 단계: ["트러블슈팅 가이드"][cloud_basic/textbook/Day1/troubleshooting-guide.md]
+다음 단계: ["트러블슈팅 가이드"](cloud_basic/textbook/Day1/troubleshooting-guide.md)
 
 ---
 
@@ -889,6 +889,6 @@ EOF
 
 <div align="center">
 
-["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
+["🏠 홈"](index.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🔗 학습 경로"](learning-path.md)
 
 </div>

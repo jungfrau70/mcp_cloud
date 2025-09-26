@@ -22,9 +22,9 @@
 ## 🛠️ 실습 학습
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/samples/day2/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/scripts/day2-practice.sh`
-- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/cloud-scripts/`
+- **실습 코드**: `./cloud_intermediate/samples/day2/`
+- **자동화 스크립트**: `./cloud_intermediate/scripts/day2-practice.sh`
+- **클라우드 스크립트**: `./cloud_intermediate/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -287,7 +287,7 @@ gcloud run services update myapp --region us-central1 --image gcr.io/my-project/
 ### 자동 정리
 ```bash
 # Day2 실습 자동 정리
-./mcp_knowledge_base/cloud_intermediate/repo/scripts/day2-practice.sh --cleanup
+./cloud_intermediate/scripts/day2-practice.sh --cleanup
 ```
 
 ### 수동 정리
@@ -322,9 +322,9 @@ gcloud monitoring dashboards delete <dashboard-id>
 ## 🔗 관련 자료
 
 ### 📚 실습 가이드
-- ["CI/CD 파이프라인"][practice/cicd-pipeline.md]
-- ["클라우드 배포"][practice/cloud-deployment.md]
-- ["모니터링 기초"][practice/monitoring-basics.md]
+- ["CI/CD 파이프라인"](practice/cicd-pipeline.md)
+- ["클라우드 배포"](practice/cloud-deployment.md)
+- ["모니터링 기초"](practice/monitoring-basics.md)
 
 ### 🛠️ 설치 가이드
 - ["GitHub CLI 설치"][_setup_wsl/install-github-cli-wsl.sh]
@@ -334,9 +334,9 @@ gcloud monitoring dashboards delete <dashboard-id>
 ### 🏠 네비게이션
 <div align="center">
 
-["← 이전: Day 1"][../Day1/README.md] | 
-["📚 전체 커리큘럼"][../../curriculum.md] | 
-["🏠 학습 경로로 돌아가기"][../../index.md] | 
-["다음: Cloud Master 과정 →"][../cloud_master/README.md]
+["← 이전: Day 1"](../Day1/README.md) | 
+["📚 전체 커리큘럼"](../../curriculum.md) | 
+["🏠 학습 경로로 돌아가기"](../../index.md) | 
+["다음: Cloud Master 과정 →"](../cloud_master/README.md)
 
 </div>

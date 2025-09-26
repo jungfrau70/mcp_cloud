@@ -3,7 +3,8 @@
 > 📋 **강의 일시**: 2024년 9월 2일 ["월"] 9:00~17:00  
 > 📋 **강의 방식**: 오프라인 실습 중심  
 > 📋 **선수 학습**: IT 기초 지식 ["OS, 네트워크 기본 이해"]
-> 📋 **참고 코드**: https://github.com/jungfrau70/cloud-basic.git
+> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_basic/_setup_wsl/README.md](../_setup_wsl/README.md)
+> 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-basic.git cloud_basic`
 
 ---
 
@@ -69,7 +70,7 @@ echo "- Safari"
 
 ### **새로운 디렉토리 구조**
 ```
-repo/automation/day1/
+cloud_basic/automation/day1/
 ├── automation/          # 자동화 스크립트
 │   ├── 01-aws-setup.sh
 │   ├── 02-gcp-setup.sh
@@ -78,7 +79,7 @@ repo/automation/day1/
 │   ├── 05-compute-practice.sh
 │   ├── 06-storage-practice.sh
 │   └── 07-environment-check.sh
-├── samples/             # 실습 샘플 코드
+├── samples/             # 실습 코드
 │   ├── aws-samples/
 │   ├── gcp-samples/
 │   └── web-app/
@@ -134,7 +135,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== AWS 계정 생성 및 설정 시작 ==="
-./repo/automation/day1/automation/01-aws-setup.sh setup
+./cloud_basic/automation/day1/automation/01-aws-setup.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 AWS 계정 생성 및 설정 ==="
@@ -176,7 +177,7 @@ aws sts get-caller-identity
 ```bash
 # 자동화 스크립트 실행
 echo "=== GCP 계정 생성 및 설정 시작 ==="
-./repo/automation/day1/automation/02-gcp-setup.sh setup
+./cloud_basic/automation/day1/automation/02-gcp-setup.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 GCP 계정 생성 및 설정 ==="
@@ -250,7 +251,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== AWS EC2 인스턴스 생성 시작 ==="
-./repo/automation/day1/automation/03-ec2-practice.sh setup
+./cloud_basic/automation/day1/automation/03-ec2-practice.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 AWS EC2 인스턴스 생성 ==="
@@ -400,7 +401,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== AWS S3 버킷 생성 및 파일 관리 시작 ==="
-./repo/automation/day1/automation/04-s3-practice.sh setup
+./cloud_basic/automation/day1/automation/04-s3-practice.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 AWS S3 버킷 생성 및 파일 관리 ==="
@@ -510,7 +511,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== GCP Compute Engine 인스턴스 생성 시작 ==="
-./repo/automation/day1/automation/05-compute-practice.sh setup
+./cloud_basic/automation/day1/automation/05-compute-practice.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 GCP Compute Engine 인스턴스 생성 ==="
@@ -633,7 +634,7 @@ echo "브라우저에서 접속하여 확인하세요!"
 ```bash
 # 자동화 스크립트 실행
 echo "=== GCP Cloud Storage 버킷 생성 및 파일 관리 시작 ==="
-./repo/automation/day1/automation/06-storage-practice.sh setup
+./cloud_basic/automation/day1/automation/06-storage-practice.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 GCP Cloud Storage 버킷 생성 및 파일 관리 ==="
@@ -805,39 +806,39 @@ flowchart TB
 상세한 실습 내용과 단계별 가이드는 다음 문서들을 참조하세요:
 
 #### **1교시: 클라우드 기본 개념 및 계정 생성**
-- **상세 가이드**: `repo/automation/day1/docs/01-cloud-concepts.md`
-- **자동화 스크립트**: `repo/automation/day1/automation/01-aws-setup.sh`
-- **샘플 코드**: `repo/automation/day1/samples/01-account-setup/`
+- **상세 가이드**: `cloud_basic/automation/day1/docs/01-cloud-concepts.md`
+- **자동화 스크립트**: `cloud_basic/automation/day1/automation/01-aws-setup.sh`
+- **실습 코드**: `cloud_basic/automation/day1/samples/01-account-setup/`
 
 #### **2교시: AWS EC2 실습**
-- **상세 가이드**: `repo/automation/day1/docs/02-aws-ec2.md`
-- **자동화 스크립트**: `repo/automation/day1/automation/03-ec2-practice.sh`
-- **샘플 코드**: `repo/automation/day1/samples/02-aws-ec2/`
+- **상세 가이드**: `cloud_basic/automation/day1/docs/02-aws-ec2.md`
+- **자동화 스크립트**: `cloud_basic/automation/day1/automation/03-ec2-practice.sh`
+- **실습 코드**: `cloud_basic/automation/day1/samples/02-aws-ec2/`
 
 #### **3교시: AWS S3 실습**
-- **상세 가이드**: `repo/automation/day1/docs/03-aws-s3.md`
-- **자동화 스크립트**: `repo/automation/day1/automation/04-s3-practice.sh`
-- **샘플 코드**: `repo/automation/day1/samples/03-aws-s3/`
+- **상세 가이드**: `cloud_basic/automation/day1/docs/03-aws-s3.md`
+- **자동화 스크립트**: `cloud_basic/automation/day1/automation/04-s3-practice.sh`
+- **실습 코드**: `cloud_basic/automation/day1/samples/03-aws-s3/`
 
 #### **4교시: GCP Compute Engine 실습**
-- **상세 가이드**: `repo/automation/day1/docs/04-gcp-compute.md`
-- **자동화 스크립트**: `repo/automation/day1/automation/05-compute-practice.sh`
-- **샘플 코드**: `repo/automation/day1/samples/04-gcp-compute/`
+- **상세 가이드**: `cloud_basic/automation/day1/docs/04-gcp-compute.md`
+- **자동화 스크립트**: `cloud_basic/automation/day1/automation/05-compute-practice.sh`
+- **실습 코드**: `cloud_basic/automation/day1/samples/04-gcp-compute/`
 
 #### **5교시: GCP Cloud Storage 실습**
-- **상세 가이드**: `repo/automation/day1/docs/05-gcp-storage.md`
-- **자동화 스크립트**: `repo/automation/day1/automation/06-storage-practice.sh`
-- **샘플 코드**: `repo/automation/day1/samples/05-gcp-storage/`
+- **상세 가이드**: `cloud_basic/automation/day1/docs/05-gcp-storage.md`
+- **자동화 스크립트**: `cloud_basic/automation/day1/automation/06-storage-practice.sh`
+- **실습 코드**: `cloud_basic/automation/day1/samples/05-gcp-storage/`
 
 ### 🛠️ **자동화 도구**
-- **통합 환경 체크**: `repo/automation/day1/scripts/environment-check.sh`
-- **AWS 설정 도우미**: `repo/automation/day1/scripts/aws-setup-helper.sh`
-- **GCP 설정 도우미**: `repo/automation/day1/scripts/gcp-setup-helper.sh`
+- **통합 환경 체크**: `cloud_basic/automation/day1/scripts/environment-check.sh`
+- **AWS 설정 도우미**: `cloud_basic/automation/day1/scripts/aws-setup-helper.sh`
+- **GCP 설정 도우미**: `cloud_basic/automation/day1/scripts/gcp-setup-helper.sh`
 
 ### 📋 **문제 해결 가이드**
-- **일반적인 문제**: `repo/automation/day1/docs/troubleshooting.md`
-- **AWS 문제**: `repo/automation/day1/docs/aws-troubleshooting.md`
-- **GCP 문제**: `repo/automation/day1/docs/gcp-troubleshooting.md`
+- **일반적인 문제**: `cloud_basic/automation/day1/docs/troubleshooting.md`
+- **AWS 문제**: `cloud_basic/automation/day1/docs/aws-troubleshooting.md`
+- **GCP 문제**: `cloud_basic/automation/day1/docs/gcp-troubleshooting.md`
 
 ---
 

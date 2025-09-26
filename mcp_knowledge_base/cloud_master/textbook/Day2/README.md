@@ -832,18 +832,18 @@ jobs:
 ## 🛠️ 실습 학습
 
 > 📚 **상세 실습 가이드**: 각 주제별 상세한 실습은 다음 파일들을 참조하세요.
-> - ["고급 Docker 실습"][practices/docker-advanced.md]
-> - ["고급 CI/CD 실습"][practices/cicd-advanced.md]
-> - ["VM 기반 컨테이너 배포 실습"][practices/vm-container-deployment.md]
-> - ["Docker Compose 고급 실습"][practices/docker-compose-advanced.md]
-> - ["Repository Secrets 고급 활용"][guides/github-repo-settings.md] - **Day1 연계!** Secrets 고급 활용법
+> - ["고급 Docker 실습"](practices/docker-advanced.md)
+> - ["고급 CI/CD 실습"](practices/cicd-advanced.md)
+> - ["VM 기반 컨테이너 배포 실습"](practices/vm-container-deployment.md)
+> - ["Docker Compose 고급 실습"](practices/docker-compose-advanced.md)
+> - ["Repository Secrets 고급 활용"](guides/github-repo-settings.md) - **Day1 연계!** Secrets 고급 활용법
 
 > 🚀 **자동화 스크립트**: 실습을 더 쉽게 하려면 다음 자동화 스크립트를 사용하세요.
 > - ["WSL 자동 설정"][../../repos/day1/cloud-scripts/wsl-auto-setup.sh] - WSL 환경 원클릭 구축
 > - ["환경 체크 도구"][../../repos/day1/cloud-scripts/environment-check-wsl.sh] - 실습 환경 자동 검증
 > - ["통합 클러스터 정리"][../../repos/day1/cloud-scripts/cluster-cleanup-interactive.sh] - 클러스터 선택적 정리
 > - ["통합 VM 정리"][../../repos/day1/cloud-scripts/vm-cleanup-interactive.sh] - VM 인스턴스 선택적 정리
-> - ["리소스 정리 스크립트"][../../repos/day1/cloud-scripts/README.md] - 생성된 리소스 자동 정리
+> - ["리소스 정리 스크립트"](../../repos/day1/cloud-scripts/README.md) - 생성된 리소스 자동 정리
 
 <details>
 <summary>🐳 고급 Docker 실습</summary>
@@ -1928,10 +1928,10 @@ gcloud compute instances delete my-vm --zone=us-central1-a
 ## 📚 참고 자료
 
 ### 상세 가이드
-- ["종합 실습 가이드"][cloud_master/textbook/Day2/guides/comprehensive-practice-guide.md] - 전체 과정 통합 실습
-- ["모니터링 가이드"][cloud_master/textbook/Day2/guides/monitoring-guide.md] - 클라우드 모니터링 설정
-- ["비용 최적화 가이드"][cloud_master/textbook/Day2/guides/cost-optimization-guide.md] - 클라우드 비용 관리
-- ["트러블슈팅 가이드"][cloud_master/textbook/Day2/guides/troubleshooting-guide.md] - 문제 해결 및 디버깅
+- ["종합 실습 가이드"](cloud_master/textbook/Day2/guides/comprehensive-practice-guide.md) - 전체 과정 통합 실습
+- ["모니터링 가이드"](cloud_master/textbook/Day2/guides/monitoring-guide.md) - 클라우드 모니터링 설정
+- ["비용 최적화 가이드"](cloud_master/textbook/Day2/guides/cost-optimization-guide.md) - 클라우드 비용 관리
+- ["트러블슈팅 가이드"](cloud_master/textbook/Day2/guides/troubleshooting-guide.md) - 문제 해결 및 디버깅
 
 ### 공식 문서
 - ["Docker 멀티스테이지 빌드"][https://docs.docker.com/develop/dev-best-practices/dockerfile_best-practices/#use-multi-stage-builds]
@@ -2015,9 +2015,9 @@ gcloud compute instances delete my-vm --zone=us-central1-a
 
 <div align="center">
 
-["← 이전: Day 1"][cloud_master/textbook/Day1/README.md] | 
-["📚 전체 커리큘럼"][curriculum.md] | 
-["🏠 학습 경로로 돌아가기"][index.md] | 
-["다음: Day 3 →"][cloud_master/textbook/Day3/README.md]
+["← 이전: Day 1"](cloud_master/textbook/Day1/README.md) | 
+["📚 전체 커리큘럼"](curriculum.md) | 
+["🏠 학습 경로로 돌아가기"](index.md) | 
+["다음: Day 3 →"](cloud_master/textbook/Day3/README.md)
 
 </div>

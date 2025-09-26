@@ -403,6 +403,6 @@ git push origin bugfix/login-error
 
 <div align="center">
 
-["← 이전: Docker 기초 실습"][cloud_master/textbook/Day1/practices/docker-basics.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["다음: GitHub Actions 기초 실습 →"][cloud_master/textbook/Day1/practices/github-actions-basics.md] | ["← 이전: Cloud Master 메인"][README.md] | ["📋 학습 경로"][learning-path.md]
+["← 이전: Docker 기초 실습"](cloud_master/textbook/Day1/practices/docker-basics.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🏠 학습 경로로 돌아가기"](index.md) | ["다음: GitHub Actions 기초 실습 →"](cloud_master/textbook/Day1/practices/github-actions-basics.md) | ["← 이전: Cloud Master 메인"](README.md) | ["📋 학습 경로"](learning-path.md)
 
 </div>

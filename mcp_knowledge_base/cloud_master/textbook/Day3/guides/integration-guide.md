@@ -511,6 +511,6 @@ chmod +x check-status.sh
 
 <div align="center">
 
-["← 이전: Auto Scaling 가이드"][cloud_master/textbook/Day3/guides/auto-scaling-guide.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md]
+["← 이전: Auto Scaling 가이드"](cloud_master/textbook/Day3/guides/auto-scaling-guide.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🏠 학습 경로로 돌아가기"](index.md)
 
 </div>

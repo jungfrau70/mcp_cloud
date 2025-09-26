@@ -309,17 +309,17 @@ Repository secrets
 - ["GCP Compute Engine SSH 키 관리"][https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys]
 
 ### 실습 가이드
-- ["Docker Hub 설정 가이드"][docker-hub-setup-guide.md]
-- ["GitHub Actions CI/CD 가이드"][github-actions-guide.md]
-- ["VM 배포 실습 가이드"][../practices/vm-deployment.md]
+- ["Docker Hub 설정 가이드"](docker-hub-setup-guide.md)
+- ["GitHub Actions CI/CD 가이드"](github-actions-guide.md)
+- ["VM 배포 실습 가이드"](../practices/vm-deployment.md)
 
 ---
 
 <div align="center">
 
-["← 이전: GitHub Actions 기초"][github-actions-guide.md] | 
-["📚 전체 가이드 목록"][../README.md] | 
-["🏠 학습 경로로 돌아가기"][../../../index.md] | 
-["다음: VM 배포 실습 →"][../practices/vm-deployment.md]
+["← 이전: GitHub Actions 기초"](github-actions-guide.md) | 
+["📚 전체 가이드 목록"](../README.md) | 
+["🏠 학습 경로로 돌아가기"](../../../index.md) | 
+["다음: VM 배포 실습 →"](../practices/vm-deployment.md)
 
 </div>

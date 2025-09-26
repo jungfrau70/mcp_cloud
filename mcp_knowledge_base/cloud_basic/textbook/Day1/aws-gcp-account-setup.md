@@ -351,7 +351,7 @@ gcloud projects list
 
 ["🚀 다음 단계"]["#다음-단계"]
 
-- **2교시 실습**: ["IAM 사용자 및 권한 관리"][cloud_basic/textbook/Day1/iam-basics-guide.md]
+- **2교시 실습**: ["IAM 사용자 및 권한 관리"](cloud_basic/textbook/Day1/iam-basics-guide.md)
 - **실제 프로젝트 적용**: 자신의 프로젝트에 클라우드 서비스 적용
 - **고급 기능 학습**: 조직 관리, 외부 연동, 자동화
 
@@ -361,7 +361,7 @@ gcloud projects list
 
 - ["AWS 공식 문서"][https:///docs.aws.amazon.com/]
 - ["GCP 공식 문서"][https:///cloud.google.com/docs]
-- ["IAM 사용자 및 권한 관리"][cloud_basic/textbook/Day1/iam-basics-guide.md]
+- ["IAM 사용자 및 권한 관리"](cloud_basic/textbook/Day1/iam-basics-guide.md)
 
 ---
 
@@ -372,6 +372,6 @@ gcloud projects list
 
 <div align="center">
 
-["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
+["🏠 홈"](index.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🔗 학습 경로"](learning-path.md)
 
 </div>

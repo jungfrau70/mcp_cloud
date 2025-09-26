@@ -501,17 +501,17 @@ cat mcp_knowledge_base/cloud_master/textbook/Day3/README.md
 ## 📚 전문 분야별 가이드
 
 ### 🏗️ 인프라 관리
-- **문서**: [infra-guide.md][infra-guide.md]
+- **문서**: (infra-guide.md)(infra-guide.md)
 - **내용**: WSL 환경 설정, 클라우드 계정 구성, VM 배포, Kubernetes 클러스터 구축
 - **대상**: 인프라 엔지니어, DevOps 엔지니어
 
 ### 🚀 CI/CD 파이프라인
-- **문서**: [cicd-guide.md][cicd-guide.md]
+- **문서**: (cicd-guide.md)(cicd-guide.md)
 - **내용**: GitHub Actions, Docker, 자동 배포, 모니터링 시스템
 - **대상**: 개발자, CI/CD 엔지니어, SRE
 
 ### 📖 전체 실습 가이드
-- **문서**: [execuise-guide.md][execuise-guide.md] ["현재 문서"]
+- **문서**: (execuise-guide.md)(execuise-guide.md) ["현재 문서"]
 - **내용**: 전체 과정 개요, 학습 자료 구조, 실습 진행 방법
 - **대상**: 모든 학습자
 

@@ -98,25 +98,25 @@
 ### 📖 상세 실습 가이드
 
 ["📖 상세 실습 가이드"]["#상세-실습-가이드"]
-- 🔗 ["고가용성 아키텍처 실습"][high-availability-architecture.md]
-- 🔗 ["고급 로드 밸런싱 실습"][practice/advanced-load-balancing.md]
-- 🔗 ["모니터링 시스템 구축"][practice/monitoring-system-setup.md]
-- 🔗 ["종합 프로젝트 실습"][practice/comprehensive-project.md]
+- 🔗 ["고가용성 아키텍처 실습"](high-availability-architecture.md)
+- 🔗 ["고급 로드 밸런싱 실습"](practice/advanced-load-balancing.md)
+- 🔗 ["모니터링 시스템 구축"](practice/monitoring-system-setup.md)
+- 🔗 ["종합 프로젝트 실습"](practice/comprehensive-project.md)
 
 ### 📚 개념 학습 가이드
 
 ["📚 개념 학습 가이드"]["#개념-학습-가이드"]
-- 🔗 ["고가용성 아키텍처 가이드"][high-availability-architecture.md]
-- 🔗 ["모니터링 설정 가이드"][monitoring-setup.md]
+- 🔗 ["고가용성 아키텍처 가이드"](high-availability-architecture.md)
+- 🔗 ["모니터링 설정 가이드"](monitoring-setup.md)
 
 ### 🔗 관련 과정 링크
 
 ["🔗 관련 과정 링크"]["#관련-과정-링크"]
 - 🔗 Cloud Basic 과정 - AWS/GCP 기초 과정
 - 🔗 Cloud Master 과정 - Docker, CI/CD 심화 과정
-- 🔗 ["전체 커리큘럼"][../../curriculum.md] - 전체 과정 구조 및 학습 경로
-- 🔗 ["통합 인덱스"][../../index.md] - 전체 과정 인덱스
-- 🔗 ["학습 경로로 돌아가기"][../../learning-path.md] - Cloud Container 학습 경로
+- 🔗 ["전체 커리큘럼"](../../curriculum.md) - 전체 과정 구조 및 학습 경로
+- 🔗 ["통합 인덱스"](../../index.md) - 전체 과정 인덱스
+- 🔗 ["학습 경로로 돌아가기"](../../learning-path.md) - Cloud Container 학습 경로
 
 ---
 
@@ -247,13 +247,13 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["고가용성 아키텍처 실습"][high-availability-architecture.md]
+- 🔗 ["고가용성 아키텍처 실습"](high-availability-architecture.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["고가용성 아키텍처 가이드"][high-availability-architecture.md]
-- 🔗 ["모니터링 설정 가이드"][monitoring-setup.md]
+- 🔗 ["고가용성 아키텍처 가이드"](high-availability-architecture.md)
+- 🔗 ["모니터링 설정 가이드"](monitoring-setup.md)
 
 </details>
 
@@ -298,12 +298,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["고급 로드 밸런싱 실습"][practice/advanced-load-balancing.md]
+- 🔗 ["고급 로드 밸런싱 실습"](practice/advanced-load-balancing.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["고급 로드 밸런싱 가이드"][practice/advanced-load-balancing.md]
+- 🔗 ["고급 로드 밸런싱 가이드"](practice/advanced-load-balancing.md)
 
 </details>
 
@@ -350,12 +350,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["비용 최적화 전략 실습"][../Day1/cost-optimization-guide.md]
+- 🔗 ["비용 최적화 전략 실습"](../Day1/cost-optimization-guide.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["비용 최적화 전략 가이드"][../Day1/cost-optimization-guide.md]
+- 🔗 ["비용 최적화 전략 가이드"](../Day1/cost-optimization-guide.md)
 
 </details>
 
@@ -399,12 +399,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["자동 복구 및 운영 자동화 실습"][../Day1/auto-recovery-guide.md]
+- 🔗 ["자동 복구 및 운영 자동화 실습"](../Day1/auto-recovery-guide.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["자동 복구 및 운영 자동화 가이드"][../Day1/auto-recovery-guide.md]
+- 🔗 ["자동 복구 및 운영 자동화 가이드"](../Day1/auto-recovery-guide.md)
 
 </details>
 
@@ -451,12 +451,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["비용 최적화 전략 실습"][../Day1/cost-optimization-guide.md]
+- 🔗 ["비용 최적화 전략 실습"](../Day1/cost-optimization-guide.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["비용 최적화 전략 가이드"][../Day1/cost-optimization-guide.md]
+- 🔗 ["비용 최적화 전략 가이드"](../Day1/cost-optimization-guide.md)
 
 </details>
 
@@ -500,12 +500,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["자동 복구 및 운영 자동화 실습"][../Day1/auto-recovery-guide.md]
+- 🔗 ["자동 복구 및 운영 자동화 실습"](../Day1/auto-recovery-guide.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["자동 복구 및 운영 자동화 가이드"][../Day1/auto-recovery-guide.md]
+- 🔗 ["자동 복구 및 운영 자동화 가이드"](../Day1/auto-recovery-guide.md)
 
 </details>
 
@@ -548,12 +548,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["모니터링 시스템 구축"][practice/monitoring-system-setup.md]
+- 🔗 ["모니터링 시스템 구축"](practice/monitoring-system-setup.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["모니터링 시스템 가이드"][monitoring-setup.md]
+- 🔗 ["모니터링 시스템 가이드"](monitoring-setup.md)
 
 </details>
 
@@ -595,12 +595,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["비용 최적화 전략 실습"][../Day1/cost-optimization-guide.md]
+- 🔗 ["비용 최적화 전략 실습"](../Day1/cost-optimization-guide.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["비용 최적화 전략 가이드"][../Day1/cost-optimization-guide.md]
+- 🔗 ["비용 최적화 전략 가이드"](../Day1/cost-optimization-guide.md)
 
 </details>
 
@@ -634,12 +634,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["자동 복구 및 운영 자동화 실습"][../Day1/auto-recovery-guide.md]
+- 🔗 ["자동 복구 및 운영 자동화 실습"](../Day1/auto-recovery-guide.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["자동 복구 및 운영 자동화 가이드"][../Day1/auto-recovery-guide.md]
+- 🔗 ["자동 복구 및 운영 자동화 가이드"](../Day1/auto-recovery-guide.md)
 
 </details>
 
@@ -673,12 +673,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["모니터링 시스템 구축"][practice/monitoring-system-setup.md]
+- 🔗 ["모니터링 시스템 구축"](practice/monitoring-system-setup.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["모니터링 시스템 가이드"][practice/monitoring-system-setup.md]
+- 🔗 ["모니터링 시스템 가이드"](practice/monitoring-system-setup.md)
 
 </details>
 
@@ -712,12 +712,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["고가용성 아키텍처 실습"][high-availability-architecture.md]
+- 🔗 ["고가용성 아키텍처 실습"](high-availability-architecture.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["고가용성 아키텍처 가이드"][high-availability-architecture.md]
+- 🔗 ["고가용성 아키텍처 가이드"](high-availability-architecture.md)
 
 </details>
 
@@ -759,12 +759,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["비용 최적화 전략 실습"][../Day1/cost-optimization-guide.md]
+- 🔗 ["비용 최적화 전략 실습"](../Day1/cost-optimization-guide.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["비용 최적화 전략 가이드"][../Day1/cost-optimization-guide.md]
+- 🔗 ["비용 최적화 전략 가이드"](../Day1/cost-optimization-guide.md)
 
 </details>
 
@@ -798,12 +798,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["자동 복구 및 운영 자동화 실습"][../Day1/auto-recovery-guide.md]
+- 🔗 ["자동 복구 및 운영 자동화 실습"](../Day1/auto-recovery-guide.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["자동 복구 및 운영 자동화 가이드"][../Day1/auto-recovery-guide.md]
+- 🔗 ["자동 복구 및 운영 자동화 가이드"](../Day1/auto-recovery-guide.md)
 
 </details>
 
@@ -837,12 +837,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["모니터링 시스템 구축"][practice/monitoring-system-setup.md]
+- 🔗 ["모니터링 시스템 구축"](practice/monitoring-system-setup.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["모니터링 시스템 가이드"][practice/monitoring-system-setup.md]
+- 🔗 ["모니터링 시스템 가이드"](practice/monitoring-system-setup.md)
 
 </details>
 
@@ -876,12 +876,12 @@ sudo apt install curl wget netcat
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["고가용성 아키텍처 실습"][high-availability-architecture.md]
+- 🔗 ["고가용성 아키텍처 실습"](high-availability-architecture.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["고가용성 아키텍처 가이드"][high-availability-architecture.md]
+- 🔗 ["고가용성 아키텍처 가이드"](high-availability-architecture.md)
 
 </details>
 
@@ -927,12 +927,12 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 ### 📖 실습 파일
 
 ["📖 실습 파일"]["#실습-파일"]
-- 🔗 ["종합 프로젝트 실습"][practice/comprehensive-project.md]
+- 🔗 ["종합 프로젝트 실습"](practice/comprehensive-project.md)
 
 ### 📚 개념 학습
 
 ["📚 개념 학습"]["#개념-학습"]
-- 🔗 ["종합 프로젝트 가이드"][practice/comprehensive-project.md]
+- 🔗 ["종합 프로젝트 가이드"](practice/comprehensive-project.md)
 
 </details>
 
@@ -946,12 +946,12 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 ### 고가용성 관련 문제
 
 ["고가용성 관련 문제"]["#고가용성-관련-문제"]
-- 🔗 ["종합 트러블슈팅 가이드"][troubleshooting/multi-az-issues.md]
+- 🔗 ["종합 트러블슈팅 가이드"](troubleshooting/multi-az-issues.md)
 
 ### 모니터링 관련 문제
 
 ["모니터링 관련 문제"]["#모니터링-관련-문제"]
-- 🔗 ["모니터링 트러블슈팅"][troubleshooting/multi-az-issues.md]
+- 🔗 ["모니터링 트러블슈팅"](troubleshooting/multi-az-issues.md)
 
 </details>
 
@@ -1004,12 +1004,12 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 
 ["🚀 시작하기"]["#시작하기"]
 
-1일차 실습이 완료되었다면 ["고가용성 아키텍처 실습"][high-availability-architecture.md]부터 시작하세요.
+1일차 실습이 완료되었다면 ["고가용성 아키텍처 실습"](high-availability-architecture.md)부터 시작하세요.
 
 ### 문제가 있나요?
 
 ["문제가 있나요?"]["#문제가-있나요"]
-실습 중 문제가 발생하면 ["트러블슈팅 가이드"][cloud_basic/textbook/Day1/troubleshooting-guide.md]를 참고하세요.
+실습 중 문제가 발생하면 ["트러블슈팅 가이드"](cloud_basic/textbook/Day1/troubleshooting-guide.md)를 참고하세요.
 
 ---
 
@@ -1019,9 +1019,9 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 
 ["🎉 Day 2 실습을 시작하세요!"]["#day-2-실습을-시작하세요"]
 
-["🚀 실습 시작하기"][../Day1/practice/container-basics.md] | 
+["🚀 실습 시작하기"](../Day1/practice/container-basics.md) | 
 📚 Cloud Container 과정 전체 |
-["🏠 홈으로 돌아가기"][../../README.md]
+["🏠 홈으로 돌아가기"](../../README.md)
 
 </div>
 
@@ -1029,6 +1029,6 @@ Internet → CloudFront → ALB → Auto Scaling Group → ECS Fargate
 
 <div align="center">
 
-["🏠 홈"][../../README.md] | ["📚 전체 커리큘럼"][../../curriculum.md] | ["🔗 학습 경로"][../../learning-path.md]
+["🏠 홈"](../../README.md) | ["📚 전체 커리큘럼"](../../curriculum.md) | ["🔗 학습 경로"](../../learning-path.md)
 
 </div>

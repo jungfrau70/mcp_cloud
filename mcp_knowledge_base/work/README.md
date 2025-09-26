@@ -169,7 +169,7 @@ frontend 프로젝트에서 프로젝트 루트 디렉토리에 있는 .slides_s
 **작업 문서**
 
 ## 🔗 관련 과정
-Cloud Basic 1일차 | ["Cloud Master 1일차"][cloud_master/textbook/Day1/README.md] | ["Cloud Container 1일차"][cloud_container/textbook/Day1/README.md]
+Cloud Basic 1일차 | ["Cloud Master 1일차"](cloud_master/textbook/Day1/README.md) | ["Cloud Container 1일차"](cloud_container/textbook/Day1/README.md)
 
 </div>
 
@@ -177,7 +177,7 @@ Cloud Basic 1일차 | ["Cloud Master 1일차"][cloud_master/textbook/Day1/README
 
 <div align="center">
 
-["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
+["🏠 홈"](index.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🔗 학습 경로"](learning-path.md)
 
 </div>
 

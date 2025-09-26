@@ -21,9 +21,9 @@
 ## 🛠️ 실습 학습
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/samples/day1/docker-advanced/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/scripts/docker-advanced-practice.sh`
-- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/cloud-scripts/`
+- **실습 코드**: `./cloud_intermediate/samples/day1/docker-advanced/`
+- **자동화 스크립트**: `./cloud_intermediate/scripts/docker-advanced-practice.sh`
+- **클라우드 스크립트**: `./cloud_intermediate/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -347,7 +347,7 @@ docker-compose down -v  # 볼륨까지 삭제
 ### 자동 정리
 ```bash
 # Docker 고급 실습 자동 정리
-./mcp_knowledge_base/cloud_intermediate/repo/scripts/docker-advanced-practice.sh --cleanup
+./cloud_intermediate/scripts/docker-advanced-practice.sh --cleanup
 ```
 
 ### 수동 정리
@@ -374,8 +374,8 @@ docker system prune -a
 ## 🔗 관련 자료
 
 ### 📚 실습 가이드
-- ["Kubernetes 기초"][kubernetes-basics.md]
-- ["클라우드 컨테이너 서비스"][cloud-container-services.md]
+- ["Kubernetes 기초"](kubernetes-basics.md)
+- ["클라우드 컨테이너 서비스"](cloud-container-services.md)
 
 ### 🛠️ 설치 가이드
 - ["Docker Desktop 설치"][_setup_wsl/install-docker-wsl.sh]
@@ -384,9 +384,9 @@ docker system prune -a
 ### 🏠 네비게이션
 <div align="center">
 
-["← 이전: Cloud Basic 과정"][../../cloud_basic/README.md] | 
-["📚 전체 커리큘럼"][../../../curriculum.md] | 
-["🏠 학습 경로로 돌아가기"][../../../index.md] | 
-["다음: Kubernetes 기초 →"][kubernetes-basics.md]
+["← 이전: Cloud Basic 과정"](../../cloud_basic/README.md) | 
+["📚 전체 커리큘럼"](../../../curriculum.md) | 
+["🏠 학습 경로로 돌아가기"](../../../index.md) | 
+["다음: Kubernetes 기초 →"](kubernetes-basics.md)
 
 </div>

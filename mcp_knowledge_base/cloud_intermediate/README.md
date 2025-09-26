@@ -128,8 +128,8 @@ Cloud Intermediate 과정의 통합 스크립트들을 활용하세요:
 
 ### 4️⃣ 첫 번째 실습 시작
 1. Day 1 실습 가이드로 이동
-2. ["Docker 고급 활용"][textbook/Day1/practice/docker-advanced.md] 따라하기
-3. ["Kubernetes 기초"][textbook/Day1/practice/kubernetes-basics.md] 따라하기
+2. ["Docker 고급 활용"](textbook/Day1/practice/docker-advanced.md) 따라하기
+3. ["Kubernetes 기초"](textbook/Day1/practice/kubernetes-basics.md) 따라하기
 
 ## 📚 학습 자료
 
@@ -138,12 +138,12 @@ Cloud Intermediate 과정의 통합 스크립트들을 활용하세요:
 - Day 2: CI/CD 및 클라우드 배포
 
 ### 🔧 실습 가이드
-- ["Docker 고급 활용"][textbook/Day1/practice/docker-advanced.md]
-- ["Kubernetes 기초"][textbook/Day1/practice/kubernetes-basics.md]
-- ["클라우드 컨테이너 서비스"][textbook/Day1/practice/cloud-container-services.md]
-- ["CI/CD 파이프라인"][textbook/Day2/practice/cicd-pipeline.md]
-- ["클라우드 배포"][textbook/Day2/practice/cloud-deployment.md]
-- ["모니터링 기초"][textbook/Day2/practice/monitoring-basics.md] ["Prometheus + Grafana 포함"]
+- ["Docker 고급 활용"](textbook/Day1/practice/docker-advanced.md)
+- ["Kubernetes 기초"](textbook/Day1/practice/kubernetes-basics.md)
+- ["클라우드 컨테이너 서비스"](textbook/Day1/practice/cloud-container-services.md)
+- ["CI/CD 파이프라인"](textbook/Day2/practice/cicd-pipeline.md)
+- ["클라우드 배포"](textbook/Day2/practice/cloud-deployment.md)
+- ["모니터링 기초"](textbook/Day2/practice/monitoring-basics.md) ["Prometheus + Grafana 포함"]
 
 ### 🛠️ 설치 가이드
 - ["Docker Desktop 설치"][_setup_wsl/install-docker-wsl.sh]
@@ -191,8 +191,8 @@ Cloud Intermediate 과정의 통합 스크립트들을 활용하세요:
 ## 🔗 관련 과정
 
 ### 📚 전체 커리큘럼
-- ["전체 커리큘럼 보기"][curriculum.md]
-- ["학습 경로 안내"][learning-path.md]
+- ["전체 커리큘럼 보기"](curriculum.md)
+- ["학습 경로 안내"](learning-path.md)
 
 ### 🚀 이전 단계
 - Cloud Basic 과정 - 클라우드 기초
@@ -202,7 +202,7 @@ Cloud Intermediate 과정의 통합 스크립트들을 활용하세요:
 - Cloud Container 과정 - 고급 컨테이너 오케스트레이션
 
 ### 🏠 홈으로
-- ["통합 인덱스"][index.md]
+- ["통합 인덱스"](index.md)
 
 ## 📞 문의 및 지원
 
@@ -219,9 +219,9 @@ Cloud Intermediate 과정의 통합 스크립트들을 활용하세요:
 
 <div align="center">
 
-["🚀 Day 1 실습 시작하기"][textbook/Day1/README.md] | 
-["📚 전체 커리큘럼 보기"][curriculum.md] | 
-["🏠 홈으로 돌아가기"][index.md]
+["🚀 Day 1 실습 시작하기"](textbook/Day1/README.md) | 
+["📚 전체 커리큘럼 보기"](curriculum.md) | 
+["🏠 홈으로 돌아가기"](index.md)
 
 </div>
 
@@ -231,6 +231,6 @@ Cloud Intermediate 과정의 통합 스크립트들을 활용하세요:
 
 <div align="center">
 
-["🏠 홈으로 돌아가기"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
+["🏠 홈으로 돌아가기"](index.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🔗 학습 경로"](learning-path.md)
 
 </div>

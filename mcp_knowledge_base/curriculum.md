@@ -15,13 +15,13 @@
 - **기간**: 2일
 - **목표**: 컨테이너 및 Kubernetes 기초, CI/CD 파이프라인
 - **내용**: Docker 고급 활용, Kubernetes 기초, 클라우드 컨테이너 서비스, CI/CD 자동화
-- **전문 분야**: ["컨테이너 기술"][cloud_intermediate/textbook/Day1/practice/docker-advanced.md], ["Kubernetes 기초"][cloud_intermediate/textbook/Day1/practice/kubernetes-basics.md]
+- **전문 분야**: ["컨테이너 기술"](cloud_intermediate/textbook/Day1/practice/docker-advanced.md), ["Kubernetes 기초"](cloud_intermediate/textbook/Day1/practice/kubernetes-basics.md)
 
 ### 3. Cloud Master - 클라우드 마스터
 - **기간**: 3일
 - **목표**: 고급 CI/CD 및 VM 기반 컨테이너 배포
 - **내용**: Docker, Kubernetes, GitHub Actions, 고가용성
-- **전문 분야**: ["인프라 관리"][cloud_master/infra-guide.md], ["CI/CD 파이프라인"][cloud_master/cicd-guide.md]
+- **전문 분야**: ["인프라 관리"](cloud_master/infra-guide.md), ["CI/CD 파이프라인"](cloud_master/cicd-guide.md)
 
 ### 4. Cloud Container - 클라우드 컨테이너
 - **기간**: 2일
@@ -30,12 +30,12 @@
 
 ## 🔗 관련 링크
 
-- ["Cloud Basic 학습 경로"][cloud_basic/learning-path.md]
-- ["Cloud Intermediate 학습 경로"][cloud_intermediate/learning-path.md]
-- ["Cloud Master 학습 경로"][cloud_master/learning-path.md]
-- ["Cloud Container 학습 경로"][cloud_container/learning-path.md]
-- ["통합 학습 시나리오"][integrated_learning_scenario.md]
-- ["통합 인덱스"][index.md]
+- ["Cloud Basic 학습 경로"](cloud_basic/learning-path.md)
+- ["Cloud Intermediate 학습 경로"](cloud_intermediate/learning-path.md)
+- ["Cloud Master 학습 경로"](cloud_master/learning-path.md)
+- ["Cloud Container 학습 경로"](cloud_container/learning-path.md)
+- ["통합 학습 시나리오"](integrated_learning_scenario.md)
+- ["통합 인덱스"](index.md)
 
 ## 📞 문의
 
@@ -58,7 +58,7 @@
 **전체 커리큘럼**
 
 ## 🔗 관련 과정
-["Cloud Basic 1일차"][README.md] | ["Cloud Master 1일차"][README.md] | ["Cloud Container 1일차"][README.md]
+["Cloud Basic 1일차"](README.md) | ["Cloud Master 1일차"](README.md) | ["Cloud Container 1일차"](README.md)
 
 </div>
 
@@ -66,6 +66,6 @@
 
 <div align="center">
 
-["🏠 홈"][index.md] | 📚 전체 커리큘럼 | ["🔗 학습 경로"][learning-path.md]
+["🏠 홈"](index.md) | 📚 전체 커리큘럼 | ["🔗 학습 경로"](learning-path.md)
 
 </div>

@@ -772,6 +772,6 @@ GitHub Actions는 현대적인 소프트웨어 개발에서 필수적인 도구�
 
 <div align="center">
 
-["← 이전: Cloud Master 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
+["← 이전: Cloud Master 메인"](README.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🏠 학습 경로로 돌아가기"](index.md) | ["📋 학습 경로"](learning-path.md)
 
 </div>

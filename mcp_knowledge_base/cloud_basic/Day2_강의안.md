@@ -3,7 +3,8 @@
 > 📋 **강의 일시**: 2024년 9월 3일 ["화"] 9:00~17:00  
 > 📋 **강의 방식**: 오프라인 실습 중심  
 > 📋 **선수 학습**: Cloud Basic 1일차 완료
-> 📋 **참고 코드**: https://github.com/jungfrau70/cloud-basic.git
+> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_basic/_setup_wsl/README.md](../_setup_wsl/README.md)
+> 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-basic.git cloud_basic`
 
 ---
 
@@ -64,7 +65,7 @@ gcloud compute instances list --filter="name=cloud-basic-instance" --format="val
 
 ### **새로운 디렉토리 구조**
 ```
-repo/automation/day2/
+cloud_basic/automation/day2/
 ├── automation/          # 자동화 스크립트
 │   ├── 01-service-comparison.sh
 │   ├── 02-cost-optimization.sh
@@ -72,7 +73,7 @@ repo/automation/day2/
 │   ├── 04-web-app-deployment.sh
 │   ├── 05-monitoring-setup.sh
 │   └── 06-cleanup.sh
-├── samples/             # 실습 샘플 코드
+├── samples/             # 실습 코드
 │   ├── comparison-templates/
 │   ├── web-app/
 │   └── monitoring-configs/
@@ -100,7 +101,7 @@ repo/automation/day2/
 ```bash
 # 자동화 스크립트 실행
 echo "=== 컴퓨팅 서비스 비교 시작 ==="
-./repo/automation/day2/automation/01-service-comparison.sh setup
+./cloud_basic/automation/day2/automation/01-service-comparison.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 컴퓨팅 서비스 비교 ==="
@@ -184,7 +185,7 @@ gcloud sql instances create cloud-basic-mysql \
 ```bash
 # 자동화 스크립트 실행
 echo "=== 비용 분석 및 최적화 시작 ==="
-./repo/automation/day2/automation/02-cost-optimization.sh setup
+./cloud_basic/automation/day2/automation/02-cost-optimization.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 비용 분석 및 최적화 ==="
@@ -252,7 +253,7 @@ gcloud billing budgets create \
 ```bash
 # 자동화 스크립트 실행
 echo "=== 보안 설정 강화 시작 ==="
-./repo/automation/day2/automation/03-security-basics.sh setup
+./cloud_basic/automation/day2/automation/03-security-basics.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 보안 설정 강화 ==="
@@ -312,7 +313,7 @@ gcloud alpha monitoring policies create \
 ```bash
 # 자동화 스크립트 실행
 echo "=== 웹 애플리케이션 배포 시작 ==="
-./repo/automation/day2/automation/04-web-app-deployment.sh setup
+./cloud_basic/automation/day2/automation/04-web-app-deployment.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 웹 애플리케이션 배포 ==="
@@ -430,7 +431,7 @@ EOF
 ```bash
 # 자동화 스크립트 실행
 echo "=== 리소스 정리 및 비용 최적화 시작 ==="
-./repo/automation/day2/automation/06-cleanup.sh setup
+./cloud_basic/automation/day2/automation/06-cleanup.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 리소스 정리 및 비용 최적화 ==="
@@ -583,39 +584,39 @@ flowchart TB
 상세한 실습 내용과 단계별 가이드는 다음 문서들을 참조하세요:
 
 #### **1교시: 서비스 비교 분석**
-- **상세 가이드**: `repo/automation/day2/docs/01-service-comparison.md`
-- **자동화 스크립트**: `repo/automation/day2/automation/01-service-comparison.sh`
-- **샘플 코드**: `repo/automation/day2/samples/01-service-comparison/`
+- **상세 가이드**: `cloud_basic/automation/day2/docs/01-service-comparison.md`
+- **자동화 스크립트**: `cloud_basic/automation/day2/automation/01-service-comparison.sh`
+- **실습 코드**: `cloud_basic/automation/day2/samples/01-service-comparison/`
 
 #### **2교시: 비용 최적화 실습**
-- **상세 가이드**: `repo/automation/day2/docs/02-cost-optimization.md`
-- **자동화 스크립트**: `repo/automation/day2/automation/02-cost-optimization.sh`
-- **샘플 코드**: `repo/automation/day2/samples/02-cost-optimization/`
+- **상세 가이드**: `cloud_basic/automation/day2/docs/02-cost-optimization.md`
+- **자동화 스크립트**: `cloud_basic/automation/day2/automation/02-cost-optimization.sh`
+- **실습 코드**: `cloud_basic/automation/day2/samples/02-cost-optimization/`
 
 #### **3교시: 보안 및 모니터링 기초**
-- **상세 가이드**: `repo/automation/day2/docs/03-security-basics.md`
-- **자동화 스크립트**: `repo/automation/day2/automation/03-security-basics.sh`
-- **샘플 코드**: `repo/automation/day2/samples/03-security-basics/`
+- **상세 가이드**: `cloud_basic/automation/day2/docs/03-security-basics.md`
+- **자동화 스크립트**: `cloud_basic/automation/day2/automation/03-security-basics.sh`
+- **실습 코드**: `cloud_basic/automation/day2/samples/03-security-basics/`
 
 #### **4교시: 종합 프로젝트**
-- **상세 가이드**: `repo/automation/day2/docs/04-web-app-deployment.md`
-- **자동화 스크립트**: `repo/automation/day2/automation/04-web-app-deployment.sh`
-- **샘플 코드**: `repo/automation/day2/samples/04-web-app-deployment/`
+- **상세 가이드**: `cloud_basic/automation/day2/docs/04-web-app-deployment.md`
+- **자동화 스크립트**: `cloud_basic/automation/day2/automation/04-web-app-deployment.sh`
+- **실습 코드**: `cloud_basic/automation/day2/samples/04-web-app-deployment/`
 
 #### **5교시: 정리 및 다음 단계**
-- **상세 가이드**: `repo/automation/day2/docs/05-cleanup-next-steps.md`
-- **자동화 스크립트**: `repo/automation/day2/automation/06-cleanup.sh`
-- **샘플 코드**: `repo/automation/day2/samples/05-cleanup/`
+- **상세 가이드**: `cloud_basic/automation/day2/docs/05-cleanup-next-steps.md`
+- **자동화 스크립트**: `cloud_basic/automation/day2/automation/06-cleanup.sh`
+- **실습 코드**: `cloud_basic/automation/day2/samples/05-cleanup/`
 
 ### 🛠️ **자동화 도구**
-- **비용 계산기**: `repo/automation/day2/scripts/cost-calculator.sh`
-- **서비스 비교 도구**: `repo/automation/day2/scripts/service-comparison.sh`
-- **리소스 정리 도구**: `repo/automation/day2/scripts/resource-cleanup.sh`
+- **비용 계산기**: `cloud_basic/automation/day2/scripts/cost-calculator.sh`
+- **서비스 비교 도구**: `cloud_basic/automation/day2/scripts/service-comparison.sh`
+- **리소스 정리 도구**: `cloud_basic/automation/day2/scripts/resource-cleanup.sh`
 
 ### 📋 **문제 해결 가이드**
-- **일반적인 문제**: `repo/automation/day2/docs/troubleshooting.md`
-- **비용 관련 문제**: `repo/automation/day2/docs/cost-troubleshooting.md`
-- **보안 관련 문제**: `repo/automation/day2/docs/security-troubleshooting.md`
+- **일반적인 문제**: `cloud_basic/automation/day2/docs/troubleshooting.md`
+- **비용 관련 문제**: `cloud_basic/automation/day2/docs/cost-troubleshooting.md`
+- **보안 관련 문제**: `cloud_basic/automation/day2/docs/security-troubleshooting.md`
 
 ---
 

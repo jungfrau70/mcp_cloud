@@ -1,6 +1,6 @@
 # 클라우드 실무력 강화! AWS & GCP 활용법
 
-> 📋 **전체 커리큘럼**: [curriculum.md][curriculum.md] | ["통합 인덱스"][index.md]에서 전체 과정 구조를 확인하세요.
+> 📋 **전체 커리큘럼**: (curriculum.md)(curriculum.md) | ["통합 인덱스"](index.md)에서 전체 과정 구조를 확인하세요.
 
 ## 📚 과정 개요
 
@@ -95,6 +95,6 @@ Cloud Basic ["2일"] → Cloud Master ["3일"] → Cloud Container ["2일"]
 
 <div align="center">
 
-["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
+["🏠 홈"](index.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🔗 학습 경로"](learning-path.md)
 
 </div>

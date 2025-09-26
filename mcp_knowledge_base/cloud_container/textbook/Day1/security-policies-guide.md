@@ -1005,9 +1005,9 @@ kubectl auth can-i delete pods --as=system:serviceaccount:container-demo:contain
 ### 추가 학습 자료
 
 ["추가 학습 자료"]["#추가-학습-자료"]
-- ["Kubernetes 고급 가이드"][cloud_container/textbook/Day1/kubernetes-advanced-guide.md]
-- ["자동 복구 가이드"][cloud_container/textbook/Day1/auto-recovery-guide.md]
-- ["종합 실습 가이드"][cloud_container/textbook/Day1/comprehensive-practice-guide.md]
+- ["Kubernetes 고급 가이드"](cloud_container/textbook/Day1/kubernetes-advanced-guide.md)
+- ["자동 복구 가이드"](cloud_container/textbook/Day1/auto-recovery-guide.md)
+- ["종합 실습 가이드"](cloud_container/textbook/Day1/comprehensive-practice-guide.md)
 
 ---
 
@@ -1029,6 +1029,6 @@ kubectl auth can-i delete pods --as=system:serviceaccount:container-demo:contain
 
 <div align="center">
 
-["← 이전: Cloud Container 1일차 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md]
+["← 이전: Cloud Container 1일차 메인"](README.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🏠 학습 경로로 돌아가기"](index.md) | ["📋 학습 경로"](learning-path.md)
 
 </div>

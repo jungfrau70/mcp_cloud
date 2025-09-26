@@ -49,9 +49,9 @@
 ## 📚 기존 문서와의 연계
 
 ### 관련 실습 가이드
-- ["인프라 가이드"][infra-guide.md] - 인프라 환경 설정 및 관리
-- ["실습 가이드"][execuise-guide.md] - 전체 과정 실습 가이드
-- ["GitHub Actions 기초 실습"][../textbook/Day1/practices/github-actions-basics.md] - 기본 워크플로우 생성
+- ["인프라 가이드"](infra-guide.md) - 인프라 환경 설정 및 관리
+- ["실습 가이드"](execuise-guide.md) - 전체 과정 실습 가이드
+- ["GitHub Actions 기초 실습"](../textbook/Day1/practices/github-actions-basics.md) - 기본 워크플로우 생성
 
 ### 자동화 스크립트
 - ["통합 자동화 스크립트"][../repos/automation/integrated-practice-automation.sh] - 전체 과정 자동화
@@ -2107,9 +2107,9 @@ docker logs [container_name]
 
 <div align="center">
 
-["← 이전: 인프라 가이드"][infra-guide.md] | 
-["📚 전체 커리큘럼"][../curriculum.md] | 
-["🏠 학습 경로로 돌아가기"][../index.md] | 
-["다음: 실습 가이드 →"][execuise-guide.md]
+["← 이전: 인프라 가이드"](infra-guide.md) | 
+["📚 전체 커리큘럼"](../curriculum.md) | 
+["🏠 학습 경로로 돌아가기"](../index.md) | 
+["다음: 실습 가이드 →"](execuise-guide.md)
 
 </div>

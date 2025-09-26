@@ -15,12 +15,12 @@
 - ["Git 설정"][_setup_wsl/install-all-wsl.sh]
 
 ### 2단계: 학습 시작
-- [Day 1: Docker & Git/GitHub & GitHub Actions][textbook/Day1/README.md]
-- ["Day 2: 고급 CI/CD & VM 기반 컨테이너 배포"][textbook/Day2/README.md]
-- ["Day 3: 로드밸런싱 & 모니터링 & 비용 최적화"][textbook/Day3/README.md]
+- [Day 1: Docker & Git/GitHub & GitHub Actions](textbook/Day1/README.md)
+- ["Day 2: 고급 CI/CD & VM 기반 컨테이너 배포"](textbook/Day2/README.md)
+- ["Day 3: 로드밸런싱 & 모니터링 & 비용 최적화"](textbook/Day3/README.md)
 
 ### 3단계: 체계적 학습
-- ["학습 경로"][learning-path.md] - 단계별 학습 가이드
+- ["학습 경로"](learning-path.md) - 단계별 학습 가이드
 - ["과정명"]["과정명.md"] - 간단한 과정 요약
 
 ## 🎯 핵심 학습 목표
@@ -61,29 +61,29 @@
 
 ### 📖 이론 학습
 - ["과정상세.md"]["과정상세.md"] - 전체 과정 상세 정보
-- ["학습경로.md"][learning-path.md] - 체계적인 학습 순서
+- ["학습경로.md"](learning-path.md) - 체계적인 학습 순서
 - ["과정명.md"]["과정명.md"] - 간단한 과정 요약
 
 ### 🛠️ 실습 가이드
-- ["Day 1 실습"][textbook/Day1/README.md] - Docker & Git/GitHub & GitHub Actions
-- ["Day 2 실습"][textbook/Day2/README.md] - 고급 CI/CD & VM 기반 컨테이너 배포
-- ["Day 3 실습"][textbook/Day3/README.md] - 로드밸런싱 & 모니터링 & 비용 최적화
+- ["Day 1 실습"](textbook/Day1/README.md) - Docker & Git/GitHub & GitHub Actions
+- ["Day 2 실습"](textbook/Day2/README.md) - 고급 CI/CD & VM 기반 컨테이너 배포
+- ["Day 3 실습"](textbook/Day3/README.md) - 로드밸런싱 & 모니터링 & 비용 최적화
 
 ### 🔧 환경 설정 가이드
 - ["WSL 자동 설정"][repos/day1/cloud-scripts/wsl-auto-setup.sh] - WSL 환경 원클릭 구축
-- ["WSL 추가 생성 가이드"][repos/day1/cloud-scripts/wsl-setup-guide.md] - 상세한 WSL 환경 구축 가이드
+- ["WSL 추가 생성 가이드"](repos/day1/cloud-scripts/wsl-setup-guide.md) - 상세한 WSL 환경 구축 가이드
 - ["환경 체크 도구"][repos/day1/cloud-scripts/environment-check-wsl.sh] - 실습 환경 자동 검증
-- ["Docker 설치 가이드"][cloud_basic/textbook/Day1/guides/install_docker.md]
-- ["Git 설정 가이드"][cloud_basic/textbook/Day1/guides/install_git.md]
-- ["AWS CLI 설정 가이드"][cloud_basic/textbook/Day1/guides/install_aws_cli.md]
-- ["GCP CLI 설정 가이드"][cloud_basic/textbook/Day1/guides/install_gcp_cli.md]
+- ["Docker 설치 가이드"](cloud_basic/textbook/Day1/guides/install_docker.md)
+- ["Git 설정 가이드"](cloud_basic/textbook/Day1/guides/install_git.md)
+- ["AWS CLI 설정 가이드"](cloud_basic/textbook/Day1/guides/install_aws_cli.md)
+- ["GCP CLI 설정 가이드"](cloud_basic/textbook/Day1/guides/install_gcp_cli.md)
 
 ### 🧹 정리 도구
 - ["통합 클러스터 정리"][repos/day1/cloud-scripts/cluster-cleanup-interactive.sh] - EKS/GKE 클러스터 선택적 정리
 - ["통합 VM 정리"][repos/day1/cloud-scripts/vm-cleanup-interactive.sh] - GCP/AWS VM 인스턴스 선택적 정리
 - ["VPC 정리 스크립트"][repos/day1/cloud-scripts/cleanup-vpcs.sh] - AWS VPC 선택적 삭제
 - ["VPC 진단 스크립트"][repos/day1/cloud-scripts/diagnose-vpc.sh] - VPC 종속성 진단
-- ["리소스 정리 가이드"][repos/day1/cloud-scripts/README.md] - 전체 정리 도구 사용법
+- ["리소스 정리 가이드"](repos/day1/cloud-scripts/README.md) - 전체 정리 도구 사용법
 
 ## ✅ 학습 체크리스트
 
@@ -125,9 +125,9 @@
 
 <div align="center">
 
-["← 이전: Cloud Container 과정"][cloud_container/README.md] | 
-["📚 전체 커리큘럼"][curriculum.md] | 
-["🏠 학습 경로로 돌아가기"][index.md] | 
+["← 이전: Cloud Container 과정"](cloud_container/README.md) | 
+["📚 전체 커리큘럼"](curriculum.md) | 
+["🏠 학습 경로로 돌아가기"](index.md) | 
 ["다음: 과정 상세 정보 →"]["과정상세.md"]
 
 </div>

@@ -52,14 +52,14 @@ CI/CD 파이프라인과 클라우드 배포까지 완전한 실무 역량을 �
 ## 🗂️ 학습 자료 구조
 
 ### 📖 Day 1: 컨테이너 및 Kubernetes 기초
-- ["Docker 고급 활용"][textbook/Day1/practice/docker-advanced.md]
-- ["Kubernetes 기초"][textbook/Day1/practice/kubernetes-basics.md]
-- ["클라우드 컨테이너 서비스"][textbook/Day1/practice/cloud-container-services.md]
+- ["Docker 고급 활용"](textbook/Day1/practice/docker-advanced.md)
+- ["Kubernetes 기초"](textbook/Day1/practice/kubernetes-basics.md)
+- ["클라우드 컨테이너 서비스"](textbook/Day1/practice/cloud-container-services.md)
 
 ### 📖 Day 2: CI/CD 및 클라우드 배포
-- ["CI/CD 파이프라인"][textbook/Day2/practice/cicd-pipeline.md]
-- ["클라우드 배포"][textbook/Day2/practice/cloud-deployment.md]
-- ["모니터링 기초"][textbook/Day2/practice/monitoring-basics.md]
+- ["CI/CD 파이프라인"](textbook/Day2/practice/cicd-pipeline.md)
+- ["클라우드 배포"](textbook/Day2/practice/cloud-deployment.md)
+- ["모니터링 기초"](textbook/Day2/practice/monitoring-basics.md)
 
 ## 🛠️ 실습 환경
 
@@ -78,7 +78,7 @@ CI/CD 파이프라인과 클라우드 배포까지 완전한 실무 역량을 �
 ## 🚀 시작하기
 
 ### 1️⃣ 사전 준비
-- ["Cloud Basic 과정 완료"][cloud_basic/README.md]
+- ["Cloud Basic 과정 완료"](cloud_basic/README.md)
 - ["Docker Desktop 설치"][_setup_wsl/install-docker-wsl.sh]
 - ["kubectl 설치"][_setup_wsl/install-kubectl-wsl.sh]
 - ["AWS CLI 설정"][_setup_wsl/install-aws-cli-wsl.sh]
@@ -91,14 +91,14 @@ CI/CD 파이프라인과 클라우드 배포까지 완전한 실무 역량을 �
 ```
 
 ### 3️⃣ Day 1 시작
-- ["Docker 고급 활용"][textbook/Day1/practice/docker-advanced.md]
-- ["Kubernetes 기초"][textbook/Day1/practice/kubernetes-basics.md]
-- ["클라우드 컨테이너 서비스"][textbook/Day1/practice/cloud-container-services.md]
+- ["Docker 고급 활용"](textbook/Day1/practice/docker-advanced.md)
+- ["Kubernetes 기초"](textbook/Day1/practice/kubernetes-basics.md)
+- ["클라우드 컨테이너 서비스"](textbook/Day1/practice/cloud-container-services.md)
 
 ### 4️⃣ Day 2 시작
-- ["CI/CD 파이프라인"][textbook/Day2/practice/cicd-pipeline.md]
-- ["클라우드 배포"][textbook/Day2/practice/cloud-deployment.md]
-- ["모니터링 기초"][textbook/Day2/practice/monitoring-basics.md]
+- ["CI/CD 파이프라인"](textbook/Day2/practice/cicd-pipeline.md)
+- ["클라우드 배포"](textbook/Day2/practice/cloud-deployment.md)
+- ["모니터링 기초"](textbook/Day2/practice/monitoring-basics.md)
 
 ## ✅ 학습 체크리스트
 
@@ -121,8 +121,8 @@ CI/CD 파이프라인과 클라우드 배포까지 완전한 실무 역량을 �
 ## 🔗 관련 과정
 
 ### 📚 전체 커리큘럼
-- ["전체 커리큘럼 보기"][curriculum.md]
-- ["학습 경로 안내"][learning-path.md]
+- ["전체 커리큘럼 보기"](curriculum.md)
+- ["학습 경로 안내"](learning-path.md)
 
 ### 🚀 이전 단계
 - Cloud Basic 과정 - 클라우드 기초
@@ -132,12 +132,12 @@ CI/CD 파이프라인과 클라우드 배포까지 완전한 실무 역량을 �
 - Cloud Container 과정 - 고급 컨테이너 오케스트레이션
 
 ### 🏠 홈으로
-- ["통합 인덱스"][index.md]
+- ["통합 인덱스"](index.md)
 
 ## 🧭 네비게이션
 
 <div align="center">
 
-["🏠 홈으로 돌아가기"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🔗 학습 경로"][learning-path.md]
+["🏠 홈으로 돌아가기"](index.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🔗 학습 경로"](learning-path.md)
 
 </div>

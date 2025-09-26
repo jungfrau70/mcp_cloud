@@ -3,7 +3,8 @@
 > 📋 **강의 일시**: 2024년 10월 2일 ["목"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Day1 완료 ["Docker, Kubernetes, 클라우드 컨테이너 서비스"]  
-> 📋 **참고 코드**: https://github.com/jungfrau70/cloud-intermediate.git
+> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_intermediate/_setup_wsl/README.md](../_setup_wsl/README.md)
+> 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-intermediate.git cloud_intermediate`
 
 ---
 
@@ -46,7 +47,7 @@ git config --global user.email && echo "✅ Git 이메일 설정됨" || echo "�
 #### **자동 체크 ["권장"]**
 ```bash
 # 환경 체크 스크립트 실행
-cd mcp_knowledge_base/cloud_intermediate/repo/scripts
+cd ./cloud_intermediate/scripts
 ./cloud-intermediate-helper.sh check-environment
 ```
 
@@ -64,16 +65,15 @@ cd mcp_knowledge_base/cloud_intermediate/repo/scripts
 
 ### **새로운 디렉토리 구조**
 ```
-mcp_knowledge_base/cloud_intermediate/
-├── repo/
-│   ├── samples/day2/
-│   │   ├── cicd-pipeline/             # CI/CD 파이프라인 실습
-│   │   ├── cloud-deployment/          # 클라우드 배포 실습
-│   │   └── monitoring-basics/         # 모니터링 기초 실습
-│   └── scripts/
-│       ├── day2-practice.sh           # Day2 실습 자동화
-│       ├── monitoring-stack.sh        # 모니터링 스택 자동화
-│       └── cloud-intermediate-helper.sh # 통합 헬퍼
+./cloud_intermediate/
+├── samples/day2/
+│   ├── cicd-pipeline/             # CI/CD 파이프라인 실습
+│   ├── cloud-deployment/          # 클라우드 배포 실습
+│   └── monitoring-basics/         # 모니터링 기초 실습
+├── scripts/
+│   ├── day2-practice.sh           # Day2 실습 자동화
+│   ├── monitoring-stack.sh        # 모니터링 스택 자동화
+│   └── cloud-intermediate-helper.sh # 통합 헬퍼
 └── textbook/Day2/
     ├── README.md                     # Day2 개요
     └── practice/                     # 실습 가이드
@@ -91,13 +91,13 @@ mcp_knowledge_base/cloud_intermediate/
 - **실습**: GitHub Actions 워크플로우 작성 및 실행
 
 **🔍 실습 코드 위치**
-- **샘플 코드**: `repo/samples/day2/cicd-pipeline/`
-- **자동화 스크립트**: `repo/scripts/day2-practice.sh`
+- **샘플 코드**: `cloud_intermediate/samples/day2/cicd-pipeline/`
+- **자동화 스크립트**: `cloud_intermediate/scripts/day2-practice.sh`
 
 **📋 실습 단계**
 ```bash
 # 1. 실습 환경 준비
-cd mcp_knowledge_base/cloud_intermediate/repo/scripts
+cd ./cloud_intermediate/scripts
 ./day2-practice.sh
 
 # 2. CI/CD 파이프라인 실습 선택
@@ -125,8 +125,8 @@ docker build -t cicd-practice-app:latest .
 - **실습**: Prometheus, Grafana, Node Exporter 설정
 
 **🔍 실습 코드 위치**
-- **샘플 코드**: `repo/samples/day2/monitoring-basics/`
-- **자동화 스크립트**: `repo/scripts/monitoring-stack.sh`
+- **샘플 코드**: `cloud_intermediate/samples/day2/monitoring-basics/`
+- **자동화 스크립트**: `cloud_intermediate/scripts/monitoring-stack.sh`
 
 **📋 실습 단계**
 ```bash
@@ -158,7 +158,7 @@ docker build -t cicd-practice-app:latest .
 - **실습**: ECS 서비스, 로드밸런서, 자동 스케일링 설정
 
 **🔍 실습 코드 위치**
-- **샘플 코드**: `repo/samples/day2/cloud-deployment/aws-ecs-deploy.sh`
+- **샘플 코드**: `cloud_intermediate/samples/day2/cloud-deployment/aws-ecs-deploy.sh`
 
 **📋 실습 단계**
 ```bash
@@ -188,7 +188,7 @@ docker build -t cicd-practice-app:latest .
 - **실습**: Cloud Run 서비스, 도메인 매핑, 트래픽 분할
 
 **🔍 실습 코드 위치**
-- **샘플 코드**: `repo/samples/day2/cloud-deployment/gcp-cloud-run-deploy.sh`
+- **샘플 코드**: `cloud_intermediate/samples/day2/cloud-deployment/gcp-cloud-run-deploy.sh`
 
 **📋 실습 단계**
 ```bash
@@ -335,8 +335,8 @@ gcloud logging read "resource.type=cloud_run_revision" --limit 50
 
 ### **실습 코드 저장소**
 - [GitHub Repository][https://github.com/jungfrau70/cloud-intermediate.git]
-- ["실습 샘플 코드"][mcp_knowledge_base/cloud_intermediate/repo/samples/day2/]
-- ["자동화 스크립트"][mcp_knowledge_base/cloud_intermediate/repo/scripts/]
+- ["실습 코드"][./cloud_intermediate/samples/day2/]
+- ["자동화 스크립트"][./cloud_intermediate/scripts/]
 
 ## 🎯 **다음 단계 안내**
 

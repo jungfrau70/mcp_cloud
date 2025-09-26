@@ -3,7 +3,8 @@
 > 📋 **강의 일시**: 2024년 9월 24일 ["수"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Day1, Day2 완료 ["기본 배포, 다중 서비스 환경"]
-> 📋 **참고 코드**: https://github.com/jungfrau70/cloud-master.git
+> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_master/_setup_wsl/README.md](../_setup_wsl/README.md)
+> 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-master.git cloud_master`
 
 ---
 
@@ -60,7 +61,7 @@ gcloud compute instances list --format="table[name,zone,status,EXTERNAL_IP]"
 #### **해결 방안**
 ```bash
 # 옵션 1: Day2 모니터링 스택 중지 ["권장"]
-cd repo/day2/samples/my-app
+cd cloud_master/day2/samples/my-app
 docker-compose down
 
 # 옵션 2: Day3 모니터링 스택 포트 변경
@@ -82,7 +83,7 @@ docker network create day3-monitoring
 #### **자동 체크 ["권장"]**
 ```bash
 # 환경 체크 스크립트 실행
-cd repo/day3/scripts
+cd cloud_master/day3/scripts
 ./environment-check.sh
 ```
 
@@ -100,7 +101,7 @@ cd repo/day3/scripts
 
 ### **새로운 디렉토리 구조**
 ```
-repo/day3/
+cloud_master/day3/
 ├── automation/          # 자동화 스크립트
 │   ├── 01-aws-loadbalancing.sh
 │   ├── 02-gcp-loadbalancing.sh
@@ -141,7 +142,7 @@ repo/day3/
 ##### **방법 1: 자동화 스크립트 사용 ["권장"]**
 ```bash
 # WSL에서 자동화 스크립트 실행
-cd /mnt/c/Users/["사용자명"]/mcp_cloud/repo/day3/automation
+cd /mnt/c/Users/["사용자명"]/mcp_cloud/cloud_master/day3/automation
 ./create-git-repo.sh
 
 # GitHub 사용자명 입력 후 자동으로 Repository 생성 및 설정
@@ -160,7 +161,7 @@ git config user.name "Cloud Master Student"
 git config user.email "student@cloudmaster.com"
 
 # 실습 코드 복사 및 커밋
-cp -r /mnt/c/Users/["사용자명"]/mcp_cloud/repo/day3/automation/* .
+cp -r /mnt/c/Users/["사용자명"]/mcp_cloud/cloud_master/day3/automation/* .
 git add .
 git commit -m "Initial commit: Day3 practice automation scripts"
 
@@ -462,7 +463,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== AWS ALB 로드밸런싱 구축 시작 ==="
-./repo/scripts/aws-loadbalancing-improved.sh setup
+./cloud_master/scripts/aws-loadbalancing-improved.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 ALB 구축 ==="
@@ -583,7 +584,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== GCP Load Balancing 구축 시작 ==="
-./repo/scripts/cloud-master-helper.sh
+./cloud_master/scripts/cloud-master-helper.sh
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 GCP Load Balancing 구축 ==="
@@ -850,7 +851,7 @@ echo "- Backend Services: https://console.cloud.google.com/net-services/loadbala
 #### 🚀 **GCP MIG 자동 스케일링 자동화 스크립트**
 ```bash
 # GCP Managed Instance Group 자동 스케일링 설정
-./repo/scripts/cloud-master-helper.sh
+./cloud_master/scripts/cloud-master-helper.sh
 
 # 자동화 장점:
 # ✅ 인스턴스 템플릿 자동 생성
@@ -863,7 +864,7 @@ echo "- Backend Services: https://console.cloud.google.com/net-services/loadbala
 #### 💰 **GCP 비용 최적화 자동화 스크립트**
 ```bash
 # GCP 비용 최적화 분석 실행
-./repo/scripts/cloud-master-helper.sh
+./cloud_master/scripts/cloud-master-helper.sh
 
 # 자동화 장점:
 # ✅ 사용하지 않는 리소스 자동 검색
@@ -875,16 +876,16 @@ echo "- Backend Services: https://console.cloud.google.com/net-services/loadbala
 #### 🚀 **GCP 자동화 스크립트 상세 가이드**
 ```bash
 # GCP Cloud Load Balancing 자동화 스크립트 사용법
-./repo/scripts/cloud-master-helper.sh
+./cloud_master/scripts/cloud-master-helper.sh
 
 # GCP MIG 자동 스케일링 자동화 스크립트 사용법
-./mcp_knowledge_base/cloud_master/repos/automation/day3/04-autoscaling.sh setup
+./cloud_master/automation/day3/04-autoscaling.sh setup
 
 # GCP 비용 최적화 자동화 스크립트 사용법
-./mcp_knowledge_base/cloud_master/repos/automation/day3/05-cost-optimization.sh analyze
+./cloud_master/automation/day3/05-cost-optimization.sh analyze
 
 # GCP 통합 실습 자동화 스크립트 사용법
-./mcp_knowledge_base/cloud_master/repos/automation/day3/06-integration-test.sh setup
+./cloud_master/automation/day3/06-integration-test.sh setup
 
 # 스크립트 옵션:
 # setup   - 설정 실행 ["기본값"]
@@ -892,21 +893,21 @@ echo "- Backend Services: https://console.cloud.google.com/net-services/loadbala
 # test    - 시스템 테스트
 
 # 예시:
-./mcp_knowledge_base/cloud_master/repos/automation/day3/02-gcp-loadbalancing.sh cleanup
-./mcp_knowledge_base/cloud_master/repos/automation/day3/04-autoscaling.sh test
+./cloud_master/automation/day3/02-gcp-loadbalancing.sh cleanup
+./cloud_master/automation/day3/04-autoscaling.sh test
 ```
 
 # 1. GCP 전용 로드밸런싱 실습
-./repo/scripts/cloud-master-helper.sh
+./cloud_master/scripts/cloud-master-helper.sh
 
 # 2. GCP 모니터링 스택 자동 구축
-./mcp_knowledge_base/cloud_master/repos/automation/day3/03-monitoring-stack.sh setup
+./cloud_master/automation/day3/03-monitoring-stack.sh setup
 
 # 3. GCP 자동 스케일링 설정
-./mcp_knowledge_base/cloud_master/repos/automation/day3/04-autoscaling.sh setup
+./cloud_master/automation/day3/04-autoscaling.sh setup
 
 # 4. GCP 비용 최적화 분석
-./mcp_knowledge_base/cloud_master/repos/automation/day3/05-cost-optimization.sh analyze
+./cloud_master/automation/day3/05-cost-optimization.sh analyze
 
 # GCP 자동화 스크립트 특징:
 # ✅ GCP Cloud SDK 자동 설정 확인
@@ -1068,7 +1069,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== 모니터링 스택 구축 시작 ==="
-./mcp_knowledge_base/cloud_master/repos/automation/day3/03-monitoring-stack.sh setup
+./cloud_master/automation/day3/03-monitoring-stack.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 모니터링 스택 구축 ==="
@@ -1320,16 +1321,16 @@ echo "- Node Exporter: 시스템 메트릭이 정상적으로 수집되는지"
 # AWS/GCP VM 실습 스크립트에 포함되어 있음
 
 # 1. AWS 통합 실습 실행 ["모니터링 포함"]
-./repo/scripts/aws-loadbalancing-improved.sh setup
+./cloud_master/scripts/aws-loadbalancing-improved.sh setup
 
 # 2. GCP 통합 실습 실행 ["모니터링 포함"]
-./repo/scripts/cloud-master-helper.sh
+./cloud_master/scripts/cloud-master-helper.sh
 
 # 3. 멀티 클라우드 모니터링 통합 실행
-./mcp_knowledge_base/cloud_master/repos/automation/day3/03-monitoring-stack.sh setup
+./cloud_master/automation/day3/03-monitoring-stack.sh setup
 
 # 4. 모니터링만 별도 실행
-./mcp_knowledge_base/cloud_master/repos/automation/day3/03-monitoring-stack.sh setup
+./cloud_master/automation/day3/03-monitoring-stack.sh setup
 
 # 접속 URL:
 # - Prometheus: http://localhost:9090
@@ -1563,7 +1564,7 @@ flowchart TB
 #### 🚀 **권장: 자동화 스크립트 사용**
 ```bash
 # 비용 최적화 자동 분석 실행
-./mcp_knowledge_base/cloud_master/repos/automation/day3/05-cost-optimization.sh analyze
+./cloud_master/automation/day3/05-cost-optimization.sh analyze
 
 # 자동화 장점:
 # ✅ AWS/GCP 비용 분석 자동 실행
@@ -1718,7 +1719,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== AWS Auto Scaling Group 구축 시작 ==="
-./mcp_knowledge_base/cloud_master/repos/automation/day3/04-autoscaling.sh setup
+./cloud_master/automation/day3/04-autoscaling.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 AWS Auto Scaling 구축 ==="
@@ -1787,7 +1788,7 @@ aws autoscaling describe-auto-scaling-groups \
 ```bash
 # 자동화 스크립트 실행
 echo "=== GCP Managed Instance Group 구축 시작 ==="
-./mcp_knowledge_base/cloud_master/repos/automation/day3/04-autoscaling.sh setup
+./cloud_master/automation/day3/04-autoscaling.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 GCP MIG 구축 ==="
@@ -2242,7 +2243,7 @@ echo "- 스케일링 활동 로그 확인"
 ```bash
 # 자동화 스크립트 실행
 echo "=== 비용 최적화 분석 시작 ==="
-./mcp_knowledge_base/cloud_master/repos/automation/day3/05-cost-optimization.sh analyze
+./cloud_master/automation/day3/05-cost-optimization.sh analyze
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 비용 최적화 분석 ==="
@@ -2306,7 +2307,7 @@ echo "- 예산 설정 및 알림"
 #### 🚀 **권장: 자동화 스크립트 사용**
 ```bash
 # 자동 스케일링 자동 설정 실행
-./mcp_knowledge_base/cloud_master/repos/automation/day3/04-autoscaling.sh setup
+./cloud_master/automation/day3/04-autoscaling.sh setup
 
 # 자동화 장점:
 # ✅ AWS Auto Scaling Group 자동 생성
@@ -2728,11 +2729,11 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     
     # 2. AWS 리소스 정리
     echo "--- AWS 리소스 정리 ---"
-    ./mcp_knowledge_base/cloud_master/repos/automation/day3/01-aws-loadbalancing.sh cleanup
+    ./cloud_master/automation/day3/01-aws-loadbalancing.sh cleanup
     
     # 3. GCP 리소스 정리
     echo "--- GCP 리소스 정리 ---"
-    ./mcp_knowledge_base/cloud_master/repos/automation/day3/02-gcp-loadbalancing.sh cleanup
+    ./cloud_master/automation/day3/02-gcp-loadbalancing.sh cleanup
     
     echo "✅ 모든 리소스 정리 완료"
 else
@@ -2774,10 +2775,10 @@ echo "- 프로덕션 환경 적용 계획 수립"
 #### 🚀 **권장: 통합 자동화 스크립트 사용**
 ```bash
 # 전체 시스템 통합 테스트 자동 실행
-./mcp_knowledge_base/cloud_master/repos/automation/day3/06-integration-test.sh setup
+./cloud_master/automation/day3/06-integration-test.sh setup
 
 # 개선된 통합 실습 ["매끄러운 실행"]
-./mcp_knowledge_base/cloud_master/repos/automation/day3/06-integration-test.sh setup
+./cloud_master/automation/day3/06-integration-test.sh setup
 
 # 자동화 장점:
 # ✅ 전체 시스템 상태 자동 확인
@@ -3079,7 +3080,7 @@ flowchart TB
 ### 📋 **실습 전 준비사항**
 ```bash
 # 1. 스크립트 실행 권한 부여
-chmod +x mcp_knowledge_base/cloud_master/repos/automation/day3/*.sh
+chmod +x ./cloud_master/automation/day3/*.sh
 
 # 2. 환경 변수 확인
 echo "AWS CLI 설정 확인:"
@@ -3126,22 +3127,22 @@ echo "- Monitoring: https://console.cloud.google.com/monitoring"
 #### 🔢 **실습 순서**
 ```bash
 # 1. AWS 로드밸런싱 구축 ["권장"]
-./repo/scripts/aws-loadbalancing-improved.sh setup
+./cloud_master/scripts/aws-loadbalancing-improved.sh setup
 
 # 2. GCP 로드밸런싱 구축
-./repo/scripts/cloud-master-helper.sh
+./cloud_master/scripts/cloud-master-helper.sh
 
 # 3. 모니터링 스택 구축
-./mcp_knowledge_base/cloud_master/repos/automation/day3/03-monitoring-stack.sh setup
+./cloud_master/automation/day3/03-monitoring-stack.sh setup
 
 # 4. 자동 스케일링 설정
-./mcp_knowledge_base/cloud_master/repos/automation/day3/04-autoscaling.sh setup
+./cloud_master/automation/day3/04-autoscaling.sh setup
 
 # 5. 비용 최적화 분석
-./mcp_knowledge_base/cloud_master/repos/automation/day3/05-cost-optimization.sh analyze
+./cloud_master/automation/day3/05-cost-optimization.sh analyze
 
 # 6. 통합 테스트
-./mcp_knowledge_base/cloud_master/repos/automation/day3/06-integration-test.sh setup
+./cloud_master/automation/day3/06-integration-test.sh setup
 
 # 각 스크립트 실행 후 확인 가능한 URL들
 echo "🌐 실습 완료 후 확인 URL들:"
@@ -3293,7 +3294,7 @@ echo "- GCP Billing: https://console.cloud.google.com/billing"
 
 사용법:
   # WSL에서 실행
-  cd /mnt/c/Users/["사용자명"]/mcp_cloud/mcp_knowledge_base/cloud_master/repos/automation/day3
+  cd /mnt/c/Users/["사용자명"]/mcp_cloud/cloud_master/automation/day3
   ./create-git-repo.sh
 ```
 
@@ -3336,7 +3337,7 @@ echo "- GCP Billing: https://console.cloud.google.com/billing"
 #### **WSL에서 ["개발 환경"]**
 ```bash
 # 1단계: Git Repository 생성
-cd /mnt/c/Users/["사용자명"]/mcp_cloud/repo/day3/automation
+cd /mnt/c/Users/["사용자명"]/mcp_cloud/cloud_master/day3/automation
 ./create-git-repo.sh
 
 # 2단계: 코드 수정 및 동기화

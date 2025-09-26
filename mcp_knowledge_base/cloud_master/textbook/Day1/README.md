@@ -346,15 +346,15 @@ ssh -i gcp-key ubuntu@<public-ip>
 ## 🛠️ 실습 학습
 
 > 📚 **상세 실습 가이드**: 각 주제별 상세한 실습은 다음 파일들을 참조하세요.
-> - ["WSL 환경 설정 가이드"][practices/wsl-setup-guide.md] - **NEW!** Windows WSL2 환경 구축
-> - ["Docker 기초 실습"][practices/docker-basics.md]
-> - ["Git/GitHub 기초 실습"][practices/git-github-basics.md]
-> - ["GitHub Actions 기초 실습"][practices/git-hub-actions-basics.md]
+> - ["WSL 환경 설정 가이드"](practices/wsl-setup-guide.md) - **NEW!** Windows WSL2 환경 구축
+> - ["Docker 기초 실습"](practices/docker-basics.md)
+> - ["Git/GitHub 기초 실습"](practices/git-github-basics.md)
+> - ["GitHub Actions 기초 실습"](practices/git-hub-actions-basics.md)
 > - ["실제 배포 프로젝트"][repos/github-actions-demo/] - **실제 수업에서 사용된 프로젝트**
-> - ["GitHub Actions CI/CD 완전 가이드"][practices/github-actions-cicd-guide.md] - **NEW!** 일자별 CI/CD 파이프라인 구축
-> - ["배포 후 체크포인트 가이드"][practices/deployment-checkpoints-guide.md] - **NEW!** 배포 확인 및 문제 해결
-> - ["VM 배포 실습"][practices/vm-deployment.md]
-> - ["GitHub Repository Secrets 설정 가이드"][guides/github-repo-settings.md] - **실제 수업 검증!** 환경파일 대신 Secrets 사용
+> - ["GitHub Actions CI/CD 완전 가이드"](practices/github-actions-cicd-guide.md) - **NEW!** 일자별 CI/CD 파이프라인 구축
+> - ["배포 후 체크포인트 가이드"](practices/deployment-checkpoints-guide.md) - **NEW!** 배포 확인 및 문제 해결
+> - ["VM 배포 실습"](practices/vm-deployment.md)
+> - ["GitHub Repository Secrets 설정 가이드"](guides/github-repo-settings.md) - **실제 수업 검증!** 환경파일 대신 Secrets 사용
 
 > 🚀 **자동화 스크립트**: 실습을 더 쉽게 하려면 다음 자동화 스크립트를 사용하세요.
 > - ["GitHub Actions CI/CD 자동화"][automation/github-actions-cicd-automation.sh] - **NEW!** CI/CD 파이프라인 자동 설정
@@ -364,7 +364,7 @@ ssh -i gcp-key ubuntu@<public-ip>
 > - ["GCP VM 자동 생성"][cloud-scripts/gcp-compute-create.sh] - Compute Engine 자동 생성
 > - ["통합 VM 정리"][cloud-scripts/vm-cleanup-interactive.sh] - VM 인스턴스 선택적 정리
 > - ["통합 클러스터 정리"][cloud-scripts/cluster-cleanup-interactive.sh] - 클러스터 선택적 정리
-> - ["리소스 정리 스크립트"][cloud-scripts/README.md] - 생성된 리소스 자동 정리
+> - ["리소스 정리 스크립트"](cloud-scripts/README.md) - 생성된 리소스 자동 정리
 
 <details>
 <summary>🐳 Docker 실습</summary>
@@ -512,7 +512,7 @@ cd github-actions-demo
    AWS_VM_USERNAME: ubuntu
    ```
 
-3. **상세 설정 방법**: ["GitHub Repository Secrets 설정 가이드"][guides/github-repo-settings.md]
+3. **상세 설정 방법**: ["GitHub Repository Secrets 설정 가이드"](guides/github-repo-settings.md)
 
 ### 3단계: GitHub Actions 실행
 ```bash
@@ -711,15 +711,15 @@ gcloud compute instances delete my-vm --zone=us-central1-a
 ## 📚 참고 자료
 
 ### 상세 가이드
-- ["WSL 환경 설정 가이드"][practices/wsl-setup-guide.md] - **NEW!** Windows WSL2 환경 구축
-- ["GitHub Actions CI/CD 완전 가이드"][practices/github-actions-cicd-guide.md] - **NEW!** 일자별 CI/CD 파이프라인 구축
-- ["배포 후 체크포인트 가이드"][practices/deployment-checkpoints-guide.md] - **NEW!** 배포 확인 및 문제 해결
-- ["GitHub Repository Secrets 설정 가이드"][guides/github-repo-settings.md] - **실제 수업 검증!** 환경파일 대신 Secrets 사용
-- ["Docker 고급 가이드"][guides/docker-advanced-guide.md] - 멀티스테이지 빌드, 이미지 최적화
-- ["Docker Compose 가이드"][guides/docker-compose-guide.md] - 다중 서비스 관리
-- ["GitHub Actions 가이드"][guides/github-actions-guide.md] - CI/CD 파이프라인 구축
-- ["AWS & GCP 배포 가이드"][guides/aws-gcp-deployment-guide.md] - 멀티클라우드 배포
-- ["트러블슈팅 가이드"][guides/troubleshooting-guide.md] - 문제 해결 및 디버깅
+- ["WSL 환경 설정 가이드"](practices/wsl-setup-guide.md) - **NEW!** Windows WSL2 환경 구축
+- ["GitHub Actions CI/CD 완전 가이드"](practices/github-actions-cicd-guide.md) - **NEW!** 일자별 CI/CD 파이프라인 구축
+- ["배포 후 체크포인트 가이드"](practices/deployment-checkpoints-guide.md) - **NEW!** 배포 확인 및 문제 해결
+- ["GitHub Repository Secrets 설정 가이드"](guides/github-repo-settings.md) - **실제 수업 검증!** 환경파일 대신 Secrets 사용
+- ["Docker 고급 가이드"](guides/docker-advanced-guide.md) - 멀티스테이지 빌드, 이미지 최적화
+- ["Docker Compose 가이드"](guides/docker-compose-guide.md) - 다중 서비스 관리
+- ["GitHub Actions 가이드"](guides/github-actions-guide.md) - CI/CD 파이프라인 구축
+- ["AWS & GCP 배포 가이드"](guides/aws-gcp-deployment-guide.md) - 멀티클라우드 배포
+- ["트러블슈팅 가이드"](guides/troubleshooting-guide.md) - 문제 해결 및 디버깅
 
 ### 공식 문서
 - ["Docker 공식 문서"][https://docs.docker.com/]
@@ -802,9 +802,9 @@ ssh -i gcp-key ubuntu@[GCP-VM-IP]
 
 <div align="center">
 
-["← 이전: Cloud Master 메인"][../README.md] | 
-["📚 전체 커리큘럼"][../../curriculum.md] | 
-["🏠 학습 경로로 돌아가기"][../../index.md] | 
-["다음: Day 2 →"][../Day2/README.md]
+["← 이전: Cloud Master 메인"](../README.md) | 
+["📚 전체 커리큘럼"](../../curriculum.md) | 
+["🏠 학습 경로로 돌아가기"](../../index.md) | 
+["다음: Day 2 →"](../Day2/README.md)
 
 </div>

@@ -26,7 +26,7 @@
 
 # Cloud Container - 컨테이너 심화 학습 경로
 
-> 📋 **전체 개요**: [README.md][README.md] | ["통합 커리큘럼"][curriculum.md] | ["통합 인덱스"][index.md]에서 전체 과정 구조를 확인하세요.
+> 📋 **전체 개요**: (README.md)(README.md) | ["통합 커리큘럼"](curriculum.md) | ["통합 인덱스"](index.md)에서 전체 과정 구조를 확인하세요.
 
 <div align="center">
 </div>
@@ -66,8 +66,8 @@
 #### 1. Kubernetes 고급 아키텍처 이론 ["60분"]
 
 **📖 이론 학습 자료**
-- ["Kubernetes 고급 가이드"][textbook/Day1/kubernetes-advanced-guide.md]
-- ["컨테이너 오케스트레이션 가이드"][textbook/Day1/container-orchestration-guide.md]
+- ["Kubernetes 고급 가이드"](textbook/Day1/kubernetes-advanced-guide.md)
+- ["컨테이너 오케스트레이션 가이드"](textbook/Day1/container-orchestration-guide.md)
 
 **🎯 이론 학습 내용**
 - Kubernetes 클러스터 아키텍처 및 컴포넌트
@@ -78,8 +78,8 @@
 #### 2. 컨테이너 오케스트레이션 고급 기법 이론 ["60분"]
 
 **📖 이론 학습 자료**
-- ["Deployment, Service, Ingress 설정"][README.md]
-- ["ConfigMap, Secret, PersistentVolume 관리"][README.md]
+- ["Deployment, Service, Ingress 설정"](README.md)
+- ["ConfigMap, Secret, PersistentVolume 관리"](README.md)
 
 **🎯 이론 학습 내용**
 - Deployment, Service, Ingress 고급 설정
@@ -92,8 +92,8 @@
 #### 1. Kubernetes 고급 아키텍처 실습 ["120분"]
 
 **🔧 실습 가이드**
-- ["Kubernetes 기본 실습"][textbook/Day1/practice/kubernetes-basics.md]
-- ["1일차 실습 가이드"][README.md]
+- ["Kubernetes 기본 실습"](textbook/Day1/practice/kubernetes-basics.md)
+- ["1일차 실습 가이드"](README.md)
 
 **🎯 실습 내용**
 - GKE 클러스터 생성 및 애플리케이션 배포
@@ -104,7 +104,7 @@
 #### 2. 컨테이너 오케스트레이션 고급 기법 실습 ["90분"]
 
 **🔧 실습 가이드**
-- ["1일차 실습 가이드"][README.md]
+- ["1일차 실습 가이드"](README.md)
 
 **🎯 실습 내용**
 - 마이크로서비스 아키텍처 구성
@@ -115,8 +115,8 @@
 #### 3. AWS ECS 및 Fargate 심화 실습 ["90분"]
 
 **🔧 실습 가이드**
-- ["ECS 클러스터 구성 및 태스크 정의"][README.md]
-- ["Fargate 서버리스 컨테이너 실행"][README.md]
+- ["ECS 클러스터 구성 및 태스크 정의"](README.md)
+- ["Fargate 서버리스 컨테이너 실행"](README.md)
 
 **🎯 실습 내용**
 - ECS 클러스터 구성 및 태스크 정의
@@ -129,7 +129,7 @@
 #### 📚 이론 학습 ["30분"]
 
 **📖 이론 학습 자료**
-- ["GitOps 기반 배포 자동화"][README.md]
+- ["GitOps 기반 배포 자동화"](README.md)
 
 **🎯 이론 학습 내용**
 - Multi-stage 배포 파이프라인
@@ -140,7 +140,7 @@
 #### 🛠️ 실습 학습 ["60분"]
 
 **🔧 실습 가이드**
-- ["1일차 실습 가이드"][README.md]
+- ["1일차 실습 가이드"](README.md)
 
 **🎯 실습 내용**
 - GitOps 기반 배포 자동화
@@ -151,18 +151,18 @@
 ### 📚 1일차 실습 자료
 
 #### 실습 가이드
-- ["1일차 실습 가이드"][README.md]
-- ["컨테이너 기본 실습"][textbook/Day1/practice/container-basics.md]
-- ["Kubernetes 기본 실습"][textbook/Day1/practice/kubernetes-basics.md]
-- ["종합 실습 가이드"][textbook/Day1/comprehensive-practice-guide.md]
-- ["Master 연계 가이드"][textbook/Day1/master-integration-guide.md]
+- ["1일차 실습 가이드"](README.md)
+- ["컨테이너 기본 실습"](textbook/Day1/practice/container-basics.md)
+- ["Kubernetes 기본 실습"](textbook/Day1/practice/kubernetes-basics.md)
+- ["종합 실습 가이드"](textbook/Day1/comprehensive-practice-guide.md)
+- ["Master 연계 가이드"](textbook/Day1/master-integration-guide.md)
 
 #### 고급 가이드 문서
-- ["Kubernetes 고급 가이드"][textbook/Day1/kubernetes-advanced-guide.md]
-- ["컨테이너 오케스트레이션 가이드"][textbook/Day1/container-orchestration-guide.md]
-- ["자동 복구 가이드"][textbook/Day1/auto-recovery-guide.md]
-- ["비용 최적화 가이드"][textbook/Day1/cost-optimization-guide.md]
-- ["보안 정책 가이드"][textbook/Day1/security-policies-guide.md]
+- ["Kubernetes 고급 가이드"](textbook/Day1/kubernetes-advanced-guide.md)
+- ["컨테이너 오케스트레이션 가이드"](textbook/Day1/container-orchestration-guide.md)
+- ["자동 복구 가이드"](textbook/Day1/auto-recovery-guide.md)
+- ["비용 최적화 가이드"](textbook/Day1/cost-optimization-guide.md)
+- ["보안 정책 가이드"](textbook/Day1/security-policies-guide.md)
 
 
 #### 고급 설정 파일
@@ -180,9 +180,9 @@
 - ["고급 배포"][repo/deprecated/textbook-scripts/day1-scripts/deploy-advanced.sh]
 
 #### 고급 가이드
-- ["자동 복구 가이드"][textbook/Day1/auto-recovery-guide.md]
-- ["비용 최적화 가이드"][textbook/Day1/cost-optimization-guide.md]
-- ["보안 정책 가이드"][textbook/Day1/security-policies-guide.md]
+- ["자동 복구 가이드"](textbook/Day1/auto-recovery-guide.md)
+- ["비용 최적화 가이드"](textbook/Day1/cost-optimization-guide.md)
+- ["보안 정책 가이드"](textbook/Day1/security-policies-guide.md)
 
 ---
 
@@ -193,7 +193,7 @@
 #### 1. 고가용성 아키텍처 설계 이론 ["60분"]
 
 **📖 이론 학습 자료**
-- ["고가용성 아키텍처 가이드"][textbook/Day2/high-availability-architecture.md]
+- ["고가용성 아키텍처 가이드"](textbook/Day2/high-availability-architecture.md)
 
 **🎯 이론 학습 내용**
 - AWS Multi-AZ / GCP Multi-Region
@@ -204,7 +204,7 @@
 #### 2. 로드 밸런싱 및 Auto Scaling 이론 ["60분"]
 
 **📖 이론 학습 자료**
-- ["고급 로드 밸런싱 실습"][textbook/Day2/practice/advanced-load-balancing.md]
+- ["고급 로드 밸런싱 실습"](textbook/Day2/practice/advanced-load-balancing.md)
 
 **🎯 이론 학습 내용**
 - AWS ELB 심화 / GCP Cloud Load Balancing
@@ -217,7 +217,7 @@
 #### 1. 고가용성 아키텍처 실습 ["120분"]
 
 **🔧 실습 가이드**
-- ["고가용성 아키텍처 실습"][textbook/Day2/high-availability-architecture.md]
+- ["고가용성 아키텍처 실습"](textbook/Day2/high-availability-architecture.md)
 
 **🎯 실습 내용**
 - Multi-AZ RDS 및 EC2 구성
@@ -228,7 +228,7 @@
 #### 2. 로드 밸런싱 및 Auto Scaling 실습 ["90분"]
 
 **🔧 실습 가이드**
-- ["고급 로드 밸런싱 실습"][textbook/Day2/practice/advanced-load-balancing.md]
+- ["고급 로드 밸런싱 실습"](textbook/Day2/practice/advanced-load-balancing.md)
 
 **🎯 실습 내용**
 - Auto Scaling + Load Balancer 연동
@@ -241,7 +241,7 @@
 **📚 이론 학습 ["30분"]**
 
 **📖 이론 학습 자료**
-- ["모니터링 설정 가이드"][textbook/Day2/monitoring-setup.md]
+- ["모니터링 설정 가이드"](textbook/Day2/monitoring-setup.md)
 
 **🎯 이론 학습 내용**
 - AWS CloudWatch / GCP Monitoring & Logging
@@ -252,7 +252,7 @@
 **🛠️ 실습 학습 ["60분"]**
 
 **🔧 실습 가이드**
-- ["모니터링 시스템 설정 실습"][textbook/Day2/practice/monitoring-system-setup.md]
+- ["모니터링 시스템 설정 실습"](textbook/Day2/practice/monitoring-system-setup.md)
 
 **🎯 실습 내용**
 - 커스텀 메트릭 대시보드 구축
@@ -265,7 +265,7 @@
 #### 📚 이론 학습 ["30분"]
 
 **📖 이론 학습 자료**
-- ["종합 프로젝트 실습"][textbook/Day2/practice/comprehensive-project.md]
+- ["종합 프로젝트 실습"](textbook/Day2/practice/comprehensive-project.md)
 
 **🎯 이론 학습 내용**
 - 고가용성 웹 서비스 아키텍처 설계
@@ -276,7 +276,7 @@
 #### 🛠️ 실습 학습 ["60분"]
 
 **🔧 실습 가이드**
-- ["종합 프로젝트 실습"][textbook/Day2/practice/comprehensive-project.md]
+- ["종합 프로젝트 실습"](textbook/Day2/practice/comprehensive-project.md)
 
 **🎯 실습 내용**
 - 실제 서비스 시나리오 아키텍처 구현
@@ -287,16 +287,16 @@
 ### 📚 2일차 실습 자료
 
 #### 실습 가이드
-- ["2일차 실습 가이드"][README.md]
-- ["고가용성 아키텍처 실습"][textbook/Day2/high-availability-architecture.md]
-- ["고급 로드 밸런싱 실습"][textbook/Day2/practice/advanced-load-balancing.md]
-- ["모니터링 시스템 설정 실습"][textbook/Day2/practice/monitoring-system-setup.md]
-- ["종합 프로젝트 실습"][textbook/Day2/practice/comprehensive-project.md]
+- ["2일차 실습 가이드"](README.md)
+- ["고가용성 아키텍처 실습"](textbook/Day2/high-availability-architecture.md)
+- ["고급 로드 밸런싱 실습"](textbook/Day2/practice/advanced-load-balancing.md)
+- ["모니터링 시스템 설정 실습"](textbook/Day2/practice/monitoring-system-setup.md)
+- ["종합 프로젝트 실습"](textbook/Day2/practice/comprehensive-project.md)
 
 #### 고급 가이드 문서
-- ["고가용성 아키텍처 가이드"][textbook/Day2/high-availability-architecture.md]
-- ["모니터링 설정 가이드"][textbook/Day2/monitoring-setup.md]
-- ["Multi-AZ 문제 해결"][textbook/Day2/troubleshooting/multi-az-issues.md]
+- ["고가용성 아키텍처 가이드"](textbook/Day2/high-availability-architecture.md)
+- ["모니터링 설정 가이드"](textbook/Day2/monitoring-setup.md)
+- ["Multi-AZ 문제 해결"](textbook/Day2/troubleshooting/multi-az-issues.md)
 
 
 #### 자동화 스크립트
@@ -304,7 +304,7 @@
 - ["GCP 설정 도우미"][repo/deprecated/textbook-scripts/day2-scripts/gcp-setup-helper.sh]
 
 #### 문제 해결
-- ["Multi-AZ 문제 해결"][textbook/Day2/troubleshooting/multi-az-issues.md]
+- ["Multi-AZ 문제 해결"](textbook/Day2/troubleshooting/multi-az-issues.md)
 
 ---
 
@@ -317,7 +317,7 @@
 - ["Docker 설치"][_setup_wsl/install-docker-wsl.sh]
 - ["Docker Compose 설치"][_setup_wsl/install-docker-wsl.sh]
 - ["Git 설치"][_setup_wsl/install-all-wsl.sh]
-- ["GitHub Actions 완전 가이드"][github-actions.md]
+- ["GitHub Actions 완전 가이드"](github-actions.md)
 - ["Helm 설치"][repo/deprecated/cloud-scripts/cloud-scripts/automation_tests/get_helm.sh]
 
 ### 클라우드별 설치 스크립트
@@ -329,15 +329,15 @@
 - ["GCP Git 설치"][repo/deprecated/cloud-scripts/cloud-scripts/automation_tests/install_tools.sh]
 
 ### 컨테이너 과정 특화 도구
-- ["GitHub Actions 가이드"][github-actions.md]
+- ["GitHub Actions 가이드"](github-actions.md)
 
 ---
 
 ## 🤖 자동화 및 테스트
 
 ### 자동화 가이드
-- ["자동화 README"][README.md]
-- ["자동화 테스트 README"][README.md]
+- ["자동화 README"](README.md)
+- ["자동화 테스트 README"](README.md)
 
 ### 자동화 스크립트
 - ["1일차 자동화 스크립트"][repo/scripts/day1-practice-improved.sh]
@@ -349,7 +349,7 @@
 - ["2일차 스크립트 자동화"][repo/deprecated/cloud-scripts/cloud-scripts/automation_tests/container_course_day2_scripts.py]
 - ["자동화 테스트 실행"][repo/deprecated/cloud-scripts/cloud-scripts/automation_tests/run_container_course_tests.py]
 - ["자동화 테스트 검증"][repo/deprecated/cloud-scripts/cloud-scripts/automation_tests/test_container_course_automation.py]
-- ["사용자 가이드"][repo/deprecated/cloud-scripts/cloud-scripts/automation_tests/USER_GUIDE.md]
+- ["사용자 가이드"](repo/deprecated/cloud-scripts/cloud-scripts/automation_tests/USER_GUIDE.md)
 
 ### 도구 설치 스크립트
 - ["Helm 설치"][repo/deprecated/cloud-scripts/cloud-scripts/automation_tests/get_helm.sh]
@@ -389,9 +389,9 @@
 ## 🚀 다음 단계
 
 ### 실무 적용
-- ["통합 자동화 시스템"][README.md]
-- ["전체 커리큘럼"][curriculum.md]
-- ["통합 인덱스"][index.md]
+- ["통합 자동화 시스템"](README.md)
+- ["전체 커리큘럼"](curriculum.md)
+- ["통합 인덱스"](index.md)
 
 ### 고급 학습
 - ["Kubernetes 공식 문서"][https:///kubernetes.io/docs/]
@@ -447,10 +447,10 @@
 
 <div align="center">
 
-["← 이전: Cloud Container 메인"][README.md] | 
-["📚 전체 커리큘럼"][curriculum.md] | 
-["🏠 학습 경로로 돌아가기"][index.md] | 
-["다음: Cloud Container 1일차 →"][README.md]
+["← 이전: Cloud Container 메인"](README.md) | 
+["📚 전체 커리큘럼"](curriculum.md) | 
+["🏠 학습 경로로 돌아가기"](index.md) | 
+["다음: Cloud Container 1일차 →"](README.md)
 
 </div>
 
@@ -458,6 +458,6 @@
 
 <div align="center">
 
-["🏠 홈"][index.md] | ["📚 전체 커리큘럼"][curriculum.md] | 🔗 학습 경로
+["🏠 홈"](index.md) | ["📚 전체 커리큘럼"](curriculum.md) | 🔗 학습 경로
 
 </div>

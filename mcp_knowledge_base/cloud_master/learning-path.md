@@ -18,15 +18,15 @@
 ### 1단계: 환경 설정
 - ["AWS Free Tier 계정"][https://aws.amazon.com/free/] 생성
 - ["GCP Free Tier 계정"][https://cloud.google.com/free] 생성
-- ["WSL 설치 및 설정"][_setup_wsl/wsl-setup-guide.md]
+- ["WSL 설치 및 설정"](_setup_wsl/wsl-setup-guide.md)
 - ["필수 도구 설치"][_setup_wsl/install-all-wsl.sh]
 - ["AWS 계정 가입"]["_accounts/AWS계정가입.md"]
 - ["GCP 계정 가입"]["_accounts/GCP_개인계정가입.md"]
 
 ### 1.5단계: 전문 분야별 가이드
-- ["인프라 관리 가이드"][infra-guide.md] - WSL 환경 설정, 클라우드 계정 구성, VM 배포, Kubernetes 클러스터 구축
-- ["CI/CD 파이프라인 가이드"][cicd-guide.md] - GitHub Actions, Docker, 자동 배포, 모니터링 시스템
-- ["전체 실습 가이드"][execuise-guide.md] - 전체 과정 개요, 학습 자료 구조, 실습 진행 방법
+- ["인프라 관리 가이드"](infra-guide.md) - WSL 환경 설정, 클라우드 계정 구성, VM 배포, Kubernetes 클러스터 구축
+- ["CI/CD 파이프라인 가이드"](cicd-guide.md) - GitHub Actions, Docker, 자동 배포, 모니터링 시스템
+- ["전체 실습 가이드"](execuise-guide.md) - 전체 과정 개요, 학습 자료 구조, 실습 진행 방법
 
 ### 2단계: Day별 학습
 
@@ -171,11 +171,11 @@
 
 ### Cloud Container 과정 준비
 - ["Cloud Container 과정 상세"]["cloud_master/cloud_container/과정상세.md"]
-- ["Cloud Container 1일차 실습 가이드"][cloud_master/cloud_container/README.md]
+- ["Cloud Container 1일차 실습 가이드"](cloud_master/cloud_container/README.md)
 
 ### 통합 학습 경로
-- ["전체 커리큘럼"][../curriculum.md]
-- ["통합 인덱스"][../index.md]
+- ["전체 커리큘럼"](../curriculum.md)
+- ["통합 인덱스"](../index.md)
 
 ## 💡 추가 학습 자료
 
@@ -207,9 +207,9 @@
 
 <div align="center">
 
-["← 이전: Cloud Container 과정"][../cloud_container/README.md] | 
-["📚 전체 커리큘럼"][../curriculum.md] | 
-["🏠 학습 경로로 돌아가기"][../index.md] | 
+["← 이전: Cloud Container 과정"](../cloud_container/README.md) | 
+["📚 전체 커리큘럼"](../curriculum.md) | 
+["🏠 학습 경로로 돌아가기"](../index.md) | 
 ["다음: 과정 상세 정보 →"]["과정상세.md"]
 
 </div>

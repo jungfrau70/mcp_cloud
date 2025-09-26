@@ -22,9 +22,9 @@
 ## 🛠️ 실습 학습
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/samples/day1/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/scripts/day1-practice.sh`
-- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/cloud-scripts/`
+- **실습 코드**: `./cloud_intermediate/samples/day1/`
+- **자동화 스크립트**: `./cloud_intermediate/scripts/day1-practice.sh`
+- **클라우드 스크립트**: `./cloud_intermediate/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -238,7 +238,7 @@ kubectl logs -f <pod-name>  # 실시간 로그 확인
 ### 자동 정리
 ```bash
 # Day1 실습 자동 정리
-./mcp_knowledge_base/cloud_intermediate/repo/scripts/day1-practice.sh --cleanup
+./cloud_intermediate/scripts/day1-practice.sh --cleanup
 ```
 
 ### 수동 정리
@@ -269,9 +269,9 @@ gcloud container clusters delete my-cluster --zone us-central1-a
 ## 🔗 관련 자료
 
 ### 📚 실습 가이드
-- ["Docker 고급 활용"][practice/docker-advanced.md]
-- ["Kubernetes 기초"][practice/kubernetes-basics.md]
-- ["클라우드 컨테이너 서비스"][practice/cloud-container-services.md]
+- ["Docker 고급 활용"](practice/docker-advanced.md)
+- ["Kubernetes 기초"](practice/kubernetes-basics.md)
+- ["클라우드 컨테이너 서비스"](practice/cloud-container-services.md)
 
 ### 🛠️ 설치 가이드
 - ["Docker Desktop 설치"][_setup_wsl/install-docker-wsl.sh]
@@ -282,9 +282,9 @@ gcloud container clusters delete my-cluster --zone us-central1-a
 ### 🏠 네비게이션
 <div align="center">
 
-["← 이전: Cloud Basic 과정"][../cloud_basic/README.md] | 
-["📚 전체 커리큘럼"][../../curriculum.md] | 
-["🏠 학습 경로로 돌아가기"][../../index.md] | 
-["다음: Day 2 →"][../Day2/README.md]
+["← 이전: Cloud Basic 과정"](../cloud_basic/README.md) | 
+["📚 전체 커리큘럼"](../../curriculum.md) | 
+["🏠 학습 경로로 돌아가기"](../../index.md) | 
+["다음: Day 2 →"](../Day2/README.md)
 
 </div>

@@ -797,7 +797,7 @@ echo "=== GCP 예산 관리 완료 ==="
 - ["GCP Cloud Billing 공식 문서"][https:///cloud.google.com/billing/docs]
 - ["GCP Cloud Recommender 공식 문서"][https:///cloud.google.com/recommender/docs]
 
-다음 단계: ["3교시: CloudWatch / Cloud Monitoring을 활용한 서비스 모니터링"][cloud_master/textbook/Day2/guides/monitoring-guide.md]
+다음 단계: ["3교시: CloudWatch / Cloud Monitoring을 활용한 서비스 모니터링"](cloud_master/textbook/Day2/guides/monitoring-guide.md)
 
 ---
 
@@ -818,6 +818,6 @@ echo "=== GCP 예산 관리 완료 ==="
 
 <div align="center">
 
-["← 이전: Cloud Master 2일차 메인"][README.md] | ["📚 전체 커리큘럼"][curriculum.md] | ["🏠 학습 경로로 돌아가기"][index.md] | ["📋 학습 경로"][learning-path.md] | ["다음: 모니터링 가이드 →"][cloud_master/textbook/Day2/guides/monitoring-guide.md]
+["← 이전: Cloud Master 2일차 메인"](README.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🏠 학습 경로로 돌아가기"](index.md) | ["📋 학습 경로"](learning-path.md) | ["다음: 모니터링 가이드 →"](cloud_master/textbook/Day2/guides/monitoring-guide.md)
 
 </div>
