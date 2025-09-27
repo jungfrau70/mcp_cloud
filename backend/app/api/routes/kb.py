@@ -324,13 +324,43 @@ def kb_move(payload: KBItemMove):
 
 @router.delete('/item')
 def kb_delete_item(path: str):
-    fp = _safe_path(path)
-    if not fp.exists():
-        raise HTTPException(status_code=404, detail='Not found')
-    if fp.is_dir():
-        raise HTTPException(status_code=400, detail='Use directory delete endpoint')
-    fp.unlink()
-    return {"deleted": path}
+    try:
+        fp = _safe_path(path)
+        if not fp.exists():
+            return {
+                "success": False,
+                "message": "파일을 찾을 수 없습니다.",
+                "path": path,
+                "error": "FILE_NOT_FOUND"
+            }
+        if fp.is_dir():
+            return {
+                "success": False,
+                "message": "디렉토리는 삭제할 수 없습니다. 디렉토리 삭제 엔드포인트를 사용하세요.",
+                "path": path,
+                "error": "IS_DIRECTORY"
+            }
+        
+        fp.unlink()
+        return {
+            "success": True,
+            "message": "파일이 성공적으로 삭제되었습니다.",
+            "path": path
+        }
+    except PermissionError:
+        return {
+            "success": False,
+            "message": "파일 삭제 권한이 없습니다.",
+            "path": path,
+            "error": "PERMISSION_DENIED"
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": f"파일 삭제 중 오류가 발생했습니다: {str(e)}",
+            "path": path,
+            "error": "DELETE_FAILED"
+        }
 
 @router.get('/trash')
 def kb_list_trash():

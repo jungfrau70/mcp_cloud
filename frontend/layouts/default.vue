@@ -1,5 +1,7 @@
 <template>
   <div class="h-screen flex flex-col">
+    <!-- 전역 메시지 컴포넌트 -->
+    <GlobalMessage />
     <!-- Top Navigation Bar -->
     <nav class="bg-white shadow-sm border-b z-50 sticky top-0 relative" :style="{ height: topNavHeight + 'px' }">
       <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">

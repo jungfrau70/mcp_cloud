@@ -198,14 +198,55 @@ function cancel(){ try{ window.dispatchEvent(new CustomEvent('kb:mode', { detail
 async function deleteCurrent(){
   try{
     if(!props.path){ return }
-    const ok = window.confirm('이 문서를 휴지통으로 이동할까요?')
+    const ok = window.confirm('이 문서를 삭제할까요?')
     if(!ok) return
+    
     const p = props.path
-    const ts = new Date().toISOString().replace(/[-:T.Z]/g,'').slice(0,14)
-    const trashPath = `.trash/${ts}/${p}`
-    await fetch(`${resolveApiBase()}/v1/knowledge-base/move`, { method:'POST', headers:{ 'Content-Type':'application/json','X-API-Key':'my_mcp_eagle_tiger' }, body: JSON.stringify({ path: p, new_path: trashPath }) })
-    try{ window.dispatchEvent(new CustomEvent('kb:deleted', { detail:{ path: p, trashPath } })) }catch{}
-  }catch{ alert('삭제 실패') }
+    
+    // 삭제 API 호출
+    const response = await fetch(`${resolveApiBase()}/v1/knowledge/item?path=${encodeURIComponent(p)}`, { 
+      method:'DELETE', 
+      headers:{ 
+        'Content-Type':'application/json',
+        'X-API-Key':'my_mcp_eagle_tiger' 
+      } 
+    })
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    
+    const result = await response.json()
+    
+    if (result.success) {
+      // 성공 메시지 표시
+      window.dispatchEvent(new CustomEvent('show-message', { 
+        detail: { message: result.message, type: 'success' } 
+      }))
+      
+      // 파일 삭제 이벤트 발생
+      try{ 
+        window.dispatchEvent(new CustomEvent('kb:deleted', { detail:{ path: p } })) 
+      }catch{}
+      
+      // 뷰 모드로 전환
+      try{ 
+        window.dispatchEvent(new CustomEvent('kb:mode', { detail:{ to:'view' } })) 
+      }catch{}
+      
+    } else {
+      // 실패 메시지 표시
+      window.dispatchEvent(new CustomEvent('show-message', { 
+        detail: { message: result.message, type: 'error' } 
+      }))
+    }
+    
+  }catch(error){ 
+    console.error('삭제 실패:', error)
+    window.dispatchEvent(new CustomEvent('show-message', { 
+      detail: { message: '파일 삭제 중 오류가 발생했습니다.', type: 'error' } 
+    }))
+  }
 }
 
 function onKey(e: KeyboardEvent){
