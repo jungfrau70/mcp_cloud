@@ -3,11 +3,8 @@
 > 📋 **강의 일시**: 2024년 10월 1일 ["수"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Cloud Basic 완료 ["AWS/GCP 기초 서비스"]  
-> 📋 **실습 작업 환경 설정**: [_setup_/README.md](cloud_intermediate/_setup_/README.md)
-> 📋 **실습 코드**: 
-> - **Git Repository**: `git clone https://github.com/jungfrau70/cloud-intermediate.git cloud_intermediate`
-> - **Golden Circle Platform**: https://app.goldencircle.us 에서 file 별 다운로드
-> - **실습 자료**: 각 Day별 실습 코드와 자동화 스크립트 제공
+> 📋 **실습 환경 설정**: [_setup_/README.md](cloud_intermediate/_setup_/README.md)
+> 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-intermediate.git cloud_intermediate` & https://app.goldencircle.us 에서 file 별 다운로드
 
 ---
 
@@ -28,7 +25,7 @@
 
 #### **🤖 자동화 실행 (권장)**
 ```bash
-# 전체 실습 자동화 실행
+# 전체 Day1 실습 자동화 실행
 cd mcp_knowledge_base/cloud_intermediate/repo/scripts
 ./day1-practice.sh --action all
 ```
@@ -152,22 +149,22 @@ chmod +x aws-ec2-create.sh
 ```bash
 # 생성된 인스턴스 정보 확인
 echo "=== AWS EC2 인스턴스 정보 ==="
-echo "인스턴스 ID: i-089c0d9f0e5a9b352"
-echo "Elastic IP: 54.180.203.112"
-echo "보안 그룹: sg-0c896c06c788efd8d"
-echo "키 페어: cloud-deployment-key"
+echo "인스턴스 ID: YOUR_EC2_INSTANCE_ID"
+echo "Elastic IP: YOUR_EC2_PUBLIC_IP"
+echo "보안 그룹: YOUR_SECURITY_GROUP_ID"
+echo "키 페어: your-key-name"
 ```
 
 #### **1-5. 키 페어 확인 및 VM 접속**
 ```bash
-# 1. 키 페어 파일 확인
-ls -la cloud-deployment-key.pem
+# 1. 키 페어 파일 확인 (실제 키 파일명으로 교체 필요)
+ls -la your-ssh-key.pem
 
 # 2. 키 파일 권한 설정 (필요한 경우)
-chmod 400 cloud-deployment-key.pem
+chmod 400 your-ssh-key.pem
 
-# 3. SSH로 VM 접속
-ssh -i cloud-deployment-key.pem ec2-user@54.180.203.112
+# 3. SSH로 VM 접속 (실제 키 파일명과 IP 주소로 교체 필요)
+ssh -i your-ssh-key.pem ec2-user@YOUR_EC2_IP
 
 # 4. 시스템 정보 확인
 echo "=== 시스템 정보 ==="
@@ -279,24 +276,24 @@ echo "jq: $(jq --version)"
 # aws-ec2-create.sh 스크립트가 자동으로 키 페어를 생성합니다:
 
 # 1. 로컬 키 파일 확인
-if [ -f "cloud-deployment-key.pem" ]; then
-    echo "✅ 기존 키 파일 발견: cloud-deployment-key.pem"
+if [ -f "your-ssh-key.pem" ]; then
+    echo "✅ 기존 키 파일 발견: your-ssh-key.pem"
     # 기존 키 파일 사용
 else
     echo "❌ 로컬 키 파일이 없습니다. AWS에서 확인 후 생성합니다."
 fi
 
 # 2. AWS에서 키 페어 존재 여부 확인
-aws ec2 describe-key-pairs --key-names cloud-deployment-key
+aws ec2 describe-key-pairs --key-names your-key-name
 
 # 3. 키 페어가 없으면 자동 생성
 aws ec2 create-key-pair \
-    --key-name cloud-deployment-key \
+    --key-name your-key-name \
     --query 'KeyMaterial' \
-    --output text > cloud-deployment-key.pem
+    --output text > your-ssh-key.pem
 
 # 4. 키 파일 권한 자동 설정 (400)
-chmod 400 cloud-deployment-key.pem
+chmod 400 your-ssh-key.pem
 ```
 
 </details>
@@ -312,27 +309,422 @@ chmod 400 cloud-deployment-key.pem
 ./lecture-monitor.sh --status
 ```
 
-# 5. 생성 완료 확인
-echo "✅ 키 페어 생성 완료: cloud-deployment-key.pem"
-echo "✅ 권한 설정 완료: 400 (소유자만 읽기 가능)"
+<details>
+<summary>📁 강의 자료 구조 및 상세 일정</summary>
+
+## 📁 **1일차 강의 자료 구조**
+
+### **디렉토리 구조**
+```
+./cloud_intermediate/
+├── samples/day1/
+│   ├── docker-advanced/          # Docker 고급 실습
+│   ├── kubernetes-basics/        # Kubernetes 기초 실습
+│   ├── cloud-container-services/ # 클라우드 컨테이너 서비스
+│   └── monitoring-hub/           # 통합 모니터링 허브 구축 실습
+|       ├── docker-compose.yml           # 모니터링 스택 구성
+|       ├── prometheus/
+|       │   └── prometheus.yml          # Prometheus 설정
+|       ├── alertmanager/
+|       │   └── alertmanager.yml        # AlertManager 설정|
+|       └── grafana/
+|           ├── datasources.yml         # Grafana 데이터소스
+|           └── dashboards.yml          # Grafana 대시보드 설정
+├── scripts/
+│   ├── day1-practice.sh          # Day1 실습 자동화
+│   └── cloud-intermediate-helper.sh # 통합 헬퍼
+└── textbook/Day1/
+    ├── README.md                     # Day1 개요
+    └── practice/                     # 실습 가이드
+        ├── docker-advanced.md
+        ├── kubernetes-basics.md
+        └── cloud-container-services.md
 ```
 
-#### **1-7. 키 페어 생성 실패 시 해결 방법**
+## 📅 **1일차 강의 일정**
+
+### 🌅 **오전 ["4시간"] - 컨테이너 기초**
+
+#### **1교시: Docker 고급 활용 ["90분"]**
+- **목표**: 멀티스테이지 빌드와 최적화 기법 학습
+- **실습**: 최적화된 Dockerfile 작성 및 이미지 빌드
+
+**🔍 실습 코드 위치**
+- **샘플 코드**: `cloud_intermediate/samples/day1/docker-advanced/`
+- **자동화 스크립트**: `cloud_intermediate/scripts/day1-practice.sh`
+
+**📋 실습 단계**
+```bash
+# 1. 실습 환경 준비
+cd cloud_intermediate/scripts
+./day1-practice.sh
+
+# 2. Docker 고급 실습 선택
+# 메뉴에서 "1. Docker 고급 실습" 선택
+
+# 3. 멀티스테이지 Dockerfile 작성
+# 최적화된 Dockerfile 생성
+
+# 4. Docker 이미지 빌드 및 테스트
+docker build -t docker-advanced:optimized .
+docker run -d --name test-container -p 8080:80 docker-advanced:optimized
+```
+
+**🎯 학습 결과**
+- ✅ 멀티스테이지 빌드로 이미지 크기 최적화
+- ✅ Prometheus 메트릭 엔드포인트 구현
+- ✅ 보안 강화된 컨테이너 이미지 생성
+
+#### **2교시: Kubernetes 기초 ["90분"]**
+- **목표**: Pod, Service, Deployment 기본 개념 학습
+- **실습**: Kubernetes 리소스 생성 및 관리
+
+**🔍 실습 코드 위치**
+- **샘플 코드**: `cloud_intermediate/samples/day1/kubernetes-basics/`
+- **자동화 스크립트**: `cloud_intermediate/scripts/day1-practice.sh`
+
+**📋 실습 단계**
+```bash
+# 1. Kubernetes 환경 준비
+# minikube 설치 및 시작
+
+# 2. 네임스페이스 및 기본 리소스 생성
+kubectl apply -f namespace.yaml
+
+# 3. Deployment 및 Service 생성
+kubectl apply -f nginx-deployment.yaml
+
+# 4. ConfigMap 및 Secret 실습
+kubectl apply -f configmap-secret.yaml
+```
+
+**🎯 학습 결과**
+- ✅ Kubernetes 기본 리소스 이해
+- ✅ ConfigMap과 Secret을 활용한 설정 관리
+- ✅ 네임스페이스와 리소스 쿼터 관리
+
+### 🌆 **오후 ["4시간"] - 클라우드 컨테이너 서비스 및 모니터링 기초**
+
+#### **3교시: AWS ECS 기초 ["90분"]**
+- **목표**: AWS ECS를 활용한 컨테이너 서비스 배포
+- **실습**: ECS 클러스터 생성 및 태스크 정의
+
+**🔍 실습 코드 위치**
+- **샘플 코드**: `cloud_intermediate/samples/day1/cloud-container-services/`
+- **자동화 스크립트**: `cloud_intermediate/scripts/day1-practice.sh`
+
+**📋 실습 단계**
+```bash
+# 1. AWS ECS 환경 준비
+# AWS CLI 설정 확인
+
+# 2. ECS 클러스터 생성
+aws ecs create-cluster --cluster-name cloud-intermediate-cluster
+
+# 3. 태스크 정의 생성 및 등록
+aws ecs register-task-definition --cli-input-json file://aws-ecs-task-definition.json
+
+# 4. ECS 서비스 생성 및 실행
+aws ecs create-service --cluster cloud-intermediate-cluster --service-name cloud-intermediate-service
+```
+
+**🎯 학습 결과**
+- ✅ AWS ECS 클러스터 생성 및 관리
+- ✅ Fargate를 활용한 서버리스 컨테이너 실행
+- ✅ 태스크 정의를 통한 컨테이너 설정
+
+#### **4교시: 통합 모니터링 허브 구축 ["90분"]**
+- **목표**: 멀티 클라우드 환경을 위한 통합 모니터링 허브 구축
+- **실습**: Phase 1 (AWS VM 기반 Global Prometheus + Grafana 설정)
+
+**🔍 실습 코드 위치**
+- **샘플 코드**: `cloud_intermediate/samples/day1/monitoring-hub/`
+- **자동화 스크립트**: `cloud_intermediate/scripts/monitoring-stack.sh`
+
+**📋 실습 단계**
+```bash
+# 1. 모니터링 환경 준비
+# Docker 및 Docker Compose 설치 확인
+
+# 2. Global Prometheus 설정
+# Prometheus 설정 파일 생성
+
+# 3. Grafana 설정
+# Grafana 데이터소스 및 대시보드 설정
+
+# 4. Docker Compose 스택 실행
+docker-compose up -d
+```
+
+**🎯 학습 결과**
+- ✅ AWS VM 기반 통합 모니터링 허브 구축
+- ✅ Global Prometheus + Grafana 정상 동작
+- ✅ Node Exporter를 통한 시스템 메트릭 수집
+- ✅ 멀티 클라우드 모니터링 기반 환경 준비
+
+</details>
+
+### 🔧 **사전 요구사항 확인**
+```bash
+# 1. 필수 도구 설치 확인
+echo "=== 필수 도구 확인 ==="
+command -v aws && echo "✅ AWS CLI 설치됨" || echo "❌ AWS CLI 설치 필요"
+command -v gcloud && echo "✅ GCP CLI 설치됨" || echo "❌ GCP CLI 설치 필요"
+command -v docker && echo "✅ Docker 설치됨" || echo "❌ Docker 설치 필요"
+command -v docker-compose && echo "✅ Docker Compose 설치됨" || echo "❌ Docker Compose 설치 필요"
+command -v kubectl && echo "✅ kubectl 설치됨" || echo "❌ kubectl 설치 필요"
+command -v jq && echo "✅ jq 설치됨" || echo "❌ jq 설치 필요"
+command -v curl && echo "✅ curl 설치됨" || echo "❌ curl 설치 필요"
+
+# 2. 클라우드 계정 설정 확인
+echo "=== 클라우드 계정 설정 확인 ==="
+aws sts get-caller-identity && echo "✅ AWS 계정 설정됨" || echo "❌ AWS 계정 설정 필요"
+gcloud auth list && echo "✅ GCP 계정 설정됨" || echo "❌ GCP 계정 설정 필요"
+
+# 3. Docker 서비스 상태 확인
+echo "=== Docker 서비스 상태 확인 ==="
+docker --version
+docker-compose --version
+docker ps
+```
+
+### 📋 **실습 전 체크리스트**
+
+#### **자동 체크 ["권장"]**
+```bash
+# 환경 체크 스크립트 실행
+cd ./cloud_intermediate/scripts
+./cloud-intermediate-helper.sh check-environment
+```
+
+#### **수동 체크**
+- [ ] **AWS CLI 설정**: `aws sts get-caller-identity` 성공
+- [ ] **GCP CLI 설정**: `gcloud auth list` 성공  
+- [ ] **Docker 실행**: `docker --version` 확인
+- [ ] **kubectl 설치**: Kubernetes 클러스터 관리 준비
+- [ ] **권한 확인**: AWS/GCP 리소스 생성 권한
+- [ ] **네트워크 확인**: 인터넷 연결 및 방화벽 설정
+- [ ] **Git Repository 준비**: 실습 코드 저장소 생성 및 설정
+
+## 🛠️ **실습 자동화 도구**
+
+### **통합 헬퍼 스크립트**
+```bash
+# 환경 체크
+./cloud-intermediate-helper.sh check-environment
+
+# Docker 실습
+./cloud-intermediate-helper.sh docker-practice
+
+# Kubernetes 실습
+./cloud-intermediate-helper.sh kubernetes-practice
+
+# 클라우드 서비스 실습
+./cloud-intermediate-helper.sh cloud-services-practice
+```
+
+### **Day1 실습 자동화**
+```bash
+# 전체 Day1 실습 실행
+./day1-practice.sh
+
+# 개별 실습 실행
+./day1-practice.sh docker-advanced
+./day1-practice.sh kubernetes-basics
+./day1-practice.sh cloud-container-services
+./day1-practice.sh monitoring-hub
+```
+
+## 📊 **학습 성과 측정**
+
+### **1교시 완료 확인**
+- [ ] 멀티스테이지 Dockerfile 작성 완료
+- [ ] Prometheus 메트릭 엔드포인트 구현
+- [ ] 최적화된 Docker 이미지 빌드 성공
+- [ ] 이미지 크기 50% 이상 감소 확인
+
+### **1교시 테스트 과정**
+```bash
+# Docker 이미지 빌드 테스트
+cd samples/day1/docker-advanced/
+docker build -t test-optimized .
+
+# 이미지 크기 확인
+docker images test-optimized
+
+# 컨테이너 실행 테스트
+docker run -d --name test-container -p 8080:80 test-optimized
+
+# 컨테이너 상태 확인
+docker ps
+docker logs test-container
+
+# 정리
+docker stop test-container
+docker rm test-container
+```
+
+### **2교시 완료 확인**
+- [ ] Kubernetes 네임스페이스 생성
+- [ ] Deployment 및 Service 생성 성공
+- [ ] ConfigMap과 Secret 설정 완료
+- [ ] Pod 상태 정상 확인
+
+### **2교시 테스트 과정**
+```bash
+# Kubernetes 리소스 상태 확인
+kubectl get all --all-namespaces
+
+# 네임스페이스 확인
+kubectl get namespaces
+
+# Pod 상태 확인
+kubectl get pods -n default
+
+# Service 확인
+kubectl get services
+
+# ConfigMap 확인
+kubectl get configmaps
+
+# Secret 확인
+kubectl get secrets
+```
+
+### **3교시 완료 확인**
+- [ ] AWS ECS 클러스터 생성 성공
+- [ ] 태스크 정의 등록 완료
+- [ ] ECS 서비스 실행 및 상태 확인
+- [ ] Fargate 태스크 정상 동작
+
+### **3교시 테스트 과정**
+```bash
+# AWS ECS 클러스터 상태 확인
+aws ecs describe-clusters --clusters cloud-intermediate-cluster
+
+# 태스크 정의 확인
+aws ecs list-task-definitions
+
+# ECS 서비스 상태 확인
+aws ecs describe-services --cluster cloud-intermediate-cluster --services cloud-intermediate-service
+
+# 태스크 상태 확인
+aws ecs list-tasks --cluster cloud-intermediate-cluster
+```
+
+### **4교시 완료 확인**
+- [ ] AWS VM 통합 모니터링 허브 구축 완료
+- [ ] Global Prometheus + Grafana 정상 동작 확인
+- [ ] Node Exporter 메트릭 수집 확인
+- [ ] 멀티 클라우드 모니터링 기반 환경 준비 완료
+
+### **4교시 테스트 과정**
+```bash
+# 모니터링 스택 상태 확인
+bash scripts/monitoring-stack.sh status
+
+# 서비스 접근성 확인
+curl http://localhost:9090/api/v1/query?query=up
+curl http://localhost:3000/api/health
+curl http://localhost:9100/metrics | head -10
+```
+
+## 🚨 **문제 해결 가이드**
+
+### **Docker 관련 문제**
+```bash
+# Docker 서비스 재시작
+sudo systemctl restart docker
+
+# Docker 이미지 정리
+docker system prune -a
+
+# 권한 문제 해결
+sudo usermod -aG docker $USER
+```
+
+### **Kubernetes 관련 문제**
+```bash
+# kubectl 설정 확인
+kubectl config current-context
+
+# 클러스터 연결 확인
+kubectl cluster-info
+
+# 리소스 상태 확인
+kubectl get all --all-namespaces
+```
+
+### **클라우드 서비스 관련 문제**
+```bash
+# AWS 자격 증명 확인
+aws sts get-caller-identity
+
+# GCP 프로젝트 설정 확인
+gcloud config get-value project
+
+# 리소스 상태 확인
+aws ecs list-clusters
+gcloud run services list
+```
+
+## 📚 **추가 학습 자료**
+
+### **공식 문서**
+- [Docker 공식 문서](https://docs.docker.com/)
+- [Kubernetes 공식 문서](https://kubernetes.io/docs/)
+- [AWS ECS 공식 문서](https://docs.aws.amazon.com/ecs/)
+- [GCP Cloud Run 공식 문서](https://cloud.google.com/run/docs)
+
+### **실습 코드 저장소**
+- [GitHub Repository](https://github.com/jungfrau70/cloud-intermediate.git)
+- [실습 코드](cloud_intermediate/samples/day1/)
+- [자동화 스크립트](cloud_intermediate/scripts/)
+
+## 🎯 **다음 단계 안내**
+
+### **Day2 준비사항**
+- [ ] Day1 실습 완료 확인
+- [ ] GitHub Actions 워크플로우 준비
+- [ ] CI/CD 파이프라인 설계
+- [ ] 모니터링 스택 준비 [Prometheus + Grafana]
+
+### **실무 적용 방안**
+- [ ] 회사 프로젝트에 Docker 최적화 적용
+- [ ] Kubernetes 클러스터 구축 계획 수립
+- [ ] 클라우드 컨테이너 서비스 도입 검토
+- [ ] 모니터링 및 로깅 시스템 구축
+
+## 🎉 **Day1 핵심 학습 완료**
+
+### **📊 학습 성과 확인**
+```bash
+# 전체 실습 완료 확인
+./day1-practice.sh --status
+
+# 학습 성과 리포트 생성
+./lecture-monitor.sh --report
+```
+
+---
+
+**💡 궁금한 점이 있으시면 언제든 문의해주세요!**  
+**문제가 발생하거나 도움이 필요하시면 실시간으로 지원해드리겠습니다.**
 ```bash
 # 키 페어 생성이 실패한 경우 수동으로 생성:
 
 # 1. AWS CLI로 키 페어 생성
 aws ec2 create-key-pair \
-    --key-name cloud-deployment-key \
+    --key-name your-key-name \
     --query 'KeyMaterial' \
-    --output text > cloud-deployment-key.pem
+    --output text > your-ssh-key.pem
 
 # 2. 키 파일 권한 설정
-chmod 400 cloud-deployment-key.pem
+chmod 400 your-ssh-key.pem
 
 # 3. 키 파일 확인
-ls -la cloud-deployment-key.pem
-# 예상 결과: -r-------- 1 user user 1674 Dec 10 10:00 cloud-deployment-key.pem
+ls -la your-ssh-key.pem
+# 예상 결과: -r-------- 1 user user 1674 Dec 10 10:00 your-ssh-key.pem
 ```
 
 ### 🔧 **Step 2: 사전 요구사항 확인**
@@ -421,7 +813,7 @@ cd ./cloud_intermediate/scripts
 #### **3-1. 실습 환경 준비 (10분)**
 ```bash
 # 1. AWS VM에 SSH 접속
-ssh -i cloud-deployment-key.pem ec2-user@54.180.203.112
+ssh -i your-ssh-key.pem ec2-user@YOUR_EC2_IP
 
 # 2. 실습 디렉토리 생성
 mkdir -p ~/cloud_intermediate/samples/day1/docker-advanced
@@ -593,7 +985,7 @@ docker rm test-container
 #### **4-1. Kubernetes 환경 준비 (15분)**
 ```bash
 # 1. AWS VM에 SSH 접속
-ssh -i cloud-deployment-key.pem ec2-user@54.180.203.112
+ssh -i your-ssh-key.pem ec2-user@YOUR_EC2_IP
 
 # 2. kubectl 설치
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -847,7 +1239,7 @@ kubectl exec -n cloud-intermediate deployment/app-with-config -- env | grep -E "
 #### **5-1. AWS ECS 환경 준비 (15분)**
 ```bash
 # 1. AWS VM에 SSH 접속
-ssh -i cloud-deployment-key.pem ec2-user@54.180.203.112
+ssh -i your-ssh-key.pem ec2-user@YOUR_EC2_IP
 
 # 2. AWS CLI 설정 확인
 aws sts get-caller-identity
@@ -998,7 +1390,7 @@ aws ecs list-tasks --cluster cloud-intermediate-cluster
 
 ```bash
 # 1. AWS VM에 SSH 접속
-ssh -i cloud-deployment-key.pem ec2-user@54.180.203.112
+ssh -i your-ssh-key.pem ec2-user@YOUR_EC2_IP
 
 # 2. Docker 및 Docker Compose 설치 확인
 sudo systemctl status docker

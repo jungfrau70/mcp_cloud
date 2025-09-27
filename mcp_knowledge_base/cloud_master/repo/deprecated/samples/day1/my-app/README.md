@@ -77,7 +77,7 @@ docker ps
 ### 3단계: VM 배포
 ```bash
 # AWS EC2에 SSH 연결
-ssh -i cloud-deployment-key.pem ubuntu@EC2_PUBLIC_IP
+ssh -i your-ssh-key.pem ubuntu@YOUR_EC2_IP
 
 # GCP VM에 SSH 연결
 gcloud compute ssh cloud-deployment-server --zone=asia-northeast3-a
