@@ -9,7 +9,7 @@ set -u
 set -o pipefail
 
 # 리소스 관리 유틸리티 로드
-source "$(dirname "$0")/resource-manager.sh"
+source "$(dirname "$0")/../../tools/monitoring/resource-manager.sh"
 
 # 사용법 출력
 usage() {
@@ -27,7 +27,11 @@ usage() {
     echo "  --action docker-advanced     # Docker 고급 실습"
     echo "  --action kubernetes-basics   # Kubernetes 기초 실습"
     echo "  --action cloud-services     # 클라우드 컨테이너 서비스"
-    echo "  --action monitoring-hub     # 모니터링 허브 구축"
+    echo "  --action cluster-status     # 클러스터 현황 확인"
+    echo "  --action deployment         # 배포 관리"
+    echo "  --action cluster            # 클러스터 관리"
+    echo "  --action monitoring-hub    # 모니터링 허브 구축"
+    echo "  --action cleanup            # 실습 환경 정리"
     echo "  --action all                # 전체 실습 실행"
     echo ""
     echo "예시:"
@@ -67,7 +71,7 @@ WORKDIR /app
 
 # 의존성 파일만 먼저 복사 (캐시 최적화)
 COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+RUN npm install --only=production && npm cache clean --force
 
 # 애플리케이션 코드 복사
 COPY . .
@@ -377,72 +381,220 @@ data:
   database_password: cG9zdGdyZXNfcGFzc3dvcmQ=  # base64 encoded "postgres_password"
 EOF
 
-    # 6. 로컬 Kubernetes 환경 확인
-    log_info "2. Kubernetes 환경 확인"
-    if command -v minikube &> /dev/null; then
-        log_info "minikube 시작"
-        minikube start
-        kubectl config use-context minikube
-    elif docker info | grep -q "Kubernetes: enabled"; then
-        log_info "Docker Desktop Kubernetes 사용"
+    # 6. AWS EKS 환경 확인 및 설정
+    log_info "2. AWS EKS 환경 확인"
+    if command -v aws &> /dev/null; then
+        log_info "AWS CLI 확인됨"
+        
+        # AWS 자격 증명 확인
+        if aws sts get-caller-identity &> /dev/null; then
+            log_success "AWS 자격 증명 확인됨"
+            
+            # EKS 클러스터 목록 확인
+            log_info "EKS 클러스터 확인 중..."
+            local clusters=$(aws eks list-clusters --query 'clusters[]' --output text 2>/dev/null || echo "")
+            
+            if [ -n "$clusters" ]; then
+                log_info "사용 가능한 EKS 클러스터: $clusters"
+                
+                # 첫 번째 클러스터 사용
+                local cluster_name=$(echo "$clusters" | head -1)
+                log_info "클러스터 '$cluster_name' 사용"
+                
+                # kubeconfig 업데이트
+                aws eks update-kubeconfig --region us-west-2 --name "$cluster_name" 2>/dev/null || \
+                aws eks update-kubeconfig --region us-east-1 --name "$cluster_name" 2>/dev/null || \
+                aws eks update-kubeconfig --region ap-northeast-2 --name "$cluster_name" 2>/dev/null
+                
+                # 클러스터 연결 확인
+                if kubectl cluster-info &> /dev/null; then
+                    log_success "EKS 클러스터 연결 성공"
+                else
+                    log_warning "EKS 클러스터 연결 실패"
+                fi
+            else
+                log_warning "EKS 클러스터가 없습니다. 새 클러스터를 생성하거나 기존 클러스터를 확인하세요."
+                log_info "EKS 클러스터 생성 예시:"
+                echo "  aws eks create-cluster --name my-cluster --role-arn arn:aws:iam::ACCOUNT:role/eksServiceRole --resources-vpc-config subnetIds=subnet-12345,subnet-67890"
+            fi
+        else
+            log_error "AWS 자격 증명이 설정되지 않았습니다."
+            log_info "AWS 자격 증명 설정:"
+            echo "  aws configure"
+            echo "  또는"
+            echo "  export AWS_ACCESS_KEY_ID=your-key"
+            echo "  export AWS_SECRET_ACCESS_KEY=your-secret"
+        fi
     else
-        log_warning "로컬 Kubernetes 환경이 없습니다. 클라우드 환경을 사용하세요."
+        log_error "AWS CLI가 설치되지 않았습니다."
+        log_info "AWS CLI 설치:"
+        echo "  curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip'"
+        echo "  unzip awscliv2.zip"
+        echo "  sudo ./aws/install"
     fi
 
-    # 7. 리소스 생성
-    log_info "3. Kubernetes 리소스 생성"
-    kubectl apply -f pod-basic.yaml
-    kubectl apply -f deployment-basic.yaml
-    kubectl apply -f service-basic.yaml
-    kubectl apply -f configmap-basic.yaml
-    kubectl apply -f secret-basic.yaml
+    # 7. EKS 리소스 생성
+    log_info "3. EKS 리소스 생성"
     
-    # 8. 상태 확인
-    log_info "4. 리소스 상태 확인"
-    kubectl get pods
-    kubectl get deployments
-    kubectl get services
-    kubectl get configmaps
-    kubectl get secrets
+    # EKS 클러스터 연결 확인
+    if kubectl cluster-info &> /dev/null; then
+        log_info "EKS 클러스터에 리소스 배포 중..."
+        
+        # 네임스페이스 생성
+        kubectl create namespace day1-practice --dry-run=client -o yaml | kubectl apply -f -
+        kubectl config set-context --current --namespace=day1-practice
+        
+        # 리소스 생성
+        kubectl apply -f pod-basic.yaml
+        kubectl apply -f deployment-basic.yaml
+        kubectl apply -f service-basic.yaml
+        kubectl apply -f configmap-basic.yaml
+        kubectl apply -f secret-basic.yaml
+        
+        log_success "EKS 리소스 생성 완료"
+    else
+        log_warning "EKS 클러스터에 연결할 수 없습니다. 리소스 생성을 건너뜁니다."
+        log_info "생성될 리소스 파일들:"
+        echo "  - pod-basic.yaml"
+        echo "  - deployment-basic.yaml" 
+        echo "  - service-basic.yaml"
+        echo "  - configmap-basic.yaml"
+        echo "  - secret-basic.yaml"
+    fi
     
-    # 9. 스케일링 테스트
-    log_info "5. Deployment 스케일링"
-    kubectl scale deployment myapp-deployment --replicas=5
-    sleep 10
-    kubectl get pods -l app=myapp
+    # 8. EKS 상태 확인
+    log_info "4. EKS 리소스 상태 확인"
     
-    # 10. 롤링 업데이트 테스트
-    log_info "6. 롤링 업데이트 테스트"
-    kubectl set image deployment/myapp-deployment myapp=nginx:1.22
-    kubectl rollout status deployment/myapp-deployment
-    
-    # 11. 롤백 테스트
-    log_info "7. 롤백 테스트"
-    kubectl rollout undo deployment/myapp-deployment
-    kubectl rollout status deployment/myapp-deployment
+    if kubectl cluster-info &> /dev/null; then
+        log_info "EKS 클러스터 리소스 상태:"
+        kubectl get pods -n day1-practice
+        kubectl get deployments -n day1-practice
+        kubectl get services -n day1-practice
+        kubectl get configmaps -n day1-practice
+        kubectl get secrets -n day1-practice
+        
+        # 9. EKS 스케일링 테스트
+        log_info "5. EKS Deployment 스케일링"
+        kubectl scale deployment myapp-deployment --replicas=3 -n day1-practice
+        sleep 15
+        kubectl get pods -l app=myapp -n day1-practice
+        
+        # 10. EKS 롤링 업데이트 테스트
+        log_info "6. EKS 롤링 업데이트 테스트"
+        kubectl set image deployment/myapp-deployment myapp=nginx:1.22 -n day1-practice
+        kubectl rollout status deployment/myapp-deployment -n day1-practice
+        
+        # 11. EKS 롤백 테스트
+        log_info "7. EKS 롤백 테스트"
+        kubectl rollout undo deployment/myapp-deployment -n day1-practice
+        kubectl rollout status deployment/myapp-deployment -n day1-practice
+        
+        # 12. EKS 서비스 엔드포인트 확인
+        log_info "8. EKS 서비스 엔드포인트 확인"
+        kubectl get services -n day1-practice
+        kubectl describe service myapp-service -n day1-practice
+    else
+        log_warning "EKS 클러스터에 연결할 수 없어 상태 확인을 건너뜁니다."
+        log_info "EKS 클러스터 연결 후 다음 명령어로 확인하세요:"
+        echo "  kubectl get pods -n day1-practice"
+        echo "  kubectl get deployments -n day1-practice"
+        echo "  kubectl get services -n day1-practice"
+    fi
     
     log_success "Kubernetes 기초 실습 완료"
     cd ..
 }
 
-# 클라우드 컨테이너 서비스 실습
+# 클라우드 컨테이너 서비스 실습 (EKS 중심)
 cloud_container_services_practice() {
-    log_header "클라우드 컨테이너 서비스 실습"
+    log_header "클라우드 컨테이너 서비스 실습 (EKS 중심)"
     
     local practice_dir="day1-cloud-container-services"
     mkdir -p "$practice_dir"
     cd "$practice_dir"
     
     # AWS EKS 실습
-    log_info "1. AWS EKS 실습"
+    log_info "1. AWS EKS 클러스터 생성 및 배포"
     if command -v aws &> /dev/null; then
-        # EKS 클러스터 생성 (시뮬레이션)
-        log_info "EKS 클러스터 생성 (시뮬레이션)"
+        # EKS Helper 함수 사용
+        log_info "EKS Helper 함수를 사용하여 클러스터 생성"
+        
+        # EKS Helper 스크립트 경로 설정
+        local eks_helper="../../tools/cloud/aws-eks-helper.sh"
+        
+        if [ -f "$eks_helper" ]; then
+            log_info "EKS Helper 스크립트 사용"
+            chmod +x "$eks_helper"
+            
+            # EKS 클러스터 생성
+            log_info "EKS 클러스터 생성 중..."
+            "$eks_helper" create
+            
+            if [ $? -eq 0 ]; then
+                log_success "EKS 클러스터 생성 완료"
+            else
+                log_warning "EKS 클러스터 생성 실패 또는 이미 존재"
+            fi
+        else
+            log_warning "EKS Helper 스크립트를 찾을 수 없습니다. 수동 스크립트 생성"
+            
+            # EKS 클러스터 생성 스크립트 (Fallback)
+            cat > create-eks-cluster.sh << 'EOF'
+#!/bin/bash
+
+# EKS 클러스터 생성 스크립트
+set -e
+
+CLUSTER_NAME="my-eks-cluster"
+REGION="us-west-2"
+NODE_GROUP_NAME="my-node-group"
+NODE_TYPE="t3.medium"
+NODE_COUNT=2
+
+echo "Creating EKS cluster: $CLUSTER_NAME"
+
+# 1. EKS 클러스터 생성
+aws eks create-cluster \
+  --name $CLUSTER_NAME \
+  --version "1.28" \
+  --role-arn arn:aws:iam::ACCOUNT:role/eksServiceRole \
+  --resources-vpc-config subnetIds=subnet-12345,subnet-67890,securityGroupIds=sg-12345 \
+  --region $REGION
+
+echo "Waiting for cluster to be active..."
+aws eks wait cluster-active --name $CLUSTER_NAME --region $REGION
+
+# 2. Node Group 생성
+aws eks create-nodegroup \
+  --cluster-name $CLUSTER_NAME \
+  --nodegroup-name $NODE_GROUP_NAME \
+  --scaling-config minSize=1,maxSize=3,desiredSize=$NODE_COUNT \
+  --instance-types $NODE_TYPE \
+  --node-role arn:aws:iam::ACCOUNT:role/eksNodeRole \
+  --subnets subnet-12345 subnet-67890 \
+  --region $REGION
+
+echo "Waiting for node group to be active..."
+aws eks wait nodegroup-active --cluster-name $CLUSTER_NAME --nodegroup-name $NODE_GROUP_NAME --region $REGION
+
+# 3. kubeconfig 업데이트
+aws eks update-kubeconfig --name $CLUSTER_NAME --region $REGION
+
+echo "EKS cluster created successfully!"
+kubectl get nodes
+EOF
+            
+            chmod +x create-eks-cluster.sh
+        fi
+        
+        # EKS 배포 매니페스트 생성
+        log_info "EKS 배포 매니페스트 생성"
         cat > eks-cluster-config.yaml << 'EOF'
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: eks-cluster-info
+  namespace: day1-practice
 data:
   cluster-name: "my-eks-cluster"
   region: "us-west-2"
@@ -450,19 +602,22 @@ data:
   node-count: "2"
   min-nodes: "1"
   max-nodes: "3"
+  version: "1.28"
 EOF
         
-        # EKS 배포 매니페스트 생성
+        # EKS 애플리케이션 배포 매니페스트 생성
+        log_info "EKS 애플리케이션 배포 매니페스트 생성"
         cat > eks-deployment.yaml << 'EOF'
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: myapp-eks
+  namespace: day1-practice
   labels:
     app: myapp
     platform: aws-eks
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: myapp
@@ -484,11 +639,24 @@ spec:
           limits:
             memory: "256Mi"
             cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: myapp-eks-service
+  namespace: day1-practice
 spec:
   selector:
     app: myapp
@@ -496,38 +664,141 @@ spec:
   - port: 80
     targetPort: 80
   type: LoadBalancer
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myapp-config
+  namespace: day1-practice
+data:
+  app_name: "My EKS Application"
+  environment: "production"
+  log_level: "info"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: myapp-secret
+  namespace: day1-practice
+type: Opaque
+data:
+  api_key: YWJjZGVmZ2hpams=  # base64 encoded "abcdefghijk"
+  database_url: cG9zdGdyZXM6Ly9sb2NhbGhvc3Q6NTQzMi9teWFwcA==  # base64 encoded "postgres://localhost:5432/myapp"
 EOF
         
-        log_info "EKS 배포 매니페스트 생성 완료"
+        # EKS 배포 스크립트 생성
+        log_info "EKS 배포 스크립트 생성"
+        cat > deploy-to-eks.sh << 'EOF'
+#!/bin/bash
+
+# EKS 배포 스크립트
+set -e
+
+CLUSTER_NAME="my-eks-cluster"
+REGION="us-west-2"
+NAMESPACE="day1-practice"
+
+echo "Deploying to EKS cluster: $CLUSTER_NAME"
+
+# 1. 클러스터 연결 확인
+if ! kubectl cluster-info &> /dev/null; then
+    echo "Connecting to EKS cluster..."
+    aws eks update-kubeconfig --name $CLUSTER_NAME --region $REGION
+fi
+
+# 2. 네임스페이스 생성
+kubectl create namespace $NAMESPACE --dry-run=client -o yaml | kubectl apply -f -
+
+# 3. 애플리케이션 배포
+kubectl apply -f eks-deployment.yaml
+
+# 4. 배포 상태 확인
+echo "Waiting for deployment to be ready..."
+kubectl rollout status deployment/myapp-eks -n $NAMESPACE --timeout=300s
+
+# 5. 서비스 상태 확인
+kubectl get services -n $NAMESPACE
+kubectl get pods -n $NAMESPACE
+
+# 6. LoadBalancer 엔드포인트 확인
+echo "Getting LoadBalancer endpoint..."
+kubectl get service myapp-eks-service -n $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+
+echo "Deployment completed successfully!"
+EOF
+        
+        chmod +x deploy-to-eks.sh
+        
+        log_info "EKS 배포 매니페스트 및 스크립트 생성 완료"
     else
         log_warning "AWS CLI가 설치되지 않음"
     fi
     
-    # GCP GKE 실습
-    log_info "2. GCP GKE 실습"
+    # GCP GKE 실습 (참고용)
+    log_info "2. GCP GKE 실습 (참고용)"
     if command -v gcloud &> /dev/null; then
-        # GKE 클러스터 생성 (시뮬레이션)
-        log_info "GKE 클러스터 생성 (시뮬레이션)"
-        cat > gke-cluster-config.yaml << 'EOF'
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: gke-cluster-info
-data:
-  cluster-name: "my-gke-cluster"
-  zone: "us-central1-a"
-  node-count: "2"
-  machine-type: "e2-medium"
-  min-nodes: "1"
-  max-nodes: "3"
-EOF
+        # GKE Helper 함수 사용
+        log_info "GKE Helper 함수를 사용하여 클러스터 생성 (참고용)"
         
-        # GKE 배포 매니페스트 생성
+        # GKE Helper 스크립트 경로 설정
+        local gke_helper="../../tools/cloud/gcp-gke-helper.sh"
+        
+        if [ -f "$gke_helper" ]; then
+            log_info "GKE Helper 스크립트 사용 (참고용)"
+            chmod +x "$gke_helper"
+            
+            # GKE 클러스터 생성 (참고용)
+            log_info "GKE 클러스터 생성 중... (참고용)"
+            "$gke_helper" create
+            
+            if [ $? -eq 0 ]; then
+                log_success "GKE 클러스터 생성 완료 (참고용)"
+            else
+                log_warning "GKE 클러스터 생성 실패 또는 이미 존재 (참고용)"
+            fi
+        else
+            log_warning "GKE Helper 스크립트를 찾을 수 없습니다. 수동 스크립트 생성 (참고용)"
+            
+            # GKE 클러스터 생성 스크립트 (Fallback)
+            cat > create-gke-cluster.sh << 'EOF'
+#!/bin/bash
+
+# GKE 클러스터 생성 스크립트 (참고용)
+set -e
+
+CLUSTER_NAME="my-gke-cluster"
+ZONE="us-central1-a"
+NODE_COUNT=2
+MACHINE_TYPE="e2-medium"
+
+echo "Creating GKE cluster: $CLUSTER_NAME"
+
+# 1. GKE 클러스터 생성
+gcloud container clusters create $CLUSTER_NAME \
+  --zone $ZONE \
+  --num-nodes $NODE_COUNT \
+  --machine-type $MACHINE_TYPE \
+  --enable-autoscaling \
+  --min-nodes 1 \
+  --max-nodes 3
+
+# 2. 클러스터 연결
+gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE
+
+echo "GKE cluster created successfully!"
+kubectl get nodes
+EOF
+            
+            chmod +x create-gke-cluster.sh
+        fi
+        
+        # GKE 배포 매니페스트 (참고용)
         cat > gke-deployment.yaml << 'EOF'
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: myapp-gke
+  namespace: day1-practice
   labels:
     app: myapp
     platform: gcp-gke
@@ -559,6 +830,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: myapp-gke-service
+  namespace: day1-practice
 spec:
   selector:
     app: myapp
@@ -568,37 +840,383 @@ spec:
   type: LoadBalancer
 EOF
         
-        log_info "GKE 배포 매니페스트 생성 완료"
+        log_info "GKE 배포 매니페스트 생성 완료 (참고용)"
     else
         log_warning "GCP CLI가 설치되지 않음"
     fi
     
+    # 통합 클러스터 관리
+    log_info "3. 통합 클러스터 관리"
+    local cluster_helper="../../tools/cloud/cloud-cluster-helper.sh"
+    
+    if [ -f "$cluster_helper" ]; then
+        log_info "통합 클러스터 Helper 사용"
+        chmod +x "$cluster_helper"
+        
+        # 클러스터 상태 확인
+        log_info "클러스터 상태 확인"
+        "$cluster_helper" status
+        
+        # 필요시 클러스터 생성
+        log_info "클러스터 생성 옵션 제공"
+        echo "통합 클러스터 Helper 사용 가능:"
+        echo "  - ./cloud-cluster-helper.sh create    # 멀티 클라우드 클러스터 생성"
+        echo "  - ./cloud-cluster-helper.sh status    # 클러스터 상태 확인"
+        echo "  - ./cloud-cluster-helper.sh delete    # 클러스터 삭제"
+    else
+        log_warning "통합 클러스터 Helper를 찾을 수 없습니다"
+    fi
+    
+    # EKS 실제 배포 테스트
+    log_info "4. EKS 실제 배포 테스트"
+    if command -v aws &> /dev/null && aws sts get-caller-identity &> /dev/null; then
+        log_info "EKS 클러스터 연결 테스트"
+        
+        # 기존 EKS 클러스터 확인
+        local existing_clusters=$(aws eks list-clusters --query 'clusters[]' --output text 2>/dev/null || echo "")
+        
+        if [ -n "$existing_clusters" ]; then
+            log_info "기존 EKS 클러스터 발견: $existing_clusters"
+            local cluster_name=$(echo "$existing_clusters" | head -1)
+            
+            # 클러스터 연결
+            aws eks update-kubeconfig --name "$cluster_name" --region us-west-2 2>/dev/null || \
+            aws eks update-kubeconfig --name "$cluster_name" --region us-east-1 2>/dev/null || \
+            aws eks update-kubeconfig --name "$cluster_name" --region ap-northeast-2 2>/dev/null
+            
+            if kubectl cluster-info &> /dev/null; then
+                log_success "EKS 클러스터 연결 성공"
+                
+                # 실제 배포 테스트
+                log_info "EKS에 애플리케이션 배포 테스트"
+                kubectl create namespace day1-practice --dry-run=client -o yaml | kubectl apply -f -
+                kubectl apply -f eks-deployment.yaml
+                
+                # 배포 상태 확인
+                log_info "배포 상태 확인 중..."
+                sleep 30
+                kubectl get pods -n day1-practice
+                kubectl get services -n day1-practice
+                
+                # LoadBalancer 엔드포인트 확인
+                local lb_endpoint=$(kubectl get service myapp-eks-service -n day1-practice -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' 2>/dev/null || echo "")
+                if [ -n "$lb_endpoint" ]; then
+                    log_success "LoadBalancer 엔드포인트: $lb_endpoint"
+                else
+                    log_warning "LoadBalancer 엔드포인트를 가져올 수 없습니다"
+                fi
+            else
+                log_warning "EKS 클러스터 연결 실패"
+            fi
+        else
+            log_warning "EKS 클러스터가 없습니다"
+            log_info "EKS 클러스터 생성 방법:"
+            echo "  1. AWS 콘솔에서 EKS 클러스터 생성"
+            echo "  2. 또는 ./create-eks-cluster.sh 스크립트 실행"
+        fi
+    else
+        log_warning "AWS 자격 증명이 설정되지 않았습니다"
+    fi
+    
     # 클라우드 서비스 비교
-    log_info "3. 클라우드 서비스 비교"
+    log_info "4. 클라우드 서비스 비교"
     cat > cloud-comparison.md << 'EOF'
 # AWS EKS vs GCP GKE 비교
 
-## AWS EKS
+## AWS EKS (Elastic Kubernetes Service)
 - **관리형 Kubernetes 서비스**
-- **장점**: AWS 생태계 통합, IAM 통합, CloudWatch 모니터링
-- **단점**: 복잡한 설정, 높은 비용
-- **사용 사례**: AWS 중심 환경, 엔터프라이즈급 애플리케이션
+- **장점**: 
+  - AWS 생태계 완벽 통합 (IAM, VPC, CloudWatch, ALB)
+  - 엔터프라이즈급 보안 및 컴플라이언스
+  - Fargate 서버리스 옵션
+  - 강력한 네트워킹 및 보안 기능
+- **단점**: 
+  - 복잡한 초기 설정
+  - 높은 비용 (컨트롤 플레인 비용)
+  - AWS 의존성
+- **사용 사례**: 
+  - AWS 중심 환경
+  - 엔터프라이즈급 애플리케이션
+  - 복잡한 보안 요구사항
 
-## GCP GKE
+## GCP GKE (Google Kubernetes Engine)
 - **관리형 Kubernetes 서비스**
-- **장점**: 간단한 설정, 자동 스케일링, 비용 효율성
-- **단점**: GCP 생태계 의존성
-- **사용 사례**: 클라우드 네이티브 애플리케이션, 마이크로서비스
+- **장점**: 
+  - 간단한 설정 및 관리
+  - 자동 스케일링 및 업그레이드
+  - 비용 효율성
+  - Google의 Kubernetes 전문성
+- **단점**: 
+  - GCP 생태계 의존성
+  - 제한적인 커스터마이징
+- **사용 사례**: 
+  - 클라우드 네이티브 애플리케이션
+  - 마이크로서비스 아키텍처
+  - 빠른 프로토타이핑
 
 ## 선택 기준
 1. **기존 인프라**: AWS 사용 중이면 EKS, GCP 사용 중이면 GKE
 2. **비용**: GKE가 일반적으로 더 비용 효율적
 3. **복잡성**: GKE가 설정이 더 간단
 4. **통합**: 각 클라우드의 다른 서비스와의 통합도 고려
+5. **보안**: EKS가 더 강력한 보안 기능 제공
+6. **스케일링**: GKE가 자동 스케일링에 더 우수
+
+## 실습 권장사항
+- **초급자**: GKE로 시작하여 Kubernetes 기본 개념 학습
+- **중급자**: EKS로 실제 프로덕션 환경 경험
+- **고급자**: 두 플랫폼 모두 경험하여 최적의 선택
 EOF
     
     log_success "클라우드 컨테이너 서비스 실습 완료"
     cd ..
+}
+
+# 통합 클러스터 관리
+unified_cluster_management() {
+    log_header "K8s 클러스터 관리"
+    
+    # 클러스터 관리 메뉴
+    show_cluster_menu() {
+        echo ""
+        log_header "K8s 클러스터 관리 메뉴"
+        echo "1. 클러스터 현황 확인"
+        echo "2. EKS 클러스터 관리"
+        echo "3. GKE 클러스터 관리"
+        echo "4. 통합 클러스터 관리"
+        echo "5. 배포 관리"
+        echo "6. 뒤로 가기"
+        echo ""
+    }
+    
+    while true; do
+        show_cluster_menu
+        read -p "선택하세요 (1-6): " choice
+        
+        case $choice in
+            1)
+                log_info "클러스터 현황 확인"
+                cluster_status_check
+                ;;
+            2)
+                log_info "EKS 클러스터 관리"
+                local eks_helper="../../tools/cloud/aws-eks-helper.sh"
+                if [ -f "$eks_helper" ]; then
+                    chmod +x "$eks_helper"
+                    "$eks_helper" --interactive
+                else
+                    log_warning "EKS Helper를 찾을 수 없습니다"
+                fi
+                ;;
+            3)
+                log_info "GKE 클러스터 관리"
+                local gke_helper="../../tools/cloud/gcp-gke-helper.sh"
+                if [ -f "$gke_helper" ]; then
+                    chmod +x "$gke_helper"
+                    "$gke_helper" --interactive
+                else
+                    log_warning "GKE Helper를 찾을 수 없습니다"
+                fi
+                ;;
+            4)
+                log_info "통합 클러스터 관리"
+                local cluster_helper="../../tools/cloud/cloud-cluster-helper.sh"
+                if [ -f "$cluster_helper" ]; then
+                    chmod +x "$cluster_helper"
+                    "$cluster_helper" --interactive
+                else
+                    log_warning "통합 클러스터 Helper를 찾을 수 없습니다"
+                fi
+                ;;
+            5)
+                log_info "배포 관리"
+                deployment_management
+                ;;
+            6)
+                log_info "클러스터 관리 메뉴를 종료합니다"
+                break
+                ;;
+            *)
+                log_error "잘못된 선택입니다. 1-6 중에서 선택하세요."
+                ;;
+        esac
+        
+        echo ""
+        read -p "계속하려면 Enter를 누르세요..."
+    done
+}
+
+# 클러스터 현황 확인
+cluster_status_check() {
+    log_header "클러스터 현황 확인"
+    
+    # 통합 클러스터 Helper 사용
+    local cluster_helper="../../tools/cloud/cloud-cluster-helper.sh"
+    if [ -f "$cluster_helper" ]; then
+        log_info "통합 클러스터 Helper 사용"
+        chmod +x "$cluster_helper"
+        "$cluster_helper" --action status
+    else
+        log_warning "통합 클러스터 Helper를 찾을 수 없습니다"
+        log_info "개별 클러스터 Helper 사용"
+        
+        # AWS EKS Helper
+        local eks_helper="../../tools/cloud/aws-eks-helper.sh"
+        if [ -f "$eks_helper" ]; then
+            chmod +x "$eks_helper"
+            "$eks_helper" --action status
+        fi
+        
+        # GCP GKE Helper
+        local gke_helper="../../tools/cloud/gcp-gke-helper.sh"
+        if [ -f "$gke_helper" ]; then
+            chmod +x "$gke_helper"
+            "$gke_helper" --action status
+        fi
+    fi
+    
+    log_success "클러스터 현황 확인 완료"
+}
+
+# 배포 관리
+deployment_management() {
+    log_header "배포 관리"
+    
+    # 배포 관리 메뉴
+    show_deployment_menu() {
+        echo ""
+        log_header "배포 관리 메뉴"
+        echo "1. 현재 배포 현황 확인"
+        echo "2. EKS 배포 관리"
+        echo "3. GKE 배포 관리"
+        echo "4. 통합 배포 관리"
+        echo "5. 뒤로 가기"
+        echo ""
+    }
+    
+    while true; do
+        show_deployment_menu
+        read -p "선택하세요 (1-5): " choice
+        
+        case $choice in
+            1)
+                log_info "현재 배포 현황 확인"
+                if kubectl cluster-info &> /dev/null; then
+                    log_info "전체 네임스페이스 배포 현황:"
+                    kubectl get deployments --all-namespaces
+                    echo ""
+                    log_info "day1-practice 네임스페이스 배포 현황:"
+                    kubectl get deployments -n day1-practice 2>/dev/null || log_warning "day1-practice 네임스페이스가 없습니다"
+                else
+                    log_warning "Kubernetes 클러스터에 연결할 수 없습니다"
+                fi
+                ;;
+            2)
+                log_info "EKS 배포 관리"
+                local eks_helper="../../tools/cloud/aws-eks-helper.sh"
+                if [ -f "$eks_helper" ]; then
+                    chmod +x "$eks_helper"
+                    "$eks_helper" --action deploy
+                else
+                    log_warning "EKS Helper를 찾을 수 없습니다"
+                fi
+                ;;
+            3)
+                log_info "GKE 배포 관리"
+                local gke_helper="../../tools/cloud/gcp-gke-helper.sh"
+                if [ -f "$gke_helper" ]; then
+                    chmod +x "$gke_helper"
+                    "$gke_helper" --action deploy
+                else
+                    log_warning "GKE Helper를 찾을 수 없습니다"
+                fi
+                ;;
+            4)
+                log_info "통합 배포 관리"
+                local cluster_helper="../../tools/cloud/cloud-cluster-helper.sh"
+                if [ -f "$cluster_helper" ]; then
+                    chmod +x "$cluster_helper"
+                    "$cluster_helper" --action deploy
+                else
+                    log_warning "통합 클러스터 Helper를 찾을 수 없습니다"
+                fi
+                ;;
+            5)
+                log_info "배포 관리 메뉴를 종료합니다"
+                break
+                ;;
+            *)
+                log_error "잘못된 선택입니다. 1-5 중에서 선택하세요."
+                ;;
+        esac
+        
+        echo ""
+        read -p "계속하려면 Enter를 누르세요..."
+    done
+}
+
+# 클러스터 관리
+cluster_management() {
+    log_header "클러스터 관리"
+    
+    # 클러스터 관리 메뉴
+    show_cluster_menu() {
+        echo ""
+        log_header "클러스터 관리 메뉴"
+        echo "1. EKS 클러스터 관리"
+        echo "2. GKE 클러스터 관리"
+        echo "3. 통합 클러스터 관리"
+        echo "4. 뒤로 가기"
+        echo ""
+    }
+    
+    while true; do
+        show_cluster_menu
+        read -p "선택하세요 (1-4): " choice
+        
+        case $choice in
+            1)
+                log_info "EKS 클러스터 관리"
+                local eks_helper="../../tools/cloud/aws-eks-helper.sh"
+                if [ -f "$eks_helper" ]; then
+                    chmod +x "$eks_helper"
+                    "$eks_helper" --interactive
+                else
+                    log_warning "EKS Helper를 찾을 수 없습니다"
+                fi
+                ;;
+            2)
+                log_info "GKE 클러스터 관리"
+                local gke_helper="../../tools/cloud/gcp-gke-helper.sh"
+                if [ -f "$gke_helper" ]; then
+                    chmod +x "$gke_helper"
+                    "$gke_helper" --interactive
+                else
+                    log_warning "GKE Helper를 찾을 수 없습니다"
+                fi
+                ;;
+            3)
+                log_info "통합 클러스터 관리"
+                local cluster_helper="../../tools/cloud/cloud-cluster-helper.sh"
+                if [ -f "$cluster_helper" ]; then
+                    chmod +x "$cluster_helper"
+                    "$cluster_helper" --interactive
+                else
+                    log_warning "통합 클러스터 Helper를 찾을 수 없습니다"
+                fi
+                ;;
+            4)
+                log_info "클러스터 관리 메뉴를 종료합니다"
+                break
+                ;;
+            *)
+                log_error "잘못된 선택입니다. 1-4 중에서 선택하세요."
+                ;;
+        esac
+        
+        echo ""
+        read -p "계속하려면 Enter를 누르세요..."
+    done
 }
 
 # 정리 함수
@@ -610,9 +1228,16 @@ cleanup_day1() {
     docker-compose -f day1-docker-advanced/docker-compose.yml down -v 2>/dev/null || true
     docker rmi myapp:optimized myapp:builder myapp:runtime 2>/dev/null || true
     
-    # Kubernetes 리소스 정리
-    log_info "Kubernetes 리소스 정리"
-    kubectl delete -f day1-kubernetes-basics/ 2>/dev/null || true
+    # EKS 리소스 정리
+    log_info "EKS 리소스 정리"
+    if kubectl cluster-info &> /dev/null; then
+        kubectl delete namespace day1-practice 2>/dev/null || true
+        log_success "EKS 리소스 정리 완료"
+    else
+        log_warning "EKS 클러스터에 연결할 수 없어 리소스 정리를 건너뜁니다."
+        log_info "수동으로 정리하려면:"
+        echo "  kubectl delete namespace day1-practice"
+    fi
     
     # 실습 디렉토리 정리
     log_info "실습 디렉토리 정리"
@@ -631,8 +1256,9 @@ show_menu() {
     echo "2. Kubernetes 기초 실습"
     echo "3. 클라우드 컨테이너 서비스 실습"
     echo "4. 전체 Day 1 실습 실행"
-    echo "5. 정리"
-    echo "6. 종료"
+    echo "5. K8s 클러스터 관리"
+    echo "6. 정리"
+    echo "7. 종료"
     echo ""
 }
 
@@ -687,8 +1313,9 @@ show_interactive_menu() {
     echo "2. Kubernetes 기초 실습"
     echo "3. 클라우드 컨테이너 서비스 실습"
     echo "4. 전체 Day 1 실습 실행"
-    echo "5. 실습 환경 정리"
-    echo "6. 종료"
+    echo "5. K8s 클러스터 관리"
+    echo "6. 실습 환경 정리"
+    echo "7. 종료"
     echo ""
 }
 
@@ -697,7 +1324,7 @@ run_interactive_mode() {
     log_header "Cloud Intermediate Day 1 실습"
     while true; do
         show_interactive_menu
-        read -p "선택하세요 (1-6): " choice
+        read -p "선택하세요 (1-7): " choice
         
         case $choice in
             1)
@@ -717,14 +1344,17 @@ run_interactive_mode() {
                 log_success "전체 Day 1 실습 완료!"
                 ;;
             5)
-                cleanup_day1
+                unified_cluster_management
                 ;;
             6)
+                cleanup_day1
+                ;;
+            7)
                 log_info "프로그램을 종료합니다"
                 exit 0
                 ;;
             *)
-                log_error "잘못된 선택입니다. 1-6 중에서 선택하세요."
+                log_error "잘못된 선택입니다. 1-7 중에서 선택하세요."
                 ;;
         esac
         
@@ -751,6 +1381,18 @@ run_parameter_mode() {
             log_info "클라우드 컨테이너 서비스 실습 실행"
             cloud_container_services_practice
             ;;
+        "cluster-status")
+            log_info "클러스터 현황 확인 실행"
+            cluster_status_check
+            ;;
+        "deployment")
+            log_info "배포 관리 실행"
+            deployment_management
+            ;;
+        "cluster")
+            log_info "클러스터 관리 실행"
+            cluster_management
+            ;;
         "monitoring-hub")
             log_info "모니터링 허브 구축 실습 실행"
             monitoring_hub_practice
@@ -762,6 +1404,10 @@ run_parameter_mode() {
             cloud_container_services_practice
             monitoring_hub_practice
             log_success "전체 Day 1 실습 완료!"
+            ;;
+        "cleanup")
+            log_info "Day 1 실습 정리 실행"
+            cleanup_day1
             ;;
         *)
             log_error "알 수 없는 액션: $action"
@@ -787,7 +1433,7 @@ main() {
                 usage
                 exit 1
             fi
-            run_parameter_mode "$2" "$3"
+            run_parameter_mode "$2" "${3:-}"
             ;;
         *)
             log_error "알 수 없는 옵션: $1"

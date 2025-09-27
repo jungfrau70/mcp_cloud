@@ -54,7 +54,7 @@ manage_aws_eks() {
     fi
     
     chmod +x "$AWS_EKS_HELPER"
-    "$AWS_EKS_HELPER" "$action" "$param"
+    "$AWS_EKS_HELPER" --action "$action" "$param"
 }
 
 # GCP GKE 클러스터 관리
@@ -70,7 +70,7 @@ manage_gcp_gke() {
     fi
     
     chmod +x "$GCP_GKE_HELPER"
-    "$GCP_GKE_HELPER" "$action" "$param"
+    "$GCP_GKE_HELPER" --action "$action" "$param"
 }
 
 # 멀티 클라우드 클러스터 생성
