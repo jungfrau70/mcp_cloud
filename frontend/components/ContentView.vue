@@ -458,19 +458,27 @@ const setupCodeBlockHandlers = () => {
     copyButton.className = 'copy-button';
     
     if (isBashCommand) {
-      copyButton.innerHTML = '🚀 실행';
+      copyButton.innerHTML = '<span>🚀</span><span>실행</span>';
       copyButton.setAttribute('aria-label', 'bash 명령어 복사');
       copyButton.setAttribute('title', '클릭하여 bash 명령어를 클립보드에 복사');
       copyButton.style.background = '#059669'; // Green for bash commands
       copyButton.style.borderColor = '#047857';
     } else {
-      copyButton.innerHTML = '📋 복사';
+      copyButton.innerHTML = '<span>📋</span><span>복사</span>';
       copyButton.setAttribute('aria-label', '코드 복사');
       copyButton.setAttribute('title', '클릭하여 코드를 클립보드에 복사');
     }
     
     copyButton.setAttribute('tabindex', '0');
     copyButton.setAttribute('role', 'button');
+    
+    // Make copy button always visible for better UX
+    copyButton.style.opacity = '1';
+    copyButton.style.transform = 'translateY(0)';
+    copyButton.style.display = 'flex';
+    copyButton.style.alignItems = 'center';
+    copyButton.style.justifyContent = 'center';
+    copyButton.style.gap = '0.25rem';
 
     // Enhanced copy functionality for bash commands
     copyButton.addEventListener('click', async (e) => {
@@ -506,13 +514,15 @@ const setupCodeBlockHandlers = () => {
         // Enhanced visual feedback
         const originalText = copyButton.innerHTML;
         if (isBashCommand) {
-          copyButton.innerHTML = '✅ 실행 준비!';
+          copyButton.innerHTML = '<span>✅</span><span>실행 준비!</span>';
           copyButton.style.background = '#10b981';
           copyButton.style.color = '#ffffff';
+          copyButton.style.transform = 'scale(1.05)';
         } else {
-          copyButton.innerHTML = '✅ 복사됨!';
+          copyButton.innerHTML = '<span>✅</span><span>복사됨!</span>';
           copyButton.style.background = '#10b981';
           copyButton.style.color = '#ffffff';
+          copyButton.style.transform = 'scale(1.05)';
         }
         
         // Show success message for bash commands
@@ -538,6 +548,7 @@ const setupCodeBlockHandlers = () => {
             copyButton.style.background = '#374151';
             copyButton.style.color = '#f9fafb';
           }
+          copyButton.style.transform = 'scale(1)';
         }, 2000);
       } catch (err) {
         console.error('Failed to copy text: ', err);
@@ -564,6 +575,7 @@ const setupCodeBlockHandlers = () => {
             copyButton.style.background = '#374151';
             copyButton.style.color = '#f9fafb';
           }
+          copyButton.style.transform = 'scale(1)';
         }, 2000);
       }
     });
@@ -1422,23 +1434,44 @@ watch(() => props.content, (c) => {
   right: 0.5rem;
   background: #374151;
   color: #f9fafb;
-  padding: 0.375rem 0.75rem;
-  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  opacity: 0;
-  transition: all 0.2s ease;
+  opacity: 1;
+  transition: all 0.3s ease;
   border: 1px solid #4b5563;
   z-index: 10;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   user-select: none;
+  min-width: 70px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.prose pre .copy-button span {
+  display: inline-block;
+  line-height: 1;
 }
 
 /* Bash 명령어 블록 특화 스타일 */
 .prose pre[data-bash="true"] {
   border-left: 4px solid #059669;
   background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  position: relative;
+}
+
+.prose pre[data-bash="true"]::before {
+  content: '🚀';
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  font-size: 1rem;
+  z-index: 5;
 }
 
 .prose pre[data-bash="true"] .copy-button {
@@ -1446,17 +1479,19 @@ watch(() => props.content, (c) => {
   border-color: #047857;
   color: #ffffff;
   font-weight: 600;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+  min-width: 80px;
 }
 
 .prose pre[data-bash="true"] .copy-button:hover {
   background: #047857;
   border-color: #065f46;
-  transform: translateY(-1px);
+  transform: translateY(-1px) scale(1.02);
   box-shadow: 0 4px 8px rgba(5, 150, 105, 0.3);
 }
 
 .prose pre:hover .copy-button {
-  opacity: 0.8;
+  opacity: 1;
   transform: translateY(-1px);
 }
 
@@ -1464,8 +1499,8 @@ watch(() => props.content, (c) => {
   opacity: 1;
   background: #4b5563;
   border-color: #6b7280;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .prose pre .copy-button:active {

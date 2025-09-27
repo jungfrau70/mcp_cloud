@@ -27,7 +27,7 @@ MACHINE_TYPE="e2-medium"
 NODE_COUNT=2
 MIN_NODES=1
 MAX_NODES=4
-VERSION="1.28"
+VERSION="1.27"
 DISK_SIZE="20"
 DISK_TYPE="pd-standard"
 
@@ -81,6 +81,7 @@ create_gke_cluster() {
     fi
     
     # GKE 클러스터 생성
+    log_info "GKE 클러스터 생성 시작..."
     gcloud container clusters create $CLUSTER_NAME \
         --zone $ZONE \
         --project $PROJECT_ID \
@@ -96,11 +97,45 @@ create_gke_cluster() {
         --enable-autoupgrade \
         --enable-ip-alias \
         --enable-network-policy \
-        --enable-stackdriver-kubernetes \
+        --logging=SYSTEM,WORKLOAD \
+        --monitoring=SYSTEM \
         --addons HorizontalPodAutoscaling,HttpLoadBalancing \
-        --tags "environment=learning,project=cloudintermediate"
+        --tags "environment=learning,project=cloudintermediate" &
     
-    if [ $? -eq 0 ]; then
+    local create_pid=$!
+    
+    # 클러스터 생성 진행 상황 모니터링 (5초마다 갱신)
+    log_info "클러스터 생성 진행 상황 모니터링 시작..."
+    while kill -0 $create_pid 2>/dev/null; do
+        local cluster_status=$(gcloud container clusters describe $CLUSTER_NAME --zone $ZONE --project $PROJECT_ID --format="value(status)" 2>/dev/null || echo "PROVISIONING")
+        
+        case "$cluster_status" in
+            "PROVISIONING")
+                log_info "클러스터 생성 진행 중... (상태: $cluster_status)"
+                ;;
+            "RUNNING")
+                log_success "클러스터 생성 완료"
+                break
+                ;;
+            "STOPPING"|"STOPPED")
+                log_warning "클러스터 상태: $cluster_status"
+                ;;
+            "ERROR")
+                log_error "클러스터 생성 실패"
+                return 1
+                ;;
+            *)
+                log_info "클러스터 상태: $cluster_status"
+                ;;
+        esac
+        
+        sleep 5
+    done
+    
+    wait $create_pid
+    local create_result=$?
+    
+    if [ $create_result -eq 0 ]; then
         log_success "GKE 클러스터 생성 완료: $CLUSTER_NAME"
         
         # kubectl 설정
@@ -164,7 +199,17 @@ check_gke_cluster() {
             gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project $PROJECT_ID
         fi
     else
-        log_error "클러스터가 존재하지 않거나 접근할 수 없습니다."
+        log_warning "GKE 클러스터 '$CLUSTER_NAME'을 찾을 수 없습니다."
+        log_info "사용 가능한 클러스터 목록:"
+        local existing_clusters=$(gcloud container clusters list --format="value(name)" 2>/dev/null)
+        if [ -n "$existing_clusters" ]; then
+            gcloud container clusters list --format="table(name,location,status,currentMasterVersion,currentNodeCount)"
+        else
+            log_warning "현재 프로젝트에 GKE 클러스터가 없습니다."
+        fi
+        
+        echo ""
+        log_info "클러스터를 생성하려면 '1. GKE 클러스터 생성'을 선택하세요."
         return 1
     fi
 }

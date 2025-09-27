@@ -1102,13 +1102,49 @@ deployment_management() {
             1)
                 log_info "현재 배포 현황 확인"
                 if kubectl cluster-info &> /dev/null; then
-                    log_info "전체 네임스페이스 배포 현황:"
+                    log_info "=== 클러스터 연결 상태 ==="
+                    kubectl cluster-info
+                    echo ""
+                    
+                    log_info "=== 전체 네임스페이스 배포 현황 ==="
                     kubectl get deployments --all-namespaces
                     echo ""
-                    log_info "day1-practice 네임스페이스 배포 현황:"
-                    kubectl get deployments -n day1-practice 2>/dev/null || log_warning "day1-practice 네임스페이스가 없습니다"
+                    
+                    log_info "=== 전체 네임스페이스 서비스 현황 ==="
+                    kubectl get services --all-namespaces
+                    echo ""
+                    
+                    log_info "=== 전체 네임스페이스 Pod 현황 ==="
+                    kubectl get pods --all-namespaces
+                    echo ""
+                    
+                    log_info "=== day1-practice 네임스페이스 상세 현황 ==="
+                    if kubectl get namespace day1-practice &> /dev/null; then
+                        log_info "Deployments:"
+                        kubectl get deployments -n day1-practice
+                        echo ""
+                        log_info "Services:"
+                        kubectl get services -n day1-practice
+                        echo ""
+                        log_info "Pods:"
+                        kubectl get pods -n day1-practice
+                        echo ""
+                        log_info "ConfigMaps:"
+                        kubectl get configmaps -n day1-practice
+                        echo ""
+                        log_info "Secrets:"
+                        kubectl get secrets -n day1-practice
+                        echo ""
+                        log_info "=== 배포 중인 리소스 상태 ==="
+                        kubectl get all -n day1-practice
+                    else
+                        log_warning "day1-practice 네임스페이스가 없습니다"
+                    fi
                 else
                     log_warning "Kubernetes 클러스터에 연결할 수 없습니다"
+                    log_info "클러스터 연결을 위해 다음을 확인하세요:"
+                    echo "  - kubectl 설정 확인: kubectl config current-context"
+                    echo "  - 클러스터 상태 확인: kubectl cluster-info"
                 fi
                 ;;
             2)

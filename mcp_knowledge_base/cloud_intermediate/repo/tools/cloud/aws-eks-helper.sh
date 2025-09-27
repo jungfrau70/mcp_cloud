@@ -83,34 +83,129 @@ create_eks_cluster() {
     # 클러스터 존재 여부 확인
     if eksctl get cluster --name $CLUSTER_NAME --region $REGION &> /dev/null; then
         log_warning "클러스터 $CLUSTER_NAME이 이미 존재합니다."
-        read -p "기존 클러스터를 삭제하고 새로 생성하시겠습니까? (y/N): " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            delete_eks_cluster
+        log_info "기존 클러스터를 사용합니다."
+        return 0
+    fi
+    
+    # CloudFormation 스택 존재 여부 확인
+    if aws cloudformation describe-stacks --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION &> /dev/null; then
+        log_warning "CloudFormation 스택이 이미 존재합니다."
+        log_info "기존 스택을 정리하고 새로 생성하시겠습니까?"
+        
+        # Force 옵션이 있으면 자동으로 y 선택
+        if [ "$FORCE_DELETE" = "true" ]; then
+            log_info "Force 옵션으로 자동 삭제 진행..."
+            REPLY="y"
         else
-            log_info "기존 클러스터를 사용합니다."
+            read -p "기존 스택을 삭제하고 새로 생성하시겠습니까? (y/N): " -n 1 -r
+            echo
+        fi
+        
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            log_info "기존 CloudFormation 스택 삭제 중..."
+            aws cloudformation delete-stack --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION
+            
+            # 진행 상황 모니터링 (5초마다 갱신)
+            log_info "스택 삭제 진행 상황 모니터링 시작..."
+            local delete_timeout=600  # 10분 타임아웃
+            local elapsed_time=0
+            
+            while [ $elapsed_time -lt $delete_timeout ]; do
+                # 스택 존재 여부 확인
+                if ! aws cloudformation describe-stacks --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION &> /dev/null; then
+                    log_success "기존 스택 삭제 완료"
+                    break
+                fi
+                
+                local stack_status=$(aws cloudformation describe-stacks --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION --query 'Stacks[0].StackStatus' --output text 2>/dev/null)
+                
+                if [ $? -ne 0 ] || [ "$stack_status" = "None" ] || [ -z "$stack_status" ]; then
+                    log_success "기존 스택 삭제 완료"
+                    break
+                fi
+                
+                case "$stack_status" in
+                    "DELETE_IN_PROGRESS")
+                        log_info "스택 삭제 진행 중... (상태: $stack_status, 경과시간: ${elapsed_time}초)"
+                        ;;
+                    "DELETE_COMPLETE")
+                        log_success "스택 삭제 완료"
+                        break
+                        ;;
+                    "DELETE_FAILED")
+                        log_error "스택 삭제 실패: $stack_status"
+                        log_info "수동으로 스택을 삭제하세요: aws cloudformation delete-stack --stack-name eksctl-$CLUSTER_NAME-cluster --region $REGION"
+                        return 1
+                        ;;
+                    *)
+                        log_info "스택 상태: $stack_status (경과시간: ${elapsed_time}초)"
+                        ;;
+                esac
+                
+                sleep 5
+                elapsed_time=$((elapsed_time + 5))
+            done
+            
+            if [ $elapsed_time -ge $delete_timeout ]; then
+                log_warning "스택 삭제 타임아웃 (${delete_timeout}초). 수동으로 확인하세요."
+                log_info "수동 삭제 명령: aws cloudformation delete-stack --stack-name eksctl-$CLUSTER_NAME-cluster --region $REGION"
+                return 1
+            fi
+        else
+            log_info "기존 스택을 사용합니다."
             return 0
         fi
     fi
     
-    # EKS 클러스터 생성
-    eksctl create cluster \
-        --name $CLUSTER_NAME \
-        --region $REGION \
-        --version $VERSION \
-        --nodegroup-name standard-workers \
-        --node-type $NODE_TYPE \
-        --nodes $NODE_COUNT \
-        --nodes-min $MIN_NODES \
-        --nodes-max $MAX_NODES \
-        --managed \
-        --with-oidc \
-        --ssh-access \
-        --ssh-public-key cloud-deployment-key \
-        --full-ecr-access \
-        --tags "Environment=Learning,Project=CloudIntermediate"
+# EKS 클러스터 생성 (전용 VPC 자동 생성)
+log_info "EKS 클러스터 생성 시작 (전용 VPC 자동 생성)..."
+eksctl create cluster \
+    --name $CLUSTER_NAME \
+    --region $REGION \
+    --version $VERSION \
+    --nodegroup-name standard-workers \
+    --node-type $NODE_TYPE \
+    --nodes $NODE_COUNT \
+    --nodes-min $MIN_NODES \
+    --nodes-max $MAX_NODES \
+    --managed \
+    --with-oidc \
+    --ssh-access \
+    --ssh-public-key cloud-deployment-key \
+    --full-ecr-access \
+    --tags "Environment=Learning,Project=CloudIntermediate,Isolation=Isolated" &
     
-    if [ $? -eq 0 ]; then
+    local create_pid=$!
+    
+    # 클러스터 생성 진행 상황 모니터링 (5초마다 갱신)
+    log_info "클러스터 생성 진행 상황 모니터링 시작..."
+    while kill -0 $create_pid 2>/dev/null; do
+        local cluster_status=$(eksctl get cluster --name $CLUSTER_NAME --region $REGION --output json 2>/dev/null | jq -r '.[0].Status // "CREATING"' 2>/dev/null || echo "CREATING")
+        
+        case "$cluster_status" in
+            "CREATING")
+                log_info "클러스터 생성 진행 중... (상태: $cluster_status)"
+                ;;
+            "ACTIVE")
+                log_success "클러스터 생성 완료"
+                break
+                ;;
+            "FAILED")
+                log_error "클러스터 생성 실패"
+                return 1
+                ;;
+            *)
+                log_info "클러스터 상태: $cluster_status"
+                ;;
+        esac
+        
+        sleep 5
+    done
+    
+    wait $create_pid
+    local create_result=$?
+    
+    if [ $create_result -eq 0 ]; then
         log_success "EKS 클러스터 생성 완료: $CLUSTER_NAME"
         
         # kubectl 설정
@@ -132,20 +227,388 @@ create_eks_cluster() {
 delete_eks_cluster() {
     log_warning "EKS 클러스터 삭제 시작: $CLUSTER_NAME"
     
-    read -p "정말로 클러스터를 삭제하시겠습니까? (y/N): " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        log_info "클러스터 삭제를 취소했습니다."
+    # Force 옵션이 있으면 자동으로 y 선택
+    if [ "$FORCE_DELETE" != "true" ]; then
+        read -p "정말로 클러스터를 삭제하시겠습니까? (y/N): " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            log_info "클러스터 삭제를 취소했습니다."
+            return 0
+        fi
+    else
+        log_info "Force 옵션으로 자동 삭제 진행..."
+    fi
+    
+    # 클러스터 존재 여부 확인
+    if ! eksctl get cluster --name $CLUSTER_NAME --region $REGION &> /dev/null; then
+        log_warning "클러스터 $CLUSTER_NAME이 존재하지 않습니다."
         return 0
     fi
     
-    eksctl delete cluster --name $CLUSTER_NAME --region $REGION
+    # 클러스터 삭제
+    log_info "클러스터 삭제 중..."
+    local delete_output=$(eksctl delete cluster --name $CLUSTER_NAME --region $REGION 2>&1)
+    local delete_result=$?
     
-    if [ $? -eq 0 ]; then
+    if [ $delete_result -eq 0 ]; then
         log_success "EKS 클러스터 삭제 완료: $CLUSTER_NAME"
     else
         log_error "EKS 클러스터 삭제 실패"
-        return 1
+        
+        # 삭제 실패 이유 분석 및 상세 메시지 제공
+        log_info "=== 삭제 실패 원인 분석 ==="
+        
+        # 1. CloudFormation 스택 상태 확인
+        local stack_status=$(aws cloudformation describe-stacks --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION --query 'Stacks[0].StackStatus' --output text 2>/dev/null)
+        if [ $? -eq 0 ] && [ "$stack_status" != "None" ]; then
+            log_warning "CloudFormation 스택 상태: $stack_status"
+            
+            case "$stack_status" in
+                "DELETE_FAILED")
+                    log_error "CloudFormation 스택 삭제 실패"
+                    log_info "스택 이벤트 확인:"
+                    aws cloudformation describe-stack-events --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION --query 'StackEvents[?ResourceStatus==`DELETE_FAILED`].[LogicalResourceId,ResourceStatusReason]' --output table
+                    ;;
+                "DELETE_IN_PROGRESS")
+                    log_warning "CloudFormation 스택이 아직 삭제 진행 중입니다"
+                    log_info "삭제 완료까지 기다리거나 수동으로 삭제하세요"
+                    ;;
+                *)
+                    log_warning "예상치 못한 스택 상태: $stack_status"
+                    ;;
+            esac
+        fi
+        
+        # 2. VPC 의존성 확인
+        log_info "VPC 의존성 확인 중..."
+        local vpc_id=$(aws eks describe-cluster --name $CLUSTER_NAME --region $REGION --query 'cluster.resourcesVpcConfig.vpcId' --output text 2>/dev/null)
+        if [ $? -eq 0 ] && [ "$vpc_id" != "None" ] && [ -n "$vpc_id" ]; then
+            log_info "클러스터 VPC ID: $vpc_id"
+            
+            # VPC 내 다른 리소스 확인
+            local vpc_resources=$(aws ec2 describe-instances --filters "Name=vpc-id,Values=$vpc_id" --query 'Reservations[].Instances[?State.Name!=`terminated`].[InstanceId,State.Name]' --output table 2>/dev/null)
+            if [ $? -eq 0 ] && [ -n "$vpc_resources" ]; then
+                log_warning "VPC에 다른 EC2 인스턴스가 있습니다:"
+                echo "$vpc_resources"
+            fi
+            
+            # VPC 엔드포인트 확인
+            local vpc_endpoints=$(aws ec2 describe-vpc-endpoints --filters "Name=vpc-id,Values=$vpc_id" --query 'VpcEndpoints[?State!=`deleted`].[VpcEndpointId,State]' --output table 2>/dev/null)
+            if [ $? -eq 0 ] && [ -n "$vpc_endpoints" ]; then
+                log_warning "VPC에 엔드포인트가 있습니다:"
+                echo "$vpc_endpoints"
+            fi
+            
+            # NAT Gateway 확인
+            local nat_gateways=$(aws ec2 describe-nat-gateways --filter "Name=vpc-id,Values=$vpc_id" --query 'NatGateways[?State!=`deleted`].[NatGatewayId,State]' --output table 2>/dev/null)
+            if [ $? -eq 0 ] && [ -n "$nat_gateways" ]; then
+                log_warning "VPC에 NAT Gateway가 있습니다:"
+                echo "$nat_gateways"
+            fi
+        fi
+        
+        # 3. IAM 역할 의존성 확인
+        log_info "IAM 역할 의존성 확인 중..."
+        local nodegroup_roles=$(aws eks describe-nodegroup --cluster-name $CLUSTER_NAME --nodegroup-name standard-workers --region $REGION --query 'nodegroup.nodeRole' --output text 2>/dev/null)
+        if [ $? -eq 0 ] && [ "$nodegroup_roles" != "None" ] && [ -n "$nodegroup_roles" ]; then
+            log_info "노드그룹 IAM 역할: $nodegroup_roles"
+            
+            # IAM 역할이 다른 리소스에서 사용 중인지 확인
+            local role_usage=$(aws iam get-role --role-name $(echo $nodegroup_roles | cut -d'/' -f2) --query 'Role.AssumeRolePolicyDocument' 2>/dev/null)
+            if [ $? -eq 0 ]; then
+                log_info "IAM 역할 사용 정책 확인됨"
+            fi
+        fi
+        
+        # 4. 자동 리소스 정리 시도 (완전한 삭제 순서)
+        log_info "=== 자동 리소스 정리 시도 (완전한 삭제 순서) ==="
+        
+        if [ -n "$vpc_id" ] && [ "$vpc_id" != "None" ]; then
+            log_info "VPC 리소스 정리 시작: $vpc_id"
+            
+            # 1. Load Balancer 삭제 (가장 먼저)
+            log_info "Load Balancer 삭제 중..."
+            local elb_v2_arns=$(aws elbv2 describe-load-balancers --query 'LoadBalancers[?VpcId==`'$vpc_id'`].LoadBalancerArn' --output text 2>/dev/null)
+            if [ -n "$elb_v2_arns" ]; then
+                for lb_arn in $elb_v2_arns; do
+                    log_info "Application/Network Load Balancer 삭제 중: $lb_arn"
+                    aws elbv2 delete-load-balancer --load-balancer-arn $lb_arn
+                done
+            fi
+            
+            local elb_names=$(aws elb describe-load-balancers --query 'LoadBalancerDescriptions[?VPCId==`'$vpc_id'`].LoadBalancerName' --output text 2>/dev/null)
+            if [ -n "$elb_names" ]; then
+                for lb_name in $elb_names; do
+                    log_info "Classic Load Balancer 삭제 중: $lb_name"
+                    aws elb delete-load-balancer --load-balancer-name $lb_name
+                done
+            fi
+            
+            # 2. Target Group 삭제
+            log_info "Target Group 삭제 중..."
+            local target_groups=$(aws elbv2 describe-target-groups --query 'TargetGroups[?VpcId==`'$vpc_id'`].TargetGroupArn' --output text 2>/dev/null)
+            if [ -n "$target_groups" ]; then
+                for tg_arn in $target_groups; do
+                    log_info "Target Group 삭제 중: $tg_arn"
+                    aws elbv2 delete-target-group --target-group-arn $tg_arn
+                done
+            fi
+            
+            # 3. Auto Scaling Group 삭제
+            log_info "Auto Scaling Group 삭제 중..."
+            local asg_names=$(aws autoscaling describe-auto-scaling-groups --query 'AutoScalingGroups[?VPCZoneIdentifier!=null].AutoScalingGroupName' --output text 2>/dev/null)
+            if [ -n "$asg_names" ]; then
+                for asg_name in $asg_names; do
+                    log_info "Auto Scaling Group 삭제 중: $asg_name"
+                    aws autoscaling delete-auto-scaling-group --auto-scaling-group-name $asg_name --force-delete
+                done
+            fi
+            
+            # 4. Launch Template 삭제
+            log_info "Launch Template 삭제 중..."
+            local launch_templates=$(aws ec2 describe-launch-templates --query 'LaunchTemplates[?contains(Tags[?Key==`Name`].Value, `'$CLUSTER_NAME'`)].LaunchTemplateId' --output text 2>/dev/null)
+            if [ -n "$launch_templates" ]; then
+                for lt_id in $launch_templates; do
+                    log_info "Launch Template 삭제 중: $lt_id"
+                    aws ec2 delete-launch-template --launch-template-id $lt_id
+                done
+            fi
+            
+            # 5. EC2 인스턴스 삭제
+            log_info "EC2 인스턴스 삭제 중..."
+            local instance_ids=$(aws ec2 describe-instances --filters "Name=vpc-id,Values=$vpc_id" "Name=instance-state-name,Values=running,pending,stopping,stopped" --query 'Reservations[].Instances[].InstanceId' --output text 2>/dev/null)
+            if [ -n "$instance_ids" ]; then
+                for instance_id in $instance_ids; do
+                    log_info "EC2 인스턴스 삭제 중: $instance_id"
+                    aws ec2 terminate-instances --instance-ids $instance_id
+                done
+                
+                # 인스턴스 삭제 완료 대기
+                log_info "EC2 인스턴스 삭제 완료 대기 중..."
+                for instance_id in $instance_ids; do
+                    while aws ec2 describe-instances --instance-ids $instance_id --query 'Reservations[0].Instances[0].State.Name' --output text 2>/dev/null | grep -q "terminated"; do
+                        sleep 10
+                        log_info "EC2 인스턴스 $instance_id 삭제 중..."
+                    done
+                done
+            fi
+            
+            # 6. VPC 엔드포인트 삭제
+            log_info "VPC 엔드포인트 삭제 중..."
+            local vpc_endpoint_ids=$(aws ec2 describe-vpc-endpoints --filters "Name=vpc-id,Values=$vpc_id" --query 'VpcEndpoints[?State!=`deleted`].VpcEndpointId' --output text 2>/dev/null)
+            if [ -n "$vpc_endpoint_ids" ]; then
+                for endpoint_id in $vpc_endpoint_ids; do
+                    log_info "VPC 엔드포인트 삭제 중: $endpoint_id"
+                    aws ec2 delete-vpc-endpoint --vpc-endpoint-id $endpoint_id
+                done
+            fi
+            
+            # 7. NAT Gateway 삭제
+            log_info "NAT Gateway 삭제 중..."
+            local nat_gateway_ids=$(aws ec2 describe-nat-gateways --filter "Name=vpc-id,Values=$vpc_id" --query 'NatGateways[?State!=`deleted`].NatGatewayId' --output text 2>/dev/null)
+            if [ -n "$nat_gateway_ids" ]; then
+                for nat_id in $nat_gateway_ids; do
+                    log_info "NAT Gateway 삭제 중: $nat_id"
+                    aws ec2 delete-nat-gateway --nat-gateway-id $nat_id
+                done
+                
+                # NAT Gateway 삭제 완료 대기
+                log_info "NAT Gateway 삭제 완료 대기 중..."
+                for nat_id in $nat_gateway_ids; do
+                    while aws ec2 describe-nat-gateways --nat-gateway-ids $nat_id --query 'NatGateways[0].State' --output text 2>/dev/null | grep -q "deleting"; do
+                        sleep 10
+                        log_info "NAT Gateway $nat_id 삭제 중..."
+                    done
+                done
+            fi
+            
+            # 8. Elastic IP 삭제
+            log_info "Elastic IP 삭제 중..."
+            local eip_allocation_ids=$(aws ec2 describe-addresses --filters "Name=domain,Values=vpc" --query 'Addresses[?AssociationId==null].AllocationId' --output text 2>/dev/null)
+            if [ -n "$eip_allocation_ids" ]; then
+                for eip_id in $eip_allocation_ids; do
+                    log_info "Elastic IP 삭제 중: $eip_id"
+                    aws ec2 release-address --allocation-id $eip_id
+                done
+            fi
+            
+            # 9. 보안 그룹 삭제 (기본 보안 그룹 제외)
+            log_info "보안 그룹 삭제 중..."
+            local security_group_ids=$(aws ec2 describe-security-groups --filters "Name=vpc-id,Values=$vpc_id" --query 'SecurityGroups[?GroupName!=`default`].GroupId' --output text 2>/dev/null)
+            if [ -n "$security_group_ids" ]; then
+                for sg_id in $security_group_ids; do
+                    log_info "보안 그룹 삭제 중: $sg_id"
+                    aws ec2 delete-security-group --group-id $sg_id
+                done
+            fi
+            
+            # 10. 라우트 테이블 삭제 (메인 라우트 테이블 제외)
+            log_info "라우트 테이블 삭제 중..."
+            local route_table_ids=$(aws ec2 describe-route-tables --filters "Name=vpc-id,Values=$vpc_id" --query 'RouteTables[?Associations[0].Main!=`true`].RouteTableId' --output text 2>/dev/null)
+            if [ -n "$route_table_ids" ]; then
+                for rt_id in $route_table_ids; do
+                    log_info "라우트 테이블 삭제 중: $rt_id"
+                    aws ec2 delete-route-table --route-table-id $rt_id
+                done
+            fi
+            
+            # 11. 서브넷 삭제
+            log_info "서브넷 삭제 중..."
+            local subnet_ids=$(aws ec2 describe-subnets --filters "Name=vpc-id,Values=$vpc_id" --query 'Subnets[].SubnetId' --output text 2>/dev/null)
+            if [ -n "$subnet_ids" ]; then
+                for subnet_id in $subnet_ids; do
+                    log_info "서브넷 삭제 중: $subnet_id"
+                    aws ec2 delete-subnet --subnet-id $subnet_id
+                done
+            fi
+            
+            # 12. 인터넷 게이트웨이 분리 및 삭제
+            log_info "인터넷 게이트웨이 분리 및 삭제 중..."
+            local igw_id=$(aws ec2 describe-internet-gateways --filters "Name=attachment.vpc-id,Values=$vpc_id" --query 'InternetGateways[0].InternetGatewayId' --output text 2>/dev/null)
+            if [ -n "$igw_id" ] && [ "$igw_id" != "None" ]; then
+                log_info "인터넷 게이트웨이 분리 중: $igw_id"
+                aws ec2 detach-internet-gateway --internet-gateway-id $igw_id --vpc-id $vpc_id
+                log_info "인터넷 게이트웨이 삭제 중: $igw_id"
+                aws ec2 delete-internet-gateway --internet-gateway-id $igw_id
+            fi
+            
+            # 13. VPC 삭제 (마지막)
+            log_info "VPC 삭제 중..."
+            aws ec2 delete-vpc --vpc-id $vpc_id
+            if [ $? -eq 0 ]; then
+                log_success "VPC $vpc_id 삭제 완료"
+            else
+                log_warning "VPC 삭제 실패 - 다른 리소스가 여전히 연결되어 있을 수 있습니다"
+            fi
+        fi
+        
+        # 5. 지능형 재삭제 시도
+        log_info "=== 지능형 재삭제 시도 ==="
+        
+        # CloudFormation 스택 재삭제 시도
+        log_info "CloudFormation 스택 재삭제 시도..."
+        local stack_delete_output=$(aws cloudformation delete-stack --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION 2>&1)
+        
+        # 삭제 실패 시 메시지 분석 및 대응
+        if echo "$stack_delete_output" | grep -q "DELETE_FAILED\|DELETE_IN_PROGRESS"; then
+            log_warning "CloudFormation 스택 삭제에 문제가 있습니다. 메시지 분석 중..."
+            
+            # 실패 원인별 대응
+            if echo "$stack_delete_output" | grep -q "DELETE_FAILED"; then
+                log_info "스택 삭제 실패 - 실패한 리소스 분석 중..."
+                
+                # 실패한 리소스 이벤트 분석
+                local failed_events=$(aws cloudformation describe-stack-events --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION --query 'StackEvents[?ResourceStatus==`DELETE_FAILED`].[LogicalResourceId,ResourceStatusReason]' --output text 2>/dev/null)
+                
+                if [ -n "$failed_events" ]; then
+                    log_info "실패한 리소스들:"
+                    echo "$failed_events"
+                    
+                    # 실패 원인별 자동 대응
+                    while IFS=$'\t' read -r resource_id reason; do
+                        log_info "리소스 $resource_id 실패 원인: $reason"
+                        
+                        # NAT Gateway 관련 실패
+                        if echo "$reason" | grep -q "NAT Gateway"; then
+                            log_info "NAT Gateway 의존성 문제 해결 시도..."
+                            # NAT Gateway 강제 삭제
+                            local nat_ids=$(aws ec2 describe-nat-gateways --filter "Name=vpc-id,Values=$vpc_id" --query 'NatGateways[?State!=`deleted`].NatGatewayId' --output text 2>/dev/null)
+                            for nat_id in $nat_ids; do
+                                aws ec2 delete-nat-gateway --nat-gateway-id $nat_id
+                                log_info "NAT Gateway $nat_id 강제 삭제 시도"
+                            done
+                        fi
+                        
+                        # VPC 관련 실패
+                        if echo "$reason" | grep -q "VPC\|Subnet"; then
+                            log_info "VPC 의존성 문제 해결 시도..."
+                            # VPC 내 모든 리소스 강제 정리
+                            local remaining_resources=$(aws ec2 describe-instances --filters "Name=vpc-id,Values=$vpc_id" --query 'Reservations[].Instances[?State.Name!=`terminated`].InstanceId' --output text 2>/dev/null)
+                            if [ -n "$remaining_resources" ]; then
+                                for instance_id in $remaining_resources; do
+                                    aws ec2 terminate-instances --instance-ids $instance_id --force
+                                    log_info "EC2 인스턴스 $instance_id 강제 종료"
+                                done
+                            fi
+                        fi
+                        
+                        # IAM 관련 실패
+                        if echo "$reason" | grep -q "IAM\|Role"; then
+                            log_info "IAM 의존성 문제 해결 시도..."
+                            # IAM 역할 정리
+                            local roles=$(aws iam list-roles --query 'Roles[?contains(RoleName, `'$CLUSTER_NAME'`)].RoleName' --output text 2>/dev/null)
+                            for role in $roles; do
+                                # 정책 분리
+                                local policies=$(aws iam list-attached-role-policies --role-name $role --query 'AttachedPolicies[].PolicyArn' --output text 2>/dev/null)
+                                for policy in $policies; do
+                                    aws iam detach-role-policy --role-name $role --policy-arn $policy
+                                    log_info "IAM 역할 $role에서 정책 $policy 분리"
+                                done
+                                # 역할 삭제
+                                aws iam delete-role --role-name $role
+                                log_info "IAM 역할 $role 삭제"
+                            done
+                        fi
+                        
+                    done <<< "$failed_events"
+                fi
+            fi
+            
+            # 스택 재삭제 시도
+            log_info "리소스 정리 후 스택 재삭제 시도..."
+            aws cloudformation delete-stack --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION
+            
+            # 삭제 완료 대기 (최대 10분)
+            local delete_timeout=600
+            local elapsed_time=0
+            
+            while [ $elapsed_time -lt $delete_timeout ]; do
+                if ! aws cloudformation describe-stacks --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION &> /dev/null; then
+                    log_success "CloudFormation 스택 삭제 완료"
+                    break
+                fi
+                
+                local current_status=$(aws cloudformation describe-stacks --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION --query 'Stacks[0].StackStatus' --output text 2>/dev/null)
+                log_info "스택 삭제 진행 중... (상태: $current_status, 경과시간: ${elapsed_time}초)"
+                
+                sleep 10
+                elapsed_time=$((elapsed_time + 10))
+            done
+            
+            if [ $elapsed_time -ge $delete_timeout ]; then
+                log_warning "스택 삭제 타임아웃. 수동 개입이 필요할 수 있습니다."
+            fi
+        fi
+        
+        # 6. 최종 클러스터 삭제 시도
+        log_info "=== 최종 클러스터 삭제 시도 ==="
+        local final_delete_output=$(eksctl delete cluster --name $CLUSTER_NAME --region $REGION --force 2>&1)
+        local final_delete_result=$?
+        
+        if [ $final_delete_result -eq 0 ]; then
+            log_success "EKS 클러스터 최종 삭제 완료: $CLUSTER_NAME"
+            return 0
+        else
+            log_error "최종 클러스터 삭제도 실패했습니다."
+            log_info "삭제 출력: $final_delete_output"
+            
+            # 7. 수동 삭제 가이드 제공
+            log_info "=== 수동 삭제 가이드 (자동 정리 실패 시) ==="
+            log_info "1. CloudFormation 스택 수동 삭제:"
+            log_info "   aws cloudformation delete-stack --stack-name eksctl-$CLUSTER_NAME-cluster --region $REGION"
+            log_info ""
+            log_info "2. VPC 수동 삭제 (다른 리소스가 없는 경우):"
+            log_info "   aws ec2 delete-vpc --vpc-id $vpc_id"
+            log_info ""
+            log_info "3. IAM 역할 수동 삭제:"
+            log_info "   aws iam detach-role-policy --role-name <role-name> --policy-arn <policy-arn>"
+            log_info "   aws iam delete-role --role-name <role-name>"
+            log_info ""
+            log_info "4. 전체 리소스 정리 후 클러스터 재삭제:"
+            log_info "   eksctl delete cluster --name $CLUSTER_NAME --region $REGION --force"
+            
+            return 1
+        fi
     fi
 }
 
@@ -171,7 +634,17 @@ check_eks_cluster() {
             aws eks update-kubeconfig --region $REGION --name $CLUSTER_NAME
         fi
     else
-        log_error "클러스터가 존재하지 않거나 접근할 수 없습니다."
+        log_warning "EKS 클러스터 '$CLUSTER_NAME'을 찾을 수 없습니다."
+        log_info "사용 가능한 클러스터 목록:"
+        local existing_clusters=$(aws eks list-clusters --region $REGION --query 'clusters[]' --output text 2>/dev/null)
+        if [ -n "$existing_clusters" ]; then
+            aws eks list-clusters --region $REGION --query 'clusters[]' --output table
+        else
+            log_warning "현재 리전($REGION)에 EKS 클러스터가 없습니다."
+        fi
+        
+        echo ""
+        log_info "클러스터를 생성하려면 '1. EKS 클러스터 생성'을 선택하세요."
         return 1
     fi
 }
@@ -295,9 +768,13 @@ usage() {
     echo "  --action upgrade <version>   # 클러스터 업그레이드"
     echo "  --action monitoring          # 모니터링 설정"
     echo ""
+    echo "옵션:"
+    echo "  --force                      # 자동으로 기존 리소스 삭제 (y/N 질문 건너뛰기)"
+    echo ""
     echo "예시:"
     echo "  $0                           # Interactive 모드"
     echo "  $0 --action create           # EKS 클러스터 생성"
+    echo "  $0 --action create --force   # 자동 삭제 후 클러스터 생성"
     echo "  $0 --action status           # 클러스터 상태 확인"
     echo "  $0 --action scale 3          # 노드 3개로 스케일링"
     echo ""
@@ -399,6 +876,17 @@ run_parameter_mode() {
 
 # 메인 함수
 main() {
+    # Force 옵션 초기화
+    FORCE_DELETE="false"
+    
+    # Force 옵션 확인
+    for arg in "$@"; do
+        if [ "$arg" = "--force" ]; then
+            FORCE_DELETE="true"
+            break
+        fi
+    done
+    
     # 인수 처리
     case "${1:-}" in
         "--help"|"-h")
