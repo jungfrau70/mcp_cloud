@@ -3,7 +3,7 @@
 > 📋 **강의 일시**: 2024년 10월 1일 ["수"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Cloud Basic 완료 ["AWS/GCP 기초 서비스"]  
-> 📋 **WSL 환경설정**: [./cloud_intermediate/_setup_wsl/README.md](../_setup_wsl/README.md)
+> 📋 **WSL 환경설정**: [./cloud_intermediate/_setup_wsl/README.md](coud_intermediate/_setup_wsl/README.md)
 > 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-intermediate.git cloud_intermediate`
 
 ---

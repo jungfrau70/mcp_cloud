@@ -19,13 +19,12 @@ services:
       - "7687:7687" # Bolt protocol for application access
     volumes:
       - neo4j_data:/data
-      - ./scripts/neo4j-healthcheck.sh:/scripts/neo4j-healthcheck.sh:ro
     networks:
       - mcp_cloud_network
     healthcheck:
-      test: ["CMD-SHELL", "chmod +x /scripts/neo4j-healthcheck.sh && /scripts/neo4j-healthcheck.sh"]
-      interval: 15s
-      timeout: 10s
+      test: ["CMD-SHELL", "USER=$(echo \"$${NEO4J_AUTH}\" | cut -d'/' -f1); PASS=$(echo \"$${NEO4J_AUTH}\" | cut -d'/' -f2); cypher-shell -a bolt://localhost:7687 -u \"$$USER\" -p \"$$PASS\" 'RETURN 1' > /dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
       retries: 10
       start_period: 30s
 

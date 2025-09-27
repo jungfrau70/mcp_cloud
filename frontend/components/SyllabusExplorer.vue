@@ -49,7 +49,7 @@
 
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-lg font-semibold whitespace-nowrap text-gray-800">
-        mcp_knowledge_base
+        과정
       </h3>
       <!-- <button @click="toggleHiddenFiles" class="px-2 py-1 text-xs border rounded" :class="showHiddenFiles ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'" title="숨김 파일 표시/숨김">
         {{ showHiddenFiles ? '숨김 파일 숨기기' : '숨김 파일 보기' }}
@@ -132,7 +132,7 @@ const showHiddenFiles = ref(true); // 기본값을 true로 설정하여 숨김�
 // 관리자 설정 UI는 지식베이스로 이동
 
 const config = useRuntimeConfig()
-const apiBase = (config.public?.apiBaseUrl) || 'http://localhost:8000'
+const apiBase = (config.public?.apiBaseUrl) || '/api'
 const apiKey = (useRuntimeConfig().public?.apiKey) || 'my_mcp_eagle_tiger'
 const curriculumLoading = ref(false)
 
@@ -506,7 +506,7 @@ async function loadcurriculumTreeIfCurriculum(){
     console.log('🔍 커리큘럼 트리 로드 시작...')
     
     // 선택 디렉토리
-    const r2 = await fetch(`${apiBase}/v1/curriculum/selection`, { headers: { 'X-API-Key': apiKey } });
+    const r2 = await fetch(`${apiBase}/api/v1/curriculum/selection`, { headers: { 'X-API-Key': apiKey } });
     const sel = await r2.json();
     selectedDirs.value = Array.isArray(sel?.selected_dirs) ? sel.selected_dirs : []
     console.log('📁 선택된 디렉토리:', selectedDirs.value)
@@ -515,38 +515,13 @@ async function loadcurriculumTreeIfCurriculum(){
     const r3 = await fetch(`${apiBase}/api/v1/curriculum/tree?show_hidden=${showHiddenFiles.value}`, { headers: { 'X-API-Key': apiKey } });
     if (r3.ok) {
       curriculumTree.value = await r3.json();
-      console.log('🌳 커리큘럼 트리 로드 완료 (지연 로딩):', curriculumTree.value)
+      console.log('🌳 커리큘럼 트리 로드 완료:', curriculumTree.value)
       // 진척률 업데이트
       updateProgress();
     } else {
       console.error('❌ 커리큘럼 트리 로드 실패:', r3.status, r3.statusText)
     }
   } finally { curriculumLoading.value = false }
-}
-
-// 지연 로딩: 디렉토리 클릭 시 하위 내용 로드
-const loadDirectoryChildren = async (path) => {
-  try {
-    console.log('📁 디렉토리 하위 내용 로드:', path)
-    const response = await fetch(`${apiBase}/api/v1/curriculum/tree/${path}?show_hidden=${showHiddenFiles.value}`, { 
-      headers: { 'X-API-Key': apiKey } 
-    })
-    
-    if (response.ok) {
-      const children = await response.json()
-      console.log('📁 하위 내용 로드 완료:', children)
-      
-      // 트리에 하위 내용 추가
-      if (curriculumTree.value[path]) {
-        curriculumTree.value[path].children = children
-        curriculumTree.value[path].expanded = true
-      }
-    } else {
-      console.error('❌ 하위 내용 로드 실패:', response.status, response.statusText)
-    }
-  } catch (error) {
-    console.error('❌ 하위 내용 로드 오류:', error)
-  }
 }
 
 onMounted(async () => {

@@ -33,10 +33,25 @@ def get_user_from_bearer(request: Request, db: Session) -> User | None:
         return None
 
 async def get_current_user(request: Request, db: Session = Depends(get_db)) -> User:
-    """JWT 토큰을 우선으로 사용하고, 프록시 헤더는 fallback으로만 사용합니다."""
+    """JWT 토큰을 우선으로 사용하고, 프록시 헤더는 fallback으로 사용합니다."""
     # 1. JWT 토큰 우선 처리
     bearer_user = get_user_from_bearer(request, db)
     if bearer_user is not None:
         return bearer_user
+    
+    # 2. 프록시 헤더 fallback 처리
+    email = request.headers.get("X-Forwarded-Email")
+    if email:
+        user = db.query(User).filter(User.email == email).first()
+        if user:
+            return user
+        # 사용자가 없으면 새로 생성
+        groups = request.headers.get("X-Forwarded-Groups", "")
+        role = "admin" if "admins" in groups else "student"
+        user = User(email=email, role=role)
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        return user
     
     raise HTTPException(status_code=401, detail="Not authenticated")

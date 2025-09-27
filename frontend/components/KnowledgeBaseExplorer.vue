@@ -461,7 +461,7 @@ async function loadSelection(){
 async function saveSelection(){
   saving.value = true
   try{
-    await fetch(`${apiBase}/v1/curriculum/selection`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey }, body: JSON.stringify({ selected_dirs: selectedDirs.value }) })
+    await fetch(`${apiBase}/api/v1/profile/curriculum-selection`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey }, body: JSON.stringify({ selected_dirs: selectedDirs.value }) })
     showAdmin.value = false
     
     // 커리큘럼 설정 변경 이벤트 발행

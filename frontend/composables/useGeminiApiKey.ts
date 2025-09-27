@@ -1,7 +1,7 @@
 // frontend/composables/useGeminiApiKey.ts
-import { ref, computed } from 'vue'
 import { useAuthStore } from '~/stores/auth'
-import { $fetch } from 'ofetch'
+
+const config = useRuntimeConfig()
 
 export const useGeminiApiKey = () => {
   const auth = useAuthStore()
@@ -23,13 +23,13 @@ export const useGeminiApiKey = () => {
       
       const base = config.public.apiBaseUrl || 'http://localhost:8000'
       
-      console.log('Fetching profile from:', `${base}/api/v1/profile/me`)
-      const response = await $fetch(`${base}/api/v1/profile/me`, {
+      console.log('Fetching profile from:', `${base}/api/v1/users/me`)
+      const response = await fetch(`${base}/api/v1/users/me`, {
         headers: {
           'Authorization': `Bearer ${auth.token}`,
           'X-API-Key': 'my_mcp_eagle_tiger'
         }
-      })
+      }).then(res => res.json())
       
       console.log('Profile response:', response)
       userProfile.value = response
@@ -77,7 +77,7 @@ export const useGeminiApiKey = () => {
   })
 
   // 초기 로드 시 프로필 가져오기
-  if (process.client && auth.token && !userProfile.value) {
+  if (typeof window !== 'undefined' && auth.token && !userProfile.value) {
     fetchUserProfile()
   }
 

@@ -246,6 +246,9 @@ async function fetchCurrentUser(){
     window.profileModalClicked = false
   }
   
+  // localStorage에서 인증 정보 로드
+  auth.loadFromStorage()
+  
   try {
     if (!auth.token) { 
       user.value = null; 
@@ -263,7 +266,7 @@ async function fetchCurrentUser(){
     }
 
     const base = config.public.apiBaseUrl || 'http://localhost:8000'
-    const { data: fetchedUser, error } = await useFetch(`${base}/api/v1/profile/me`, {
+    const { data: fetchedUser, error } = await useFetch(`${base}/api/v1/users/me`, {
       key: auth.token,
       lazy: false,
       headers: headers,
@@ -560,7 +563,7 @@ async function openProfileModal(){
   
   try{
     const base = (config.public?.apiBaseUrl) || '/api'
-    const data = await $fetch(`${base}/api/v1/profile/me`, {
+    const data = await $fetch(`${base}/api/v1/users/me`, {
       headers: {
         'X-API-Key': apiKey,
         ...(auth.token ? { 'Authorization': `Bearer ${auth.token}` } : {})

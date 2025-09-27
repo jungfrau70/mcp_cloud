@@ -108,20 +108,33 @@ def _clean_anchor_links_for_pdf(markdown_content: str) -> str:
 
 
 def _build_tree(show_hidden: bool = False) -> Dict[str, Any]:
-    # 최상위 디렉토리만 반환 (지연 로딩)
+    # .slides_selection.json에 정의된 디렉토리들만 필터링하여 반환
     data: Dict[str, Any] = {}
     selected = get_selection().get('selected_dirs', [])
 
+    def build(d: Path) -> Dict[str, Any]:
+        tree: Dict[str, Any] = {}
+        files = []
+        for child in sorted(d.iterdir()):
+            # Skip hidden files/directories unless show_hidden is True
+            if not show_hidden and child.name.startswith('.'):
+                continue
+                
+            if child.is_dir():
+                tree[child.name] = build(child)
+            else:
+                files.append({"name": child.name, "path": str(child.relative_to(KB_ROOT)).replace('\\','/')})
+        if files:
+            tree['files'] = files
+        return tree
+
+    # 선택된 디렉토리들만 반환 (필터링)
     for rel in selected:
         p = (KB_ROOT / rel).resolve()
         if p.exists() and str(p).startswith(str(KB_ROOT)):
-            # 최상위 디렉토리만 표시 (하위는 클릭 시 로드)
-            data[rel] = {
-                "type": "directory",
-                "expanded": False,
-                "children": []  # 클릭 시 로드될 예정
-            }
-    
+            # 디렉토리명만 키로 사용 (전체 경로가 아닌)
+            dir_name = rel.split('/')[-1] if '/' in rel else rel
+            data[dir_name] = build(p)
     return data
 
 @router.get('/tree')
@@ -675,6 +688,39 @@ async def get_slides_selection():
             "slides_selection": [],
             "message": f"파일 읽기 오류: {str(e)}",
             "file_path": str(SELECTION_FILE)
+        }
+
+@router.post("/selection")
+async def save_curriculum_selection(request: Dict[str, Any]):
+    """
+    선택된 커리큘럼 디렉토리를 .slides_selection.json에 저장합니다.
+    """
+    try:
+        selected_dirs = request.get('selected_dirs', [])
+        
+        # 디렉토리 존재 여부 검증
+        valid_dirs = []
+        for dir_name in selected_dirs:
+            dir_path = KB_ROOT / dir_name
+            if dir_path.exists() and dir_path.is_dir():
+                valid_dirs.append(dir_name)
+        
+        # .slides_selection.json 파일에 저장
+        SELECTION_FILE.parent.mkdir(parents=True, exist_ok=True)
+        with open(SELECTION_FILE, 'w', encoding='utf-8') as f:
+            json.dump(valid_dirs, f, ensure_ascii=False, indent=2)
+        
+        return {
+            "success": True,
+            "selected_dirs": valid_dirs,
+            "message": f"커리큘럼 디렉토리 {len(valid_dirs)}개가 성공적으로 저장되었습니다."
+        }
+        
+    except Exception as e:
+        return {
+            "success": False,
+            "selected_dirs": [],
+            "message": f"저장 중 오류가 발생했습니다: {str(e)}"
         }
 
 

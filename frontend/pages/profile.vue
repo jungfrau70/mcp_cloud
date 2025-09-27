@@ -188,7 +188,7 @@ async function fetchProfile() {
     // localStorage에서 직접 토큰 확인
     const token = process.client ? localStorage.getItem('auth_token') : null;
     
-    const data = await $fetch('/api/v1/profile/me', {
+    const data = await $fetch('/api/v1/users/me', {
       headers: {
         ...(token ? { 'Authorization': `Bearer ${token}` } : {})
       }

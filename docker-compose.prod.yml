@@ -140,8 +140,8 @@ services:
       dockerfile: Dockerfile.app
     container_name: mcp_frontend_prod
     environment:
-      - NUXT_PUBLIC_API_BASE_URL=https://api.goldencircle.us/api
-      - NUXT_PUBLIC_WS_BASE_URL=wss://api.goldencircle.us/api
+      - NUXT_PUBLIC_API_BASE_URL=https://api.goldencircle.us
+      - NUXT_PUBLIC_WS_BASE_URL=wss://api.goldencircle.us
       - NUXT_PUBLIC_API_KEY=${MCP_API_KEY:-my_mcp_eagle_tiger}
       - NODE_ENV=production
       - NUXT_PUBLIC_ENV=production
