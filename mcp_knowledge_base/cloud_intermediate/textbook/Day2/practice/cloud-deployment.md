@@ -29,7 +29,7 @@
 ## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/samples/day2/cloud-deployment/`
+- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/examples/day2/cloud-deployment/`
 - **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/automation/day2/cloud-deployment-practice-automation.sh`
 - **클라우드 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/cloud-scripts/`
 
@@ -71,7 +71,7 @@ mkdir -p ~/cloud_intermediate/samples/day2/cloud-deployment/aws-ecs
 cd ~/cloud_intermediate/samples/day2/cloud-deployment/aws-ecs
 
 # 실습 샘플 코드 복사 (있는 경우)
-cp -r /mcp_knowledge_base/cloud_intermediate/repo/samples/day2/cloud-deployment/aws-ecs/* ./
+cp -r /mcp_knowledge_base/cloud_intermediate/repo/examples/day2/cloud-deployment/aws-ecs/* ./
 ```
 
 #### ECS 클러스터 생성
@@ -199,7 +199,7 @@ mkdir -p ~/cloud_intermediate/samples/day2/cloud-deployment/gcp-cloud-run
 cd ~/cloud_intermediate/samples/day2/cloud-deployment/gcp-cloud-run
 
 # 실습 샘플 코드 복사 (있는 경우)
-cp -r /mcp_knowledge_base/cloud_intermediate/repo/samples/day2/cloud-deployment/gcp-cloud-run/* ./
+cp -r /mcp_knowledge_base/cloud_intermediate/repo/examples/day2/cloud-deployment/gcp-cloud-run/* ./
 ```
 
 #### Docker 이미지 빌드 및 푸시

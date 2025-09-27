@@ -122,35 +122,43 @@ flowchart TD
 
 ### **전체 과정 자동화**
 ```bash
-# 전체 과정 자동화 실행
-./run-full-course.sh
+# 전체 과정 자동화 실행 (새로운 repo 구조)
+cd repo/automation/
+./cloud-intermediate-helper.sh
 
 # 실시간 모니터링
+cd ../tools/monitoring/
 ./lecture-monitor.sh --dashboard
 ```
 
 ### **개별 Day 실행**
 ```bash
-# Day 1 실행
-./run-day1.sh
+# Day 1 실행 (새로운 구조)
+cd repo/automation/day1/
+./day1-practice.sh
 
-# Day 2 실행
-./run-day2.sh
+# Day 2 실행 (새로운 구조)
+cd repo/automation/day2/
+./day2-practice.sh
 ```
 
 ### **개별 실습 실행**
 ```bash
-# Docker 고급 실습
-./run-docker-advanced.sh
+# Docker 고급 실습 (새로운 구조)
+cd repo/examples/day1/docker-advanced/
+# 실습 코드 확인 후 수동 실행
 
-# Kubernetes 기초 실습
-./run-kubernetes-basics.sh
+# Kubernetes 기초 실습 (새로운 구조)
+cd repo/examples/day1/kubernetes-basics/
+# 실습 코드 확인 후 수동 실행
 
-# AWS ECS 실습
-./run-aws-ecs.sh
+# AWS ECS 실습 (새로운 구조)
+cd repo/examples/day1/cloud-container-services/
+# 실습 코드 확인 후 수동 실행
 
-# 모니터링 허브 구축
-./run-monitoring-hub.sh
+# 모니터링 허브 구축 (새로운 구조)
+cd repo/automation/monitoring/
+./monitoring-stack.sh
 ```
 
 ---

@@ -64,24 +64,30 @@
 git clone https://github.com/jungfrau70/cloud-intermediate.git
 cd cloud-intermediate
 
-# 환경 설정
-chmod +x setup-environment.sh
-./setup-environment.sh
+# 환경 설정 (새로운 repo 구조)
+cd repo/setup/
+chmod +x install-all-wsl.sh
+./install-all-wsl.sh
 ```
 
 ### **2. 자동화 실행**
 ```bash
-# 전체 과정 자동화 실행
-./run-full-course.sh
+# 전체 과정 자동화 실행 (새로운 구조)
+cd repo/automation/
+./cloud-intermediate-helper.sh
 
 # 개별 Day 실행
-./run-day1.sh
-./run-day2.sh
+cd automation/day1/
+./day1-practice.sh
+
+cd automation/day2/
+./day2-practice.sh
 ```
 
 ### **3. 실시간 모니터링**
 ```bash
-# 강의 진행 상황 모니터링
+# 강의 진행 상황 모니터링 (새로운 구조)
+cd repo/tools/monitoring/
 ./lecture-monitor.sh --dashboard
 ```
 

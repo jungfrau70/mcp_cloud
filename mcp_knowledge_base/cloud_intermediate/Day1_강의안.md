@@ -25,10 +25,10 @@
 
 ## 🛠️ 실습 학습
 
-### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/samples/day1/`
+### 📁 실습 코드 및 자동화 (새로운 repo 구조)
+- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/examples/day1/`
 - **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/automation/day1/`
-- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/cloud-scripts/`
+- **클라우드 도구**: `/mcp_knowledge_base/cloud_intermediate/repo/tools/cloud/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
