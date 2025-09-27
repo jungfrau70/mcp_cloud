@@ -355,12 +355,23 @@ function getFileName(filePath) {
   const parts = filePath.split('/')
   const filename = parts[parts.length - 1] || filePath
   
-  // 개선된 안전한 파일명 디코딩
-  const result = processPathSafely(filename, 'decode')
-  if (result.success) {
-    return result.result
-  } else {
-    console.warn('Failed to decode filename:', filename, result.errors)
+  // 한글 파일명 디코딩 처리
+  try {
+    // URL 인코딩된 한글 파일명 디코딩
+    if (/%[0-9A-Fa-f]{2}/.test(filename)) {
+      const decoded = decodeURIComponent(filename)
+      console.log('SyllabusExplorer: Decoded filename:', { original: filename, decoded })
+      return decoded
+    }
+    
+    // 이미 한글이 포함된 경우 그대로 반환
+    if (/[가-힣]/.test(filename)) {
+      return filename
+    }
+    
+    return filename
+  } catch (error) {
+    console.warn('Failed to decode filename:', filename, error)
     return filename
   }
 }
@@ -375,18 +386,29 @@ function getDisplayPath(filePath) {
     const decodedParts = parts.map(part => {
       if (!part) return part
       
-      // 한글이 포함된 세그먼트만 디코딩
-      if (/[가-힣]/.test(part) || /%[0-9A-Fa-f]{2}/.test(part)) {
+      // URL 인코딩된 한글 파일명 디코딩
+      if (/%[0-9A-Fa-f]{2}/.test(part)) {
         try {
-          return decodeURIComponent(part)
-        } catch {
+          const decoded = decodeURIComponent(part)
+          console.log('getDisplayPath: Decoded path segment:', { original: part, decoded })
+          return decoded
+        } catch (error) {
+          console.warn('Failed to decode path segment:', part, error)
           return part
         }
       }
+      
+      // 이미 한글이 포함된 경우 그대로 반환
+      if (/[가-힣]/.test(part)) {
+        return part
+      }
+      
       return part
     })
     
-    return decodedParts.join('/')
+    const result = decodedParts.join('/')
+    console.log('getDisplayPath: Final decoded path:', { original: filePath, decoded: result })
+    return result
   } catch (error) {
     console.warn('Failed to decode display path:', filePath, error)
     return filePath
@@ -592,25 +614,35 @@ try{
 // FileTree 네비게이션 이벤트 처리
 const handleFileTreeNavigate = (event) => {
   const targetPath = event?.detail?.path;
+  const openDirectory = event?.detail?.openDirectory;
+  
   if (!targetPath) return;
+  
+  console.log('SyllabusExplorer: FileTree navigate event received:', { targetPath, openDirectory });
   
   // FileTree에서 해당 경로로 스크롤 및 하이라이트
   nextTick(() => {
     try {
-      // curriculum tree에서 해당 파일 찾기
-      const findFileInTree = (tree, path) => {
+      // curriculum tree에서 해당 파일/디렉토리 찾기
+      const findInTree = (tree, path) => {
         if (!tree || typeof tree !== 'object') return null;
         
         // files 배열에서 찾기
         if (tree.files && Array.isArray(tree.files)) {
           const file = tree.files.find(f => f.path === path);
-          if (file) return file;
+          if (file) return { type: 'file', item: file };
         }
         
-        // 하위 디렉토리에서 재귀적으로 찾기
+        // 디렉토리에서 찾기 (경로가 디렉토리인 경우)
         for (const [key, value] of Object.entries(tree)) {
           if (key !== 'files' && typeof value === 'object') {
-            const found = findFileInTree(value, path);
+            // 디렉토리 경로 매칭 확인
+            if (path.includes(key) || key.includes(path.split('/').pop())) {
+              return { type: 'directory', item: value, key };
+            }
+            
+            // 하위에서 재귀적으로 찾기
+            const found = findInTree(value, path);
             if (found) return found;
           }
         }
@@ -618,25 +650,47 @@ const handleFileTreeNavigate = (event) => {
         return null;
       };
       
-      const file = findFileInTree(displayTree.value, targetPath);
-      if (file) {
-        // 해당 파일 요소 찾기 및 스크롤
-        const fileElement = document.querySelector(`.tree-item.is-file[data-path="${CSS.escape(targetPath)}"]`);
-        if (fileElement) {
-          fileElement.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center' 
-          });
+      const result = findInTree(displayTree.value, targetPath);
+      
+      if (result) {
+        if (result.type === 'file') {
+          // 파일인 경우: 해당 파일 요소 찾기 및 스크롤
+          const fileElement = document.querySelector(`.tree-item.is-file[data-path="${CSS.escape(targetPath)}"]`);
+          if (fileElement) {
+            fileElement.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'center' 
+            });
+            
+            // 하이라이트 효과
+            fileElement.classList.add('bg-blue-100', 'border-blue-300');
+            setTimeout(() => {
+              fileElement.classList.remove('bg-blue-100', 'border-blue-300');
+            }, 2000);
+          }
+        } else if (result.type === 'directory' && openDirectory) {
+          // 디렉토리인 경우: 해당 디렉토리 자동 열기
+          console.log('SyllabusExplorer: Opening directory:', result.key);
           
-          // 하이라이트 효과
-          fileElement.classList.add('bg-blue-100', 'border-blue-300');
-          setTimeout(() => {
-            fileElement.classList.remove('bg-blue-100', 'border-blue-300');
-          }, 2000);
+          // 디렉토리 토글 버튼 찾기 및 클릭
+          const directoryElement = document.querySelector(`.tree-item.is-directory[data-path*="${result.key}"]`);
+          if (directoryElement) {
+            const toggleButton = directoryElement.querySelector('.tree-toggle');
+            if (toggleButton && !directoryElement.classList.contains('expanded')) {
+              console.log('SyllabusExplorer: Clicking directory toggle button');
+              toggleButton.click();
+              
+              // 디렉토리 하이라이트 효과
+              directoryElement.classList.add('bg-green-100', 'border-green-300');
+              setTimeout(() => {
+                directoryElement.classList.remove('bg-green-100', 'border-green-300');
+              }, 3000);
+            }
+          }
         }
       }
     } catch (error) {
-      console.warn('Failed to navigate to file in FileTree:', error);
+      console.warn('Failed to navigate to file/directory in FileTree:', error);
     }
   });
 };

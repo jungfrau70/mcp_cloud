@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gke-cluster-info
+data:
+  cluster-name: "my-gke-cluster"
+  zone: "us-central1-a"
+  node-count: "2"
+  machine-type: "e2-medium"
+  min-nodes: "1"
+  max-nodes: "3"

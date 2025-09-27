@@ -501,28 +501,47 @@ const setupCodeBlockHandlers = () => {
   });
 };
 
-// FileTree로 네비게이션하는 함수 (통합된 경로 처리 사용)
+// FileTree로 네비게이션하는 함수 (한글 파일명 디코딩 처리)
 const getDisplayPath = (filePath) => {
   if (!filePath) return 'Unknown'
   
   // 디버깅을 위한 로그 추가
   console.log('ContentView getDisplayPath input:', filePath)
   
-  // 통합된 지식베이스 경로 처리 사용 (표시용이므로 인코딩하지 않음)
-  const pathResult = processKnowledgeBasePath(filePath, {
-    addPrefix: false, // 표시용이므로 prefix 제거
-    encode: false,    // 표시용이므로 인코딩하지 않음
-    fixWindowsPaths: true
-  })
-  
-  if (!pathResult.success) {
-    console.warn('Path processing failed for display:', pathResult.errors)
-    // 처리 실패 시 기본 정규화만 수행
-    return filePath.replace(/\\/g, '/')
+  // 한글 파일명 디코딩 처리
+  try {
+    // 경로를 세그먼트별로 분리하여 각각 디코딩
+    const parts = filePath.split('/')
+    const decodedParts = parts.map(part => {
+      if (!part) return part
+      
+      // URL 인코딩된 한글 파일명 디코딩
+      if (/%[0-9A-Fa-f]{2}/.test(part)) {
+        try {
+          const decoded = decodeURIComponent(part)
+          console.log('ContentView getDisplayPath: Decoded path segment:', { original: part, decoded })
+          return decoded
+        } catch (error) {
+          console.warn('Failed to decode path segment:', part, error)
+          return part
+        }
+      }
+      
+      // 이미 한글이 포함된 경우 그대로 반환
+      if (/[가-힣]/.test(part)) {
+        return part
+      }
+      
+      return part
+    })
+    
+    const result = decodedParts.join('/')
+    console.log('ContentView getDisplayPath: Final decoded path:', { original: filePath, decoded: result })
+    return result
+  } catch (error) {
+    console.warn('Failed to decode display path:', filePath, error)
+    return filePath
   }
-  
-  console.log('ContentView getDisplayPath: processed from', filePath, 'to', pathResult.result)
-  return pathResult.result
 }
 
 const navigateToFileTree = () => {
@@ -656,16 +675,36 @@ const setupLinkIntercepts = async () => {
 
     // Check if the target is a directory
     if (isDirectoryPath(targetPath)) {
-      // For directories, try to find README.md first
-      const normalizedPath = normalizeDirectoryPath(targetPath);
+      console.log('ContentView: Directory link clicked:', targetPath);
       
-      // Dispatch navigation event with directory flag
-      window.dispatchEvent(new CustomEvent('kb:open', {
+      // For directories, navigate to FileTree instead of trying to open the directory
+      const normalizedPath = normalizeDirectoryPath(targetPath);
+      console.log('ContentView: Normalized path:', normalizedPath);
+      
+      // Show user feedback
+      if (typeof window !== 'undefined') {
+        const toast = document.createElement('div');
+        toast.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50';
+        toast.textContent = `FileTree에서 "${getDisplayPath(normalizedPath)}" 디렉토리로 이동합니다`;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+          if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+          }
+        }, 3000);
+      }
+      
+      // Navigate to FileTree with the directory path
+      console.log('ContentView: Dispatching filetree:navigate event with:', {
+        path: normalizedPath,
+        openDirectory: true
+      });
+      
+      window.dispatchEvent(new CustomEvent('filetree:navigate', {
         detail: { 
-          path: normalizedPath, 
-          container: container,
-          isDirectory: true,
-          originalPath: targetPath
+          path: normalizedPath,
+          openDirectory: true
         }
       }));
     } else {

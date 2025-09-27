@@ -3,8 +3,8 @@
 > 📋 **강의 일시**: 2024년 10월 2일 ["목"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Day1 완료 ["Docker, Kubernetes, 클라우드 컨테이너 서비스"]  
-> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_intermediate/_setup_wsl/README.md](cloud_intermediate/_setup_wsl/README.md)
-> 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-intermediate.git cloud_intermediate`
+> 📋 **실습 환경 설정**: [_setup_/README.md](cloud_intermediate/_setup_/README.md)
+> 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-intermediate.git cloud_intermediate` & https://app.goldencircle.us 에서 file 별 다운로드
 
 ---
 
@@ -463,8 +463,8 @@ gcloud logging read "resource.type=cloud_run_revision" --limit 50
 
 ### **실습 코드 저장소**
 - [GitHub Repository](https://github.com/jungfrau70/cloud-intermediate.git)
-- [실습 코드](cloud_intermediate/samples/day2/)
-- [자동화 스크립트](cloud_intermediate/scripts/)
+- [실습 코드](../cloud_intermediate/samples/day2/)
+- [자동화 스크립트](../cloud_intermediate/scripts/)
 
 ## 🎯 **다음 단계 안내**
 

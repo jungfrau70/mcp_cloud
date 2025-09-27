@@ -3,6 +3,18 @@
 # MCP Cloud Master - WSL 환경 체크 스크립트
 # Cloud Master 과정용 WSL 환경 검증 도구
 # install-all-wsl.sh와 동기화된 최신 버전
+#
+# 🎯 주요 기능:
+# 1. WSL 환경 검증 (Docker, Git, AWS CLI, GCP CLI, Terraform 등)
+# 2. 클러스터 정리 기능 (실습 완료 후 리소스 정리)
+#    - EKS/GKE 클러스터 정리
+#    - AWS EC2/GCP VM 인스턴스 정리
+#    - 비용 절약을 위한 리소스 정리 도구
+#
+# 💡 사용 권장 시점:
+# - 실습 완료 후 (권장)
+# - 테스트용 리소스 정리 시
+# - 환경 재설정 시
 
 # 색상 정의
 RED='\033[0;31m'
@@ -894,10 +906,33 @@ main() {
     
     # 클러스터 정리 메뉴 (선택사항)
     echo ""
+    log_header "=== 클러스터 정리 기능 안내 ==="
+    log_info "이 기능은 실습 중 생성된 클라우드 리소스를 정리하는 도구입니다."
+    echo ""
+    log_info "📋 정리 가능한 리소스:"
+    echo "  • EKS 클러스터 (AWS Kubernetes)"
+    echo "  • GKE 클러스터 (Google Kubernetes)" 
+    echo "  • GCP VM 인스턴스 (Google Cloud 가상머신)"
+    echo "  • AWS EC2 인스턴스 (Amazon 가상머신)"
+    echo "  • 통합 클러스터 정리 스크립트"
+    echo "  • 통합 VM 정리 스크립트"
+    echo ""
+    log_warning "💰 비용 절약: 실습 완료 후 불필요한 리소스를 정리하여 비용을 절약할 수 있습니다."
+    echo ""
+    log_info "🎯 사용 권장 시점:"
+    echo "  • 실습 완료 후 (권장)"
+    echo "  • 테스트용 리소스 정리 시"
+    echo "  • 환경 재설정 시"
+    echo ""
+    log_info "⚠️  처음 실습하는 경우 'N'을 선택하여 건너뛰어도 됩니다."
+    echo ""
     log_info "클러스터 정리 기능을 사용하시겠습니까? (y/N)"
     read -r response
     if [[ "$response" =~ ^[Yy]$ ]]; then
         cluster_cleanup_menu
+    else
+        log_info "클러스터 정리 기능을 건너뜁니다."
+        log_info "나중에 필요시 'environment-check-wsl.sh'를 다시 실행하세요."
     fi
 }
 
@@ -906,20 +941,27 @@ cluster_cleanup_menu() {
     while true; do
         echo ""
         log_header "=== 클러스터 정리 메뉴 ==="
-        echo "1. EKS 클러스터 목록 보기"
-        echo "2. GKE 클러스터 목록 보기"
-        echo "3. GCP VM 인스턴스 목록 보기"
-        echo "4. AWS EC2 인스턴스 목록 보기"
-        echo "5. 통합 클러스터 정리 스크립트 실행"
-        echo "6. 통합 VM 정리 스크립트 실행"
+        log_info "실습 중 생성된 클라우드 리소스를 정리합니다."
+        log_warning "⚠️  주의: 선택한 리소스가 영구적으로 삭제됩니다!"
+        echo ""
+        echo "📋 정리 메뉴:"
+        echo "1. EKS 클러스터 목록 보기 (AWS Kubernetes)"
+        echo "2. GKE 클러스터 목록 보기 (Google Kubernetes)"
+        echo "3. GCP VM 인스턴스 목록 보기 (Google Cloud 가상머신)"
+        echo "4. AWS EC2 인스턴스 목록 보기 (Amazon 가상머신)"
+        echo "5. 통합 클러스터 정리 스크립트 실행 (모든 Kubernetes 클러스터)"
+        echo "6. 통합 VM 정리 스크립트 실행 (모든 가상머신)"
         echo "7. 메인 메뉴로 돌아가기"
+        echo ""
+        log_info "💡 팁: 먼저 목록 보기(1-4)로 리소스를 확인한 후 정리(5-6)를 실행하세요."
         echo ""
         echo -n "선택 (1-7): "
         read -r choice
         
         case $choice in
             1)
-                log_info "EKS 클러스터 목록 조회 중..."
+                log_info "🔍 EKS 클러스터 목록 조회 중..."
+                log_info "AWS Kubernetes 클러스터를 확인합니다."
                 if command -v eksctl &> /dev/null; then
                     eksctl get cluster --region ap-northeast-2 2>/dev/null || log_warning "EKS 클러스터가 없거나 접근할 수 없습니다."
                 else
@@ -927,7 +969,8 @@ cluster_cleanup_menu() {
                 fi
                 ;;
             2)
-                log_info "GKE 클러스터 목록 조회 중..."
+                log_info "🔍 GKE 클러스터 목록 조회 중..."
+                log_info "Google Kubernetes 클러스터를 확인합니다."
                 if command -v gcloud &> /dev/null; then
                     gcloud container clusters list 2>/dev/null || log_warning "GKE 클러스터가 없거나 접근할 수 없습니다."
                 else
@@ -935,7 +978,8 @@ cluster_cleanup_menu() {
                 fi
                 ;;
             3)
-                log_info "GCP VM 인스턴스 목록 조회 중..."
+                log_info "🔍 GCP VM 인스턴스 목록 조회 중..."
+                log_info "Google Cloud 가상머신을 확인합니다."
                 if command -v gcloud &> /dev/null; then
                     gcloud compute instances list 2>/dev/null || log_warning "GCP VM 인스턴스가 없거나 접근할 수 없습니다."
                 else
@@ -943,7 +987,8 @@ cluster_cleanup_menu() {
                 fi
                 ;;
             4)
-                log_info "AWS EC2 인스턴스 목록 조회 중..."
+                log_info "🔍 AWS EC2 인스턴스 목록 조회 중..."
+                log_info "Amazon 가상머신을 확인합니다."
                 if command -v aws &> /dev/null; then
                     aws ec2 describe-instances --region ap-northeast-2 --query 'Reservations[*].Instances[*].[InstanceId,State.Name,InstanceType,Tags[?Key==`Name`].Value|[0]]' --output table 2>/dev/null || log_warning "AWS EC2 인스턴스가 없거나 접근할 수 없습니다."
                 else
@@ -951,16 +996,20 @@ cluster_cleanup_menu() {
                 fi
                 ;;
             5)
+                log_warning "⚠️  주의: 모든 Kubernetes 클러스터가 삭제됩니다!"
+                log_info "통합 클러스터 정리 스크립트를 실행합니다."
                 if [ -f "./cluster-cleanup-interactive.sh" ]; then
-                    log_info "통합 클러스터 정리 스크립트를 실행합니다."
+                    log_info "🗑️  모든 Kubernetes 클러스터를 정리합니다."
                     ./cluster-cleanup-interactive.sh
                 else
                     log_error "cluster-cleanup-interactive.sh 파일을 찾을 수 없습니다."
                 fi
                 ;;
             6)
+                log_warning "⚠️  주의: 모든 가상머신이 삭제됩니다!"
+                log_info "통합 VM 정리 스크립트를 실행합니다."
                 if [ -f "./vm-cleanup-interactive.sh" ]; then
-                    log_info "통합 VM 정리 스크립트를 실행합니다."
+                    log_info "🗑️  모든 가상머신을 정리합니다."
                     ./vm-cleanup-interactive.sh
                 else
                     log_error "vm-cleanup-interactive.sh 파일을 찾을 수 없습니다."

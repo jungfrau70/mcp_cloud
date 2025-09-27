@@ -614,11 +614,17 @@ export function handleKoreanFilename(filename: string, mode: 'encode' | 'decode'
         return /[가-힣]/.test(filename) ? encodeURIComponent(filename) : filename
         
       case 'decode':
-        return isEncodedFilename(filename) ? decodeURIComponent(filename) : filename
+        // URL 인코딩된 한글 파일명 디코딩
+        if (/%[0-9A-Fa-f]{2}/.test(filename)) {
+          const decoded = decodeURIComponent(filename)
+          console.log('handleKoreanFilename: Decoded filename:', { original: filename, decoded })
+          return decoded
+        }
+        return filename
         
       case 'auto':
       default:
-        if (isEncodedFilename(filename)) {
+        if (/%[0-9A-Fa-f]{2}/.test(filename)) {
           return decodeURIComponent(filename)
         } else if (/[가-힣]/.test(filename)) {
           return encodeURIComponent(filename)
@@ -1370,7 +1376,7 @@ export function resolveKnowledgeBasePath(currentPath: string, relativePath: stri
   const finalResult = '/' + uniqueSegments.join('/');
   
   // 7. 디버깅을 위한 로그 (개발 환경에서만)
-  if (process.env.NODE_ENV === 'development') {
+  if (typeof window !== 'undefined' && (import.meta as any).env?.DEV) {
     console.log('resolveKnowledgeBasePath:', {
       currentPath,
       relativePath,

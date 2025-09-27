@@ -8,6 +8,30 @@ set -e
 set -u
 set -o pipefail
 
+# 사용법 출력
+usage() {
+    echo "Cloud Intermediate Day 2 실습 스크립트"
+    echo ""
+    echo "사용법:"
+    echo "  $0 [옵션]                    # Interactive 모드"
+    echo "  $0 --action <액션> [파라미터] # Parameter 모드"
+    echo ""
+    echo "Interactive 모드 옵션:"
+    echo "  --interactive, -i           # Interactive 모드 (기본값)"
+    echo "  --help, -h                   # 도움말 표시"
+    echo ""
+    echo "Parameter 모드 액션:"
+    echo "  --action cicd-pipeline      # CI/CD 파이프라인 실습"
+    echo "  --action cloud-deployment   # 클라우드 배포 실습"
+    echo "  --action monitoring-basics  # 모니터링 기초 실습"
+    echo "  --action all                # 전체 실습 실행"
+    echo ""
+    echo "예시:"
+    echo "  $0                          # Interactive 모드"
+    echo "  $0 --action cicd-pipeline   # CI/CD 파이프라인만 실행"
+    echo "  $0 --action all             # 전체 실습 실행"
+}
+
 # 색상 정의
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -973,6 +997,119 @@ main() {
         echo ""
         read -p "계속하려면 Enter를 누르세요..."
     done
+}
+
+# Interactive 모드 메뉴
+show_interactive_menu() {
+    echo ""
+    log_header "Cloud Intermediate Day 2 실습 메뉴"
+    echo "1. CI/CD 파이프라인 실습"
+    echo "2. 클라우드 배포 실습"
+    echo "3. 모니터링 기초 실습"
+    echo "4. 전체 Day 2 실습 실행"
+    echo "5. 실습 환경 정리"
+    echo "6. 종료"
+    echo ""
+}
+
+# Interactive 모드 실행
+run_interactive_mode() {
+    log_header "Cloud Intermediate Day 2 실습"
+    while true; do
+        show_interactive_menu
+        read -p "선택하세요 (1-6): " choice
+        
+        case $choice in
+            1)
+                cicd_pipeline_practice
+                ;;
+            2)
+                cloud_deployment_practice
+                ;;
+            3)
+                monitoring_practice
+                ;;
+            4)
+                log_info "전체 Day 2 실습 실행"
+                cicd_pipeline_practice
+                cloud_deployment_practice
+                monitoring_practice
+                log_success "전체 Day 2 실습 완료!"
+                ;;
+            5)
+                cleanup_day2
+                ;;
+            6)
+                log_info "프로그램을 종료합니다"
+                exit 0
+                ;;
+            *)
+                log_error "잘못된 선택입니다. 1-6 중에서 선택하세요."
+                ;;
+        esac
+        
+        echo ""
+        read -p "계속하려면 Enter를 누르세요..."
+    done
+}
+
+# Parameter 모드 실행
+run_parameter_mode() {
+    local action=$1
+    shift
+    
+    case "$action" in
+        "cicd-pipeline")
+            log_info "CI/CD 파이프라인 실습 실행"
+            cicd_pipeline_practice
+            ;;
+        "cloud-deployment")
+            log_info "클라우드 배포 실습 실행"
+            cloud_deployment_practice
+            ;;
+        "monitoring-basics")
+            log_info "모니터링 기초 실습 실행"
+            monitoring_practice
+            ;;
+        "all")
+            log_info "전체 Day 2 실습 실행"
+            cicd_pipeline_practice
+            cloud_deployment_practice
+            monitoring_practice
+            log_success "전체 Day 2 실습 완료!"
+            ;;
+        *)
+            log_error "알 수 없는 액션: $action"
+            usage
+            exit 1
+            ;;
+    esac
+}
+
+# 메인 함수
+main() {
+    case "${1:-}" in
+        "--help"|"-h")
+            usage
+            exit 0
+            ;;
+        "--interactive"|"-i"|"")
+            run_interactive_mode
+            ;;
+        "--action")
+            if [ -z "${2:-}" ]; then
+                log_error "액션을 지정해주세요."
+                usage
+                exit 1
+            fi
+            run_parameter_mode "$2" "$3"
+            ;;
+        *)
+            log_error "알 수 없는 옵션: $1"
+            usage
+            exit 1
+            ;;
+    esac
 }
 
 # 스크립트 실행

@@ -287,9 +287,9 @@ gcloud auth application-default login
 - 상세한 오류 메시지와 환경 정보를 포함하세요
 
 ### 커뮤니티
-- Cloud Master 과정 참여자들과 정보를 공유하세요
+- Cloud Intermediate 과정 참여자들과 정보를 공유하세요
 - 질문과 답변을 통해 함께 성장하세요
 
 ---
 
-**Cloud Master WSL 환경 구성을 성공적으로 완료하세요! 🚀**
+**Cloud Intermediate WSL 환경 구성을 성공적으로 완료하세요! 🚀**

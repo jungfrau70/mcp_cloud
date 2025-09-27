@@ -1,0 +1,40 @@
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  name: cloud-intermediate-gke
+  namespace: default
+spec:
+  location: asia-northeast3-a
+  initialNodeCount: 2
+  nodeConfig:
+    machineType: e2-medium
+    diskSizeGb: 20
+    diskType: pd-standard
+    oauthScopes:
+      - https://www.googleapis.com/auth/cloud-platform
+    serviceAccount: cloud-intermediate-sa@PROJECT_ID.iam.gserviceaccount.com
+  network: projects/PROJECT_ID/global/networks/default
+  subnetwork: projects/PROJECT_ID/regions/asia-northeast3/subnetworks/default
+  ipAllocationPolicy:
+    clusterIpv4Cidr: "10.0.0.0/16"
+    servicesIpv4Cidr: "10.1.0.0/16"
+  masterAuth:
+    clientCertificateConfig:
+      issueClientCertificate: true
+  loggingService: logging.googleapis.com/kubernetes
+  monitoringService: monitoring.googleapis.com/kubernetes
+  addonsConfig:
+    httpLoadBalancing:
+      disabled: false
+    horizontalPodAutoscaling:
+      disabled: false
+    networkPolicyConfig:
+      disabled: false
+  networkPolicy:
+    enabled: true
+    provider: CALICO
+  masterAuthorizedNetworksConfig:
+    enabled: true
+    cidrBlocks:
+      - cidrBlock: "0.0.0.0/0"
+        displayName: "All"

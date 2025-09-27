@@ -83,6 +83,17 @@ except Exception:
 def _safe_path(rel: str) -> Path:
     rel = (rel or '').strip().lstrip('/\\')
     
+    # 한글 파일명 디코딩 처리 (URL 인코딩된 한글 파일명을 원래 한글로 복원)
+    try:
+        # URL 인코딩된 한글 파일명 디코딩
+        if '%' in rel:
+            # 재귀적 디코딩: 2중 인코딩된 경우를 처리
+            while '%' in rel and rel != urllib.parse.unquote(rel):
+                rel = urllib.parse.unquote(rel)
+            print(f"DEBUG: _safe_path - decoded Korean filename: {rel}")
+    except Exception as e:
+        print(f"DEBUG: _safe_path - failed to decode Korean filename: {e}")
+    
     # 경로 중복 제거 로직 추가
     if rel:
         # 중복된 경로 세그먼트 제거

@@ -8,6 +8,34 @@ set -e
 set -u
 set -o pipefail
 
+# 리소스 관리 유틸리티 로드
+source "$(dirname "$0")/resource-manager.sh"
+
+# 사용법 출력
+usage() {
+    echo "Cloud Intermediate Day 1 실습 스크립트"
+    echo ""
+    echo "사용법:"
+    echo "  $0 [옵션]                    # Interactive 모드"
+    echo "  $0 --action <액션> [파라미터] # Parameter 모드"
+    echo ""
+    echo "Interactive 모드 옵션:"
+    echo "  --interactive, -i           # Interactive 모드 (기본값)"
+    echo "  --help, -h                   # 도움말 표시"
+    echo ""
+    echo "Parameter 모드 액션:"
+    echo "  --action docker-advanced     # Docker 고급 실습"
+    echo "  --action kubernetes-basics   # Kubernetes 기초 실습"
+    echo "  --action cloud-services     # 클라우드 컨테이너 서비스"
+    echo "  --action monitoring-hub     # 모니터링 허브 구축"
+    echo "  --action all                # 전체 실습 실행"
+    echo ""
+    echo "예시:"
+    echo "  $0                          # Interactive 모드"
+    echo "  $0 --action docker-advanced # Docker 고급 실습만 실행"
+    echo "  $0 --action all             # 전체 실습 실행"
+}
+
 # 색상 정의
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -28,7 +56,7 @@ docker_advanced_practice() {
     log_header "Docker 고급 실습"
     
     local practice_dir="day1-docker-advanced"
-    mkdir -p "$practice_dir"
+    smart_mkdir "$practice_dir" false
     cd "$practice_dir"
     
     # 1. 최적화된 Dockerfile 생성
@@ -194,7 +222,7 @@ EOF
     
     # 8. Docker Compose 실행
     log_info "5. Docker Compose 실행"
-    docker-compose up -d
+    smart_docker_compose_up "docker-compose.yml" false
     
     # 9. 서비스 상태 확인
     log_info "6. 서비스 상태 확인"
@@ -649,6 +677,124 @@ main() {
         echo ""
         read -p "계속하려면 Enter를 누르세요..."
     done
+}
+
+# Interactive 모드 메뉴
+show_interactive_menu() {
+    echo ""
+    log_header "Cloud Intermediate Day 1 실습 메뉴"
+    echo "1. Docker 고급 실습"
+    echo "2. Kubernetes 기초 실습"
+    echo "3. 클라우드 컨테이너 서비스 실습"
+    echo "4. 전체 Day 1 실습 실행"
+    echo "5. 실습 환경 정리"
+    echo "6. 종료"
+    echo ""
+}
+
+# Interactive 모드 실행
+run_interactive_mode() {
+    log_header "Cloud Intermediate Day 1 실습"
+    while true; do
+        show_interactive_menu
+        read -p "선택하세요 (1-6): " choice
+        
+        case $choice in
+            1)
+                docker_advanced_practice
+                ;;
+            2)
+                kubernetes_basics_practice
+                ;;
+            3)
+                cloud_container_services_practice
+                ;;
+            4)
+                log_info "전체 Day 1 실습 실행"
+                docker_advanced_practice
+                kubernetes_basics_practice
+                cloud_container_services_practice
+                log_success "전체 Day 1 실습 완료!"
+                ;;
+            5)
+                cleanup_day1
+                ;;
+            6)
+                log_info "프로그램을 종료합니다"
+                exit 0
+                ;;
+            *)
+                log_error "잘못된 선택입니다. 1-6 중에서 선택하세요."
+                ;;
+        esac
+        
+        echo ""
+        read -p "계속하려면 Enter를 누르세요..."
+    done
+}
+
+# Parameter 모드 실행
+run_parameter_mode() {
+    local action=$1
+    shift
+    
+    case "$action" in
+        "docker-advanced")
+            log_info "Docker 고급 실습 실행"
+            docker_advanced_practice
+            ;;
+        "kubernetes-basics")
+            log_info "Kubernetes 기초 실습 실행"
+            kubernetes_basics_practice
+            ;;
+        "cloud-services")
+            log_info "클라우드 컨테이너 서비스 실습 실행"
+            cloud_container_services_practice
+            ;;
+        "monitoring-hub")
+            log_info "모니터링 허브 구축 실습 실행"
+            monitoring_hub_practice
+            ;;
+        "all")
+            log_info "전체 Day 1 실습 실행"
+            docker_advanced_practice
+            kubernetes_basics_practice
+            cloud_container_services_practice
+            monitoring_hub_practice
+            log_success "전체 Day 1 실습 완료!"
+            ;;
+        *)
+            log_error "알 수 없는 액션: $action"
+            usage
+            exit 1
+            ;;
+    esac
+}
+
+# 메인 함수
+main() {
+    case "${1:-}" in
+        "--help"|"-h")
+            usage
+            exit 0
+            ;;
+        "--interactive"|"-i"|"")
+            run_interactive_mode
+            ;;
+        "--action")
+            if [ -z "${2:-}" ]; then
+                log_error "액션을 지정해주세요."
+                usage
+                exit 1
+            fi
+            run_parameter_mode "$2" "$3"
+            ;;
+        *)
+            log_error "알 수 없는 옵션: $1"
+            usage
+            exit 1
+            ;;
+    esac
 }
 
 # 스크립트 실행
