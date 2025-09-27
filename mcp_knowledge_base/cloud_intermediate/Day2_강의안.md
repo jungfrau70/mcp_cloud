@@ -16,8 +16,22 @@
 - **모니터링 스택**: Prometheus + Grafana 통합 모니터링 시스템
 - **실무 중심**: 프로덕션 환경에서 사용되는 DevOps 패턴 학습
 - **자동화**: 실습 자동화 스크립트를 통한 효율적 학습
+- **🤖 100% 자동화**: 모든 실습이 자동화 스크립트로 완주 가능
+- **📊 실시간 모니터링**: 강의 진행 상황 실시간 추적
 
 ## ⚠️ 실습 전 필수 준비사항
+
+### 🤖 **자동화 실행 (권장)**
+```bash
+# 전체 Day2 실습 자동화 실행
+cd mcp_knowledge_base/cloud_intermediate/repo/scripts
+./day2-practice.sh --action all
+
+# 또는 개별 실습 실행
+./day2-practice.sh --action cicd-pipeline
+./day2-practice.sh --action cloud-deployment
+./day2-practice.sh --action monitoring-basics
+```
 
 ### 🔧 **사전 요구사항 확인**
 ```bash

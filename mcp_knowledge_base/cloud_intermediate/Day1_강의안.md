@@ -19,10 +19,34 @@
 - **클라우드 컨테이너 서비스**: AWS ECS, GCP Cloud Run
 - **실무 중심**: 프로덕션 환경에서 사용되는 패턴 학습
 - **자동화**: 실습 자동화 스크립트를 통한 효율적 학습
+- **🤖 100% 자동화**: 모든 실습이 자동화 스크립트로 완주 가능
+- **📊 실시간 모니터링**: 강의 진행 상황 실시간 추적
 
 ## ⚠️ 실습 전 필수 준비사항
 
 ### 🚀 **Step 1: AWS EC2 VM 생성 및 설정**
+
+#### **🤖 자동화 실행 (권장)**
+```bash
+# 전체 실습 자동화 실행
+cd mcp_knowledge_base/cloud_intermediate/repo/scripts
+./day1-practice.sh --action all
+
+# 또는 개별 실습 실행
+./day1-practice.sh --action docker-advanced
+./day1-practice.sh --action kubernetes-basics
+./day1-practice.sh --action cloud-services
+./day1-practice.sh --action monitoring-hub
+```
+
+#### **📊 실시간 모니터링**
+```bash
+# 강의 진행 상황 실시간 모니터링
+./lecture-monitor.sh --dashboard
+
+# 현재 상태 확인
+./lecture-monitor.sh --status
+```
 
 #### **1-1. 실습 코드 다운로드**
 ```bash

@@ -80,7 +80,7 @@ test_parameter_mode() {
     )
     
     for script in "${scripts[@]}"; do
-        run_test "Parameter 모드: $script" "grep -q '--action' ./$script"
+        run_test "Parameter 모드: $script" "grep -q '\-\-action' ./$script"
         run_test "도움말 함수: $script" "grep -q 'usage()' ./$script"
     done
 }
