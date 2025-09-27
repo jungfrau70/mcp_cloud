@@ -21,17 +21,17 @@
 
 ## ⚠️ 실습 전 필수 준비사항
 
-### 🤖 **자동화 실행 (권장)**
+### 🚀 **핵심 실습 환경 설정**
+
+#### **🤖 자동화 실행 (권장)**
 ```bash
 # 전체 Day2 실습 자동화 실행
 cd mcp_knowledge_base/cloud_intermediate/repo/scripts
 ./day2-practice.sh --action all
-
-# 또는 개별 실습 실행
-./day2-practice.sh --action cicd-pipeline
-./day2-practice.sh --action cloud-deployment
-./day2-practice.sh --action monitoring-basics
 ```
+
+<details>
+<summary>🔧 상세 환경 설정 및 부가 절차</summary>
 
 ### 🔧 **사전 요구사항 확인**
 ```bash
@@ -74,6 +74,22 @@ cloud-intermediate-helper.sh check-environment
 - [ ] **권한 확인**: AWS/GCP 리소스 생성 권한
 - [ ] **네트워크 확인**: 인터넷 연결 및 방화벽 설정
 - [ ] **GitHub Repository**: 실습용 저장소 생성 및 설정
+
+</details>
+
+## 🚀 **핵심 실습 시작**
+
+### **📋 실습 환경 확인**
+```bash
+# 실습 환경 상태 확인
+./day2-practice.sh --status
+
+# 실습 진행 상황 확인
+./lecture-monitor.sh --status
+```
+
+<details>
+<summary>📁 강의 자료 구조 및 상세 일정</summary>
 
 ## 📁 **2일차 강의 자료 구조**
 
@@ -494,11 +510,31 @@ gcloud logging read "resource.type=cloud_run_revision" --limit 50
 - [ ] 모니터링 시스템 구축 계획
 - [ ] DevOps 문화 정착 방안
 
+</details>
+
+## 🎯 **핵심 학습 완료**
+
+### **📊 학습 성과 확인**
+```bash
+# 전체 실습 완료 확인
+./day2-practice.sh --status
+
+# 학습 성과 리포트 생성
+./lecture-monitor.sh --report
+```
+
+<details>
+<summary>🚀 심화 학습 방향</summary>
+
 ### **심화 학습 방향**
 - [ ] Kubernetes 고급 기능 학습
 - [ ] 마이크로서비스 아키텍처 설계
 - [ ] 클라우드 네이티브 보안
+
+</details>
 - [ ] 성능 최적화 및 비용 관리
+
+</details>
 
 ---
 

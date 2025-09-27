@@ -24,20 +24,17 @@
 
 ## ⚠️ 실습 전 필수 준비사항
 
-### 🚀 **Step 1: AWS EC2 VM 생성 및 설정**
+### 🚀 **핵심 실습 환경 설정**
 
 #### **🤖 자동화 실행 (권장)**
 ```bash
 # 전체 실습 자동화 실행
 cd mcp_knowledge_base/cloud_intermediate/repo/scripts
 ./day1-practice.sh --action all
-
-# 또는 개별 실습 실행
-./day1-practice.sh --action docker-advanced
-./day1-practice.sh --action kubernetes-basics
-./day1-practice.sh --action cloud-services
-./day1-practice.sh --action monitoring-hub
 ```
+
+<details>
+<summary>🔧 상세 환경 설정 및 부가 절차</summary>
 
 #### **📊 실시간 모니터링**
 ```bash
@@ -66,7 +63,7 @@ cd cloud_intermediate
 # - 설정 파일: cloud_intermediate/_setup_/
 ```
 
-#### **1-2. 로컬 PC 환경 준비 (WSL 기준)**치
+#### **1-2. 로컬 PC 환경 준비 (WSL 기준)**
 ```bash
 # 1. 실습 디렉토리로 이동
 cd ./_setup_
@@ -300,6 +297,20 @@ aws ec2 create-key-pair \
 
 # 4. 키 파일 권한 자동 설정 (400)
 chmod 400 cloud-deployment-key.pem
+```
+
+</details>
+
+## 🚀 **핵심 실습 시작**
+
+### **📋 실습 환경 확인**
+```bash
+# 실습 환경 상태 확인
+./day1-practice.sh --status
+
+# 실습 진행 상황 확인
+./lecture-monitor.sh --status
+```
 
 # 5. 생성 완료 확인
 echo "✅ 키 페어 생성 완료: cloud-deployment-key.pem"
@@ -1537,6 +1548,9 @@ docker-compose logs
 - **Kubernetes 기초**: `mcp_knowledge_base/cloud_intermediate/repo/samples/day1/kubernetes-basics/`
 - **클라우드 컨테이너**: `mcp_knowledge_base/cloud_intermediate/repo/samples/day1/cloud-container-services/`
 
+<details>
+<summary>🎯 다음 단계 안내 및 실무 적용</summary>
+
 ## 🎯 **다음 단계 안내**
 
 ### **Day2 준비사항**
@@ -1550,6 +1564,19 @@ docker-compose logs
 - [ ] Kubernetes 클러스터 구축 계획 수립
 - [ ] 클라우드 컨테이너 서비스 도입 검토
 - [ ] 모니터링 및 로깅 시스템 구축
+
+</details>
+
+## 🎉 **Day1 핵심 학습 완료**
+
+### **📊 학습 성과 확인**
+```bash
+# 전체 실습 완료 확인
+./day1-practice.sh --status
+
+# 학습 성과 리포트 생성
+./lecture-monitor.sh --report
+```
 
 ---
 
