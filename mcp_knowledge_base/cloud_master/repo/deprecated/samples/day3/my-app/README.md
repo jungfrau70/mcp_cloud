@@ -11,35 +11,35 @@
 ### 1. 클라우드 환경 설정
 ```bash
 # AWS 환경 설정
-chmod +x ../../../repos/cloud-scripts/aws-setup-helper.sh
-./../../../repos/cloud-scripts/aws-setup-helper.sh
+chmod +x .../.repos/cloud-scripts/aws-setup-helper.sh
+../.../repos/cloud-scripts/aws-setup-helper.sh
 
 # GCP 환경 설정
-chmod +x ../../../repos/cloud-scripts/gcp-setup-helper.sh
-./../../../repos/cloud-scripts/gcp-setup-helper.sh
+chmod +x .../.repos/cloud-scripts/gcp-setup-helper.sh
+../.../repos/cloud-scripts/gcp-setup-helper.sh
 ```
 
 ### 2. 로드밸런서 설정
 ```bash
 # 로드밸런서 자동 설정
-chmod +x ../../../repos/cloud-scripts/load-balancer-setup.sh
-./../../../repos/cloud-scripts/load-balancer-setup.sh aws
-./../../../repos/cloud-scripts/load-balancer-setup.sh gcp
+chmod +x .../.repos/cloud-scripts/load-balancer-setup.sh
+../.../repos/cloud-scripts/load-balancer-setup.sh aws
+../.../repos/cloud-scripts/load-balancer-setup.sh gcp
 ```
 
 ### 3. 모니터링 스택 배포
 ```bash
 # 모니터링 스택 자동 배포
-chmod +x ../../../repos/cloud-scripts/monitoring-stack-deploy.sh
-./../../../repos/cloud-scripts/monitoring-stack-deploy.sh
+chmod +x .../.repos/cloud-scripts/monitoring-stack-deploy.sh
+../.../repos/cloud-scripts/monitoring-stack-deploy.sh
 ```
 
 ### 4. 비용 최적화 분석
 ```bash
 # 비용 최적화 스크립트 실행
-chmod +x ../../../repos/cloud-scripts/cost-optimization.sh
-./../../../repos/cloud-scripts/cost-optimization.sh aws
-./../../../repos/cloud-scripts/cost-optimization.sh gcp
+chmod +x .../.repos/cloud-scripts/cost-optimization.sh
+../.../repos/cloud-scripts/cost-optimization.sh aws
+../.../repos/cloud-scripts/cost-optimization.sh gcp
 ```
 
 ## 📁 파일 구조
@@ -136,12 +136,12 @@ docker stop prometheus grafana node-exporter alertmanager
 docker rm prometheus grafana node-exporter alertmanager
 
 # AWS 리소스 정리
-chmod +x ../../../repos/cloud-scripts/aws-resource-cleanup.sh
-./../../../repos/cloud-scripts/aws-resource-cleanup.sh
+chmod +x .../.repos/cloud-scripts/aws-resource-cleanup.sh
+../.../repos/cloud-scripts/aws-resource-cleanup.sh
 
 # GCP 리소스 정리
-chmod +x ../../../repos/cloud-scripts/gcp-project-cleanup.sh
-./../../../repos/cloud-scripts/gcp-project-cleanup.sh
+chmod +x .../.repos/cloud-scripts/gcp-project-cleanup.sh
+../.../repos/cloud-scripts/gcp-project-cleanup.sh
 ```
 
 ## 📚 참고 자료

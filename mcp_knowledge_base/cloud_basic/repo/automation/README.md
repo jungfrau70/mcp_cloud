@@ -17,7 +17,7 @@
 Basic 과정의 실습 코드
 
 ```bash
-cd C:/Users/JIH/githubs/mcp_cloud/./automation_tests && python basic_course_automation.py
+cd C:/Users/JIH/githubs/mcp_cloud/automation_tests && python basic_course_automation.py
 ```
 Basic 과정 자동화가 성공적으로 완료되었습니다! 이제 생성된 파일들을 확인해보겠습니다.
 
@@ -25,7 +25,7 @@ Ran tool
 좋습니다! Basic 과정의 스크립트들이 생성되었습니다. 이제 Basic 과정의 테스트를 실행해보겠습니다.
 
 ```bash
-cd C:/Users/JIH/githubs/mcp_cloud/./automation_tests && python run_basic_course_tests.py
+cd C:/Users/JIH/githubs/mcp_cloud/automation_tests && python run_basic_course_tests.py
 ```
 🎉 **완벽합니다!** Basic 과정의 모든 테스트가 성공적으로 통과했습니다!
 
@@ -58,7 +58,7 @@ cd C:/Users/JIH/githubs/mcp_cloud/./automation_tests && python run_basic_course_
 ### �� 생성된 Basic 과정 파일들
 
 ```
-./automation/
+automation/
 ├── day1/                               # Day 1 실습 스크립트
 │   ├── cloud_basics.sh                # 클라우드 기초 실습
 │   ├── iam_basics.sh                  # IAM 기초 실습
@@ -93,20 +93,20 @@ cd C:/Users/JIH/githubs/mcp_cloud/./automation_tests && python run_basic_course_
 
 ```bash
 # Day 1 실습 스크립트 실행
-cd ./automation/day1
+cd automation/day1
 chmod +x *.sh
-./cloud_basics.sh
-./iam_basics.sh
-./vm_services.sh
-./storage_services.sh
+cloud_basics.sh
+iam_basics.sh
+vm_services.sh
+storage_services.sh
 
 # Day 2 실습 스크립트 실행
-cd ../day2
+cd .day2
 chmod +x *.sh
-./networking_basics.sh
-./security_basics.sh
-./database_services.sh
-./comprehensive_practice.sh
+networking_basics.sh
+security_basics.sh
+database_services.sh
+comprehensive_practice.sh
 ```
 
 ### �� Basic 과정 실습 내용

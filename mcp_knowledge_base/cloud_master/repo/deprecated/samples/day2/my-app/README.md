@@ -11,26 +11,26 @@
 ### 1. 클라우드 환경 설정
 ```bash
 # AWS 환경 설정
-chmod +x ../../../repos/cloud-scripts/aws-setup-helper.sh
-./../../../repos/cloud-scripts/aws-setup-helper.sh
+chmod +x .../.repos/cloud-scripts/aws-setup-helper.sh
+../.../repos/cloud-scripts/aws-setup-helper.sh
 
 # GCP 환경 설정
-chmod +x ../../../repos/cloud-scripts/gcp-setup-helper.sh
-./../../../repos/cloud-scripts/gcp-setup-helper.sh
+chmod +x .../.repos/cloud-scripts/gcp-setup-helper.sh
+../.../repos/cloud-scripts/gcp-setup-helper.sh
 ```
 
 ### 2. Kubernetes 클러스터 생성
 ```bash
 # Kubernetes 클러스터 자동 생성
-chmod +x ../../../repos/cloud-scripts/k8s-cluster-create.sh
-./../../../repos/cloud-scripts/k8s-cluster-create.sh
+chmod +x .../.repos/cloud-scripts/k8s-cluster-create.sh
+../.../repos/cloud-scripts/k8s-cluster-create.sh
 ```
 
 ### 3. 애플리케이션 배포
 ```bash
 # Kubernetes 애플리케이션 자동 배포
-chmod +x ../../../repos/cloud-scripts/k8s-app-deploy.sh
-./../../../repos/cloud-scripts/k8s-app-deploy.sh
+chmod +x .../.repos/cloud-scripts/k8s-app-deploy.sh
+../.../repos/cloud-scripts/k8s-app-deploy.sh
 ```
 
 ## 📁 파일 구조
@@ -117,12 +117,12 @@ kubectl delete namespace my-app
 docker system prune -a
 
 # AWS 리소스 정리
-chmod +x ../../../repos/cloud-scripts/aws-resource-cleanup.sh
-./../../../repos/cloud-scripts/aws-resource-cleanup.sh
+chmod +x .../.repos/cloud-scripts/aws-resource-cleanup.sh
+../.../repos/cloud-scripts/aws-resource-cleanup.sh
 
 # GCP 리소스 정리
-chmod +x ../../../repos/cloud-scripts/gcp-project-cleanup.sh
-./../../../repos/cloud-scripts/gcp-project-cleanup.sh
+chmod +x .../.repos/cloud-scripts/gcp-project-cleanup.sh
+../.../repos/cloud-scripts/gcp-project-cleanup.sh
 ```
 
 ## 📚 참고 자료

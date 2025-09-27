@@ -12,7 +12,7 @@
 # WSL에서 실행
 cd mcp_knowledge_base/cloud_master/repos/install
 chmod +x install-all-wsl.sh
-./install-all-wsl.sh
+install-all-wsl.sh
 ```
 
 ### 수동 설치
@@ -236,8 +236,8 @@ cd ~/mcp_knowledge_base/cloud_master/repos/cloud-scripts
 cd $MCP_KNOWLEDGE_BASE/cloud_master/repos/cloud-scripts
 
 # 스크립트 실행
-./aws-ec2-create.sh
-./gcp-compute-create.sh
+aws-ec2-create.sh
+gcp-compute-create.sh
 ```
 
 ### 7. 문제 해결

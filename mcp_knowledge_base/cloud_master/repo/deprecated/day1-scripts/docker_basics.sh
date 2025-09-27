@@ -294,8 +294,8 @@ echo "chmod +x *.sh"
 echo "./git_github_basics.sh"
 
 echo -e "\n${BLUE}교재 참조:${NC}"
-echo "- [Docker 고급 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/docker-advanced-guide.md)"
-echo "- [1일차 실습 가이드](/mcp_knowledge_base/cloud_master/textbook/Day1/README.md)"
+echo "- [Docker 고급 가이드](cloud_master/textbook/Day1/docker-advanced-guide.md)"
+echo "- [1일차 실습 가이드](cloud_master/textbook/Day1/README.md)"
 
 # 상위 디렉토리로 이동
 cd ..

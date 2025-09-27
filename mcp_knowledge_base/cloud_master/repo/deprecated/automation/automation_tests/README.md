@@ -101,7 +101,7 @@ python run_master_course_tests.py
 # Day 1 스크립트 실행 예시
 cd mcp_knowledge_base/cloud_master/automation/day1
 chmod +x *.sh
-./docker_basics.sh
+docker_basics.sh
 ```
 
 ## 환경 변수 설정

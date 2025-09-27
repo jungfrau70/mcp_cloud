@@ -3,7 +3,7 @@
 > 📋 **강의 일시**: 2024년 9월 3일 ["화"] 9:00~17:00  
 > 📋 **강의 방식**: 오프라인 실습 중심  
 > 📋 **선수 학습**: Cloud Basic 1일차 완료
-> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_basic/_setup_wsl/README.md](../_setup_wsl/README.md)
+> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_basic/_setup_wsl/README.md](_setup_wsl/README.md)
 > 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-basic.git cloud_basic`
 
 ---
@@ -101,7 +101,7 @@ cloud_basic/automation/day2/
 ```bash
 # 자동화 스크립트 실행
 echo "=== 컴퓨팅 서비스 비교 시작 ==="
-./cloud_basic/automation/day2/automation/01-service-comparison.sh setup
+cloud_basic/automation/day2/automation/01-service-comparison.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 컴퓨팅 서비스 비교 ==="
@@ -185,7 +185,7 @@ gcloud sql instances create cloud-basic-mysql \
 ```bash
 # 자동화 스크립트 실행
 echo "=== 비용 분석 및 최적화 시작 ==="
-./cloud_basic/automation/day2/automation/02-cost-optimization.sh setup
+cloud_basic/automation/day2/automation/02-cost-optimization.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 비용 분석 및 최적화 ==="
@@ -253,7 +253,7 @@ gcloud billing budgets create \
 ```bash
 # 자동화 스크립트 실행
 echo "=== 보안 설정 강화 시작 ==="
-./cloud_basic/automation/day2/automation/03-security-basics.sh setup
+cloud_basic/automation/day2/automation/03-security-basics.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 보안 설정 강화 ==="
@@ -313,7 +313,7 @@ gcloud alpha monitoring policies create \
 ```bash
 # 자동화 스크립트 실행
 echo "=== 웹 애플리케이션 배포 시작 ==="
-./cloud_basic/automation/day2/automation/04-web-app-deployment.sh setup
+cloud_basic/automation/day2/automation/04-web-app-deployment.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 웹 애플리케이션 배포 ==="
@@ -431,7 +431,7 @@ EOF
 ```bash
 # 자동화 스크립트 실행
 echo "=== 리소스 정리 및 비용 최적화 시작 ==="
-./cloud_basic/automation/day2/automation/06-cleanup.sh setup
+cloud_basic/automation/day2/automation/06-cleanup.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 리소스 정리 및 비용 최적화 ==="

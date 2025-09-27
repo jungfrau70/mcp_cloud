@@ -10,23 +10,23 @@
 ### 1. 클라우드 환경 설정
 ```bash
 # AWS 환경 설정
-chmod +x ../../../repos/cloud-scripts/aws-setup-helper.sh
-./../../../repos/cloud-scripts/aws-setup-helper.sh
+chmod +x .../.repos/cloud-scripts/aws-setup-helper.sh
+../.../repos/cloud-scripts/aws-setup-helper.sh
 
 # GCP 환경 설정
-chmod +x ../../../repos/cloud-scripts/gcp-setup-helper.sh
-./../../../repos/cloud-scripts/gcp-setup-helper.sh
+chmod +x .../.repos/cloud-scripts/gcp-setup-helper.sh
+../.../repos/cloud-scripts/gcp-setup-helper.sh
 ```
 
 ### 2. VM 자동 생성
 ```bash
 # AWS EC2 인스턴스 자동 생성
-chmod +x ../../../repos/cloud-scripts/aws-ec2-create.sh
-./../../../repos/cloud-scripts/aws-ec2-create.sh
+chmod +x .../.repos/cloud-scripts/aws-ec2-create.sh
+../.../repos/cloud-scripts/aws-ec2-create.sh
 
 # GCP Compute Engine 인스턴스 자동 생성
-chmod +x ../../../repos/cloud-scripts/gcp-compute-create.sh
-./../../../repos/cloud-scripts/gcp-compute-create.sh
+chmod +x .../.repos/cloud-scripts/gcp-compute-create.sh
+../.../repos/cloud-scripts/gcp-compute-create.sh
 ```
 
 ### 3. 애플리케이션 배포
@@ -86,12 +86,12 @@ gcloud compute ssh cloud-deployment-server --zone=asia-northeast3-a
 ## 🧹 정리
 ```bash
 # AWS 리소스 정리
-chmod +x ../../../repos/cloud-scripts/aws-resource-cleanup.sh
-./../../../repos/cloud-scripts/aws-resource-cleanup.sh
+chmod +x .../.repos/cloud-scripts/aws-resource-cleanup.sh
+../.../repos/cloud-scripts/aws-resource-cleanup.sh
 
 # GCP 리소스 정리
-chmod +x ../../../repos/cloud-scripts/gcp-project-cleanup.sh
-./../../../repos/cloud-scripts/gcp-project-cleanup.sh
+chmod +x .../.repos/cloud-scripts/gcp-project-cleanup.sh
+../.../repos/cloud-scripts/gcp-project-cleanup.sh
 ```
 
 ## 📚 참고 자료

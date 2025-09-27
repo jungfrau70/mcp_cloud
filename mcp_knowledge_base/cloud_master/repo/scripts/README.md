@@ -38,7 +38,7 @@ scripts/
 **고도화된 통합 Helper 스크립트 ["권장"]**
 
 ```bash
-./cloud-master-advanced.sh
+cloud-master-advanced.sh
 ```
 
 **주요 기능:**
@@ -60,7 +60,7 @@ scripts/
 **기본 통합 Helper 스크립트**
 
 ```bash
-./cloud-master-helper.sh
+cloud-master-helper.sh
 ```
 
 **주요 기능:**
@@ -72,7 +72,7 @@ scripts/
 **사용 예시:**
 ```bash
 # 고도화된 스크립트 실행 ["권장"]
-./cloud-master-advanced.sh
+cloud-master-advanced.sh
 
 # 메뉴에서 선택하여 실행
 1. 🔍 종합 환경 체크
@@ -94,7 +94,7 @@ scripts/
 **기본 스크립트 사용 예시:**
 ```bash
 # 환경 체크만 실행
-./cloud-master-helper.sh
+cloud-master-helper.sh
 
 # 메뉴에서 선택하여 실행
 1. 환경 체크
@@ -111,7 +111,7 @@ scripts/
 **Day1 실습 개선 스크립트**
 
 ```bash
-./day1-practice-improved.sh
+day1-practice-improved.sh
 ```
 
 **주요 기능:**
@@ -132,7 +132,7 @@ scripts/
 **AWS 로드 밸런싱 개선 스크립트**
 
 ```bash
-./aws-loadbalancing-improved.sh
+aws-loadbalancing-improved.sh
 ```
 
 **주요 기능:**
@@ -153,7 +153,7 @@ scripts/
 **CI/CD Docker 개선 스크립트**
 
 ```bash
-./cicd-docker-improved.sh
+cicd-docker-improved.sh
 ```
 
 **주요 기능:**
@@ -178,7 +178,7 @@ scripts/
 # AWS CLI
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
-sudo ./aws/install
+sudo aws/install
 
 # GCP CLI
 curl https://sdk.cloud.google.com | bash
@@ -222,22 +222,22 @@ export REDIS_PASSWORD=""
 ### 1. Dry-run 테스트
 ```bash
 # 환경 체크만 실행
-./cloud-master-helper.sh
+cloud-master-helper.sh
 # 메뉴에서 "1. 환경 체크" 선택
 
 # Docker Compose 설정 검증
-./cicd-docker-improved.sh
+cicd-docker-improved.sh
 # 메뉴에서 "2. Docker Compose 설정 검증" 선택
 ```
 
 ### 2. 실제 리소스 테스트
 ```bash
 # Day1 실습 ["실제 인스턴스 생성"]
-./day1-practice-improved.sh
+day1-practice-improved.sh
 # 메뉴에서 "2. AWS EC2 인스턴스 생성" 선택
 
 # AWS 로드 밸런싱 ["실제 리소스 생성"]
-./aws-loadbalancing-improved.sh
+aws-loadbalancing-improved.sh
 ```
 
 ## 🚨 주의사항

@@ -103,7 +103,7 @@ jobs:
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
-        file: ./coverage/lcov.info
+        file: coverage/lcov.info
 
   security:
     runs-on: ubuntu-latest
@@ -275,8 +275,8 @@ RUN npm run build
 
 FROM node:16-alpine AS production
 WORKDIR /app
-COPY --from=base /app/node_modules ./node_modules
-COPY --from=build /app/dist ./dist
+COPY --from=base /app/node_modules node_modules
+COPY --from=build /app/dist dist
 COPY --from=build /app/package*.json ./
 EXPOSE 3000
 CMD ["npm", "start"]
@@ -293,7 +293,7 @@ services:
       context: .
       target: test
     volumes:
-      - ./coverage:/app/coverage
+      - coverage:/app/coverage
     environment:
       - NODE_ENV=test
       - CI=true
@@ -303,7 +303,7 @@ services:
       context: .
       target: build
     volumes:
-      - ./dist:/app/dist
+      - dist:/app/dist
 
   production:
     build:
@@ -599,7 +599,7 @@ docker-compose -f docker-compose.ci.yml up test  # CI 테스트 실행
 ### 자동 정리
 ```bash
 # Day2 CI/CD 고급 실습 자동 정리
-./mcp_knowledge_base/cloud_master/repos/automation/day2/advanced_cicd.sh --cleanup
+mcp_knowledge_base/cloud_master/repos/automation/day2/advanced_cicd.sh --cleanup
 ```
 
 ### 수동 정리

@@ -3,7 +3,7 @@
 > 📋 **강의 일시**: 2024년 10월 2일 ["목"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Day1 완료 ["Docker, Kubernetes, 클라우드 컨테이너 서비스"]  
-> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_intermediate/_setup_wsl/README.md](../_setup_wsl/README.md)
+> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_intermediate/_setup_wsl/README.md](cloud_intermediate/_setup_wsl/README.md)
 > 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-intermediate.git cloud_intermediate`
 
 ---
@@ -47,8 +47,8 @@ git config --global user.email && echo "✅ Git 이메일 설정됨" || echo "�
 #### **자동 체크 ["권장"]**
 ```bash
 # 환경 체크 스크립트 실행
-cd ./cloud_intermediate/scripts
-./cloud-intermediate-helper.sh check-environment
+cd cloud_intermediate/scripts
+cloud-intermediate-helper.sh check-environment
 ```
 
 #### **수동 체크**
@@ -65,7 +65,7 @@ cd ./cloud_intermediate/scripts
 
 ### **새로운 디렉토리 구조**
 ```
-./cloud_intermediate/
+cloud_intermediate/
 ├── samples/day2/
 │   ├── cicd-pipeline/             # CI/CD 파이프라인 실습
 │   ├── cloud-deployment/          # 클라우드 배포 실습
@@ -97,8 +97,8 @@ cd ./cloud_intermediate/scripts
 **📋 실습 단계**
 ```bash
 # 1. 실습 환경 준비
-cd ./cloud_intermediate/scripts
-./day2-practice.sh
+cd cloud_intermediate/scripts
+day2-practice.sh
 
 # 2. CI/CD 파이프라인 실습 선택
 # 메뉴에서 "1. CI/CD 파이프라인 실습" 선택
@@ -222,16 +222,16 @@ cat cloud_intermediate/통합모니터링시나리오.md
 # 메뉴에서 "2. 클라우드 배포 실습" 선택
 
 # 2. ECS 클러스터 생성
-./aws-ecs-deploy.sh deploy
+aws-ecs-deploy.sh deploy
 
 # 3. Application Load Balancer 설정
 # ALB, 타겟 그룹, 리스너 생성
 
 # 4. 서비스 배포 및 상태 확인
-./aws-ecs-deploy.sh status
+aws-ecs-deploy.sh status
 
 # 5. 로그 확인
-./aws-ecs-deploy.sh logs
+aws-ecs-deploy.sh logs
 ```
 
 **🎯 학습 결과**
@@ -252,17 +252,17 @@ cat cloud_intermediate/통합모니터링시나리오.md
 # 메뉴에서 "2. 클라우드 배포 실습" 선택
 
 # 2. Docker 이미지 빌드 및 푸시
-./gcp-cloud-run-deploy.sh deploy
+gcp-cloud-run-deploy.sh deploy
 
 # 3. 도메인 매핑 설정
-./gcp-cloud-run-deploy.sh domain
+gcp-cloud-run-deploy.sh domain
 
 # 4. 트래픽 분할 설정
-./gcp-cloud-run-deploy.sh traffic
+gcp-cloud-run-deploy.sh traffic
 
 # 5. 서비스 상태 및 메트릭 확인
-./gcp-cloud-run-deploy.sh status
-./gcp-cloud-run-deploy.sh metrics
+gcp-cloud-run-deploy.sh status
+gcp-cloud-run-deploy.sh metrics
 ```
 
 **🎯 학습 결과**
@@ -275,45 +275,45 @@ cat cloud_intermediate/통합모니터링시나리오.md
 ### **통합 헬퍼 스크립트**
 ```bash
 # 환경 체크
-./cloud-intermediate-helper.sh check-environment
+cloud-intermediate-helper.sh check-environment
 
 # CI/CD 실습
-./cloud-intermediate-helper.sh cicd-practice
+cloud-intermediate-helper.sh cicd-practice
 
 # 모니터링 실습
-./cloud-intermediate-helper.sh monitoring-practice
+cloud-intermediate-helper.sh monitoring-practice
 
 # 클라우드 배포 실습
-./cloud-intermediate-helper.sh cloud-deployment-practice
+cloud-intermediate-helper.sh cloud-deployment-practice
 ```
 
 ### **Day2 실습 자동화**
 ```bash
 # 전체 Day2 실습 실행
-./day2-practice.sh
+day2-practice.sh
 
 # 개별 실습 실행
-./day2-practice.sh cicd-pipeline
-./day2-practice.sh cloud-deployment
-./day2-practice.sh monitoring
+day2-practice.sh cicd-pipeline
+day2-practice.sh cloud-deployment
+day2-practice.sh monitoring
 ```
 
 ### **모니터링 스택 자동화**
 ```bash
 # 모니터링 스택 설정
-./monitoring-stack.sh setup
+monitoring-stack.sh setup
 
 # 서비스 상태 확인
-./monitoring-stack.sh status
+monitoring-stack.sh status
 
 # Prometheus 타겟 확인
-./monitoring-stack.sh targets
+monitoring-stack.sh targets
 
 # 메트릭 쿼리 테스트
-./monitoring-stack.sh test
+monitoring-stack.sh test
 
 # 정리
-./monitoring-stack.sh cleanup
+monitoring-stack.sh cleanup
 ```
 
 ## 📊 **학습 성과 측정**
@@ -431,8 +431,8 @@ docker build --no-cache -t test-image .
 ### **모니터링 관련 문제**
 ```bash
 # 모니터링 스택 재시작
-./monitoring-stack.sh cleanup
-./monitoring-stack.sh setup
+monitoring-stack.sh cleanup
+monitoring-stack.sh setup
 
 # Prometheus 설정 확인
 curl http://localhost:9090/api/v1/status/config
@@ -455,16 +455,16 @@ gcloud logging read "resource.type=cloud_run_revision" --limit 50
 ## 📚 **추가 학습 자료**
 
 ### **공식 문서**
-- ["GitHub Actions 공식 문서"][https://docs.github.com/en/actions]
-- ["Prometheus 공식 문서"][https://prometheus.io/docs/]
-- ["Grafana 공식 문서"][https://grafana.com/docs/]
-- ["AWS ECS 공식 문서"][https://docs.aws.amazon.com/ecs/]
-- ["GCP Cloud Run 공식 문서"][https://cloud.google.com/run/docs]
+- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
+- [Prometheus 공식 문서](https://prometheus.io/docs/)
+- [Grafana 공식 문서](https://grafana.com/docs/)
+- [AWS ECS 공식 문서](https://docs.aws.amazon.com/ecs/)
+- [GCP Cloud Run 공식 문서](https://cloud.google.com/run/docs)
 
 ### **실습 코드 저장소**
-- [GitHub Repository][https://github.com/jungfrau70/cloud-intermediate.git]
-- ["실습 코드"][./cloud_intermediate/samples/day2/]
-- ["자동화 스크립트"][./cloud_intermediate/scripts/]
+- [GitHub Repository](https://github.com/jungfrau70/cloud-intermediate.git)
+- [실습 코드](cloud_intermediate/samples/day2/)
+- [자동화 스크립트](cloud_intermediate/scripts/)
 
 ## 🎯 **다음 단계 안내**
 

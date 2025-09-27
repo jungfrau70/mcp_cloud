@@ -67,7 +67,7 @@ python run_basic_course_tests.py
 ## 📁 생성되는 파일 구조
 
 ```
-./automation/
+automation/
 ├── day1/                               # Day 1 실습 스크립트
 │   ├── cloud_basics.sh                # 클라우드 기초 실습
 │   ├── iam_basics.sh                  # IAM 기초 실습
@@ -88,20 +88,20 @@ python run_basic_course_tests.py
 
 ```bash
 # Day 1 스크립트 실행
-cd ./automation/day1
+cd automation/day1
 chmod +x *.sh
-./cloud_basics.sh
-./iam_basics.sh
-./vm_services.sh
-./storage_services.sh
+cloud_basics.sh
+iam_basics.sh
+vm_services.sh
+storage_services.sh
 
 # Day 2 스크립트 실행
-cd ../day2
+cd .day2
 chmod +x *.sh
-./networking_basics.sh
-./security_basics.sh
-./database_services.sh
-./comprehensive_practice.sh
+networking_basics.sh
+security_basics.sh
+database_services.sh
+comprehensive_practice.sh
 ```
 
 ### 전체 과정 실행

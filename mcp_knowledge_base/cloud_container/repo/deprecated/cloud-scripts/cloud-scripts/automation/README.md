@@ -96,17 +96,17 @@ mcp_knowledge_base/cloud_container/automation/
 # Day 1 실습 스크립트 실행
 cd mcp_knowledge_base/cloud_container/automation/day1
 chmod +x *.sh
-./kubernetes_advanced.sh
-./gke_cluster.sh
-./ecs_fargate.sh
-./advanced_cicd.sh
+kubernetes_advanced.sh
+gke_cluster.sh
+ecs_fargate.sh
+advanced_cicd.sh
 
 # Day 2 실습 스크립트 실행
-cd ../day2
+cd .day2
 chmod +x *.sh
-./high_availability.sh
-./monitoring.sh
-./comprehensive_project.sh
+high_availability.sh
+monitoring.sh
+comprehensive_project.sh
 ```
 
 **Container 과정 실습 코드 수행 및 테스트가 성공적으로 완료되었습니다!** 🚀

@@ -545,7 +545,7 @@ kubectl top pods                                      # 리소스 사용량
 ### 자동 정리
 ```bash
 # Day3 오토 스케일링 실습 자동 정리
-./mcp_knowledge_base/cloud_master/repos/automation/day3/auto_scaling.sh --cleanup
+mcp_knowledge_base/cloud_master/repos/automation/day3/auto_scaling.sh --cleanup
 ```
 
 ### 수동 정리

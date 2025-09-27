@@ -65,7 +65,7 @@ RUN npm ci --only=production
 
 FROM node:16-alpine AS runtime
 WORKDIR /app
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/node_modules node_modules
 COPY . .
 EXPOSE 3000
 CMD ["npm", "start"]
@@ -127,7 +127,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - web
     networks:
@@ -224,7 +224,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - monitoring
 
@@ -297,7 +297,7 @@ docker-compose restart web          # 특정 서비스 재시작
 ### 자동 정리
 ```bash
 # Day2 Docker 고급 실습 자동 정리
-./mcp_knowledge_base/cloud_master/repos/automation/day2/docker-advanced.sh --cleanup
+mcp_knowledge_base/cloud_master/repos/automation/day2/docker-advanced.sh --cleanup
 ```
 
 ### 수동 정리

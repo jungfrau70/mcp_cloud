@@ -3,7 +3,7 @@
 > 📋 **강의 일시**: 2024년 9월 23일 ["화"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Day1 완료 ["WSL, 클라우드 설정, GitHub Actions 배포"]
-> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_master/_setup_wsl/README.md](../_setup_wsl/README.md)
+> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_master/_setup_wsl/README.md](_setup_wsl/README.md)
 > 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-master.git cloud_master`
 
 ---
@@ -130,7 +130,7 @@ RUN npm ci --only=production
 # Stage 2: 프로덕션 환경
 FROM node:18-alpine AS production
 WORKDIR /app
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/node_modules node_modules
 COPY . .
 EXPOSE 3000
 CMD ["node", "app.js"]
@@ -278,7 +278,7 @@ EOF
 #### Step 4: 애플리케이션 코드 설정 ["15분"]
 ```bash
 # src/app.js 파일 생성 ["프로젝트 폴더에서 복사"]
-cp textbook/Day2/project/src/app.js ./src/
+cp textbook/Day2/project/src/app.js src/
 
 # 환경 변수 파일 생성
 cat > .env << 'EOF'
@@ -754,7 +754,7 @@ EOF
 # 단위 테스트 파일 생성
 cat > tests/unit/app.test.js << 'EOF'
 const request = require['supertest'];
-const app = require['../../src/app'];
+const app = require['.../src/app'];
 
 describe['App Unit Tests', [] => {
   test['GET /health should return 200', async [] => {
@@ -779,7 +779,7 @@ EOF
 # 통합 테스트 파일 생성
 cat > tests/integration/database.test.js << 'EOF'
 const request = require['supertest'];
-const app = require['../../src/app'];
+const app = require['.../src/app'];
 
 describe['Database Integration Tests', [] => {
   test['Database connection should work', async [] => {
@@ -921,7 +921,7 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - database/init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
     networks:
       - app-network
@@ -955,8 +955,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf
-      - ./nginx/ssl:/etc/nginx/ssl
+      - nginx/nginx.prod.conf:/etc/nginx/nginx.conf
+      - nginx/ssl:/etc/nginx/ssl
     depends_on:
       - app
     restart: unless-stopped

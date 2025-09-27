@@ -38,7 +38,7 @@ scripts/
 **고도화된 통합 Helper 스크립트 ["권장"]**
 
 ```bash
-./cloud-intermediate-advanced.sh
+cloud-intermediate-advanced.sh
 ```
 
 **주요 기능:**
@@ -64,7 +64,7 @@ scripts/
 **기본 통합 Helper 스크립트**
 
 ```bash
-./cloud-intermediate-helper.sh
+cloud-intermediate-helper.sh
 ```
 
 **주요 기능:**
@@ -77,7 +77,7 @@ scripts/
 **사용 예시:**
 ```bash
 # 고도화된 스크립트 실행 ["권장"]
-./cloud-intermediate-advanced.sh
+cloud-intermediate-advanced.sh
 
 # 메뉴에서 선택하여 실행
 1. 🔍 종합 환경 체크
@@ -99,7 +99,7 @@ scripts/
 **기본 스크립트 사용 예시:**
 ```bash
 # 환경 체크만 실행
-./cloud-intermediate-helper.sh
+cloud-intermediate-helper.sh
 
 # 메뉴에서 선택하여 실행
 1. 환경 체크
@@ -131,7 +131,7 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 # AWS CLI
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
-sudo ./aws/install
+sudo aws/install
 
 # GCP CLI
 curl https://sdk.cloud.google.com | bash
@@ -176,21 +176,21 @@ export KUBECONFIG="~/.kube/config"
 ### 1. Dry-run 테스트
 ```bash
 # 환경 체크만 실행
-./cloud-intermediate-helper.sh
+cloud-intermediate-helper.sh
 # 메뉴에서 "1. 환경 체크" 선택
 
 # Dry-run 테스트 실행
-./test-dry-run.sh
+test-dry-run.sh
 ```
 
 ### 2. 실제 리소스 테스트
 ```bash
 # Docker 실습 ["로컬 환경"]
-./cloud-intermediate-advanced.sh
+cloud-intermediate-advanced.sh
 # 메뉴에서 "2. Docker 리소스 현황" 선택
 
 # Kubernetes 실습 ["로컬 클러스터"]
-./cloud-intermediate-advanced.sh
+cloud-intermediate-advanced.sh
 # 메뉴에서 "3. Kubernetes 리소스 현황" 선택
 ```
 

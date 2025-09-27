@@ -58,7 +58,7 @@
   - docker: {'installed': True, 'version': 'Docker version 28.3.2, build 578ccf6'}
   - git: {'installed': True, 'version': 'git version 2.45.2.windows.1'}
   - gh: {'installed': True, 'version': 'gh version 2.60.1 [2024-10-25]'}
-  - kubectl: {'installed': False, 'error': "error: unknown flag: --version/nSee 'kubectl --help' for usage./n"}
+  - kubectl: {'installed': False, 'error': "error: unknown flag: --version/nSee 'kubectl --help' for usagen"}
   - helm: {'installed': False, 'error': 'Error: unknown flag: --version/n'}
   - terraform: {'installed': True, 'version': 'Terraform v1.10.5'}
 

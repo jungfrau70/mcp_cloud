@@ -33,13 +33,13 @@ wsl --install
 ### 2. 전체 환경 설정 ["권장"]
 ```bash
 # 모든 도구를 한 번에 설치
-./install-all-wsl.sh
+install-all-wsl.sh
 ```
 
 ### 3. 환경 체크
 ```bash
 # 설치된 도구들 확인
-./environment-check-wsl.sh
+environment-check-wsl.sh
 ```
 
 ## 📋 개별 스크립트 사용법
@@ -48,7 +48,7 @@ wsl --install
 
 #### `install-all-wsl.sh` - 전체 도구 설치
 ```bash
-./install-all-wsl.sh
+install-all-wsl.sh
 ```
 **기능:**
 - AWS CLI 설치
@@ -59,7 +59,7 @@ wsl --install
 
 #### `install-aws-cli-wsl.sh` - AWS CLI 설치
 ```bash
-./install-aws-cli-wsl.sh
+install-aws-cli-wsl.sh
 ```
 **기능:**
 - AWS CLI v2 설치
@@ -67,7 +67,7 @@ wsl --install
 
 #### `install-gcp-cli-wsl.sh` - GCP CLI 설치
 ```bash
-./install-gcp-cli-wsl.sh
+install-gcp-cli-wsl.sh
 ```
 **기능:**
 - Google Cloud SDK 설치
@@ -75,7 +75,7 @@ wsl --install
 
 #### `install-docker-wsl.sh` - Docker 설치
 ```bash
-./install-docker-wsl.sh
+install-docker-wsl.sh
 ```
 **기능:**
 - Docker Engine 설치
@@ -86,7 +86,7 @@ wsl --install
 
 #### `environment-check-wsl.sh` - 환경 체크
 ```bash
-./environment-check-wsl.sh
+environment-check-wsl.sh
 ```
 **기능:**
 - 설치된 도구 버전 확인
@@ -97,7 +97,7 @@ wsl --install
 
 #### `aws-setup-helper.sh` - AWS 설정 도우미
 ```bash
-./aws-setup-helper.sh
+aws-setup-helper.sh
 ```
 **기능:**
 - AWS 계정 설정
@@ -107,7 +107,7 @@ wsl --install
 
 #### `gcp-setup-helper.sh` - GCP 설정 도우미
 ```bash
-./gcp-setup-helper.sh
+gcp-setup-helper.sh
 ```
 **기능:**
 - GCP 프로젝트 설정
@@ -119,7 +119,7 @@ wsl --install
 
 #### `aws-ec2-create.sh` - AWS EC2 인스턴스 생성
 ```bash
-./aws-ec2-create.sh
+aws-ec2-create.sh
 ```
 **기능:**
 - EC2 인스턴스 생성
@@ -129,7 +129,7 @@ wsl --install
 
 #### `gcp-compute-create.sh` - GCP Compute 인스턴스 생성
 ```bash
-./gcp-compute-create.sh
+gcp-compute-create.sh
 ```
 **기능:**
 - Compute Engine 인스턴스 생성
@@ -165,28 +165,28 @@ sudo apt install -y curl wget git jq unzip
 #### 3단계: 클라우드 도구 설치
 ```bash
 # AWS CLI 설치
-./install-aws-cli-wsl.sh
+install-aws-cli-wsl.sh
 
 # GCP CLI 설치
-./install-gcp-cli-wsl.sh
+install-gcp-cli-wsl.sh
 
 # Docker 설치
-./install-docker-wsl.sh
+install-docker-wsl.sh
 ```
 
 #### 4단계: 계정 설정
 ```bash
 # AWS 계정 설정
-./aws-setup-helper.sh
+aws-setup-helper.sh
 
 # GCP 계정 설정
-./gcp-setup-helper.sh
+gcp-setup-helper.sh
 ```
 
 #### 5단계: 환경 확인
 ```bash
 # 전체 환경 체크
-./environment-check-wsl.sh
+environment-check-wsl.sh
 ```
 
 ## 🔧 문제 해결
@@ -218,7 +218,7 @@ exit
 # AWS CLI 재설치
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
-sudo ./aws/install
+sudo aws/install
 ```
 
 #### 4. GCP CLI 인증 오류

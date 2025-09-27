@@ -23,18 +23,18 @@ scripts/
 chmod +x cloud-container-helper.sh
 
 # 통합 도우미 실행
-./cloud-container-helper.sh
+cloud-container-helper.sh
 ```
 
 ### 2. 개별 실습 실행
 ```bash
 # Day1 실습
 chmod +x day1-practice-improved.sh
-./day1-practice-improved.sh
+day1-practice-improved.sh
 
 # Day2 실습
 chmod +x day2-practice-improved.sh
-./day2-practice-improved.sh
+day2-practice-improved.sh
 ```
 
 ## 📋 주요 스크립트 설명
@@ -52,7 +52,7 @@ chmod +x day2-practice-improved.sh
 
 **사용법:**
 ```bash
-./cloud-container-helper.sh
+cloud-container-helper.sh
 # 메뉴에서 원하는 기능 선택
 ```
 
@@ -77,7 +77,7 @@ chmod +x day2-practice-improved.sh
 
 **실행 예시:**
 ```bash
-./day1-practice-improved.sh
+day1-practice-improved.sh
 # 메뉴에서 "8. 전체 실습 실행" 선택
 ```
 
@@ -100,7 +100,7 @@ chmod +x day2-practice-improved.sh
 
 **실행 예시:**
 ```bash
-./day2-practice-improved.sh
+day2-practice-improved.sh
 # 메뉴에서 "8. 전체 실습 실행" 선택
 ```
 
@@ -222,11 +222,11 @@ kubectl get secret --namespace monitoring prometheus-grafana -o jsonpath="{.data
 ### 실습 후 정리
 ```bash
 # Day1 정리
-./day1-practice-improved.sh
+day1-practice-improved.sh
 # 메뉴에서 "9. 정리" 선택
 
 # Day2 정리
-./day2-practice-improved.sh
+day2-practice-improved.sh
 # 메뉴에서 "9. 정리" 선택
 ```
 

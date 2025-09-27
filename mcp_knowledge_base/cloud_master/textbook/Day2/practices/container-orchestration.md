@@ -490,7 +490,7 @@ data:
             "type": "graph",
             "targets": [
               {
-                "expr": "rate[http_requests_total{status=~/"5../"}[5m]]",
+                "expr": "rate[http_requests_total{status=~/"5."}[5m]]",
                 "legendFormat": "{{instance}}"
               }
             ]
@@ -575,7 +575,7 @@ istioctl dashboard prometheus               # Prometheus 대시보드 열기
 ### 자동 정리
 ```bash
 # Day2 컨테이너 오케스트레이션 실습 자동 정리
-./mcp_knowledge_base/cloud_master/repos/automation/day2/container_orchestration.sh --cleanup
+mcp_knowledge_base/cloud_master/repos/automation/day2/container_orchestration.sh --cleanup
 ```
 
 ### 수동 정리

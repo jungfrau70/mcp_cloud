@@ -25,20 +25,20 @@ python basic_course_automation.py
 
 ```bash
 # Day 1 실습
-cd ./automation/day1
+cd automation/day1
 chmod +x *.sh
-./cloud_basics.sh
-./iam_basics.sh
-./vm_services.sh
-./storage_services.sh
+cloud_basics.sh
+iam_basics.sh
+vm_services.sh
+storage_services.sh
 
 # Day 2 실습
-cd ../day2
+cd .day2
 chmod +x *.sh
-./networking_basics.sh
-./security_basics.sh
-./database_services.sh
-./comprehensive_practice.sh
+networking_basics.sh
+security_basics.sh
+database_services.sh
+comprehensive_practice.sh
 ```
 
 ## 📋 체크리스트
@@ -88,8 +88,8 @@ python run_basic_course_tests.py
 tail -f basic_course_automation.log
 
 # 생성된 스크립트 확인
-ls -la ./automation/day1/
-ls -la ./automation/day2/
+ls -la automation/day1/
+ls -la automation/day2/
 ```
 
 ## 🆘 도움이 필요하신가요?

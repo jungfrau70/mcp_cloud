@@ -3,7 +3,7 @@
 > 📋 **강의 일시**: 2024년 10월 2일 ["수"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Cloud Container 1일차 완료
-> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_container/_setup_wsl/README.md](../_setup_wsl/README.md)
+> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_container/_setup_wsl/README.md](_setup_wsl/README.md)
 > 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-container.git cloud_container`
 
 ---
@@ -80,7 +80,7 @@ gcloud container clusters get-credentials cloud-container-ha-cluster --zone=asia
 #### 🏗️ **1단계: Multi-AZ 클러스터 구축**
 ```bash
 # 자동화 스크립트 실행
-./cloud_container/scripts/day2-practice-improved.sh
+cloud_container/scripts/day2-practice-improved.sh
 
 # 또는 수동 실행
 gcloud container clusters create cloud-container-ha-cluster \
@@ -297,7 +297,7 @@ kubectl get poddisruptionbudgets --all-namespaces
 kubectl apply -f k8s/performance/performance-monitor.yaml
 
 # 성능 테스트 실행
-./performance-test.sh
+performance-test.sh
 ```
 
 #### 🏗️ **15단계: VPA 설정**
@@ -346,7 +346,7 @@ velero install \
     --provider gcp \
     --plugins velero/velero-plugin-for-gcp:v1.5.1 \
     --bucket velero-backups \
-    --secret-file ./credentials-velero
+    --secret-file credentials-velero
 ```
 
 #### 🏗️ **17단계: Persistent Volume 백업 설정**
@@ -372,13 +372,13 @@ gcloud container clusters create cloud-container-dr-cluster \
     --machine-type=e2-medium
 
 # 백업 복제 실행
-./backup-replication.sh
+backup-replication.sh
 ```
 
 #### 🏗️ **19단계: 자동화된 재해 복구 파이프라인**
 ```bash
 # 재해 복구 자동화 스크립트 실행
-./disaster-recovery.sh
+disaster-recovery.sh
 
 # 정기 백업 CronJob 적용
 kubectl apply -f k8s/backup/backup-cronjob.yaml

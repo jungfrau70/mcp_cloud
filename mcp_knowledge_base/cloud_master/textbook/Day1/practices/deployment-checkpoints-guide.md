@@ -27,7 +27,7 @@ echo "3. 최신 실행 결과 확인 ["초록색 체크마크 = 성공"]"
 #### 체크포인트 2: 워크플로우 로그 확인
 ```bash
 # 자동화 스크립트로 로그 확인
-./scripts/check-github-actions-logs.sh
+scripts/check-github-actions-logs.sh
 
 # 수동 확인 방법
 echo "📊 워크플로우 로그 확인 방법:"
@@ -123,19 +123,19 @@ echo "🎯 Day 1 배포 후 자동 확인 시작..."
 
 # 1. GitHub Actions 상태 확인
 echo "1️⃣ GitHub Actions 워크플로우 확인"
-./cloud-scripts/check-github-actions.sh
+cloud-scripts/check-github-actions.sh
 
 # 2. Docker 이미지 확인
 echo "2️⃣ Docker 이미지 확인"
-./cloud-scripts/check-docker-images.sh
+cloud-scripts/check-docker-images.sh
 
 # 3. VM 배포 확인
 echo "3️⃣ VM 배포 확인"
-./cloud-scripts/check-vm-deployment.sh
+cloud-scripts/check-vm-deployment.sh
 
 # 4. 애플리케이션 상태 확인
 echo "4️⃣ 애플리케이션 상태 확인"
-./cloud-scripts/check-application-health.sh
+cloud-scripts/check-application-health.sh
 
 echo "✅ Day 1 확인 완료!"
 ```
@@ -241,19 +241,19 @@ echo "🎯 Day 2 배포 후 자동 확인 시작..."
 
 # 1. 매트릭스 빌드 확인
 echo "1️⃣ 매트릭스 빌드 확인"
-./cloud-scripts/check-matrix-build.sh
+cloud-scripts/check-matrix-build.sh
 
 # 2. 환경별 배포 확인
 echo "2️⃣ 환경별 배포 확인"
-./cloud-scripts/check-environment-deployment.sh
+cloud-scripts/check-environment-deployment.sh
 
 # 3. Kubernetes 클러스터 확인
 echo "3️⃣ Kubernetes 클러스터 확인"
-./cloud-scripts/check-k8s-clusters.sh
+cloud-scripts/check-k8s-clusters.sh
 
 # 4. 애플리케이션 배포 확인
 echo "4️⃣ 애플리케이션 배포 확인"
-./cloud-scripts/check-k8s-deployment.sh
+cloud-scripts/check-k8s-deployment.sh
 
 echo "✅ Day 2 확인 완료!"
 ```
@@ -351,19 +351,19 @@ echo "🎯 Day 3 배포 후 자동 확인 시작..."
 
 # 1. 모니터링 스택 확인
 echo "1️⃣ 모니터링 스택 확인"
-./cloud-scripts/check-monitoring-stack.sh
+cloud-scripts/check-monitoring-stack.sh
 
 # 2. 로드밸런서 확인
 echo "2️⃣ 로드밸런서 확인"
-./cloud-scripts/check-load-balancers.sh
+cloud-scripts/check-load-balancers.sh
 
 # 3. 비용 최적화 확인
 echo "3️⃣ 비용 최적화 확인"
-./cloud-scripts/check-cost-optimization.sh
+cloud-scripts/check-cost-optimization.sh
 
 # 4. 통합 대시보드 확인
 echo "4️⃣ 통합 대시보드 확인"
-./cloud-scripts/check-integrated-dashboard.sh
+cloud-scripts/check-integrated-dashboard.sh
 
 echo "✅ Day 3 확인 완료!"
 ```
@@ -381,19 +381,19 @@ echo "🎯 Cloud Master 전체 배포 후 통합 확인 시작..."
 
 # Day 1 확인
 echo "📅 Day 1: 기본 CI/CD 파이프라인 확인"
-./cloud-scripts/day1-check.sh
+cloud-scripts/day1-check.sh
 
 # Day 2 확인
 echo "📅 Day 2: 고급 CI/CD 파이프라인 확인"
-./cloud-scripts/day2-check.sh
+cloud-scripts/day2-check.sh
 
 # Day 3 확인
 echo "📅 Day 3: 모니터링 및 최적화 CI/CD 확인"
-./cloud-scripts/day3-check.sh
+cloud-scripts/day3-check.sh
 
 # 전체 상태 요약
 echo "📊 전체 상태 요약"
-./cloud-scripts/generate-status-report.sh
+cloud-scripts/generate-status-report.sh
 
 echo "✅ 전체 확인 완료!"
 ```
@@ -421,9 +421,9 @@ echo "- AWS: aws logs describe-log-groups"
 
 # 리소스 정리
 echo "3️⃣ 리소스 정리:"
-echo "- AWS: ./cloud-scripts/cleanup-aws.sh"
-echo "- GCP: ./cloud-scripts/cleanup-gcp.sh"
-echo "- Kubernetes: ./cloud-scripts/cleanup-k8s.sh"
+echo "- AWS: cloud-scripts/cleanup-aws.sh"
+echo "- GCP: cloud-scripts/cleanup-gcp.sh"
+echo "- Kubernetes: cloud-scripts/cleanup-k8s.sh"
 ```
 
 ---
@@ -495,8 +495,8 @@ echo "- Kubernetes: ./cloud-scripts/cleanup-k8s.sh"
 <div align="center">
 
 ["← 이전: GitHub Actions CI/CD 완전 가이드"](github-actions-cicd-guide.md) | 
-["📚 전체 커리큘럼"](../../../curriculum.md) | 
-["🏠 학습 경로로 돌아가기"](../../../index.md) | 
+["📚 전체 커리큘럼"](.curriculum.md) | 
+["🏠 학습 경로로 돌아가기"](.index.md) | 
 ["다음: VM 배포 실습 →"](vm-deployment.md)
 
 </div>

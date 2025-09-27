@@ -18,7 +18,7 @@ ls mcp_knowledge_base/cloud_master/automation/
 ```bash
 cd mcp_knowledge_base/cloud_master/automation/day1
 chmod +x *.sh
-./docker_basics.sh
+docker_basics.sh
 ```
 
 ## 생성되는 실습 스크립트

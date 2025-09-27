@@ -3,7 +3,7 @@
 > 📋 **강의 일시**: 2024년 9월 2일 ["월"] 9:00~17:00  
 > 📋 **강의 방식**: 오프라인 실습 중심  
 > 📋 **선수 학습**: IT 기초 지식 ["OS, 네트워크 기본 이해"]
-> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_basic/_setup_wsl/README.md](../_setup_wsl/README.md)
+> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_basic/_setup_wsl/README.md](_setup_wsl/README.md)
 > 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-basic.git cloud_basic`
 
 ---
@@ -135,7 +135,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== AWS 계정 생성 및 설정 시작 ==="
-./cloud_basic/automation/day1/automation/01-aws-setup.sh setup
+cloud_basic/automation/day1/automation/01-aws-setup.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 AWS 계정 생성 및 설정 ==="
@@ -177,7 +177,7 @@ aws sts get-caller-identity
 ```bash
 # 자동화 스크립트 실행
 echo "=== GCP 계정 생성 및 설정 시작 ==="
-./cloud_basic/automation/day1/automation/02-gcp-setup.sh setup
+cloud_basic/automation/day1/automation/02-gcp-setup.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 GCP 계정 생성 및 설정 ==="
@@ -251,7 +251,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== AWS EC2 인스턴스 생성 시작 ==="
-./cloud_basic/automation/day1/automation/03-ec2-practice.sh setup
+cloud_basic/automation/day1/automation/03-ec2-practice.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 AWS EC2 인스턴스 생성 ==="
@@ -401,7 +401,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== AWS S3 버킷 생성 및 파일 관리 시작 ==="
-./cloud_basic/automation/day1/automation/04-s3-practice.sh setup
+cloud_basic/automation/day1/automation/04-s3-practice.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 AWS S3 버킷 생성 및 파일 관리 ==="
@@ -511,7 +511,7 @@ flowchart TB
 ```bash
 # 자동화 스크립트 실행
 echo "=== GCP Compute Engine 인스턴스 생성 시작 ==="
-./cloud_basic/automation/day1/automation/05-compute-practice.sh setup
+cloud_basic/automation/day1/automation/05-compute-practice.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 GCP Compute Engine 인스턴스 생성 ==="
@@ -634,7 +634,7 @@ echo "브라우저에서 접속하여 확인하세요!"
 ```bash
 # 자동화 스크립트 실행
 echo "=== GCP Cloud Storage 버킷 생성 및 파일 관리 시작 ==="
-./cloud_basic/automation/day1/automation/06-storage-practice.sh setup
+cloud_basic/automation/day1/automation/06-storage-practice.sh setup
 
 # 또는 수동 실행 ["참고용"]
 echo "=== 수동 GCP Cloud Storage 버킷 생성 및 파일 관리 ==="

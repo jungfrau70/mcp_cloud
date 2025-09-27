@@ -26,10 +26,10 @@
 ## 🛠️ 실습 학습
 
 ### 📁 실습 코드 및 자동화
-- **통합 시나리오**: `./cloud_intermediate/통합모니터링시나리오.md`
-- **실습 코드**: `./cloud_intermediate/samples/day2/monitoring-basics/`
-- **자동화 스크립트**: `./cloud_intermediate/scripts/monitoring-stack.sh`
-- **클라우드 스크립트**: `./cloud_intermediate/cloud-scripts/`
+- **통합 시나리오**: `cloud_intermediate/통합모니터링시나리오.md`
+- **실습 코드**: `cloud_intermediate/samples/day2/monitoring-basics/`
+- **자동화 스크립트**: `cloud_intermediate/scripts/monitoring-stack.sh`
+- **클라우드 스크립트**: `cloud_intermediate/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -202,7 +202,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -258,7 +258,7 @@ services:
     ports:
       - "9093:9093"
     volumes:
-      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
     networks:
       - monitoring
 

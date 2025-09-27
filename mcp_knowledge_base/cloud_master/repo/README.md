@@ -63,13 +63,13 @@ mcp_knowledge_base/cloud_master/repo/
 #### **Dry-run 테스트**
 ```bash
 cd mcp_knowledge_base/cloud_master/repo/scripts
-./cloud-master-helper.sh
+cloud-master-helper.sh
 # 메뉴에서 "1. 환경 체크" 선택
 ```
 
 #### **실제 리소스 테스트**
 ```bash
-./day1-practice-improved.sh
+day1-practice-improved.sh
 # 메뉴에서 "2. AWS EC2 인스턴스 생성" 선택
 ```
 

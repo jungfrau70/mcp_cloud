@@ -83,31 +83,31 @@ python run_integrated_automation.py --config custom_config.json
 ### Cloud Basic 과정
 ```bash
 # Basic 과정만 실행
-cd ../cloud_basic/automation_tests
+cd .cloud_basic/automation_tests
 python basic_course_automation.py
 
 # Basic → Master 연계 설정
-cd ../../integrated_automation
-./bridge_scripts/basic_to_master_bridge.sh
+cd .../integrated_automation
+bridge_scripts/basic_to_master_bridge.sh
 ```
 
 ### Cloud Master 과정
 ```bash
 # Master 과정만 실행
-cd ../cloud_master/automation_tests
-source ../../integrated_automation/shared_resources/master_course_config.env
+cd .cloud_master/automation_tests
+source .../integrated_automation/shared_resources/master_course_config.env
 python master_course_automation.py
 
 # Master → Container 연계 설정
-cd ../../integrated_automation
-./bridge_scripts/master_to_container_bridge.sh
+cd .../integrated_automation
+bridge_scripts/master_to_container_bridge.sh
 ```
 
 ### Cloud Container 과정
 ```bash
 # Container 과정만 실행
-cd ../cloud_container/automation_tests
-source ../../integrated_automation/shared_resources/container_course_config.env
+cd .cloud_container/automation_tests
+source .../integrated_automation/shared_resources/container_course_config.env
 python container_course_automation.py
 ```
 
@@ -119,9 +119,9 @@ python container_course_automation.py
 tail -f integrated_course_automation.log
 
 # 특정 과정 로그
-tail -f ../cloud_basic/automation_tests/basic_course_automation.log
-tail -f ../cloud_master/automation_tests/master_course_automation.log
-tail -f ../cloud_container/automation_tests/container_course_automation.log
+tail -f .cloud_basic/automation_tests/basic_course_automation.log
+tail -f .cloud_master/automation_tests/master_course_automation.log
+tail -f .cloud_container/automation_tests/container_course_automation.log
 ```
 
 ### 결과 확인
@@ -188,7 +188,7 @@ gcloud projects list
 grep -i error integrated_course_automation.log | tail -10
 
 # 특정 과정 오류 확인
-grep -i error ../cloud_basic/automation_tests/basic_course_automation.log
+grep -i error .cloud_basic/automation_tests/basic_course_automation.log
 ```
 
 #### 성능 분석

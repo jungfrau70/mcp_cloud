@@ -20,7 +20,7 @@ cd /mnt/c/Users/["사용자명"]/githubs/mcp_cloud/mcp_knowledge_base/cloud_mast
 chmod +x setup-wsl-environment.sh
 
 # 통합 설정 실행
-./setup-wsl-environment.sh
+setup-wsl-environment.sh
 ```
 
 ### 3단계: 메뉴에서 "1. 전체 환경 설정" 선택
@@ -31,11 +31,11 @@ chmod +x setup-wsl-environment.sh
 
 | 스크립트 | 기능 | 사용법 |
 |---------|------|--------|
-| `setup-wsl-environment.sh` | **통합 설정** | `./setup-wsl-environment.sh` |
-| `install-all-wsl.sh` | 전체 도구 설치 | `./install-all-wsl.sh` |
-| `environment-check-wsl.sh` | 환경 체크 | `./environment-check-wsl.sh` |
-| `aws-setup-helper.sh` | AWS 설정 | `./aws-setup-helper.sh` |
-| `gcp-setup-helper.sh` | GCP 설정 | `./gcp-setup-helper.sh` |
+| `setup-wsl-environment.sh` | **통합 설정** | `setup-wsl-environment.sh` |
+| `install-all-wsl.sh` | 전체 도구 설치 | `install-all-wsl.sh` |
+| `environment-check-wsl.sh` | 환경 체크 | `environment-check-wsl.sh` |
+| `aws-setup-helper.sh` | AWS 설정 | `aws-setup-helper.sh` |
+| `gcp-setup-helper.sh` | GCP 설정 | `gcp-setup-helper.sh` |
 
 ## ✅ 설치 확인
 

@@ -506,7 +506,7 @@ gcloud compute forwarding-rules list                 # 포워딩 규칙 목록
 ### 자동 정리
 ```bash
 # Day3 로드 밸런싱 실습 자동 정리
-./mcp_knowledge_base/cloud_master/repos/automation/day3/load_balancing.sh --cleanup
+mcp_knowledge_base/cloud_master/repos/automation/day3/load_balancing.sh --cleanup
 ```
 
 ### 수동 정리

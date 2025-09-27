@@ -158,13 +158,13 @@ chmod +x *.sh
 #### **스크립트 실행**
 ```bash
 # 스크립트 실행
-./script_name.sh
+script_name.sh
 
 # 백그라운드 실행
-nohup ./script_name.sh &
+nohup script_name.sh &
 
 # 로그와 함께 실행
-./script_name.sh 2>&1 | tee output.log
+script_name.sh 2>&1 | tee output.log
 ```
 
 ### **환경 변수 및 설정**
@@ -300,16 +300,16 @@ clear
 #### **클러스터 관리**
 ```bash
 # EKS 클러스터 생성
-./eks-cluster-create.sh
+eks-cluster-create.sh
 
 # GKE 클러스터 생성
-./k8s-cluster-create.sh
+k8s-cluster-create.sh
 
 # 모든 클러스터 정리
-./cleanup-all-clusters.sh
+cleanup-all-clusters.sh
 
 # VPC 정리
-./cleanup-vpcs.sh
+cleanup-vpcs.sh
 ```
 
 #### **상태 확인**
