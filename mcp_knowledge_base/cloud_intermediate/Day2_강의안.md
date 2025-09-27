@@ -1,540 +1,603 @@
-# Cloud Intermediate - 2일차 강의안
+# ☁️ 클라우드 중급 과정 - Day 2: CI/CD 및 고급 클라우드 배포, 멀티 클라우드 모니터링
 
-> 📋 **강의 일시**: 2024년 10월 2일 ["목"] 9:00~17:00  
-> 📋 **강의 방식**: 온라인 실습 중심  
-> 📋 **선수 학습**: Day1 완료 ["Docker, Kubernetes, 클라우드 컨테이너 서비스"]  
-> 📋 **실습 환경 설정**: [_setup_/README.md](cloud_intermediate/_setup_/README.md)
-> 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-intermediate.git cloud_intermediate` & https://app.goldencircle.us 에서 file 별 다운로드
+## 🎯 학습 목표
+
+### 핵심 학습 목표
+- **CI/CD 파이프라인** GitHub Actions를 활용한 자동화된 빌드, 테스트, 배포 파이프라인을 구축합니다.
+- **멀티 클라우드 통합 모니터링** AWS EKS, GCP GKE를 연동한 통합 모니터링 시스템을 구축합니다.
+- **AWS Application 모니터링** EKS 애플리케이션 배포 및 모니터링을 통해 실무 역량을 강화합니다.
+- **GCP 클러스터 통합** GKE 클러스터 구축 및 멀티 클라우드 모니터링을 완성합니다.
+
+### 실습 후 달성할 수 있는 능력
+- ✅ GitHub Actions CI/CD 파이프라인 구축 및 운영
+- ✅ 멀티 클라우드 환경에서의 통합 모니터링 시스템 구축
+- ✅ AWS EKS 및 GCP GKE 클러스터 운영
+- ✅ 실무 수준의 DevOps 자동화 역량
+
+### 예상 소요 시간
+- **CI/CD 파이프라인**: 90-120분
+- **멀티 클라우드 통합 모니터링**: 90-120분
+- **AWS Application 모니터링**: 90-120분
+- **GCP 클러스터 통합**: 90-120분
+- **전체 과정**: 6-8시간
 
 ---
 
-## 🎯 2일차 학습 목표
+## 🛠️ 실습 학습
 
-### 핵심 목표
-- **CI/CD 파이프라인**: GitHub Actions를 활용한 자동화된 배포
-- **클라우드 배포**: AWS ECS, GCP Cloud Run 고급 배포 전략
-- **모니터링 스택**: Prometheus + Grafana 통합 모니터링 시스템
-- **실무 중심**: 프로덕션 환경에서 사용되는 DevOps 패턴 학습
-- **자동화**: 실습 자동화 스크립트를 통한 효율적 학습
-- **🤖 100% 자동화**: 모든 실습이 자동화 스크립트로 완주 가능
-- **📊 실시간 모니터링**: 강의 진행 상황 실시간 추적
-
-## ⚠️ 실습 전 필수 준비사항
-
-### 🚀 **핵심 실습 환경 설정**
-
-#### **🤖 자동화 실행 (권장)**
-```bash
-# 전체 Day2 실습 자동화 실행
-cd mcp_knowledge_base/cloud_intermediate/repo/scripts
-./day2-practice.sh --action all
-```
+### 📁 실습 코드 및 자동화
+- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/samples/day2/`
+- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/automation/day2/`
+- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/cloud-scripts/`
 
 <details>
-<summary>🔧 상세 환경 설정 및 부가 절차</summary>
+<summary>🚀 실습 환경 준비</summary>
 
-### 🔧 **사전 요구사항 확인**
+#### 필수 도구
+- **GitHub Actions**: CI/CD 파이프라인 자동화
+- **AWS CLI**: AWS 서비스 관리 도구
+- **GCP CLI**: GCP 서비스 관리 도구
+- **kubectl**: Kubernetes 클러스터 관리 도구
+
+#### 환경 설정
 ```bash
-# 1. 필수 도구 설치 확인
-echo "=== 필수 도구 확인 ==="
-command -v aws && echo "✅ AWS CLI 설치됨" || echo "❌ AWS CLI 설치 필요"
-command -v gcloud && echo "✅ GCP CLI 설치됨" || echo "❌ GCP CLI 설치 필요"
-command -v docker && echo "✅ Docker 설치됨" || echo "❌ Docker 설치 필요"
-command -v docker-compose && echo "✅ Docker Compose 설치됨" || echo "❌ Docker Compose 설치 필요"
-command -v jq && echo "✅ jq 설치됨" || echo "❌ jq 설치 필요"
-command -v curl && echo "✅ curl 설치됨" || echo "❌ curl 설치 필요"
-command -v git && echo "✅ Git 설치됨" || echo "❌ Git 설치 필요"
+# GitHub Actions 설정 확인
+gh auth status
 
-# 2. 클라우드 계정 설정 확인
-echo "=== 클라우드 계정 설정 확인 ==="
-aws sts get-caller-identity && echo "✅ AWS 계정 설정됨" || echo "❌ AWS 계정 설정 필요"
-gcloud auth list && echo "✅ GCP 계정 설정됨" || echo "❌ GCP 계정 설정 필요"
+# AWS CLI 설정 확인
+aws sts get-caller-identity
 
-# 3. GitHub 설정 확인
-echo "=== GitHub 설정 확인 ==="
-git config --global user.name && echo "✅ Git 사용자명 설정됨" || echo "❌ Git 사용자명 설정 필요"
-git config --global user.email && echo "✅ Git 이메일 설정됨" || echo "❌ Git 이메일 설정 필요"
+# GCP CLI 설정 확인
+gcloud auth list
+
+# kubectl 설정 확인
+kubectl version --client
 ```
-
-### 📋 **실습 전 체크리스트**
-
-#### **자동 체크 ["권장"]**
-```bash
-# 환경 체크 스크립트 실행
-cd cloud_intermediate/scripts
-cloud-intermediate-helper.sh check-environment
-```
-
-#### **수동 체크**
-- [ ] **AWS CLI 설정**: `aws sts get-caller-identity` 성공
-- [ ] **GCP CLI 설정**: `gcloud auth list` 성공  
-- [ ] **Docker 실행**: `docker --version` 확인
-- [ ] **Git 설정**: GitHub 계정 연결 및 권한 확인
-- [ ] **Day1 완료**: Docker, Kubernetes, 클라우드 서비스 실습 완료
-- [ ] **권한 확인**: AWS/GCP 리소스 생성 권한
-- [ ] **네트워크 확인**: 인터넷 연결 및 방화벽 설정
-- [ ] **GitHub Repository**: 실습용 저장소 생성 및 설정
 
 </details>
 
-## 🚀 **핵심 실습 시작**
-
-### **📋 실습 환경 확인**
-```bash
-# 실습 환경 상태 확인
-./day2-practice.sh --status
-
-# 실습 진행 상황 확인
-./lecture-monitor.sh --status
-```
-
 <details>
-<summary>📁 강의 자료 구조 및 상세 일정</summary>
+<summary>🔧 1교시: GitHub Actions CI/CD 파이프라인</summary>
 
-## 📁 **2일차 강의 자료 구조**
-
-### **새로운 디렉토리 구조**
-```
-cloud_intermediate/
-├── samples/day2/
-│   ├── cicd-pipeline/             # CI/CD 파이프라인 실습
-│   ├── cloud-deployment/          # 클라우드 배포 실습
-│   └── monitoring-basics/         # 멀티 클라우드 통합 모니터링 실습
-├── scripts/
-│   ├── day2-practice.sh           # Day2 실습 자동화
-│   ├── monitoring-stack.sh        # 모니터링 스택 자동화
-│   └── cloud-intermediate-helper.sh # 통합 헬퍼
-└── textbook/Day2/
-    ├── README.md                     # Day2 개요
-    └── practice/                     # 실습 가이드
-        ├── cicd-pipeline.md
-        ├── cloud-deployment.md
-        └── monitoring-basics.md
-```
-
-## 📅 **2일차 강의 일정**
-
-### 🌅 **오전 ["4시간"] - CI/CD 및 모니터링**
-
-#### **1교시: GitHub Actions CI/CD 파이프라인 ["90분"]**
-- **목표**: 자동화된 빌드, 테스트, 배포 파이프라인 구축
-- **실습**: GitHub Actions 워크플로우 작성 및 실행
-
-**🔍 실습 코드 위치**
-- **샘플 코드**: `cloud_intermediate/samples/day2/cicd-pipeline/`
-- **자동화 스크립트**: `cloud_intermediate/scripts/day2-practice.sh`
-
-**📋 실습 단계**
+#### GitHub Actions 워크플로우 생성
 ```bash
-# 1. 실습 환경 준비
-cd cloud_intermediate/scripts
-day2-practice.sh
+# .github/workflows/ci-cd.yml 생성
+mkdir -p .github/workflows
+cat > .github/workflows/ci-cd.yml << 'EOF'
+name: CI/CD Pipeline
 
-# 2. CI/CD 파이프라인 실습 선택
-# 메뉴에서 "1. CI/CD 파이프라인 실습" 선택
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
 
-# 3. GitHub Actions 워크플로우 생성
-# .github/workflows/ci-cd.yml 파일 생성
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run tests
+      run: npm test
+    
+    - name: Run linting
+      run: npm run lint
+    
+    - name: Build Docker image
+      run: docker build -t ${{ github.repository }}:${{ github.sha }} .
+    
+    - name: Run security scan
+      run: |
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+          aquasec/trivy image ${{ github.repository }}:${{ github.sha }}
 
-# 4. 로컬 테스트 실행
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy to AWS ECS
+      run: |
+        aws ecs update-service \
+          --cluster ${{ secrets.ECS_CLUSTER }} \
+          --service ${{ secrets.ECS_SERVICE }} \
+          --force-new-deployment
+EOF
+
+# 워크플로우 파일 권한 설정
+chmod +x .github/workflows/ci-cd.yml
+```
+
+#### 로컬 테스트 실행
+```bash
+# 의존성 설치
 npm install
+
+# 테스트 실행
 npm test
+
+# 린팅 실행
 npm run lint
 
-# 5. Docker 이미지 빌드 테스트
-docker build -t cicd-practice-app:latest .
-```
-
-**🎯 학습 결과**
-- ✅ GitHub Actions 워크플로우 작성
-- ✅ 자동화된 테스트 및 빌드 파이프라인
-- ✅ 보안 스캔 및 품질 검증 자동화
-
-#### **2교시: 멀티 클라우드 통합 모니터링 시스템 ["90분"]**
-- **목표**: AWS/GCP 멀티 클라우드 환경에서의 통합 모니터링 시스템 구축
-- **실습**: Phase 1-2 (통합 모니터링 허브 + AWS 클러스터 모니터링)
-
-**🔍 실습 코드 위치**
-- **통합 시나리오**: `cloud_intermediate/통합모니터링시나리오.md`
-- **자동화 스크립트**: `cloud_intermediate/scripts/monitoring-stack.sh`
-
-**📋 실습 단계**
-```bash
-# 1. 통합 모니터링 시나리오 확인
-cat cloud_intermediate/통합모니터링시나리오.md
-
-# 2. Phase 1: 통합 모니터링 허브 구축
-# AWS VM 생성 및 Global Prometheus + Grafana 설정
-
-# 3. Phase 2: AWS 클러스터 모니터링
-# AWS EKS 클러스터 구축 및 Infrastructure/Platform 모니터링
-
-# 4. 통합 대시보드 구성
-# 멀티 클라우드 환경 모니터링 시각화
-```
-
-**🎯 학습 결과**
-- ✅ 멀티 클라우드 통합 모니터링 시스템 구축
-- ✅ Infrastructure/Platform 3계층 모니터링
-- ✅ Global Dashboard를 통한 통합 시각화
-- ✅ 실제 운영 환경 수준의 모니터링 시스템
-
-### 🌆 **오후 ["4시간"] - 애플리케이션 모니터링 및 GCP 통합**
-
-#### **3교시: AWS Application 모니터링 ["90분"]**
-- **목표**: GitHub Actions를 통한 AWS EKS 애플리케이션 배포 및 Application 모니터링
-- **실습**: Phase 3 (AWS Application 모니터링)
-
-**🔍 실습 코드 위치**
-- **통합 시나리오**: `cloud_intermediate/통합모니터링시나리오.md`
-- **GitHub Actions**: `.github/workflows/deploy-aws-app.yml`
-
-**📋 실습 단계**
-```bash
-# 1. Phase 3: AWS Application 모니터링
-# GitHub Actions 워크플로우 생성
-
-# 2. 애플리케이션 배포 매니페스트 생성
-# Kubernetes Deployment, Service, ServiceMonitor 설정
-
-# 3. 애플리케이션 배포 및 모니터링 확인
-# Prometheus에서 애플리케이션 메트릭 수집 확인
-
-# 4. Application Dashboard 구성
-# 애플리케이션 성능 모니터링 시각화
-```
-
-**🎯 학습 결과**
-- ✅ GitHub Actions CI/CD 파이프라인 구축
-- ✅ AWS EKS 애플리케이션 자동 배포
-- ✅ Application 모니터링 설정
-- ✅ 실시간 애플리케이션 성능 모니터링
-
-#### **4교시: GCP 클러스터 통합 모니터링 ["90분"]**
-- **목표**: GCP GKE 클러스터 구축 및 멀티 클라우드 통합 모니터링 완성
-- **실습**: Phase 4 (GCP 클러스터 모니터링)
-
-**🔍 실습 코드 위치**
-- **통합 시나리오**: `cloud_intermediate/통합모니터링시나리오.md`
-- **GCP 설정**: GCP Console 및 gcloud CLI
-
-**📋 실습 단계**
-```bash
-# 1. Phase 4: GCP 클러스터 모니터링
-# GCP GKE 클러스터 생성
-
-# 2. GCP Infrastructure/Platform 모니터링 설정
-# Prometheus 스택 배포 및 메트릭 수집
-
-# 3. Global Prometheus에 GCP 클러스터 연동
-# 멀티 클라우드 통합 모니터링 완성
-
-# 4. 통합 모니터링 대시보드 구성
-# AWS + GCP 통합 시각화
-```
-
-**🎯 학습 결과**
-- ✅ GCP GKE 클러스터 구축
-- ✅ GCP Infrastructure/Platform 모니터링
-- ✅ 멀티 클라우드 통합 모니터링 시스템 완성
-- ✅ Global Dashboard를 통한 통합 시각화
-
-#### **5교시: AWS ECS 고급 배포 ["90분"]**
-- **목표**: AWS ECS를 활용한 프로덕션 배포 전략
-- **실습**: ECS 서비스, 로드밸런서, 자동 스케일링 설정
-
-**🔍 실습 코드 위치**
-- **샘플 코드**: `cloud_intermediate/samples/day2/cloud-deployment/aws-ecs-deploy.sh`
-
-**📋 실습 단계**
-```bash
-# 1. 클라우드 배포 실습 선택
-# 메뉴에서 "2. 클라우드 배포 실습" 선택
-
-# 2. ECS 클러스터 생성
-aws-ecs-deploy.sh deploy
-
-# 3. Application Load Balancer 설정
-# ALB, 타겟 그룹, 리스너 생성
-
-# 4. 서비스 배포 및 상태 확인
-aws-ecs-deploy.sh status
-
-# 5. 로그 확인
-aws-ecs-deploy.sh logs
-```
-
-**🎯 학습 결과**
-- ✅ AWS ECS 고급 배포 전략
-- ✅ Application Load Balancer 설정
-- ✅ 자동 스케일링 및 헬스 체크
-
-#### **4교시: GCP Cloud Run 고급 배포 ["90분"]**
-- **목표**: GCP Cloud Run을 활용한 서버리스 배포 전략
-- **실습**: Cloud Run 서비스, 도메인 매핑, 트래픽 분할
-
-**🔍 실습 코드 위치**
-- **샘플 코드**: `cloud_intermediate/samples/day2/cloud-deployment/gcp-cloud-run-deploy.sh`
-
-**📋 실습 단계**
-```bash
-# 1. GCP Cloud Run 실습 선택
-# 메뉴에서 "2. 클라우드 배포 실습" 선택
-
-# 2. Docker 이미지 빌드 및 푸시
-gcp-cloud-run-deploy.sh deploy
-
-# 3. 도메인 매핑 설정
-gcp-cloud-run-deploy.sh domain
-
-# 4. 트래픽 분할 설정
-gcp-cloud-run-deploy.sh traffic
-
-# 5. 서비스 상태 및 메트릭 확인
-gcp-cloud-run-deploy.sh status
-gcp-cloud-run-deploy.sh metrics
-```
-
-**🎯 학습 결과**
-- ✅ GCP Cloud Run 고급 배포 전략
-- ✅ 도메인 매핑 및 SSL 인증서 설정
-- ✅ 트래픽 분할 및 카나리 배포
-
-## 🛠️ **실습 자동화 도구**
-
-### **통합 헬퍼 스크립트**
-```bash
-# 환경 체크
-cloud-intermediate-helper.sh check-environment
-
-# CI/CD 실습
-cloud-intermediate-helper.sh cicd-practice
-
-# 모니터링 실습
-cloud-intermediate-helper.sh monitoring-practice
-
-# 클라우드 배포 실습
-cloud-intermediate-helper.sh cloud-deployment-practice
-```
-
-### **Day2 실습 자동화**
-```bash
-# 전체 Day2 실습 실행
-day2-practice.sh
-
-# 개별 실습 실행
-day2-practice.sh cicd-pipeline
-day2-practice.sh cloud-deployment
-day2-practice.sh monitoring
-```
-
-### **모니터링 스택 자동화**
-```bash
-# 모니터링 스택 설정
-monitoring-stack.sh setup
-
-# 서비스 상태 확인
-monitoring-stack.sh status
-
-# Prometheus 타겟 확인
-monitoring-stack.sh targets
-
-# 메트릭 쿼리 테스트
-monitoring-stack.sh test
-
-# 정리
-monitoring-stack.sh cleanup
-```
-
-## 📊 **학습 성과 측정**
-
-### **1교시 완료 확인**
-- [ ] GitHub Actions 워크플로우 작성 완료
-- [ ] 자동화된 테스트 및 빌드 파이프라인 구축
-- [ ] Docker 이미지 빌드 및 푸시 자동화
-- [ ] 보안 스캔 및 품질 검증 설정
-
-### **1교시 테스트 과정**
-```bash
-# GitHub Actions 워크플로우 테스트
-cd samples/day2/ci-cd-pipeline/
-# GitHub에 푸시하여 Actions 실행 확인
-
-# 로컬에서 워크플로우 테스트
-act -j build-and-test
-
 # Docker 이미지 빌드 테스트
-docker build -t test-app:latest .
+docker build -t cicd-practice-app:latest .
 
-# 보안 스캔 테스트
-trivy image test-app:latest
+# 보안 스캔 실행
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+  aquasec/trivy image cicd-practice-app:latest
 ```
-
-### **2교시 완료 확인**
-- [ ] 멀티 클라우드 통합 모니터링 시스템 구축
-- [ ] AWS 클러스터 Infrastructure/Platform 모니터링 설정
-- [ ] Global Dashboard를 통한 통합 시각화
-- [ ] 실제 운영 환경 수준의 모니터링 시스템 구축
-
-### **2교시 테스트 과정**
-```bash
-# 통합 모니터링 스택 테스트
-cd cloud_intermediate/repo/
-bash scripts/test-monitoring-stack.sh
-
-# Phase 2-4 클라우드 테스트
-bash scripts/test-phase2-4-cloud.sh
-
-# 모니터링 스택 상태 확인
-bash scripts/monitoring-stack.sh status
-
-# Prometheus 메트릭 확인
-curl http://localhost:9090/api/v1/query?query=up
-
-# Grafana 대시보드 확인
-curl http://localhost:3000/api/health
-```
-
-### **3교시 완료 확인**
-- [ ] GitHub Actions CI/CD 파이프라인 구축
-- [ ] AWS EKS 애플리케이션 자동 배포
-- [ ] Application 모니터링 설정
-- [ ] 실시간 애플리케이션 성능 모니터링
-
-### **3교시 테스트 과정**
-```bash
-# AWS EKS 클러스터 연결 확인
-aws eks update-kubeconfig --name aws-monitoring-cluster --region us-west-2
-
-# 애플리케이션 배포 테스트
-kubectl apply -f samples/day2/monitoring-basics/k8s/aws-app-deployment.yml
-kubectl apply -f samples/day2/monitoring-basics/k8s/aws-app-service.yml
-
-# 배포 상태 확인
-kubectl get pods
-kubectl get services
-
-# 애플리케이션 모니터링 확인
-kubectl logs -l app=aws-monitoring-app
-```
-
-### **4교시 완료 확인**
-- [ ] GCP GKE 클러스터 구축
-- [ ] GCP Infrastructure/Platform 모니터링
-- [ ] 멀티 클라우드 통합 모니터링 시스템 완성
-- [ ] Global Dashboard를 통한 통합 시각화
-
-### **4교시 테스트 과정**
-```bash
-# GCP GKE 클러스터 연결 확인
-gcloud container clusters get-credentials gcp-monitoring-cluster --zone us-central1-a
-
-# GCP 애플리케이션 배포 테스트
-kubectl apply -f samples/day2/monitoring-basics/k8s/gcp-app-deployment.yml
-kubectl apply -f samples/day2/monitoring-basics/k8s/gcp-app-service.yml
-
-# 배포 상태 확인
-kubectl get pods
-kubectl get services
-
-# 통합 모니터링 테스트
-bash scripts/run-all-tests.sh
-
-# 최종 통합 테스트
-bash scripts/test-monitoring-stack.sh
-```
-
-## 🚨 **문제 해결 가이드**
-
-### **CI/CD 관련 문제**
-```bash
-# GitHub Actions 워크플로우 디버깅
-# 1. Actions 탭에서 워크플로우 실행 로그 확인
-# 2. 로컬에서 동일한 명령어 실행 테스트
-# 3. 시크릿 및 환경 변수 설정 확인
-
-# Docker 빌드 문제
-docker system prune -a
-docker build --no-cache -t test-image .
-```
-
-### **모니터링 관련 문제**
-```bash
-# 모니터링 스택 재시작
-monitoring-stack.sh cleanup
-monitoring-stack.sh setup
-
-# Prometheus 설정 확인
-curl http://localhost:9090/api/v1/status/config
-
-# Grafana 연결 확인
-curl http://localhost:3000/api/health
-```
-
-### **클라우드 배포 관련 문제**
-```bash
-# AWS ECS 문제 해결
-aws ecs describe-services --cluster your-cluster --services your-service
-aws logs tail /ecs/your-service --follow
-
-# GCP Cloud Run 문제 해결
-gcloud run services describe your-service --region your-region
-gcloud logging read "resource.type=cloud_run_revision" --limit 50
-```
-
-## 📚 **추가 학습 자료**
-
-### **공식 문서**
-- [GitHub Actions 공식 문서](https://docs.github.com/en/actions)
-- [Prometheus 공식 문서](https://prometheus.io/docs/)
-- [Grafana 공식 문서](https://grafana.com/docs/)
-- [AWS ECS 공식 문서](https://docs.aws.amazon.com/ecs/)
-- [GCP Cloud Run 공식 문서](https://cloud.google.com/run/docs)
-
-### **실습 코드 저장소**
-- [GitHub Repository](https://github.com/jungfrau70/cloud-intermediate.git)
-- [실습 코드](../cloud_intermediate/samples/day2/)
-- [자동화 스크립트](../cloud_intermediate/scripts/)
-
-## 🎯 **다음 단계 안내**
-
-### **Cloud Master 과정 준비**
-- [ ] Day2 실습 완료 확인
-- [ ] 고급 CI/CD 파이프라인 설계
-- [ ] Kubernetes 고급 활용 준비
-- [ ] 모니터링 및 로깅 시스템 고도화
-
-### **실무 적용 방안**
-- [ ] 회사 프로젝트에 CI/CD 파이프라인 도입
-- [ ] 클라우드 배포 전략 수립
-- [ ] 모니터링 시스템 구축 계획
-- [ ] DevOps 문화 정착 방안
 
 </details>
-
-## 🎯 **핵심 학습 완료**
-
-### **📊 학습 성과 확인**
-```bash
-# 전체 실습 완료 확인
-./day2-practice.sh --status
-
-# 학습 성과 리포트 생성
-./lecture-monitor.sh --report
-```
 
 <details>
-<summary>🚀 심화 학습 방향</summary>
+<summary>🔧 2교시: 멀티 클라우드 통합 모니터링 시스템</summary>
 
-### **심화 학습 방향**
-- [ ] Kubernetes 고급 기능 학습
-- [ ] 마이크로서비스 아키텍처 설계
-- [ ] 클라우드 네이티브 보안
+#### Phase 1: 통합 모니터링 허브 구축
+```bash
+# AWS EC2 인스턴스 생성 (모니터링 허브)
+aws ec2 run-instances \
+    --image-id ami-0c02fb55956c7d316 \
+    --instance-type t3.medium \
+    --key-name my-key \
+    --security-group-ids sg-12345 \
+    --subnet-id subnet-12345 \
+    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=monitoring-hub}]'
+
+# 인스턴스 상태 확인
+aws ec2 describe-instances --filters "Name=tag:Name,Values=monitoring-hub"
+```
+
+#### Phase 2: AWS 클러스터 모니터링
+```bash
+# EKS 클러스터 생성
+aws eks create-cluster \
+    --name aws-monitoring-cluster \
+    --role-arn arn:aws:iam::ACCOUNT:role/eks-cluster-role \
+    --resources-vpc-config subnetIds=subnet-12345,subnet-67890,securityGroupIds=sg-12345
+
+# 클러스터 상태 확인
+aws eks describe-cluster --name aws-monitoring-cluster
+
+# kubectl 설정
+aws eks update-kubeconfig --name aws-monitoring-cluster --region us-west-2
+```
+
+#### Prometheus 스택 배포
+```bash
+# Prometheus 스택 배포
+kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/bundle.yaml
+
+# Prometheus 인스턴스 생성
+cat > prometheus-instance.yaml << 'EOF'
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus
+spec:
+  serviceAccountName: prometheus
+  serviceMonitorSelector:
+    matchLabels:
+      team: frontend
+  resources:
+    requests:
+      memory: 400Mi
+  enableAdminAPI: false
+EOF
+
+kubectl apply -f prometheus-instance.yaml
+```
 
 </details>
-- [ ] 성능 최적화 및 비용 관리
+
+<details>
+<summary>🔧 3교시: AWS Application 모니터링</summary>
+
+#### 애플리케이션 배포 매니페스트 생성
+```bash
+# 애플리케이션 Deployment 생성
+cat > aws-app-deployment.yaml << 'EOF'
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-monitoring-app
+  labels:
+    app: aws-monitoring-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: aws-monitoring-app
+  template:
+    metadata:
+      labels:
+        app: aws-monitoring-app
+    spec:
+      containers:
+      - name: app
+        image: nginx:1.21
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+EOF
+
+# Service 생성
+cat > aws-app-service.yaml << 'EOF'
+apiVersion: v1
+kind: Service
+metadata:
+  name: aws-monitoring-app-service
+  labels:
+    app: aws-monitoring-app
+spec:
+  selector:
+    app: aws-monitoring-app
+  ports:
+  - port: 80
+    targetPort: 80
+  type: LoadBalancer
+EOF
+
+# ServiceMonitor 생성
+cat > aws-app-servicemonitor.yaml << 'EOF'
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: aws-monitoring-app
+  labels:
+    team: frontend
+spec:
+  selector:
+    matchLabels:
+      app: aws-monitoring-app
+  endpoints:
+  - port: http
+    interval: 30s
+EOF
+
+# 리소스 배포
+kubectl apply -f aws-app-deployment.yaml
+kubectl apply -f aws-app-service.yaml
+kubectl apply -f aws-app-servicemonitor.yaml
+```
+
+#### 애플리케이션 모니터링 확인
+```bash
+# 배포 상태 확인
+kubectl get pods -l app=aws-monitoring-app
+kubectl get services
+kubectl get servicemonitors
+
+# 애플리케이션 로그 확인
+kubectl logs -l app=aws-monitoring-app
+
+# Prometheus 타겟 확인
+kubectl port-forward svc/prometheus 9090:9090
+curl http://localhost:9090/api/v1/targets
+```
 
 </details>
+
+<details>
+<summary>🔧 4교시: GCP 클러스터 통합 모니터링</summary>
+
+#### GCP GKE 클러스터 생성
+```bash
+# GKE 클러스터 생성
+gcloud container clusters create gcp-monitoring-cluster \
+    --zone us-central1-a \
+    --num-nodes 3 \
+    --machine-type e2-medium \
+    --enable-ip-alias \
+    --enable-autoscaling \
+    --min-nodes 1 \
+    --max-nodes 5
+
+# 클러스터 연결
+gcloud container clusters get-credentials gcp-monitoring-cluster \
+    --zone us-central1-a
+
+# 클러스터 상태 확인
+kubectl get nodes
+kubectl get pods --all-namespaces
+```
+
+#### GCP Infrastructure/Platform 모니터링 설정
+```bash
+# Prometheus 스택 배포
+kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/bundle.yaml
+
+# Prometheus 인스턴스 생성
+cat > gcp-prometheus-instance.yaml << 'EOF'
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: gcp-prometheus
+spec:
+  serviceAccountName: prometheus
+  serviceMonitorSelector:
+    matchLabels:
+      team: backend
+  resources:
+    requests:
+      memory: 400Mi
+  enableAdminAPI: false
+EOF
+
+kubectl apply -f gcp-prometheus-instance.yaml
+```
+
+#### Global Prometheus에 GCP 클러스터 연동
+```bash
+# GCP 클러스터 메트릭 수집 설정
+cat > gcp-cluster-monitoring.yaml << 'EOF'
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gcp-cluster-config
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+    scrape_configs:
+    - job_name: 'gcp-cluster'
+      static_configs:
+      - targets: ['gcp-monitoring-cluster:9090']
+      metrics_path: '/federate'
+      params:
+        'match[]':
+        - '{job=~".*"}'
+EOF
+
+kubectl apply -f gcp-cluster-monitoring.yaml
+```
+
+</details>
+
+<details>
+<summary>🔧 5교시: AWS ECS 고급 배포</summary>
+
+#### ECS 클러스터 생성
+```bash
+# ECS 클러스터 생성
+aws ecs create-cluster \
+    --cluster-name production-cluster \
+    --capacity-providers FARGATE \
+    --default-capacity-provider-strategy capacityProvider=FARGATE,weight=1
+
+# 클러스터 상태 확인
+aws ecs describe-clusters --clusters production-cluster
+```
+
+#### Application Load Balancer 설정
+```bash
+# ALB 생성
+aws elbv2 create-load-balancer \
+    --name production-alb \
+    --subnets subnet-12345 subnet-67890 \
+    --security-groups sg-12345
+
+# 타겟 그룹 생성
+aws elbv2 create-target-group \
+    --name production-targets \
+    --protocol HTTP \
+    --port 80 \
+    --vpc-id vpc-12345 \
+    --target-type ip
+
+# 리스너 생성
+aws elbv2 create-listener \
+    --load-balancer-arn arn:aws:elasticloadbalancing:region:account:loadbalancer/app/production-alb/1234567890123456 \
+    --protocol HTTP \
+    --port 80 \
+    --default-actions Type=forward,TargetGroupArn=arn:aws:elasticloadbalancing:region:account:targetgroup/production-targets/1234567890123456
+```
+
+#### ECS 서비스 배포
+```bash
+# 태스크 정의 생성
+cat > task-definition.json << 'EOF'
+{
+  "family": "production-app",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::ACCOUNT:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "production-app",
+      "image": "nginx:1.21",
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "healthCheck": {
+        "command": ["CMD-SHELL", "curl -f http://localhost/ || exit 1"],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3
+      }
+    }
+  ]
+}
+EOF
+
+# 태스크 정의 등록
+aws ecs register-task-definition --cli-input-json file://task-definition.json
+
+# ECS 서비스 생성
+aws ecs create-service \
+    --cluster production-cluster \
+    --service-name production-service \
+    --task-definition production-app:1 \
+    --desired-count 3 \
+    --launch-type FARGATE \
+    --network-configuration "awsvpcConfiguration={subnets=[subnet-12345,subnet-67890],securityGroups=[sg-12345],assignPublicIp=ENABLED}" \
+    --load-balancers "targetGroupArn=arn:aws:elasticloadbalancing:region:account:targetgroup/production-targets/1234567890123456,containerName=production-app,containerPort=80"
+```
+
+</details>
+
+<details>
+<summary>🔧 6교시: GCP Cloud Run 고급 배포</summary>
+
+#### Docker 이미지 빌드 및 푸시
+```bash
+# Docker 이미지 빌드
+docker build -t gcr.io/PROJECT_ID/cloud-run-app:latest .
+
+# GCP Container Registry에 푸시
+docker push gcr.io/PROJECT_ID/cloud-run-app:latest
+
+# 이미지 푸시 확인
+gcloud container images list --repository gcr.io/PROJECT_ID
+```
+
+#### Cloud Run 서비스 배포
+```bash
+# Cloud Run 서비스 배포
+gcloud run deploy cloud-run-app \
+    --image gcr.io/PROJECT_ID/cloud-run-app:latest \
+    --platform managed \
+    --region us-central1 \
+    --allow-unauthenticated \
+    --memory 512Mi \
+    --cpu 1 \
+    --max-instances 10 \
+    --min-instances 1
+
+# 서비스 상태 확인
+gcloud run services describe cloud-run-app --region us-central1
+```
+
+#### 도메인 매핑 설정
+```bash
+# 도메인 매핑
+gcloud run domain-mappings create \
+    --service cloud-run-app \
+    --domain your-domain.com \
+    --region us-central1
+
+# SSL 인증서 자동 생성 확인
+gcloud run domain-mappings describe your-domain.com --region us-central1
+```
+
+#### 트래픽 분할 설정
+```bash
+# 트래픽 분할 설정
+gcloud run services update-traffic cloud-run-app \
+    --to-latest \
+    --region us-central1
+
+# 카나리 배포 설정
+gcloud run services update-traffic cloud-run-app \
+    --to-revisions cloud-run-app-00001-abc=90,cloud-run-app-00002-def=10 \
+    --region us-central1
+```
+
+</details>
+
+---
+
+## 📚 참고 자료
+
+### 유용한 명령어
+```bash
+# GitHub Actions 관리
+gh workflow list
+gh workflow run ci-cd.yml
+
+# AWS ECS 관리
+aws ecs list-clusters
+aws ecs list-services --cluster production-cluster
+aws ecs describe-tasks --cluster production-cluster --tasks TASK_ARN
+
+# GCP Cloud Run 관리
+gcloud run services list
+gcloud run services describe cloud-run-app --region us-central1
+gcloud logging read "resource.type=cloud_run_revision" --limit 50
+
+# Kubernetes 관리
+kubectl get all
+kubectl logs -l app=aws-monitoring-app
+kubectl exec -it POD_NAME -- /bin/bash
+```
+
+### 문제 해결
+1. **GitHub Actions 워크플로우 실패**
+   - Actions 탭에서 워크플로우 실행 로그 확인
+   - 로컬에서 동일한 명령어 실행 테스트
+   - 시크릿 및 환경 변수 설정 확인
+
+2. **AWS ECS 태스크 시작 실패**
+   - IAM 역할 권한 확인
+   - 서브넷 및 보안 그룹 설정 확인
+   - 태스크 정의 문법 확인
+
+3. **GCP Cloud Run 배포 실패**
+   - 이미지 푸시 상태 확인
+   - 서비스 계정 권한 확인
+   - 리전 및 리소스 제한 확인
+
+---
+
+## 🧹 실습 정리
+
+### 자동 정리
+```bash
+# Day2 실습 자동 정리
+./mcp_knowledge_base/cloud_intermediate/repo/automation/day2/cleanup.sh
+```
+
+### 수동 정리
+```bash
+# AWS ECS 리소스 정리
+aws ecs delete-service --cluster production-cluster --service production-service
+aws ecs delete-cluster --cluster production-cluster
+
+# GCP Cloud Run 리소스 정리
+gcloud run services delete cloud-run-app --region us-central1
+
+# Kubernetes 리소스 정리
+kubectl delete all --all
+kubectl delete servicemonitors --all
+```
+
+### 정리 확인
+- [ ] GitHub Actions 워크플로우 정상 동작 확인
+- [ ] AWS ECS 리소스 정리 완료
+- [ ] GCP Cloud Run 리소스 정리 완료
+- [ ] 멀티 클라우드 모니터링 시스템 정상 동작 확인
+
+---
+
+## 🔗 관련 문서
+
+- [학습 경로 (Learning Path)](./learning-path.md)
+- [1일차 강의안 (Day1_강의안)](./Day1_강의안.md)
+- [통합 강의 시나리오 (Integrated Lecture Scenario)](./통합강의시나리오.md)
+- [통합 모니터링 시나리오 (Integrated Monitoring Scenario)](./통합모니터링시나리오.md)
 
 ---
 

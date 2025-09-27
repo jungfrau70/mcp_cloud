@@ -1,12 +1,16 @@
-# 🏗️ 통합 모니터링 허브 구축
+# 📊 통합 모니터링 허브 구축 실습
+
+> 📋 **실습 시간**: 90분  
+> 📋 **난이도**: 중급  
+> 📋 **선수 학습**: Docker, Prometheus, Grafana 기초  
+> 📋 **실습 환경**: AWS VM 기반 Global Prometheus + Grafana
 
 ## 🎯 학습 목표
 
 ### 핵심 학습 목표
-- **멀티 클라우드 환경**을 위한 통합 모니터링 허브 구축
-- **AWS VM 기반** Global Prometheus + Grafana 설정
-- **Docker Compose**를 활용한 모니터링 스택 구성
-- **실제 운영 환경** 수준의 모니터링 기반 환경 준비
+- **통합 모니터링**: 멀티 클라우드 환경을 위한 통합 모니터링 허브 구축
+- **Global Prometheus**: 중앙 집중식 메트릭 수집 및 저장
+- **Grafana 대시보드**: 시각화 및 알림 설정
 
 ### 실습 후 달성할 수 있는 능력
 - ✅ AWS VM 기반 통합 모니터링 허브 구축
@@ -15,183 +19,80 @@
 - ✅ 멀티 클라우드 모니터링 기반 환경 준비
 
 ### 예상 소요 시간
-- **AWS VM 설정**: 30-45분
-- **모니터링 스택 구성**: 60-90분
-- **연결 및 테스트**: 30-45분
-- **전체 과정**: 2-3시간
+- **모니터링 환경 준비**: 15분
+- **Global Prometheus 설정**: 25분
+- **Grafana 설정**: 20분
+- **Docker Compose 스택 실행**: 30분
 
 ---
 
-## 🛠️ 실습 학습
+## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화
-- **통합 시나리오**: `cloud_intermediate/통합모니터링시나리오.md`
-- **실습 코드**: `cloud_intermediate/samples/day1/monitoring-hub/`
-- **자동화 스크립트**: `cloud_intermediate/scripts/monitoring-stack.sh`
-- **클라우드 스크립트**: `cloud_intermediate/cloud-scripts/`
+- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repos/samples/day1/monitoring-hub/`
+- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repos/automation/day1/monitoring-hub-practice-automation.sh`
+- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repos/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
 
 #### 필수 도구
-- **AWS CLI**: AWS 서비스 관리
-- **Docker & Docker Compose**: 컨테이너 환경
-- **SSH 클라이언트**: AWS VM 접속
+- **Docker**: 컨테이너 런타임
+- **Docker Compose**: 컨테이너 오케스트레이션
+- **curl**: HTTP 요청 테스트
+- **jq**: JSON 데이터 처리
 
 #### 환경 설정
 ```bash
-# AWS CLI 설정 확인
-aws --version
-aws configure list
-
-# Docker 환경 확인
+# Docker 및 Docker Compose 설치 확인
+sudo systemctl status docker
 docker --version
 docker-compose --version
 
-# AWS 계정 설정 확인
-aws sts get-caller-identity
-```
-
-#### 클라우드 계정 설정
-```bash
-# AWS 계정 설정
-aws sts get-caller-identity
-
-# AWS 리전 설정
-aws configure set region us-west-2
-```
-
-</details>
-
----
-
-## 🏗️ Phase 1: 통합 모니터링 허브 구축
-
-### 📋 **Phase 1 개요**
-- **목표**: AWS VM에 통합 모니터링 허브 구축
-- **구성**: Global Prometheus + Grafana + AlertManager + Node Exporter
-- **예상 소요 시간**: 2-3시간
-
-### 🔧 **1-1. AWS EC2 인스턴스 생성**
-
-<details>
-<summary>📋 클릭하여 코드 복사</summary>
-
-```bash
-# AWS EC2 인스턴스 생성
-aws ec2 run-instances \
-  --image-id ami-0c02fb55956c7d316 \
-  --instance-type t3.medium \
-  --key-name monitoring-key \
-  --security-group-ids sg-monitoring \
-  --subnet-id subnet-monitoring \
-  --associate-public-ip-address \
-  --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=global-monitoring-hub}]'
-
-# 인스턴스 ID 확인
-aws ec2 describe-instances --filters "Name=tag:Name,Values=global-monitoring-hub" --query 'Reservations[*].Instances[*].[InstanceId,State.Name]' --output table
-```
-
-</details>
-
-### 🔧 **1-2. Elastic IP 할당**
-
-<details>
-<summary>📋 클릭하여 코드 복사</summary>
-
-```bash
-# Elastic IP 할당
-aws ec2 allocate-address --domain vpc
-
-# 할당된 Elastic IP를 인스턴스에 연결
-aws ec2 associate-address \
-  --instance-id i-1234567890abcdef0 \
-  --allocation-id eipalloc-12345678
-
-# Public IP 확인
-aws ec2 describe-addresses --query 'Addresses[*].[PublicIp,InstanceId]' --output table
-```
-
-</details>
-
-### 🔧 **1-3. 보안 그룹 설정**
-
-<details>
-<summary>📋 클릭하여 코드 복사</summary>
-
-```bash
-# 보안 그룹 생성
-aws ec2 create-security-group \
-  --group-name global-monitoring-sg \
-  --description "Security group for global monitoring hub"
-
-# 인바운드 규칙 설정
-aws ec2 authorize-security-group-ingress \
-  --group-id sg-12345678 \
-  --protocol tcp \
-  --port 22 \
-  --cidr 0.0.0.0/0
-
-aws ec2 authorize-security-group-ingress \
-  --group-id sg-12345678 \
-  --protocol tcp \
-  --port 9090 \
-  --cidr 0.0.0.0/0
-
-aws ec2 authorize-security-group-ingress \
-  --group-id sg-12345678 \
-  --protocol tcp \
-  --port 3000 \
-  --cidr 0.0.0.0/0
-
-aws ec2 authorize-security-group-ingress \
-  --group-id sg-12345678 \
-  --protocol tcp \
-  --port 9093 \
-  --cidr 0.0.0.0/0
-
-aws ec2 authorize-security-group-ingress \
-  --group-id sg-12345678 \
-  --protocol tcp \
-  --port 9091 \
-  --cidr 0.0.0.0/0
-```
-
-</details>
-
-### 🔧 **1-4. SSH 접속 및 환경 설정**
-
-<details>
-<summary>📋 클릭하여 코드 복사</summary>
-
-```bash
-# AWS VM에 SSH 접속
-ssh -i monitoring-key.pem ubuntu@3.123.45.67
-
-# 시스템 업데이트
-sudo apt-get update && sudo apt-get upgrade -y
-
-# Docker 설치
-sudo apt-get install -y docker.io docker-compose
+# Docker 서비스 시작
 sudo systemctl start docker
 sudo systemctl enable docker
-sudo usermod -aG docker ubuntu
-
-# 모니터링 디렉토리 생성
-mkdir -p /home/ubuntu/monitoring/{prometheus,grafana,alertmanager,dashboards}
-cd /home/ubuntu/monitoring
+sudo usermod -aG docker $USER
+newgrp docker
 ```
 
 </details>
 
-### 🔧 **1-5. Prometheus 설정 파일 생성**
+<details>
+<summary>🔧 1단계: 모니터링 환경 준비</summary>
+
+#### 실습 디렉토리 생성
+```bash
+# 실습 디렉토리 생성
+mkdir -p ~/cloud_intermediate/samples/day1/monitoring-hub
+cd ~/cloud_intermediate/samples/day1/monitoring-hub
+
+# 실습 샘플 코드 복사 (있는 경우)
+cp -r /mcp_knowledge_base/cloud_intermediate/repos/samples/day1/monitoring-hub/* ./
+
+# 모니터링 디렉토리 구조 생성
+mkdir -p monitoring/{prometheus,grafana,alertmanager,dashboards}
+cd monitoring
+```
+
+#### 실습 샘플과 동일한 구성 확인
+```bash
+# 실습 샘플 디렉토리 구조 확인
+echo "=== 실습 샘플 디렉토리 구조 ==="
+echo "실습 샘플: mcp_knowledge_base/cloud_intermediate/repos/samples/day1/monitoring-hub/"
+echo "현재 디렉토리: $(pwd)"
+echo "구성 파일: docker-compose.yml, prometheus.yml, alertmanager.yml"
+```
+
+</details>
 
 <details>
-<summary>📋 클릭하여 코드 복사</summary>
+<summary>🔧 2단계: Global Prometheus 설정</summary>
 
+#### Prometheus 설정 파일 생성
 ```bash
 # Prometheus 설정 파일 생성
-cat > /home/ubuntu/monitoring/prometheus/prometheus.yml << 'EOF'
+cat > prometheus/prometheus.yml << 'EOF'
 global:
   scrape_interval: 15s
   external_labels:
@@ -240,56 +141,111 @@ scrape_configs:
       username: 'prometheus'
       password: 'secure-password'
 EOF
+
+# Prometheus 설정 확인
+echo "=== Prometheus 설정 확인 ==="
+cat prometheus/prometheus.yml
 ```
 
 </details>
 
-### 🔧 **1-6. AlertManager 설정 파일 생성**
-
 <details>
-<summary>📋 클릭하여 코드 복사</summary>
+<summary>🔧 3단계: Grafana 설정</summary>
 
+#### Grafana 데이터소스 설정 생성
 ```bash
-# AlertManager 설정 파일 생성
-cat > /home/ubuntu/monitoring/alertmanager/alertmanager.yml << 'EOF'
-global:
-  smtp_smarthost: 'localhost:587'
-  smtp_from: 'alerts@example.com'
+# Grafana 데이터소스 설정 생성
+cat > grafana/datasources.yml << 'EOF'
+apiVersion: 1
 
-route:
-  group_by: ['alertname']
-  group_wait: 10s
-  group_interval: 10s
-  repeat_interval: 1h
-  receiver: 'web.hook'
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: true
+    jsonData:
+      httpMethod: POST
+      manageAlerts: true
+      prometheusType: Prometheus
+      prometheusVersion: 2.40.0
+      cacheLevel: 'High'
+      disableRecordingRules: false
+      incrementalQueryOverlapWindow: 10m
+      queryTimeout: 60s
+      timeInterval: 15s
+EOF
 
-receivers:
-- name: 'web.hook'
-  webhook_configs:
-  - url: 'http://127.0.0.1:5001/'
+# Grafana 대시보드 설정 생성
+cat > grafana/dashboards.yml << 'EOF'
+apiVersion: 1
 
-- name: 'email'
-  email_configs:
-  - to: 'admin@example.com'
-    subject: 'Alert: {{ .GroupLabels.alertname }}'
-    body: |
-      {{ range .Alerts }}
-      Alert: {{ .Annotations.summary }}
-      Description: {{ .Annotations.description }}
-      {{ end }}
+providers:
+  - name: 'default'
+    orgId: 1
+    folder: ''
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards
+EOF
+
+# 기본 대시보드 JSON 생성
+cat > dashboards/aws-vm-dashboard.json << 'EOF'
+{
+  "dashboard": {
+    "id": null,
+    "title": "AWS VM 모니터링",
+    "tags": ["aws", "vm", "monitoring"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "CPU 사용률",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "100 - (avg by (instance) (irate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+      },
+      {
+        "id": 2,
+        "title": "메모리 사용률",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "100 * (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes))",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "refresh": "30s"
+  }
+}
 EOF
 ```
 
 </details>
 
-### 🔧 **1-7. Docker Compose 파일 생성**
-
 <details>
-<summary>📋 클릭하여 코드 복사</summary>
+<summary>🔧 4단계: Docker Compose 스택 실행</summary>
 
+#### Docker Compose 파일 생성
 ```bash
-# Docker Compose 파일 생성
-cat > /home/ubuntu/monitoring/docker-compose.yml << 'EOF'
+# Docker Compose 파일 생성 (실습 샘플과 동일한 구성)
+cat > docker-compose.yml << 'EOF'
 version: '3.8'
 
 services:
@@ -300,7 +256,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -356,7 +312,7 @@ services:
     ports:
       - "9093:9093"
     volumes:
-      - alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
     networks:
       - monitoring
 
@@ -368,227 +324,135 @@ networks:
   monitoring:
     driver: bridge
 EOF
-```
 
-</details>
+# AlertManager 설정 생성
+cat > alertmanager/alertmanager.yml << 'EOF'
+global:
+  smtp_smarthost: 'localhost:587'
+  smtp_from: 'alerts@example.com'
 
-### 🔧 **1-8. 모니터링 스택 실행**
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'web.hook'
 
-<details>
-<summary>📋 클릭하여 코드 복사</summary>
+receivers:
+- name: 'web.hook'
+  webhook_configs:
+  - url: 'http://127.0.0.1:5001/'
 
-```bash
-# 모니터링 스택 실행
-cd /home/ubuntu/monitoring
-docker-compose up -d
-
-# 서비스 상태 확인
-docker-compose ps
-
-# 로그 확인
-docker-compose logs prometheus
-docker-compose logs grafana
-```
-
-</details>
-
-### 🔧 **1-9. 접속 정보 확인**
-
-<details>
-<summary>📋 클릭하여 코드 복사</summary>
-
-```bash
-# Public IP 확인
-PUBLIC_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
-
-# 접속 정보 출력
-echo "=== 모니터링 스택 접속 정보 ==="
-echo "Grafana: http://$PUBLIC_IP:3000 (admin/admin123)"
-echo "Prometheus: http://$PUBLIC_IP:9090"
-echo "AlertManager: http://$PUBLIC_IP:9093"
-echo "Push Gateway: http://$PUBLIC_IP:9091"
-echo "Node Exporter: http://$PUBLIC_IP:9100"
-```
-
-</details>
-
-### 🔧 **1-10. 서비스 상태 확인**
-
-<details>
-<summary>📋 클릭하여 코드 복사</summary>
-
-```bash
-# Prometheus 타겟 확인
-curl "http://localhost:9090/api/v1/targets" | jq '.data.activeTargets[] | {job: .labels.job, health: .health}'
-
-# Grafana 헬스 체크
-curl "http://localhost:3000/api/health"
-
-# Node Exporter 메트릭 확인
-curl "http://localhost:9100/metrics" | head -20
-```
-
-</details>
-
----
-
-## 🧪 **연결 및 테스트**
-
-### 🔍 **Prometheus 쿼리 테스트**
-
-<details>
-<summary>📋 클릭하여 코드 복사</summary>
-
-```bash
-# 기본 메트릭 쿼리 테스트
-curl "http://localhost:9090/api/v1/query?query=up"
-
-# CPU 사용률 쿼리
-curl "http://localhost:9090/api/v1/query?query=100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)"
-
-# 메모리 사용률 쿼리
-curl "http://localhost:9090/api/v1/query?query=(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100"
-
-# 디스크 사용률 쿼리
-curl "http://localhost:9090/api/v1/query?query=(1 - (node_filesystem_avail_bytes / node_filesystem_size_bytes)) * 100"
-```
-
-</details>
-
-### 📊 **Grafana 대시보드 설정**
-
-<details>
-<summary>📋 클릭하여 코드 복사</summary>
-
-```bash
-# 기본 대시보드 JSON 생성
-cat > /home/ubuntu/monitoring/dashboards/basic-dashboard.json << 'EOF'
-{
-  "dashboard": {
-    "title": "AWS VM Basic Monitoring",
-    "panels": [
-      {
-        "title": "System Overview",
-        "type": "stat",
-        "targets": [
-          {
-            "expr": "up",
-            "legendFormat": "System Status"
-          }
-        ]
-      },
-      {
-        "title": "CPU Usage",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
-            "legendFormat": "CPU Usage %"
-          }
-        ]
-      },
-      {
-        "title": "Memory Usage",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100",
-            "legendFormat": "Memory Usage %"
-          }
-        ]
-      }
-    ]
-  }
-}
+- name: 'email'
+  email_configs:
+  - to: 'admin@example.com'
+    subject: 'Alert: {{ .GroupLabels.alertname }}'
+    body: |
+      {{ range .Alerts }}
+      Alert: {{ .Annotations.summary }}
+      Description: {{ .Annotations.description }}
+      {{ end }}
 EOF
 ```
 
+#### 모니터링 스택 실행
+```bash
+# 모니터링 스택 실행
+echo "=== 모니터링 스택 실행 ==="
+docker-compose up -d
+
+# 서비스 상태 확인
+echo "=== 서비스 상태 확인 ==="
+sleep 10
+docker-compose ps
+
+# 서비스 접근성 확인
+echo "=== 서비스 접근성 확인 ==="
+curl -s http://localhost:9090/api/v1/query?query=up | jq .
+curl -s http://localhost:3000/api/health
+curl -s http://localhost:9100/metrics | head -10
+```
+
 </details>
 
 ---
 
-## 🧹 **실습 정리**
+## 📚 참고 자료
 
-### 🔧 **자동 정리**
-
-<details>
-<summary>📋 클릭하여 코드 복사</summary>
-
+### 유용한 명령어
 ```bash
-# 모니터링 스택 중지
-cd /home/ubuntu/monitoring
+# Docker Compose 관리
+docker-compose up -d
+docker-compose down
+docker-compose ps
+docker-compose logs
+
+# Prometheus 쿼리
+curl "http://localhost:9090/api/v1/query?query=up"
+curl "http://localhost:9090/api/v1/query?query=node_cpu_seconds_total"
+
+# Grafana 접속
+# http://localhost:3000 (admin/admin123)
+```
+
+### 문제 해결
+1. **Prometheus 시작 실패**
+   - 설정 파일 문법 확인: `promtool check config prometheus.yml`
+   - 포트 충돌 확인: `netstat -tlnp | grep 9090`
+
+2. **Grafana 접속 불가**
+   - 컨테이너 상태 확인: `docker-compose logs grafana`
+   - 포트 확인: `docker-compose ps`
+
+3. **Node Exporter 메트릭 없음**
+   - 컨테이너 상태 확인: `docker-compose logs node-exporter`
+   - 메트릭 엔드포인트 확인: `curl http://localhost:9100/metrics`
+
+---
+
+## 🧹 실습 정리
+
+### 자동 정리
+```bash
+# Day1 모니터링 허브 실습 자동 정리
+./mcp_knowledge_base/cloud_intermediate/repos/automation/day1/monitoring-hub-practice-automation.sh --cleanup
+```
+
+### 수동 정리
+```bash
+# 모니터링 스택 정리
 docker-compose down
 
-# 볼륨 정리 (선택사항)
-docker-compose down -v
+# 볼륨 정리
+docker volume rm monitoring-hub_prometheus_data monitoring-hub_grafana_data
 
-# AWS 리소스 정리
-aws ec2 terminate-instances --instance-id i-1234567890abcdef0
-aws ec2 release-address --allocation-id eipalloc-12345678
+# 컨테이너 정리
+docker system prune -a
 ```
 
-</details>
-
-### 📊 **수동 정리**
-
-<details>
-<summary>📋 클릭하여 코드 복사</summary>
-
-```bash
-# Docker 컨테이너 정리
-docker stop $(docker ps -aq)
-docker rm $(docker ps -aq)
-
-# Docker 이미지 정리
-docker rmi $(docker images -q)
-
-# 모니터링 디렉토리 정리
-sudo rm -rf /home/ubuntu/monitoring
-```
-
-</details>
-
-### ✅ **정리 확인**
-
-- [ ] 모니터링 스택이 정상적으로 중지됨
-- [ ] AWS EC2 인스턴스가 종료됨
-- [ ] Elastic IP가 해제됨
-- [ ] 불필요한 리소스가 정리됨
+### 정리 확인
+- [ ] 모니터링 스택 정리 완료
+- [ ] Docker 볼륨 정리 완료
+- [ ] 포트 해제 확인
+- [ ] 디스크 공간 정리 확인
 
 ---
 
-## 🎓 **학습 성과 및 다음 단계**
+## 🎯 학습 성과 확인
 
-### 🏆 **달성한 학습 목표**
-- ✅ **AWS VM 기반** 통합 모니터링 허브 구축
-- ✅ **Global Prometheus + Grafana** 정상 동작
-- ✅ **Node Exporter**를 통한 시스템 메트릭 수집
-- ✅ **멀티 클라우드 모니터링** 기반 환경 준비
+### 실습 완료 체크리스트
+- [ ] AWS VM 통합 모니터링 허브 구축 완료
+- [ ] Global Prometheus + Grafana 정상 동작 확인
+- [ ] Node Exporter 메트릭 수집 확인
+- [ ] 멀티 클라우드 모니터링 기반 환경 준비 완료
+- [ ] AlertManager 설정 완료
 
-### 🚀 **다음 단계 학습 제안**
-1. **Day2**: AWS 클러스터 Infrastructure/Platform 모니터링
-2. **Day2**: AWS Application 모니터링
-3. **Day2**: GCP 클러스터 통합 모니터링
-4. **고급**: APM, 로그 분석, 보안 모니터링
-
-### 💡 **실무 적용 팁**
-- **점진적 구축**: 단계별로 모니터링 범위 확장
-- **자동화**: Infrastructure as Code로 모니터링 환경 관리
-- **문서화**: 모니터링 시스템 운영 가이드 작성
-- **팀 교육**: 모니터링 도구 사용법 교육
+### 다음 단계
+- **Day2 CI/CD 파이프라인** 실습으로 진행
+- **멀티 클라우드 모니터링** 확장 실습
+- **고급 모니터링 설정** 및 **알림 구성**
 
 ---
 
-## 📚 **참고 자료**
-
-### **공식 문서**
-- [Prometheus 공식 문서](https://prometheus.io/docs/)
-- [Grafana 공식 문서](https://grafana.com/docs/)
-- [AWS EC2 가이드](https://docs.aws.amazon.com/ec2/)
-- [Docker Compose 가이드](https://docs.docker.com/compose/)
-
-### **추가 실습 자료**
-- [Prometheus 쿼리 예제](https://prometheus.io/docs/prometheus/latest/querying/examples/)
-- [Grafana 대시보드 템플릿](https://grafana.com/grafana/dashboards/)
-
-이제 **Cloud Intermediate Day1**의 학습자들이 이 실습 가이드를 따라하면서 **멀티 클라우드 환경을 위한 통합 모니터링 허브**를 구축할 수 있습니다! 🎉
+**💡 궁금한 점이 있으시면 언제든 문의해주세요!**  
+**문제가 발생하거나 도움이 필요하시면 실시간으로 지원해드리겠습니다.**
