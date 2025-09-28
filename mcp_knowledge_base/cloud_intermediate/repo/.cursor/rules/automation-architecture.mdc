@@ -1,0 +1,349 @@
+# 자동화 코드 아키텍처 규칙
+
+## 🎯 핵심 원칙
+
+### **1. 관심사 분리 (Separation of Concerns)**
+- **메뉴 시스템**: 사용자 인터페이스와 네비게이션만 담당
+- **서브 모듈**: 실제 비즈니스 로직과 작업 수행
+- **명확한 경계**: 각 컴포넌트의 역할과 책임이 명확히 구분됨
+
+### **2. 모듈화 (Modularity)**
+- **독립적 모듈**: 각 서브 모듈은 독립적으로 실행 가능
+- **재사용성**: 서브 모듈들은 다른 메뉴에서도 재사용 가능
+- **확장성**: 새로운 기능 추가 시 기존 구조에 영향 없음
+
+## 📁 디렉토리 구조 규칙
+
+### **메뉴 시스템 위치**
+```
+mcp_knowledge_base/cloud_intermediate/repo/automation/day1/
+└── day1-practice.sh                    # 메인 메뉴 시스템
+```
+
+### **서브 모듈 위치**
+```
+mcp_knowledge_base/cloud_intermediate/repo/tools/cloud/
+├── aws-eks-helper.sh                  # EKS 클러스터 관리
+├── gcp-gke-helper.sh                  # GKE 클러스터 관리
+├── cloud-cluster-helper.sh           # 통합 클러스터 관리
+├── improved-eks-cleanup.sh           # 개선된 EKS 정리
+└── [새로운-모듈].sh                   # 새 서브 모듈
+```
+
+## 🎮 메뉴 시스템 개발 규칙
+
+### **메뉴 시스템 역할**
+- ✅ **사용자 인터페이스**: 메뉴 표시 및 사용자 입력 처리
+- ✅ **네비게이션**: 메뉴 간 이동 및 상태 관리
+- ✅ **서브 모듈 호출**: 적절한 서브 모듈로 작업 위임
+- ✅ **에러 처리**: 서브 모듈 실행 실패 시 대안 제공
+
+### **메뉴 시스템 금지사항**
+- ❌ **비즈니스 로직 구현**: 메뉴 시스템에서 직접 작업 수행 금지
+- ❌ **하드코딩된 경로**: 상대 경로 사용 필수
+- ❌ **에러 무시**: 서브 모듈 실행 실패 시 대안 제공 필수
+
+### **메뉴 시스템 코드 패턴**
+```bash
+# ✅ DO: 표준 메뉴 호출 패턴
+case $choice in
+    2)
+        log_info "EKS 클러스터 관리"
+        local eks_helper="../../tools/cloud/aws-eks-helper.sh"
+        if [ -f "$eks_helper" ]; then
+            chmod +x "$eks_helper"
+            "$eks_helper" --interactive
+        else
+            log_warning "EKS Helper를 찾을 수 없습니다"
+        fi
+        ;;
+esac
+
+# ❌ DON'T: 메뉴 시스템에서 직접 작업 수행
+case $choice in
+    2)
+        # 직접 AWS 명령어 실행 금지
+        aws eks list-clusters
+        ;;
+esac
+```
+
+## 🔧 서브 모듈 개발 규칙
+
+### **서브 모듈 표준 인터페이스**
+```bash
+#!/bin/bash
+# ✅ DO: 표준 서브 모듈 헤더
+# 역할: [모듈 역할 설명]
+# 인터페이스: --action <액션> [옵션]
+
+# 표준 로깅 함수
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+log_info() { echo -e "${BLUE}[INFO]${NC} $1"; }
+log_success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
+log_warning() { echo -e "${YELLOW}[WARNING]${NC} $1"; }
+log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
+
+# 메인 로직
+main() {
+    # 모듈별 비즈니스 로직
+}
+
+# 스크립트 실행
+main "$@"
+```
+
+### **서브 모듈 에러 처리**
+```bash
+# ✅ DO: 필수 파일 검증
+if [ ! -f "$required_file" ]; then
+    log_error "필수 파일을 찾을 수 없습니다: $required_file"
+    exit 1
+fi
+
+# ✅ DO: 명령어 존재 확인
+if ! command -v aws &> /dev/null; then
+    log_error "AWS CLI가 설치되지 않았습니다"
+    exit 1
+fi
+
+# ✅ DO: 실행 권한 확인
+if [ ! -x "$script_file" ]; then
+    log_warning "실행 권한이 없습니다. 권한을 부여합니다."
+    chmod +x "$script_file"
+fi
+```
+
+### **Stuck 상태 감지 및 해결**
+```bash
+# ✅ DO: Stuck 상태 감지 로직
+wait_for_completion_with_stuck_detection() {
+    local resource_name="$1"
+    local check_command="$2"
+    local timeout_seconds="${3:-300}"  # 기본 5분
+    local stuck_threshold=15           # 15초 동안 변화 없으면 stuck 의심
+    
+    local start_time=$(date +%s)
+    local last_status=""
+    local last_change_time=$(date +%s)
+    local stuck_count=0
+    
+    log_info "$resource_name 완료 대기 중..."
+    
+    while [ $(($(date +%s) - start_time)) -lt $timeout_seconds ]; do
+        local current_status=$(eval "$check_command" 2>/dev/null)
+        local current_time=$(date +%s)
+        
+        # 상태 변화 감지
+        if [ "$current_status" != "$last_status" ]; then
+            last_status="$current_status"
+            last_change_time=$current_time
+            stuck_count=0
+            log_info "$resource_name 상태: $current_status"
+        else
+            # 상태 변화 없음
+            local time_since_change=$(($current_time - $last_change_time))
+            if [ $time_since_change -ge $stuck_threshold ]; then
+                stuck_count=$((stuck_count + 1))
+                log_warning "$resource_name이 ${stuck_threshold}초 동안 변화 없음 (stuck 의심 #$stuck_count)"
+                
+                # Stuck 상태 해결 시도
+                if [ $stuck_count -eq 1 ]; then
+                    log_info "Stuck 상태 해결 시도 중..."
+                    handle_stuck_resource "$resource_name" "$check_command"
+                elif [ $stuck_count -ge 3 ]; then
+                    log_error "$resource_name이 3번 연속 stuck 상태입니다. 강제 종료합니다."
+                    return 1
+                fi
+            fi
+        fi
+        
+        sleep 5
+    done
+    
+    log_error "$resource_name 완료 대기 타임아웃 (${timeout_seconds}초)"
+    return 1
+}
+
+# ✅ DO: Stuck 상태 해결 함수
+handle_stuck_resource() {
+    local resource_name="$1"
+    local check_command="$2"
+    
+    log_info "Stuck 상태 해결 시도: $resource_name"
+    
+    # 1. 리소스 상태 재확인
+    local current_status=$(eval "$check_command" 2>/dev/null)
+    log_info "현재 상태: $current_status"
+    
+    # 2. 의존성 리소스 확인
+    check_dependent_resources "$resource_name"
+    
+    # 3. 강제 새로고침 시도
+    log_info "리소스 상태 강제 새로고침 시도..."
+    # AWS CLI 캐시 클리어
+    aws configure set cli_cache_path /tmp/aws-cli-cache-$(date +%s)
+    
+    # 4. 대안 명령어 시도
+    if [[ "$resource_name" == *"stack"* ]]; then
+        log_info "CloudFormation 스택 강제 새로고침 시도..."
+        aws cloudformation describe-stacks --stack-name "$resource_name" --region $REGION >/dev/null 2>&1
+    fi
+}
+
+# ✅ DO: 의존성 리소스 확인
+check_dependent_resources() {
+    local resource_name="$1"
+    
+    log_info "의존성 리소스 확인 중..."
+    
+    # EKS 클러스터의 경우
+    if [[ "$resource_name" == *"eks"* ]]; then
+        # 노드그룹 상태 확인
+        local nodegroups=$(aws eks list-nodegroups --cluster-name cloud-intermediate-eks --region ap-northeast-2 --query 'nodegroups[]' --output text 2>/dev/null)
+        if [ -n "$nodegroups" ]; then
+            log_warning "노드그룹이 아직 존재합니다: $nodegroups"
+        fi
+        
+        # 애드온 상태 확인
+        local addons=$(aws eks list-addons --cluster-name cloud-intermediate-eks --region ap-northeast-2 --query 'addons[]' --output text 2>/dev/null)
+        if [ -n "$addons" ]; then
+            log_warning "애드온이 아직 존재합니다: $addons"
+        fi
+    fi
+}
+```
+
+### **서브 모듈 인터페이스 표준**
+```bash
+# ✅ DO: 표준 액션 지원
+--action create      # 리소스 생성
+--action delete      # 리소스 삭제
+--action status      # 상태 확인
+--action list        # 목록 조회
+--interactive        # 대화형 모드
+
+# ✅ DO: 도움말 지원
+--help, -h           # 도움말 표시
+```
+
+## 🔄 메뉴-서브모듈 연동 규칙
+
+### **호출 패턴**
+```bash
+# ✅ DO: 표준 호출 패턴
+local helper_script="../../tools/cloud/[모듈명].sh"
+if [ -f "$helper_script" ]; then
+    chmod +x "$helper_script"
+    "$helper_script" --action [액션] --interactive
+else
+    log_warning "[모듈명] Helper를 찾을 수 없습니다"
+fi
+```
+
+### **에러 처리 패턴**
+```bash
+# ✅ DO: 대안 제공
+if [ -f "$improved_script" ]; then
+    log_info "개선된 스크립트 실행 중..."
+    "$improved_script"
+else
+    log_warning "개선된 스크립트를 찾을 수 없습니다"
+    log_info "대신 기존 Helper를 사용합니다."
+    
+    # 대안 로직 실행
+    local fallback_script="../../tools/cloud/[기존-모듈].sh"
+    if [ -f "$fallback_script" ]; then
+        chmod +x "$fallback_script"
+        "$fallback_script" --action [액션]
+    else
+        log_error "대안 스크립트도 찾을 수 없습니다."
+    fi
+fi
+```
+
+## 📋 새 모듈 추가 규칙
+
+### **새 서브 모듈 추가 시**
+1. **위치**: `../../tools/cloud/[모듈명].sh`
+2. **표준 헤더**: 역할, 인터페이스 명시
+3. **로깅 함수**: 표준 로깅 함수 구현
+4. **에러 처리**: 필수 검증 및 에러 처리
+5. **인터페이스**: `--action` 및 `--interactive` 지원
+6. **테스트**: 독립 실행 테스트
+
+### **새 메뉴 추가 시**
+1. **메뉴 함수**: `show_[메뉴명]_menu()` 함수 추가
+2. **서브 모듈 호출**: 표준 호출 패턴 사용
+3. **에러 처리**: 서브 모듈 없을 때 대안 제공
+4. **문서화**: 메뉴 구조 및 기능 설명
+
+## 🧪 테스트 규칙
+
+### **메뉴 시스템 테스트**
+```bash
+# ✅ DO: 기본 기능 테스트
+./day1-practice.sh --help
+./day1-practice.sh --action status
+./day1-practice.sh --action cleanup
+
+# ✅ DO: 대화형 모드 테스트
+./day1-practice.sh
+# 각 메뉴 선택 및 서브 모듈 호출 확인
+```
+
+### **서브 모듈 테스트**
+```bash
+# ✅ DO: 개별 모듈 테스트
+./aws-eks-helper.sh --action status
+./gcp-gke-helper.sh --action status
+./improved-eks-cleanup.sh
+
+# ✅ DO: 에러 상황 테스트
+# 필수 도구가 없을 때 에러 처리 확인
+```
+
+## 📊 품질 관리 규칙
+
+### **코드 품질**
+- **가독성**: 명확한 변수명과 함수명 사용
+- **일관성**: 동일한 패턴과 스타일 유지
+- **문서화**: 모든 함수와 주요 로직에 주석 추가
+
+### **성능 관리**
+- **응답 시간**: 메뉴 응답 1초 이내
+- **실행 시간**: 서브 모듈 작업별 최적화
+- **에러율**: 전체 에러 발생률 5% 이하
+
+### **보안 관리**
+- **권한 검증**: 실행 권한 확인 및 부여
+- **입력 검증**: 사용자 입력 유효성 검사
+- **경로 보안**: 상대 경로 사용으로 보안 강화
+
+## 🚨 주의사항
+
+### **절대 금지사항**
+- ❌ **메뉴 시스템에서 직접 작업 수행**: 모든 작업은 서브 모듈에 위임
+- ❌ **하드코딩된 절대 경로**: 상대 경로 사용 필수
+- ❌ **에러 무시**: 모든 에러 상황에 대한 처리 필수
+- ❌ **권한 무시**: 실행 권한 확인 및 부여 필수
+
+### **권장사항**
+- ✅ **모듈화**: 기능별로 독립적인 모듈 구성
+- ✅ **재사용성**: 공통 기능은 재사용 가능한 모듈로 구성
+- ✅ **확장성**: 새로운 기능 추가 시 기존 구조 유지
+- ✅ **테스트**: 모든 모듈의 독립적 테스트 가능
+
+## 📚 관련 문서
+
+- [자동화 아키텍처 문서](../docs/automation-architecture.md)
+- [EKS 클러스터 관리 가이드](../tools/cloud/aws-eks-helper.sh)
+- [GKE 클러스터 관리 가이드](../tools/cloud/gcp-gke-helper.sh)
+- [개선된 EKS 정리 가이드](../tools/cloud/improved-eks-cleanup.sh)
+
+이 규칙을 통해 일관되고 유지보수 가능한 자동화 시스템을 구축할 수 있습니다.

@@ -105,39 +105,10 @@ create_eks_cluster() {
         fi
         
         if [[ $REPLY =~ ^[Yy]$ ]]; then
-            log_info "기존 CloudFormation 스택들 삭제 중..."
+            log_info "기존 CloudFormation 스택들 삭제 중 (개선된 로직 사용)..."
             
-            # 모든 관련 스택 삭제
-            for stack_name in $existing_stacks; do
-                log_info "스택 삭제 중: $stack_name"
-                aws cloudformation delete-stack --stack-name $stack_name --region $REGION
-            done
-            
-            # 진행 상황 모니터링 (5초마다 갱신)
-            log_info "스택 삭제 진행 상황 모니터링 시작..."
-            local delete_timeout=600  # 10분 타임아웃
-            local elapsed_time=0
-            
-            while [ $elapsed_time -lt $delete_timeout ]; do
-                # 모든 스택 삭제 완료 확인
-                local remaining_stacks=$(aws cloudformation list-stacks --region $REGION --query 'StackSummaries[?contains(StackName, `'$CLUSTER_NAME'`) && StackStatus!=`DELETE_COMPLETE`].StackName' --output text 2>/dev/null)
-                
-                if [ -z "$remaining_stacks" ]; then
-                    log_success "모든 기존 스택 삭제 완료"
-                    break
-                fi
-                
-                log_info "남은 스택들: $remaining_stacks (경과시간: ${elapsed_time}초)"
-                
-                sleep 5
-                elapsed_time=$((elapsed_time + 5))
-            done
-            
-            if [ $elapsed_time -ge $delete_timeout ]; then
-                log_warning "스택 삭제 타임아웃 (${delete_timeout}초). 수동으로 확인하세요."
-                log_info "수동 삭제 명령: aws cloudformation delete-stack --stack-name eksctl-$CLUSTER_NAME-cluster --region $REGION"
-                return 1
-            fi
+            # 개선된 클러스터 이름 기반 스택 삭제 사용
+            cleanup_all_cluster_stacks
         else
             log_info "기존 스택을 사용합니다."
             return 0
@@ -745,8 +716,9 @@ delete_eks_cluster() {
                         done
                     fi
                     
-                    # 3. 스택 재삭제 시도
-                    log_info "스택 재삭제 시도..."
+        # 3. 클러스터 이름 기반 모든 스택 삭제 시도
+        log_info "클러스터 이름 기반 모든 스택 삭제 시도..."
+        cleanup_all_cluster_stacks
                     aws cloudformation delete-stack --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION
                 fi
                 
@@ -789,6 +761,72 @@ delete_eks_cluster() {
             return 1
         fi
     fi
+}
+
+# 클러스터 이름 기반 모든 스택 삭제
+cleanup_all_cluster_stacks() {
+    log_info "클러스터 이름 기반 모든 스택 삭제: $CLUSTER_NAME"
+    
+    # 클러스터 이름이 포함된 모든 스택 찾기 (생성 시간 순으로 정렬)
+    local related_stacks=$(aws cloudformation list-stacks --region $REGION --query 'StackSummaries[?contains(StackName, `'$CLUSTER_NAME'`) && StackStatus != `DELETE_COMPLETE`].[StackName,StackStatus,CreationTime]' --output text 2>/dev/null)
+    
+    if [ -z "$related_stacks" ]; then
+        log_info "삭제할 관련 스택이 없습니다."
+        return 0
+    fi
+    
+    log_info "발견된 관련 스택들 (생성 시간 순):"
+    echo "$related_stacks" | sort -k3 -r | while IFS=$'\t' read -r stack_name stack_status creation_time; do
+        log_info "  - $stack_name ($stack_status) - 생성: $creation_time"
+    done
+    
+    # 생성 시간 역순으로 삭제 (가장 나중에 생성된 것부터)
+    echo "$related_stacks" | sort -k3 -r | while IFS=$'\t' read -r stack_name stack_status creation_time; do
+        if [ -n "$stack_name" ]; then
+            log_info "스택 삭제: $stack_name (현재 상태: $stack_status, 생성: $creation_time)"
+            
+            # 이미 삭제 중인 스택은 대기
+            if [ "$stack_status" = "DELETE_IN_PROGRESS" ]; then
+                log_info "스택 $stack_name이 이미 삭제 진행 중입니다. 완료 대기..."
+                wait_for_stack_deletion "$stack_name"
+            else
+                # 스택 삭제 시도
+                aws cloudformation delete-stack --stack-name "$stack_name" --region $REGION
+                wait_for_stack_deletion "$stack_name"
+            fi
+        fi
+    done
+}
+
+# 스택 삭제 완료 대기
+wait_for_stack_deletion() {
+    local stack_name="$1"
+    local timeout=600  # 10분
+    local elapsed=0
+    
+    log_info "스택 $stack_name 삭제 완료 대기 중..."
+    
+    while [ $elapsed -lt $timeout ]; do
+        if ! aws cloudformation describe-stacks --stack-name "$stack_name" --region $REGION &> /dev/null; then
+            log_success "스택 $stack_name 삭제 완료"
+            return 0
+        fi
+        
+        # 현재 스택 상태 확인
+        local current_status=$(aws cloudformation describe-stacks --stack-name "$stack_name" --region $REGION --query 'Stacks[0].StackStatus' --output text 2>/dev/null)
+        
+        if [ "$current_status" = "DELETE_FAILED" ]; then
+            log_warning "스택 $stack_name 삭제 실패"
+            return 1
+        fi
+        
+        sleep 15
+        elapsed=$((elapsed + 15))
+        log_info "스택 $stack_name 삭제 대기 중... (${elapsed}초 경과, 상태: $current_status)"
+    done
+    
+    log_warning "스택 $stack_name 삭제 타임아웃"
+    return 1
 }
 
 # EKS 클러스터 상태 확인

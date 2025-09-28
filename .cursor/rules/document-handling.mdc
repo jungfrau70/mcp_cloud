@@ -68,18 +68,54 @@ const titleText = computed(() => {
 
 ## 🔗 교육 자료 내부 링크 처리 규칙
 
+### **절대경로 링크 사용 (필수)**
+```markdown
+<!-- ✅ DO: 절대경로 사용 -->
+[Cloud Basic 과정](cloud_basic/README.md)
+[Day1 실습 가이드](cloud_basic/textbook/Day1/README.md)
+[Kubernetes 기초](cloud_intermediate/textbook/Day1/practice/kubernetes-basics.md)
+
+<!-- ❌ DON'T: mcp_knowledge_base/ 접두사 사용 -->
+[Cloud Basic 과정](mcp_knowledge_base/cloud_basic/README.md)
+[Day1 실습 가이드](mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+```
+
 ### **학습 경로 네비게이션**
 ```markdown
-<!-- ✅ DO: 교육 과정 네비게이션 -->
+<!-- ✅ DO: 교육 과정 네비게이션 (절대경로 사용) -->
 <div align="center">
 
-[← 이전: Cloud Basic 1일차](../README.md) | 
-[📚 전체 커리큘럼](../../../curriculum.md) | 
-[🏠 학습 경로로 돌아가기](../../../index.md) | 
-[다음: Cloud Basic 2일차 →](../README.md)
+[← 이전: Cloud Basic 1일차](cloud_basic/textbook/Day1/README.md) | 
+[📚 전체 커리큘럼](cloud_basic/curriculum.md) | 
+[🏠 학습 경로로 돌아가기](cloud_basic/learning-path.md) | 
+[다음: Cloud Basic 2일차 →](cloud_basic/textbook/Day2/README.md)
 
 </div>
 ```
+
+### **bash 명령어 블록 작성 규칙**
+```markdown
+<!-- ✅ DO: 올바른 bash 코드 블록 작성 -->
+```bash
+# AWS CLI 설치 확인
+aws --version
+
+# Docker 컨테이너 실행
+docker run -d -p 8080:80 nginx
+
+# Kubernetes 클러스터 상태 확인
+kubectl get nodes
+```
+
+<!-- ❌ DON'T: 잘못된 코드 블록 -->
+```shell
+# 이렇게 작성하면 Easy Copy 버튼이 제대로 작동하지 않음
+```
+
+### **Easy Copy 기능 자동 감지 패턴**
+- **언어 지정**: `bash`, `shell`, `sh`
+- **명령어 패턴**: `$`, `#`로 시작하는 명령어
+- **키워드 감지**: `sudo`, `npm`, `git`, `docker`, `kubectl`, `aws`, `gcloud` 등
 
 ### **실습 가이드 링크 처리**
 ```typescript
@@ -217,12 +253,40 @@ describe('Practice Guide', () => {
 - **진도 데이터**: 학습 진도 데이터 안전한 저장
 - **피드백 데이터**: 학습자 피드백 익명화 처리
 
+## 🛠️ 자동화 도구 사용법
+
+### **내부 링크 자동 수정**
+```bash
+# 모든 내부 링크를 절대경로로 자동 수정
+python3 tools/fix_internal_links.py
+
+# 수정 결과 확인
+cat internal_links_fix_report.md
+```
+
+### **Easy Copy 기능 테스트**
+```bash
+# bash 명령어 블록 테스트
+echo "```bash
+# 테스트 명령어
+echo 'Hello World'
+```" > test.md
+```
+
+### **문서 작성 시 필수 체크리스트**
+- [ ] bash 명령어 블록에 `bash` 언어 지정자 사용
+- [ ] 내부 링크는 절대경로 사용 (mcp_knowledge_base/ 접두사 제거)
+- [ ] 링크 텍스트가 명확하고 구체적
+- [ ] 파일 확장자 포함 (.md)
+- [ ] 한글 파일명 정확히 처리
+
 ## 📚 관련 파일
 
-- [ContentView.vue](mdc:frontend/components/ContentView.vue) - 교육 자료 표시 컴포넌트
+- [ContentView.vue](mdc:frontend/components/ContentView.vue) - 교육 자료 표시 컴포넌트 및 Easy Copy 기능
 - [curriculum.py](mdc:backend/app/api/routes/curriculum.py) - 교육 커리큘럼 API
 - [path.ts](mdc:frontend/utils/path.ts) - 교육 자료 경로 처리
 - [default.vue](mdc:frontend/layouts/default.vue) - 교육 플랫폼 레이아웃
+- [fix_internal_links.py](mdc:tools/fix_internal_links.py) - 내부 링크 자동 수정 도구
 
 ## 🔄 교육 자료 업데이트 가이드
 

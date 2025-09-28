@@ -13,6 +13,8 @@
 - **Node Exporter**: 시스템 메트릭 수집 설정
 - **AlertManager**: 알림 시스템 구성
 - **통합 모니터링**: 멀티 클라우드 환경 모니터링 전략
+- **외부 접속**: AWS 보안 그룹 설정 및 외부 접속 테스트
+- **자동 정리**: 통합 삭제 기능을 통한 리소스 정리
 
 ### 실습 후 달성할 수 있는 능력
 - ✅ Prometheus 서버 설치 및 설정
@@ -20,6 +22,8 @@
 - ✅ Node Exporter를 통한 시스템 메트릭 수집
 - ✅ AlertManager 알림 시스템 구성
 - ✅ 통합 모니터링 대시보드 구축
+- ✅ AWS 보안 그룹 자동 설정 및 외부 접속 테스트
+- ✅ 통합 삭제 기능을 통한 모든 리소스 자동 정리
 
 ### 예상 소요 시간
 - **Prometheus 설치**: 30분
@@ -748,15 +752,59 @@ curl -s http://localhost:9093/api/v1/alerts | jq
 
 ---
 
+## 🌐 외부 접속 및 보안 설정
+
+### AWS 보안 그룹 자동 설정
+```bash
+# 외부 접속을 위한 보안 그룹 자동 설정
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/samples/day1
+./external-access-test.sh
+```
+
+### 외부 접속 URL 생성
+```bash
+# 외부 IP 자동 감지 및 URL 생성
+EXTERNAL_IP=$(curl -s https://ipinfo.io/ip)
+echo "🌐 외부에서 접속 가능한 모니터링 URL:"
+echo "   - Prometheus: http://$EXTERNAL_IP:9090"
+echo "   - Grafana: http://$EXTERNAL_IP:3000 (admin/admin)"
+echo "   - AlertManager: http://$EXTERNAL_IP:9093"
+echo "   - Node Exporter: http://$EXTERNAL_IP:9100/metrics"
+```
+
+### 외부 접속 테스트
+```bash
+# 모든 모니터링 서비스 외부 접속 테스트
+curl -f http://3.38.192.99:9090/api/v1/status/config && echo "Prometheus: OK"
+curl -f http://3.38.192.99:3000/api/health && echo "Grafana: OK"
+curl -f http://3.38.192.99:9093/api/v1/status && echo "AlertManager: OK"
+curl -f http://3.38.192.99:9100/metrics && echo "Node Exporter: OK"
+```
+
+---
+
 ## 🧹 실습 정리
 
-### 자동 정리
+### 통합 삭제 (자동 정리)
 ```bash
-# Day1 통합 모니터링 허브 실습 자동 정리
+# 모든 Day1 실습 리소스 통합 삭제
 cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/automation/day1
 ./day1-practice.sh
-# 메뉴에서 "정리" 옵션 선택
+# 메뉴에서 "6. 실습 환경 정리" 선택
+
+# 또는 직접 통합 삭제 스크립트 실행
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/samples/day1
+./unified-cleanup.sh
 ```
+
+### 통합 삭제 기능
+- **Docker 컨테이너 정리**: 모든 실습 컨테이너 중지 및 삭제
+- **Docker 이미지 정리**: 사용하지 않는 이미지 삭제
+- **Docker 네트워크 정리**: 생성된 네트워크 삭제
+- **Docker 볼륨 정리**: 사용하지 않는 볼륨 삭제
+- **설정 파일 정리**: 생성된 설정 파일 삭제
+- **Kubernetes 리소스 정리**: 배포된 K8s 리소스 삭제
+- **클라우드 리소스 정리**: AWS/GCP 리소스 정리
 
 ### 수동 정리
 ```bash

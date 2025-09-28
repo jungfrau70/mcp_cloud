@@ -7,12 +7,15 @@
 - **Kubernetes 기초**: Pod, Service, Deployment 등 Kubernetes 핵심 리소스를 이해하고 관리합니다.
 - **클라우드 컨테이너 서비스**: AWS ECS, GCP Cloud Run을 활용하여 클라우드 환경에 컨테이너 애플리케이션을 배포합니다.
 - **통합 모니터링 허브**: AWS VM 기반 Prometheus + Grafana를 구축하여 모니터링 인프라를 준비합니다.
+- **외부 접속 및 보안**: AWS 보안 그룹 자동 설정 및 외부 접속 테스트를 통한 실습 환경 검증
 
 ### 실습 후 달성할 수 있는 능력
 - ✅ Docker 멀티스테이지 빌드를 활용한 경량화된 이미지 생성
 - ✅ Kubernetes 기본 리소스(Pod, Service, Deployment) 배포 및 관리
 - ✅ AWS ECS를 활용한 컨테이너 애플리케이션 배포
 - ✅ Prometheus + Grafana 기반 모니터링 시스템 구축
+- ✅ AWS 보안 그룹 자동 설정 및 외부 접속 테스트
+- ✅ 실습 결과 외부 공유 및 검증
 
 ### 예상 소요 시간
 - **Docker 고급 활용**: 90-120분
@@ -52,6 +55,14 @@
 - **AlertManager 설정**: 알림 시스템 구성
 
 **실습 파일**: [monitoring-hub.md](./practice/monitoring-hub.md)
+
+### 🔧 5교시: 외부 접속 및 보안 설정 (30분)
+- **AWS 보안 그룹 자동 설정**: 외부 접속을 위한 방화벽 설정
+- **외부 IP 주소 확인**: 퍼블릭 IP 자동 감지 및 URL 생성
+- **외부 접속 테스트**: 모든 서비스의 외부 접속 가능 여부 검증
+- **실습 결과 공유**: 외부 접속 URL을 통한 실습 결과 공유
+
+**실습 파일**: [external-access-guide.md](./practice/external-access-guide.md)
 
 ---
 
@@ -100,6 +111,14 @@ cd ../automation/day1/
 2. **Kubernetes 기초** → [kubernetes-basics.md](./practice/kubernetes-basics.md)
 3. **클라우드 컨테이너 서비스** → [cloud-container-services.md](./practice/cloud-container-services.md)
 4. **통합 모니터링 허브** → [monitoring-hub.md](./practice/monitoring-hub.md)
+5. **외부 접속 및 보안 설정** → [external-access-guide.md](./practice/external-access-guide.md)
+
+### 2.5단계: 외부 접속 테스트
+```bash
+# 외부 접속 테스트 및 검증 실행
+cd mcp_knowledge_base/cloud_intermediate/repo/samples/day1/
+./external-access-test.sh
+```
 
 ### 3단계: 실습 정리
 ```bash
@@ -117,6 +136,9 @@ cd ../automation/day1/
 - [ ] AWS ECS 컨테이너 서비스 배포 완료
 - [ ] GCP Cloud Run 서버리스 배포 완료
 - [ ] Prometheus + Grafana 모니터링 시스템 구축 완료
+- [ ] AWS 보안 그룹 자동 설정 완료
+- [ ] 외부 접속 테스트 및 검증 완료
+- [ ] 실습 결과 외부 공유 가능
 
 ### 다음 단계
 - **Day 2 실습**으로 진행: CI/CD 및 고급 클라우드 배포, 멀티 클라우드 모니터링

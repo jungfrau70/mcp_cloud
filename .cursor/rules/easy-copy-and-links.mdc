@@ -1,0 +1,201 @@
+# Easy Copy 기능 및 내부 링크 절대경로 규칙
+
+## 🚀 Easy Copy 기능 구현 규칙
+
+### **마크다운 문서 작성 시 bash 명령어 블록 표준**
+모든 마크다운 문서에서 bash 명령어 블록을 작성할 때 다음 규칙을 **반드시** 준수해야 합니다:
+
+```markdown
+<!-- ✅ DO: 올바른 bash 코드 블록 작성 -->
+```bash
+# AWS CLI 설치 확인
+aws --version
+
+# Docker 컨테이너 실행
+docker run -d -p 8080:80 nginx
+
+# Kubernetes 클러스터 상태 확인
+kubectl get nodes
+```
+
+<!-- ❌ DON'T: 잘못된 코드 블록 -->
+```shell
+# 이렇게 작성하면 Easy Copy 버튼이 제대로 작동하지 않음
+```
+
+### **Easy Copy 기능 자동 감지 패턴**
+다음 패턴들이 자동으로 감지되어 Easy Copy 버튼이 표시됩니다:
+
+1. **언어 지정**: `bash`, `shell`, `sh`
+2. **명령어 패턴**: `$`, `#`로 시작하는 명령어
+3. **키워드 감지**: `sudo`, `npm`, `git`, `docker`, `kubectl`, `aws`, `gcloud` 등
+
+### **bash 명령어 블록 작성 가이드라인**
+```markdown
+<!-- ✅ DO: 명확한 bash 명령어 블록 -->
+```bash
+# 1단계: 환경 확인
+echo "현재 디렉토리: $(pwd)"
+ls -la
+
+# 2단계: Docker 이미지 빌드
+docker build -t my-app:latest .
+
+# 3단계: 컨테이너 실행
+docker run -d -p 3000:3000 my-app:latest
+```
+
+### **Easy Copy 버튼 스타일링**
+- **bash 명령어**: 🚀 "실행" 버튼 (초록색)
+- **일반 코드**: 📋 "복사" 버튼 (회색)
+- **성공 피드백**: "✅ 실행 준비!" 또는 "✅ 복사됨!" 메시지
+
+## 🔗 내부 링크 절대경로 사용 규칙
+
+### **절대경로 링크 작성 표준**
+모든 내부 파일링크는 **절대경로**를 사용해야 합니다:
+
+```markdown
+<!-- ✅ DO: 절대경로 사용 -->
+[Cloud Basic 과정](cloud_basic/README.md)
+[Day1 실습 가이드](cloud_basic/textbook/Day1/README.md)
+[Kubernetes 기초](cloud_intermediate/textbook/Day1/practice/kubernetes-basics.md)
+
+<!-- ❌ DON'T: mcp_knowledge_base/ 접두사 사용 -->
+[Cloud Basic 과정](mcp_knowledge_base/cloud_basic/README.md)
+[Day1 실습 가이드](mcp_knowledge_base/cloud_basic/textbook/Day1/README.md)
+```
+
+### **링크 패턴별 작성 규칙**
+
+#### **1. 일반 문서 링크**
+```markdown
+<!-- ✅ DO: 절대경로 사용 -->
+[과정 개요](cloud_basic/README.md)
+[학습 경로](cloud_basic/learning-path.md)
+[강의안](cloud_basic/Day1_강의안.md)
+```
+
+#### **2. 실습 가이드 링크**
+```markdown
+<!-- ✅ DO: 실습 가이드 절대경로 -->
+[기본 실습](cloud_basic/textbook/Day1/practice/aws_basic_practice.md)
+[고급 실습](cloud_intermediate/textbook/Day1/practice/kubernetes-basics.md)
+[통합 실습](cloud_master/textbook/Day1/practices/docker-basics.md)
+```
+
+#### **3. 이미지 링크**
+```markdown
+<!-- ✅ DO: 이미지 절대경로 -->
+![아키텍처 다이어그램](cloud_basic/images/architecture.png)
+![실습 결과](cloud_intermediate/images/practice-result.png)
+```
+
+#### **4. 앵커 링크**
+```markdown
+<!-- ✅ DO: 앵커 링크 절대경로 -->
+[학습 목표](#학습-목표)
+[실습 가이드](#실습-가이드)
+[문제 해결](#문제-해결)
+```
+
+### **링크 작성 체크리스트**
+- [ ] `mcp_knowledge_base/` 접두사 제거 확인
+- [ ] 상대경로 대신 절대경로 사용
+- [ ] 링크 텍스트가 명확하고 구체적
+- [ ] 파일 확장자 포함 (`.md`)
+- [ ] 한글 파일명 정확히 처리
+
+## 🛠️ 자동화 도구 사용법
+
+### **내부 링크 자동 수정**
+```bash
+# 모든 내부 링크를 절대경로로 자동 수정
+python3 tools/fix_internal_links.py
+
+# 수정 결과 확인
+cat internal_links_fix_report.md
+```
+
+### **Easy Copy 기능 테스트**
+```bash
+# bash 명령어 블록 테스트
+echo "```bash
+# 테스트 명령어
+echo 'Hello World'
+```" > test.md
+```
+
+## 📋 문서 작성 시 필수 체크리스트
+
+### **bash 명령어 블록 작성 시**
+- [ ] `bash` 언어 지정자 사용
+- [ ] 명령어에 주석 추가
+- [ ] 단계별로 구분하여 작성
+- [ ] 예상 결과 명시
+- [ ] 오류 처리 방법 포함
+
+### **내부 링크 작성 시**
+- [ ] `mcp_knowledge_base/` 접두사 제거
+- [ ] 절대경로 사용
+- [ ] 링크 텍스트 명확성 확인
+- [ ] 파일 존재 여부 확인
+- [ ] 한글 파일명 정확성 확인
+
+## 🎯 품질 보장 규칙
+
+### **Easy Copy 기능 품질**
+- **자동 감지**: bash 명령어 자동 인식
+- **사용자 경험**: 직관적인 버튼 디자인
+- **접근성**: 키보드 네비게이션 지원
+- **피드백**: 명확한 성공/실패 메시지
+
+### **내부 링크 품질**
+- **일관성**: 모든 링크가 절대경로 사용
+- **정확성**: 링크가 올바른 파일을 가리킴
+- **유지보수성**: 경로 변경 시에도 안정적
+- **가독성**: 명확하고 이해하기 쉬운 링크 텍스트
+
+## 🚨 주의사항
+
+### **절대 금지사항**
+- ❌ `mcp_knowledge_base/` 접두사 사용
+- ❌ 상대경로 링크 사용 (`../`, `./`)
+- ❌ bash 명령어 블록에 `shell` 언어 지정자 사용
+- ❌ 링크 텍스트 없이 URL만 표시
+
+### **권장사항**
+- ✅ 모든 bash 명령어에 `bash` 언어 지정자 사용
+- ✅ 내부 링크는 절대경로로 작성
+- ✅ 링크 텍스트는 명확하고 구체적으로 작성
+- ✅ 정기적으로 링크 유효성 검사
+
+## 📊 성과 지표
+
+### **Easy Copy 기능**
+- **bash 명령어 감지율**: 100%
+- **사용자 만족도**: 높음
+- **복사 성공률**: 95% 이상
+
+### **내부 링크 품질**
+- **절대경로 사용률**: 100%
+- **링크 정확도**: 100%
+- **유지보수 효율성**: 높음
+
+## 🔄 지속적 개선
+
+### **정기 검증**
+- **주간**: 내부 링크 유효성 검사
+- **월간**: Easy Copy 기능 사용성 검토
+- **분기별**: 전체 링크 구조 최적화
+
+### **자동화 도구 활용**
+```bash
+# 주간 링크 검증
+python3 tools/fix_internal_links.py
+
+# Easy Copy 기능 테스트
+# 브라우저에서 마크다운 문서 열어서 복사 버튼 동작 확인
+```
+
+이 규칙을 통해 모든 마크다운 문서에서 일관된 Easy Copy 기능과 절대경로 링크를 사용할 수 있습니다.
