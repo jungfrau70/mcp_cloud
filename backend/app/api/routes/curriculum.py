@@ -337,13 +337,19 @@ def get_slide(textbook_path: str = None, curriculum_path: str = None):
     if not raw:
         raise HTTPException(status_code=400, detail='Missing curriculum_path')
     
+    # 입력 검증: JavaScript 함수가 전달되는 경우 방지
+    if not isinstance(raw, str) or 'function' in str(raw).lower():
+        print(f"ERROR: Invalid curriculum_path received: {raw}")
+        raise HTTPException(status_code=400, detail='Invalid curriculum_path parameter')
+    
     # URL 디코딩 처리 (한글 파일명 지원, 2중 인코딩 방지)
     try:
         rel = raw.strip().lstrip('/\\')
         # 재귀적 디코딩: 2중 인코딩된 경우를 처리
         while '%' in rel and rel != urllib.parse.unquote(rel):
             rel = urllib.parse.unquote(rel)
-    except Exception:
+    except Exception as e:
+        print(f"ERROR: URL decoding failed: {e}")
         rel = raw.strip().lstrip('/\\')
     
     # Clean duplicate path segments
@@ -369,13 +375,17 @@ def get_slide(textbook_path: str = None, curriculum_path: str = None):
     # If PPT/PPTX requested, convert to PDF and stream
     if fp.suffix.lower() in ('.ppt', '.pptx'):
         if convert_pptx_to_pdf is None:
-            raise HTTPException(status_code=501, detail='PPTX conversion is not available on server')
+            # LibreOffice가 없는 경우 원본 PPTX 파일을 직접 서빙
+            print(f"DEBUG: LibreOffice not available, serving original PPTX file: {fp}")
+            return FileResponse(str(fp), media_type='application/vnd.openxmlformats-officedocument.presentationml.presentation', filename=fp.name, content_disposition_type='inline')
         try:
             pdf_fp = convert_pptx_to_pdf(fp, KB_ROOT)
         except HTTPException as e:
             raise e
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f'Conversion error: {e}')
+            print(f"DEBUG: PPTX conversion failed: {e}, serving original file")
+            # 변환 실패 시 원본 파일 서빙
+            return FileResponse(str(fp), media_type='application/vnd.openxmlformats-officedocument.presentationml.presentation', filename=fp.name, content_disposition_type='inline')
         return FileResponse(str(pdf_fp), media_type='application/pdf', filename=pdf_fp.name, content_disposition_type='inline')
 
     # Default: return text content

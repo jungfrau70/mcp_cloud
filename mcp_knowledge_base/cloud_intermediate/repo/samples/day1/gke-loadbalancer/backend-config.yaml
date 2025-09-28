@@ -1,0 +1,23 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: myapp-backend-config
+  namespace: day1-practice
+spec:
+  healthCheck:
+    checkIntervalSec: 10
+    timeoutSec: 5
+    healthyThreshold: 2
+    unhealthyThreshold: 3
+    path: "/"
+    port: 80
+  sessionAffinity:
+    affinityType: "CLIENT_IP"
+  connectionDraining:
+    drainingTimeoutSec: 60
+  cdn:
+    enabled: true
+    cachePolicy:
+      includeHost: true
+      includeProtocol: true
+      includeQueryString: true

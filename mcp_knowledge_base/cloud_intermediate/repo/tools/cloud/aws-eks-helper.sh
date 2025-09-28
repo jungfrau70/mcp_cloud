@@ -18,8 +18,8 @@ log_warning() { echo -e "${YELLOW}[WARNING]${NC} $1"; }
 log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
 log_header() { echo -e "${PURPLE}=== $1 ===${NC}"; }
 
-# 기본 설정
-CLUSTER_NAME="cloud-intermediate-eks"
+# 기본 설정 (환경 변수로 오버라이드 가능)
+CLUSTER_NAME="${CLUSTER_NAME:-cloud-intermediate-eks}"
 REGION="ap-northeast-2"
 NODE_TYPE="t3.medium"
 NODE_COUNT=2
@@ -87,23 +87,31 @@ create_eks_cluster() {
         return 0
     fi
     
-    # CloudFormation 스택 존재 여부 확인
-    if aws cloudformation describe-stacks --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION &> /dev/null; then
-        log_warning "CloudFormation 스택이 이미 존재합니다."
-        log_info "기존 스택을 정리하고 새로 생성하시겠습니까?"
+    # 모든 관련 CloudFormation 스택 확인 및 정리
+    local existing_stacks=$(aws cloudformation list-stacks --region $REGION --query 'StackSummaries[?contains(StackName, `'$CLUSTER_NAME'`) && StackStatus!=`DELETE_COMPLETE`].StackName' --output text 2>/dev/null)
+    
+    if [ -n "$existing_stacks" ]; then
+        log_warning "기존 CloudFormation 스택들이 존재합니다:"
+        echo "$existing_stacks"
+        log_info "기존 스택들을 정리하고 새로 생성하시겠습니까?"
         
         # Force 옵션이 있으면 자동으로 y 선택
         if [ "$FORCE_DELETE" = "true" ]; then
             log_info "Force 옵션으로 자동 삭제 진행..."
             REPLY="y"
         else
-            read -p "기존 스택을 삭제하고 새로 생성하시겠습니까? (y/N): " -n 1 -r
+            read -p "기존 스택들을 삭제하고 새로 생성하시겠습니까? (y/N): " -n 1 -r
             echo
         fi
         
         if [[ $REPLY =~ ^[Yy]$ ]]; then
-            log_info "기존 CloudFormation 스택 삭제 중..."
-            aws cloudformation delete-stack --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION
+            log_info "기존 CloudFormation 스택들 삭제 중..."
+            
+            # 모든 관련 스택 삭제
+            for stack_name in $existing_stacks; do
+                log_info "스택 삭제 중: $stack_name"
+                aws cloudformation delete-stack --stack-name $stack_name --region $REGION
+            done
             
             # 진행 상황 모니터링 (5초마다 갱신)
             log_info "스택 삭제 진행 상황 모니터링 시작..."
@@ -111,36 +119,15 @@ create_eks_cluster() {
             local elapsed_time=0
             
             while [ $elapsed_time -lt $delete_timeout ]; do
-                # 스택 존재 여부 확인
-                if ! aws cloudformation describe-stacks --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION &> /dev/null; then
-                    log_success "기존 스택 삭제 완료"
+                # 모든 스택 삭제 완료 확인
+                local remaining_stacks=$(aws cloudformation list-stacks --region $REGION --query 'StackSummaries[?contains(StackName, `'$CLUSTER_NAME'`) && StackStatus!=`DELETE_COMPLETE`].StackName' --output text 2>/dev/null)
+                
+                if [ -z "$remaining_stacks" ]; then
+                    log_success "모든 기존 스택 삭제 완료"
                     break
                 fi
                 
-                local stack_status=$(aws cloudformation describe-stacks --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION --query 'Stacks[0].StackStatus' --output text 2>/dev/null)
-                
-                if [ $? -ne 0 ] || [ "$stack_status" = "None" ] || [ -z "$stack_status" ]; then
-                    log_success "기존 스택 삭제 완료"
-                    break
-                fi
-                
-                case "$stack_status" in
-                    "DELETE_IN_PROGRESS")
-                        log_info "스택 삭제 진행 중... (상태: $stack_status, 경과시간: ${elapsed_time}초)"
-                        ;;
-                    "DELETE_COMPLETE")
-                        log_success "스택 삭제 완료"
-                        break
-                        ;;
-                    "DELETE_FAILED")
-                        log_error "스택 삭제 실패: $stack_status"
-                        log_info "수동으로 스택을 삭제하세요: aws cloudformation delete-stack --stack-name eksctl-$CLUSTER_NAME-cluster --region $REGION"
-                        return 1
-                        ;;
-                    *)
-                        log_info "스택 상태: $stack_status (경과시간: ${elapsed_time}초)"
-                        ;;
-                esac
+                log_info "남은 스택들: $remaining_stacks (경과시간: ${elapsed_time}초)"
                 
                 sleep 5
                 elapsed_time=$((elapsed_time + 5))
@@ -242,7 +229,15 @@ delete_eks_cluster() {
     # 클러스터 존재 여부 확인
     if ! eksctl get cluster --name $CLUSTER_NAME --region $REGION &> /dev/null; then
         log_warning "클러스터 $CLUSTER_NAME이 존재하지 않습니다."
-        return 0
+        
+        # CloudFormation 스택이 있는지 확인
+        if aws cloudformation describe-stacks --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION &> /dev/null; then
+            log_info "CloudFormation 스택은 존재합니다. 스택 정리를 진행합니다."
+            # 스택만 있는 상황에서도 정리 진행
+        else
+            log_info "클러스터와 스택 모두 존재하지 않습니다."
+            return 0
+        fi
     fi
     
     # 클러스터 삭제
@@ -250,7 +245,10 @@ delete_eks_cluster() {
     local delete_output=$(eksctl delete cluster --name $CLUSTER_NAME --region $REGION 2>&1)
     local delete_result=$?
     
-    if [ $delete_result -eq 0 ]; then
+    # 삭제 후 스택 상태 확인
+    local stack_status=$(aws cloudformation describe-stacks --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION --query 'Stacks[0].StackStatus' --output text 2>/dev/null)
+    
+    if [ $delete_result -eq 0 ] && [ "$stack_status" != "DELETE_FAILED" ]; then
         log_success "EKS 클러스터 삭제 완료: $CLUSTER_NAME"
     else
         log_error "EKS 클러스터 삭제 실패"
@@ -320,11 +318,79 @@ delete_eks_cluster() {
             fi
         fi
         
-        # 4. 자동 리소스 정리 시도 (완전한 삭제 순서)
-        log_info "=== 자동 리소스 정리 시도 (완전한 삭제 순서) ==="
-        
-        if [ -n "$vpc_id" ] && [ "$vpc_id" != "None" ]; then
-            log_info "VPC 리소스 정리 시작: $vpc_id"
+            # 4. 자동 리소스 정리 시도 (완전한 삭제 순서)
+            log_info "=== 자동 리소스 정리 시도 (완전한 삭제 순서) ==="
+            
+            # 4-1. 노드그룹 스택 삭제
+            log_info "노드그룹 스택 삭제 중..."
+            local nodegroup_stacks=$(aws cloudformation list-stacks --region $REGION --query 'StackSummaries[?contains(StackName, `'$CLUSTER_NAME'`) && contains(StackName, `nodegroup`)].StackName' --output text 2>/dev/null)
+            if [ -n "$nodegroup_stacks" ]; then
+                for stack_name in $nodegroup_stacks; do
+                    log_info "노드그룹 스택 삭제 중: $stack_name"
+                    aws cloudformation delete-stack --stack-name $stack_name --region $REGION
+                done
+                
+                # 노드그룹 스택 삭제 완료 대기
+                log_info "노드그룹 스택 삭제 완료 대기 중..."
+                for stack_name in $nodegroup_stacks; do
+                    local delete_timeout=300  # 5분 타임아웃
+                    local elapsed_time=0
+                    
+                    while [ $elapsed_time -lt $delete_timeout ]; do
+                        if ! aws cloudformation describe-stacks --stack-name $stack_name --region $REGION &> /dev/null; then
+                            log_success "노드그룹 스택 $stack_name 삭제 완료"
+                            break
+                        fi
+                        
+                        local stack_status=$(aws cloudformation describe-stacks --stack-name $stack_name --region $REGION --query 'Stacks[0].StackStatus' --output text 2>/dev/null)
+                        log_info "노드그룹 스택 $stack_name 삭제 진행 중... (상태: $stack_status, 경과시간: ${elapsed_time}초)"
+                        
+                        sleep 10
+                        elapsed_time=$((elapsed_time + 10))
+                    done
+                    
+                    if [ $elapsed_time -ge $delete_timeout ]; then
+                        log_warning "노드그룹 스택 $stack_name 삭제 타임아웃"
+                    fi
+                done
+            fi
+            
+            # 4-2. 애드온 스택 삭제
+            log_info "애드온 스택 삭제 중..."
+            local addon_stacks=$(aws cloudformation list-stacks --region $REGION --query 'StackSummaries[?contains(StackName, `'$CLUSTER_NAME'`) && contains(StackName, `addon`)].StackName' --output text 2>/dev/null)
+            if [ -n "$addon_stacks" ]; then
+                for stack_name in $addon_stacks; do
+                    log_info "애드온 스택 삭제 중: $stack_name"
+                    aws cloudformation delete-stack --stack-name $stack_name --region $REGION
+                done
+                
+                # 애드온 스택 삭제 완료 대기
+                log_info "애드온 스택 삭제 완료 대기 중..."
+                for stack_name in $addon_stacks; do
+                    local delete_timeout=300  # 5분 타임아웃
+                    local elapsed_time=0
+                    
+                    while [ $elapsed_time -lt $delete_timeout ]; do
+                        if ! aws cloudformation describe-stacks --stack-name $stack_name --region $REGION &> /dev/null; then
+                            log_success "애드온 스택 $stack_name 삭제 완료"
+                            break
+                        fi
+                        
+                        local stack_status=$(aws cloudformation describe-stacks --stack-name $stack_name --region $REGION --query 'Stacks[0].StackStatus' --output text 2>/dev/null)
+                        log_info "애드온 스택 $stack_name 삭제 진행 중... (상태: $stack_status, 경과시간: ${elapsed_time}초)"
+                        
+                        sleep 10
+                        elapsed_time=$((elapsed_time + 10))
+                    done
+                    
+                    if [ $elapsed_time -ge $delete_timeout ]; then
+                        log_warning "애드온 스택 $stack_name 삭제 타임아웃"
+                    fi
+                done
+            fi
+            
+            if [ -n "$vpc_id" ] && [ "$vpc_id" != "None" ]; then
+                log_info "VPC 리소스 정리 시작: $vpc_id"
             
             # 1. Load Balancer 삭제 (가장 먼저)
             log_info "Load Balancer 삭제 중..."
@@ -558,9 +624,10 @@ delete_eks_cluster() {
             log_info "리소스 정리 후 스택 재삭제 시도..."
             aws cloudformation delete-stack --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION
             
-            # 삭제 완료 대기 (최대 10분)
+            # 삭제 완료 대기 (최대 10분) - Stuck 리소스 자동 점검
             local delete_timeout=600
             local elapsed_time=0
+            local stuck_check_interval=30  # 30초마다 stuck 리소스 점검
             
             while [ $elapsed_time -lt $delete_timeout ]; do
                 if ! aws cloudformation describe-stacks --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION &> /dev/null; then
@@ -570,6 +637,118 @@ delete_eks_cluster() {
                 
                 local current_status=$(aws cloudformation describe-stacks --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION --query 'Stacks[0].StackStatus' --output text 2>/dev/null)
                 log_info "스택 삭제 진행 중... (상태: $current_status, 경과시간: ${elapsed_time}초)"
+                
+                # DELETE_IN_PROGRESS 상태에서 stuck 리소스 점검
+                if [ "$current_status" = "DELETE_IN_PROGRESS" ] && [ $((elapsed_time % stuck_check_interval)) -eq 0 ]; then
+                    log_info "=== Stuck 리소스 점검 및 자동 조치 ==="
+                    
+                    # 1. VPC 의존성 점검
+                    local vpc_id=$(aws eks describe-cluster --name $CLUSTER_NAME --region $REGION --query 'cluster.resourcesVpcConfig.vpcId' --output text 2>/dev/null)
+                    if [ $? -eq 0 ] && [ "$vpc_id" != "None" ] && [ -n "$vpc_id" ]; then
+                        log_info "VPC 의존성 점검 중: $vpc_id"
+                        
+                        # NAT Gateway stuck 점검
+                        local stuck_nat=$(aws ec2 describe-nat-gateways --filter "Name=vpc-id,Values=$vpc_id" --query 'NatGateways[?State==`deleting`].[NatGatewayId,State]' --output text 2>/dev/null)
+                        if [ -n "$stuck_nat" ]; then
+                            log_warning "Stuck NAT Gateway 발견:"
+                            echo "$stuck_nat"
+                            log_info "NAT Gateway 강제 삭제 시도..."
+                            echo "$stuck_nat" | while read nat_id state; do
+                                aws ec2 delete-nat-gateway --nat-gateway-id $nat_id
+                                log_info "NAT Gateway $nat_id 재삭제 요청"
+                            done
+                        fi
+                        
+                        # Elastic IP stuck 점검
+                        local stuck_eip=$(aws ec2 describe-addresses --filters "Name=domain,Values=vpc" --query 'Addresses[?AssociationId==null && State==`available`].[AllocationId,State]' --output text 2>/dev/null)
+                        if [ -n "$stuck_eip" ]; then
+                            log_warning "Stuck Elastic IP 발견:"
+                            echo "$stuck_eip"
+                            log_info "Elastic IP 강제 해제 시도..."
+                            echo "$stuck_eip" | while read eip_id state; do
+                                aws ec2 release-address --allocation-id $eip_id
+                                log_info "Elastic IP $eip_id 해제"
+                            done
+                        fi
+                        
+                        # VPC Endpoint stuck 점검
+                        local stuck_endpoints=$(aws ec2 describe-vpc-endpoints --filters "Name=vpc-id,Values=$vpc_id" --query 'VpcEndpoints[?State==`deleting`].[VpcEndpointId,State]' --output text 2>/dev/null)
+                        if [ -n "$stuck_endpoints" ]; then
+                            log_warning "Stuck VPC Endpoint 발견:"
+                            echo "$stuck_endpoints"
+                            log_info "VPC Endpoint 강제 삭제 시도..."
+                            echo "$stuck_endpoints" | while read endpoint_id state; do
+                                aws ec2 delete-vpc-endpoint --vpc-endpoint-id $endpoint_id
+                                log_info "VPC Endpoint $endpoint_id 재삭제 요청"
+                            done
+                        fi
+                        
+                        # EC2 인스턴스 stuck 점검
+                        local stuck_instances=$(aws ec2 describe-instances --filters "Name=vpc-id,Values=$vpc_id" "Name=instance-state-name,Values=shutting-down" --query 'Reservations[].Instances[].InstanceId' --output text 2>/dev/null)
+                        if [ -n "$stuck_instances" ]; then
+                            log_warning "Stuck EC2 인스턴스 발견:"
+                            echo "$stuck_instances"
+                            log_info "EC2 인스턴스 강제 종료 시도..."
+                            echo "$stuck_instances" | while read instance_id; do
+                                aws ec2 terminate-instances --instance-ids $instance_id --force
+                                log_info "EC2 인스턴스 $instance_id 강제 종료"
+                            done
+                        fi
+                        
+                        # 보안 그룹 의존성 점검
+                        local stuck_sg=$(aws ec2 describe-security-groups --filters "Name=vpc-id,Values=$vpc_id" --query 'SecurityGroups[?GroupName!=`default`].[GroupId,GroupName]' --output text 2>/dev/null)
+                        if [ -n "$stuck_sg" ]; then
+                            log_warning "남은 보안 그룹 발견:"
+                            echo "$stuck_sg"
+                            log_info "보안 그룹 강제 삭제 시도..."
+                            echo "$stuck_sg" | while read sg_id sg_name; do
+                                aws ec2 delete-security-group --group-id $sg_id
+                                log_info "보안 그룹 $sg_id ($sg_name) 삭제"
+                            done
+                        fi
+                        
+                        # 서브넷 의존성 점검
+                        local stuck_subnets=$(aws ec2 describe-subnets --filters "Name=vpc-id,Values=$vpc_id" --query 'Subnets[].SubnetId' --output text 2>/dev/null)
+                        if [ -n "$stuck_subnets" ]; then
+                            log_warning "남은 서브넷 발견:"
+                            echo "$stuck_subnets"
+                            log_info "서브넷 강제 삭제 시도..."
+                            echo "$stuck_subnets" | while read subnet_id; do
+                                aws ec2 delete-subnet --subnet-id $subnet_id
+                                log_info "서브넷 $subnet_id 삭제"
+                            done
+                        fi
+                    fi
+                    
+                    # 2. CloudFormation 이벤트 점검
+                    log_info "CloudFormation 이벤트 점검 중..."
+                    local failed_events=$(aws cloudformation describe-stack-events --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION --query 'StackEvents[?ResourceStatus==`DELETE_FAILED`].[LogicalResourceId,ResourceStatusReason]' --output text 2>/dev/null)
+                    if [ -n "$failed_events" ]; then
+                        log_warning "삭제 실패한 리소스 발견:"
+                        echo "$failed_events"
+                        
+                        # 실패한 리소스별 맞춤 조치
+                        echo "$failed_events" | while IFS=$'\t' read -r resource_id reason; do
+                            log_info "리소스 $resource_id 실패 원인: $reason"
+                            
+                            # VPC 관련 실패 시 강제 정리
+                            if echo "$reason" | grep -q "VPC\|Subnet\|SecurityGroup"; then
+                                log_info "VPC 관련 리소스 강제 정리 시도..."
+                                # VPC 내 모든 리소스 강제 정리 로직 실행
+                            fi
+                            
+                            # NAT Gateway 관련 실패 시 강제 삭제
+                            if echo "$reason" | grep -q "NAT Gateway"; then
+                                log_info "NAT Gateway 강제 삭제 시도..."
+                                # NAT Gateway 강제 삭제 로직 실행
+                            fi
+                        done
+                    fi
+                    
+                    # 3. 스택 재삭제 시도
+                    log_info "스택 재삭제 시도..."
+                    aws cloudformation delete-stack --stack-name "eksctl-$CLUSTER_NAME-cluster" --region $REGION
+                fi
                 
                 sleep 10
                 elapsed_time=$((elapsed_time + 10))

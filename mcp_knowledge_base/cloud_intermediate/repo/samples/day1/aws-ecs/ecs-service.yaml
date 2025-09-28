@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-intermediate-app-service
+  namespace: default
+  labels:
+    app: cloud-intermediate-app
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+  selector:
+    app: cloud-intermediate-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-intermediate-app
+  namespace: default
+  labels:
+    app: cloud-intermediate-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cloud-intermediate-app
+  template:
+    metadata:
+      labels:
+        app: cloud-intermediate-app
+    spec:
+      containers:
+      - name: cloud-intermediate-app
+        image: ACCOUNT_ID.dkr.ecr.ap-northeast-2.amazonaws.com/cloud-intermediate-app:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: AWS_REGION
+          value: "ap-northeast-2"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5

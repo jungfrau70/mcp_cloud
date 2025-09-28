@@ -1,0 +1,68 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'cloud-intermediate'
+    environment: 'learning'
+
+rule_files:
+  - "rules/*.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+
+  - job_name: 'grafana'
+    static_configs:
+      - targets: ['grafana:3000']
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+
+  - job_name: 'alertmanager'
+    static_configs:
+      - targets: ['alertmanager:9093']
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+
+  - job_name: 'pushgateway'
+    static_configs:
+      - targets: ['pushgateway:9091']
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+
+  # AWS ECS 메트릭 수집
+  - job_name: 'aws-ecs'
+    static_configs:
+      - targets: ['aws-ecs-exporter:9105']
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+
+  # GCP Cloud Run 메트릭 수집
+  - job_name: 'gcp-cloud-run'
+    static_configs:
+      - targets: ['gcp-cloud-run-exporter:9106']
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+
+  # 외부 서비스 메트릭 수집
+  - job_name: 'external-services'
+    static_configs:
+      - targets: ['aws-alb-dns:80', 'gcp-cloud-run-url:8080']
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+    scheme: http

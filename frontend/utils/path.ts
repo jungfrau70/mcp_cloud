@@ -54,45 +54,50 @@ export function normalizePath(path: string): string {
 
 // DEPRECATED: processKnowledgeBasePath()로 통합됨
 export function cleanApiPath(path: string): string {
-  if (!path) return ''
+  if (!path || typeof path !== 'string') return ''
   
-  // First strip base path, then normalize
-  const stripped = stripBasePath(path)
-  const normalized = normalizePath(stripped)
-  
-  // Additional check to prevent duplication
-  // If the path contains repeated segments, remove them
-  const segments = normalized.split('/')
-  const cleaned: string[] = []
-  let lastSegment = ''
-  
-  for (const segment of segments) {
-    if (segment && segment !== lastSegment) {
-      cleaned.push(segment)
-      lastSegment = segment
+  try {
+    // First strip base path, then normalize
+    const stripped = stripBasePath(path)
+    const normalized = normalizePath(stripped)
+    
+    // Additional check to prevent duplication
+    // If the path contains repeated segments, remove them
+    const segments = normalized.split('/')
+    const cleaned: string[] = []
+    let lastSegment = ''
+    
+    for (const segment of segments) {
+      if (segment && segment !== lastSegment) {
+        cleaned.push(segment)
+        lastSegment = segment
+      }
     }
-  }
-  
-  // Final check: if the path still contains repeated patterns, remove them
-  let result = cleaned.join('/')
-  
-  // Remove repeated patterns like "cloud_master/textbook/Day3/cloud_master/textbook/Day3/"
-  const pattern = /(cloud_(?:basic|master|container)\/textbook\/Day\d+\/)(\1)+/g
-  result = result.replace(pattern, '$1')
-  
-  // Remove any remaining duplicate segments
-  const finalSegments = result.split('/')
-  const finalCleaned: string[] = []
-  let lastFinalSegment = ''
-  
-  for (const segment of finalSegments) {
-    if (segment && segment !== lastFinalSegment) {
-      finalCleaned.push(segment)
-      lastFinalSegment = segment
+    
+    // Final check: if the path still contains repeated patterns, remove them
+    let result = cleaned.join('/')
+    
+    // Remove repeated patterns like "cloud_master/textbook/Day3/cloud_master/textbook/Day3/"
+    const pattern = /(cloud_(?:basic|master|container)\/textbook\/Day\d+\/)(\1)+/g
+    result = result.replace(pattern, '$1')
+    
+    // Remove any remaining duplicate segments
+    const finalSegments = result.split('/')
+    const finalCleaned: string[] = []
+    let lastFinalSegment = ''
+    
+    for (const segment of finalSegments) {
+      if (segment && segment !== lastFinalSegment) {
+        finalCleaned.push(segment)
+        lastFinalSegment = segment
+      }
     }
+    
+    return finalCleaned.join('/')
+  } catch (error) {
+    console.error('cleanApiPath error:', error, 'path:', path)
+    return path || ''
   }
-  
-  return finalCleaned.join('/')
 }
 
 // More aggressive path cleaning function for problematic cases

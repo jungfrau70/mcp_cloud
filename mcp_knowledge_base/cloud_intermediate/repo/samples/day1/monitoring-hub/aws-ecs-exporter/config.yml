@@ -1,0 +1,12 @@
+region: ap-northeast-2
+metrics:
+  - aws_namespace: AWS/ECS
+    aws_metric_name: CPUUtilization
+    aws_dimensions: [ServiceName, ClusterName]
+    aws_statistics: [Average]
+    range_seconds: 300
+  - aws_namespace: AWS/ECS
+    aws_metric_name: MemoryUtilization
+    aws_dimensions: [ServiceName, ClusterName]
+    aws_statistics: [Average]
+    range_seconds: 300

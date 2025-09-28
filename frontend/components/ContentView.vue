@@ -973,7 +973,18 @@ const slideTitle = computed(() => {
 const openSlides = async () => {
   if (!props.path) return;
   try {
-    const url = `${apiBase}/api/v1/slides?curriculum_path=${encodeURIComponent(cleanApiPath(props.path))}`;
+    // 경로 처리 개선: cleanApiPath 함수 호출 전 검증
+    let processedPath = props.path;
+    if (typeof processedPath === 'string') {
+      processedPath = cleanApiPath(processedPath);
+    } else {
+      console.error('Invalid path type:', typeof processedPath, processedPath);
+      return;
+    }
+    
+    const url = `${apiBase}/api/v1/slides?curriculum_path=${encodeURIComponent(processedPath)}`;
+    console.log('PPTX request URL:', url);
+    
     const res = await fetch(url, { headers: { 'X-API-Key': API_KEY } });
     if (!res.ok) throw new Error(`Failed to load slides: ${res.status}`);
     const ct = (res.headers.get('content-type') || '').toLowerCase();
@@ -989,7 +1000,7 @@ const openSlides = async () => {
     }
     isSlideView.value = true;
   } catch (e) {
-    console.error(e);
+    console.error('PPTX loading error:', e);
     alert('슬라이드를 불러오는 중 오류가 발생했습니다.');
   }
 };

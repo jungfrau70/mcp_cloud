@@ -27,7 +27,7 @@ MACHINE_TYPE="e2-medium"
 NODE_COUNT=2
 MIN_NODES=1
 MAX_NODES=4
-VERSION="1.27"
+VERSION="1.30"
 DISK_SIZE="20"
 DISK_TYPE="pd-standard"
 
@@ -36,6 +36,63 @@ if [ -f "gcp-environment.env" ]; then
     source gcp-environment.env
     log_info "GCP 환경 변수 로드 완료"
 fi
+
+# GKE 클러스터 선택
+select_gke_cluster() {
+    log_info "사용 가능한 GKE 클러스터 목록:"
+    local clusters=$(gcloud container clusters list --format="table(name,location,status,currentMasterVersion,currentNodeCount)" 2>/dev/null)
+    
+    if [ -z "$clusters" ] || [ "$clusters" = "NAME  LOCATION  STATUS  CURRENT_MASTER_VERSION  CURRENT_NODE_COUNT" ]; then
+        log_warning "GKE 클러스터가 없습니다."
+        return 1
+    fi
+    
+    echo "$clusters"
+    echo ""
+    
+    # 클러스터 이름 목록 추출
+    local cluster_names=$(gcloud container clusters list --format="value(name)" 2>/dev/null)
+    local cluster_array=($cluster_names)
+    
+    if [ ${#cluster_array[@]} -eq 0 ]; then
+        log_warning "선택할 수 있는 클러스터가 없습니다."
+        return 1
+    fi
+    
+    # 클러스터 선택 메뉴
+    echo "=== 클러스터 선택 ==="
+    for i in "${!cluster_array[@]}"; do
+        echo "$((i+1)). ${cluster_array[i]}"
+    done
+    echo "0. 취소"
+    echo ""
+    
+    read -p "삭제할 클러스터를 선택하세요 (번호): " choice
+    
+    if [ "$choice" = "0" ]; then
+        log_info "클러스터 선택을 취소했습니다."
+        return 1
+    fi
+    
+    if [ "$choice" -ge 1 ] && [ "$choice" -le ${#cluster_array[@]} ]; then
+        local selected_cluster="${cluster_array[$((choice-1))]}"
+        log_info "선택된 클러스터: $selected_cluster"
+        
+        # 선택된 클러스터의 상세 정보 확인
+        local cluster_info=$(gcloud container clusters describe "$selected_cluster" --format="value(name,location,status)" 2>/dev/null)
+        if [ -n "$cluster_info" ]; then
+            log_info "클러스터 정보: $cluster_info"
+            CLUSTER_NAME="$selected_cluster"
+            return 0
+        else
+            log_error "클러스터 정보를 가져올 수 없습니다."
+            return 1
+        fi
+    else
+        log_error "잘못된 선택입니다."
+        return 1
+    fi
+}
 
 # GCP CLI 설정 확인
 check_gcp_cli() {
@@ -100,7 +157,7 @@ create_gke_cluster() {
         --logging=SYSTEM,WORKLOAD \
         --monitoring=SYSTEM \
         --addons HorizontalPodAutoscaling,HttpLoadBalancing \
-        --tags "environment=learning,project=cloudintermediate" &
+        --tags "gke-test1-cluster" &
     
     local create_pid=$!
     
@@ -155,13 +212,23 @@ create_gke_cluster() {
 
 # GKE 클러스터 삭제
 delete_gke_cluster() {
+    # 클러스터 선택
+    if ! select_gke_cluster; then
+        return 1
+    fi
+    
     log_warning "GKE 클러스터 삭제 시작: $CLUSTER_NAME"
     
-    read -p "정말로 클러스터를 삭제하시겠습니까? (y/N): " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        log_info "클러스터 삭제를 취소했습니다."
-        return 0
+    # Force 옵션이 있으면 자동으로 y 선택
+    if [ "$FORCE_DELETE" != "true" ]; then
+        read -p "정말로 클러스터를 삭제하시겠습니까? (y/N): " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            log_info "클러스터 삭제를 취소했습니다."
+            return 0
+        fi
+    else
+        log_info "Force 옵션으로 자동 삭제 진행..."
     fi
     
     gcloud container clusters delete $CLUSTER_NAME \

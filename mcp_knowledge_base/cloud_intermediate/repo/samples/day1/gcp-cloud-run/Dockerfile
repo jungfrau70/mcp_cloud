@@ -21,5 +21,13 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nextjs:nodejs /app ./
 
 USER nextjs
-EXPOSE 3000
+
+# Cloud Run은 PORT 환경변수 사용
+ENV PORT=8080
+EXPOSE $PORT
+
+# 헬스체크 추가
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:$PORT/health || exit 1
+
 CMD ["npm", "start"]
