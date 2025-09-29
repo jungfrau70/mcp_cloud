@@ -1,0 +1,27 @@
+{
+  "name": "cloud-intermediate-app-gcp",
+  "version": "1.0.0",
+  "description": "Cloud Intermediate Application for GCP Cloud Run",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "gcp",
+    "cloud-run",
+    "docker",
+    "nodejs",
+    "express"
+  ],
+  "author": "Cloud Intermediate Team",
+  "license": "MIT"
+}

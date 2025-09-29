@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitoring
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+
+    rule_files:
+      - "alert_rules.yml"
+
+    alerting:
+      alertmanagers:
+        - static_configs:
+            - targets:
+              - alertmanager:9093
+
+    scrape_configs:
+      # AWS EKS 클러스터 모니터링
+      - job_name: 'aws-eks-cluster'
+        static_configs:
+          - targets: ['aws-eks-prometheus:9090']
+        scrape_interval: 30s
+        metrics_path: /federate
+        params:
+          'match[]':
+            - '{job=~"kubernetes-.*"}'
+            - '{job=~"node-exporter"}'
+
+      # GCP GKE 클러스터 모니터링
+      - job_name: 'gcp-gke-cluster'
+        static_configs:
+          - targets: ['gcp-gke-prometheus:9090']
+        scrape_interval: 30s
+        metrics_path: /federate
+        params:
+          'match[]':
+            - '{job=~"kubernetes-.*"}'
+            - '{job=~"node-exporter"}'
+
+      # 통합 모니터링 허브 (AWS VM)
+      - job_name: 'monitoring-hub'
+        static_configs:
+          - targets: ['monitoring-hub-prometheus:9090']
+        scrape_interval: 15s
+
+      # 애플리케이션 메트릭
+      - job_name: 'applications'
+        static_configs:
+          - targets: 
+            - 'aws-app:3000'
+            - 'gcp-app:3000'
+        scrape_interval: 30s
+        metrics_path: /metrics
+
+  alert_rules.yml: |
+    groups:
+    - name: multi-cloud-alerts
+      rules:
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is above 80% for more than 5 minutes"
+
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is above 85% for more than 5 minutes"
+
+      - alert: PodCrashLooping
+        expr: rate(kube_pod_container_status_restarts_total[15m]) > 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Pod is crash looping"
+          description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is crash looping"

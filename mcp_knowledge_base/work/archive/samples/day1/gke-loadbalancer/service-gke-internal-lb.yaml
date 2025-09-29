@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service-gke-internal-lb
+  namespace: day1-practice
+  labels:
+    app: myapp
+  annotations:
+    cloud.google.com/load-balancer-type: "Internal"
+    networking.gke.io/load-balancer-subnet: "default"
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: myapp

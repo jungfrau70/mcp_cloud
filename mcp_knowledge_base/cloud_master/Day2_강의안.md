@@ -206,30 +206,32 @@ docker-compose down
 
 ### 🛠️ 실습 ["60분"]
 
-#### Step 1: 프로젝트 디렉토리 생성 및 초기화 ["10분"]
+#### Step 1: 프로젝트 구조 확인 및 초기화 ["10분"]
 ```bash
-# 1. 프로젝트 디렉토리 생성
-mkdir github-actions-demo-day2
-cd github-actions-demo-day2
+# 1. Fork된 저장소에서 프로젝트 구조 확인
+# 이미 완성된 프로젝트 구조가 포함되어 있음
+ls -la
 
-# 2. Git 저장소 초기화
-git init
-git checkout -b day2-advanced
-
-# 3. 프로젝트 구조 생성
+# 2. 필요한 디렉토리 생성 (없는 경우)
 mkdir -p src database nginx scripts tests/{unit,integration} logs
+
+# 3. 프로젝트 구조 확인
+tree -L 2
 ```
 
-#### Step 2: package.json 설정 ["5분"]
+#### Step 2: package.json 설정 및 의존성 설치 ["5분"]
 ```bash
-# package.json 파일 생성 ["프로젝트 폴더에서 복사"]
-cp textbook/Day2/project/package.json .
+# 1. 이미 포함된 package.json 확인
+cat package.json
 
-# 의존성 설치
+# 2. 의존성 설치
 npm install
 
-# 설치된 패키지 확인
+# 3. 설치된 패키지 확인
 npm list --depth=0
+
+# 4. 스크립트 명령어 확인
+npm run
 ```
 
 **주요 의존성 패키지:**
@@ -242,10 +244,13 @@ npm list --depth=0
 - `cors`: CORS 지원
 - `compression`: Gzip 압축
 
-#### Step 3: 데이터베이스 스키마 설정 ["10분"]
+#### Step 3: 데이터베이스 스키마 확인 및 설정 ["10분"]
 ```bash
-# database/init.sql 파일 생성
-cat > database/init.sql << 'EOF'
+# 1. 이미 포함된 데이터베이스 스키마 확인
+cat database/init.sql
+
+# 2. 필요시 추가 스키마 설정
+cat >> database/init.sql << 'EOF'
 -- 사용자 테이블
 CREATE TABLE users [
     id SERIAL PRIMARY KEY,
@@ -275,13 +280,16 @@ INSERT INTO app_logs [level, message] VALUES
 EOF
 ```
 
-#### Step 4: 애플리케이션 코드 설정 ["15분"]
+#### Step 4: 애플리케이션 코드 확인 및 설정 ["15분"]
 ```bash
-# src/app.js 파일 생성 ["프로젝트 폴더에서 복사"]
-cp textbook/Day2/project/src/app.js src/
+# 1. 이미 포함된 애플리케이션 코드 확인
+cat src/app.js
 
-# 환경 변수 파일 생성
-cat > .env << 'EOF'
+# 2. 환경 변수 파일 확인 및 설정
+cat .env
+
+# 3. 필요시 환경 변수 추가
+cat >> .env << 'EOF'
 NODE_ENV=development
 PORT=3000
 DB_HOST=postgres
@@ -296,14 +304,17 @@ LOG_LEVEL=debug
 EOF
 ```
 
-#### Step 5: Docker Compose 개발 환경 설정 ["10분"]
+#### Step 5: Docker Compose 개발 환경 확인 및 설정 ["10분"]
 ```bash
-# docker-compose.yml 파일 생성 ["프로젝트 폴더에서 복사"]
-cp textbook/Day2/project/docker-compose.yml .
+# 1. 이미 포함된 Docker Compose 파일 확인
+cat docker-compose.yml
 
-# Nginx 설정 파일 생성
+# 2. Nginx 설정 파일 확인
+cat nginx/nginx.dev.conf
+
+# 3. 필요시 Nginx 설정 추가
 mkdir -p nginx
-cat > nginx/nginx.dev.conf << 'EOF'
+cat >> nginx/nginx.dev.conf << 'EOF'
 events {
     worker_connections 1024;
 }
@@ -374,17 +385,20 @@ curl http://localhost/metrics
 
 ### 🛠️ 실습 ["75분"]
 
-#### Step 1: GitHub 저장소 생성 및 연결 ["10분"]
+#### Step 1: GitHub 저장소 준비 및 연결 ["10분"]
 ```bash
-# 1. GitHub에서 새 저장소 생성
-# Repository name: github-actions-demo-day2
-# Description: GitHub Actions CI/CD 실습 프로젝트 - Day2 고급 기능
-# Visibility: Public 또는 Private
+# 1. 새로운 Day2 전용 저장소 Fork
+# Repository: https://github.com/jungfrau70/github-actions-demo-day2.git
+# 개인 계정으로 Fork하여 사용
 
-# 2. 로컬 저장소와 GitHub 연결
-git remote add origin https://github.com/YOUR_USERNAME/github-actions-demo-day2.git
+# 2. 로컬 저장소 클론
+git clone https://github.com/YOUR_USERNAME/github-actions-demo-day2.git
+cd github-actions-demo-day2
 
-# 3. 첫 커밋 및 푸시
+# 3. Day2 브랜치 생성 및 전환
+git checkout -b day2-advanced
+
+# 4. 첫 커밋 및 푸시
 git add .
 git commit -m "feat: Day2 고급 CI/CD 파이프라인 프로젝트 초기화"
 git push -u origin day2-advanced

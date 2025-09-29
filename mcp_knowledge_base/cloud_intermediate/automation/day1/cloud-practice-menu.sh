@@ -1,0 +1,1 @@
+../../tools/cloud/cloud-practice-menu.sh

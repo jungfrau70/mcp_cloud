@@ -1,0 +1,1 @@
+/home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/tools/cloud/day1-practice.sh

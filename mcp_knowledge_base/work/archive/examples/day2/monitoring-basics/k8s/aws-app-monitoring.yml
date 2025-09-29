@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: aws-monitoring-app
+  namespace: monitoring
+  labels:
+    app: aws-monitoring-app
+spec:
+  selector:
+    matchLabels:
+      app: aws-monitoring-app
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: 30s

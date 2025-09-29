@@ -1,0 +1,10 @@
+displayName: "High Error Rate"
+conditions:
+  - displayName: "Error rate > 5%"
+    conditionThreshold:
+      filter: "metric.type=\"custom.googleapis.com/error_rate\""
+      comparison: COMPARISON_GREATER_THAN
+      thresholdValue: 0.05
+      duration: "300s"
+notificationChannels:
+  - "projects/my-project/notificationChannels/1234567890123456789"

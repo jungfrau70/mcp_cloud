@@ -144,7 +144,7 @@ docker pull myapp:latest                # 이미지 풀
 
 ### ✅ 완료된 작업
 1. **GitHub 저장소 준비**
-   - `https://github.com/jungfrau70/github-actions-demo.git` Fork
+   - `https://github.com/jungfrau70/github-actions-demo.git` Fork (Day1 기본 실습용)
    - 개인 계정으로 저장소 복사 완료
 
 2. **로컬 환경 설정**

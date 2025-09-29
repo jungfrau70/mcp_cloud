@@ -1,0 +1,59 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: cloud-intermediate-eks
+  region: ap-northeast-2
+  version: "1.28"
+
+nodeGroups:
+  - name: ng-1
+    instanceType: t3.medium
+    desiredCapacity: 2
+    minSize: 1
+    maxSize: 4
+    volumeSize: 20
+    ssh:
+      allow: true
+      publicKeyName: cloud-deployment-key
+
+  - name: ng-2
+    instanceType: t3.large
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 3
+    volumeSize: 30
+    ssh:
+      allow: true
+      publicKeyName: cloud-deployment-key
+
+# IAM 설정
+iam:
+  withOIDC: true
+  serviceAccounts:
+    - metadata:
+        name: aws-load-balancer-controller
+        namespace: kube-system
+      attachPolicyARNs:
+        - arn:aws:iam::ACCOUNT_ID:policy/AWSLoadBalancerControllerIAMPolicy
+    - metadata:
+        name: cluster-autoscaler
+        namespace: kube-system
+      attachPolicyARNs:
+        - arn:aws:iam::ACCOUNT_ID:policy/AmazonEKSClusterAutoscalerPolicy
+
+# VPC 설정
+vpc:
+  cidr: "10.0.0.0/16"
+  subnets:
+    private:
+      ap-northeast-2a: { id: subnet-12345678 }
+      ap-northeast-2b: { id: subnet-87654321 }
+    public:
+      ap-northeast-2a: { id: subnet-11111111 }
+      ap-northeast-2b: { id: subnet-22222222 }
+
+# 클러스터 로깅
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["*"]
