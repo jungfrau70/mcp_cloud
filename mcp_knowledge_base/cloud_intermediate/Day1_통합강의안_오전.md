@@ -132,12 +132,21 @@ flowchart TD
     style E fill:#9c27b0,color:#ffffff
 ```
 
+**구체적 비교 대상**:
+- **단일 스테이지**: `demo-app:single` (비교 기준)
+- **멀티스테이지**: `demo-app:multistage` (최적화 대상)
+- **최적화된 버전**: `demo-app:optimized` (추가 최적화)
+
 **자동화 도구 실행**:
 ```bash
 # 실습 스크립트 실행
 cd automation/day1
 ./day1-practice.sh
 # 메뉴 선택: 1. Docker 고급 활용
+
+# 구체적 비교 데모 실행
+cd examples/day1
+./docker-comparison-demo.sh
 
 # 자동화 도구: ./tools/cloud/docker-helper.sh --action multistage-build
 ```
@@ -173,47 +182,374 @@ flowchart TD
 
 **실습 명령어**:
 ```bash
-# 멀티스테이지 빌드 Dockerfile 생성
-cat > Dockerfile.multistage << 'EOF'
-# Build stage
-FROM node:18-alpine AS builder
+# 구체적 비교 데모 실행
+cd examples/day1
+./docker-comparison-demo.sh
+
+# 또는 수동으로 실행
+# Original Dockerfile 생성
+cat > Dockerfile.original << 'EOF'
+FROM node:18
 WORKDIR /app
-
-# 의존성 파일만 먼저 복사 (캐시 최적화)
-COPY package*.json ./
-RUN npm install --only=production && npm cache clean --force
-
-# 애플리케이션 코드 복사
 COPY . .
+RUN npm install
+EXPOSE 3000
+CMD ["npm", "start"]
+EOF
 
-# Production stage
-FROM node:18-alpine AS runtime
+# Optimized Dockerfile 생성
+cat > Dockerfile.optimized << 'EOF'
+FROM node:18-alpine
 WORKDIR /app
-
-# 보안을 위한 non-root 사용자 생성
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nextjs -u 1001
-
-# 빌드된 파일만 복사
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=nextjs:nodejs /app ./
-
+COPY package*.json ./
+RUN npm ci --only=production && npm cache clean --force
+COPY . .
+RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
+RUN chown -R nextjs:nodejs /app
 USER nextjs
 EXPOSE 3000
 CMD ["npm", "start"]
-
 EOF
 
-# 멀티스테이지 빌드 실행
-docker build -f Dockerfile.multistage -t myapp:multistage .
+# Multistage Dockerfile 생성
+cat > Dockerfile.multistage << 'EOF'
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production && npm cache clean --force
+COPY . .
 
-# 이미지 크기 비교
-docker images | grep myapp
+FROM node:18-alpine AS runtime
+WORKDIR /app
+RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /app ./
+USER nextjs
+EXPOSE 3000
+CMD ["npm", "start"]
+EOF
+
+# 이미지 빌드 및 비교
+docker build -f Dockerfile.original -t demo-app:original .
+docker build -f Dockerfile.optimized -t demo-app:optimized .
+docker build -f Dockerfile.multistage -t demo-app:multistage .
+
+# 비교 테이블 출력
+docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}" | grep demo-app
+```
+
+**비교 결과 테이블**:
+```mermaid
+flowchart TD
+    subgraph "Dockerfile 비교 테이블"
+        A["Original"] --> A1["Base: node:18"]
+        A --> A2["Stages: 1"]
+        A --> A3["User: Root"]
+        A --> A4["Size: Large"]
+        
+        B["Optimized"] --> B1["Base: node:18-alpine"]
+        B --> B2["Stages: 1"]
+        B --> B3["User: Non-root"]
+        B --> B4["Size: Medium"]
+        
+        C["Multistage"] --> C1["Base: node:18-alpine"]
+        C --> C2["Stages: 2"]
+        C --> C3["User: Non-root"]
+        C --> C4["Size: Small"]
+    end
+    
+    style A fill:#d32f2f,color:#ffffff
+    style B fill:#f57c00,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
 ```
 
 **실습 내용**:
-- Node.js 애플리케이션 멀티스테이지 빌드
-- 이미지 크기 비교
+- Original vs Optimized vs Multistage Dockerfile 비교
+- 이미지 크기, 보안, 성능 비교 테이블 생성
+- 구체적인 수치와 시각적 비교 결과 확인
+
+#### 수작업 실습 가이드 (자동화 대안)
+
+**1단계: 샘플 애플리케이션 생성**
+```bash
+# 작업 디렉토리 생성
+mkdir docker-comparison-demo && cd docker-comparison-demo
+
+# package.json 생성
+cat > package.json << 'EOF'
+{
+  "name": "docker-comparison-demo",
+  "version": "1.0.0",
+  "description": "Docker Advanced 실습용 샘플 애플리케이션",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0"
+  }
+}
+EOF
+
+# server.js 생성
+cat > server.js << 'EOF'
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(helmet());
+app.use(cors());
+app.use(express.json());
+
+app.get('/', (req, res) => {
+    res.json({
+        message: 'Docker Advanced 실습 데모 애플리케이션',
+        version: '1.0.0',
+        timestamp: new Date().toISOString()
+    });
+});
+
+app.get('/health', (req, res) => {
+    res.json({
+        status: 'healthy',
+        uptime: process.uptime(),
+        memory: process.memoryUsage()
+    });
+});
+
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`서버가 포트 ${PORT}에서 실행 중입니다.`);
+});
+EOF
+
+# .dockerignore 생성
+cat > .dockerignore << 'EOF'
+node_modules
+npm-debug.log
+.git
+.gitignore
+README.md
+.env
+EOF
+```
+
+**2단계: Original Dockerfile 생성 및 빌드**
+```bash
+# Original Dockerfile 생성
+cat > Dockerfile.original << 'EOF'
+FROM node:18
+WORKDIR /app
+COPY . .
+RUN npm install
+EXPOSE 3000
+CMD ["npm", "start"]
+EOF
+
+# Original 이미지 빌드
+docker build -f Dockerfile.original -t demo-app:original .
+```
+
+**3단계: Optimized Dockerfile 생성 및 빌드**
+```bash
+# Optimized Dockerfile 생성
+cat > Dockerfile.optimized << 'EOF'
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install --only=production && npm cache clean --force
+COPY . .
+RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
+RUN chown -R nextjs:nodejs /app
+USER nextjs
+EXPOSE 3000
+CMD ["npm", "start"]
+EOF
+
+# Optimized 이미지 빌드
+docker build -f Dockerfile.optimized -t demo-app:optimized .
+```
+
+**4단계: Multistage Dockerfile 생성 및 빌드**
+```bash
+# Multistage Dockerfile 생성
+cat > Dockerfile.multistage << 'EOF'
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install --only=production && npm cache clean --force
+COPY . .
+
+FROM node:18-alpine AS runtime
+WORKDIR /app
+RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /app ./
+USER nextjs
+EXPOSE 3000
+CMD ["npm", "start"]
+EOF
+
+# Multistage 이미지 빌드
+docker build -f Dockerfile.multistage -t demo-app:multistage .
+```
+
+**5단계: 이미지 크기 비교**
+```bash
+# 이미지 크기 확인
+echo "=== 이미지 크기 비교 ==="
+docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}" | grep demo-app
+
+# 상세 크기 분석
+echo ""
+echo "=== 상세 크기 분석 ==="
+for tag in original optimized multistage; do
+    size=$(docker images --format "{{.Size}}" demo-app:$tag)
+    echo "demo-app:$tag = $size"
+done
+```
+
+**6단계: 이미지 레이어 분석**
+```bash
+# 각 이미지의 레이어 분석
+echo "=== Original 이미지 레이어 ==="
+docker history demo-app:original --format "table {{.CreatedBy}}\t{{.Size}}"
+
+echo ""
+echo "=== Optimized 이미지 레이어 ==="
+docker history demo-app:optimized --format "table {{.CreatedBy}}\t{{.Size}}"
+
+echo ""
+echo "=== Multistage 이미지 레이어 ==="
+docker history demo-app:multistage --format "table {{.CreatedBy}}\t{{.Size}}"
+```
+
+**7단계: 보안 스캔 (Trivy 설치 및 실행)**
+```bash
+# Trivy 설치 (Ubuntu/Debian)
+sudo apt-get update
+sudo apt-get install wget apt-transport-https gnupg lsb-release
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+sudo apt-get update
+sudo apt-get install trivy
+
+# 또는 Docker로 Trivy 실행
+echo "=== 보안 스캔 결과 ==="
+for tag in original optimized multistage; do
+    echo ""
+    echo "--- demo-app:$tag 보안 스캔 ---"
+    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+        aquasec/trivy image demo-app:$tag --format table --severity HIGH,CRITICAL
+done
+```
+
+**8단계: 컨테이너 실행 테스트**
+```bash
+# 각 이미지 실행 테스트
+echo "=== 컨테이너 실행 테스트 ==="
+for tag in original optimized multistage; do
+    echo ""
+    echo "--- demo-app:$tag 실행 테스트 ---"
+    
+    # 컨테이너 실행
+    container_id=$(docker run -d -p 3000:3000 --name "demo-app-$tag" demo-app:$tag)
+    
+    # 잠시 대기
+    sleep 3
+    
+    # 헬스 체크
+    if curl -s http://localhost:3000/health > /dev/null; then
+        echo "✅ demo-app:$tag 정상 실행됨"
+        echo "API 응답:"
+        curl -s http://localhost:3000/ | jq . 2>/dev/null || curl -s http://localhost:3000/
+    else
+        echo "❌ demo-app:$tag 실행 실패"
+    fi
+    
+    # 컨테이너 정리
+    docker stop "$container_id" > /dev/null
+    docker rm "$container_id" > /dev/null
+done
+```
+
+**9단계: 성능 비교 (시작 시간 측정)**
+```bash
+# 컨테이너 시작 시간 측정
+echo "=== 성능 비교 (시작 시간) ==="
+for tag in original optimized multistage; do
+    echo ""
+    echo "--- demo-app:$tag 시작 시간 측정 ---"
+    
+    # 시작 시간 측정
+    start_time=$(date +%s.%N)
+    container_id=$(docker run -d -p 3000:3000 --name "demo-app-$tag" demo-app:$tag)
+    
+    # 헬스 체크 대기
+    while ! curl -s http://localhost:3000/health > /dev/null; do
+        sleep 0.1
+    done
+    
+    end_time=$(date +%s.%N)
+    duration=$(echo "$end_time - $start_time" | bc -l)
+    
+    echo "✅ demo-app:$tag 시작 시간: ${duration}초"
+    
+    # 컨테이너 정리
+    docker stop "$container_id" > /dev/null
+    docker rm "$container_id" > /dev/null
+done
+```
+
+**10단계: 비교 테이블 생성**
+```bash
+# 비교 테이블 출력
+echo ""
+echo "=== Dockerfile 비교 테이블 ==="
+echo "┌─────────────────┬─────────────────┬─────────────────┬─────────────────┐"
+echo "│     항목        │    Original     │    Optimized    │   Multistage    │"
+echo "├─────────────────┼─────────────────┼─────────────────┼─────────────────┤"
+echo "│ Base Image      │   node:18       │  node:18-alpine │  node:18-alpine │"
+echo "│ Build Stages    │        1        │        1        │        2        │"
+echo "│ Dependencies    │   All (dev+prod)│   Production    │   Production    │"
+echo "│ User            │     Root        │   Non-root      │   Non-root      │"
+echo "│ Security        │      Low        │     Medium      │      High       │"
+echo "│ Cache Strategy  │      None       │   Layer Cache   │   Layer Cache   │"
+echo "│ Build Tools     │   Included      │   Included      │   Excluded      │"
+echo "│ Image Size      │     Large       │     Medium      │     Small       │"
+echo "└─────────────────┴─────────────────┴─────────────────┴─────────────────┘"
+
+# 실제 크기 데이터로 테이블 생성
+echo ""
+echo "=== 실제 이미지 크기 비교 ==="
+echo "┌─────────────────┬─────────────────┬─────────────────┬─────────────────┐"
+echo "│     이미지      │      크기       │   레이어 수     │   압축률        │"
+echo "├─────────────────┼─────────────────┼─────────────────┼─────────────────┤"
+
+for tag in original optimized multistage; do
+    size=$(docker images --format "{{.Size}}" demo-app:$tag)
+    layers=$(docker history demo-app:$tag --format "{{.CreatedBy}}" | wc -l)
+    printf "│ demo-app:%-7s │     %-10s │       %-3s        │      N/A       │\n" "$tag" "$size" "$layers"
+done
+
+echo "└─────────────────┴─────────────────┴─────────────────┴─────────────────┘"
+```
+
+**11단계: 정리**
+```bash
+# 실행 중인 컨테이너 정리
+docker ps -a --filter "name=demo-app-" --format "{{.Names}}" | xargs -r docker rm -f
+
+# 이미지 정리
+docker rmi demo-app:original demo-app:optimized demo-app:multistage
+
+# 작업 디렉토리 정리
+cd .. && rm -rf docker-comparison-demo
+```
 
 #### 실습 2: 이미지 최적화 (20분)
 
@@ -310,6 +646,81 @@ docker build -f Dockerfile.optimized -t myapp:optimized .
 - Alpine Linux 기반 경량 이미지
 - 레이어 최적화
 
+#### 수작업 실습 가이드 (이미지 최적화)
+
+**1단계: .dockerignore 파일 생성**
+```bash
+# .dockerignore 파일 생성
+cat > .dockerignore << 'EOF'
+node_modules
+npm-debug.log
+.git
+.gitignore
+README.md
+.env
+.nyc_output
+coverage
+.nyc_output
+.coverage
+Dockerfile*
+docker-compose*
+EOF
+```
+
+**2단계: 최적화된 Dockerfile 생성**
+```bash
+# Alpine 기반 최적화된 Dockerfile
+cat > Dockerfile.optimized << 'EOF'
+FROM node:18-alpine
+WORKDIR /app
+
+# 의존성 파일만 먼저 복사 (캐시 최적화)
+COPY package*.json ./
+
+# Production 의존성만 설치
+RUN npm install --only=production && npm cache clean --force
+
+# 애플리케이션 코드 복사
+COPY . .
+
+# 보안을 위한 non-root 사용자 생성
+RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
+
+# 파일 소유권 변경
+RUN chown -R nextjs:nodejs /app
+
+# Non-root 사용자로 전환
+USER nextjs
+
+# 포트 노출
+EXPOSE 3000
+
+# 애플리케이션 실행
+CMD ["npm", "start"]
+EOF
+```
+
+**3단계: 최적화된 이미지 빌드**
+```bash
+# 최적화된 이미지 빌드
+docker build -f Dockerfile.optimized -t myapp:optimized .
+
+# 이미지 크기 비교
+echo "=== 이미지 크기 비교 ==="
+docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}" | grep myapp
+```
+
+**4단계: 레이어 최적화 확인**
+```bash
+# 레이어 분석
+echo "=== 레이어 분석 ==="
+docker history myapp:optimized --format "table {{.CreatedBy}}\t{{.Size}}"
+
+# 레이어 수 확인
+layers=$(docker history myapp:optimized --format "{{.CreatedBy}}" | wc -l)
+echo "총 레이어 수: $layers"
+```
+
 #### 실습 3: 보안 강화 (20분)
 
 **변경 전 시스템 아키텍처**:
@@ -397,11 +808,174 @@ docker build -f Dockerfile.secure -t myapp:secure .
 - non-root 사용자 설정
 - 보안 스캔 도구 활용
 
+#### 수작업 실습 가이드 (보안 강화)
+
+**1단계: 보안 강화된 Dockerfile 생성**
+```bash
+# 보안 강화된 Dockerfile 생성
+cat > Dockerfile.secure << 'EOF'
+FROM node:18-alpine
+WORKDIR /app
+
+# 보안 강화: non-root 사용자 생성
+RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
+
+# 패키지 설치 및 정리
+COPY package*.json ./
+RUN npm ci --only=production && npm cache clean --force
+
+# 소스 코드 복사 및 권한 설정
+COPY --chown=nextjs:nodejs . .
+USER nextjs
+
+EXPOSE 3000
+CMD ["node", "server.js"]
+EOF
+```
+
+**2단계: 보안 강화된 이미지 빌드**
+```bash
+# 보안 강화된 이미지 빌드
+docker build -f Dockerfile.secure -t myapp:secure .
+
+# 이미지 확인
+docker images | grep myapp
+```
+
+**3단계: Trivy 보안 스캔 도구 설치**
+```bash
+# Trivy 설치 (Ubuntu/Debian)
+sudo apt-get update
+sudo apt-get install wget apt-transport-https gnupg lsb-release
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+sudo apt-get update
+sudo apt-get install trivy
+
+# 또는 Docker로 Trivy 실행
+echo "=== 보안 스캔 결과 ==="
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+  aquasec/trivy image myapp:secure --format table --severity HIGH,CRITICAL
+```
+
+**4단계: 보안 스캔 결과 분석**
+```bash
+# 상세 보안 스캔
+echo "=== 상세 보안 스캔 ==="
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+  aquasec/trivy image myapp:secure --format json > security-report.json
+
+# 취약점 개수 확인
+vulnerabilities=$(cat security-report.json | jq '.Results[0].Vulnerabilities | length')
+echo "발견된 취약점 수: $vulnerabilities"
+
+# HIGH/CRITICAL 취약점만 필터링
+cat security-report.json | jq '.Results[0].Vulnerabilities[] | select(.Severity == "HIGH" or .Severity == "CRITICAL")'
+```
+
+**5단계: 컨테이너 보안 검증**
+```bash
+# 컨테이너 실행 및 보안 검증
+echo "=== 컨테이너 보안 검증 ==="
+
+# 컨테이너 실행
+container_id=$(docker run -d -p 3000:3000 --name myapp-secure myapp:secure)
+
+# 사용자 확인 (non-root 여부)
+echo "실행 사용자 확인:"
+docker exec myapp-secure whoami
+
+# 프로세스 확인
+echo "실행 프로세스 확인:"
+docker exec myapp-secure ps aux
+
+# 파일 권한 확인
+echo "파일 권한 확인:"
+docker exec myapp-secure ls -la /app
+
+# 컨테이너 정리
+docker stop "$container_id" > /dev/null
+docker rm "$container_id" > /dev/null
+```
+
+**6단계: 보안 비교 테이블 생성**
+```bash
+# 보안 비교 테이블
+echo "=== 보안 비교 테이블 ==="
+echo "┌─────────────────┬─────────────────┬─────────────────┐"
+echo "│     항목        │    Original     │    Secure       │"
+echo "├─────────────────┼─────────────────┼─────────────────┤"
+echo "│ User            │     Root        │   Non-root      │"
+echo "│ Dependencies    │   All (dev+prod)│   Production    │"
+echo "│ Build Tools     │   Included      │   Excluded      │"
+echo "│ Attack Surface  │      Large      │     Small       │"
+echo "│ CVE Risk        │      High       │      Low        │"
+echo "│ File Permissions│   777/755       │   644/755       │"
+echo "└─────────────────┴─────────────────┴─────────────────┘"
+```
+
 ### 📊 실습 결과
+
+#### 자동화 도구 사용 시
 - [ ] 멀티스테이지 빌드 성공
 - [ ] 이미지 크기 최적화 확인
 - [ ] 보안 취약점 최소화
 - [ ] Docker Compose 스택 관리
+
+#### 수작업 실습 완료 체크리스트
+- [ ] **1단계**: 샘플 애플리케이션 생성 완료
+- [ ] **2단계**: Original Dockerfile 생성 및 빌드 완료
+- [ ] **3단계**: Optimized Dockerfile 생성 및 빌드 완료
+- [ ] **4단계**: Multistage Dockerfile 생성 및 빌드 완료
+- [ ] **5단계**: 이미지 크기 비교 결과 확인
+- [ ] **6단계**: 이미지 레이어 분석 완료
+- [ ] **7단계**: Trivy 보안 스캔 실행 및 결과 분석
+- [ ] **8단계**: 컨테이너 실행 테스트 완료
+- [ ] **9단계**: 성능 비교 (시작 시간) 측정 완료
+- [ ] **10단계**: 비교 테이블 생성 및 분석 완료
+- [ ] **11단계**: 실습 환경 정리 완료
+
+#### 예상 결과 비교표
+```mermaid
+flowchart TD
+    subgraph "실습 결과 비교"
+        A["Original"] --> A1["크기: ~1.2GB"]
+        A --> A2["보안: 취약점 많음"]
+        A --> A3["성능: 느림"]
+        
+        B["Optimized"] --> B1["크기: ~200MB"]
+        B --> B2["보안: 중간 수준"]
+        B --> B3["성능: 보통"]
+        
+        C["Multistage"] --> C1["크기: ~150MB"]
+        C --> C2["보안: 안전"]
+        C --> C3["성능: 빠름"]
+    end
+    
+    style A fill:#d32f2f,color:#ffffff
+    style B fill:#f57c00,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+```
+
+#### 수작업 실습 가이드 요약
+
+**핵심 학습 포인트**:
+1. **Dockerfile 최적화**: Original → Optimized → Multistage 순서로 개선
+2. **이미지 크기 감소**: Alpine Linux, .dockerignore, 레이어 캐싱 활용
+3. **보안 강화**: Non-root 사용자, 최소 권한 원칙, 보안 스캔
+4. **성능 향상**: 멀티스테이지 빌드로 빌드 도구 제거
+
+**실습 시간 배분**:
+- **1-4단계**: Dockerfile 생성 및 빌드 (30분)
+- **5-6단계**: 이미지 분석 (15분)
+- **7단계**: 보안 스캔 (20분)
+- **8-9단계**: 실행 테스트 및 성능 측정 (15분)
+- **10-11단계**: 결과 분석 및 정리 (10분)
+
+**문제 해결 가이드**:
+- **빌드 실패**: Dockerfile 문법 확인, 의존성 설치 상태 점검
+- **보안 스캔 오류**: Trivy 설치 확인, Docker 권한 확인
+- **컨테이너 실행 실패**: 포트 충돌 확인, 로그 분석 (`docker logs`)
 
 ---
 

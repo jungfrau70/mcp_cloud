@@ -1,0 +1,40 @@
+# =============================================================================
+# Optimized Dockerfile (단일 스테이지 최적화)
+# =============================================================================
+# 개선사항:
+# - Alpine Linux 사용으로 크기 감소
+# - .dockerignore 활용
+# - 레이어 캐싱 최적화
+# - Production 의존성만 설치
+# - Non-root 사용자 설정
+# =============================================================================
+
+FROM node:18-alpine
+
+# 작업 디렉토리 설정
+WORKDIR /app
+
+# 의존성 파일만 먼저 복사 (캐시 최적화)
+COPY package*.json ./
+
+# Production 의존성만 설치
+RUN npm install --only=production && npm cache clean --force
+
+# 애플리케이션 코드 복사
+COPY . .
+
+# 보안을 위한 non-root 사용자 생성
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001
+
+# 파일 소유권 변경
+RUN chown -R nextjs:nodejs /app
+
+# Non-root 사용자로 전환
+USER nextjs
+
+# 포트 노출
+EXPOSE 3000
+
+# 애플리케이션 실행
+CMD ["npm", "start"]
