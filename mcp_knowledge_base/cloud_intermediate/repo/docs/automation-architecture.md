@@ -24,7 +24,7 @@
 ## 📁 디렉토리 구조
 
 ```
-mcp_knowledge_base/cloud_intermediate/repo/
+cloud_intermediate/repo/
 ├── automation/day1/                    # 메뉴 시스템
 │   └── day1-practice.sh               # 메인 메뉴 시스템
 ├── tools/cloud/                       # 서브 모듈들

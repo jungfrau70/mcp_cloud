@@ -14,7 +14,7 @@ wsl --install
 ### 2단계: 통합 설정 실행
 ```bash
 # WSL 환경으로 이동
-cd /mnt/c/Users/[사용자명]/githubs/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/setup
+cd /mnt/c/Users/[사용자명]/githubs/mcp_cloud/cloud_intermediate/repo/setup
 
 # 실행 권한 부여
 chmod +x setup-wsl-environment.sh

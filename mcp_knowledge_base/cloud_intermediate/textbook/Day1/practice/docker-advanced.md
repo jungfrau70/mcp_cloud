@@ -29,9 +29,9 @@
 ## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repos/samples/day1/docker-advanced/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repos/automation/day1/docker-advanced-practice-automation.sh`
-- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repos/cloud-scripts/`
+- **실습 샘플 코드**: `/cloud_intermediate/repos/samples/day1/docker-advanced/`
+- **자동화 스크립트**: `/cloud_intermediate/repos/automation/day1/docker-advanced-practice-automation.sh`
+- **클라우드 스크립트**: `/cloud_intermediate/repos/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -69,7 +69,7 @@ mkdir -p ~/cloud_intermediate/samples/day1/docker-advanced
 cd ~/cloud_intermediate/samples/day1/docker-advanced
 
 # 실습 샘플 코드 복사 (있는 경우)
-cp -r /mcp_knowledge_base/cloud_intermediate/repos/samples/day1/docker-advanced/* ./
+cp -r /cloud_intermediate/repos/samples/day1/docker-advanced/* ./
 ```
 
 #### 멀티스테이지 Dockerfile 생성
@@ -296,7 +296,7 @@ docker exec -it <container_name> /bin/sh
 ### 자동 정리
 ```bash
 # Day1 Docker 실습 자동 정리
-./mcp_knowledge_base/cloud_intermediate/repos/automation/day1/docker-advanced-practice-automation.sh --cleanup
+./cloud_intermediate/repos/automation/day1/docker-advanced-practice-automation.sh --cleanup
 ```
 
 ### 수동 정리

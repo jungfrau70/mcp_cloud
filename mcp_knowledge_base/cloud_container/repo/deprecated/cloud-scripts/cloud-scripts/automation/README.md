@@ -17,7 +17,7 @@
 Container 과정의 실습 코드
 
 ```bash
-cd C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/cloud_container/automation_tests && python container_course_automation.py
+cd C:/Users/JIH/githubs/mcp_cloud/cloud_container/automation_tests && python container_course_automation.py
 ```
 Container 과정 자동화가 성공적으로 완료되었습니다! 이제 생성된 파일들을 확인해보겠습니다.
 
@@ -25,7 +25,7 @@ Ran tool
 좋습니다! Container 과정의 스크립트들이 생성되었습니다. 이제 Container 과정의 테스트를 실행해보겠습니다.
 
 ```bash
-cd C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/cloud_container/automation_tests && python run_container_course_tests.py
+cd C:/Users/JIH/githubs/mcp_cloud/cloud_container/automation_tests && python run_container_course_tests.py
 ```
 🎉 **완벽합니다!** Container 과정의 모든 테스트가 성공적으로 통과했습니다!
 
@@ -58,7 +58,7 @@ cd C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/cloud_container/automation_
 ### 📁 생성된 Container 과정 파일들
 
 ```
-mcp_knowledge_base/cloud_container/automation/
+cloud_container/automation/
 ├── day1/                               # Day 1 실습 스크립트
 │   ├── kubernetes_advanced.sh         # Kubernetes 고급 아키텍처 실습
 │   ├── gke_cluster.sh                 # GKE 클러스터 생성 및 관리
@@ -94,7 +94,7 @@ mcp_knowledge_base/cloud_container/automation/
 
 ```bash
 # Day 1 실습 스크립트 실행
-cd mcp_knowledge_base/cloud_container/automation/day1
+cd cloud_container/automation/day1
 chmod +x *.sh
 kubernetes_advanced.sh
 gke_cluster.sh

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Copy Buttons Debug</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
+    <style>
+        .prose pre {
+            position: relative;
+            overflow: visible;
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .prose pre .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: #059669;
+            color: #f9fafb;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            opacity: 1;
+            transition: all 0.3s ease;
+            border: 1px solid #047857;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            user-select: none;
+            min-width: 70px;
+            text-align: center;
+            justify-content: center;
+        }
+        
+        .prose pre .copy-button:hover {
+            background: #047857;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <h1>Copy Buttons Debug Test</h1>
+    <div id="content"></div>
+    
+    <script>
+        const markdown = `# 테스트 문서
+
+## Bash 명령어 테스트
+
+\`\`\`bash
+# Day1 실습 자동 정리
+./day1-practice.sh
+# 메뉴에서 "정리" 옵션 선택
+\`\`\`
+
+## 일반 코드 테스트
+
+\`\`\`javascript
+console.log("Hello World");
+\`\`\`
+
+## Shell 명령어 테스트
+
+\`\`\`shell
+cd /home/user
+pwd
+\`\`\``;
+
+        // marked 옵션 설정
+        const renderer = new marked.Renderer();
+        marked.setOptions({
+            renderer: renderer,
+            gfm: true,
+            breaks: false,
+            pedantic: false,
+            sanitize: false,
+            smartLists: true,
+            smartypants: false
+        });
+
+        const html = marked.parse(markdown);
+        document.getElementById('content').innerHTML = html;
+        
+        // 렌더링된 HTML 확인
+        console.log('Rendered HTML:', html);
+        
+        // 코드 블록에 복사 버튼 추가
+        function setupCodeBlockHandlers() {
+            const codeBlocks = document.querySelectorAll('pre code');
+            console.log('Found code blocks:', codeBlocks.length);
+            
+            codeBlocks.forEach((codeBlock, index) => {
+                const pre = codeBlock.parentElement;
+                if (!pre || pre.querySelector('.copy-button')) {
+                    console.log(`Skipping block ${index} (no pre or already has button)`);
+                    return;
+                }
+
+                const className = codeBlock.className;
+                const textContent = codeBlock.textContent;
+                
+                const isBashCommand = className.includes('language-bash') || 
+                                     className.includes('language-shell') ||
+                                     className.includes('language-sh') ||
+                                     className.includes('bash') ||
+                                     className.includes('shell') ||
+                                     textContent.trim().startsWith('$') ||
+                                     textContent.trim().startsWith('#') ||
+                                     textContent.includes('sudo ') ||
+                                     textContent.includes('npm ') ||
+                                     textContent.includes('git ') ||
+                                     textContent.includes('docker ') ||
+                                     textContent.includes('kubectl ') ||
+                                     textContent.includes('./') ||
+                                     textContent.includes('cd ') ||
+                                     textContent.includes('ls ') ||
+                                     textContent.includes('cat ') ||
+                                     textContent.includes('echo ') ||
+                                     textContent.includes('aws ') ||
+                                     textContent.includes('gcloud ') ||
+                                     textContent.includes('kubectl ') ||
+                                     textContent.includes('helm ');
+
+                console.log(`Block ${index}:`, {
+                    className,
+                    textContent: textContent.substring(0, 50) + '...',
+                    isBashCommand
+                });
+
+                const copyButton = document.createElement('button');
+                copyButton.className = 'copy-button';
+                
+                if (isBashCommand) {
+                    copyButton.innerHTML = '<span>🚀</span><span>실행</span>';
+                    copyButton.style.background = '#059669';
+                    copyButton.style.borderColor = '#047857';
+                } else {
+                    copyButton.innerHTML = '<span>📋</span><span>복사</span>';
+                }
+                
+                copyButton.addEventListener('click', async () => {
+                    try {
+                        await navigator.clipboard.writeText(textContent);
+                        console.log('Copied to clipboard:', textContent);
+                        alert('클립보드에 복사되었습니다!');
+                    } catch (err) {
+                        console.error('Failed to copy:', err);
+                        alert('복사에 실패했습니다.');
+                    }
+                });
+                
+                pre.appendChild(copyButton);
+                console.log(`Added copy button to block ${index}`);
+            });
+        }
+        
+        // DOM이 로드된 후 실행
+        setTimeout(setupCodeBlockHandlers, 100);
+    </script>
+</body>
+</html>

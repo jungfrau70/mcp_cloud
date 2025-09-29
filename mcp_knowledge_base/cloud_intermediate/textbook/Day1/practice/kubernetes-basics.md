@@ -29,9 +29,9 @@
 ## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repos/samples/day1/kubernetes-basics/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repos/automation/day1/kubernetes-basics-practice-automation.sh`
-- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repos/cloud-scripts/`
+- **실습 샘플 코드**: `/cloud_intermediate/repos/samples/day1/kubernetes-basics/`
+- **자동화 스크립트**: `/cloud_intermediate/repos/automation/day1/kubernetes-basics-practice-automation.sh`
+- **클라우드 스크립트**: `/cloud_intermediate/repos/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -68,7 +68,7 @@ mkdir -p ~/cloud_intermediate/samples/day1/kubernetes-basics
 cd ~/cloud_intermediate/samples/day1/kubernetes-basics
 
 # 실습 샘플 코드 복사 (있는 경우)
-cp -r /mcp_knowledge_base/cloud_intermediate/repos/samples/day1/kubernetes-basics/* ./
+cp -r /cloud_intermediate/repos/samples/day1/kubernetes-basics/* ./
 ```
 
 #### Kubernetes 클러스터 확인
@@ -374,7 +374,7 @@ kubectl port-forward <pod-name> 8080:80 -n <namespace>
 ### 자동 정리
 ```bash
 # Day1 Kubernetes 실습 자동 정리
-./mcp_knowledge_base/cloud_intermediate/repos/automation/day1/kubernetes-basics-practice-automation.sh --cleanup
+./cloud_intermediate/repos/automation/day1/kubernetes-basics-practice-automation.sh --cleanup
 ```
 
 ### 수동 정리

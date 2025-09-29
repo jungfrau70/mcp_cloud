@@ -72,9 +72,9 @@
 ## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화 (새로운 repo 구조)
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/examples/day2/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/automation/day2/`
-- **클라우드 도구**: `/mcp_knowledge_base/cloud_intermediate/repo/tools/cloud/`
+- **실습 샘플 코드**: `/cloud_intermediate/repo/examples/day2/`
+- **자동화 스크립트**: `/cloud_intermediate/repo/automation/day2/`
+- **클라우드 도구**: `/cloud_intermediate/repo/tools/cloud/`
 
 ### 필수 도구
 - **GitHub Actions**: CI/CD 파이프라인 자동화
@@ -104,7 +104,7 @@ kubectl version --client
 ### 1단계: 환경 준비
 ```bash
 # 실습 환경 자동 설정
-cd mcp_knowledge_base/cloud_intermediate/repo/automation/day2/
+cd cloud_intermediate/repo/automation/day2/
 ./day2-environment-setup.sh
 ```
 
@@ -116,7 +116,7 @@ cd mcp_knowledge_base/cloud_intermediate/repo/automation/day2/
 ### 3단계: 실습 정리
 ```bash
 # Day2 실습 자동 정리
-./mcp_knowledge_base/cloud_intermediate/repo/automation/day2/cleanup.sh
+./cloud_intermediate/repo/automation/day2/cleanup.sh
 ```
 
 ---

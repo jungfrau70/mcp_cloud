@@ -10,7 +10,7 @@
 
 ```bash
 # WSL에서 실행
-cd mcp_knowledge_base/cloud_master/repos/install
+cd cloud_master/repos/install
 chmod +x install-all-wsl.sh
 install-all-wsl.sh
 ```
@@ -230,7 +230,7 @@ echo "MCP Knowledge Base: $MCP_KNOWLEDGE_BASE"
 
 ```bash
 # 심볼릭 링크를 통한 스크립트 실행
-cd ~/mcp_knowledge_base/cloud_master/repos/cloud-scripts
+cd ~/cloud_master/repos/cloud-scripts
 
 # 또는 환경 변수 사용
 cd $MCP_KNOWLEDGE_BASE/cloud_master/repos/cloud-scripts
@@ -442,7 +442,7 @@ docker-compose ps
 start-docker
 
 # 실습 디렉토리로 이동
-cd mcp_knowledge_base/cloud_master/repos/samples/day1/my-app
+cd cloud_master/repos/samples/day1/my-app
 
 # Docker 이미지 빌드
 docker build -t my-web-app .

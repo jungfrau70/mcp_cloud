@@ -69,9 +69,9 @@
 ## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화 (새로운 repo 구조)
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/examples/day1/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/automation/day1/`
-- **클라우드 도구**: `/mcp_knowledge_base/cloud_intermediate/repo/tools/cloud/`
+- **실습 샘플 코드**: `/cloud_intermediate/repo/examples/day1/`
+- **자동화 스크립트**: `/cloud_intermediate/repo/automation/day1/`
+- **클라우드 도구**: `/cloud_intermediate/repo/tools/cloud/`
 
 ### 필수 도구
 - **Docker**: 컨테이너 런타임 환경
@@ -98,7 +98,7 @@ aws configure list
 ### 1단계: 환경 준비 (새로운 repo 구조)
 ```bash
 # 실습 환경 자동 설정
-cd mcp_knowledge_base/cloud_intermediate/repo/setup/
+cd cloud_intermediate/repo/setup/
 ./install-all-wsl.sh
 
 # Day1 실습 자동화 실행
@@ -116,14 +116,14 @@ cd ../automation/day1/
 ### 2.5단계: 외부 접속 테스트
 ```bash
 # 외부 접속 테스트 및 검증 실행
-cd mcp_knowledge_base/cloud_intermediate/repo/samples/day1/
+cd cloud_intermediate/repo/samples/day1/
 ./external-access-test.sh
 ```
 
 ### 3단계: 실습 정리
 ```bash
 # Day1 실습 자동 정리
-./mcp_knowledge_base/cloud_intermediate/repo/automation/day1/cleanup.sh
+./cloud_intermediate/repo/automation/day1/cleanup.sh
 ```
 
 ---

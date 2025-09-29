@@ -288,6 +288,106 @@ echo 'Hello World'
 - [default.vue](mdc:frontend/layouts/default.vue) - 교육 플랫폼 레이아웃
 - [fix_internal_links.py](mdc:tools/fix_internal_links.py) - 내부 링크 자동 수정 도구
 
+## 🎯 Cloud Intermediate Day 1 실습 메뉴 내부파일링크 규칙
+
+### **실습 메뉴 구조 표준**
+```markdown
+<!-- ✅ DO: Cloud Intermediate Day 1 실습 메뉴 표준 구조 -->
+=== ========================================== ===
+=== Cloud Intermediate Day 1 실습 메뉴 ===
+=== ========================================== ===
+
+1. 🐳 Docker 고급 실습
+2. ☸️  Kubernetes 기초 실습
+3. ☁️  클라우드 컨테이너 서비스 실습
+4. 📊 통합 모니터링 허브 구축
+5. 🔍 클러스터 현황 확인
+6. 🚀 배포 관리
+7. ⚙️  클러스터 관리
+8. 🧹 실습 환경 정리
+9. 📋 현재 리소스 상태 확인
+0. 종료
+```
+
+### **실습 메뉴 내부파일링크 매핑 규칙**
+```markdown
+<!-- ✅ DO: 실습 메뉴 항목별 내부파일링크 매핑 -->
+1. 🐳 Docker 고급 실습
+   → [docker-advanced.md](cloud_intermediate/textbook/Day1/practice/docker-advanced.md)
+
+2. ☸️  Kubernetes 기초 실습
+   → [kubernetes-basics.md](cloud_intermediate/textbook/Day1/practice/kubernetes-basics.md)
+
+3. ☁️  클라우드 컨테이너 서비스 실습
+   → [cloud-container-services.md](cloud_intermediate/textbook/Day1/practice/cloud-container-services.md)
+
+4. 📊 통합 모니터링 허브 구축
+   → [monitoring-hub.md](cloud_intermediate/textbook/Day1/practice/monitoring-hub.md)
+
+5. 🔍 클러스터 현황 확인
+   → [kubernetes-basics-updated.md](cloud_intermediate/textbook/Day1/practice/kubernetes-basics-updated.md)
+
+6. 🚀 배포 관리
+   → [integrated-practice-guide.md](cloud_intermediate/textbook/Day1/practice/integrated-practice-guide.md)
+
+7. ⚙️  클러스터 관리
+   → [external-access-guide.md](cloud_intermediate/textbook/Day1/practice/external-access-guide.md)
+
+8. 🧹 실습 환경 정리
+   → [README.md](cloud_intermediate/textbook/Day1/README.md) (정리 섹션)
+
+9. 📋 현재 리소스 상태 확인
+   → [README.md](cloud_intermediate/textbook/Day1/README.md) (상태 확인 섹션)
+```
+
+### **실습 메뉴 자동화 스크립트 연결 규칙**
+```bash
+# ✅ DO: 실습 메뉴 자동화 스크립트 연결
+cloud_intermediate/repo/automation/day1/cloud-practice-menu.sh
+├── 1. Docker 고급 실습
+│   └── cloud_intermediate/repo/tools/cloud/docker-advanced-helper.sh
+├── 2. Kubernetes 기초 실습
+│   └── cloud_intermediate/repo/tools/cloud/kubernetes-basics-helper.sh
+├── 3. 클라우드 컨테이너 서비스 실습
+│   └── cloud_intermediate/repo/tools/cloud/cloud-container-helper.sh
+├── 4. 통합 모니터링 허브 구축
+│   └── cloud_intermediate/repo/tools/cloud/monitoring-hub-helper.sh
+├── 5. 클러스터 현황 확인
+│   └── cloud_intermediate/repo/tools/cloud/cluster-status-helper.sh
+├── 6. 배포 관리
+│   └── cloud_intermediate/repo/tools/cloud/deployment-helper.sh
+├── 7. 클러스터 관리
+│   └── cloud_intermediate/repo/tools/cloud/cluster-management-helper.sh
+├── 8. 실습 환경 정리
+│   └── cloud_intermediate/repo/tools/cloud/cleanup-helper.sh
+└── 9. 현재 리소스 상태 확인
+    └── cloud_intermediate/repo/tools/cloud/resource-status-helper.sh
+```
+
+### **실습 메뉴 문서 작성 규칙**
+```markdown
+<!-- ✅ DO: 실습 메뉴 문서 작성 시 필수 요소 -->
+# Cloud Intermediate Day 1 실습 메뉴
+
+## 🎯 실습 목표
+- Docker 고급 기능 활용
+- Kubernetes 클러스터 구축 및 관리
+- 클라우드 컨테이너 서비스 통합
+
+## 📋 실습 메뉴
+[위의 표준 구조 사용]
+
+## 🔗 관련 문서
+- [Day1 README](cloud_intermediate/textbook/Day1/README.md)
+- [통합 실습 가이드](cloud_intermediate/textbook/Day1/practice/integrated-practice-guide.md)
+- [자동화 스크립트](cloud_intermediate/repo/automation/day1/cloud-practice-menu.sh)
+
+## 🛠️ 실습 환경
+- **필수 도구**: Docker, Kubernetes, AWS CLI, GCP CLI
+- **환경 설정**: [환경 설정 가이드](cloud_intermediate/repo/setup/QUICK_START.md)
+- **문제 해결**: [문제 해결 가이드](cloud_intermediate/textbook/Day1/practice/troubleshooting-guide.md)
+```
+
 ## 🔄 교육 자료 업데이트 가이드
 
 ### **새로운 교육 과정 추가 시**

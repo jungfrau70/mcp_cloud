@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Markdown Rendering Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
+</head>
+<body>
+    <div id="content"></div>
+    
+    <script>
+        const markdown = `# 테스트 문서
+
+## Bash 명령어 테스트
+
+\`\`\`bash
+# 테스트 명령어
+echo "Hello World"
+ls -la
+\`\`\`
+
+## 일반 코드 테스트
+
+\`\`\`javascript
+console.log("Hello World");
+\`\`\`
+
+## Shell 명령어 테스트
+
+\`\`\`shell
+cd /home/user
+pwd
+\`\`\``;
+
+        const html = marked.parse(markdown);
+        document.getElementById('content').innerHTML = html;
+        
+        // 렌더링된 HTML 확인
+        console.log('Rendered HTML:', html);
+        
+        // 코드 블록 확인
+        const codeBlocks = document.querySelectorAll('pre code');
+        console.log('Found code blocks:', codeBlocks.length);
+        
+        codeBlocks.forEach((block, index) => {
+            console.log(`Block ${index}:`, {
+                className: block.className,
+                textContent: block.textContent.substring(0, 50),
+                parentElement: block.parentElement.tagName
+            });
+        });
+    </script>
+</body>
+</html>

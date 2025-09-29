@@ -26,9 +26,9 @@
 ## 🛠️ 실습 학습
 
 ### 📁 실습 코드 및 자동화 (새로운 repo 구조)
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/examples/day2/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/automation/day2/`
-- **클라우드 도구**: `/mcp_knowledge_base/cloud_intermediate/repo/tools/cloud/`
+- **실습 샘플 코드**: `/cloud_intermediate/repo/examples/day2/`
+- **자동화 스크립트**: `/cloud_intermediate/repo/automation/day2/`
+- **클라우드 도구**: `/cloud_intermediate/repo/tools/cloud/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -60,6 +60,65 @@ kubectl version --client
 <summary>🔧 1교시: GitHub Actions CI/CD 파이프라인</summary>
 
 #### GitHub Actions 워크플로우 생성
+
+**변경 전 시스템 아키텍처**:
+```mermaid
+flowchart TD
+    subgraph "기존 수동 배포"
+        A["개발자"] --> B["코드 작성"]
+        B --> C["수동 테스트"]
+        C --> D["수동 빌드"]
+        D --> E["수동 배포"]
+        E --> F["배포 오류 위험"]
+    end
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#388e3c,color:#ffffff
+    style C fill:#f57c00,color:#ffffff
+    style D fill:#f57c00,color:#ffffff
+    style E fill:#f57c00,color:#ffffff
+    style F fill:#d32f2f,color:#ffffff
+```
+
+**자동화 도구 실행**:
+```bash
+# 자동화 도구: ./tools/cloud/github-actions-helper.sh --action create-workflow
+```
+
+**변경 후 시스템 아키텍처**:
+```mermaid
+flowchart TD
+    subgraph "GitHub Actions CI/CD"
+        A["코드 Push"] --> B["자동 트리거"]
+        B --> C["테스트 실행"]
+        C --> D["빌드 자동화"]
+        D --> E["배포 자동화"]
+        E --> F["알림 발송"]
+    end
+    
+    subgraph "CI/CD 파이프라인"
+        G["코드 품질 검사"] --> H["자동 테스트"]
+        H --> I["보안 스캔"]
+        I --> J["자동 배포"]
+        J --> K["롤백 자동화"]
+    end
+    
+    F --> G
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#388e3c,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+    style D fill:#388e3c,color:#ffffff
+    style E fill:#388e3c,color:#ffffff
+    style F fill:#4caf50,color:#ffffff
+    style G fill:#4caf50,color:#ffffff
+    style H fill:#4caf50,color:#ffffff
+    style I fill:#4caf50,color:#ffffff
+    style J fill:#4caf50,color:#ffffff
+    style K fill:#4caf50,color:#ffffff
+```
+
+**실습 명령어**:
 ```bash
 # .github/workflows/ci-cd.yml 생성
 mkdir -p .github/workflows
@@ -567,7 +626,7 @@ kubectl exec -it POD_NAME -- /bin/bash
 ### 자동 정리
 ```bash
 # Day2 실습 자동 정리
-./mcp_knowledge_base/cloud_intermediate/repo/automation/day2/cleanup.sh
+./cloud_intermediate/repo/automation/day2/cleanup.sh
 ```
 
 ### 수동 정리

@@ -31,9 +31,9 @@
 ## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/samples/day1/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/automation/day1/day1-practice.sh`
-- **문제 해결 도구**: `/mcp_knowledge_base/cloud_intermediate/repo/automation/day1/eks-lb-troubleshoot.sh`
+- **실습 샘플 코드**: `/cloud_intermediate/repo/samples/day1/`
+- **자동화 스크립트**: `/cloud_intermediate/repo/automation/day1/day1-practice.sh`
+- **문제 해결 도구**: `/cloud_intermediate/repo/automation/day1/eks-lb-troubleshoot.sh`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -143,7 +143,7 @@ kubectl config use-context gke_PROJECT_ID_REGION_cloud-intermediate-gke
 #### 자동화 스크립트 사용
 ```bash
 # 실습 스크립트 실행
-cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/automation/day1
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/cloud_intermediate/repo/automation/day1
 ./day1-practice.sh
 
 # 메뉴에서 "2. 클러스터 전환 (EKS ↔ GKE)" 선택
@@ -573,7 +573,7 @@ curl http://localhost:8080
 #### EKS LoadBalancer 문제 해결
 ```bash
 # 문제 해결 스크립트 실행
-cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/automation/day1
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/cloud_intermediate/repo/automation/day1
 ./eks-lb-troubleshoot.sh diagnose
 
 # 자동 문제 해결
@@ -709,7 +709,7 @@ kubectl config get-contexts
 ### 자동 정리
 ```bash
 # Day1 Kubernetes 실습 자동 정리
-cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/automation/day1
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/cloud_intermediate/repo/automation/day1
 ./day1-practice.sh
 # 메뉴에서 "정리" 옵션 선택
 ```

@@ -26,9 +26,9 @@
 ## 🛠️ 실습 학습
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_master/repos/samples/day2/my-app/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_master/repos/automation/day2/container_orchestration.sh`
-- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_master/repos/cloud-scripts/`
+- **실습 샘플 코드**: `/cloud_master/repos/samples/day2/my-app/`
+- **자동화 스크립트**: `/cloud_master/repos/automation/day2/container_orchestration.sh`
+- **클라우드 스크립트**: `/cloud_master/repos/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -575,7 +575,7 @@ istioctl dashboard prometheus               # Prometheus 대시보드 열기
 ### 자동 정리
 ```bash
 # Day2 컨테이너 오케스트레이션 실습 자동 정리
-mcp_knowledge_base/cloud_master/repos/automation/day2/container_orchestration.sh --cleanup
+cloud_master/repos/automation/day2/container_orchestration.sh --cleanup
 ```
 
 ### 수동 정리

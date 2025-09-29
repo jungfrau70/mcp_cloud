@@ -26,9 +26,9 @@
 ## 🛠️ 실습 학습
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_master/repos/samples/day2/my-app/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_master/repos/automation/day2/docker-advanced.sh`
-- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_master/repos/cloud-scripts/`
+- **실습 샘플 코드**: `/cloud_master/repos/samples/day2/my-app/`
+- **자동화 스크립트**: `/cloud_master/repos/automation/day2/docker-advanced.sh`
+- **클라우드 스크립트**: `/cloud_master/repos/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -297,7 +297,7 @@ docker-compose restart web          # 특정 서비스 재시작
 ### 자동 정리
 ```bash
 # Day2 Docker 고급 실습 자동 정리
-mcp_knowledge_base/cloud_master/repos/automation/day2/docker-advanced.sh --cleanup
+cloud_master/repos/automation/day2/docker-advanced.sh --cleanup
 ```
 
 ### 수동 정리

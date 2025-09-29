@@ -16,7 +16,7 @@
 ### 1단계: 전체 실습 환경 구축
 
 ```bash
-cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/automation/day1
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/cloud_intermediate/repo/automation/day1
 ./day1-practice.sh
 ```
 
@@ -26,7 +26,7 @@ cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_interme
 ### 2단계: 외부 접속 테스트 및 검증
 
 ```bash
-cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/samples/day1
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/cloud_intermediate/repo/samples/day1
 ./external-access-test.sh
 ```
 
@@ -78,11 +78,11 @@ cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_interme
 ### 자동 통합 삭제
 ```bash
 # 모든 Day1 실습 리소스 통합 삭제
-cd mcp_knowledge_base/cloud_intermediate/repo/samples/day1/
+cd cloud_intermediate/repo/samples/day1/
 ./unified-cleanup.sh
 
 # 또는 메뉴를 통한 삭제
-cd mcp_knowledge_base/cloud_intermediate/repo/automation/day1/
+cd cloud_intermediate/repo/automation/day1/
 ./day1-practice.sh
 # 6번 선택 (실습 환경 정리) → 5번 선택 (통합 삭제)
 ```

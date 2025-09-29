@@ -28,7 +28,7 @@
 ---
 # textbook 및 실습코드 작성
 
-## 요청1) 전체 구조는 mcp_knowledge_base/cloud_master 를 참조하여, cloud_basic 과 cloud_container 과정 재구성.
+## 요청1) 전체 구조는 cloud_master 를 참조하여, cloud_basic 과 cloud_container 과정 재구성.
 
 ## 요청2) mcp_knowledge_base 디렉토리 하위에 구성된, cloud_basic, cloud_master, cloud_container 과정 확인 후, 각 과정이 맥락에 맞게 구성되었는지 실습 코드 포함하여 점검 및 개선 방안 제시  ["단, 현재 과정 유지 조건, 질문 필수"]
 
@@ -41,8 +41,8 @@
 
 ## 요청3) 각 과정이 마크다운 문서로 작성된 textbook 을 중심으로 진행될때, 섹션과 링크 기능을 활용하여 맥락을 쉽게 파악하고 사용자 친화적으로 UI 가 구성될 수 있도록 고도화 해 줘. 
 
-* 맥락: 과정간: mcp_knowledge_base/curriculum.md ->> 과정별: 과정명, 과정상세 ->> 과정내: textbook간, 코드간
-* 참고) 섹션사용 textbook : mcp_knowledge_base/cloud_master/textbook/Day1/cloud-deployment-guide.md
+* 맥락: 과정간: curriculum.md ->> 과정별: 과정명, 과정상세 ->> 과정내: textbook간, 코드간
+* 참고) 섹션사용 textbook : cloud_master/textbook/Day1/cloud-deployment-guide.md
 
 ## 요청4) 각 과정의 모든 markdown 문서들이 섹션과 링크 기능을 활용하여 맥락을 쉽게 파악하고 사용자 친화적으로 UI 가 구성될 수 있도록 고도화 되어 있는지 점검해 줘
 
@@ -57,47 +57,47 @@ google cloud 에 프로젝트, 네트워크 및 VM 생성 및 설정 스크립�
 
 1) 아래 파일을 보고, 관련 내용간 링크를 추가해 줘. README.md 는 container 과정 처럼 작성하면 좋겠어
 
-mcp_knowledge_base/cloud_master/README.md
-mcp_knowledge_base/cloud_master/과정명.md
-mcp_knowledge_base/cloud_master/과정상세.md
+cloud_master/README.md
+cloud_master/과정명.md
+cloud_master/과정상세.md
 
-요청2) 이제, 전체 관점에서 아래 파일을 보고, 관련 내용간 링크를 추가해 줘. mcp_knowledge_base/README.md 는 필요 시 작성하면 좋겠어
+요청2) 이제, 전체 관점에서 아래 파일을 보고, 관련 내용간 링크를 추가해 줘. README.md 는 필요 시 작성하면 좋겠어
 
-mcp_knowledge_base/curriculum.md
-mcp_knowledge_base/index.md
-mcp_knowledge_base/README.md
-mcp_knowledge_base/cloud_basic/README.md
-mcp_knowledge_base/cloud_basic/과정명.md
-mcp_knowledge_base/cloud_basic/과정상세.md
-mcp_knowledge_base/cloud_master/README.md
-mcp_knowledge_base/cloud_master/과정명.md
-mcp_knowledge_base/cloud_master/과정상세.md
-mcp_knowledge_base/cloud_container/README.md
-mcp_knowledge_base/cloud_container/과정명.md
-mcp_knowledge_base/cloud_container/과정상세.m
+curriculum.md
+index.md
+README.md
+cloud_basic/README.md
+cloud_basic/과정명.md
+cloud_basic/과정상세.md
+cloud_master/README.md
+cloud_master/과정명.md
+cloud_master/과정상세.md
+cloud_container/README.md
+cloud_container/과정명.md
+cloud_container/과정상세.m
 
 요청3) 아래 파일들은 Master 과정 디렉토리 내 파일인데, 내용이 이에 부합하게 작성되었는지 확인해 줘
 
-mcp_knowledge_base/cloud_master/README.md
-mcp_knowledge_base/cloud_master/과정명.md
-mcp_knowledge_base/cloud_master/과정상세.md
+cloud_master/README.md
+cloud_master/과정명.md
+cloud_master/과정상세.md
 
-요청4) 위 세개의 파일들이 Master 과정 교구들 ["mcp_knowledge_base/cloud_master 디렉토리 내 파일들"]과  맥락적으로 연계 되었는지, 특히 mcp_knowledge_base/cloud_master/textbook 내 교재들은 전수 조사해 줘.
+요청4) 위 세개의 파일들이 Master 과정 교구들 ["cloud_master 디렉토리 내 파일들"]과  맥락적으로 연계 되었는지, 특히 cloud_master/textbook 내 교재들은 전수 조사해 줘.
 
 요청5) 교재간 전/후 이동 링크 확인 및 부재 시 추가
 
 요청6) 아래 날짜간 README 파일과 실습파일 간 전/후 이동 링크 추가
 
 README 파일
-   mcp_knowledge_base/cloud_master/textbook/Day3/README.md
-   mcp_knowledge_base/cloud_master/textbook/Day2/README.md
-   mcp_knowledge_base/cloud_master/textbook/Day1/README.md
+   cloud_master/textbook/Day3/README.md
+   cloud_master/textbook/Day2/README.md
+   cloud_master/textbook/Day1/README.md
 
 실습파일
-   mcp_knowledge_base/cloud_master/textbook/Day1/practice/docker-basics.md
-   mcp_knowledge_base/cloud_master/textbook/Day1/practice/git-github-basics.md
-   mcp_knowledge_base/cloud_master/textbook/Day1/practice/github-actions-basics.md
-   mcp_knowledge_base/cloud_master/textbook/Day1/practice/vm-deployment.md
+   cloud_master/textbook/Day1/practice/docker-basics.md
+   cloud_master/textbook/Day1/practice/git-github-basics.md
+   cloud_master/textbook/Day1/practice/github-actions-basics.md
+   cloud_master/textbook/Day1/practice/vm-deployment.md
 
 요청7) 페이지 이동 시, 이동 후 해당 페이지 상단이 보여지게
 

@@ -329,7 +329,7 @@ CURRENT   NAME                                                                  
           AUTHINFO                                                                   NAMESPACE
 *         arn:aws:eks:ap-northeast-2:032068930526:cluster/cloud-master-eks-cluster   arn:aws:eks:ap-northeast-2:032068930526:cluster/cloud-master-eks-cluster   arn:aws:eks:ap-northeast-2:032068930526:cluster/cloud-master-eks-cluster
           gke_cloud-deployment-471606_asia-northeast3-a_cloud-master-cluster         gke_cloud-deployment-471606_asia-northeast3-a_cloud-master-cluster         gke_cloud-deployment-471606_asia-northeast3-a_cloud-master-cluster
-jih@DESKTOP-0TCBR9U:~/mcp-cloud-workspace/mcp_knowledge_base/cloud_master/repos/cloud-scripts$ 
+jih@DESKTOP-0TCBR9U:~/mcp-cloud-workspace/cloud_master/repos/cloud-scripts$ 
 
 
 wsl kubectl config use-context gke_cloud-deployment-471606_asia-northeast3-a_cloud-master-cluster

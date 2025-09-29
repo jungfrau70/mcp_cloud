@@ -3,7 +3,7 @@
 > 📋 **강의 일시**: 2024년 9월 2일 ["월"] 9:00~17:00  
 > 📋 **강의 방식**: 오프라인 실습 중심  
 > 📋 **선수 학습**: IT 기초 지식 ["OS, 네트워크 기본 이해"]
-> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_basic/_setup_wsl/README.md](_setup_wsl/README.md)
+> 📋 **WSL 환경설정**: [cloud_basic/_setup_wsl/README.md](_setup_wsl/README.md)
 > 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-basic.git cloud_basic`
 
 ---

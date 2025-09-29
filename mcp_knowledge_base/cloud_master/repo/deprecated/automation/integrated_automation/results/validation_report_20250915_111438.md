@@ -9,17 +9,17 @@
 ### Directory Structure
 
 - **directories**:
-  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation
-  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/results
-  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/shared_resources
-  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/bridge_scripts
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/integrated_automation
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/integrated_automation/results
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/integrated_automation/shared_resources
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/integrated_automation/bridge_scripts
 - **files**:
-  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/integrated_course_automation.py
-  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/shared_resource_manager.py
-  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/integrated_config.json
-  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/README.md
-  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/bridge_scripts/basic_to_master_bridge.sh
-  - ✅ C:/Users/JIH/githubs/mcp_cloud/mcp_knowledge_base/integrated_automation/bridge_scripts/master_to_container_bridge.sh
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/integrated_automation/integrated_course_automation.py
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/integrated_automation/shared_resource_manager.py
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/integrated_automation/integrated_config.json
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/integrated_automation/README.md
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/integrated_automation/bridge_scripts/basic_to_master_bridge.sh
+  - ✅ C:/Users/JIH/githubs/mcp_cloud/integrated_automation/bridge_scripts/master_to_container_bridge.sh
 
 ### Course Connections
 

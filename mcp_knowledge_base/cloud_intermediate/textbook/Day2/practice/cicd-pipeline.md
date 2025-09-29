@@ -29,9 +29,9 @@
 ## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/examples/day2/cicd-pipeline/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/automation/day2/cicd-pipeline-practice-automation.sh`
-- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/cloud-scripts/`
+- **실습 샘플 코드**: `/cloud_intermediate/repo/examples/day2/cicd-pipeline/`
+- **자동화 스크립트**: `/cloud_intermediate/repo/automation/day2/cicd-pipeline-practice-automation.sh`
+- **클라우드 스크립트**: `/cloud_intermediate/repo/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -74,7 +74,7 @@ mkdir -p ~/cloud_intermediate/samples/day2/cicd-pipeline
 cd ~/cloud_intermediate/samples/day2/cicd-pipeline
 
 # 실습 샘플 코드 복사 (있는 경우)
-cp -r /mcp_knowledge_base/cloud_intermediate/repo/examples/day2/cicd-pipeline/* ./
+cp -r /cloud_intermediate/repo/examples/day2/cicd-pipeline/* ./
 ```
 
 #### GitHub Actions 워크플로우 생성
@@ -390,7 +390,7 @@ gcloud run services describe cicd-app --region us-central1
 ### 자동 정리
 ```bash
 # Day2 CI/CD 실습 자동 정리
-./mcp_knowledge_base/cloud_intermediate/repo/automation/day2/cicd-pipeline-practice-automation.sh --cleanup
+./cloud_intermediate/repo/automation/day2/cicd-pipeline-practice-automation.sh --cleanup
 ```
 
 ### 수동 정리

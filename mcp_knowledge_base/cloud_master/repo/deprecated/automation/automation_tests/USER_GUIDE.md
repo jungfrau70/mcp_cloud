@@ -11,12 +11,12 @@ python master_course_automation.py
 
 ### 2단계: 생성된 스크립트 확인
 ```bash
-ls mcp_knowledge_base/cloud_master/automation/
+ls cloud_master/automation/
 ```
 
 ### 3단계: 실습 스크립트 실행
 ```bash
-cd mcp_knowledge_base/cloud_master/automation/day1
+cd cloud_master/automation/day1
 chmod +x *.sh
 docker_basics.sh
 ```

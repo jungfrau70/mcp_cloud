@@ -5,7 +5,7 @@
 ### **개발 환경 설정**
 ```bash
 # 프로젝트 디렉토리로 이동
-cd mcp_knowledge_base/cloud_intermediate/repo
+cd cloud_intermediate/repo
 
 # 실행 권한 부여
 chmod +x automation/day1/day1-practice.sh

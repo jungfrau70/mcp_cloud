@@ -30,9 +30,9 @@
 ## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/samples/day1/cloud-container-services/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/automation/day1/day1-practice.sh`
-- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/cloud-scripts/`
+- **실습 샘플 코드**: `/cloud_intermediate/repo/samples/day1/cloud-container-services/`
+- **자동화 스크립트**: `/cloud_intermediate/repo/automation/day1/day1-practice.sh`
+- **클라우드 스크립트**: `/cloud_intermediate/repo/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -812,7 +812,7 @@ gcloud monitoring metrics list --filter="resource.type=cloud_run_revision"
 ### 자동 정리
 ```bash
 # Day1 클라우드 컨테이너 서비스 실습 자동 정리
-cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/automation/day1
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/cloud_intermediate/repo/automation/day1
 ./day1-practice.sh
 # 메뉴에서 "정리" 옵션 선택
 ```

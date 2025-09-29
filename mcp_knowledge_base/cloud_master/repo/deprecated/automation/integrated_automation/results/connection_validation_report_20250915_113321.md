@@ -9,15 +9,15 @@
 ### Course Automation Scripts
 
 - **scripts**:
-  - cloud_basic: {'exists': True, 'path': 'C://Users//JIH//githubs//mcp_cloud/mcp_knowledge_base//cloud_basic//automation_tests//cloud_basic_course_automation.py', 'size': 10935, 'has_main_function': True, 'has_course_config': True, 'has_shared_resource_integration': True}
-  - cloud_master: {'exists': True, 'path': 'C://Users//JIH//githubs//mcp_cloud/mcp_knowledge_base//cloud_master//automation_tests//cloud_master_course_automation.py', 'size': 16676, 'has_main_function': True, 'has_course_config': True, 'has_shared_resource_integration': True}
-  - cloud_container: {'exists': True, 'path': 'C://Users//JIH//githubs//mcp_cloud/mcp_knowledge_base//cloud_container//automation_tests//cloud_container_course_automation.py', 'size': 27, 'has_main_function': False, 'has_course_config': False, 'has_shared_resource_integration': False}
+  - cloud_basic: {'exists': True, 'path': 'C://Users//JIH//githubs//mcp_cloud//cloud_basic//automation_tests//cloud_basic_course_automation.py', 'size': 10935, 'has_main_function': True, 'has_course_config': True, 'has_shared_resource_integration': True}
+  - cloud_master: {'exists': True, 'path': 'C://Users//JIH//githubs//mcp_cloud//cloud_master//automation_tests//cloud_master_course_automation.py', 'size': 16676, 'has_main_function': True, 'has_course_config': True, 'has_shared_resource_integration': True}
+  - cloud_container: {'exists': True, 'path': 'C://Users//JIH//githubs//mcp_cloud//cloud_container//automation_tests//cloud_container_course_automation.py', 'size': 27, 'has_main_function': False, 'has_course_config': False, 'has_shared_resource_integration': False}
 
 ### Bridge Scripts
 
 - **scripts**:
-  - basic_to_master_bridge.sh: {'exists': True, 'path': 'C://Users//JIH//githubs//mcp_cloud/mcp_knowledge_base//integrated_automation//bridge_scripts//basic_to_master_bridge.sh', 'size': 8286, 'is_executable': True, 'has_logging': True, 'has_error_handling': True, 'has_resource_validation': True}
-  - master_to_container_bridge.sh: {'exists': True, 'path': 'C://Users//JIH//githubs//mcp_cloud/mcp_knowledge_base//integrated_automation//bridge_scripts//master_to_container_bridge.sh', 'size': 9749, 'is_executable': True, 'has_logging': True, 'has_error_handling': True, 'has_resource_validation': True}
+  - basic_to_master_bridge.sh: {'exists': True, 'path': 'C://Users//JIH//githubs//mcp_cloud//integrated_automation//bridge_scripts//basic_to_master_bridge.sh', 'size': 8286, 'is_executable': True, 'has_logging': True, 'has_error_handling': True, 'has_resource_validation': True}
+  - master_to_container_bridge.sh: {'exists': True, 'path': 'C://Users//JIH//githubs//mcp_cloud//integrated_automation//bridge_scripts//master_to_container_bridge.sh', 'size': 9749, 'is_executable': True, 'has_logging': True, 'has_error_handling': True, 'has_resource_validation': True}
 
 ### Shared Resource Integration
 

@@ -433,7 +433,7 @@ curl http://localhost:8080
 #### 4-1. LoadBalancer 문제 진단
 ```bash
 # 문제 해결 스크립트 실행
-cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/automation/day1
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/cloud_intermediate/repo/automation/day1
 ./eks-lb-troubleshoot.sh diagnose
 
 # 자동 문제 해결
@@ -485,7 +485,7 @@ kubectl autoscale deployment myapp-deployment --cpu-percent=50 --min=3 --max=10 
 #### 5-1. 자동 정리
 ```bash
 # Day1 Kubernetes 실습 자동 정리
-cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/automation/day1
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/cloud_intermediate/repo/automation/day1
 ./day1-practice.sh
 # 메뉴에서 "정리" 옵션 선택
 ```
@@ -508,7 +508,7 @@ kubectl delete secret myapp-secret -n day1-practice
 ### 실습 스크립트 실행
 ```bash
 # 메인 실습 스크립트 실행
-cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/automation/day1
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/cloud_intermediate/repo/automation/day1
 ./day1-practice.sh
 
 # 메뉴 선택:

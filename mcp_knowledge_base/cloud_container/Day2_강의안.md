@@ -3,7 +3,7 @@
 > 📋 **강의 일시**: 2024년 10월 2일 ["수"] 9:00~17:00  
 > 📋 **강의 방식**: 온라인 실습 중심  
 > 📋 **선수 학습**: Cloud Container 1일차 완료
-> 📋 **WSL 환경설정**: [mcp_knowledge_base/cloud_container/_setup_wsl/README.md](_setup_wsl/README.md)
+> 📋 **WSL 환경설정**: [cloud_container/_setup_wsl/README.md](_setup_wsl/README.md)
 > 📋 **실습 코드**: `git clone https://github.com/jungfrau70/cloud-container.git cloud_container`
 
 ---

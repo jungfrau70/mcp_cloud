@@ -95,11 +95,11 @@ python run_master_course_tests.py
 ```
 
 ### 3. 개별 스크립트 실행
-생성된 스크립트들은 `mcp_knowledge_base/cloud_master/automation/` 디렉토리에 저장됩니다.
+생성된 스크립트들은 `cloud_master/automation/` 디렉토리에 저장됩니다.
 
 ```bash
 # Day 1 스크립트 실행 예시
-cd mcp_knowledge_base/cloud_master/automation/day1
+cd cloud_master/automation/day1
 chmod +x *.sh
 docker_basics.sh
 ```

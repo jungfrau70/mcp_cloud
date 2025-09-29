@@ -26,9 +26,9 @@
 ## 🛠️ 실습 학습
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_master/repos/samples/day3/my-app/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_master/repos/automation/day3/auto_scaling.sh`
-- **클라우드 스크립트**: `/mcp_knowledge_base/cloud_master/repos/cloud-scripts/`
+- **실습 샘플 코드**: `/cloud_master/repos/samples/day3/my-app/`
+- **자동화 스크립트**: `/cloud_master/repos/automation/day3/auto_scaling.sh`
+- **클라우드 스크립트**: `/cloud_master/repos/cloud-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -545,7 +545,7 @@ kubectl top pods                                      # 리소스 사용량
 ### 자동 정리
 ```bash
 # Day3 오토 스케일링 실습 자동 정리
-mcp_knowledge_base/cloud_master/repos/automation/day3/auto_scaling.sh --cleanup
+cloud_master/repos/automation/day3/auto_scaling.sh --cleanup
 ```
 
 ### 수동 정리

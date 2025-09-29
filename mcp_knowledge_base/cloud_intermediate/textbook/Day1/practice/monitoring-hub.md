@@ -36,9 +36,9 @@
 ## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/mcp_knowledge_base/cloud_intermediate/repo/samples/day1/monitoring-hub/`
-- **자동화 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/automation/day1/day1-practice.sh`
-- **모니터링 스크립트**: `/mcp_knowledge_base/cloud_intermediate/repo/monitoring-scripts/`
+- **실습 샘플 코드**: `/cloud_intermediate/repo/samples/day1/monitoring-hub/`
+- **자동화 스크립트**: `/cloud_intermediate/repo/automation/day1/day1-practice.sh`
+- **모니터링 스크립트**: `/cloud_intermediate/repo/monitoring-scripts/`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -757,7 +757,7 @@ curl -s http://localhost:9093/api/v1/alerts | jq
 ### AWS 보안 그룹 자동 설정
 ```bash
 # 외부 접속을 위한 보안 그룹 자동 설정
-cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/samples/day1
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/cloud_intermediate/repo/samples/day1
 ./external-access-test.sh
 ```
 
@@ -788,12 +788,12 @@ curl -f http://3.38.192.99:9100/metrics && echo "Node Exporter: OK"
 ### 통합 삭제 (자동 정리)
 ```bash
 # 모든 Day1 실습 리소스 통합 삭제
-cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/automation/day1
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/cloud_intermediate/repo/automation/day1
 ./day1-practice.sh
 # 메뉴에서 "6. 실습 환경 정리" 선택
 
 # 또는 직접 통합 삭제 스크립트 실행
-cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/samples/day1
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/cloud_intermediate/repo/samples/day1
 ./unified-cleanup.sh
 ```
 

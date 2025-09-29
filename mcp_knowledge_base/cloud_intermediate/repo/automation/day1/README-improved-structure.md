@@ -12,7 +12,7 @@ Cloud Intermediate 과정의 자동화 코드를 다음 원칙에 따라 개선�
 ## 🏗️ 새로운 구조
 
 ```
-mcp_knowledge_base/cloud_intermediate/repo/
+cloud_intermediate/repo/
 ├── automation/day1/
 │   └── cloud-practice-menu.sh          # 메뉴 시스템 (역할 분리)
 └── tools/cloud/

@@ -71,7 +71,7 @@ pytest test_container_course_automation.py -v
 ## 📁 생성되는 파일 구조
 
 ```
-mcp_knowledge_base/cloud_container/automation/
+cloud_container/automation/
 ├── day1/
 │   ├── kubernetes_advanced.sh      # Kubernetes 고급 실습
 │   ├── gke_cluster.sh             # GKE 클러스터 관리

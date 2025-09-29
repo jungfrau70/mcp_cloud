@@ -126,7 +126,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, nextTick } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import { useRuntimeConfig } from '#app';
 import { marked } from 'marked';
 import mermaid from 'mermaid';
@@ -429,27 +429,74 @@ const setupDetailsHandlers = () => {
 
 // Setup code block copy functionality with enhanced bash support
 const setupCodeBlockHandlers = () => {
-  if (!contentContainer.value) return;
+  if (!contentContainer.value) {
+    console.log('ContentView: setupCodeBlockHandlers - contentContainer not found');
+    return;
+  }
+
+  // 기존 복사 버튼 제거 (중복 방지)
+  const existingButtons = contentContainer.value.querySelectorAll('.copy-button');
+  existingButtons.forEach(button => button.remove());
 
   const codeBlocks = contentContainer.value.querySelectorAll('pre code');
-  codeBlocks.forEach((codeBlock) => {
+  console.log('ContentView: setupCodeBlockHandlers - found', codeBlocks.length, 'code blocks');
+  
+  codeBlocks.forEach((codeBlock, index) => {
     const pre = codeBlock.parentElement;
-    if (!pre || pre.querySelector('.copy-button')) return;
+    if (!pre) {
+      console.log(`ContentView: setupCodeBlockHandlers - skipping block ${index} (no pre element)`);
+      return;
+    }
 
     // Detect bash/shell commands
-    const isBashCommand = codeBlock.className.includes('language-bash') || 
-                         codeBlock.className.includes('language-shell') ||
-                         codeBlock.className.includes('language-sh') ||
-                         codeBlock.textContent.trim().startsWith('$') ||
-                         codeBlock.textContent.trim().startsWith('#') ||
-                         codeBlock.textContent.includes('sudo ') ||
-                         codeBlock.textContent.includes('npm ') ||
-                         codeBlock.textContent.includes('git ') ||
-                         codeBlock.textContent.includes('docker ') ||
-                         codeBlock.textContent.includes('kubectl ');
+    const className = codeBlock.className;
+    const textContent = codeBlock.textContent;
+    
+    // marked 라이브러리는 'language-bash', 'language-shell' 등의 클래스를 생성
+    const isBashCommand = className.includes('language-bash') || 
+                         className.includes('language-shell') ||
+                         className.includes('language-sh') ||
+                         className.includes('bash') ||
+                         className.includes('shell') ||
+                         textContent.trim().startsWith('$') ||
+                         textContent.trim().startsWith('#') ||
+                         textContent.includes('sudo ') ||
+                         textContent.includes('npm ') ||
+                         textContent.includes('git ') ||
+                         textContent.includes('docker ') ||
+                         textContent.includes('kubectl ') ||
+                         textContent.includes('./') ||
+                         textContent.includes('cd ') ||
+                         textContent.includes('ls ') ||
+                         textContent.includes('cat ') ||
+                         textContent.includes('echo ') ||
+                         textContent.includes('aws ') ||
+                         textContent.includes('gcloud ') ||
+                         textContent.includes('kubectl ') ||
+                         textContent.includes('helm ');
+    
+    // 디버깅을 위해 강제로 bash 명령어로 인식하는 옵션
+    const forceBashDetection = textContent.includes('./day1-practice.sh') || 
+                              textContent.includes('# Day1 실습') ||
+                              textContent.includes('# 실습 스크립트');
+    
+    const finalIsBashCommand = isBashCommand || forceBashDetection;
+
+    console.log(`ContentView: setupCodeBlockHandlers - block ${index}:`, {
+      className,
+      textContent: textContent.substring(0, 50) + '...',
+      isBashCommand,
+      forceBashDetection,
+      finalIsBashCommand,
+      parentElement: pre.tagName,
+      parentClassName: pre.className
+    });
+    
+    // 실제 HTML 구조도 로그에 출력
+    console.log(`ContentView: setupCodeBlockHandlers - block ${index} HTML:`, pre.outerHTML.substring(0, 200) + '...');
 
     // Add bash-specific styling to the pre element
-    if (isBashCommand) {
+    if (finalIsBashCommand) {
       pre.setAttribute('data-bash', 'true');
     }
 
@@ -457,16 +504,19 @@ const setupCodeBlockHandlers = () => {
     const copyButton = document.createElement('button');
     copyButton.className = 'copy-button';
     
-    if (isBashCommand) {
-      copyButton.innerHTML = '<span>🚀</span><span>실행</span>';
+    if (finalIsBashCommand) {
+      copyButton.innerHTML = '<span>Copy</span>';
       copyButton.setAttribute('aria-label', 'bash 명령어 복사');
       copyButton.setAttribute('title', '클릭하여 bash 명령어를 클립보드에 복사');
-      copyButton.style.background = '#059669'; // Green for bash commands
-      copyButton.style.borderColor = '#047857';
+      copyButton.style.background = '#6b7280'; // Gray for bash commands
+      copyButton.style.borderColor = '#4b5563';
+      copyButton.style.color = '#ffffff'; // White text
+      console.log(`ContentView: setupCodeBlockHandlers - created bash copy button for block ${index}`);
     } else {
-      copyButton.innerHTML = '<span>📋</span><span>복사</span>';
+      copyButton.innerHTML = '<span>Copy</span>';
       copyButton.setAttribute('aria-label', '코드 복사');
       copyButton.setAttribute('title', '클릭하여 코드를 클립보드에 복사');
+      console.log(`ContentView: setupCodeBlockHandlers - created regular copy button for block ${index}`);
     }
     
     copyButton.setAttribute('tabindex', '0');
@@ -589,7 +639,10 @@ const setupCodeBlockHandlers = () => {
     });
 
     pre.appendChild(copyButton);
+    console.log(`ContentView: setupCodeBlockHandlers - added copy button to block ${index}`);
   });
+  
+  console.log('ContentView: setupCodeBlockHandlers - completed');
 };
 
 // FileTree로 네비게이션하는 함수 (한글 파일명 디코딩 처리)
@@ -899,11 +952,60 @@ const setupMermaidControls = (container, svgElement, initialScale) => {
   });
 };
 
+// MutationObserver를 사용하여 DOM 변경 감지
+let mutationObserver = null;
+
+const startMutationObserver = () => {
+  if (!contentContainer.value || mutationObserver) return;
+  
+  mutationObserver = new MutationObserver((mutations) => {
+    let shouldUpdate = false;
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+        // 새로운 코드 블록이 추가되었는지 확인
+        for (let node of mutation.addedNodes) {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            if (node.tagName === 'PRE' || node.querySelector('pre')) {
+              shouldUpdate = true;
+              break;
+            }
+          }
+        }
+      }
+    });
+    
+    if (shouldUpdate) {
+      console.log('ContentView: DOM mutation detected, updating code blocks');
+      setTimeout(() => {
+        setupCodeBlockHandlers();
+      }, 100);
+    }
+  });
+  
+  mutationObserver.observe(contentContainer.value, {
+    childList: true,
+    subtree: true
+  });
+};
+
+const stopMutationObserver = () => {
+  if (mutationObserver) {
+    mutationObserver.disconnect();
+    mutationObserver = null;
+  }
+};
+
 onMounted(() => {
   loadRecentFiles();
   setupLinkIntercepts()
   setupDetailsHandlers()
-  setupCodeBlockHandlers()
+  // 코드 블록 핸들러는 DOM이 완전히 렌더링된 후 호출
+  nextTick(() => {
+    setTimeout(() => {
+      setupCodeBlockHandlers()
+      startMutationObserver()
+    }, 200)
+  })
   // Mermaid 다이어그램 렌더링 (SplitEditor.vue와 동일한 방식)
   scheduleMermaidRender();
   
@@ -924,16 +1026,30 @@ onMounted(() => {
 watch(() => props.content, () => {
   setupLinkIntercepts()
   setupDetailsHandlers()
-  setupCodeBlockHandlers()
   // Clear loading state when content changes
   isLoading.value = false
   // Mermaid 다이어그램 렌더링 (SplitEditor.vue와 동일한 방식)
   scheduleMermaidRender();
 })
 
+// renderedContent가 변경될 때마다 코드 블록 핸들러 설정
+watch(renderedContent, () => {
+  nextTick(() => {
+    // DOM이 완전히 렌더링될 때까지 약간의 지연
+    setTimeout(() => {
+      setupCodeBlockHandlers()
+    }, 100)
+  })
+})
+
 // renderedContent가 변경될 때마다 Mermaid 렌더링
 watch(renderedContent, () => {
   scheduleMermaidRender();
+})
+
+// 컴포넌트 언마운트 시 정리
+onUnmounted(() => {
+  stopMutationObserver();
 })
 
 watch(() => props.path, () => {
@@ -1437,6 +1553,7 @@ watch(() => props.content, (c) => {
 /* 코드 블록 복사 버튼 스타일 */
 .prose pre {
   position: relative;
+  overflow: visible; /* 버튼이 잘리지 않도록 */
 }
 
 .prose pre .copy-button {
@@ -1454,14 +1571,14 @@ watch(() => props.content, (c) => {
   transition: all 0.3s ease;
   border: 1px solid #4b5563;
   z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   user-select: none;
   min-width: 70px;
   text-align: center;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 0.25rem;
 }
 
 .prose pre .copy-button span {

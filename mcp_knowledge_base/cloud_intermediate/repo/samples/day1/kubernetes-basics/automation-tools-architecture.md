@@ -394,7 +394,7 @@ flowchart TD
 #### 1. 메인 실습 스크립트 실행
 ```bash
 # 실습 스크립트 실행
-cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/automation/day1
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/cloud_intermediate/repo/automation/day1
 ./day1-practice.sh
 ```
 

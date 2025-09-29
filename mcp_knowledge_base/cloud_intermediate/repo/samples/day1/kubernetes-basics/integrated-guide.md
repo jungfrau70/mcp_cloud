@@ -31,7 +31,7 @@ kubectl config use-context gke_PROJECT_ID_REGION_cloud-intermediate-gke
 #### 자동화 도구 사용
 ```bash
 # 실습 스크립트 실행
-cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/mcp_knowledge_base/cloud_intermediate/repo/automation/day1
+cd /home/ec2-user/mcp-cloud-workspace/mcp_cloud/cloud_intermediate/repo/automation/day1
 ./day1-practice.sh
 
 # 메뉴 선택:

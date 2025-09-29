@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-내부 링크 수정 도구
-mcp_knowledge_base/ 접두사를 제거하여 절대경로로 변환
+상대경로 링크를 절대경로로 변환하는 도구
+./practice/file.md -> cloud_intermediate/textbook/Day1/practice/file.md
 """
 
 import os
@@ -14,31 +14,56 @@ def find_markdown_files(directory):
     pattern = os.path.join(directory, "**", "*.md")
     return glob.glob(pattern, recursive=True)
 
-def fix_internal_links(content, file_path):
-    """내부 링크를 절대경로로 수정"""
-    # mcp_knowledge_base/ 접두사를 제거하는 패턴들
+def convert_relative_to_absolute(content, file_path):
+    """상대경로 링크를 절대경로로 변환"""
+    # 파일의 디렉토리 경로 추출
+    file_dir = os.path.dirname(file_path)
+    
+    # mcp_knowledge_base/ 제거
+    if file_dir.startswith('mcp_knowledge_base/'):
+        file_dir = file_dir[len('mcp_knowledge_base/'):]
+    
+    changes_made = []
+    
+    # 상대경로 링크 패턴들
     patterns = [
-        # [텍스트](mcp_knowledge_base/경로) 형태
-        (r'\[([^\]]+)\]\(mcp_knowledge_base/([^)]+)\)', r'[\1](\2)'),
-        # [텍스트](../mcp_knowledge_base/경로) 형태
-        (r'\[([^\]]+)\]\(\.\./mcp_knowledge_base/([^)]+)\)', r'[\1](\2)'),
-        # [텍스트](./mcp_knowledge_base/경로) 형태
-        (r'\[([^\]]+)\]\(\./mcp_knowledge_base/([^)]+)\)', r'[\1](\2)'),
-        # [텍스트](/mcp_knowledge_base/경로) 형태
-        (r'\[([^\]]+)\]\(/mcp_knowledge_base/([^)]+)\)', r'[\1](\2)'),
+        # [텍스트](./파일) 형태
+        (r'\[([^\]]+)\]\(\./([^)]+)\)', r'[\1](\2)'),
+        # [텍스트](../파일) 형태  
+        (r'\[([^\]]+)\]\(\.\./([^)]+)\)', r'[\1](\2)'),
     ]
     
     modified_content = content
-    changes_made = []
     
     for pattern, replacement in patterns:
         matches = re.findall(pattern, modified_content)
         if matches:
-            modified_content = re.sub(pattern, replacement, modified_content)
             for match in matches:
+                link_text = match[0]
+                relative_path = match[1]
+                
+                # 상대경로를 절대경로로 변환
+                if pattern.startswith(r'\[([^\]]+)\]\(\./'):
+                    # ./파일 -> 현재 디렉토리/파일
+                    absolute_path = f"{file_dir}/{relative_path}"
+                else:
+                    # ../파일 -> 상위 디렉토리/파일
+                    parent_dir = os.path.dirname(file_dir)
+                    absolute_path = f"{parent_dir}/{relative_path}"
+                
+                # 경로 정리 (중복 슬래시 제거)
+                absolute_path = re.sub(r'/+', '/', absolute_path)
+                
+                # 원본 링크와 새 링크
+                original_link = f'[{link_text}]({relative_path})'
+                new_link = f'[{link_text}]({absolute_path})'
+                
+                # 링크 교체
+                modified_content = modified_content.replace(original_link, new_link)
+                
                 changes_made.append({
-                    'original': f'[{match[0]}](mcp_knowledge_base/{match[1]})',
-                    'fixed': f'[{match[0]}]({match[1]})'
+                    'original': original_link,
+                    'fixed': new_link
                 })
     
     return modified_content, changes_made
@@ -49,7 +74,7 @@ def process_file(file_path):
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
         
-        modified_content, changes = fix_internal_links(content, file_path)
+        modified_content, changes = convert_relative_to_absolute(content, file_path)
         
         if changes:
             # 백업 파일 생성
@@ -81,7 +106,7 @@ def main():
         print(f"Error: {knowledge_base_dir} directory not found")
         return
     
-    print(f"🔍 {knowledge_base_dir} 디렉토리에서 마크다운 파일 검색 중...")
+    print(f"🔍 {knowledge_base_dir} 디렉토리에서 상대경로 링크 검색 중...")
     
     markdown_files = find_markdown_files(knowledge_base_dir)
     print(f"📄 {len(markdown_files)}개의 마크다운 파일 발견")
@@ -114,7 +139,7 @@ def main():
                 print(f"    {change['original']} → {change['fixed']}")
     
     # 수정 결과 보고서 생성
-    report_content = f"""# 내부 링크 수정 보고서
+    report_content = f"""# 상대경로 링크 수정 보고서
 
 ## 수정 요약
 - 처리된 파일: {len(processed_files)}개
@@ -132,10 +157,11 @@ def main():
         for change in result['changes']:
             report_content += f"- `{change['original']}` → `{change['fixed']}`\n"
     
-    with open("internal_links_fix_report.md", "w", encoding="utf-8") as f:
+    with open("relative_links_fix_report.md", "w", encoding="utf-8") as f:
         f.write(report_content)
     
-    print(f"\n📄 상세 보고서: internal_links_fix_report.md")
+    print(f"\n📄 상세 보고서: relative_links_fix_report.md")
 
 if __name__ == "__main__":
     main()
+

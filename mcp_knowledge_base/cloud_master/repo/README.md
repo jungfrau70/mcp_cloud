@@ -45,7 +45,7 @@
 ### �� 최종 구조
 
 ```
-mcp_knowledge_base/cloud_master/repo/
+cloud_master/repo/
 ├── scripts/                          # 통합 스크립트
 │   ├── cloud-master-helper.sh        # 통합 Helper
 │   ├── day1-practice-improved.sh     # Day1 실습
@@ -62,7 +62,7 @@ mcp_knowledge_base/cloud_master/repo/
 
 #### **Dry-run 테스트**
 ```bash
-cd mcp_knowledge_base/cloud_master/repo/scripts
+cd cloud_master/repo/scripts
 cloud-master-helper.sh
 # 메뉴에서 "1. 환경 체크" 선택
 ```
