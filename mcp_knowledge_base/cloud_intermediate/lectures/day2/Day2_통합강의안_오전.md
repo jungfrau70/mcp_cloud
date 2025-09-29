@@ -27,10 +27,72 @@
 
 ## 🛠️ 실습 학습
 
-### 📁 실습 코드 및 자동화 (새로운 repo 구조)
-- **실습 샘플 코드**: `./examples/day2/`
-- **자동화 스크립트**: `./automation/day2/`
-- **클라우드 도구**: `./tools/cloud/`
+### 📁 실습 코드 및 자동화 (개선된 경로 구조)
+
+#### **🎯 실습 디렉토리 구조**
+```
+mcp_knowledge_base/cloud_intermediate/
+├── 📚 lectures/day2/                    # 강의안
+├── 🛠️ practice/day2/                   # 실습 코드
+│   ├── cicd-pipeline/                  # CI/CD 파이프라인
+│   ├── cicd-practice-app/             # CI/CD 연습용 앱
+│   ├── advanced-monitoring/           # 고급 모니터링
+│   └── cloud-deployment/              # 클라우드 배포
+├── 🤖 automation/day2/                 # 자동화 스크립트
+└── 🛠️ tools/cloud/                    # 공통 도구 및 설정
+```
+
+#### **📋 실습별 정확한 경로**
+
+**1. GitHub Actions CI/CD 파이프라인**
+- **실습 위치**: `practice/day2/cicd-pipeline/`
+- **실행 스크립트**: `./cicd-pipeline-helper.sh`
+- **워크플로우**: `.github/workflows/ci-cd.yml`
+
+**2. CI/CD 연습용 애플리케이션**
+- **실습 위치**: `practice/day2/cicd-practice-app/`
+- **애플리케이션**: Node.js Express 서버
+- **테스트**: Jest 기반 단위 테스트
+
+**3. 멀티 클라우드 통합 모니터링**
+- **실습 위치**: `practice/day2/advanced-monitoring/`
+- **실행 스크립트**: `./monitoring-helper.sh`
+- **설정 파일**: Prometheus + Grafana 설정
+
+**4. 클라우드 배포**
+- **실습 위치**: `practice/day2/cloud-deployment/`
+- **AWS 배포**: `./aws-deployment-helper.sh`
+- **GCP 배포**: `./gcp-deployment-helper.sh`
+
+### 📋 실습 진행 체크리스트
+- [ ] **환경 설정**: GitHub Actions, AWS CLI, GCP CLI 설정 완료
+  - [ ] GitHub Actions 권한 설정 확인
+  - [ ] AWS CLI 설정 및 EKS 접근 권한 확인
+  - [ ] GCP CLI 설정 및 GKE 접근 권한 확인
+  - [ ] kubectl 멀티 클러스터 설정 확인
+- [ ] **CI/CD 파이프라인**: GitHub Actions 워크플로우 구축 완료
+  - [ ] `cd practice/day2/cicd-practice-app/` 디렉토리로 이동
+  - [ ] 환경 파일 복사: `cp ../../tools/cloud/package.json ./ && cp ../../tools/cloud/.env* ./ && cp -r ../../tools/cloud/.github/ ./ && cp ../../tools/cloud/Dockerfile* ./`
+  - [ ] 환경 파일 확인: `ls -la package.json .env* .github/workflows/`
+  - [ ] `npm install` 프로젝트 설정 완료
+  - [ ] GitHub Actions 워크플로우 파일 생성
+  - [ ] `npm test && npm run build` 자동 테스트 및 빌드 파이프라인 실행
+  - [ ] 배포 자동화 확인
+- [ ] **멀티 클라우드 모니터링**: AWS/GCP 통합 모니터링 구축 완료
+  - [ ] 통합 모니터링 허브 구축
+  - [ ] AWS EKS 클러스터 모니터링 설정
+  - [ ] GCP GKE 클러스터 모니터링 설정
+  - [ ] 통합 대시보드 구성
+- [ ] **AWS Application 모니터링**: EKS 애플리케이션 배포 및 모니터링 완료
+  - [ ] EKS 클러스터 생성 및 설정
+  - [ ] 애플리케이션 배포 및 서비스 설정
+  - [ ] Prometheus 메트릭 수집 설정
+  - [ ] Grafana 대시보드 구성
+- [ ] **GCP 클러스터 통합**: GKE 클러스터 구축 및 통합 모니터링 완료
+  - [ ] GKE 클러스터 생성 및 설정
+  - [ ] 애플리케이션 배포 및 서비스 설정
+  - [ ] 통합 모니터링 시스템 연결
+  - [ ] 멀티 클라우드 모니터링 완성
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -58,11 +120,38 @@ kubectl version --client
 
 #### 실습 환경 체크
 ```bash
-# 실습 환경 자동 체크
+# 📍 실습 위치: mcp_knowledge_base/cloud_intermediate/
+cd mcp_knowledge_base/cloud_intermediate/
+
+# 📍 실습 환경 자동 체크
 ./tools/cloud/environment-check.sh
 
-# 환경 설정 자동화
+# 📍 환경 설정 자동화
 ./tools/cloud/setup-environment.sh
+
+# 📍 개별 실습 모듈 및 환경 파일 확인
+ls -la practice/day2/
+# cicd-practice-app/, monitoring-hub/, aws-application-monitoring/ 등 확인
+
+# 📍 중앙 집중식 환경 파일 확인
+echo "=== 중앙 집중식 환경 파일 (tools/cloud/) ==="
+ls -la tools/cloud/package.json .env* .github/ Dockerfile* prometheus.yml 2>/dev/null || echo "환경 파일이 없습니다"
+
+# 📍 환경 파일 복사 및 확인
+echo "=== CI/CD 실습 환경 파일 복사 ==="
+cd practice/day2/cicd-practice-app/
+cp ../../tools/cloud/package.json ./
+cp ../../tools/cloud/.env* ./
+cp -r ../../tools/cloud/.github/ ./
+cp ../../tools/cloud/Dockerfile* ./
+ls -la package.json .env* .github/workflows/ Dockerfile*
+
+echo "=== 모니터링 실습 환경 파일 복사 ==="
+cd ../monitoring-hub/
+cp ../../tools/cloud/prometheus.yml ./
+cp -r ../../tools/cloud/grafana/ ./
+cp ../../tools/cloud/docker-compose.yml ./
+ls -la prometheus.yml grafana/ docker-compose.yml
 ```
 
 </details>
@@ -1100,7 +1189,25 @@ flowchart TD
 
 **자동화 도구 실행**:
 ```bash
-# 자동화 도구: ./tools/cloud/github-actions-helper.sh --action test-pipeline
+# 📍 실습 위치: mcp_knowledge_base/cloud_intermediate/practice/day2/cicd-practice-app/
+cd mcp_knowledge_base/cloud_intermediate/practice/day2/cicd-practice-app/
+
+# 📍 환경 파일 복사 (중앙 집중식 관리)
+cp ../../tools/cloud/package.json ./
+cp ../../tools/cloud/.env* ./
+cp -r ../../tools/cloud/.github/ ./
+cp ../../tools/cloud/Dockerfile* ./
+
+# 📍 환경 파일 확인 (필수)
+ls -la package.json .env* .github/workflows/ Dockerfile*
+
+# 📍 CI/CD 실습 앱 직접 실행 (권장)
+npm install
+npm test
+npm run build
+
+# 📍 또는 CI/CD 파이프라인 헬퍼 사용
+./automation/day2/cicd-pipeline-helper.sh --action test-pipeline
 ```
 
 **변경 후 시스템 아키텍처**:

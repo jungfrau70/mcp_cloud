@@ -1,0 +1,351 @@
+# =============================================================================
+# Cloud Intermediate 의존성 관리
+# =============================================================================
+# 
+# 기능:
+#   - 모든 실습에 필요한 의존성 정의
+#   - 버전 호환성 관리
+#   - 자동 설치 스크립트 생성
+#
+# 사용법:
+#   yq eval '.system_packages[]' dependencies.yml
+#
+# 작성일: 2024-12-19
+# 작성자: Cloud Intermediate 과정
+# =============================================================================
+
+# =============================================================================
+# 시스템 패키지 의존성
+# =============================================================================
+system_packages:
+  # 필수 도구
+  essential:
+    - name: "curl"
+      description: "HTTP 클라이언트"
+      required: true
+      install_command: "apt-get install -y curl"
+      
+    - name: "wget"
+      description: "파일 다운로드 도구"
+      required: true
+      install_command: "apt-get install -y wget"
+      
+    - name: "git"
+      description: "버전 관리 도구"
+      required: true
+      install_command: "apt-get install -y git"
+      
+    - name: "jq"
+      description: "JSON 처리 도구"
+      required: true
+      install_command: "apt-get install -y jq"
+      
+    - name: "yq"
+      description: "YAML 처리 도구"
+      required: true
+      install_command: "snap install yq"
+      
+  # 개발 도구
+  development:
+    - name: "build-essential"
+      description: "빌드 도구"
+      required: true
+      install_command: "apt-get install -y build-essential"
+      
+    - name: "python3"
+      description: "Python 3"
+      required: true
+      install_command: "apt-get install -y python3 python3-pip"
+      
+    - name: "nodejs"
+      description: "Node.js"
+      required: true
+      install_command: "curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs"
+      
+  # 클라우드 도구
+  cloud:
+    - name: "aws-cli"
+      description: "AWS CLI"
+      required: true
+      install_command: "curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip' && unzip awscliv2.zip && ./aws/install"
+      
+    - name: "gcloud-cli"
+      description: "Google Cloud CLI"
+      required: true
+      install_command: "curl https://sdk.cloud.google.com | bash"
+      
+    - name: "kubectl"
+      description: "Kubernetes CLI"
+      required: true
+      install_command: "curl -LO 'https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl' && chmod +x kubectl && mv kubectl /usr/local/bin/"
+      
+    - name: "helm"
+      description: "Kubernetes 패키지 매니저"
+      required: false
+      install_command: "curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash"
+
+# =============================================================================
+# Docker 의존성
+# =============================================================================
+docker:
+  # Docker Engine
+  engine:
+    version: "24.0.0"
+    install_command: |
+      curl -fsSL https://get.docker.com -o get-docker.sh
+      sh get-docker.sh
+      usermod -aG docker $USER
+      
+  # Docker Compose
+  compose:
+    version: "2.20.0"
+    install_command: |
+      curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      chmod +x /usr/local/bin/docker-compose
+      
+  # Docker 이미지
+  images:
+    - name: "nginx"
+      tag: "alpine"
+      required: true
+      
+    - name: "prometheus"
+      tag: "latest"
+      required: true
+      
+    - name: "grafana"
+      tag: "latest"
+      required: true
+      
+    - name: "postgres"
+      tag: "13-alpine"
+      required: true
+      
+    - name: "redis"
+      tag: "6-alpine"
+      required: true
+
+# =============================================================================
+# Kubernetes 의존성
+# =============================================================================
+kubernetes:
+  # 클러스터 도구
+  tools:
+    - name: "kubectl"
+      version: "1.28.0"
+      required: true
+      
+    - name: "helm"
+      version: "3.12.0"
+      required: false
+      
+    - name: "k9s"
+      version: "0.27.4"
+      required: false
+      
+  # Helm 차트
+  charts:
+    - name: "prometheus"
+      repository: "https://prometheus-community.github.io/helm-charts"
+      version: "23.1.0"
+      required: true
+      
+    - name: "grafana"
+      repository: "https://grafana.github.io/helm-charts"
+      version: "6.60.0"
+      required: true
+
+# =============================================================================
+# Node.js 의존성
+# =============================================================================
+nodejs:
+  # Node.js 버전
+  version: "18.17.0"
+  
+  # 글로벌 패키지
+  global_packages:
+    - name: "npm"
+      version: "9.6.7"
+      required: true
+      
+    - name: "yarn"
+      version: "1.22.19"
+      required: false
+      
+    - name: "nodemon"
+      version: "3.0.1"
+      required: false
+      
+  # 프로젝트별 의존성
+  project_dependencies:
+    cicd_practice_app:
+      dependencies:
+        - name: "express"
+          version: "^4.18.2"
+        - name: "cors"
+          version: "^2.8.5"
+        - name: "helmet"
+          version: "^7.0.0"
+      devDependencies:
+        - name: "jest"
+          version: "^29.5.0"
+        - name: "eslint"
+          version: "^8.40.0"
+        - name: "supertest"
+          version: "^6.3.3"
+
+# =============================================================================
+# Python 의존성
+# =============================================================================
+python:
+  # Python 버전
+  version: "3.9"
+  
+  # 글로벌 패키지
+  global_packages:
+    - name: "pip"
+      version: "23.2.1"
+      required: true
+      
+    - name: "virtualenv"
+      version: "20.24.0"
+      required: false
+      
+  # 프로젝트별 의존성
+  project_dependencies:
+    automation_scripts:
+      packages:
+        - name: "pyyaml"
+          version: "6.0.1"
+        - name: "requests"
+          version: "2.31.0"
+        - name: "boto3"
+          version: "1.28.0"
+        - name: "google-cloud"
+          version: "0.34.0"
+
+# =============================================================================
+# 환경별 의존성
+# =============================================================================
+environments:
+  development:
+    required_packages:
+      - "curl"
+      - "wget"
+      - "git"
+      - "jq"
+      - "yq"
+      - "build-essential"
+      - "python3"
+      - "nodejs"
+      - "aws-cli"
+      - "gcloud-cli"
+      - "kubectl"
+      - "docker"
+      - "docker-compose"
+      
+  staging:
+    required_packages:
+      - "curl"
+      - "wget"
+      - "git"
+      - "jq"
+      - "yq"
+      - "aws-cli"
+      - "gcloud-cli"
+      - "kubectl"
+      - "docker"
+      - "docker-compose"
+      - "helm"
+      
+  production:
+    required_packages:
+      - "curl"
+      - "wget"
+      - "git"
+      - "jq"
+      - "yq"
+      - "aws-cli"
+      - "gcloud-cli"
+      - "kubectl"
+      - "docker"
+      - "docker-compose"
+      - "helm"
+      - "k9s"
+
+# =============================================================================
+# 설치 스크립트 생성
+# =============================================================================
+install_scripts:
+  # 전체 의존성 설치
+  install_all: |
+    #!/bin/bash
+    set -euo pipefail
+    
+    # 시스템 패키지 업데이트
+    apt-get update
+    
+    # 필수 도구 설치
+    apt-get install -y curl wget git jq build-essential python3 python3-pip
+    
+    # Node.js 설치
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+    apt-get install -y nodejs
+    
+    # AWS CLI 설치
+    curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip'
+    unzip awscliv2.zip
+    ./aws/install
+    
+    # Google Cloud CLI 설치
+    curl https://sdk.cloud.google.com | bash
+    
+    # kubectl 설치
+    curl -LO 'https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl'
+    chmod +x kubectl
+    mv kubectl /usr/local/bin/
+    
+    # Docker 설치
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sh get-docker.sh
+    usermod -aG docker $USER
+    
+    # Docker Compose 설치
+    curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+    
+    # Helm 설치
+    curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    
+    echo "모든 의존성 설치 완료!"
+    
+  # 환경별 설치
+  install_development: |
+    #!/bin/bash
+    set -euo pipefail
+    
+    # 개발 환경 의존성 설치
+    apt-get update
+    apt-get install -y curl wget git jq yq build-essential python3 python3-pip nodejs aws-cli gcloud-cli kubectl docker docker-compose helm
+    
+    echo "개발 환경 의존성 설치 완료!"
+    
+  # 의존성 검증
+  verify_dependencies: |
+    #!/bin/bash
+    set -euo pipefail
+    
+    echo "의존성 검증 시작..."
+    
+    # 필수 도구 검증
+    command -v curl >/dev/null 2>&1 || { echo "curl이 설치되지 않았습니다"; exit 1; }
+    command -v wget >/dev/null 2>&1 || { echo "wget이 설치되지 않았습니다"; exit 1; }
+    command -v git >/dev/null 2>&1 || { echo "git이 설치되지 않았습니다"; exit 1; }
+    command -v jq >/dev/null 2>&1 || { echo "jq가 설치되지 않았습니다"; exit 1; }
+    command -v yq >/dev/null 2>&1 || { echo "yq가 설치되지 않았습니다"; exit 1; }
+    command -v docker >/dev/null 2>&1 || { echo "docker가 설치되지 않았습니다"; exit 1; }
+    command -v kubectl >/dev/null 2>&1 || { echo "kubectl이 설치되지 않았습니다"; exit 1; }
+    command -v aws >/dev/null 2>&1 || { echo "aws cli가 설치되지 않았습니다"; exit 1; }
+    command -v gcloud >/dev/null 2>&1 || { echo "gcloud cli가 설치되지 않았습니다"; exit 1; }
+    
+    echo "모든 의존성이 정상적으로 설치되었습니다!"

@@ -28,12 +28,72 @@
 
 ## 🛠️ 실습 학습
 
-### 📁 실습 코드 및 자동화 (새로운 repo 구조)
-- **실습 샘플 코드**: `./examples/day1/`
-- **자동화 스크립트**: `./automation/day1/`
-- **클라우드 도구**: `./tools/cloud/`
-- **AWS EC2 Helper**: `./tools/cloud/aws-ec2-helper.sh`
-- **GCP Compute Helper**: `./tools/cloud/gcp-compute-helper.sh`
+### 📁 실습 코드 및 자동화 (개선된 경로 구조)
+
+#### **🎯 실습 디렉토리 구조**
+```
+mcp_knowledge_base/cloud_intermediate/
+├── 📚 lectures/day1/                    # 강의안
+├── 🛠️ practice/day1/                   # 실습 코드
+│   ├── docker-advanced/                # Docker 고급 실습
+│   ├── kubernetes-basics/              # Kubernetes 기초
+│   ├── cloud-container-services/       # 클라우드 컨테이너 서비스
+│   └── monitoring-hub/                 # 통합 모니터링 허브
+├── 🤖 automation/day1/                 # 자동화 스크립트
+└── 🛠️ tools/cloud/                    # 공통 도구 및 설정
+```
+
+#### **📋 실습별 정확한 경로**
+
+**1. Docker 고급 실습**
+- **실습 위치**: `practice/day1/docker-advanced/`
+- **실행 스크립트**: `./docker-comparison-demo.sh`
+- **환경 파일**: `tools/cloud/`에서 자동 복사
+
+**2. Kubernetes 기초 실습**
+- **실습 위치**: `practice/day1/kubernetes-basics/`
+- **실행 스크립트**: `./kubernetes-basics-helper.sh`
+- **환경 파일**: `tools/cloud/`에서 자동 복사
+
+**3. 클라우드 컨테이너 서비스**
+- **실습 위치**: `practice/day1/cloud-container-services/`
+- **AWS ECS**: `./aws-ecs-helper.sh`
+- **GCP Cloud Run**: `./gcp-cloud-run-helper.sh`
+
+**4. 통합 모니터링 허브**
+- **실습 위치**: `practice/day1/monitoring-hub/`
+- **실행 스크립트**: `./monitoring-hub-helper.sh`
+- **설정 파일**: `tools/cloud/`에서 자동 복사
+
+### 📋 실습 진행 체크리스트
+- [ ] **환경 설정**: 필수 도구 설치 및 설정 완료
+  - [ ] Docker 설치 및 실행 확인
+  - [ ] kubectl 설치 및 클러스터 연결 확인
+  - [ ] AWS CLI 설정 및 인증 확인
+  - [ ] GCP CLI 설정 및 인증 확인
+- [ ] **Docker 고급 실습**: 멀티스테이지 빌드 및 최적화 완료
+  - [ ] `cd practice/day1/` 디렉토리로 이동
+  - [ ] 환경 파일 복사: `cp ../tools/cloud/.env* ./ && cp ../tools/cloud/docker-compose.yml ./ && cp ../tools/cloud/Dockerfile* ./`
+  - [ ] 환경 파일 확인: `ls -la .env docker-compose.yml Dockerfile*`
+  - [ ] `./docker-comparison-demo.sh` 실행 완료
+  - [ ] 이미지 크기 비교 결과 확인
+  - [ ] 보안 스캔 결과 확인
+- [ ] **Kubernetes 기초**: Pod, Service, Deployment 생성 완료
+  - [ ] `cd practice/day1/kubernetes-basics/` 디렉토리로 이동
+  - [ ] 환경 파일 복사: `cp ../../tools/cloud/kubeconfig* ./ && cp ../../tools/cloud/.env* ./ && cp ../../tools/cloud/*.yaml ./`
+  - [ ] 환경 파일 확인: `ls -la kubeconfig* .env* *.yaml`
+  - [ ] `./kubernetes-basics-helper.sh` 실습 완료
+  - [ ] Pod 생성 및 상태 확인
+  - [ ] Service 생성 및 접근 확인
+  - [ ] Deployment 생성 및 스케일링 확인
+- [ ] **클라우드 서비스**: AWS ECS, GCP Cloud Run 배포 완료
+  - [ ] AWS ECS 클러스터 생성 및 태스크 실행
+  - [ ] GCP Cloud Run 서비스 배포
+  - [ ] 외부 접속 테스트 완료
+- [ ] **모니터링 허브**: Prometheus + Grafana 구축 완료
+  - [ ] AWS VM에 Prometheus 설치
+  - [ ] Grafana 대시보드 설정
+  - [ ] 모니터링 데이터 수집 확인
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -61,11 +121,35 @@ gcloud auth list
 
 #### 실습 환경 체크
 ```bash
-# 실습 환경 자동 체크
+# 📍 실습 환경 자동 체크
+cd mcp_knowledge_base/cloud_intermediate/
 ./tools/cloud/environment-check.sh
 
-# 환경 설정 자동화
+# 📍 환경 설정 자동화
 ./tools/cloud/setup-environment.sh
+
+# 📍 개별 실습 모듈 및 환경 파일 확인
+ls -la practice/day1/
+# docker-comparison-demo.sh, kubernetes-basics/, cloud-container-services/ 등 확인
+
+# 📍 중앙 집중식 환경 파일 확인
+echo "=== 중앙 집중식 환경 파일 (tools/cloud/) ==="
+ls -la tools/cloud/.env* docker-compose.yml Dockerfile* kubeconfig* *.yaml 2>/dev/null || echo "환경 파일이 없습니다"
+
+# 📍 환경 파일 복사 및 확인
+echo "=== Docker 실습 환경 파일 복사 ==="
+cd practice/day1/
+cp ../tools/cloud/.env* ./
+cp ../tools/cloud/docker-compose.yml ./
+cp ../tools/cloud/Dockerfile* ./
+ls -la .env* docker-compose.yml Dockerfile*
+
+echo "=== Kubernetes 실습 환경 파일 복사 ==="
+cd kubernetes-basics/
+cp ../../tools/cloud/kubeconfig* ./
+cp ../../tools/cloud/.env* ./
+cp ../../tools/cloud/*.yaml ./
+ls -la kubeconfig* .env* *.yaml
 ```
 
 </details>
@@ -139,16 +223,22 @@ flowchart TD
 
 **자동화 도구 실행**:
 ```bash
-# 실습 스크립트 실행
-cd automation/day1
-./day1-practice.sh
-# 메뉴 선택: 1. Docker 고급 활용
+# 📍 실습 위치: mcp_knowledge_base/cloud_intermediate/practice/day1/
+cd mcp_knowledge_base/cloud_intermediate/practice/day1/
 
-# 구체적 비교 데모 실행
-cd examples/day1
+# 📍 환경 파일 복사 (중앙 집중식 관리)
+cp ../tools/cloud/.env ./
+cp ../tools/cloud/docker-compose.yml ./
+cp ../tools/cloud/Dockerfile* ./
+
+# 📍 환경 파일 확인 (필수)
+ls -la .env docker-compose.yml Dockerfile*
+
+# 📍 Docker 고급 실습 직접 실행 (권장)
 ./docker-comparison-demo.sh
 
-# 자동화 도구: ./tools/cloud/docker-helper.sh --action multistage-build
+# 📍 또는 개별 Docker 도구 사용
+./tools/cloud/docker-helper.sh --action multistage-build
 ```
 
 **변경 후 시스템 아키텍처**:
@@ -182,11 +272,13 @@ flowchart TD
 
 **실습 명령어**:
 ```bash
-# 구체적 비교 데모 실행
-cd examples/day1
+# 📍 실습 위치: mcp_knowledge_base/cloud_intermediate/practice/day1/
+cd mcp_knowledge_base/cloud_intermediate/practice/day1/
+
+# 📍 Docker 고급 실습 실행
 ./docker-comparison-demo.sh
 
-# 또는 수동으로 실행
+# 📍 수동으로 실행 (고급 사용자용)
 # Original Dockerfile 생성
 cat > Dockerfile.original << 'EOF'
 FROM node:18
@@ -1039,11 +1131,22 @@ flowchart TD
 
 **자동화 도구 실행**:
 ```bash
-# 실습 스크립트 실행
-./day1-practice.sh
-# 메뉴 선택: 2. Kubernetes 기초 실습
+# 📍 실습 위치: mcp_knowledge_base/cloud_intermediate/practice/day1/kubernetes-basics/
+cd mcp_knowledge_base/cloud_intermediate/practice/day1/kubernetes-basics/
 
-# 자동화 도구: ./tools/cloud/k8s-helper.sh --action setup-context
+# 📍 환경 파일 복사 (중앙 집중식 관리)
+cp ../../tools/cloud/kubeconfig* ./
+cp ../../tools/cloud/.env* ./
+cp ../../tools/cloud/*.yaml ./
+
+# 📍 환경 파일 확인 (필수)
+ls -la kubeconfig* .env* *.yaml *.yml
+
+# 📍 Kubernetes 기초 실습 직접 실행 (권장)
+./kubernetes-basics-helper.sh
+
+# 📍 또는 개별 Kubernetes 도구 사용
+./tools/cloud/k8s-helper.sh --action setup-context
 ```
 
 **변경 후 시스템 아키텍처**:

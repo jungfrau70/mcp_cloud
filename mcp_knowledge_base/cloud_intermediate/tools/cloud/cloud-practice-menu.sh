@@ -39,12 +39,36 @@ PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-# 로그 함수
-log_info() { echo -e "${BLUE}[INFO]${NC} $1"; }
-log_success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
-log_warning() { echo -e "${YELLOW}[WARNING]${NC} $1"; }
-log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
-log_header() { echo -e "${PURPLE}[HEADER]${NC} $1"; }
+# 로그 함수 (개선된 버전)
+LOG_FILE="${SCRIPT_DIR}/../cloud-intermediate-advanced.log"
+LOG_LEVEL="${LOG_LEVEL:-INFO}"
+
+log_info() { 
+    echo -e "${BLUE}[INFO]${NC} $1"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') [INFO] $1" >> "$LOG_FILE"
+}
+log_success() { 
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') [SUCCESS] $1" >> "$LOG_FILE"
+}
+log_warning() { 
+    echo -e "${YELLOW}[WARNING]${NC} $1"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') [WARNING] $1" >> "$LOG_FILE"
+}
+log_error() { 
+    echo -e "${RED}[ERROR]${NC} $1"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') [ERROR] $1" >> "$LOG_FILE"
+}
+log_header() { 
+    echo -e "${PURPLE}[HEADER]${NC} $1"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') [HEADER] $1" >> "$LOG_FILE"
+}
+log_debug() {
+    if [[ "$LOG_LEVEL" == "DEBUG" ]]; then
+        echo -e "${CYAN}[DEBUG]${NC} $1"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') [DEBUG] $1" >> "$LOG_FILE"
+    fi
+}
 
 # =============================================================================
 # 환경 설정 로드
