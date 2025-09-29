@@ -47,7 +47,167 @@ Multi-Cloud Monitoring Helper 모듈
   $0 --action monitoring-setup --provider aws
   $0 --action prometheus-deploy --provider gcp
   $0 --action cross-cluster-setup --provider all
+
+상세 사용법:
+  $0 --help --action monitoring-setup     # monitoring-setup 액션 상세 사용법
+  $0 --help --action prometheus-deploy    # prometheus-deploy 액션 상세 사용법
+  $0 --help --action cleanup              # cleanup 액션 상세 사용법
 EOF
+}
+
+# =============================================================================
+# 액션별 상세 사용법 함수
+# =============================================================================
+show_action_help() {
+    local action="$1"
+    
+    case "$action" in
+        "monitoring-setup")
+            cat << EOF
+MONITORING-SETUP 액션 상세 사용법:
+
+기능:
+  - 멀티 클라우드 통합 모니터링 시스템을 구축합니다
+  - AWS EKS와 GCP GKE를 연동하여 통합 모니터링을 제공합니다
+  - Prometheus와 Grafana를 기반으로 한 모니터링 스택을 배포합니다
+
+사용법:
+  $0 --action monitoring-setup [옵션]
+
+옵션:
+  --provider <provider>   # 클라우드 프로바이더 (aws, gcp, all)
+  --cluster-name <name>   # 클러스터 이름 (기본값: 환경변수)
+  --namespace <namespace> # 네임스페이스 (기본값: monitoring)
+  --region <region>       # 리전 (기본값: 환경변수)
+
+예시:
+  $0 --action monitoring-setup --provider aws
+  $0 --action monitoring-setup --provider all --namespace custom-monitoring
+  $0 --action monitoring-setup --cluster-name my-cluster --region us-west-2
+
+구축되는 리소스:
+  - Prometheus 서버
+  - Grafana 대시보드
+  - Node Exporter
+  - AlertManager
+  - 통합 모니터링 대시보드
+
+진행 상황:
+  - 환경 검증
+  - 클러스터 확인
+  - 모니터링 스택 배포
+  - 크로스 클러스터 설정
+  - 완료 보고
+EOF
+            ;;
+        "prometheus-deploy")
+            cat << EOF
+PROMETHEUS-DEPLOY 액션 상세 사용법:
+
+기능:
+  - Prometheus 서버를 클러스터에 배포합니다
+  - 메트릭 수집 및 저장 기능을 제공합니다
+  - 서비스 디스커버리를 통한 자동 타겟 관리
+
+사용법:
+  $0 --action prometheus-deploy [옵션]
+
+옵션:
+  --provider <provider>   # 클라우드 프로바이더 (aws, gcp)
+  --cluster-name <name>   # 클러스터 이름 (기본값: 환경변수)
+  --namespace <namespace> # 네임스페이스 (기본값: monitoring)
+  --storage-size <size>   # 스토리지 크기 (기본값: 10Gi)
+
+예시:
+  $0 --action prometheus-deploy --provider aws
+  $0 --action prometheus-deploy --provider gcp --namespace custom-monitoring
+  $0 --action prometheus-deploy --storage-size 20Gi
+
+배포되는 리소스:
+  - Prometheus Deployment
+  - Prometheus Service
+  - Prometheus ConfigMap
+  - PersistentVolumeClaim
+  - ServiceMonitor
+
+진행 상황:
+  - 네임스페이스 생성
+  - ConfigMap 생성
+  - Deployment 배포
+  - Service 생성
+  - 상태 확인
+EOF
+            ;;
+        "cleanup")
+            cat << EOF
+CLEANUP 액션 상세 사용법:
+
+기능:
+  - 멀티 클라우드 모니터링 관련 모든 리소스를 정리합니다
+  - Prometheus, Grafana, AlertManager를 순서대로 삭제합니다
+  - 네임스페이스와 관련 리소스를 정리합니다
+
+사용법:
+  $0 --action cleanup [옵션]
+
+옵션:
+  --provider <provider>   # 클라우드 프로바이더 (aws, gcp, all)
+  --cluster-name <name>   # 클러스터 이름 (기본값: 환경변수)
+  --namespace <namespace> # 네임스페이스 (기본값: monitoring)
+  --force                 # 확인 없이 강제 삭제
+  --keep-data             # 데이터 유지
+
+예시:
+  $0 --action cleanup --provider aws
+  $0 --action cleanup --provider all --force
+  $0 --action cleanup --namespace custom-monitoring
+
+삭제되는 리소스:
+  - Grafana Deployment
+  - Prometheus Deployment
+  - AlertManager Deployment
+  - 관련 Services
+  - ConfigMaps
+  - PersistentVolumeClaims (--keep-data 옵션 없을 경우)
+  - 네임스페이스 (--keep-data 옵션 없을 경우)
+
+주의사항:
+  - 삭제된 모니터링 데이터는 복구할 수 없습니다
+  - --force 옵션 사용 시 확인 없이 삭제됩니다
+  - 데이터를 보존하려면 --keep-data 옵션을 사용하세요
+EOF
+            ;;
+        *)
+            cat << EOF
+알 수 없는 액션: $action
+
+사용 가능한 액션:
+  - monitoring-setup: 통합 모니터링 시스템 구축
+  - prometheus-deploy: Prometheus 배포
+  - grafana-deploy: Grafana 배포
+  - cross-cluster-setup: 크로스 클러스터 모니터링 설정
+  - monitoring-status: 모니터링 상태 확인
+  - cleanup: 전체 정리
+
+각 액션의 상세 사용법을 보려면:
+  $0 --help --action <액션명>
+EOF
+            ;;
+    esac
+}
+
+# =============================================================================
+# --help 옵션 처리 로직
+# =============================================================================
+handle_help_option() {
+    local action="$1"
+    
+    if [ -n "$action" ]; then
+        show_action_help "$action"
+    else
+        usage
+    fi
+    exit 0
 }
 
 # =============================================================================
@@ -582,8 +742,13 @@ main() {
                 shift 2
                 ;;
             --help|-h)
-                usage
-                exit 0
+                # --help 옵션 처리
+                if [ "$2" = "--action" ] && [ -n "$3" ]; then
+                    handle_help_option "$3"
+                else
+                    usage
+                    exit 0
+                fi
                 ;;
             *)
                 log_error "알 수 없는 옵션: $1"

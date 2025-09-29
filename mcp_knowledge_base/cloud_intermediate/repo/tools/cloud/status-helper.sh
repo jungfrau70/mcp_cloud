@@ -45,7 +45,176 @@ Status Helper 모듈
   $0 --action status --provider aws
   $0 --action remaining --provider gcp
   $0 --action health-check --provider all
+
+상세 사용법:
+  $0 --help --action status           # status 액션 상세 사용법
+  $0 --help --action remaining        # remaining 액션 상세 사용법
+  $0 --help --action health-check     # health-check 액션 상세 사용법
 EOF
+}
+
+# =============================================================================
+# 액션별 상세 사용법 함수
+# =============================================================================
+show_action_help() {
+    local action="$1"
+    
+    case "$action" in
+        "status")
+            cat << EOF
+STATUS 액션 상세 사용법:
+
+기능:
+  - 클라우드 리소스의 현재 상태를 확인합니다
+  - 실행 중인 리소스와 중지된 리소스를 구분하여 표시합니다
+  - 리소스별 상세 정보를 제공합니다
+
+사용법:
+  $0 --action status --provider <프로바이더> [옵션]
+
+프로바이더:
+  aws                     # AWS 리소스 상태 확인
+  gcp                     # GCP 리소스 상태 확인
+  all                     # 모든 프로바이더 상태 확인
+
+옵션:
+  --format <format>       # 출력 형식 (table, json, yaml)
+  --verbose               # 상세 정보 출력
+  --filter <filter>       # 리소스 필터링
+
+예시:
+  $0 --action status --provider aws
+  $0 --action status --provider gcp --format json
+  $0 --action status --provider all --verbose --filter "running"
+
+확인되는 리소스:
+  - EKS/GKE 클러스터
+  - EC2/GCE 인스턴스
+  - 로드 밸런서
+  - 데이터베이스
+  - 스토리지
+  - 네트워크 리소스
+
+출력 정보:
+  - 리소스 이름
+  - 현재 상태
+  - 생성 시간
+  - 리전/존
+  - 태그 정보
+EOF
+            ;;
+        "remaining")
+            cat << EOF
+REMAINING 액션 상세 사용법:
+
+기능:
+  - 정리 작업 후 남은 리소스를 확인합니다
+  - 정리되지 않은 리소스의 원인을 분석합니다
+  - 추가 정리가 필요한 리소스를 식별합니다
+
+사용법:
+  $0 --action remaining --provider <프로바이더> [옵션]
+
+프로바이더:
+  aws                     # AWS 남은 리소스 확인
+  gcp                     # GCP 남은 리소스 확인
+  all                     # 모든 프로바이더 남은 리소스 확인
+
+옵션:
+  --format <format>       # 출력 형식 (table, json, yaml)
+  --verbose               # 상세 정보 출력
+  --analyze               # 남은 리소스 원인 분석
+
+예시:
+  $0 --action remaining --provider aws
+  $0 --action remaining --provider gcp --analyze
+  $0 --action remaining --provider all --format json
+
+분석되는 리소스:
+  - 정리되지 않은 클러스터
+  - 종속성으로 인해 남은 리소스
+  - 보호된 리소스
+  - 오류로 인해 삭제되지 않은 리소스
+
+제공되는 정보:
+  - 리소스 이름
+  - 남은 이유
+  - 종속성 정보
+  - 해결 방법 제안
+EOF
+            ;;
+        "health-check")
+            cat << EOF
+HEALTH-CHECK 액션 상세 사용법:
+
+기능:
+  - 클라우드 환경의 전반적인 건강 상태를 확인합니다
+  - 시스템 성능과 가용성을 모니터링합니다
+  - 문제가 있는 리소스를 식별합니다
+
+사용법:
+  $0 --action health-check --provider <프로바이더> [옵션]
+
+프로바이더:
+  aws                     # AWS 환경 건강 상태 확인
+  gcp                     # GCP 환경 건강 상태 확인
+  all                     # 모든 프로바이더 건강 상태 확인
+
+옵션:
+  --format <format>       # 출력 형식 (table, json, yaml)
+  --verbose               # 상세 정보 출력
+  --check-metrics         # 메트릭 기반 건강 상태 확인
+
+예시:
+  $0 --action health-check --provider aws
+  $0 --action health-check --provider gcp --check-metrics
+  $0 --action health-check --provider all --verbose
+
+확인되는 항목:
+  - 클러스터 상태
+  - 노드 상태
+  - 서비스 상태
+  - 네트워크 연결성
+  - 스토리지 상태
+  - 보안 설정
+
+건강 상태 지표:
+  - 가용성 (Availability)
+  - 성능 (Performance)
+  - 보안 (Security)
+  - 비용 (Cost)
+  - 준수 (Compliance)
+EOF
+            ;;
+        *)
+            cat << EOF
+알 수 없는 액션: $action
+
+사용 가능한 액션:
+  - status: 현재 리소스 상태 확인
+  - remaining: 정리 후 남은 리소스 확인
+  - health-check: 시스템 건강 상태 확인
+  - resource-summary: 리소스 요약 보고
+
+각 액션의 상세 사용법을 보려면:
+  $0 --help --action <액션명>
+EOF
+            ;;
+    esac
+}
+
+# =============================================================================
+# --help 옵션 처리 로직
+# =============================================================================
+handle_help_option() {
+    local action="$1"
+    
+    if [ -n "$action" ]; then
+        show_action_help "$action"
+    else
+        usage
+    fi
+    exit 0
 }
 
 # =============================================================================

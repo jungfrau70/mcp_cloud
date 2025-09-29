@@ -58,7 +58,163 @@ AWS ECS Helper 모듈
   $0 --action cluster-create
   $0 --action service-create --service-name my-service
   $0 --action cluster-status
+
+상세 사용법:
+  $0 --help --action cluster-create     # cluster-create 액션 상세 사용법
+  $0 --help --action service-create     # service-create 액션 상세 사용법
+  $0 --help --action cleanup            # cleanup 액션 상세 사용법
 EOF
+}
+
+# =============================================================================
+# 액션별 상세 사용법 함수
+# =============================================================================
+show_action_help() {
+    local action="$1"
+    
+    case "$action" in
+        "cluster-create")
+            cat << EOF
+CLUSTER-CREATE 액션 상세 사용법:
+
+기능:
+  - 새로운 ECS 클러스터를 생성합니다
+  - 기존 클러스터가 있으면 재사용합니다
+  - 클러스터 생성 과정을 실시간으로 추적합니다
+
+사용법:
+  $0 --action cluster-create [옵션]
+
+옵션:
+  --cluster-name <name>   # 클러스터 이름 (기본값: 환경변수)
+  --region <region>       # 리전 (기본값: 환경변수)
+  --tags <tags>           # 태그 (JSON 형식)
+
+예시:
+  $0 --action cluster-create
+  $0 --action cluster-create --cluster-name my-ecs-cluster
+  $0 --action cluster-create --tags '{"Environment":"Learning","Project":"CloudIntermediate"}'
+
+생성되는 리소스:
+  - ECS 클러스터
+  - 클러스터 로그 그룹
+  - IAM 역할 (필요한 경우)
+  - 보안 그룹 (필요한 경우)
+
+진행 상황:
+  - 환경 검증
+  - 기존 클러스터 확인
+  - 클러스터 생성
+  - 상태 확인
+  - 완료 보고
+EOF
+            ;;
+        "service-create")
+            cat << EOF
+SERVICE-CREATE 액션 상세 사용법:
+
+기능:
+  - ECS 서비스를 생성합니다
+  - 태스크 정의를 기반으로 서비스를 배포합니다
+  - 로드 밸런서와 연동합니다
+
+사용법:
+  $0 --action service-create [옵션]
+
+옵션:
+  --cluster-name <name>   # 클러스터 이름 (기본값: 환경변수)
+  --service-name <name>   # 서비스 이름 (기본값: 환경변수)
+  --task-family <family>  # 태스크 패밀리 이름 (기본값: 환경변수)
+  --desired-count <count> # 원하는 태스크 수 (기본값: 1)
+
+예시:
+  $0 --action service-create
+  $0 --action service-create --cluster-name my-cluster --service-name my-service
+  $0 --action service-create --desired-count 3
+
+생성되는 리소스:
+  - ECS 서비스
+  - 태스크 정의 (없는 경우)
+  - 로드 밸런서 (설정된 경우)
+  - 타겟 그룹 (설정된 경우)
+
+진행 상황:
+  - 클러스터 확인
+  - 태스크 정의 확인/생성
+  - 서비스 생성
+  - 상태 확인
+  - 완료 보고
+EOF
+            ;;
+        "cleanup")
+            cat << EOF
+CLEANUP 액션 상세 사용법:
+
+기능:
+  - ECS 관련 모든 리소스를 안전하게 삭제합니다
+  - 서비스, 클러스터, 태스크 정의를 순서대로 정리합니다
+  - 삭제 전 확인 절차를 거칩니다
+
+사용법:
+  $0 --action cleanup [옵션]
+
+옵션:
+  --cluster-name <name>   # 삭제할 클러스터 이름
+  --service-name <name>   # 삭제할 서비스 이름
+  --force                 # 확인 없이 강제 삭제
+  --keep-logs             # 로그 그룹 유지
+
+예시:
+  $0 --action cleanup
+  $0 --action cleanup --cluster-name my-cluster
+  $0 --action cleanup --force
+
+삭제되는 리소스:
+  - ECS 서비스
+  - ECS 클러스터
+  - 태스크 정의
+  - 로그 그룹 (--keep-logs 옵션 없을 경우)
+  - 관련 IAM 역할
+
+주의사항:
+  - 삭제된 리소스는 복구할 수 없습니다
+  - --force 옵션 사용 시 확인 없이 삭제됩니다
+  - 로그 그룹은 별도로 삭제해야 할 수 있습니다
+EOF
+            ;;
+        *)
+            cat << EOF
+알 수 없는 액션: $action
+
+사용 가능한 액션:
+  - cluster-create: ECS 클러스터 생성
+  - cluster-delete: ECS 클러스터 삭제
+  - cluster-status: ECS 클러스터 상태 확인
+  - task-definition-create: 태스크 정의 생성
+  - service-create: ECS 서비스 생성
+  - service-delete: ECS 서비스 삭제
+  - service-status: ECS 서비스 상태 확인
+  - cleanup: 전체 정리
+
+각 액션의 상세 사용법을 보려면:
+  $0 --help --action <액션명>
+EOF
+            ;;
+    esac
+}
+
+# =============================================================================
+# --help 옵션 처리 로직
+# =============================================================================
+handle_help_option() {
+    local action="$1"
+    
+    if [ -n "$action" ]; then
+        show_action_help "$action"
+    else
+        usage
+    fi
+    exit 0
 }
 
 # =============================================================================
@@ -451,8 +607,13 @@ main() {
                 shift 2
                 ;;
             --help|-h)
-                usage
-                exit 0
+                # --help 옵션 처리
+                if [ "$2" = "--action" ] && [ -n "$3" ]; then
+                    handle_help_option "$3"
+                else
+                    usage
+                    exit 0
+                fi
                 ;;
             *)
                 log_error "알 수 없는 옵션: $1"

@@ -47,7 +47,162 @@ CI/CD Pipeline Helper 모듈
   $0 --action pipeline-create
   $0 --action pipeline-status --repository my-repo
   $0 --action deployment --provider aws
+
+상세 사용법:
+  $0 --help --action pipeline-create     # pipeline-create 액션 상세 사용법
+  $0 --help --action deployment          # deployment 액션 상세 사용법
+  $0 --help --action cleanup             # cleanup 액션 상세 사용법
 EOF
+}
+
+# =============================================================================
+# 액션별 상세 사용법 함수
+# =============================================================================
+show_action_help() {
+    local action="$1"
+    
+    case "$action" in
+        "pipeline-create")
+            cat << EOF
+PIPELINE-CREATE 액션 상세 사용법:
+
+기능:
+  - GitHub Actions CI/CD 파이프라인을 생성합니다
+  - 워크플로우 파일을 자동으로 생성합니다
+  - 필요한 시크릿과 환경 변수를 설정합니다
+
+사용법:
+  $0 --action pipeline-create [옵션]
+
+옵션:
+  --provider <provider>   # 클라우드 프로바이더 (aws, gcp)
+  --repository <repo>     # GitHub 저장소 (기본값: 환경변수)
+  --branch <branch>       # 브랜치 (기본값: main)
+  --workflow-name <name>  # 워크플로우 이름 (기본값: ci-cd)
+
+예시:
+  $0 --action pipeline-create
+  $0 --action pipeline-create --repository my-repo --provider aws
+  $0 --action pipeline-create --branch develop --workflow-name custom-ci
+
+생성되는 리소스:
+  - .github/workflows/ci-cd.yml
+  - GitHub Secrets 설정
+  - 환경 변수 설정
+  - 웹훅 설정
+
+진행 상황:
+  - 환경 검증
+  - 저장소 확인
+  - 워크플로우 파일 생성
+  - 시크릿 설정
+  - 완료 보고
+EOF
+            ;;
+        "deployment")
+            cat << EOF
+DEPLOYMENT 액션 상세 사용법:
+
+기능:
+  - CI/CD 파이프라인을 통해 배포를 실행합니다
+  - 빌드, 테스트, 배포 과정을 자동화합니다
+  - 배포 상태를 실시간으로 모니터링합니다
+
+사용법:
+  $0 --action deployment [옵션]
+
+옵션:
+  --provider <provider>   # 클라우드 프로바이더 (aws, gcp)
+  --repository <repo>     # GitHub 저장소 (기본값: 환경변수)
+  --branch <branch>       # 브랜치 (기본값: main)
+  --environment <env>     # 배포 환경 (dev, staging, prod)
+
+예시:
+  $0 --action deployment
+  $0 --action deployment --provider aws --environment prod
+  $0 --action deployment --repository my-repo --branch develop
+
+배포 과정:
+  - 코드 체크아웃
+  - 의존성 설치
+  - 테스트 실행
+  - 빌드 생성
+  - 배포 실행
+  - 상태 확인
+
+모니터링:
+  - 빌드 로그 확인
+  - 테스트 결과 확인
+  - 배포 상태 확인
+  - 알림 발송
+EOF
+            ;;
+        "cleanup")
+            cat << EOF
+CLEANUP 액션 상세 사용법:
+
+기능:
+  - CI/CD 파이프라인 관련 모든 리소스를 정리합니다
+  - 워크플로우 파일과 설정을 삭제합니다
+  - GitHub Secrets과 환경 변수를 정리합니다
+
+사용법:
+  $0 --action cleanup [옵션]
+
+옵션:
+  --provider <provider>   # 클라우드 프로바이더 (aws, gcp)
+  --repository <repo>     # GitHub 저장소 (기본값: 환경변수)
+  --force                 # 확인 없이 강제 삭제
+  --keep-secrets          # 시크릿 유지
+
+예시:
+  $0 --action cleanup
+  $0 --action cleanup --repository my-repo
+  $0 --action cleanup --force
+
+삭제되는 리소스:
+  - .github/workflows/ 디렉토리
+  - GitHub Secrets (--keep-secrets 옵션 없을 경우)
+  - 환경 변수
+  - 웹훅 설정
+
+주의사항:
+  - 삭제된 워크플로우는 복구할 수 없습니다
+  - --force 옵션 사용 시 확인 없이 삭제됩니다
+  - 시크릿은 별도로 삭제해야 할 수 있습니다
+EOF
+            ;;
+        *)
+            cat << EOF
+알 수 없는 액션: $action
+
+사용 가능한 액션:
+  - pipeline-create: CI/CD 파이프라인 생성
+  - pipeline-delete: CI/CD 파이프라인 삭제
+  - pipeline-status: 파이프라인 상태 확인
+  - workflow-test: 워크플로우 테스트
+  - deployment: 배포 실행
+  - cleanup: 전체 정리
+
+각 액션의 상세 사용법을 보려면:
+  $0 --help --action <액션명>
+EOF
+            ;;
+    esac
+}
+
+# =============================================================================
+# --help 옵션 처리 로직
+# =============================================================================
+handle_help_option() {
+    local action="$1"
+    
+    if [ -n "$action" ]; then
+        show_action_help "$action"
+    else
+        usage
+    fi
+    exit 0
 }
 
 # =============================================================================
@@ -427,8 +582,13 @@ main() {
                 shift 2
                 ;;
             --help|-h)
-                usage
-                exit 0
+                # --help 옵션 처리
+                if [ "$2" = "--action" ] && [ -n "$3" ]; then
+                    handle_help_option "$3"
+                else
+                    usage
+                    exit 0
+                fi
                 ;;
             *)
                 log_error "알 수 없는 옵션: $1"

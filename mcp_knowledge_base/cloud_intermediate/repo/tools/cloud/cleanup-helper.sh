@@ -45,7 +45,168 @@ Cleanup Helper 모듈
   $0 --action cleanup --provider aws
   $0 --action force-cleanup --provider gcp
   $0 --action verify-cleanup --provider all
+
+상세 사용법:
+  $0 --help --action cleanup           # cleanup 액션 상세 사용법
+  $0 --help --action force-cleanup     # force-cleanup 액션 상세 사용법
+  $0 --help --action selective-cleanup # selective-cleanup 액션 상세 사용법
 EOF
+}
+
+# =============================================================================
+# 액션별 상세 사용법 함수
+# =============================================================================
+show_action_help() {
+    local action="$1"
+    
+    case "$action" in
+        "cleanup")
+            cat << EOF
+CLEANUP 액션 상세 사용법:
+
+기능:
+  - 클라우드 리소스를 안전하게 정리합니다
+  - 중요한 리소스는 보존하고 불필요한 리소스만 삭제합니다
+  - 삭제 전 확인 절차를 거칩니다
+
+사용법:
+  $0 --action cleanup --provider <프로바이더> [옵션]
+
+프로바이더:
+  aws                     # AWS 리소스 정리
+  gcp                     # GCP 리소스 정리
+  all                     # 모든 프로바이더 정리
+
+옵션:
+  --dry-run               # 실제 삭제 없이 시뮬레이션만 실행
+  --exclude <resource>    # 제외할 리소스 타입
+  --include <resource>    # 포함할 리소스 타입
+
+예시:
+  $0 --action cleanup --provider aws
+  $0 --action cleanup --provider gcp --dry-run
+  $0 --action cleanup --provider all --exclude "rds,s3"
+
+정리되는 리소스:
+  - EKS/GKE 클러스터
+  - EC2/GCE 인스턴스
+  - 로드 밸런서
+  - 보안 그룹
+  - 임시 스토리지
+
+보존되는 리소스:
+  - RDS 데이터베이스
+  - S3 버킷 (데이터 포함)
+  - 중요한 IAM 역할
+  - 로그 그룹
+EOF
+            ;;
+        "force-cleanup")
+            cat << EOF
+FORCE-CLEANUP 액션 상세 사용법:
+
+기능:
+  - 모든 클라우드 리소스를 강제로 삭제합니다
+  - 데이터 손실 위험이 있으므로 주의해서 사용하세요
+  - 확인 없이 즉시 삭제를 진행합니다
+
+사용법:
+  $0 --action force-cleanup --provider <프로바이더> [옵션]
+
+프로바이더:
+  aws                     # AWS 리소스 강제 삭제
+  gcp                     # GCP 리소스 강제 삭제
+  all                     # 모든 프로바이더 강제 삭제
+
+옵션:
+  --confirm               # 확인 없이 실행
+  --exclude <resource>    # 제외할 리소스 타입
+  --backup-first          # 삭제 전 백업 생성
+
+예시:
+  $0 --action force-cleanup --provider aws --confirm
+  $0 --action force-cleanup --provider gcp --backup-first
+  $0 --action force-cleanup --provider all --exclude "rds"
+
+삭제되는 리소스:
+  - 모든 EKS/GKE 클러스터
+  - 모든 EC2/GCE 인스턴스
+  - 모든 스토리지 (데이터 포함)
+  - 모든 네트워크 리소스
+  - 모든 IAM 역할 (기본 역할 제외)
+
+주의사항:
+  - 이 작업은 되돌릴 수 없습니다
+  - 중요한 데이터는 미리 백업하세요
+  - 프로덕션 환경에서는 사용하지 마세요
+EOF
+            ;;
+        "selective-cleanup")
+            cat << EOF
+SELECTIVE-CLEANUP 액션 상세 사용법:
+
+기능:
+  - 특정 리소스만 선택적으로 정리합니다
+  - 세밀한 제어가 가능합니다
+  - 안전한 정리 모드입니다
+
+사용법:
+  $0 --action selective-cleanup --provider <프로바이더> [옵션]
+
+프로바이더:
+  aws                     # AWS 리소스 선택적 정리
+  gcp                     # GCP 리소스 선택적 정리
+  all                     # 모든 프로바이더 선택적 정리
+
+옵션:
+  --include <resource>    # 포함할 리소스 타입 (필수)
+  --exclude <resource>    # 제외할 리소스 타입
+  --dry-run               # 실제 삭제 없이 시뮬레이션만 실행
+  --interactive           # 대화형 모드로 실행
+
+예시:
+  $0 --action selective-cleanup --provider aws --include "ec2,eks"
+  $0 --action selective-cleanup --provider gcp --include "gke" --exclude "gke-system"
+  $0 --action selective-cleanup --provider all --include "loadbalancer" --interactive
+
+지원하는 리소스 타입:
+  - ec2, gce: 컴퓨팅 인스턴스
+  - eks, gke: Kubernetes 클러스터
+  - rds, cloudsql: 데이터베이스
+  - s3, gcs: 스토리지
+  - loadbalancer: 로드 밸런서
+  - security-group: 보안 그룹
+EOF
+            ;;
+        *)
+            cat << EOF
+알 수 없는 액션: $action
+
+사용 가능한 액션:
+  - cleanup: 일반 정리 (안전 모드)
+  - force-cleanup: 강제 정리 (모든 리소스)
+  - selective-cleanup: 선택적 정리
+  - verify-cleanup: 정리 검증
+
+각 액션의 상세 사용법을 보려면:
+  $0 --help --action <액션명>
+EOF
+            ;;
+    esac
+}
+
+# =============================================================================
+# --help 옵션 처리 로직
+# =============================================================================
+handle_help_option() {
+    local action="$1"
+    
+    if [ -n "$action" ]; then
+        show_action_help "$action"
+    else
+        usage
+    fi
+    exit 0
 }
 
 # =============================================================================
@@ -523,8 +684,13 @@ main() {
                 shift 2
                 ;;
             --help|-h)
-                usage
-                exit 0
+                # --help 옵션 처리
+                if [ "$2" = "--action" ] && [ -n "$3" ]; then
+                    handle_help_option "$3"
+                else
+                    usage
+                    exit 0
+                fi
                 ;;
             *)
                 log_error "알 수 없는 옵션: $1"

@@ -180,6 +180,65 @@ chmod +x .github/workflows/ci-cd.yml
 ```
 
 #### 로컬 테스트 실행
+
+**변경 전 시스템 아키텍처**:
+```mermaid
+flowchart TD
+    subgraph "기존 로컬 테스트"
+        A["개발자"] --> B["수동 테스트"]
+        B --> C["개별 도구 실행"]
+        C --> D["결과 수동 확인"]
+        D --> E["일관성 부족"]
+    end
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#388e3c,color:#ffffff
+    style C fill:#f57c00,color:#ffffff
+    style D fill:#f57c00,color:#ffffff
+    style E fill:#d32f2f,color:#ffffff
+```
+
+**자동화 도구 실행**:
+```bash
+# 자동화 도구: ./tools/cloud/github-actions-helper.sh --action local-test
+```
+
+**변경 후 시스템 아키텍처**:
+```mermaid
+flowchart TD
+    subgraph "통합 로컬 테스트"
+        A["자동화 스크립트"] --> B["의존성 설치"]
+        B --> C["테스트 실행"]
+        C --> D["린팅 검사"]
+        D --> E["Docker 빌드"]
+        E --> F["보안 스캔"]
+        F --> G["통합 결과 보고"]
+    end
+    
+    subgraph "테스트 자동화"
+        H["단위 테스트"] --> I["통합 테스트"]
+        I --> J["코드 품질 검사"]
+        J --> K["보안 취약점 검사"]
+        K --> L["자동 보고서 생성"]
+    end
+    
+    G --> H
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#388e3c,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+    style D fill:#388e3c,color:#ffffff
+    style E fill:#388e3c,color:#ffffff
+    style F fill:#388e3c,color:#ffffff
+    style G fill:#4caf50,color:#ffffff
+    style H fill:#4caf50,color:#ffffff
+    style I fill:#4caf50,color:#ffffff
+    style J fill:#4caf50,color:#ffffff
+    style K fill:#4caf50,color:#ffffff
+    style L fill:#4caf50,color:#ffffff
+```
+
+**실습 명령어**:
 ```bash
 # 의존성 설치
 npm install
@@ -204,6 +263,67 @@ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
 <summary>🔧 2교시: 멀티 클라우드 통합 모니터링 시스템</summary>
 
 #### Phase 1: 통합 모니터링 허브 구축
+
+**변경 전 시스템 아키텍처**:
+```mermaid
+flowchart TD
+    subgraph "기존 분산 모니터링"
+        A["AWS 리소스"] --> B["AWS CloudWatch"]
+        C["GCP 리소스"] --> D["GCP Monitoring"]
+        E["온프레미스"] --> F["별도 모니터링"]
+        B --> G["분리된 대시보드"]
+        D --> G
+        F --> G
+    end
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#388e3c,color:#ffffff
+    style C fill:#1976d2,color:#ffffff
+    style D fill:#388e3c,color:#ffffff
+    style E fill:#1976d2,color:#ffffff
+    style F fill:#388e3c,color:#ffffff
+    style G fill:#d32f2f,color:#ffffff
+```
+
+**자동화 도구 실행**:
+```bash
+# 자동화 도구: ./tools/cloud/monitoring-hub-helper.sh --action create-hub
+```
+
+**변경 후 시스템 아키텍처**:
+```mermaid
+flowchart TD
+    subgraph "통합 모니터링 허브"
+        A["AWS 리소스"] --> B["Prometheus"]
+        C["GCP 리소스"] --> B
+        D["온프레미스"] --> B
+        B --> E["Grafana"]
+        E --> F["통합 대시보드"]
+    end
+    
+    subgraph "모니터링 기능"
+        G["메트릭 수집"] --> H["알림 관리"]
+        H --> I["로그 분석"]
+        I --> J["성능 분석"]
+        J --> K["자동 스케일링"]
+    end
+    
+    F --> G
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#d32f2f,color:#ffffff
+    style C fill:#1976d2,color:#ffffff
+    style D fill:#1976d2,color:#ffffff
+    style E fill:#1976d2,color:#ffffff
+    style F fill:#4caf50,color:#ffffff
+    style G fill:#4caf50,color:#ffffff
+    style H fill:#4caf50,color:#ffffff
+    style I fill:#4caf50,color:#ffffff
+    style J fill:#4caf50,color:#ffffff
+    style K fill:#4caf50,color:#ffffff
+```
+
+**실습 명령어**:
 ```bash
 # AWS EC2 인스턴스 생성 (모니터링 허브)
 aws ec2 run-instances \
@@ -219,6 +339,59 @@ aws ec2 describe-instances --filters "Name=tag:Name,Values=monitoring-hub"
 ```
 
 #### Phase 2: AWS 클러스터 모니터링
+
+**변경 전 시스템 아키텍처**:
+```mermaid
+flowchart TD
+    subgraph "기존 AWS 모니터링"
+        A["EKS 클러스터"] --> B["CloudWatch 기본 메트릭"]
+        B --> C["제한된 가시성"]
+        C --> D["수동 알림 설정"]
+        D --> E["통합 모니터링 부족"]
+    end
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#388e3c,color:#ffffff
+    style C fill:#f57c00,color:#ffffff
+    style D fill:#f57c00,color:#ffffff
+    style E fill:#d32f2f,color:#ffffff
+```
+
+**자동화 도구 실행**:
+```bash
+# 자동화 도구: ./tools/cloud/aws-eks-monitoring-helper.sh --action setup-monitoring
+```
+
+**변경 후 시스템 아키텍처**:
+```mermaid
+flowchart TD
+    subgraph "AWS EKS 통합 모니터링"
+        A["EKS 클러스터"] --> B["Prometheus"]
+        B --> C["Grafana"]
+        C --> D["통합 대시보드"]
+    end
+    
+    subgraph "모니터링 범위"
+        E["Pod 메트릭"] --> F["Node 메트릭"]
+        F --> G["클러스터 메트릭"]
+        G --> H["애플리케이션 메트릭"]
+        H --> I["자동 스케일링"]
+    end
+    
+    D --> E
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#d32f2f,color:#ffffff
+    style C fill:#1976d2,color:#ffffff
+    style D fill:#4caf50,color:#ffffff
+    style E fill:#4caf50,color:#ffffff
+    style F fill:#4caf50,color:#ffffff
+    style G fill:#4caf50,color:#ffffff
+    style H fill:#4caf50,color:#ffffff
+    style I fill:#4caf50,color:#ffffff
+```
+
+**실습 명령어**:
 ```bash
 # EKS 클러스터 생성
 aws eks create-cluster \
@@ -234,6 +407,61 @@ aws eks update-kubeconfig --name aws-monitoring-cluster --region us-west-2
 ```
 
 #### Prometheus 스택 배포
+
+**변경 전 시스템 아키텍처**:
+```mermaid
+flowchart TD
+    subgraph "기존 모니터링 스택"
+        A["EKS 클러스터"] --> B["기본 메트릭"]
+        B --> C["제한된 수집"]
+        C --> D["수동 설정"]
+        D --> E["통합 부족"]
+    end
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#388e3c,color:#ffffff
+    style C fill:#f57c00,color:#ffffff
+    style D fill:#f57c00,color:#ffffff
+    style E fill:#d32f2f,color:#ffffff
+```
+
+**자동화 도구 실행**:
+```bash
+# 자동화 도구: ./tools/cloud/prometheus-stack-helper.sh --action deploy-stack
+```
+
+**변경 후 시스템 아키텍처**:
+```mermaid
+flowchart TD
+    subgraph "Prometheus 스택"
+        A["EKS 클러스터"] --> B["Prometheus Operator"]
+        B --> C["Prometheus Server"]
+        C --> D["ServiceMonitor"]
+        D --> E["통합 메트릭 수집"]
+    end
+    
+    subgraph "모니터링 스택"
+        F["메트릭 수집"] --> G["알림 규칙"]
+        G --> H["서비스 디스커버리"]
+        H --> I["자동 설정"]
+        I --> J["통합 대시보드"]
+    end
+    
+    E --> F
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#d32f2f,color:#ffffff
+    style C fill:#d32f2f,color:#ffffff
+    style D fill:#d32f2f,color:#ffffff
+    style E fill:#4caf50,color:#ffffff
+    style F fill:#4caf50,color:#ffffff
+    style G fill:#4caf50,color:#ffffff
+    style H fill:#4caf50,color:#ffffff
+    style I fill:#4caf50,color:#ffffff
+    style J fill:#4caf50,color:#ffffff
+```
+
+**실습 명령어**:
 ```bash
 # Prometheus 스택 배포
 kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/bundle.yaml
@@ -264,6 +492,61 @@ kubectl apply -f prometheus-instance.yaml
 <summary>🔧 3교시: AWS Application 모니터링</summary>
 
 #### 애플리케이션 배포 매니페스트 생성
+
+**변경 전 시스템 아키텍처**:
+```mermaid
+flowchart TD
+    subgraph "기존 애플리케이션 배포"
+        A["애플리케이션"] --> B["수동 배포"]
+        B --> C["기본 모니터링"]
+        C --> D["제한된 메트릭"]
+        D --> E["수동 스케일링"]
+    end
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#388e3c,color:#ffffff
+    style C fill:#f57c00,color:#ffffff
+    style D fill:#f57c00,color:#ffffff
+    style E fill:#d32f2f,color:#ffffff
+```
+
+**자동화 도구 실행**:
+```bash
+# 자동화 도구: ./tools/cloud/aws-app-monitoring-helper.sh --action deploy-app
+```
+
+**변경 후 시스템 아키텍처**:
+```mermaid
+flowchart TD
+    subgraph "AWS 애플리케이션 모니터링"
+        A["애플리케이션"] --> B["Kubernetes Deployment"]
+        B --> C["Service"]
+        C --> D["LoadBalancer"]
+        D --> E["통합 모니터링"]
+    end
+    
+    subgraph "모니터링 기능"
+        F["Pod 메트릭"] --> G["서비스 메트릭"]
+        G --> H["트래픽 분석"]
+        H --> I["자동 스케일링"]
+        I --> J["알림 관리"]
+    end
+    
+    E --> F
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#388e3c,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+    style D fill:#388e3c,color:#ffffff
+    style E fill:#4caf50,color:#ffffff
+    style F fill:#4caf50,color:#ffffff
+    style G fill:#4caf50,color:#ffffff
+    style H fill:#4caf50,color:#ffffff
+    style I fill:#4caf50,color:#ffffff
+    style J fill:#4caf50,color:#ffffff
+```
+
+**실습 명령어**:
 ```bash
 # 애플리케이션 Deployment 생성
 cat > aws-app-deployment.yaml << 'EOF'
@@ -358,6 +641,59 @@ curl http://localhost:9090/api/v1/targets
 <summary>🔧 4교시: GCP 클러스터 통합 모니터링</summary>
 
 #### GCP GKE 클러스터 생성
+
+**변경 전 시스템 아키텍처**:
+```mermaid
+flowchart TD
+    subgraph "기존 GCP 모니터링"
+        A["GCP 리소스"] --> B["GCP Monitoring"]
+        B --> C["제한된 통합"]
+        C --> D["별도 대시보드"]
+        D --> E["멀티 클라우드 분리"]
+    end
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#388e3c,color:#ffffff
+    style C fill:#f57c00,color:#ffffff
+    style D fill:#f57c00,color:#ffffff
+    style E fill:#d32f2f,color:#ffffff
+```
+
+**자동화 도구 실행**:
+```bash
+# 자동화 도구: ./tools/cloud/gcp-gke-monitoring-helper.sh --action create-cluster
+```
+
+**변경 후 시스템 아키텍처**:
+```mermaid
+flowchart TD
+    subgraph "GCP GKE 통합 모니터링"
+        A["GKE 클러스터"] --> B["Prometheus"]
+        B --> C["Grafana"]
+        C --> D["통합 대시보드"]
+    end
+    
+    subgraph "멀티 클라우드 통합"
+        E["AWS EKS"] --> F["통합 모니터링"]
+        G["GCP GKE"] --> F
+        H["온프레미스"] --> F
+        F --> I["단일 대시보드"]
+    end
+    
+    D --> F
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#d32f2f,color:#ffffff
+    style C fill:#1976d2,color:#ffffff
+    style D fill:#4caf50,color:#ffffff
+    style E fill:#ff9800,color:#ffffff
+    style F fill:#4caf50,color:#ffffff
+    style G fill:#1976d2,color:#ffffff
+    style H fill:#9c27b0,color:#ffffff
+    style I fill:#4caf50,color:#ffffff
+```
+
+**실습 명령어**:
 ```bash
 # GKE 클러스터 생성
 gcloud container clusters create gcp-monitoring-cluster \
