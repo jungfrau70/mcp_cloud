@@ -243,6 +243,539 @@ chmod +x .github/workflows/ci-cd.yml
 - CI/CD 파이프라인 구성
 - 자동 테스트 및 배포 설정
 
+#### 수작업 실습 가이드 (GitHub Actions 워크플로우 생성)
+
+**1단계: GitHub 저장소 생성 및 설정**
+```bash
+# GitHub CLI 설치 확인
+gh --version
+
+# GitHub 인증 확인
+gh auth status
+
+# 새 저장소 생성
+gh repo create cicd-practice-app --public --description "CI/CD Practice Application"
+
+# 저장소 클론
+git clone https://github.com/YOUR_USERNAME/cicd-practice-app.git
+cd cicd-practice-app
+```
+
+**2단계: 샘플 애플리케이션 생성**
+```bash
+# package.json 생성
+cat > package.json << 'EOF'
+{
+  "name": "cicd-practice-app",
+  "version": "1.0.0",
+  "description": "CI/CD Practice Application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "jest",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "eslint": "^8.40.0",
+    "supertest": "^6.3.3"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
+EOF
+
+# Express 서버 생성
+cat > server.js << 'EOF'
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// 미들웨어 설정
+app.use(helmet());
+app.use(cors());
+app.use(express.json());
+
+// 라우트 정의
+app.get('/', (req, res) => {
+  res.json({
+    message: 'CI/CD Practice Application',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'healthy',
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.get('/api/version', (req, res) => {
+  res.json({
+    version: '1.0.0',
+    build: process.env.BUILD_NUMBER || 'local',
+    commit: process.env.COMMIT_SHA || 'unknown'
+  });
+});
+
+// 서버 시작
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+module.exports = app;
+EOF
+
+# 테스트 파일 생성
+cat > server.test.js << 'EOF'
+const request = require('supertest');
+const app = require('./server');
+
+describe('Server Tests', () => {
+  test('GET / should return welcome message', async () => {
+    const response = await request(app).get('/');
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe('CI/CD Practice Application');
+  });
+
+  test('GET /health should return health status', async () => {
+    const response = await request(app).get('/health');
+    expect(response.status).toBe(200);
+    expect(response.body.status).toBe('healthy');
+  });
+
+  test('GET /api/version should return version info', async () => {
+    const response = await request(app).get('/api/version');
+    expect(response.status).toBe(200);
+    expect(response.body.version).toBe('1.0.0');
+  });
+});
+EOF
+
+# ESLint 설정 파일 생성
+cat > .eslintrc.js << 'EOF'
+module.exports = {
+  env: {
+    node: true,
+    es2021: true,
+    jest: true
+  },
+  extends: ['eslint:recommended'],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module'
+  },
+  rules: {
+    'no-console': 'warn',
+    'no-unused-vars': 'error',
+    'prefer-const': 'error'
+  }
+};
+EOF
+
+# .gitignore 생성
+cat > .gitignore << 'EOF'
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+coverage/
+.nyc_output/
+*.log
+.DS_Store
+EOF
+```
+
+**3단계: Dockerfile 생성**
+```bash
+# Dockerfile 생성
+cat > Dockerfile << 'EOF'
+FROM node:18-alpine
+
+WORKDIR /app
+
+# 의존성 파일 복사 및 설치
+COPY package*.json ./
+RUN npm ci --only=production
+
+# 애플리케이션 코드 복사
+COPY . .
+
+# 보안을 위한 non-root 사용자 생성
+RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
+RUN chown -R nextjs:nodejs /app
+USER nextjs
+
+# 포트 노출
+EXPOSE 3000
+
+# 헬스체크 추가
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
+
+# 애플리케이션 시작
+CMD ["npm", "start"]
+EOF
+
+# .dockerignore 생성
+cat > .dockerignore << 'EOF'
+node_modules
+npm-debug.log
+.git
+.gitignore
+README.md
+.env
+.nyc_output
+coverage
+.DS_Store
+*.log
+EOF
+```
+
+**4단계: GitHub Actions 워크플로우 생성**
+```bash
+# .github/workflows 디렉토리 생성
+mkdir -p .github/workflows
+
+# CI/CD 워크플로우 생성
+cat > .github/workflows/ci-cd.yml << 'EOF'
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  NODE_VERSION: '18'
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test and Build
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run linting
+      run: npm run lint
+      
+    - name: Run tests
+      run: npm test
+      
+    - name: Run tests with coverage
+      run: npm test -- --coverage
+      
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+
+  security-scan:
+    runs-on: ubuntu-latest
+    name: Security Scan
+    needs: test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Build Docker image
+      run: |
+        docker build -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
+        docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:latest
+        
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        
+    - name: Upload Trivy scan results
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  build-and-push:
+    runs-on: ubuntu-latest
+    name: Build and Push Docker Image
+    needs: [test, security-scan]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Log in to Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha,prefix={{branch}}-
+          type=raw,value=latest,enable={{is_default_branch}}
+          
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to AWS ECS
+    needs: build-and-push
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-northeast-2
+        
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+      
+    - name: Build, tag, and push image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: cicd-practice-app
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        
+    - name: Deploy to Amazon ECS
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: cicd-practice-app
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        aws ecs update-service \
+          --cluster ${{ secrets.ECS_CLUSTER }} \
+          --service ${{ secrets.ECS_SERVICE }} \
+          --force-new-deployment
+
+  notify:
+    runs-on: ubuntu-latest
+    name: Notify Deployment Status
+    needs: [deploy]
+    if: always()
+    
+    steps:
+    - name: Notify Success
+      if: needs.deploy.result == 'success'
+      run: |
+        echo "✅ Deployment successful!"
+        # 여기에 Slack, Discord 등 알림 추가
+        
+    - name: Notify Failure
+      if: needs.deploy.result == 'failure'
+      run: |
+        echo "❌ Deployment failed!"
+        # 여기에 Slack, Discord 등 알림 추가
+EOF
+```
+
+**5단계: GitHub Secrets 설정**
+```bash
+# GitHub Secrets 설정 (수동으로 GitHub 웹에서 설정)
+echo "GitHub 저장소에서 다음 Secrets를 설정하세요:"
+echo "1. AWS_ACCESS_KEY_ID: AWS 액세스 키 ID"
+echo "2. AWS_SECRET_ACCESS_KEY: AWS 시크릿 액세스 키"
+echo "3. ECS_CLUSTER: ECS 클러스터 이름"
+echo "4. ECS_SERVICE: ECS 서비스 이름"
+
+# GitHub CLI를 통한 Secrets 설정 (선택사항)
+# gh secret set AWS_ACCESS_KEY_ID --body "YOUR_ACCESS_KEY"
+# gh secret set AWS_SECRET_ACCESS_KEY --body "YOUR_SECRET_KEY"
+# gh secret set ECS_CLUSTER --body "your-cluster-name"
+# gh secret set ECS_SERVICE --body "your-service-name"
+```
+
+**6단계: 코드 커밋 및 푸시**
+```bash
+# Git 설정
+git config user.name "Your Name"
+git config user.email "your.email@example.com"
+
+# 모든 파일 추가
+git add .
+
+# 첫 번째 커밋
+git commit -m "Initial commit: Add CI/CD pipeline setup"
+
+# 메인 브랜치로 푸시
+git push origin main
+
+# develop 브랜치 생성 및 푸시
+git checkout -b develop
+git push origin develop
+```
+
+**7단계: 워크플로우 실행 확인**
+```bash
+# 워크플로우 실행 상태 확인
+gh run list
+
+# 최신 워크플로우 실행 로그 확인
+gh run view --log
+
+# 특정 워크플로우 실행 상세 정보
+gh run view [RUN_ID] --log
+```
+
+**8단계: Pull Request 테스트**
+```bash
+# feature 브랜치 생성
+git checkout -b feature/new-endpoint
+
+# 새로운 엔드포인트 추가
+cat >> server.js << 'EOF'
+
+app.get('/api/status', (req, res) => {
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+EOF
+
+# 테스트 추가
+cat >> server.test.js << 'EOF'
+
+  test('GET /api/status should return status info', async () => {
+    const response = await request(app).get('/api/status');
+    expect(response.status).toBe(200);
+    expect(response.body.status).toBe('ok');
+  });
+EOF
+
+# 변경사항 커밋
+git add .
+git commit -m "Add new status endpoint"
+
+# feature 브랜치 푸시
+git push origin feature/new-endpoint
+
+# Pull Request 생성
+gh pr create --title "Add new status endpoint" --body "This PR adds a new /api/status endpoint for health monitoring"
+```
+
+**9단계: 워크플로우 모니터링**
+```bash
+# PR 워크플로우 실행 확인
+gh run list --branch feature/new-endpoint
+
+# 워크플로우 실행 로그 실시간 확인
+gh run watch
+
+# 특정 워크플로우의 모든 단계 확인
+gh run view [RUN_ID] --log --job [JOB_NAME]
+```
+
+**10단계: 배포 확인**
+```bash
+# ECS 서비스 상태 확인
+aws ecs describe-services \
+  --cluster your-cluster-name \
+  --services your-service-name
+
+# ECS 태스크 상태 확인
+aws ecs list-tasks \
+  --cluster your-cluster-name \
+  --service-name your-service-name
+
+# 애플리케이션 접근 테스트
+# ALB DNS 이름을 사용하여 접근 테스트
+curl http://your-alb-dns-name/health
+curl http://your-alb-dns-name/api/version
+```
+
+**11단계: 롤백 테스트**
+```bash
+# 이전 버전으로 롤백
+aws ecs update-service \
+  --cluster your-cluster-name \
+  --service your-service-name \
+  --task-definition your-task-definition:previous-version
+
+# 롤백 상태 확인
+aws ecs describe-services \
+  --cluster your-cluster-name \
+  --services your-service-name
+```
+
+**12단계: 정리**
+```bash
+# feature 브랜치 삭제
+git checkout main
+git branch -d feature/new-endpoint
+git push origin --delete feature/new-endpoint
+
+# 로컬 정리
+cd ..
+rm -rf cicd-practice-app
+
+# GitHub 저장소 삭제 (선택사항)
+gh repo delete cicd-practice-app --confirm
+```
+
 #### 실습 2: 로컬 테스트 실행 (20분)
 
 **변경 전 시스템 아키텍처**:
@@ -326,6 +859,226 @@ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
 - 자동화된 테스트 실행
 - 보안 스캔 및 품질 검사
 
+#### 수작업 실습 가이드 (로컬 테스트 실행)
+
+**1단계: 로컬 개발 환경 설정**
+```bash
+# Node.js 버전 확인
+node --version
+npm --version
+
+# 프로젝트 디렉토리로 이동
+cd cicd-practice-app
+
+# 의존성 설치
+npm install
+
+# 설치된 패키지 확인
+npm list --depth=0
+```
+
+**2단계: 코드 품질 검사 도구 설정**
+```bash
+# ESLint 전역 설치 (선택사항)
+npm install -g eslint
+
+# 프로젝트 ESLint 설정 확인
+npx eslint --version
+
+# ESLint 설정 파일 검증
+cat .eslintrc.js
+
+# ESLint 규칙 테스트
+npx eslint server.js --fix
+```
+
+**3단계: 단위 테스트 실행**
+```bash
+# Jest 설치 확인
+npx jest --version
+
+# 테스트 실행
+npm test
+
+# 커버리지와 함께 테스트 실행
+npm test -- --coverage
+
+# 테스트 결과 확인
+ls -la coverage/
+cat coverage/lcov.info | head -20
+```
+
+**4단계: 통합 테스트 실행**
+```bash
+# 서버 백그라운드 실행
+npm start &
+SERVER_PID=$!
+
+# 서버 시작 대기
+sleep 5
+
+# 헬스체크 테스트
+curl -s http://localhost:3000/health | jq
+
+# API 엔드포인트 테스트
+curl -s http://localhost:3000/ | jq
+curl -s http://localhost:3000/api/version | jq
+
+# 서버 종료
+kill $SERVER_PID
+```
+
+**5단계: Docker 이미지 빌드 테스트**
+```bash
+# Docker 설치 확인
+docker --version
+
+# Docker 이미지 빌드
+docker build -t cicd-practice-app:local .
+
+# 빌드된 이미지 확인
+docker images | grep cicd-practice-app
+
+# 이미지 레이어 분석
+docker history cicd-practice-app:local
+```
+
+**6단계: Docker 컨테이너 실행 테스트**
+```bash
+# 컨테이너 실행
+docker run -d --name test-app -p 3001:3000 cicd-practice-app:local
+
+# 컨테이너 상태 확인
+docker ps | grep test-app
+
+# 컨테이너 로그 확인
+docker logs test-app
+
+# 애플리케이션 접근 테스트
+curl -s http://localhost:3001/health | jq
+curl -s http://localhost:3001/ | jq
+
+# 컨테이너 정리
+docker stop test-app
+docker rm test-app
+```
+
+**7단계: 보안 스캔 실행**
+```bash
+# Trivy 설치 (Ubuntu/Debian)
+sudo apt-get update
+sudo apt-get install wget apt-transport-https gnupg lsb-release
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+sudo apt-get update
+sudo apt-get install trivy
+
+# Trivy 버전 확인
+trivy --version
+
+# Docker 이미지 보안 스캔
+trivy image cicd-practice-app:local
+
+# JSON 형태로 스캔 결과 저장
+trivy image --format json --output trivy-results.json cicd-practice-app:local
+
+# 스캔 결과 확인
+cat trivy-results.json | jq '.Results[] | select(.Vulnerabilities != null) | .Vulnerabilities[] | {VulnerabilityID, Severity, Title}'
+```
+
+**8단계: 성능 테스트**
+```bash
+# Apache Bench 설치 (Ubuntu/Debian)
+sudo apt-get install apache2-utils
+
+# 서버 실행
+npm start &
+SERVER_PID=$!
+sleep 5
+
+# 성능 테스트 실행
+ab -n 100 -c 10 http://localhost:3000/health
+
+# 메모리 사용량 모니터링
+curl -s http://localhost:3000/health | jq '.memory'
+
+# 서버 종료
+kill $SERVER_PID
+```
+
+**9단계: 코드 품질 메트릭 수집**
+```bash
+# 코드 복잡도 분석 (선택사항)
+npm install -g complexity-report
+npx cr --format json server.js > complexity-report.json
+
+# 코드 라인 수 확인
+wc -l server.js server.test.js
+
+# 파일 크기 확인
+ls -lh server.js server.test.js package.json
+
+# 의존성 취약점 검사
+npm audit
+
+# 의존성 업데이트 확인
+npm outdated
+```
+
+**10단계: 로컬 테스트 결과 정리**
+```bash
+# 테스트 결과 디렉토리 생성
+mkdir -p test-results
+
+# 커버리지 리포트 복사
+cp -r coverage/ test-results/
+
+# 보안 스캔 결과 복사
+cp trivy-results.json test-results/
+
+# 복잡도 리포트 복사
+cp complexity-report.json test-results/
+
+# 테스트 결과 요약 생성
+cat > test-results/summary.md << 'EOF'
+# 로컬 테스트 결과 요약
+
+## 테스트 실행 결과
+- 단위 테스트: ✅ 통과
+- 통합 테스트: ✅ 통과
+- 코드 커버리지: [결과 확인]
+
+## 보안 스캔 결과
+- 취약점 수: [결과 확인]
+- 심각도 분포: [결과 확인]
+
+## 성능 테스트 결과
+- 응답 시간: [결과 확인]
+- 처리량: [결과 확인]
+
+## 코드 품질
+- ESLint 오류: [결과 확인]
+- 복잡도: [결과 확인]
+EOF
+
+# 결과 확인
+ls -la test-results/
+cat test-results/summary.md
+```
+
+**11단계: 정리**
+```bash
+# 임시 파일 정리
+rm -rf test-results/
+rm -f trivy-results.json complexity-report.json
+
+# Docker 이미지 정리
+docker rmi cicd-practice-app:local
+
+# 로그 정리
+rm -f *.log
+```
+
 #### 실습 3: CI/CD 파이프라인 테스트 (20분)
 
 **변경 전 시스템 아키텍처**:
@@ -405,11 +1158,325 @@ aws ecs describe-services --cluster my-cluster --services my-service
 - CI/CD 파이프라인 모니터링
 - 자동 배포 결과 확인
 
+#### 수작업 실습 가이드 (CI/CD 파이프라인 테스트)
+
+**1단계: GitHub Actions 워크플로우 트리거**
+```bash
+# 현재 브랜치 확인
+git branch
+
+# 변경사항 확인
+git status
+
+# 새로운 기능 추가
+cat >> server.js << 'EOF'
+
+app.get('/api/metrics', (req, res) => {
+  res.json({
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    cpu: process.cpuUsage(),
+    version: process.version,
+    platform: process.platform
+  });
+});
+EOF
+
+# 테스트 추가
+cat >> server.test.js << 'EOF'
+
+  test('GET /api/metrics should return system metrics', async () => {
+    const response = await request(app).get('/api/metrics');
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('uptime');
+    expect(response.body).toHaveProperty('memory');
+    expect(response.body).toHaveProperty('cpu');
+  });
+EOF
+
+# 변경사항 커밋
+git add .
+git commit -m "Add system metrics endpoint"
+```
+
+**2단계: 워크플로우 실행 및 모니터링**
+```bash
+# 메인 브랜치로 푸시 (배포 트리거)
+git push origin main
+
+# 워크플로우 실행 상태 확인
+gh run list --limit 5
+
+# 최신 워크플로우 실행 ID 확인
+LATEST_RUN_ID=$(gh run list --limit 1 --json databaseId --jq '.[0].databaseId')
+echo "Latest run ID: $LATEST_RUN_ID"
+
+# 워크플로우 실행 상세 정보 확인
+gh run view $LATEST_RUN_ID
+```
+
+**3단계: 워크플로우 단계별 모니터링**
+```bash
+# 테스트 단계 로그 확인
+gh run view $LATEST_RUN_ID --log --job test
+
+# 보안 스캔 단계 로그 확인
+gh run view $LATEST_RUN_ID --log --job security-scan
+
+# 빌드 및 푸시 단계 로그 확인
+gh run view $LATEST_RUN_ID --log --job build-and-push
+
+# 배포 단계 로그 확인
+gh run view $LATEST_RUN_ID --log --job deploy
+```
+
+**4단계: 실시간 워크플로우 모니터링**
+```bash
+# 워크플로우 실행 상태 실시간 모니터링
+gh run watch
+
+# 특정 워크플로우 실행 상태 확인
+gh run view $LATEST_RUN_ID --log --follow
+
+# 워크플로우 실행 결과 확인
+gh run view $LATEST_RUN_ID --log | grep -E "(✅|❌|Error|Failed|Success)"
+```
+
+**5단계: AWS ECS 배포 확인**
+```bash
+# AWS CLI 설정 확인
+aws sts get-caller-identity
+
+# ECS 클러스터 목록 확인
+aws ecs list-clusters
+
+# ECS 서비스 목록 확인
+aws ecs list-services --cluster your-cluster-name
+
+# ECS 서비스 상태 확인
+aws ecs describe-services \
+  --cluster your-cluster-name \
+  --services your-service-name
+
+# ECS 태스크 상태 확인
+aws ecs list-tasks \
+  --cluster your-cluster-name \
+  --service-name your-service-name
+```
+
+**6단계: 배포된 애플리케이션 테스트**
+```bash
+# ALB DNS 이름 확인
+ALB_DNS=$(aws elbv2 describe-load-balancers \
+  --names your-alb-name \
+  --query 'LoadBalancers[0].DNSName' \
+  --output text)
+
+echo "ALB DNS: $ALB_DNS"
+
+# 애플리케이션 헬스체크
+curl -s http://$ALB_DNS/health | jq
+
+# 기본 엔드포인트 테스트
+curl -s http://$ALB_DNS/ | jq
+
+# 버전 정보 확인
+curl -s http://$ALB_DNS/api/version | jq
+
+# 새로운 메트릭 엔드포인트 테스트
+curl -s http://$ALB_DNS/api/metrics | jq
+```
+
+**7단계: 배포 롤백 테스트**
+```bash
+# 이전 태스크 정의 확인
+aws ecs describe-task-definition \
+  --task-definition your-task-definition
+
+# 이전 버전으로 롤백
+aws ecs update-service \
+  --cluster your-cluster-name \
+  --service your-service-name \
+  --task-definition your-task-definition:previous-version
+
+# 롤백 상태 모니터링
+aws ecs describe-services \
+  --cluster your-cluster-name \
+  --services your-service-name \
+  --query 'services[0].deployments[0].{Status:status,RunningCount:runningCount,DesiredCount:desiredCount}'
+```
+
+**8단계: 모니터링 및 알림 확인**
+```bash
+# CloudWatch 로그 확인
+aws logs describe-log-groups \
+  --log-group-name-prefix /ecs/your-service-name
+
+# CloudWatch 메트릭 확인
+aws cloudwatch get-metric-statistics \
+  --namespace AWS/ECS \
+  --metric-name CPUUtilization \
+  --dimensions Name=ServiceName,Value=your-service-name Name=ClusterName,Value=your-cluster-name \
+  --start-time $(date -u -d '1 hour ago' +%Y-%m-%dT%H:%M:%S) \
+  --end-time $(date -u +%Y-%m-%dT%H:%M:%S) \
+  --period 300 \
+  --statistics Average
+```
+
+**9단계: 성능 및 부하 테스트**
+```bash
+# Apache Bench를 사용한 부하 테스트
+ab -n 1000 -c 50 http://$ALB_DNS/health
+
+# 응답 시간 측정
+time curl -s http://$ALB_DNS/health > /dev/null
+
+# 동시 연결 테스트
+for i in {1..10}; do
+  curl -s http://$ALB_DNS/health &
+done
+wait
+```
+
+**10단계: 보안 및 취약점 확인**
+```bash
+# ECS 태스크 보안 그룹 확인
+aws ecs describe-services \
+  --cluster your-cluster-name \
+  --services your-service-name \
+  --query 'services[0].networkConfiguration.awsvpcConfiguration.securityGroups'
+
+# 태스크 정의 보안 설정 확인
+aws ecs describe-task-definition \
+  --task-definition your-task-definition \
+  --query 'taskDefinition.{ExecutionRoleArn:executionRoleArn,TaskRoleArn:taskRoleArn,NetworkMode:networkMode}'
+```
+
+**11단계: CI/CD 파이프라인 결과 분석**
+```bash
+# 워크플로우 실행 시간 분석
+gh run list --limit 10 --json createdAt,updatedAt,conclusion --jq '.[] | {created: .createdAt, updated: .updatedAt, status: .conclusion}'
+
+# 실패한 워크플로우 확인
+gh run list --status failure --limit 5
+
+# 성공한 워크플로우 확인
+gh run list --status success --limit 5
+
+# 워크플로우 실행 통계 생성
+cat > pipeline-stats.md << 'EOF'
+# CI/CD 파이프라인 실행 통계
+
+## 최근 실행 결과
+- 성공률: [계산 결과]
+- 평균 실행 시간: [계산 결과]
+- 실패 원인: [분석 결과]
+
+## 배포 상태
+- 현재 버전: [확인 결과]
+- 배포 시간: [확인 결과]
+- 롤백 가능성: [확인 결과]
+
+## 성능 지표
+- 응답 시간: [측정 결과]
+- 처리량: [측정 결과]
+- 오류율: [측정 결과]
+EOF
+```
+
+**12단계: 정리 및 다음 단계 준비**
+```bash
+# 워크플로우 실행 로그 다운로드
+gh run download $LATEST_RUN_ID
+
+# 로그 파일 확인
+ls -la $LATEST_RUN_ID/
+
+# 임시 파일 정리
+rm -rf $LATEST_RUN_ID/
+
+# 다음 실습을 위한 브랜치 생성
+git checkout -b feature/monitoring-integration
+git push origin feature/monitoring-integration
+```
+
 ### 📊 실습 결과
+
+#### 자동화 도구 사용 시
 - [ ] GitHub Actions 워크플로우 생성 완료
 - [ ] 로컬 테스트 환경 구성 완료
 - [ ] CI/CD 파이프라인 테스트 완료
 - [ ] 자동 배포 시스템 구축 완료
+
+#### 수작업 실습 완료 체크리스트
+- [ ] GitHub 저장소 생성 및 설정 완료
+- [ ] 샘플 애플리케이션 생성 완료
+- [ ] Dockerfile 및 Docker 이미지 생성 완료
+- [ ] GitHub Actions 워크플로우 생성 완료
+- [ ] GitHub Secrets 설정 완료
+- [ ] 코드 커밋 및 푸시 완료
+- [ ] 워크플로우 실행 확인 완료
+- [ ] Pull Request 테스트 완료
+- [ ] 워크플로우 모니터링 완료
+- [ ] 배포 확인 완료
+- [ ] 롤백 테스트 완료
+- [ ] 정리 완료
+
+#### 예상 결과 비교표
+```mermaid
+flowchart TD
+    A["수작업 실습"] --> B["GitHub Actions 워크플로우"]
+    A --> C["로컬 테스트 환경"]
+    A --> D["CI/CD 파이프라인"]
+    
+    B --> E["자동화된 빌드"]
+    B --> F["자동화된 테스트"]
+    B --> G["자동화된 배포"]
+    
+    C --> H["코드 품질 검사"]
+    C --> I["보안 스캔"]
+    C --> J["성능 테스트"]
+    
+    D --> K["AWS ECS 배포"]
+    D --> L["롤백 자동화"]
+    D --> M["모니터링"]
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#388e3c,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+    style D fill:#388e3c,color:#ffffff
+    style E fill:#4caf50,color:#ffffff
+    style F fill:#4caf50,color:#ffffff
+    style G fill:#4caf50,color:#ffffff
+    style H fill:#4caf50,color:#ffffff
+    style I fill:#4caf50,color:#ffffff
+    style J fill:#4caf50,color:#ffffff
+    style K fill:#4caf50,color:#ffffff
+    style L fill:#4caf50,color:#ffffff
+    style M fill:#4caf50,color:#ffffff
+```
+
+#### 수작업 실습 가이드 요약
+
+**핵심 학습 포인트**:
+- **GitHub Actions**: 자동화된 CI/CD 파이프라인 구축
+- **로컬 테스트**: 코드 품질, 보안, 성능 검증
+- **Docker 통합**: 컨테이너화된 애플리케이션 배포
+- **AWS ECS**: 클라우드 환경 자동 배포
+- **모니터링**: 배포 상태 및 성능 추적
+
+**시간 배분**:
+- **워크플로우 생성**: 20분
+- **로컬 테스트**: 20분
+- **파이프라인 테스트**: 20분
+- **총 소요 시간**: 60분
+
+**문제 해결 가이드**:
+1. **워크플로우 실행 실패**: GitHub Secrets 확인, 권한 설정 검토
+2. **로컬 테스트 실패**: 의존성 설치 확인, 포트 충돌 해결
+3. **배포 실패**: AWS 자격 증명 확인, ECS 서비스 상태 검토
+4. **성능 이슈**: 리소스 할당 확인, 로드 밸런서 설정 검토
 
 ---
 

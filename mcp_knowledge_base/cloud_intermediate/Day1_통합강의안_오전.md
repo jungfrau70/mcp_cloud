@@ -1212,6 +1212,746 @@ kubectl apply -f nginx-service.yaml
 - ConfigMap과 Secret 관리
 - 리소스 상태 모니터링
 
+#### 수작업 실습 가이드 (Kubernetes Workload 배포)
+
+**1단계: Pod 생성 및 관리**
+```bash
+# Pod YAML 파일 생성
+cat > nginx-pod.yaml << 'EOF'
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    app: nginx
+    tier: frontend
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.21
+    ports:
+    - containerPort: 80
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 80
+      initialDelaySeconds: 30
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 80
+      initialDelaySeconds: 5
+      periodSeconds: 5
+EOF
+
+# Pod 생성
+kubectl apply -f nginx-pod.yaml
+
+# Pod 상태 확인
+kubectl get pods
+kubectl get pods -o wide
+
+# Pod 상세 정보 확인
+kubectl describe pod nginx-pod
+
+# Pod 로그 확인
+kubectl logs nginx-pod
+```
+
+**2단계: Deployment 생성 및 관리**
+```bash
+# Deployment YAML 파일 생성
+cat > nginx-deployment.yaml << 'EOF'
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.21
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+EOF
+
+# Deployment 생성
+kubectl apply -f nginx-deployment.yaml
+
+# Deployment 상태 확인
+kubectl get deployments
+kubectl get pods -l app=nginx
+
+# Deployment 상세 정보 확인
+kubectl describe deployment nginx-deployment
+
+# ReplicaSet 확인
+kubectl get replicasets
+```
+
+**3단계: Service 생성 및 관리**
+```bash
+# ClusterIP Service 생성
+cat > nginx-service.yaml << 'EOF'
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  labels:
+    app: nginx
+spec:
+  selector:
+    app: nginx
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  type: ClusterIP
+EOF
+
+# Service 생성
+kubectl apply -f nginx-service.yaml
+
+# Service 상태 확인
+kubectl get services
+kubectl get svc nginx-service
+
+# Service 상세 정보 확인
+kubectl describe service nginx-service
+
+# Service 엔드포인트 확인
+kubectl get endpoints nginx-service
+```
+
+**4단계: LoadBalancer Service 생성**
+```bash
+# LoadBalancer Service 생성
+cat > nginx-loadbalancer.yaml << 'EOF'
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-loadbalancer
+  labels:
+    app: nginx
+spec:
+  selector:
+    app: nginx
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  type: LoadBalancer
+EOF
+
+# LoadBalancer Service 생성
+kubectl apply -f nginx-loadbalancer.yaml
+
+# LoadBalancer 상태 확인
+kubectl get services nginx-loadbalancer
+kubectl get svc nginx-loadbalancer -o wide
+
+# 외부 IP 확인 (클라우드 환경에서)
+kubectl get svc nginx-loadbalancer --watch
+```
+
+**5단계: ConfigMap과 Secret 생성**
+```bash
+# ConfigMap 생성
+cat > nginx-configmap.yaml << 'EOF'
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    server {
+        listen 80;
+        server_name localhost;
+        location / {
+            root /usr/share/nginx/html;
+            index index.html index.htm;
+        }
+    }
+  index.html: |
+    <html>
+    <head><title>Kubernetes Demo</title></head>
+    <body>
+        <h1>Hello from Kubernetes!</h1>
+        <p>This is served from a ConfigMap</p>
+    </body>
+    </html>
+EOF
+
+# Secret 생성
+cat > nginx-secret.yaml << 'EOF'
+apiVersion: v1
+kind: Secret
+metadata:
+  name: nginx-secret
+type: Opaque
+data:
+  username: YWRtaW4=  # admin
+  password: cGFzc3dvcmQ=  # password
+EOF
+
+# ConfigMap과 Secret 생성
+kubectl apply -f nginx-configmap.yaml
+kubectl apply -f nginx-secret.yaml
+
+# ConfigMap과 Secret 확인
+kubectl get configmaps
+kubectl get secrets
+kubectl describe configmap nginx-config
+kubectl describe secret nginx-secret
+```
+
+**6단계: ConfigMap과 Secret을 사용하는 Pod 생성**
+```bash
+# ConfigMap과 Secret을 사용하는 Pod 생성
+cat > nginx-with-config.yaml << 'EOF'
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-with-config
+  labels:
+    app: nginx-config
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.21
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: config-volume
+      mountPath: /etc/nginx/conf.d
+    - name: html-volume
+      mountPath: /usr/share/nginx/html
+    - name: secret-volume
+      mountPath: /etc/secrets
+      readOnly: true
+    env:
+    - name: USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: nginx-secret
+          key: username
+    - name: PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: nginx-secret
+          key: password
+  volumes:
+  - name: config-volume
+    configMap:
+      name: nginx-config
+      items:
+      - key: nginx.conf
+        path: default.conf
+  - name: html-volume
+    configMap:
+      name: nginx-config
+      items:
+      - key: index.html
+        path: index.html
+  - name: secret-volume
+    secret:
+      secretName: nginx-secret
+EOF
+
+# Pod 생성
+kubectl apply -f nginx-with-config.yaml
+
+# Pod 상태 확인
+kubectl get pods nginx-with-config
+kubectl describe pod nginx-with-config
+
+# 환경 변수 확인
+kubectl exec nginx-with-config -- env | grep -E "(USERNAME|PASSWORD)"
+```
+
+**7단계: 리소스 상태 모니터링**
+```bash
+# 모든 리소스 상태 확인
+echo "=== 전체 리소스 상태 ==="
+kubectl get all
+
+# Pod 상태 상세 확인
+echo "=== Pod 상태 ==="
+kubectl get pods -o wide
+kubectl get pods --show-labels
+
+# Service 상태 확인
+echo "=== Service 상태 ==="
+kubectl get services
+kubectl get endpoints
+
+# 이벤트 확인
+echo "=== 이벤트 확인 ==="
+kubectl get events --sort-by=.metadata.creationTimestamp
+
+# 리소스 사용량 확인 (metrics-server 설치된 경우)
+kubectl top pods
+kubectl top nodes
+```
+
+**8단계: 네트워크 테스트**
+```bash
+# 클러스터 내부에서 Service 접근 테스트
+echo "=== 클러스터 내부 네트워크 테스트 ==="
+
+# 테스트용 Pod 생성
+kubectl run test-pod --image=busybox --rm -it --restart=Never -- wget -qO- nginx-service
+
+# DNS 확인
+kubectl run dns-test --image=busybox --rm -it --restart=Never -- nslookup nginx-service
+
+# 포트 포워딩으로 로컬 접근 테스트
+echo "=== 포트 포워딩 테스트 ==="
+kubectl port-forward service/nginx-service 8080:80 &
+sleep 5
+curl http://localhost:8080
+kill %1
+```
+
+**9단계: 스케일링 테스트**
+```bash
+# Deployment 스케일링
+echo "=== Deployment 스케일링 테스트 ==="
+
+# Replica 수 증가
+kubectl scale deployment nginx-deployment --replicas=5
+kubectl get pods -l app=nginx
+
+# Replica 수 감소
+kubectl scale deployment nginx-deployment --replicas=2
+kubectl get pods -l app=nginx
+
+# 자동 스케일링 (HPA - Horizontal Pod Autoscaler)
+kubectl autoscale deployment nginx-deployment --cpu-percent=50 --min=2 --max=10
+kubectl get hpa
+```
+
+**10단계: 롤링 업데이트 테스트**
+```bash
+# 이미지 업데이트 (롤링 업데이트)
+echo "=== 롤링 업데이트 테스트 ==="
+
+# 이미지 업데이트
+kubectl set image deployment/nginx-deployment nginx=nginx:1.22
+
+# 롤링 업데이트 상태 확인
+kubectl rollout status deployment/nginx-deployment
+
+# 롤아웃 히스토리 확인
+kubectl rollout history deployment/nginx-deployment
+
+# 이전 버전으로 롤백
+kubectl rollout undo deployment/nginx-deployment
+
+# 특정 버전으로 롤백
+kubectl rollout undo deployment/nginx-deployment --to-revision=1
+```
+
+**11단계: 정리**
+```bash
+# 리소스 정리
+echo "=== 리소스 정리 ==="
+
+# 모든 리소스 삭제
+kubectl delete -f nginx-pod.yaml
+kubectl delete -f nginx-deployment.yaml
+kubectl delete -f nginx-service.yaml
+kubectl delete -f nginx-loadbalancer.yaml
+kubectl delete -f nginx-configmap.yaml
+kubectl delete -f nginx-secret.yaml
+kubectl delete -f nginx-with-config.yaml
+
+# HPA 삭제
+kubectl delete hpa nginx-deployment
+
+# 정리 확인
+kubectl get all
+```
+
+#### 수작업 실습 가이드 (EKS 클러스터 배포)
+
+**1단계: AWS CLI 및 EKS CLI 설치 및 설정**
+```bash
+# AWS CLI 설치 확인
+aws --version
+
+# AWS CLI 설정
+aws configure
+# AWS Access Key ID: [입력]
+# AWS Secret Access Key: [입력]
+# Default region name: ap-northeast-2
+# Default output format: json
+
+# EKS CLI (eksctl) 설치
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+eksctl version
+
+# kubectl 설치
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+kubectl version --client
+```
+
+**2단계: EKS 클러스터 생성**
+```bash
+# EKS 클러스터 생성
+eksctl create cluster \
+  --name cloud-intermediate-cluster \
+  --region ap-northeast-2 \
+  --version 1.28 \
+  --nodegroup-name worker-nodes \
+  --node-type t3.medium \
+  --nodes 2 \
+  --nodes-min 1 \
+  --nodes-max 4 \
+  --managed \
+  --ssh-access \
+  --ssh-public-key ~/.ssh/id_rsa.pub \
+  --with-oidc \
+  --without-nodegroup
+
+# 클러스터 생성 상태 확인
+eksctl get cluster --region ap-northeast-2
+aws eks describe-cluster --name cloud-intermediate-cluster --region ap-northeast-2
+```
+
+**3단계: Node Group 추가**
+```bash
+# Managed Node Group 생성
+eksctl create nodegroup \
+  --cluster cloud-intermediate-cluster \
+  --region ap-northeast-2 \
+  --name worker-nodes \
+  --node-type t3.medium \
+  --nodes 2 \
+  --nodes-min 1 \
+  --nodes-max 4 \
+  --ssh-access \
+  --ssh-public-key ~/.ssh/id_rsa.pub
+
+# Node Group 상태 확인
+eksctl get nodegroup --cluster cloud-intermediate-cluster --region ap-northeast-2
+```
+
+**4단계: kubectl 설정**
+```bash
+# kubeconfig 업데이트
+aws eks update-kubeconfig --region ap-northeast-2 --name cloud-intermediate-cluster
+
+# 클러스터 연결 확인
+kubectl get nodes
+kubectl get pods --all-namespaces
+kubectl cluster-info
+```
+
+**5단계: AWS Load Balancer Controller 설치**
+```bash
+# IAM 정책 다운로드
+curl -o iam_policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.6.0/docs/install/iam_policy.json
+
+# IAM 정책 생성
+aws iam create-policy \
+    --policy-name AWSLoadBalancerControllerIAMPolicy \
+    --policy-document file://iam_policy.json
+
+# EKS 클러스터 OIDC 공급자 URL 확인
+aws eks describe-cluster --name cloud-intermediate-cluster --region ap-northeast-2 --query "cluster.identity.oidc.issuer" --output text
+
+# IAM 역할 생성
+eksctl create iamserviceaccount \
+  --cluster cloud-intermediate-cluster \
+  --namespace kube-system \
+  --name aws-load-balancer-controller \
+  --role-name AmazonEKSLoadBalancerControllerRole \
+  --attach-policy-arn arn:aws:iam::$(aws sts get-caller-identity --query Account --output text):policy/AWSLoadBalancerControllerIAMPolicy \
+  --approve
+
+# Helm 설치
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+# AWS Load Balancer Controller 설치
+helm repo add eks https://aws.github.io/eks-charts
+helm repo update
+
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName=cloud-intermediate-cluster \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller
+
+# 설치 확인
+kubectl get deployment -n kube-system aws-load-balancer-controller
+```
+
+**6단계: 샘플 애플리케이션 배포**
+```bash
+# Namespace 생성
+kubectl create namespace demo-app
+
+# Deployment 생성
+cat > nginx-deployment.yaml << 'EOF'
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: demo-app
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.21
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+EOF
+
+# Service 생성
+cat > nginx-service.yaml << 'EOF'
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: demo-app
+  labels:
+    app: nginx
+spec:
+  selector:
+    app: nginx
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  type: ClusterIP
+EOF
+
+# Ingress 생성
+cat > nginx-ingress.yaml << 'EOF'
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: demo-app
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service
+            port:
+              number: 80
+EOF
+
+# 리소스 배포
+kubectl apply -f nginx-deployment.yaml
+kubectl apply -f nginx-service.yaml
+kubectl apply -f nginx-ingress.yaml
+
+# 배포 상태 확인
+kubectl get all -n demo-app
+kubectl get ingress -n demo-app
+```
+
+**7단계: 외부 접근 테스트**
+```bash
+# Ingress 상태 확인
+kubectl describe ingress nginx-ingress -n demo-app
+
+# Load Balancer URL 확인
+kubectl get ingress nginx-ingress -n demo-app -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+
+# 외부 접근 테스트
+ALB_URL=$(kubectl get ingress nginx-ingress -n demo-app -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+curl http://$ALB_URL
+
+# 포트 포워딩으로 로컬 테스트
+kubectl port-forward service/nginx-service 8080:80 -n demo-app &
+curl http://localhost:8080
+kill %1
+```
+
+**8단계: 모니터링 및 로그 확인**
+```bash
+# Pod 로그 확인
+kubectl logs -l app=nginx -n demo-app
+
+# 이벤트 확인
+kubectl get events -n demo-app --sort-by=.metadata.creationTimestamp
+
+# 리소스 사용량 확인
+kubectl top pods -n demo-app
+kubectl top nodes
+
+# AWS CloudWatch 로그 확인
+aws logs describe-log-groups --log-group-name-prefix /aws/eks/cloud-intermediate-cluster
+```
+
+**9단계: 스케일링 테스트**
+```bash
+# Horizontal Pod Autoscaler 생성
+cat > nginx-hpa.yaml << 'EOF'
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx-hpa
+  namespace: demo-app
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx-deployment
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+EOF
+
+kubectl apply -f nginx-hpa.yaml
+
+# HPA 상태 확인
+kubectl get hpa -n demo-app
+
+# 부하 테스트 (별도 터미널에서)
+kubectl run -it --rm load-generator --image=busybox --restart=Never -- /bin/sh
+# while true; do wget -q -O- http://nginx-service.demo-app.svc.cluster.local; done
+```
+
+**10단계: 보안 설정**
+```bash
+# Network Policy 생성
+cat > nginx-network-policy.yaml << 'EOF'
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: nginx-network-policy
+  namespace: demo-app
+spec:
+  podSelector:
+    matchLabels:
+      app: nginx
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: demo-app
+    ports:
+    - protocol: TCP
+      port: 80
+  egress:
+  - {}
+EOF
+
+kubectl apply -f nginx-network-policy.yaml
+
+# Pod Security Policy 확인
+kubectl get psp
+```
+
+**11단계: 백업 및 복구**
+```bash
+# 클러스터 설정 백업
+kubectl get all -n demo-app -o yaml > demo-app-backup.yaml
+
+# ConfigMap과 Secret 백업
+kubectl get configmaps -n demo-app -o yaml > configmaps-backup.yaml
+kubectl get secrets -n demo-app -o yaml > secrets-backup.yaml
+
+# EKS 클러스터 스냅샷 생성
+aws eks create-cluster-snapshot \
+  --cluster-name cloud-intermediate-cluster \
+  --snapshot-name demo-cluster-snapshot-$(date +%Y%m%d)
+```
+
+**12단계: 정리**
+```bash
+# 애플리케이션 리소스 삭제
+kubectl delete namespace demo-app
+
+# Node Group 삭제
+eksctl delete nodegroup --cluster cloud-intermediate-cluster --name worker-nodes --region ap-northeast-2
+
+# EKS 클러스터 삭제
+eksctl delete cluster --name cloud-intermediate-cluster --region ap-northeast-2
+
+# 정리 확인
+eksctl get cluster --region ap-northeast-2
+```
+
 #### 실습 3: 외부 접근 구성 (30분)
 
 **변경 전 시스템 아키텍처**:
