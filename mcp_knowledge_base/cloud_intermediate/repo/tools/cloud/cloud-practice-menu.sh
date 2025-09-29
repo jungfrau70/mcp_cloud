@@ -1,12 +1,29 @@
 #!/bin/bash
 
-# Cloud Intermediate 실습 메뉴 시스템 (중앙화)
-# 사용자에게 서비스 실행 모듈을 호출할 수 있는 메뉴 제공 역할에 한정
-# 날짜별로 동적 구성되는 통합 메뉴 시스템
+# =============================================================================
+# Cloud Intermediate 통합 실습 메뉴 시스템
+# =============================================================================
+# 
+# 기능:
+#   - 통합강의안 자동화 코드를 사용자에게 호출할 수 있는 메뉴 제공
+#   - AWS 및 GCP 인프라 자원배포 (EC2, EKS, GKE) 통합 관리
+#   - 서브실행모듈을 통한 클라우드 작업 실행
+#   - 환경 파일 기반 설정 관리
+#
+# 사용법:
+#   ./cloud-practice-menu.sh                    # Interactive 모드
+#   ./cloud-practice-menu.sh --day 1            # Day 1 모드
+#   ./cloud-practice-menu.sh --day 2            # Day 2 모드
+#   ./cloud-practice-menu.sh --action status    # Direct 실행 모드
+#
+# 작성일: 2024-01-XX
+# 작성자: Cloud Intermediate 과정
+# =============================================================================
 
 # =============================================================================
-# 설정 및 초기화
+# 환경 설정 및 초기화
 # =============================================================================
+set -euo pipefail
 
 # 스크립트 디렉토리 설정
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -147,8 +164,8 @@ show_day1_menu() {
     log_header "=========================================="
     echo ""
     echo "1. 🐳 Docker 고급 실습"
-    echo "2. ☸️ Kubernetes cluster 배포 실습"
-    echo "3. ☸️ Kubernetes object 배포 실습"
+    echo "2. ☸️  Kubernetes 기초 실습"
+    echo "3. ☁️  클라우드 컨테이너 서비스 실습"
     echo "4. 📊 통합 모니터링 허브 구축"
     echo "5. 🔍 클러스터 현황 확인"
     echo "6. 🚀 배포 관리"
@@ -165,10 +182,10 @@ show_day2_menu() {
     log_header "Cloud Intermediate Day 2 실습 메뉴"
     log_header "=========================================="
     echo ""
-    echo "1. 🔄 CI/CD 파이프라인 실습"
-    echo "2. 🌐 멀티 클라우드 통합 모니터링"
-    echo "3. 📊 AWS Application 모니터링"
-    echo "4. ☁️  GCP 클러스터 통합"
+    echo "1. 🔄 GitHub Actions CI/CD 파이프라인"
+    echo "2. 📊 AWS EKS 애플리케이션 모니터링"
+    echo "3. ☁️  GCP GKE 클러스터 통합 모니터링"
+    echo "4. 🌐 멀티 클라우드 통합 모니터링"
     echo "5. 🔍 클러스터 현황 확인"
     echo "6. 🚀 배포 관리"
     echo "7. ⚙️  클러스터 관리"
@@ -181,17 +198,20 @@ show_day2_menu() {
 show_general_menu() {
     clear
     log_header "=========================================="
-    log_header "Cloud Intermediate 실습 메뉴"
+    log_header "Cloud Intermediate 통합 실습 메뉴"
     log_header "=========================================="
     echo ""
-    echo "1. 📋 현재 리소스 상태 확인"
-    echo "2. 🧹 실습 환경 정리"
-    echo "3. 🔍 클러스터 현황 확인"
-    echo "4. 🚀 배포 관리"
-    echo "5. ⚙️  클러스터 관리"
-    echo "6. 📊 모니터링 설정"
-    echo "7. 🔄 CI/CD 파이프라인"
-    echo "8. ☁️  멀티 클라우드 관리"
+    echo "1. 🏗️  AWS/GCP 인프라 설정"
+    echo "1a. 🖥️  AWS EC2 인스턴스 생성"
+    echo "1b. 🖥️  GCP Compute Engine 인스턴스 생성"
+    echo "2. 📋 현재 리소스 상태 확인"
+    echo "3. 🧹 실습 환경 정리"
+    echo "4. 🔍 클러스터 현황 확인"
+    echo "5. 🚀 배포 관리"
+    echo "6. ⚙️  클러스터 관리"
+    echo "7. 📊 모니터링 설정"
+    echo "8. 🔄 CI/CD 파이프라인"
+    echo "9. ☁️  멀티 클라우드 관리"
     echo "0. 종료"
     echo ""
 }
@@ -206,17 +226,45 @@ handle_day1_menu() {
         read -p "선택하세요 (0-9): " choice
         
         case $choice in
-            1) call_sub_module "aws-setup-helper.sh" "docker-advanced" ;;
-            2) call_sub_module "aws-eks-helper-new.sh" "cluster" ;;
-            3) call_sub_module "aws-eks-helper-new.sh" "kubernetes-basics" ;;
-            4) call_sub_module "aws-eks-helper-new.sh" "deployment" ;;
-            5) call_sub_module "aws-eks-helper-new.sh" "cloud-services" ;;
-            6) call_sub_module "multi-cloud-monitoring-helper.sh" "monitoring-hub" ;;
-            7) call_sub_module "status-helper.sh" "status" "aws" ;;
-            8) call_sub_module "aws-eks-helper-new.sh" "cluster" ;;
-            9) call_sub_module "cleanup-helper.sh" "cleanup" "aws" ;;
-            a) call_sub_module "status-helper.sh" "status" "aws" ;;
-            b) 
+            1) 
+                log_info "Docker 고급 실습을 시작합니다..."
+                call_sub_module "docker-helper.sh" "multistage-build" "aws"
+                ;;
+            2) 
+                log_info "Kubernetes 기초 실습을 시작합니다..."
+                call_sub_module "k8s-helper.sh" "setup-context" "aws"
+                ;;
+            3) 
+                log_info "클라우드 컨테이너 서비스 실습을 시작합니다..."
+                call_sub_module "aws-ecs-helper.sh" "cluster-create" "aws"
+                call_sub_module "gcp-cloudrun-helper.sh" "deploy-service" "gcp"
+                ;;
+            4) 
+                log_info "통합 모니터링 허브 구축을 시작합니다..."
+                call_sub_module "monitoring-hub-helper.sh" "create-hub" "aws"
+                ;;
+            5) 
+                log_info "클러스터 현황을 확인합니다..."
+                call_sub_module "k8s-helper.sh" "status" "aws"
+                call_sub_module "k8s-helper.sh" "status" "gcp"
+                ;;
+            6) 
+                log_info "배포 관리를 시작합니다..."
+                call_sub_module "k8s-helper.sh" "deploy-workload" "aws"
+                ;;
+            7) 
+                log_info "클러스터 관리를 시작합니다..."
+                call_sub_module "k8s-helper.sh" "setup-external-access" "aws"
+                ;;
+            8) 
+                log_info "실습 환경을 정리합니다..."
+                call_sub_module "comprehensive-cleanup.sh" "cleanup" "all"
+                ;;
+            9) 
+                log_info "현재 리소스 상태를 확인합니다..."
+                call_sub_module "comprehensive-cleanup.sh" "status" "all"
+                ;;
+            0) 
                 log_info "프로그램을 종료합니다."
                 exit 0
                 ;;
@@ -234,15 +282,45 @@ handle_day2_menu() {
         read -p "선택하세요 (0-9): " choice
         
         case $choice in
-            1) call_sub_module "cicd-pipeline-helper.sh" "cicd-pipeline" ;;
-            2) call_sub_module "multi-cloud-monitoring-helper.sh" "multi-cloud-monitoring" ;;
-            3) call_sub_module "aws-app-monitoring-helper.sh" "aws-app-monitoring" ;;
-            4) call_sub_module "gcp-cluster-integration-helper.sh" "gcp-cluster-integration" ;;
-            5) call_sub_module "status-helper.sh" "status" "all" ;;
-            6) call_sub_module "cicd-pipeline-helper.sh" "deployment" ;;
-            7) call_sub_module "multi-cloud-monitoring-helper.sh" "cluster-management" ;;
-            8) call_sub_module "cleanup-helper.sh" "cleanup" "all" ;;
-            9) call_sub_module "status-helper.sh" "status" "all" ;;
+            1) 
+                log_info "GitHub Actions CI/CD 파이프라인을 시작합니다..."
+                call_sub_module "github-actions-helper.sh" "create-workflow" "aws"
+                ;;
+            2) 
+                log_info "AWS EKS 애플리케이션 모니터링을 시작합니다..."
+                call_sub_module "aws-eks-monitoring-helper.sh" "create-cluster" "aws"
+                call_sub_module "aws-app-monitoring-helper.sh" "app-deploy" "aws"
+                ;;
+            3) 
+                log_info "GCP GKE 클러스터 통합 모니터링을 시작합니다..."
+                call_sub_module "gcp-gke-monitoring-helper.sh" "create-cluster" "gcp"
+                call_sub_module "gcp-gke-monitoring-helper.sh" "setup-monitoring" "gcp"
+                ;;
+            4) 
+                log_info "멀티 클라우드 통합 모니터링을 시작합니다..."
+                call_sub_module "multi-cloud-monitoring-helper.sh" "monitoring-setup" "all"
+                ;;
+            5) 
+                log_info "클러스터 현황을 확인합니다..."
+                call_sub_module "aws-eks-monitoring-helper.sh" "status" "aws"
+                call_sub_module "gcp-gke-monitoring-helper.sh" "status" "gcp"
+                ;;
+            6) 
+                log_info "배포 관리를 시작합니다..."
+                call_sub_module "github-actions-helper.sh" "deploy-app" "aws"
+                ;;
+            7) 
+                log_info "클러스터 관리를 시작합니다..."
+                call_sub_module "multi-cloud-monitoring-helper.sh" "cross-cluster-setup" "all"
+                ;;
+            8) 
+                log_info "실습 환경을 정리합니다..."
+                call_sub_module "comprehensive-cleanup.sh" "cleanup" "all"
+                ;;
+            9) 
+                log_info "현재 리소스 상태를 확인합니다..."
+                call_sub_module "comprehensive-cleanup.sh" "status" "all"
+                ;;
             0) 
                 log_info "프로그램을 종료합니다."
                 exit 0
@@ -258,17 +336,57 @@ handle_day2_menu() {
 handle_general_menu() {
     while true; do
         show_general_menu
-        read -p "선택하세요 (0-8): " choice
+        read -p "선택하세요 (0-9): " choice
         
         case $choice in
-            1) call_sub_module "status-helper.sh" "status" "all" ;;
-            2) call_sub_module "cleanup-helper.sh" "cleanup" "all" ;;
-            3) call_sub_module "status-helper.sh" "status" "all" ;;
-            4) call_sub_module "aws-eks-helper-new.sh" "deployment" ;;
-            5) call_sub_module "aws-eks-helper-new.sh" "cluster" ;;
-            6) call_sub_module "multi-cloud-monitoring-helper.sh" "monitoring-setup" "all" ;;
-            7) call_sub_module "cicd-pipeline-helper.sh" "cicd-pipeline" ;;
-            8) call_sub_module "multi-cloud-monitoring-helper.sh" "multi-cloud-monitoring" ;;
+            1) 
+                log_info "AWS/GCP 인프라 설정을 시작합니다..."
+                call_sub_module "aws-setup-helper.sh" "setup" "aws"
+                call_sub_module "gcp-setup-helper.sh" "setup" "gcp"
+                ;;
+            1a) 
+                log_info "AWS EC2 인스턴스를 생성합니다..."
+                call_sub_module "aws-ec2-helper.sh" "create-instance" "aws"
+                ;;
+            1b) 
+                log_info "GCP Compute Engine 인스턴스를 생성합니다..."
+                call_sub_module "gcp-compute-helper.sh" "create-instance" "gcp"
+                ;;
+            2) 
+                log_info "현재 리소스 상태를 확인합니다..."
+                call_sub_module "comprehensive-cleanup.sh" "status" "all"
+                ;;
+            3) 
+                log_info "실습 환경을 정리합니다..."
+                call_sub_module "comprehensive-cleanup.sh" "cleanup" "all"
+                ;;
+            4) 
+                log_info "클러스터 현황을 확인합니다..."
+                call_sub_module "aws-eks-monitoring-helper.sh" "status" "aws"
+                call_sub_module "gcp-gke-monitoring-helper.sh" "status" "gcp"
+                ;;
+            5) 
+                log_info "배포 관리를 시작합니다..."
+                call_sub_module "github-actions-helper.sh" "deploy-app" "aws"
+                ;;
+            6) 
+                log_info "클러스터 관리를 시작합니다..."
+                call_sub_module "k8s-helper.sh" "setup-external-access" "aws"
+                call_sub_module "k8s-helper.sh" "setup-external-access" "gcp"
+                ;;
+            7) 
+                log_info "모니터링 설정을 시작합니다..."
+                call_sub_module "monitoring-hub-helper.sh" "create-hub" "aws"
+                call_sub_module "multi-cloud-monitoring-helper.sh" "monitoring-setup" "all"
+                ;;
+            8) 
+                log_info "CI/CD 파이프라인을 시작합니다..."
+                call_sub_module "github-actions-helper.sh" "create-workflow" "aws"
+                ;;
+            9) 
+                log_info "멀티 클라우드 관리를 시작합니다..."
+                call_sub_module "multi-cloud-monitoring-helper.sh" "cross-cluster-setup" "all"
+                ;;
             0) 
                 log_info "프로그램을 종료합니다."
                 exit 0
@@ -286,7 +404,7 @@ handle_general_menu() {
 # =============================================================================
 usage() {
     cat << EOF
-Cloud Intermediate 실습 메뉴 시스템 (중앙화)
+Cloud Intermediate 통합 실습 메뉴 시스템
 
 사용법:
   $0 [옵션]                    # Interactive 모드
@@ -298,7 +416,7 @@ Interactive 모드 옵션:
   --day <N>                   # 특정 Day 모드 (1, 2, ...)
   --help, -h                 # 도움말 표시
 
-Parameter 모드 액션:
+Direct 실행 모드 액션:
   --action status             # 현재 리소스 상태 확인
   --action cleanup            # 실습 환경 정리
   --action cluster-status     # 클러스터 현황 확인
@@ -307,6 +425,19 @@ Parameter 모드 액션:
   --action monitoring         # 모니터링 설정
   --action cicd               # CI/CD 파이프라인
   --action multi-cloud        # 멀티 클라우드 관리
+  --action setup              # AWS/GCP 인프라 설정
+
+Day 1 실습 내용:
+  - Docker 고급 실습 (멀티스테이지 빌드, 이미지 최적화, 보안 스캔)
+  - Kubernetes 기초 실습 (클러스터 Context, Workload 배포, 외부 접근)
+  - 클라우드 컨테이너 서비스 (AWS ECS, GCP Cloud Run)
+  - 통합 모니터링 허브 구축 (Prometheus, Grafana, Node Exporter)
+
+Day 2 실습 내용:
+  - GitHub Actions CI/CD 파이프라인
+  - AWS EKS 애플리케이션 모니터링
+  - GCP GKE 클러스터 통합 모니터링
+  - 멀티 클라우드 통합 모니터링
 
 예시:
   $0                          # Interactive 모드 (자동 Day 감지)
@@ -314,6 +445,7 @@ Parameter 모드 액션:
   $0 --day 2                  # Day 2 모드
   $0 --action status          # 상태 확인
   $0 --action cleanup         # 환경 정리
+  $0 --action setup           # 인프라 설정
 EOF
 }
 
@@ -326,28 +458,35 @@ direct_mode() {
     
     case "$action" in
         "status")
-            call_sub_module "status-helper.sh" "status" "all"
+            call_sub_module "comprehensive-cleanup.sh" "status" "all"
             ;;
         "cleanup")
-            call_sub_module "cleanup-helper.sh" "cleanup" "all"
+            call_sub_module "comprehensive-cleanup.sh" "cleanup" "all"
             ;;
         "cluster-status")
-            call_sub_module "status-helper.sh" "status" "all"
+            call_sub_module "aws-eks-monitoring-helper.sh" "status" "aws"
+            call_sub_module "gcp-gke-monitoring-helper.sh" "status" "gcp"
             ;;
         "deployment")
-            call_sub_module "aws-eks-helper-new.sh" "deployment"
+            call_sub_module "github-actions-helper.sh" "deploy-app" "aws"
             ;;
         "cluster")
-            call_sub_module "aws-eks-helper-new.sh" "cluster"
+            call_sub_module "k8s-helper.sh" "setup-external-access" "aws"
+            call_sub_module "k8s-helper.sh" "setup-external-access" "gcp"
             ;;
         "monitoring")
+            call_sub_module "monitoring-hub-helper.sh" "create-hub" "aws"
             call_sub_module "multi-cloud-monitoring-helper.sh" "monitoring-setup" "all"
             ;;
         "cicd")
-            call_sub_module "cicd-pipeline-helper.sh" "cicd-pipeline"
+            call_sub_module "github-actions-helper.sh" "create-workflow" "aws"
             ;;
         "multi-cloud")
-            call_sub_module "multi-cloud-monitoring-helper.sh" "multi-cloud-monitoring"
+            call_sub_module "multi-cloud-monitoring-helper.sh" "cross-cluster-setup" "all"
+            ;;
+        "setup")
+            call_sub_module "aws-setup-helper.sh" "setup" "aws"
+            call_sub_module "gcp-setup-helper.sh" "setup" "gcp"
             ;;
         *)
             log_error "알 수 없는 액션: $action"

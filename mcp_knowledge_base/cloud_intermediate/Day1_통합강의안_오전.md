@@ -32,6 +32,8 @@
 - **실습 샘플 코드**: `./examples/day1/`
 - **자동화 스크립트**: `./automation/day1/`
 - **클라우드 도구**: `./tools/cloud/`
+- **AWS EC2 Helper**: `./tools/cloud/aws-ec2-helper.sh`
+- **GCP Compute Helper**: `./tools/cloud/gcp-compute-helper.sh`
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
@@ -133,6 +135,7 @@ flowchart TD
 **자동화 도구 실행**:
 ```bash
 # 실습 스크립트 실행
+cd automation/day1
 ./day1-practice.sh
 # 메뉴 선택: 1. Docker 고급 활용
 
@@ -175,16 +178,30 @@ cat > Dockerfile.multistage << 'EOF'
 # Build stage
 FROM node:18-alpine AS builder
 WORKDIR /app
+
+# 의존성 파일만 먼저 복사 (캐시 최적화)
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm install --only=production && npm cache clean --force
+
+# 애플리케이션 코드 복사
+COPY . .
 
 # Production stage
-FROM node:18-alpine AS production
+FROM node:18-alpine AS runtime
 WORKDIR /app
-COPY --from=builder /app/node_modules ./node_modules
-COPY . .
+
+# 보안을 위한 non-root 사용자 생성
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001
+
+# 빌드된 파일만 복사
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /app ./
+
+USER nextjs
 EXPOSE 3000
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
+
 EOF
 
 # 멀티스테이지 빌드 실행
@@ -276,12 +293,13 @@ cat > Dockerfile.optimized << 'EOF'
 FROM node:18-alpine
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+RUN npm install --only=production && npm cache clean --force
+
 COPY . .
 RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
 USER nextjs
 EXPOSE 3000
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
 EOF
 
 # 최적화된 이미지 빌드
