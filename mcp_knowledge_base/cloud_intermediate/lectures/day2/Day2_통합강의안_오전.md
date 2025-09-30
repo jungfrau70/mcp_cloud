@@ -72,8 +72,8 @@ mcp_knowledge_base/cloud_intermediate/
   - [ ] kubectl 멀티 클러스터 설정 확인
 - [ ] **CI/CD 파이프라인**: GitHub Actions 워크플로우 구축 완료
   - [ ] `cd practice/day2/cicd-practice-app/` 디렉토리로 이동
-  - [ ] 환경 파일 복사: `cp ../../tools/cloud/package.json ./ && cp ../../tools/cloud/.env* ./ && cp -r ../../tools/cloud/.github/ ./ && cp ../../tools/cloud/Dockerfile* ./`
-  - [ ] 환경 파일 확인: `ls -la package.json .env* .github/workflows/`
+  - [ ] 환경 파일 복사: `cp ../../../tools/cloud/*-environment.env ./ && cp ../../../tools/cloud/cicd-pipeline-helper.sh ./`
+  - [ ] 환경 파일 확인: `ls -la *-environment.env cicd-pipeline-helper.sh`
   - [ ] `npm install` 프로젝트 설정 완료
   - [ ] GitHub Actions 워크플로우 파일 생성
   - [ ] `npm test && npm run build` 자동 테스트 및 빌드 파이프라인 실행
@@ -135,23 +135,21 @@ ls -la practice/day2/
 
 # 📍 중앙 집중식 환경 파일 확인
 echo "=== 중앙 집중식 환경 파일 (tools/cloud/) ==="
-ls -la tools/cloud/package.json .env* .github/ Dockerfile* prometheus.yml 2>/dev/null || echo "환경 파일이 없습니다"
+ls -la tools/cloud/*-environment.env tools/cloud/*-helper.sh tools/cloud/*.yaml 2>/dev/null || echo "환경 파일이 없습니다"
 
 # 📍 환경 파일 복사 및 확인
 echo "=== CI/CD 실습 환경 파일 복사 ==="
 cd practice/day2/cicd-practice-app/
-cp ../../tools/cloud/package.json ./
-cp ../../tools/cloud/.env* ./
-cp -r ../../tools/cloud/.github/ ./
-cp ../../tools/cloud/Dockerfile* ./
-ls -la package.json .env* .github/workflows/ Dockerfile*
+cp ../../../tools/cloud/*-environment.env ./
+cp ../../../tools/cloud/cicd-pipeline-helper.sh ./
+ls -la *-environment.env cicd-pipeline-helper.sh
 
 echo "=== 모니터링 실습 환경 파일 복사 ==="
 cd ../monitoring-hub/
-cp ../../tools/cloud/prometheus.yml ./
-cp -r ../../tools/cloud/grafana/ ./
-cp ../../tools/cloud/docker-compose.yml ./
-ls -la prometheus.yml grafana/ docker-compose.yml
+cp ../../../tools/cloud/*-environment.env ./
+cp ../../../tools/cloud/monitoring-hub-helper.sh ./
+cp ../../../tools/cloud/multi-cloud-monitoring-helper.sh ./
+ls -la *-environment.env monitoring-hub-helper.sh multi-cloud-monitoring-helper.sh
 ```
 
 </details>
@@ -1193,13 +1191,11 @@ flowchart TD
 cd mcp_knowledge_base/cloud_intermediate/practice/day2/cicd-practice-app/
 
 # 📍 환경 파일 복사 (중앙 집중식 관리)
-cp ../../tools/cloud/package.json ./
-cp ../../tools/cloud/.env* ./
-cp -r ../../tools/cloud/.github/ ./
-cp ../../tools/cloud/Dockerfile* ./
+cp ../../../tools/cloud/*-environment.env ./
+cp ../../../tools/cloud/cicd-pipeline-helper.sh ./
 
 # 📍 환경 파일 확인 (필수)
-ls -la package.json .env* .github/workflows/ Dockerfile*
+ls -la *-environment.env cicd-pipeline-helper.sh
 
 # 📍 CI/CD 실습 앱 직접 실행 (권장)
 npm install

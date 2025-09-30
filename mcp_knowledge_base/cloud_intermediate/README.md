@@ -54,6 +54,7 @@ mcp_knowledge_base/cloud_intermediate/
 cd practice/day1
 
 # Docker 고급 실습
+cd docker-demo
 ./docker-comparison-demo.sh
 
 # 1일차 통합 실습

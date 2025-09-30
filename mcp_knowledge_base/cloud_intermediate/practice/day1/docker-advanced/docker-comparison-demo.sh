@@ -46,12 +46,27 @@ log_comparison() { echo -e "${CYAN}[COMPARISON]${NC} $1"; }
 setup_demo_environment() {
     log_header "=== Docker Advanced 실습 데모 환경 준비 ==="
     
-    # 데모 디렉토리 생성
-    mkdir -p "$DEMO_DIR"
-    cd "$DEMO_DIR"
-    
-    # 샘플 Node.js 애플리케이션 생성
-    create_sample_app
+    # 작업 디렉토리에 필요한 파일들이 있는지 확인
+    if [ -f "package.json" ] || [ -f "index.js" ] || [ -f "server.js" ]; then
+        log_info "작업 디렉토리에 기존 애플리케이션 파일들이 발견되었습니다."
+        log_info "현재 디렉토리에서 실습을 진행합니다: $(pwd)"
+        
+        # 필요한 파일들만 확인
+        if [ -f "package.json" ]; then
+            log_info "package.json이 이미 존재합니다."
+        else
+            log_info "package.json이 없어서 생성합니다."
+            create_sample_app
+        fi
+    else
+        log_info "새로운 데모 환경을 생성합니다."
+        # 데모 디렉토리 생성
+        mkdir -p "$DEMO_DIR"
+        cd "$DEMO_DIR"
+        
+        # 샘플 Node.js 애플리케이션 생성
+        create_sample_app
+    fi
     
     log_success "데모 환경 준비 완료"
 }
@@ -184,6 +199,13 @@ EOF
 create_original_dockerfile() {
     log_info "Original Dockerfile 생성 중..."
     
+    # 작업 디렉토리에 Dockerfile.original이 있는지 확인
+    if [ -f "Dockerfile.original" ]; then
+        log_info "작업 디렉토리의 Dockerfile.original을 사용합니다."
+        return
+    fi
+    
+    # 기본 Dockerfile.original 생성
     cat > Dockerfile.original << 'EOF'
 # =============================================================================
 # Original Dockerfile (비교 기준)
@@ -223,6 +245,13 @@ EOF
 create_optimized_dockerfile() {
     log_info "Optimized Dockerfile 생성 중..."
     
+    # 작업 디렉토리에 Dockerfile.optimized가 있는지 확인
+    if [ -f "Dockerfile.optimized" ]; then
+        log_info "작업 디렉토리의 Dockerfile.optimized를 사용합니다."
+        return
+    fi
+    
+    # 기본 Dockerfile.optimized 생성
     cat > Dockerfile.optimized << 'EOF'
 # =============================================================================
 # Optimized Dockerfile (단일 스테이지 최적화)
@@ -275,6 +304,13 @@ EOF
 create_multistage_dockerfile() {
     log_info "Multistage Dockerfile 생성 중..."
     
+    # 작업 디렉토리에 Dockerfile.multistage가 있는지 확인
+    if [ -f "Dockerfile.multistage" ]; then
+        log_info "작업 디렉토리의 Dockerfile.multistage를 사용합니다."
+        return
+    fi
+    
+    # 기본 Dockerfile.multistage 생성
     cat > Dockerfile.multistage << 'EOF'
 # =============================================================================
 # Multistage Dockerfile (멀티스테이지 빌드)
@@ -533,29 +569,74 @@ scan_with_local_trivy() {
 }
 
 # =============================================================================
+# 기존 컨테이너 정리
+# =============================================================================
+cleanup_existing_containers() {
+    log_info "기존 컨테이너 정리 중..."
+    
+    # 기존 demo-app 컨테이너들 정리
+    for tag in original optimized multistage; do
+        container_name="demo-app-$tag"
+        
+        # 실행 중인 컨테이너 중지
+        if docker ps -q --filter "name=$container_name" | grep -q .; then
+            log_info "기존 컨테이너 중지: $container_name"
+            docker stop "$container_name" > /dev/null 2>&1 || true
+        fi
+        
+        # 컨테이너 제거
+        if docker ps -aq --filter "name=$container_name" | grep -q .; then
+            log_info "기존 컨테이너 제거: $container_name"
+            docker rm "$container_name" > /dev/null 2>&1 || true
+        fi
+    done
+    
+    log_success "기존 컨테이너 정리 완료"
+}
+
+# =============================================================================
 # 컨테이너 실행 테스트
 # =============================================================================
 test_container_execution() {
     log_header "=== 컨테이너 실행 테스트 ==="
+    
+    # 기존 컨테이너 정리
+    cleanup_existing_containers
     
     for tag in original optimized multistage; do
         echo ""
         log_comparison "demo-app:$tag 실행 테스트:"
         echo "=========================================="
         
+        # 포트 매핑 설정 (5000번대 포트 사용)
+        case $tag in
+            "original")
+                port=5001
+                ;;
+            "optimized")
+                port=5002
+                ;;
+            "multistage")
+                port=5003
+                ;;
+            *)
+                port=3000
+                ;;
+        esac
+        
         # 컨테이너 실행
-        container_id=$(docker run -d -p 3000:3000 --name "demo-app-$tag" demo-app:$tag)
+        container_id=$(docker run -d -p $port:3000 --name "demo-app-$tag" demo-app:$tag)
         
         # 잠시 대기
         sleep 3
         
         # 헬스 체크
-        if curl -s http://localhost:3000/health > /dev/null; then
-            log_success "demo-app:$tag 정상 실행됨"
+        if curl -s http://localhost:$port/health > /dev/null; then
+            log_success "demo-app:$tag 정상 실행됨 (포트: $port)"
             
             # API 테스트
             echo "API 응답:"
-            curl -s http://localhost:3000/ | jq . 2>/dev/null || curl -s http://localhost:3000/
+            curl -s http://localhost:$port/ | jq . 2>/dev/null || curl -s http://localhost:$port/
         else
             log_error "demo-app:$tag 실행 실패"
         fi
@@ -572,6 +653,9 @@ test_container_execution() {
 performance_comparison() {
     log_header "=== 성능 비교 ==="
     
+    # 기존 컨테이너 정리
+    cleanup_existing_containers
+    
     echo ""
     log_comparison "컨테이너 시작 시간 비교:"
     echo "=========================================="
@@ -580,12 +664,28 @@ performance_comparison() {
         echo ""
         log_info "demo-app:$tag 시작 시간 측정 중..."
         
+        # 포트 매핑 설정 (5000번대 포트 사용)
+        case $tag in
+            "original")
+                port=5001
+                ;;
+            "optimized")
+                port=5002
+                ;;
+            "multistage")
+                port=5003
+                ;;
+            *)
+                port=3000
+                ;;
+        esac
+        
         # 시작 시간 측정
         start_time=$(date +%s.%N)
-        container_id=$(docker run -d -p 3000:3000 --name "demo-app-$tag" demo-app:$tag)
+        container_id=$(docker run -d -p $port:3000 --name "demo-app-$tag" demo-app:$tag)
         
         # 헬스 체크 대기
-        while ! curl -s http://localhost:3000/health > /dev/null; do
+        while ! curl -s http://localhost:$port/health > /dev/null; do
             sleep 0.1
         done
         
@@ -598,6 +698,35 @@ performance_comparison() {
         docker stop "$container_id" > /dev/null
         docker rm "$container_id" > /dev/null
     done
+}
+
+# =============================================================================
+# 수동 컨테이너 정리 함수
+# =============================================================================
+manual_cleanup() {
+    log_header "=== 수동 컨테이너 정리 ==="
+    
+    log_info "다음 명령어로 수동 정리 가능:"
+    echo ""
+    echo "🔧 기존 컨테이너 정리:"
+    echo "docker stop demo-app-original demo-app-optimized demo-app-multistage 2>/dev/null || true"
+    echo "docker rm demo-app-original demo-app-optimized demo-app-multistage 2>/dev/null || true"
+    echo ""
+    echo "🔧 모든 demo-app 컨테이너 정리:"
+    echo "docker ps -a --filter 'name=demo-app-' --format '{{.Names}}' | xargs -r docker rm -f"
+    echo ""
+    echo "🔧 이미지 정리:"
+    echo "docker rmi demo-app:original demo-app:optimized demo-app:multistage 2>/dev/null || true"
+    echo ""
+    
+    # 자동 실행 여부 확인
+    read -p "자동으로 정리하시겠습니까? (y/N): " auto_cleanup
+    if [[ "$auto_cleanup" =~ ^[Yy]$ ]]; then
+        cleanup_existing_containers
+        log_success "자동 정리 완료"
+    else
+        log_info "수동 정리 명령어를 실행해주세요."
+    fi
 }
 
 # =============================================================================
@@ -625,10 +754,21 @@ cleanup_demo() {
 main() {
     log_header "=== Docker Advanced 실습 - 구체적 비교 데모 ==="
     
+    # 현재 작업 디렉토리 확인
+    log_info "현재 작업 디렉토리: $(pwd)"
+    
+    # 기존 컨테이너 정리
+    cleanup_existing_containers
+    
     # 데모 환경 준비
     setup_demo_environment
     
-    # Dockerfile 생성
+    # 3개 Dockerfile 생성 (비교용)
+    log_header "=== 3개 Dockerfile 생성 (비교용) ==="
+    log_info "1. Dockerfile.original - 기본 Dockerfile (비교 기준)"
+    log_info "2. Dockerfile.optimized - 최적화된 Dockerfile (단일 스테이지)"
+    log_info "3. Dockerfile.multistage - 멀티스테이지 Dockerfile"
+    
     create_original_dockerfile
     create_optimized_dockerfile
     create_multistage_dockerfile
@@ -648,7 +788,7 @@ main() {
     if [[ "$cleanup_choice" =~ ^[Yy]$ ]]; then
         cleanup_demo
     else
-        log_info "데모 환경이 유지됩니다: $DEMO_DIR"
+        log_info "데모 환경이 유지됩니다: $(pwd)"
     fi
     
     log_success "Docker Advanced 실습 데모 완료!"

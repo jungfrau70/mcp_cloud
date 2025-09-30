@@ -72,20 +72,29 @@ mcp_knowledge_base/cloud_intermediate/
   - [ ] AWS CLI 설정 및 인증 확인
   - [ ] GCP CLI 설정 및 인증 확인
 - [ ] **Docker 고급 실습**: 멀티스테이지 빌드 및 최적화 완료
-  - [ ] `cd practice/day1/` 디렉토리로 이동
-  - [ ] 환경 파일 복사: `cp ../tools/cloud/.env* ./ && cp ../tools/cloud/docker-compose.yml ./ && cp ../tools/cloud/Dockerfile* ./`
-  - [ ] 환경 파일 확인: `ls -la .env docker-compose.yml Dockerfile*`
+  - [ ] `cd practice/day1/docker-advanced/` 디렉토리로 이동
+  - [ ] 환경 파일 복사: `cp ../../../tools/cloud/*-environment.env ./ && cp ../../../tools/cloud/docker-helper.sh ./ && cp ../../../tools/cloud/docker-comparison-demo.sh ./`
+  - [ ] 환경 파일 확인: `ls -la *-environment.env docker-helper.sh docker-comparison-demo.sh`
+  - [ ] **포트 충돌 해결**: 기존 컨테이너 정리 후 실행
+    - [ ] `docker stop demo-app-original demo-app-optimized demo-app-multistage 2>/dev/null || true`
+    - [ ] `docker rm demo-app-original demo-app-optimized demo-app-multistage 2>/dev/null || true`
   - [ ] `./docker-comparison-demo.sh` 실행 완료
+  - [ ] **포트 매핑 확인**: 5001(Original), 5002(Optimized), 5003(Multistage)
+    - [ ] `curl http://localhost:5001/health` (Original)
+    - [ ] `curl http://localhost:5002/health` (Optimized)
+    - [ ] `curl http://localhost:5003/health` (Multistage)
   - [ ] 이미지 크기 비교 결과 확인
   - [ ] 보안 스캔 결과 확인
-- [ ] **Kubernetes 기초**: Pod, Service, Deployment 생성 완료
+- [ ] **Kubernetes 기초**: AWS EKS 클러스터 배포 및 Workload 배포 완료
   - [ ] `cd practice/day1/kubernetes-basics/` 디렉토리로 이동
-  - [ ] 환경 파일 복사: `cp ../../tools/cloud/kubeconfig* ./ && cp ../../tools/cloud/.env* ./ && cp ../../tools/cloud/*.yaml ./`
-  - [ ] 환경 파일 확인: `ls -la kubeconfig* .env* *.yaml`
-  - [ ] `./kubernetes-basics-helper.sh` 실습 완료
-  - [ ] Pod 생성 및 상태 확인
-  - [ ] Service 생성 및 접근 확인
-  - [ ] Deployment 생성 및 스케일링 확인
+  - [ ] 환경 파일 복사: `cp ../../../tools/cloud/aws-setup-helper.sh ./ && cp ../../../tools/cloud/aws-aws-eks-helper.sh ./ && cp ../../../tools/cloud/*-environment.env ./ && cp ../../../tools/cloud/*.yaml ./`
+  - [ ] 환경 파일 확인: `ls -la aws-setup-helper.sh aws-aws-eks-helper.sh *-environment.env *.yaml`
+  - [ ] **AWS EKS 클러스터 배포**: `./aws-setup-helper.sh --action create-eks-cluster`
+  - [ ] **EKS 클러스터 설정**: `./aws-aws-eks-helper.sh --action setup-cluster`
+  - [ ] **클러스터 검증**: `./aws-aws-eks-helper.sh --action check-cluster`
+  - [ ] **Workload 배포**: `./aws-aws-eks-helper.sh --action deploy-workload`
+  - [ ] **외부 접근 테스트**: `./aws-aws-eks-helper.sh --action test-external-access`
+  - [ ] 클러스터 상태 확인: `kubectl get nodes`, `kubectl get pods`, `kubectl get services`
 - [ ] **클라우드 서비스**: AWS ECS, GCP Cloud Run 배포 완료
   - [ ] AWS ECS 클러스터 생성 및 태스크 실행
   - [ ] GCP Cloud Run 서비스 배포
@@ -134,22 +143,22 @@ ls -la practice/day1/
 
 # 📍 중앙 집중식 환경 파일 확인
 echo "=== 중앙 집중식 환경 파일 (tools/cloud/) ==="
-ls -la tools/cloud/.env* docker-compose.yml Dockerfile* kubeconfig* *.yaml 2>/dev/null || echo "환경 파일이 없습니다"
+ls -la tools/cloud/*-environment.env tools/cloud/*-helper.sh tools/cloud/*.yaml 2>/dev/null || echo "환경 파일이 없습니다"
 
 # 📍 환경 파일 복사 및 확인
 echo "=== Docker 실습 환경 파일 복사 ==="
-cd practice/day1/
-cp ../tools/cloud/.env* ./
-cp ../tools/cloud/docker-compose.yml ./
-cp ../tools/cloud/Dockerfile* ./
-ls -la .env* docker-compose.yml Dockerfile*
+cd practice/day1/docker-demo/
+cp ../../../tools/cloud/*-environment.env ./
+cp ../../../tools/cloud/docker-helper.sh ./
+cp ../../../tools/cloud/docker-comparison-demo.sh ./
+ls -la *-environment.env docker-helper.sh docker-comparison-demo.sh
 
 echo "=== Kubernetes 실습 환경 파일 복사 ==="
 cd kubernetes-basics/
-cp ../../tools/cloud/kubeconfig* ./
-cp ../../tools/cloud/.env* ./
-cp ../../tools/cloud/*.yaml ./
-ls -la kubeconfig* .env* *.yaml
+cp ../../../tools/cloud/*-environment.env ./
+cp ../../../tools/cloud/k8s-helper.sh ./
+cp ../../../tools/cloud/nginx-loadbalancer.yaml ./
+ls -la *-environment.env k8s-helper.sh nginx-loadbalancer.yaml
 ```
 
 </details>
@@ -224,7 +233,7 @@ flowchart TD
 **자동화 도구 실행**:
 ```bash
 # 📍 실습 위치: mcp_knowledge_base/cloud_intermediate/practice/day1/
-cd mcp_knowledge_base/cloud_intermediate/practice/day1/
+cd mcp_knowledge_base/cloud_intermediate/practice/day1/docker-advanced/
 
 # 📍 환경 파일 복사 (중앙 집중식 관리)
 cp ../tools/cloud/.env ./
@@ -239,6 +248,67 @@ ls -la .env docker-compose.yml Dockerfile*
 
 # 📍 또는 개별 Docker 도구 사용
 ./tools/cloud/docker-helper.sh --action multistage-build
+```
+
+#### 🚨 포트 충돌 해결 (중요)
+
+**문제 상황**: 여러 컨테이너가 동일한 포트(3000)를 사용하여 충돌 발생
+
+**해결 방법**: 5000번대 포트로 매핑하여 충돌 방지
+
+```bash
+# 🔧 기존 컨테이너 정리 (충돌 방지)
+docker stop demo-app-original demo-app-optimized demo-app-multistage 2>/dev/null || true
+docker rm demo-app-original demo-app-optimized demo-app-multistage 2>/dev/null || true
+
+# 🔧 포트 매핑 확인
+netstat -tulpn | grep :500[1-3]
+```
+
+**포트 매핑 구조**:
+| 서비스 | 포트 | 접속 URL | 설명 |
+|--------|------|----------|------|
+| Original | 5001 | http://localhost:5001 | 기본 Dockerfile |
+| Optimized | 5002 | http://localhost:5002 | 최적화된 Dockerfile |
+| Multistage | 5003 | http://localhost:5003 | 멀티스테이지 Dockerfile |
+
+**자동화된 해결책**:
+- 스크립트 실행 전 자동 컨테이너 정리
+- 포트 충돌 방지 로직 내장
+- 수동 정리 명령어 제공
+
+#### 🔧 문제 해결 가이드
+
+**문제 1: 컨테이너 이름 충돌**
+```bash
+# 에러: Conflict. The container name "/demo-app-original" is already in use
+# 해결: 기존 컨테이너 정리
+docker stop demo-app-original demo-app-optimized demo-app-multistage 2>/dev/null || true
+docker rm demo-app-original demo-app-optimized demo-app-multistage 2>/dev/null || true
+```
+
+**문제 2: 포트 충돌**
+```bash
+# 에러: bind: address already in use
+# 해결: 포트 사용 확인 및 정리
+netstat -tulpn | grep :500[1-3]
+lsof -i :5001 -i :5002 -i :5003
+```
+
+**문제 3: 이미지 빌드 실패**
+```bash
+# 에러: failed to solve
+# 해결: Docker 데몬 상태 확인
+docker system prune -f
+docker builder prune -f
+```
+
+**문제 4: 네트워크 연결 실패**
+```bash
+# 에러: connection refused
+# 해결: 컨테이너 상태 확인
+docker ps -a
+docker logs demo-app-original
 ```
 
 **변경 후 시스템 아키텍처**:
@@ -554,11 +624,27 @@ for tag in original optimized multistage; do
     # 잠시 대기
     sleep 3
     
+    # 포트 매핑 설정 (5000번대 포트 사용)
+    case $tag in
+        "original")
+            port=5001
+            ;;
+        "optimized")
+            port=5002
+            ;;
+        "multistage")
+            port=5003
+            ;;
+        *)
+            port=3000
+            ;;
+    esac
+    
     # 헬스 체크
-    if curl -s http://localhost:3000/health > /dev/null; then
-        echo "✅ demo-app:$tag 정상 실행됨"
+    if curl -s http://localhost:$port/health > /dev/null; then
+        echo "✅ demo-app:$tag 정상 실행됨 (포트: $port)"
         echo "API 응답:"
-        curl -s http://localhost:3000/ | jq . 2>/dev/null || curl -s http://localhost:3000/
+        curl -s http://localhost:$port/ | jq . 2>/dev/null || curl -s http://localhost:$port/
     else
         echo "❌ demo-app:$tag 실행 실패"
     fi
@@ -577,12 +663,28 @@ for tag in original optimized multistage; do
     echo ""
     echo "--- demo-app:$tag 시작 시간 측정 ---"
     
+    # 포트 매핑 설정 (5000번대 포트 사용)
+    case $tag in
+        "original")
+            port=5001
+            ;;
+        "optimized")
+            port=5002
+            ;;
+        "multistage")
+            port=5003
+            ;;
+        *)
+            port=3000
+            ;;
+    esac
+    
     # 시작 시간 측정
     start_time=$(date +%s.%N)
-    container_id=$(docker run -d -p 3000:3000 --name "demo-app-$tag" demo-app:$tag)
+    container_id=$(docker run -d -p $port:3000 --name "demo-app-$tag" demo-app:$tag)
     
     # 헬스 체크 대기
-    while ! curl -s http://localhost:3000/health > /dev/null; do
+    while ! curl -s http://localhost:$port/health > /dev/null; do
         sleep 0.1
     done
     
@@ -1112,21 +1214,35 @@ flowchart TD
 
 ### 🛠️ 실습 진행 (90분)
 
-#### 실습 1: 클러스터 Context 구성 (15분)
+#### 실습 1: AWS EKS 클러스터 배포 (30분)
 
-**변경 전 시스템 아키텍처**:
+**AWS Helper를 사용한 클러스터 배포**:
 ```mermaid
 flowchart TD
-    subgraph "기존 클러스터 환경"
-        A["로컬 kubectl"] --> B["단일 클러스터"]
-        B --> C["수동 설정"]
-        C --> D["클러스터 전환 어려움"]
+    subgraph "AWS EKS 클러스터 배포"
+        A["AWS Helper"] --> B["EKS 클러스터 생성"]
+        B --> C["노드 그룹 설정"]
+        C --> D["보안 그룹 구성"]
+        D --> E["클러스터 연결"]
     end
+    
+    subgraph "자동화 도구"
+        F["aws-setup-helper.sh"] --> G["AWS 환경 설정"]
+        G --> H["kubectl 설정"]
+        H --> I["클러스터 검증"]
+    end
+    
+    A --> F
     
     style A fill:#1976d2,color:#ffffff
     style B fill:#388e3c,color:#ffffff
     style C fill:#f57c00,color:#ffffff
     style D fill:#d32f2f,color:#ffffff
+    style E fill:#4caf50,color:#ffffff
+    style F fill:#1976d2,color:#ffffff
+    style G fill:#388e3c,color:#ffffff
+    style H fill:#f57c00,color:#ffffff
+    style I fill:#4caf50,color:#ffffff
 ```
 
 **자동화 도구 실행**:
@@ -1135,18 +1251,32 @@ flowchart TD
 cd mcp_knowledge_base/cloud_intermediate/practice/day1/kubernetes-basics/
 
 # 📍 환경 파일 복사 (중앙 집중식 관리)
-cp ../../tools/cloud/kubeconfig* ./
-cp ../../tools/cloud/.env* ./
-cp ../../tools/cloud/*.yaml ./
+cp ../../../tools/cloud/aws-setup-helper.sh ./
+cp ../../../tools/cloud/aws-aws-eks-helper.sh ./
+cp ../../../tools/cloud/aws-environment.env ./
+cp ../../../tools/cloud/*.yaml ./
 
 # 📍 환경 파일 확인 (필수)
-ls -la kubeconfig* .env* *.yaml *.yml
+ls -la aws-setup-helper.sh aws-aws-eks-helper.sh aws-environment.env *.yaml
 
-# 📍 Kubernetes 기초 실습 직접 실행 (권장)
-./kubernetes-basics-helper.sh
+# 📍 AWS 환경 설정 및 인증 확인
+./aws-setup-helper.sh --action setup-aws-environment
+./aws-setup-helper.sh --action check-aws-credentials
 
-# 📍 또는 개별 Kubernetes 도구 사용
-./tools/cloud/k8s-helper.sh --action setup-context
+# 📍 EKS 클러스터 생성 (자동화)
+./aws-aws-eks-helper.sh --action create-cluster
+./aws-aws-eks-helper.sh --action create-cluster --name [cluster-name] --region [region-name]
+
+# 📍 노드 그룹 생성
+./aws-aws-eks-helper.sh --action create-nodegroup --cluster demo-cluster --node-type t3.medium
+
+# 📍 kubectl 설정 및 클러스터 연결
+./aws-aws-eks-helper.sh --action setup-kubectl --cluster demo-cluster --region us-west-2
+
+# 📍 클러스터 상태 확인
+./aws-aws-eks-helper.sh --action check-cluster --cluster demo-cluster
+kubectl get nodes
+kubectl get pods --all-namespaces
 ```
 
 **변경 후 시스템 아키텍처**:
@@ -1178,44 +1308,86 @@ flowchart TD
 
 **실습 명령어**:
 ```bash
-# AWS EKS 클러스터 연결
-aws eks update-kubeconfig --region us-west-2 --name my-cluster
+# 📍 AWS 환경 설정 및 인증 확인
+./aws-setup-helper.sh --action setup-aws-environment
+./aws-setup-helper.sh --action check-aws-credentials
 
-# GCP GKE 클러스터 연결
-gcloud container clusters get-credentials my-cluster --zone us-central1-a
+# 📍 EKS 클러스터 생성 (자동화)
+./aws-aws-eks-helper.sh --action create-cluster --name demo-cluster --region us-west-2
 
-# 클러스터 Context 확인
+# 📍 노드 그룹 생성
+./aws-aws-eks-helper.sh --action create-nodegroup --cluster demo-cluster --node-type t3.medium
+
+# 📍 kubectl 설정 및 클러스터 연결
+./aws-aws-eks-helper.sh --action setup-kubectl --cluster demo-cluster --region us-west-2
+
+# 📍 클러스터 상태 확인
+./aws-aws-eks-helper.sh --action check-cluster --cluster demo-cluster
+kubectl get nodes
+kubectl get pods --all-namespaces
+
+# 📍 Context 확인 및 전환
 kubectl config get-contexts
-
-# Context 전환
-kubectl config use-context arn:aws:eks:us-west-2:123456789012:cluster/my-cluster
+kubectl config use-context arn:aws:eks:us-west-2:123456789012:cluster/demo-cluster
 ```
 
 **실습 내용**:
-- AWS EKS 클러스터 연결
-- GCP GKE 클러스터 연결
+- AWS 환경 설정 및 인증 확인
+- EKS 클러스터 자동 생성 및 설정
+- 노드 그룹 생성 및 관리
+- kubectl 설정 및 클러스터 연결
+- 클러스터 상태 확인 및 검증
 - 클러스터 간 전환
 
-#### 실습 2: Workload 배포 (30분)
+#### 실습 2: 클러스터 검증 및 설정 (20분)
 
-**변경 전 시스템 아키텍처**:
+**EKS Helper를 사용한 클러스터 검증**:
 ```mermaid
 flowchart TD
-    subgraph "기존 배포 방식"
-        A["수동 YAML 작성"] --> B["개별 리소스 생성"]
-        B --> C["설정 관리 어려움"]
-        C --> D["배포 복잡성"]
+    subgraph "클러스터 검증 프로세스"
+        A["EKS Helper"] --> B["클러스터 상태 확인"]
+        B --> C["노드 그룹 검증"]
+        C --> D["kubectl 설정"]
+        D --> E["클러스터 연결 테스트"]
     end
+    
+    subgraph "자동화 검증"
+        F["aws-eks-helper.sh"] --> G["상태 체크"]
+        G --> H["설정 검증"]
+        H --> I["연결 테스트"]
+    end
+    
+    A --> F
     
     style A fill:#1976d2,color:#ffffff
     style B fill:#388e3c,color:#ffffff
     style C fill:#f57c00,color:#ffffff
     style D fill:#d32f2f,color:#ffffff
+    style E fill:#4caf50,color:#ffffff
+    style F fill:#1976d2,color:#ffffff
+    style G fill:#388e3c,color:#ffffff
+    style H fill:#f57c00,color:#ffffff
+    style I fill:#4caf50,color:#ffffff
 ```
 
 **자동화 도구 실행**:
 ```bash
-# 자동화 도구: ./tools/cloud/k8s-helper.sh --action deploy-workload
+# 📍 클러스터 상태 확인
+./aws-aws-eks-helper.sh --action check-cluster
+
+# 📍 노드 그룹 상태 확인
+./aws-aws-eks-helper.sh --action check-nodegroups
+
+# 📍 kubectl 설정 확인
+./aws-aws-eks-helper.sh --action verify-kubectl
+
+# 📍 클러스터 연결 테스트
+./aws-aws-eks-helper.sh --action test-connection
+
+# 📍 클러스터 정보 출력
+kubectl cluster-info
+kubectl get nodes
+kubectl get namespaces
 ```
 
 **변경 후 시스템 아키텍처**:
@@ -2055,26 +2227,56 @@ eksctl delete cluster --name cloud-intermediate-cluster --region ap-northeast-2
 eksctl get cluster --region ap-northeast-2
 ```
 
-#### 실습 3: 외부 접근 구성 (30분)
+#### 실습 3: Workload 배포 (40분)
 
-**변경 전 시스템 아키텍처**:
+**EKS Helper를 사용한 Workload 배포**:
 ```mermaid
 flowchart TD
-    subgraph "기존 네트워크 구조"
-        A["Pod"] --> B["ClusterIP"]
-        B --> C["내부 접근만 가능"]
-        C --> D["외부 접근 불가"]
+    subgraph "Workload 배포 프로세스"
+        A["EKS Helper"] --> B["Deployment 생성"]
+        B --> C["Service 생성"]
+        C --> D["Ingress 설정"]
+        D --> E["외부 접근 구성"]
     end
+    
+    subgraph "자동화 배포"
+        F["aws-eks-helper.sh"] --> G["YAML 배포"]
+        G --> H["리소스 생성"]
+        H --> I["상태 확인"]
+    end
+    
+    A --> F
     
     style A fill:#1976d2,color:#ffffff
     style B fill:#388e3c,color:#ffffff
     style C fill:#f57c00,color:#ffffff
     style D fill:#d32f2f,color:#ffffff
+    style E fill:#4caf50,color:#ffffff
+    style F fill:#1976d2,color:#ffffff
+    style G fill:#388e3c,color:#ffffff
+    style H fill:#f57c00,color:#ffffff
+    style I fill:#4caf50,color:#ffffff
 ```
 
 **자동화 도구 실행**:
 ```bash
-# 자동화 도구: ./tools/cloud/k8s-helper.sh --action setup-external-access
+# 📍 기본 Workload 배포
+./aws-aws-eks-helper.sh --action deploy-workload
+
+# 📍 Nginx Deployment 배포
+./aws-aws-eks-helper.sh --action deploy-nginx
+
+# 📍 LoadBalancer Service 생성
+./aws-aws-eks-helper.sh --action create-loadbalancer
+
+# 📍 외부 접근 테스트
+./aws-aws-eks-helper.sh --action test-external-access
+
+# 📍 배포 상태 확인
+kubectl get deployments
+kubectl get services
+kubectl get pods
+kubectl get ingress
 ```
 
 **변경 후 시스템 아키텍처**:

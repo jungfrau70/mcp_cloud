@@ -1,0 +1,42 @@
+# =============================================================================
+# Multistage Dockerfile (멀티스테이지 빌드)
+# =============================================================================
+# 개선사항:
+# - 빌드 도구와 런타임 환경 분리
+# - 최종 이미지에 빌드 도구 제외
+# - 더 작은 이미지 크기
+# - 보안 강화 (최소 권한)
+# - 레이어 최적화
+# =============================================================================
+
+# Build stage
+FROM node:18-alpine AS builder
+WORKDIR /app
+
+# 의존성 파일만 먼저 복사 (캐시 최적화)
+COPY package*.json ./
+RUN npm install --only=production && npm cache clean --force
+
+# 애플리케이션 코드 복사
+COPY . .
+
+# Production stage
+FROM node:18-alpine AS runtime
+WORKDIR /app
+
+# 보안을 위한 non-root 사용자 생성
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001
+
+# 빌드된 파일만 복사 (빌드 도구 제외)
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /app ./
+
+# Non-root 사용자로 전환
+USER nextjs
+
+# 포트 노출
+EXPOSE 3000
+
+# 애플리케이션 실행
+CMD ["npm", "start"]
