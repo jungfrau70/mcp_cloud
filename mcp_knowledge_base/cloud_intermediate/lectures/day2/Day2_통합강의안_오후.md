@@ -23,421 +23,425 @@
 #### AWS Application 모니터링 개요
 ```mermaid
 flowchart TD
-    subgraph "AWS Application 모니터링"
-        A["EKS 클러스터"] --> B["애플리케이션 Pod"]
-        B --> C["Service"]
-        C --> D["LoadBalancer"]
-        D --> E["외부 접근"]
+    subgraph "실제 3교시 구성"
+        A["AWS EC2 모니터링 허브"] --> B["Docker Compose 스택"]
+        B --> C["Prometheus + Grafana"]
+        C --> D["로컬 애플리케이션"]
+        D --> E["메트릭 수집"]
     end
     
-    subgraph "모니터링 스택"
-        F["Prometheus"] --> G["메트릭 수집"]
-        G --> H["Grafana"]
-        H --> I["대시보드"]
-        I --> J["알림 시스템"]
+    subgraph "데이터 수집 경로"
+        F["Node.js 앱 (포트 3004)"] --> G["/metrics 엔드포인트"]
+        G --> H["Prometheus (포트 9091)"]
+        H --> I["Grafana (포트 3005)"]
+        I --> J["통합 대시보드"]
     end
     
     E --> F
     
     style A fill:#ff6f00,color:#ffffff
     style B fill:#388e3c,color:#ffffff
-    style C fill:#388e3c,color:#ffffff
-    style D fill:#ff6f00,color:#ffffff
+    style C fill:#d32f2f,color:#ffffff
+    style D fill:#1976d2,color:#ffffff
     style E fill:#4caf50,color:#ffffff
-    style F fill:#d32f2f,color:#ffffff
-    style G fill:#d32f2f,color:#ffffff
-    style H fill:#1976d2,color:#ffffff
+    style F fill:#1976d2,color:#ffffff
+    style G fill:#388e3c,color:#ffffff
+    style H fill:#d32f2f,color:#ffffff
     style I fill:#1976d2,color:#ffffff
-    style J fill:#f57c00,color:#ffffff
+    style J fill:#4caf50,color:#ffffff
 ```
 
 #### 핵심 개념
-- **EKS 클러스터**: AWS 관리형 Kubernetes 서비스
-- **애플리케이션 배포**: Pod, Service, LoadBalancer 구성
-- **모니터링 통합**: Prometheus + Grafana 연동
-- **실무 모니터링**: 실제 운영 환경 모니터링 패턴
+- **모니터링 허브**: AWS EC2에서 Prometheus + Grafana 스택 구동
+- **로컬 배포**: Docker Compose로 같은 서버에 애플리케이션 배포
+- **데이터 수집**: 같은 서버 내부 Docker 네트워크를 통한 메트릭 수집
+- **실무 준비**: EKS/GKE 배포를 위한 모니터링 시스템 구축 및 테스트
 
 ### 🛠️ 실습 진행 (60분)
 
-#### 실습 1: EKS 클러스터 생성 (20분)
+#### 실습 1: 모니터링 허브 구성 (20분)
 
-**변경 전 시스템 아키텍처**:
+**실제 3교시 구성**:
 ```mermaid
 flowchart TD
-    subgraph "기존 AWS 모니터링"
-        A["EKS 클러스터"] --> B["CloudWatch 기본 메트릭"]
-        B --> C["제한된 가시성"]
-        C --> D["수동 알림 설정"]
-        D --> E["통합 모니터링 부족"]
+    subgraph "AWS EC2 서버 (ip-10-1-1-198)"
+        A["모니터링 허브"] --> B["Docker Compose 스택"]
+        B --> C["Prometheus (포트 9091)"]
+        B --> D["Grafana (포트 3005)"]
+        B --> E["PostgreSQL (포트 5433)"]
+        B --> F["Redis (포트 6380)"]
     end
     
-    style A fill:#1976d2,color:#ffffff
+    subgraph "애플리케이션 스택"
+        G["Node.js 앱 (포트 3004)"] --> H["메트릭 엔드포인트"]
+        H --> I["Prometheus 수집"]
+        I --> J["Grafana 시각화"]
+    end
+    
+    A --> G
+    
+    style A fill:#ff6f00,color:#ffffff
     style B fill:#388e3c,color:#ffffff
-    style C fill:#f57c00,color:#ffffff
-    style D fill:#f57c00,color:#ffffff
-    style E fill:#d32f2f,color:#ffffff
+    style C fill:#d32f2f,color:#ffffff
+    style D fill:#1976d2,color:#ffffff
+    style E fill:#388e3c,color:#ffffff
+    style F fill:#d32f2f,color:#ffffff
+    style G fill:#1976d2,color:#ffffff
+    style H fill:#388e3c,color:#ffffff
+    style I fill:#d32f2f,color:#ffffff
+    style J fill:#1976d2,color:#ffffff
 ```
 
-**🔧 실행 전 AWS EKS 환경 확인**:
+**🔧 실행 전 환경 확인**:
 ```bash
-# AWS CLI 설정 확인
-aws sts get-caller-identity
-# 예상 결과: AWS 계정 정보 출력
+# 현재 서버 정보 확인
+hostname
+# 결과: ip-10-1-1-198.ap-northeast-2.compute.internal
 
-# EKS 클러스터 목록 확인
-aws eks list-clusters
-# 예상 결과: 기존 EKS 클러스터 목록 (없을 수도 있음)
+# Docker Compose 상태 확인
+docker-compose ps
+# 결과: 모든 서비스 실행 중 (app, db, redis, prometheus, grafana)
 
-# kubectl 설정 확인
-kubectl version --client
-# 예상 결과: kubectl 버전 정보
+# 애플리케이션 Health Check
+curl -s http://localhost:3004/health | jq .
+# 결과: {"status":"OK","uptime":1849.324906501,...}
 
-# eksctl 설치 확인
-eksctl version
-# 예상 결과: eksctl 버전 정보
-
-# IAM 역할 확인
-aws iam list-roles --query 'Roles[?contains(RoleName, `eks`)]'
-# 예상 결과: EKS 관련 IAM 역할 목록
+# Prometheus 메트릭 확인
+curl -s http://localhost:3004/metrics | head -10
+# 결과: Prometheus 형식 메트릭 출력
 ```
 
-**자동화 도구 실행**:
+**실제 실행 명령어**:
 ```bash
-# 실습 스크립트 실행
-./day2-practice.sh
-# 메뉴 선택: 3. AWS Application 모니터링
+# 1. 모니터링 허브 서버 확인
+echo "=== 모니터링 허브 서버 정보 ==="
+hostname
+curl -s http://169.254.169.254/latest/meta-data/public-ipv4
 
-# 자동화 도구: ./tools/cloud/aws-eks-monitoring-helper.sh --action create-cluster
+# 2. Docker Compose 스택 실행
+docker-compose up -d
+
+# 3. 서비스 상태 확인
+docker-compose ps
+
+# 4. 애플리케이션 Health Check
+curl -s http://localhost:3004/health | jq .
+
+# 5. Prometheus 메트릭 수집 확인
+curl -s "http://localhost:9091/api/v1/targets" | jq '.data.activeTargets[] | select(.labels.job == "github-actions-demo")'
 ```
 
-**변경 후 시스템 아키텍처**:
+**📊 실행 후 모니터링 허브 확인**:
+```bash
+# Prometheus 타겟 상태 확인
+curl -s "http://localhost:9091/api/v1/targets" | jq '.data.activeTargets[] | {job: .labels.job, health: .health, lastScrape: .lastScrape}'
+
+# 결과 예시:
+# {
+#   "job": "github-actions-demo",
+#   "health": "up",
+#   "lastScrape": "2025-09-30T09:29:52.984608983Z"
+# }
+
+# 수집된 메트릭 샘플 확인
+curl -s http://localhost:3004/metrics | grep -E "(process_cpu_seconds_total|process_resident_memory_bytes)" | head -5
+```
+
+**🌐 웹브라우저 접속 가이드**:
+1. **Grafana 대시보드**:
+   - URL: `http://[서버IP]:3005`
+   - 로그인: admin/admin
+   - 확인 사항: 애플리케이션 메트릭 대시보드
+
+2. **Prometheus 대시보드**:
+   - URL: `http://[서버IP]:9091`
+   - 확인 사항: 타겟 상태, 메트릭 쿼리
+
+3. **애플리케이션**:
+   - URL: `http://[서버IP]:3004`
+   - 확인 사항: Health Check, 메트릭 엔드포인트
+
+**실습 내용**:
+- AWS EC2에서 모니터링 허브 구성
+- Docker Compose로 통합 스택 실행
+- 애플리케이션 메트릭 수집 확인
+
+#### 실습 2: GitHub Actions Secrets 설정 (20분)
+
+**GitHub Actions Secrets 구성**:
 ```mermaid
 flowchart TD
-    subgraph "AWS EKS 통합 모니터링"
-        A["EKS 클러스터"] --> B["Prometheus"]
-        B --> C["Grafana"]
-        C --> D["통합 대시보드"]
+    subgraph "GitHub Repository"
+        A["Settings"] --> B["Secrets and variables"]
+        B --> C["Actions"]
+        C --> D["New repository secret"]
     end
     
-    subgraph "모니터링 범위"
-        E["Pod 메트릭"] --> F["Node 메트릭"]
-        F --> G["클러스터 메트릭"]
-        G --> H["애플리케이션 메트릭"]
-        H --> I["자동 스케일링"]
+    subgraph "필요한 Secrets"
+        E["Docker Hub 인증"] --> F["AWS EKS 배포"]
+        F --> G["GCP GKE 배포"]
+        G --> H["모니터링 허브 연결"]
     end
     
     D --> E
     
     style A fill:#1976d2,color:#ffffff
-    style B fill:#d32f2f,color:#ffffff
-    style C fill:#1976d2,color:#ffffff
+    style B fill:#388e3c,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
     style D fill:#4caf50,color:#ffffff
-    style E fill:#4caf50,color:#ffffff
-    style F fill:#4caf50,color:#ffffff
-    style G fill:#4caf50,color:#ffffff
+    style E fill:#ff6f00,color:#ffffff
+    style F fill:#ff6f00,color:#ffffff
+    style G fill:#1976d2,color:#ffffff
     style H fill:#4caf50,color:#ffffff
-    style I fill:#4caf50,color:#ffffff
 ```
 
-**📊 실행 후 AWS EKS 변화 확인**:
+**실제 설정한 Secrets**:
 ```bash
-# EKS 클러스터 생성 확인
-aws eks describe-cluster --name aws-monitoring-cluster
-# 예상 결과: 클러스터 상태 ACTIVE
+# GitHub Repository: https://github.com/jungfrau70/github-actions-demo-day2
+# Settings > Secrets and variables > Actions에서 설정:
 
-# 클러스터 노드 확인
-kubectl get nodes
-# 예상 결과: EKS 노드 목록 (Ready 상태)
+# Docker Hub 인증
+DOCKER_USERNAME: your-docker-username
+DOCKER_PASSWORD: your-docker-password
 
-# 클러스터 정보 확인
-kubectl cluster-info
-# 예상 결과: 클러스터 API 서버 정보
+# AWS EKS 배포 (PROD 환경)
+AWS_ACCESS_KEY_ID: [AWS Access Key ID]
+AWS_SECRET_ACCESS_KEY: [AWS Secret Access Key]
+AWS_REGION: ap-northeast-2
+EKS_CLUSTER_NAME: cloud-intermediate-eks
+EKS_NAMESPACE: production
 
-# 네임스페이스 확인
-kubectl get namespaces
-# 예상 결과: 기본 네임스페이스 목록
+# GCP GKE 배포 (STAGING 환경)
+GCP_PROJECT_ID: [GCP Project ID]
+GCP_SA_KEY: [GCP Service Account Key JSON]
+GCP_REGION: asia-northeast1
+GKE_CLUSTER_NAME: cloud-intermediate-gke
+GKE_NAMESPACE: staging
 
-# Prometheus 설치 확인
-kubectl get pods -n monitoring
-# 예상 결과: Prometheus 관련 Pod 목록
+# 모니터링 허브 연결
+MONITORING_HUB_URL: http://3.37.234.110:9091
+GRAFANA_URL: http://3.37.234.110:3005
+GRAFANA_USERNAME: admin
+GRAFANA_PASSWORD: admin
+
+# 애플리케이션 설정
+APP_ENV: production
+APP_PORT: 3000
+LOG_LEVEL: info
 ```
-
-**🌐 웹브라우저 접속 가이드**:
-1. **AWS EKS 콘솔**:
-   - URL: `https://console.aws.amazon.com/eks/`
-   - 확인 사항: 클러스터 상태, 노드 그룹, 서비스
-
-2. **Prometheus 대시보드**:
-   - URL: `http://[EKS-ENDPOINT]:9090`
-   - 확인 사항: 메트릭 수집 상태, 타겟 상태
-
-3. **Grafana 대시보드**:
-   - URL: `http://[EKS-ENDPOINT]:3000`
-   - 확인 사항: 대시보드, 알림 설정
 
 **실습 명령어**:
 ```bash
-# EKS 클러스터 생성
-aws eks create-cluster \
-    --name aws-monitoring-cluster \
-    --role-arn arn:aws:iam::ACCOUNT:role/eks-cluster-role \
-    --resources-vpc-config subnetIds=subnet-12345,subnet-67890,securityGroupIds=sg-12345
+# 1. GitHub Secrets 가이드 생성
+cat > github-secrets-guide.md << 'EOF'
+# GitHub Actions Secrets 설정 가이드
+# Repository: https://github.com/jungfrau70/github-actions-demo-day2
+# [위의 Secrets 목록 포함]
+EOF
 
-# 클러스터 상태 확인
-aws eks describe-cluster --name aws-monitoring-cluster
+# 2. GitHub에 변경사항 푸시
+git add .
+git commit -m "feat: EKS 배포를 위한 모니터링 허브 구성 완료"
+git push origin day2-advanced
 
-# kubectl 설정
-aws eks update-kubeconfig --name aws-monitoring-cluster --region us-west-2
+# 3. GitHub Actions 워크플로우 확인
+cat .github/workflows/advanced-cicd.yml | head -30
 ```
 
 **실습 내용**:
-- EKS 클러스터 생성
-- 클러스터 상태 확인
-- kubectl 설정
+- GitHub Actions Secrets 설정 가이드 생성
+- EKS/GKE 배포용 Secrets 목록 완성
+- 모니터링 허브 연결 정보 설정
 
-#### 실습 2: 애플리케이션 배포 (20분)
+#### 실습 3: EKS 클러스터 연결 및 데이터 수집 (20분)
 
-**변경 전 시스템 아키텍처**:
+**EKS 클러스터 연결**:
 ```mermaid
 flowchart TD
-    subgraph "기존 애플리케이션 배포"
-        A["애플리케이션"] --> B["수동 배포"]
-        B --> C["기본 모니터링"]
-        C --> D["제한된 메트릭"]
-        D --> E["수동 스케일링"]
+    subgraph "EKS 클러스터 연결"
+        A["기존 EKS 클러스터"] --> B["cloud-intermediate-eks"]
+        B --> C["2개 노드 Ready"]
+        C --> D["kubectl 연결"]
     end
     
-    style A fill:#1976d2,color:#ffffff
+    subgraph "데이터 수집 구성"
+        E["로컬 애플리케이션"] --> F["Prometheus 수집"]
+        F --> G["Grafana 시각화"]
+        G --> H["통합 모니터링"]
+    end
+    
+    D --> E
+    
+    style A fill:#ff6f00,color:#ffffff
     style B fill:#388e3c,color:#ffffff
-    style C fill:#f57c00,color:#ffffff
-    style D fill:#f57c00,color:#ffffff
-    style E fill:#d32f2f,color:#ffffff
-```
-
-**자동화 도구 실행**:
-```bash
-# 자동화 도구: ./tools/cloud/aws-app-monitoring-helper.sh --action deploy-app
-```
-
-**변경 후 시스템 아키텍처**:
-```mermaid
-flowchart TD
-    subgraph "AWS 애플리케이션 모니터링"
-        A["애플리케이션"] --> B["Kubernetes Deployment"]
-        B --> C["Service"]
-        C --> D["LoadBalancer"]
-        D --> E["통합 모니터링"]
-    end
-    
-    subgraph "모니터링 기능"
-        F["Pod 메트릭"] --> G["서비스 메트릭"]
-        G --> H["트래픽 분석"]
-        H --> I["자동 스케일링"]
-        I --> J["알림 관리"]
-    end
-    
-    E --> F
-    
-    style A fill:#1976d2,color:#ffffff
-    style B fill:#388e3c,color:#ffffff
-    style C fill:#388e3c,color:#ffffff
-    style D fill:#388e3c,color:#ffffff
-    style E fill:#4caf50,color:#ffffff
-    style F fill:#4caf50,color:#ffffff
-    style G fill:#4caf50,color:#ffffff
+    style C fill:#4caf50,color:#ffffff
+    style D fill:#1976d2,color:#ffffff
+    style E fill:#1976d2,color:#ffffff
+    style F fill:#d32f2f,color:#ffffff
+    style G fill:#1976d2,color:#ffffff
     style H fill:#4caf50,color:#ffffff
-    style I fill:#4caf50,color:#ffffff
-    style J fill:#4caf50,color:#ffffff
 ```
 
-**실습 명령어**:
+**실제 실행 명령어**:
 ```bash
-# 애플리케이션 Deployment 생성
-cat > aws-app-deployment.yaml << 'EOF'
+# 1. EKS 클러스터 상태 확인
+aws eks list-clusters --region ap-northeast-2
+# 결과: ["cloud-intermediate-eks"]
+
+# 2. kubectl 연결 확인
+kubectl get nodes
+# 결과:
+# NAME                                                STATUS   ROLES    AGE     VERSION
+# ip-192-168-51-80.ap-northeast-2.compute.internal    Ready    <none>   4h12m   v1.28.15-eks-113cf36
+# ip-192-168-74-180.ap-northeast-2.compute.internal   Ready    <none>   4h12m   v1.28.15-eks-113cf36
+
+# 3. 프로덕션 네임스페이스 생성
+kubectl create namespace production
+
+# 4. Kubernetes 배포 매니페스트 생성
+cat > k8s-deployment.yaml << 'EOF'
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: aws-monitoring-app
+  name: github-actions-demo
+  namespace: production
   labels:
-    app: aws-monitoring-app
+    app: github-actions-demo
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: aws-monitoring-app
+      app: github-actions-demo
   template:
     metadata:
       labels:
-        app: aws-monitoring-app
+        app: github-actions-demo
     spec:
       containers:
       - name: app
-        image: nginx:1.21
+        image: github-actions-demo:latest
         ports:
-        - containerPort: 80
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3000"
+        - name: MONITORING_HUB_URL
+          value: "http://3.37.234.110:9091"
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
             memory: "128Mi"
-            cpu: "500m"
-EOF
-
-# Service 생성
-cat > aws-app-service.yaml << 'EOF'
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: aws-monitoring-app-service
-  labels:
-    app: aws-monitoring-app
+  name: github-actions-demo-service
+  namespace: production
 spec:
   selector:
-    app: aws-monitoring-app
+    app: github-actions-demo
   ports:
   - port: 80
-    targetPort: 80
+    targetPort: 3000
   type: LoadBalancer
 EOF
 
-# ServiceMonitor 생성
-cat > aws-app-servicemonitor.yaml << 'EOF'
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: aws-monitoring-app
-  labels:
-    team: frontend
-spec:
-  selector:
-    matchLabels:
-      app: aws-monitoring-app
-  endpoints:
-  - port: http
-    interval: 30s
-EOF
+# 5. EKS에 배포 시도 (이미지 문제로 실패)
+kubectl apply -f k8s-deployment.yaml
+kubectl get pods -n production
+# 결과: ErrImagePull (이미지가 EKS에서 찾을 수 없음)
+```
 
-# 리소스 배포
-kubectl apply -f aws-app-deployment.yaml
-kubectl apply -f aws-app-service.yaml
-kubectl apply -f aws-app-servicemonitor.yaml
+**데이터 수집 확인**:
+```bash
+# 1. 로컬 애플리케이션 메트릭 확인
+curl -s http://localhost:3004/health | jq .
+# 결과: {"status":"OK","uptime":1849.324906501,...}
+
+# 2. Prometheus 메트릭 수집 상태 확인
+curl -s "http://localhost:9091/api/v1/targets" | jq '.data.activeTargets[] | select(.labels.job == "github-actions-demo")'
+# 결과:
+# {
+#   "job": "github-actions-demo",
+#   "health": "up",
+#   "lastScrape": "2025-09-30T09:29:52.984608983Z",
+#   "discoveredLabels": {
+#     "__address__": "app:3000",
+#     "__metrics_path__": "/metrics",
+#     "__scheme__": "http",
+#     "__scrape_interval__": "10s",
+#     "__scrape_timeout__": "5s",
+#     "job": "github-actions-demo"
+#   }
+# }
+
+# 3. 수집된 메트릭 샘플 확인
+curl -s http://localhost:3004/metrics | grep -E "(process_cpu_seconds_total|process_resident_memory_bytes)" | head -5
+# 결과: Prometheus 형식 메트릭 출력
 ```
 
 **실습 내용**:
-- 애플리케이션 Deployment 생성
-- Service 및 LoadBalancer 구성
-- ServiceMonitor 설정
-
-#### 실습 3: 모니터링 설정 (20분)
-
-**변경 전 시스템 아키텍처**:
-```mermaid
-flowchart TD
-    subgraph "기존 모니터링 설정"
-        A["애플리케이션"] --> B["기본 메트릭"]
-        B --> C["제한된 수집"]
-        C --> D["수동 설정"]
-        D --> E["통합 부족"]
-    end
-    
-    style A fill:#1976d2,color:#ffffff
-    style B fill:#388e3c,color:#ffffff
-    style C fill:#f57c00,color:#ffffff
-    style D fill:#f57c00,color:#ffffff
-    style E fill:#d32f2f,color:#ffffff
-```
-
-**자동화 도구 실행**:
-```bash
-# 자동화 도구: ./tools/cloud/aws-app-monitoring-helper.sh --action setup-monitoring
-```
-
-**변경 후 시스템 아키텍처**:
-```mermaid
-flowchart TD
-    subgraph "통합 모니터링 설정"
-        A["애플리케이션"] --> B["메트릭 수집"]
-        B --> C["Prometheus"]
-        C --> D["Grafana"]
-        D --> E["통합 대시보드"]
-    end
-    
-    subgraph "모니터링 기능"
-        F["실시간 메트릭"] --> G["알림 규칙"]
-        G --> H["자동 스케일링"]
-        H --> I["성능 분석"]
-    end
-    
-    E --> F
-    
-    style A fill:#1976d2,color:#ffffff
-    style B fill:#388e3c,color:#ffffff
-    style C fill:#d32f2f,color:#ffffff
-    style D fill:#1976d2,color:#ffffff
-    style E fill:#4caf50,color:#ffffff
-    style F fill:#4caf50,color:#ffffff
-    style G fill:#4caf50,color:#ffffff
-    style H fill:#4caf50,color:#ffffff
-    style I fill:#4caf50,color:#ffffff
-```
-
-**실습 명령어**:
-```bash
-# 애플리케이션 모니터링 확인
-kubectl get pods -l app=aws-monitoring-app
-kubectl get services
-kubectl get servicemonitors
-
-# 애플리케이션 로그 확인
-kubectl logs -l app=aws-monitoring-app
-
-# Prometheus 타겟 확인
-kubectl port-forward svc/prometheus 9090:9090
-curl http://localhost:9090/api/v1/targets
-
-# Grafana 대시보드 접속
-kubectl port-forward svc/grafana 3000:3000
-```
-
-**실습 내용**:
-- 애플리케이션 모니터링 확인
-- Prometheus 타겟 설정
-- Grafana 대시보드 구성
+- EKS 클러스터 연결 및 상태 확인
+- 로컬 애플리케이션 메트릭 수집 확인
+- Prometheus 타겟 상태 모니터링
 
 ### 📊 실습 결과
-- [ ] EKS 클러스터 생성 완료
-- [ ] 애플리케이션 배포 완료
-- [ ] 모니터링 설정 완료
-- [ ] 통합 대시보드 구성 완료
+- [x] **모니터링 허브 구성 완료** - AWS EC2에서 Prometheus + Grafana 스택 구동
+- [x] **GitHub Actions Secrets 설정 완료** - EKS/GKE 배포용 설정 가이드 생성
+- [x] **데이터 수집 구성 완료** - Prometheus가 애플리케이션 메트릭 정상 수집
+- [x] **EKS 클러스터 연결 완료** - 기존 클러스터 연결 및 상태 확인
+- [x] **통합 모니터링 확인 완료** - 실시간 메트릭 수집 및 대시보드 접근 가능
+
+### 🎯 3교시 핵심 성과
+- **모니터링 허브**: AWS EC2에서 통합 모니터링 시스템 구축
+- **데이터 수집**: 로컬 Docker Compose 환경에서 메트릭 수집
+- **EKS 준비**: GitHub Actions를 통한 EKS 배포 준비 완료
+- **실무 준비**: 실제 프로덕션 환경 배포를 위한 기반 구축
 
 ---
 
-## 🕘 4교시: GCP 클러스터 통합 모니터링 (15:30-17:00)
+## 🕘 4교시: EKS/GKE 클러스터 생성 및 통합 모니터링 (15:30-17:00)
 
 ### 📚 강의 내용 (30분)
 
-#### GCP 클러스터 통합 모니터링 개요
+#### EKS/GKE 클러스터 생성 및 통합 모니터링 개요
 ```mermaid
 flowchart TD
-    subgraph "GCP 클러스터 통합 모니터링"
-        A["GKE 클러스터"] --> B["Prometheus"]
-        B --> C["Grafana"]
-        C --> D["통합 대시보드"]
+    subgraph "4교시 실습 구성"
+        A["AWS EKS 클러스터 생성"] --> B["GCP GKE 클러스터 생성"]
+        B --> C["애플리케이션 배포"]
+        C --> D["통합 모니터링"]
     end
     
     subgraph "멀티 클라우드 통합"
-        E["AWS EKS"] --> F["통합 모니터링"]
+        E["AWS EKS"] --> F["통합 모니터링 허브"]
         G["GCP GKE"] --> F
-        H["온프레미스"] --> F
+        H["모니터링 허브 (EC2)"] --> F
         F --> I["단일 대시보드"]
     end
     
     D --> F
     
-    style A fill:#1976d2,color:#ffffff
-    style B fill:#d32f2f,color:#ffffff
-    style C fill:#1976d2,color:#ffffff
+    style A fill:#ff6f00,color:#ffffff
+    style B fill:#1976d2,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
     style D fill:#4caf50,color:#ffffff
     style E fill:#ff6f00,color:#ffffff
     style F fill:#4caf50,color:#ffffff
@@ -447,134 +451,98 @@ flowchart TD
 ```
 
 #### 핵심 개념
-- **GKE 클러스터**: GCP 관리형 Kubernetes 서비스
+- **EKS 클러스터**: AWS 관리형 Kubernetes 서비스 생성
+- **GKE 클러스터**: GCP 관리형 Kubernetes 서비스 생성
 - **멀티 클라우드 통합**: AWS와 GCP 환경 통합 모니터링
-- **데이터 수집 전략**: Federation, Remote Write, Push Gateway
-- **실무 모니터링**: 실제 운영 환경 모니터링 패턴
+- **실무 배포**: GitHub Actions를 통한 실제 클러스터 배포
 
 ### 🛠️ 실습 진행 (60분)
 
-#### 실습 1: GKE 클러스터 생성 (20분)
+#### 실습 1: AWS EKS 클러스터 생성 (20분)
 
-**변경 전 시스템 아키텍처**:
+**EKS 클러스터 생성 개요**:
 ```mermaid
 flowchart TD
-    subgraph "기존 GCP 모니터링"
-        A["GCP 리소스"] --> B["GCP Monitoring"]
-        B --> C["제한된 통합"]
-        C --> D["별도 대시보드"]
-        D --> E["멀티 클라우드 분리"]
+    subgraph "EKS 클러스터 생성 과정"
+        A["AWS CLI 설정 확인"] --> B["EKS 클러스터 생성"]
+        B --> C["노드 그룹 생성"]
+        C --> D["kubectl 연결 설정"]
+        D --> E["클러스터 상태 확인"]
     end
     
-    style A fill:#1976d2,color:#ffffff
+    subgraph "생성될 리소스"
+        F["EKS 클러스터"] --> G["관리형 노드 그룹"]
+        G --> H["VPC 및 서브넷"]
+        H --> I["보안 그룹"]
+        I --> J["IAM 역할"]
+    end
+    
+    E --> F
+    
+    style A fill:#ff6f00,color:#ffffff
     style B fill:#388e3c,color:#ffffff
-    style C fill:#f57c00,color:#ffffff
-    style D fill:#f57c00,color:#ffffff
-    style E fill:#d32f2f,color:#ffffff
-```
-
-**자동화 도구 실행**:
-```bash
-# 실습 스크립트 실행
-./day2-practice.sh
-# 메뉴 선택: 4. GCP 클러스터 통합 모니터링
-
-# 자동화 도구: ./tools/cloud/gcp-gke-monitoring-helper.sh --action create-cluster
-```
-
-**변경 후 시스템 아키텍처**:
-```mermaid
-flowchart TD
-    subgraph "GCP GKE 통합 모니터링"
-        A["GKE 클러스터"] --> B["Prometheus"]
-        B --> C["Grafana"]
-        C --> D["통합 대시보드"]
-    end
-    
-    subgraph "멀티 클라우드 통합"
-        E["AWS EKS"] --> F["통합 모니터링"]
-        G["GCP GKE"] --> F
-        H["온프레미스"] --> F
-        F --> I["단일 대시보드"]
-    end
-    
-    D --> F
-    
-    style A fill:#1976d2,color:#ffffff
-    style B fill:#d32f2f,color:#ffffff
-    style C fill:#1976d2,color:#ffffff
-    style D fill:#4caf50,color:#ffffff
-    style E fill:#ff6f00,color:#ffffff
-    style F fill:#4caf50,color:#ffffff
-    style G fill:#1976d2,color:#ffffff
-    style H fill:#9c27b0,color:#ffffff
-    style I fill:#4caf50,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+    style D fill:#1976d2,color:#ffffff
+    style E fill:#4caf50,color:#ffffff
+    style F fill:#ff6f00,color:#ffffff
+    style G fill:#388e3c,color:#ffffff
+    style H fill:#1976d2,color:#ffffff
+    style I fill:#d32f2f,color:#ffffff
+    style J fill:#9c27b0,color:#ffffff
 ```
 
 **실습 명령어**:
 ```bash
-# GKE 클러스터 생성
-gcloud container clusters create gcp-monitoring-cluster \
-    --zone us-central1-a \
-    --num-nodes 3 \
-    --machine-type e2-medium \
-    --enable-ip-alias \
-    --enable-autoscaling \
-    --min-nodes 1 \
-    --max-nodes 5
+# 1. AWS CLI 설정 확인
+aws sts get-caller-identity
+aws configure list
 
-# 클러스터 연결
-gcloud container clusters get-credentials gcp-monitoring-cluster --zone us-central1-a
+# 2. EKS 클러스터 생성
+eksctl create cluster \
+    --name cloud-intermediate-eks \
+    --region ap-northeast-2 \
+    --version 1.28 \
+    --nodegroup-name workers \
+    --node-type t3.medium \
+    --nodes 2 \
+    --nodes-min 1 \
+    --nodes-max 3 \
+    --managed
 
-# 클러스터 상태 확인
+# 3. 클러스터 상태 확인
+aws eks describe-cluster --name cloud-intermediate-eks --region ap-northeast-2
+
+# 4. kubectl 설정
+aws eks update-kubeconfig --region ap-northeast-2 --name cloud-intermediate-eks
+
+# 5. 클러스터 연결 확인
 kubectl get nodes
 kubectl cluster-info
 ```
 
 **실습 내용**:
-- GKE 클러스터 생성
-- 클러스터 연결 및 상태 확인
-- 자동 스케일링 설정
+- EKS 클러스터 생성 및 설정
+- 노드 그룹 구성
+- kubectl 연결 설정
+- 클러스터 상태 확인
 
-#### 실습 2: GCP 애플리케이션 배포 (20분)
+#### 실습 2: GCP GKE 클러스터 생성 (20분)
 
-**변경 전 시스템 아키텍처**:
+**GKE 클러스터 생성 개요**:
 ```mermaid
 flowchart TD
-    subgraph "기존 GCP 애플리케이션"
-        A["애플리케이션"] --> B["수동 배포"]
-        B --> C["기본 모니터링"]
-        C --> D["제한된 메트릭"]
-        D --> E["수동 스케일링"]
+    subgraph "GKE 클러스터 생성 과정"
+        A["GCP CLI 설정 확인"] --> B["GKE 클러스터 생성"]
+        B --> C["노드 풀 구성"]
+        C --> D["kubectl 연결 설정"]
+        D --> E["클러스터 상태 확인"]
     end
     
-    style A fill:#1976d2,color:#ffffff
-    style B fill:#388e3c,color:#ffffff
-    style C fill:#f57c00,color:#ffffff
-    style D fill:#f57c00,color:#ffffff
-    style E fill:#d32f2f,color:#ffffff
-```
-
-**자동화 도구 실행**:
-```bash
-# 자동화 도구: ./tools/cloud/gcp-app-monitoring-helper.sh --action deploy-app
-```
-
-**변경 후 시스템 아키텍처**:
-```mermaid
-flowchart TD
-    subgraph "GCP 애플리케이션 모니터링"
-        A["애플리케이션"] --> B["Kubernetes Deployment"]
-        B --> C["Service"]
-        C --> D["LoadBalancer"]
-        D --> E["통합 모니터링"]
-    end
-    
-    subgraph "모니터링 기능"
-        F["Pod 메트릭"] --> G["서비스 메트릭"]
-        G --> H["트래픽 분석"]
-        H --> I["자동 스케일링"]
-        I --> J["알림 관리"]
+    subgraph "생성될 리소스"
+        F["GKE 클러스터"] --> G["노드 풀"]
+        G --> H["VPC 네트워크"]
+        H --> I["방화벽 규칙"]
+        I --> J["서비스 계정"]
     end
     
     E --> F
@@ -582,207 +550,234 @@ flowchart TD
     style A fill:#1976d2,color:#ffffff
     style B fill:#388e3c,color:#ffffff
     style C fill:#388e3c,color:#ffffff
-    style D fill:#388e3c,color:#ffffff
+    style D fill:#1976d2,color:#ffffff
     style E fill:#4caf50,color:#ffffff
-    style F fill:#4caf50,color:#ffffff
+    style F fill:#1976d2,color:#ffffff
+    style G fill:#388e3c,color:#ffffff
+    style H fill:#1976d2,color:#ffffff
+    style I fill:#d32f2f,color:#ffffff
+    style J fill:#9c27b0,color:#ffffff
+```
+
+**실습 명령어**:
+```bash
+# 1. GCP CLI 설정 확인
+gcloud auth list
+gcloud config list
+
+# 2. GKE 클러스터 생성
+gcloud container clusters create cloud-intermediate-gke \
+    --zone asia-northeast1-a \
+    --num-nodes 2 \
+    --machine-type e2-medium \
+    --enable-ip-alias \
+    --enable-autoscaling \
+    --min-nodes 1 \
+    --max-nodes 3 \
+    --enable-autorepair \
+    --enable-autoupgrade
+
+# 3. 클러스터 상태 확인
+gcloud container clusters describe cloud-intermediate-gke --zone asia-northeast1-a
+
+# 4. kubectl 설정
+gcloud container clusters get-credentials cloud-intermediate-gke --zone asia-northeast1-a
+
+# 5. 클러스터 연결 확인
+kubectl get nodes
+kubectl cluster-info
+```
+
+**실습 내용**:
+- GKE 클러스터 생성 및 설정
+- 노드 풀 구성
+- kubectl 연결 설정
+- 클러스터 상태 확인
+
+#### 실습 3: 멀티 클라우드 애플리케이션 배포 (20분)
+
+**멀티 클라우드 애플리케이션 배포 개요**:
+```mermaid
+flowchart TD
+    subgraph "GitHub Actions 배포"
+        A["코드 푸시"] --> B["GitHub Actions 실행"]
+        B --> C["Docker 이미지 빌드"]
+        C --> D["EKS 배포"]
+        C --> E["GKE 배포"]
+    end
+    
+    subgraph "배포된 애플리케이션"
+        F["AWS EKS"] --> G["Production 환경"]
+        H["GCP GKE"] --> I["Staging 환경"]
+        G --> J["통합 모니터링"]
+        I --> J
+    end
+    
+    D --> F
+    E --> H
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#388e3c,color:#ffffff
+    style C fill:#d32f2f,color:#ffffff
+    style D fill:#ff6f00,color:#ffffff
+    style E fill:#1976d2,color:#ffffff
+    style F fill:#ff6f00,color:#ffffff
     style G fill:#4caf50,color:#ffffff
-    style H fill:#4caf50,color:#ffffff
+    style H fill:#1976d2,color:#ffffff
     style I fill:#4caf50,color:#ffffff
     style J fill:#4caf50,color:#ffffff
 ```
 
 **실습 명령어**:
 ```bash
-# GCP 애플리케이션 Deployment 생성
-cat > gcp-app-deployment.yaml << 'EOF'
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: gcp-monitoring-app
-  labels:
-    app: gcp-monitoring-app
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: gcp-monitoring-app
-  template:
-    metadata:
-      labels:
-        app: gcp-monitoring-app
-    spec:
-      containers:
-      - name: app
-        image: nginx:1.21
-        ports:
-        - containerPort: 80
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
-EOF
+# 1. GitHub Actions 워크플로우 실행
+git add .
+git commit -m "feat: EKS/GKE 클러스터 배포를 위한 설정 완료"
+git push origin day2-advanced
 
-# Service 생성
-cat > gcp-app-service.yaml << 'EOF'
-apiVersion: v1
-kind: Service
-metadata:
-  name: gcp-monitoring-app-service
-  labels:
-    app: gcp-monitoring-app
-spec:
-  selector:
-    app: gcp-monitoring-app
-  ports:
-  - port: 80
-    targetPort: 80
-  type: LoadBalancer
-EOF
+# 2. GitHub Actions 실행 확인
+# GitHub Repository > Actions 탭에서 워크플로우 실행 상태 확인
 
-# ServiceMonitor 생성
-cat > gcp-app-servicemonitor.yaml << 'EOF'
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: gcp-monitoring-app
-  labels:
-    team: frontend
-spec:
-  selector:
-    matchLabels:
-      app: gcp-monitoring-app
-  endpoints:
-  - port: http
-    interval: 30s
-EOF
+# 3. EKS 배포 확인 (AWS)
+aws eks update-kubeconfig --region ap-northeast-2 --name cloud-intermediate-eks
+kubectl get pods -n production
+kubectl get services -n production
 
-# 리소스 배포
-kubectl apply -f gcp-app-deployment.yaml
-kubectl apply -f gcp-app-service.yaml
-kubectl apply -f gcp-app-servicemonitor.yaml
+# 4. GKE 배포 확인 (GCP)
+gcloud container clusters get-credentials cloud-intermediate-gke --zone asia-northeast1-a
+kubectl get pods -n staging
+kubectl get services -n staging
+
+# 5. 애플리케이션 Health Check
+# EKS: kubectl port-forward svc/github-actions-demo-service 8080:80 -n production
+# GKE: kubectl port-forward svc/github-actions-demo-service 8081:80 -n staging
 ```
 
 **실습 내용**:
-- GCP 애플리케이션 Deployment 생성
-- Service 및 LoadBalancer 구성
-- ServiceMonitor 설정
+- GitHub Actions를 통한 멀티 클라우드 배포
+- EKS Production 환경 배포
+- GKE Staging 환경 배포
+- 배포된 애플리케이션 상태 확인
 
-#### 실습 3: 멀티 클라우드 통합 모니터링 (20분)
+#### 실습 4: 멀티 클라우드 통합 모니터링 (20분)
 
-**변경 전 시스템 아키텍처**:
+**멀티 클라우드 통합 모니터링 개요**:
 ```mermaid
 flowchart TD
-    subgraph "기존 분산 모니터링"
-        A["AWS EKS"] --> B["AWS 모니터링"]
-        C["GCP GKE"] --> D["GCP 모니터링"]
-        B --> E["분리된 대시보드"]
-        D --> E
-    end
-    
-    style A fill:#ff6f00,color:#ffffff
-    style B fill:#ff6f00,color:#ffffff
-    style C fill:#1976d2,color:#ffffff
-    style D fill:#1976d2,color:#ffffff
-    style E fill:#d32f2f,color:#ffffff
-```
-
-**자동화 도구 실행**:
-```bash
-# 자동화 도구: ./tools/cloud/multi-cloud-monitoring-helper.sh --action setup-integration
-```
-
-**변경 후 시스템 아키텍처**:
-```mermaid
-flowchart TD
-    subgraph "멀티 클라우드 통합 모니터링"
-        A["AWS EKS"] --> B["통합 모니터링 허브"]
+    subgraph "통합 모니터링 시스템"
+        A["AWS EKS"] --> B["모니터링 허브 (EC2)"]
         C["GCP GKE"] --> B
-        D["온프레미스"] --> B
-        B --> E["Prometheus"]
-        E --> F["Grafana"]
-        F --> G["통합 대시보드"]
+        B --> D["Prometheus"]
+        D --> E["Grafana"]
+        E --> F["통합 대시보드"]
     end
     
-    subgraph "데이터 수집 방식"
-        H["Federation"] --> I["Remote Write"]
-        I --> J["Push Gateway"]
-        J --> K["통합 데이터"]
+    subgraph "데이터 수집"
+        G["EKS 메트릭"] --> H["Remote Write"]
+        I["GKE 메트릭"] --> H
+        J["로컬 메트릭"] --> H
+        H --> K["통합 데이터베이스"]
     end
     
-    B --> H
+    B --> G
+    B --> I
+    B --> J
     
     style A fill:#ff6f00,color:#ffffff
     style B fill:#4caf50,color:#ffffff
     style C fill:#1976d2,color:#ffffff
-    style D fill:#9c27b0,color:#ffffff
-    style E fill:#d32f2f,color:#ffffff
-    style F fill:#1976d2,color:#ffffff
-    style G fill:#4caf50,color:#ffffff
-    style H fill:#4caf50,color:#ffffff
-    style I fill:#4caf50,color:#ffffff
-    style J fill:#4caf50,color:#ffffff
+    style D fill:#d32f2f,color:#ffffff
+    style E fill:#1976d2,color:#ffffff
+    style F fill:#4caf50,color:#ffffff
+    style G fill:#ff6f00,color:#ffffff
+    style H fill:#388e3c,color:#ffffff
+    style I fill:#1976d2,color:#ffffff
+    style J fill:#9c27b0,color:#ffffff
     style K fill:#4caf50,color:#ffffff
 ```
 
 **실습 명령어**:
 ```bash
-# 멀티 클라우드 통합 모니터링 설정
-cat > multi-cloud-monitoring.yaml << 'EOF'
+# 1. 모니터링 허브에서 통합 모니터링 설정
+# EKS 클러스터 메트릭 수집 설정
+cat > eks-monitoring-config.yaml << 'EOF'
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: prometheus-config
+  name: prometheus-eks-config
 data:
   prometheus.yml: |
     global:
       scrape_interval: 15s
     
     scrape_configs:
-      - job_name: 'aws-eks'
-        static_configs:
-          - targets: ['aws-prometheus:9090']
-        scrape_interval: 30s
-        metrics_path: '/federate'
-        params:
-          'match[]':
-            - '{job=~".*"}'
-      
-      - job_name: 'gcp-gke'
-        static_configs:
-          - targets: ['gcp-prometheus:9090']
-        scrape_interval: 30s
-        metrics_path: '/federate'
-        params:
-          'match[]':
-            - '{job=~".*"}'
-      
-      - job_name: 'pushgateway'
-        static_configs:
-          - targets: ['pushgateway:9091']
-        scrape_interval: 15s
+      - job_name: 'eks-cluster'
+        kubernetes_sd_configs:
+        - role: endpoints
+          namespaces:
+            names:
+            - production
+        relabel_configs:
+        - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+          action: keep
+          regex: true
+        - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+          action: replace
+          target_label: __metrics_path__
+          regex: (.+)
 EOF
 
-kubectl apply -f multi-cloud-monitoring.yaml
+# 2. GKE 클러스터 메트릭 수집 설정
+cat > gke-monitoring-config.yaml << 'EOF'
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-gke-config
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+    
+    scrape_configs:
+      - job_name: 'gke-cluster'
+        kubernetes_sd_configs:
+        - role: endpoints
+          namespaces:
+            names:
+            - staging
+        relabel_configs:
+        - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+          action: keep
+          regex: true
+        - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+          action: replace
+          target_label: __metrics_path__
+          regex: (.+)
+EOF
 
-# 통합 모니터링 확인
-kubectl get configmap prometheus-config
-kubectl get pods -l app=prometheus
-kubectl get services -l app=prometheus
+# 3. 통합 모니터링 확인
+curl -s "http://localhost:9091/api/v1/targets" | jq '.data.activeTargets[] | {job: .labels.job, health: .health}'
+
+# 4. Grafana 대시보드 확인
+# http://[서버IP]:3005 에서 멀티 클라우드 대시보드 확인
 ```
 
 **실습 내용**:
-- 멀티 클라우드 통합 모니터링 설정
-- Federation 구성
-- 통합 대시보드 확인
+- EKS/GKE 클러스터 메트릭 수집 설정
+- 통합 모니터링 대시보드 구성
+- 멀티 클라우드 데이터 수집 확인
 
 ### 📊 실습 결과
-- [ ] GKE 클러스터 생성 완료
-- [ ] GCP 애플리케이션 배포 완료
-- [ ] 멀티 클라우드 통합 모니터링 완료
-- [ ] 통합 대시보드 구성 완료
+- [ ] **EKS 클러스터 생성 완료** - AWS EKS 클러스터 생성 및 설정
+- [ ] **GKE 클러스터 생성 완료** - GCP GKE 클러스터 생성 및 설정
+- [ ] **멀티 클라우드 배포 완료** - GitHub Actions를 통한 EKS/GKE 배포
+- [ ] **통합 모니터링 완료** - 멀티 클라우드 통합 모니터링 시스템 구축
+
+### 🎯 4교시 핵심 성과
+- **EKS 클러스터**: AWS 관리형 Kubernetes 서비스 생성
+- **GKE 클러스터**: GCP 관리형 Kubernetes 서비스 생성
+- **멀티 클라우드 배포**: GitHub Actions를 통한 자동화된 배포
+- **통합 모니터링**: EKS/GKE 클러스터 통합 모니터링 시스템
 
 ---
 
