@@ -178,6 +178,7 @@ handle_day1_menu() {
                 call_sub_module "aws-ecs-helper.sh" "task-definition" "aws"
                 call_sub_module "aws-ecs-helper.sh" "service-create" "aws"
                 call_sub_module "gcp-cloudrun-helper.sh" "deploy-service" "gcp"
+                call_sub_module "gcp-cloudrun-helper.sh" "status" "gcp"
                 call_sub_module "gcp-cloudrun-helper.sh" "manage-traffic" "gcp"
                 ;;
             4) 
@@ -306,6 +307,7 @@ direct_mode() {
             call_sub_module "aws-ecs-helper.sh" "task-definition" "aws"
             call_sub_module "aws-ecs-helper.sh" "service-create" "aws"
             call_sub_module "gcp-cloudrun-helper.sh" "deploy-service" "gcp"
+            call_sub_module "gcp-cloudrun-helper.sh" "status" "gcp"
             call_sub_module "gcp-cloudrun-helper.sh" "manage-traffic" "gcp"
             ;;
         "monitoring-hub")
@@ -350,6 +352,7 @@ direct_mode() {
             call_sub_module "k8s-helper.sh" "setup-context" "aws"
             call_sub_module "aws-ecs-helper.sh" "cluster-create" "aws"
             call_sub_module "gcp-cloudrun-helper.sh" "deploy-service" "gcp"
+            call_sub_module "gcp-cloudrun-helper.sh" "status" "gcp"
             call_sub_module "monitoring-hub-helper.sh" "create-hub" "aws"
             log_success "Day 1 전체 실습 완료"
             ;;

@@ -78,6 +78,29 @@ flowchart TD
     style E fill:#d32f2f,color:#ffffff
 ```
 
+**🔧 실행 전 AWS EKS 환경 확인**:
+```bash
+# AWS CLI 설정 확인
+aws sts get-caller-identity
+# 예상 결과: AWS 계정 정보 출력
+
+# EKS 클러스터 목록 확인
+aws eks list-clusters
+# 예상 결과: 기존 EKS 클러스터 목록 (없을 수도 있음)
+
+# kubectl 설정 확인
+kubectl version --client
+# 예상 결과: kubectl 버전 정보
+
+# eksctl 설치 확인
+eksctl version
+# 예상 결과: eksctl 버전 정보
+
+# IAM 역할 확인
+aws iam list-roles --query 'Roles[?contains(RoleName, `eks`)]'
+# 예상 결과: EKS 관련 IAM 역할 목록
+```
+
 **자동화 도구 실행**:
 ```bash
 # 실습 스크립트 실행
@@ -115,6 +138,42 @@ flowchart TD
     style H fill:#4caf50,color:#ffffff
     style I fill:#4caf50,color:#ffffff
 ```
+
+**📊 실행 후 AWS EKS 변화 확인**:
+```bash
+# EKS 클러스터 생성 확인
+aws eks describe-cluster --name aws-monitoring-cluster
+# 예상 결과: 클러스터 상태 ACTIVE
+
+# 클러스터 노드 확인
+kubectl get nodes
+# 예상 결과: EKS 노드 목록 (Ready 상태)
+
+# 클러스터 정보 확인
+kubectl cluster-info
+# 예상 결과: 클러스터 API 서버 정보
+
+# 네임스페이스 확인
+kubectl get namespaces
+# 예상 결과: 기본 네임스페이스 목록
+
+# Prometheus 설치 확인
+kubectl get pods -n monitoring
+# 예상 결과: Prometheus 관련 Pod 목록
+```
+
+**🌐 웹브라우저 접속 가이드**:
+1. **AWS EKS 콘솔**:
+   - URL: `https://console.aws.amazon.com/eks/`
+   - 확인 사항: 클러스터 상태, 노드 그룹, 서비스
+
+2. **Prometheus 대시보드**:
+   - URL: `http://[EKS-ENDPOINT]:9090`
+   - 확인 사항: 메트릭 수집 상태, 타겟 상태
+
+3. **Grafana 대시보드**:
+   - URL: `http://[EKS-ENDPOINT]:3000`
+   - 확인 사항: 대시보드, 알림 설정
 
 **실습 명령어**:
 ```bash

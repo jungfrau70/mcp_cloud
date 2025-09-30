@@ -16,6 +16,239 @@
 
 ---
 
+## 🛠️ 실습 학습
+
+### 🚀 **4교시 VM 환경 준비 완료**
+
+#### **✅ 배포된 VM 정보**
+
+**AWS EC2 인스턴스**
+- **인스턴스 ID**: `i-09108c566c2abb37d`
+- **퍼블릭 IP**: `43.200.178.26`
+- **Elastic IP**: `3.37.234.110`
+- **프라이빗 IP**: `172.31.47.27`
+- **보안 그룹**: `sg-0c896c06c788efd8d`
+- **키 페어**: `cloud-deployment-key.pem`
+
+**GCP Compute Engine 인스턴스**
+- **인스턴스명**: `cloud-intermediate-vm`
+- **외부 IP**: `34.158.217.114`
+- **내부 IP**: `10.178.0.22`
+- **존**: `asia-northeast3-a`
+- **머신 타입**: `e2-medium`
+
+#### **🔗 VM 연결 명령어**
+
+**AWS EC2 연결**
+```bash
+ssh -i cloud-deployment-key.pem ec2-user@3.37.234.110
+```
+
+**GCP Compute Engine 연결**
+```bash
+gcloud compute ssh cloud-intermediate-vm --zone=asia-northeast3-a
+```
+
+### 🎉 **4교시 통합 모니터링 허브 구축 완료**
+
+#### **✅ 구축된 모니터링 환경**
+
+**🔧 설치된 모니터링 도구**
+- **Prometheus**: `http://3.37.234.110:9090` ✅ 정상 동작
+- **Grafana**: `http://3.37.234.110:3000` ✅ 정상 동작  
+- **Node Exporter**: `http://3.37.234.110:9100` ✅ 정상 동작
+
+**📊 모니터링 도구별 기능**
+
+**1. Prometheus (메트릭 수집)**
+- **URL**: `http://3.37.234.110:9090`
+- **기능**: 메트릭 수집 및 저장, 쿼리 실행
+- **상태**: 정상 동작 확인됨
+
+**2. Grafana (시각화 대시보드)**
+- **URL**: `http://3.37.234.110:3000`
+- **기본 로그인**: `admin/admin`
+- **기능**: 대시보드 생성, 알림 설정, 데이터 시각화
+
+**3. Node Exporter (시스템 메트릭)**
+- **URL**: `http://3.37.234.110:9100/metrics`
+- **기능**: CPU, 메모리, 디스크, 네트워크 등 시스템 메트릭 수집
+
+#### **🔗 웹 인터페이스 접속**
+
+```bash
+# Prometheus (메트릭 수집)
+http://3.37.234.110:9090
+
+# Grafana (대시보드)
+http://3.37.234.110:3000
+# 로그인: admin/admin
+
+# Node Exporter (시스템 메트릭)
+http://3.37.234.110:9100/metrics
+```
+
+#### **📋 다음 단계**
+
+**1. Grafana 설정**
+- Prometheus를 데이터 소스로 추가
+- Node Exporter 메트릭을 위한 대시보드 생성
+- 알림 규칙 설정
+
+**2. 모니터링 대시보드 구성**
+- 시스템 리소스 모니터링
+- 애플리케이션 성능 모니터링
+- 알림 및 경고 설정
+
+**3. 통합 모니터링 설정**
+- Prometheus에서 Node Exporter 타겟 추가
+- Grafana에서 Prometheus 데이터 소스 연결
+- 커스텀 대시보드 생성
+
+### 📁 실습 코드 및 자동화 (개선된 경로 구조)
+
+#### **🎯 실습 디렉토리 구조**
+```
+mcp_knowledge_base/cloud_intermediate/
+├── 📚 lectures/day1/                    # 강의안
+├── 🛠️ repo/practice/day1/              # 실습 코드
+│   ├── cloud-container-services/       # 클라우드 컨테이너 서비스
+│   └── monitoring-hub/                 # 통합 모니터링 허브
+├── 🤖 repo/automation/day1/            # 자동화 스크립트
+└── 🛠️ repo/tools/cloud/               # 공통 도구 및 설정
+```
+
+#### **📋 실습별 정확한 경로**
+
+**1. 클라우드 컨테이너 서비스**
+- **실습 위치**: `repo/practice/day1/cloud-container-services/`
+- **AWS ECS**: `./aws-ecs-helper.sh`
+- **GCP Cloud Run**: `./gcp-cloudrun-helper.sh`
+- **환경 파일**: `repo/tools/cloud/`에서 자동 복사
+
+**2. 통합 모니터링 허브**
+- **실습 위치**: `repo/practice/day1/monitoring-hub/`
+- **실행 스크립트**: `./monitoring-hub-helper.sh`
+- **설정 파일**: `repo/tools/cloud/`에서 자동 복사
+
+### 📋 실습 진행 체크리스트
+- [ ] **환경 설정**: 필수 도구 설치 및 설정 완료
+  - [ ] AWS CLI 설정 및 인증 확인
+  - [ ] GCP CLI 설정 및 인증 확인
+  - [ ] Docker 설치 및 실행 확인
+- [ ] **클라우드 컨테이너 서비스**: AWS ECS, GCP Cloud Run 배포 완료
+  - [ ] `cd repo/practice/day1/cloud-container-services/` 디렉토리로 이동
+  - [ ] 환경 파일 복사: `cp ../../../tools/cloud/*-environment.env ./ && cp ../../../tools/cloud/aws-ecs-helper.sh ./ && cp ../../../tools/cloud/gcp-cloudrun-helper.sh ./`
+  - [ ] 환경 파일 확인: `ls -la *-environment.env aws-ecs-helper.sh gcp-cloudrun-helper.sh`
+  - [ ] **환경 변수 설정**: 각 실습 시작 전 0단계 환경 변수 설정 및 확인
+  - [ ] **AWS ECS 배포**: 수작업 실습 가이드 0-10단계 진행
+  - [ ] **GCP Cloud Run 배포**: 수작업 실습 가이드 0-13단계 진행
+  - [ ] 외부 접속 테스트 완료
+- [ ] **통합 모니터링 허브**: Prometheus + Grafana 구축 완료
+  - [ ] `cd repo/practice/day1/monitoring-hub/` 디렉토리로 이동
+  - [ ] 환경 파일 복사: `cp ../../../tools/cloud/monitoring-hub-helper.sh ./ && cp ../../../tools/cloud/*-environment.env ./`
+  - [ ] 환경 파일 확인: `ls -la monitoring-hub-helper.sh *-environment.env`
+  - [ ] **모니터링 허브 구축**: `./monitoring-hub-helper.sh --action create-hub`
+  - [ ] **Prometheus 설정**: `./monitoring-hub-helper.sh --action install-prometheus`
+  - [ ] **Grafana 설정**: `./monitoring-hub-helper.sh --action install-grafana`
+  - [ ] 모니터링 데이터 수집 확인
+
+<details>
+<summary>🚀 실습 환경 준비</summary>
+
+#### 필수 도구
+- **AWS CLI**: AWS 서비스 관리 도구
+- **GCP CLI**: GCP 서비스 관리 도구
+- **Docker**: 컨테이너 런타임 환경
+
+#### 환경 설정
+```bash
+# AWS CLI 설정 확인
+aws sts get-caller-identity
+
+# GCP CLI 설정 확인
+gcloud auth list
+
+# Docker 설치 확인
+docker --version
+```
+
+#### AWS ECS 사전 설정 (문제 방지)
+```bash
+# 사용자 IAM 정책 확인
+aws iam list-attached-user-policies --user-name $(aws sts get-caller-identity --query User --output text | cut -d'/' -f2)
+
+# ECS 관련 정책 추가 (없는 경우)
+aws iam attach-user-policy \
+    --user-name $(aws sts get-caller-identity --query User --output text | cut -d'/' -f2) \
+    --policy-arn arn:aws:iam::aws:policy/AmazonECS_FullAccess
+
+# IAM 역할 생성 권한 추가 (필요시)
+aws iam attach-user-policy \
+    --user-name $(aws sts get-caller-identity --query User --output text | cut -d'/' -f2) \
+    --policy-arn arn:aws:iam::aws:policy/IAMFullAccess
+
+# ECS Task Execution Role 생성 (사전 생성)
+aws iam create-role \
+    --role-name ecsTaskExecutionRole \
+    --assume-role-policy-document '{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": {
+                    "Service": "ecs-tasks.amazonaws.com"
+                },
+                "Action": "sts:AssumeRole"
+            }
+        ]
+    }' 2>/dev/null || echo "IAM 역할이 이미 존재합니다."
+
+# ECS Task Execution Role에 정책 연결
+aws iam attach-role-policy \
+    --role-name ecsTaskExecutionRole \
+    --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+
+# IAM 역할 생성 확인
+aws iam get-role --role-name ecsTaskExecutionRole
+```
+
+#### 실습 환경 체크
+```bash
+# 📍 실습 환경 자동 체크
+cd mcp_knowledge_base/cloud_intermediate/
+./tools/cloud/environment-check.sh
+
+# 📍 환경 설정 자동화
+./tools/cloud/setup-environment.sh
+
+# 📍 개별 실습 모듈 및 환경 파일 확인
+ls -la repo/practice/day1/
+# cloud-container-services/, monitoring-hub/ 등 확인
+
+# 📍 중앙 집중식 환경 파일 확인
+echo "=== 중앙 집중식 환경 파일 (tools/cloud/) ==="
+ls -la tools/cloud/*-environment.env tools/cloud/*-helper.sh 2>/dev/null || echo "환경 파일이 없습니다"
+
+# 📍 환경 파일 복사 및 확인
+echo "=== 클라우드 컨테이너 서비스 실습 환경 파일 복사 ==="
+cd repo/practice/day1/cloud-container-services/
+cp ../../../tools/cloud/*-environment.env ./
+cp ../../../tools/cloud/aws-ecs-helper.sh ./
+cp ../../../tools/cloud/gcp-cloudrun-helper.sh ./
+ls -la *-environment.env aws-ecs-helper.sh gcp-cloudrun-helper.sh
+
+echo "=== 통합 모니터링 허브 실습 환경 파일 복사 ==="
+cd ../monitoring-hub/
+cp ../../../tools/cloud/*-environment.env ./
+cp ../../../tools/cloud/monitoring-hub-helper.sh ./
+ls -la *-environment.env monitoring-hub-helper.sh
+```
+
+</details>
+
+---
+
 ## 🕘 3교시: 클라우드 컨테이너 서비스 (13:45-15:15)
 
 ### 📚 강의 내용 (30분)
@@ -51,6 +284,61 @@ flowchart TD
     style J fill:#4caf50,color:#ffffff
 ```
 
+#### 컨테이너 서비스 비교 분석
+
+**🔄 EKS vs ECS vs Cloud Run vs GKE 비교**
+
+| 구분 | **AWS EKS** | **AWS ECS** | **GCP GKE** | **GCP Cloud Run** |
+|------|-------------|-------------|-------------|-------------------|
+| **서비스 유형** | 관리형 Kubernetes | AWS 네이티브 오케스트레이션 | 관리형 Kubernetes | 서버리스 컨테이너 |
+| **복잡도** | 높음 (Kubernetes 지식 필요) | 중간 (AWS 특화) | 높음 (Kubernetes 지식 필요) | 낮음 (서버리스) |
+| **관리 부담** | 중간 (노드 관리 필요) | 낮음 (Fargate 사용 시) | 중간 (노드 관리 필요) | 없음 (완전 서버리스) |
+| **스케일링** | 수동/자동 설정 | 자동 (Fargate) | 수동/자동 설정 | 자동 (0에서 무한대) |
+| **비용 모델** | 노드 + 리소스 사용량 | 태스크 기반 | 노드 + 리소스 사용량 | 요청 기반 |
+| **학습 곡선** | 가파름 | 완만함 | 가파름 | 완만함 |
+| **사용 사례** | 복잡한 마이크로서비스 | 중간 규모 애플리케이션 | 복잡한 마이크로서비스 | 간단한 웹 서비스 |
+
+**🎯 실습에서 배울 서비스 선택 이유**
+
+```mermaid
+flowchart TD
+    subgraph "실습 서비스 선택 기준"
+        A["ECS 선택 이유"] --> B["AWS 네이티브 서비스"]
+        B --> C["Fargate 서버리스"]
+        C --> D["관리 부담 최소화"]
+        
+        E["Cloud Run 선택 이유"] --> F["완전 서버리스"]
+        F --> G["자동 스케일링"]
+        G --> H["비용 최적화"]
+    end
+    
+    subgraph "vs 오케스트레이션 서비스"
+        I["EKS/GKE"] --> J["복잡한 설정"]
+        J --> K["노드 관리 필요"]
+        K --> L["높은 학습 곡선"]
+    end
+    
+    D --> M["실습 목표 달성"]
+    H --> M
+    L --> N["고급 과정에서 학습"]
+    
+    style A fill:#ff6f00,color:#ffffff
+    style E fill:#1976d2,color:#ffffff
+    style I fill:#9c27b0,color:#ffffff
+    style M fill:#4caf50,color:#ffffff
+    style N fill:#f57c00,color:#ffffff
+```
+
+**📊 서비스별 특징 비교**
+
+| 특징 | **ECS (Fargate)** | **Cloud Run** | **EKS** | **GKE** |
+|------|-------------------|---------------|---------|---------|
+| **시작 시간** | 30-60초 | 1-3초 | 2-5분 | 2-5분 |
+| **최소 리소스** | 0.25 vCPU, 0.5GB | 0.1 vCPU, 0.1GB | 1 vCPU, 1GB | 1 vCPU, 1GB |
+| **최대 인스턴스** | 10,000 | 무제한 | 클러스터 크기에 따라 | 클러스터 크기에 따라 |
+| **네트워킹** | VPC 통합 | 자동 관리 | 복잡한 설정 | 복잡한 설정 |
+| **모니터링** | CloudWatch 통합 | 자동 메트릭 | 수동 설정 | 수동 설정 |
+
 #### 핵심 개념
 - **AWS ECS**: 컨테이너 오케스트레이션 서비스
 - **GCP Cloud Run**: 서버리스 컨테이너 플랫폼
@@ -58,7 +346,53 @@ flowchart TD
 
 ### 🛠️ 실습 진행 (60분)
 
+> **💡 실습 방법**: 아래의 수작업 실습 가이드를 따라 단계별로 진행하세요. 각 단계는 상세한 명령어와 설명을 포함하고 있어 원활한 학습이 가능합니다.
+> 
+> **🤖 자동화 옵션**: 수동 가이드와 동일한 결과를 보장하는 자동화 스크립트도 제공됩니다.
+
+#### 🚀 **자동화 스크립트 사용법**
+
+**GCP Cloud Run 자동화**
+```bash
+# 1. 서비스 배포
+./gcp-cloudrun-helper.sh --action deploy-service
+
+# 2. 상태 확인
+./gcp-cloudrun-helper.sh --action status
+
+# 3. 트래픽 관리
+./gcp-cloudrun-helper.sh --action manage-traffic
+```
+
+**AWS ECS 자동화**
+```bash
+# 1. 클러스터 생성
+./aws-ecs-helper.sh --action cluster-create
+
+# 2. 태스크 정의 생성
+./aws-ecs-helper.sh --action task-definition
+
+# 3. 서비스 생성
+./aws-ecs-helper.sh --action service-create
+```
+
+**통합 실행**
+```bash
+# 전체 클라우드 컨테이너 서비스 실습
+./day1-practice.sh --action cloud-services
+```
+
 #### 실습 1: AWS ECS 배포 (30분)
+
+**🔄 EKS vs ECS 실습 비교**
+
+| 구분 | **EKS (오전 실습)** | **ECS (오후 실습)** |
+|------|---------------------|---------------------|
+| **복잡도** | 높음 (Kubernetes YAML) | 중간 (AWS CLI/콘솔) |
+| **설정 파일** | 복잡한 YAML 매니페스트 | 간단한 JSON 태스크 정의 |
+| **네트워킹** | Service, Ingress 설정 | VPC, 보안 그룹 설정 |
+| **스케일링** | HPA, VPA 설정 | Auto Scaling 설정 |
+| **학습 목표** | Kubernetes 마스터 | AWS 네이티브 서비스 |
 
 **변경 전 시스템 아키텍처**:
 ```mermaid
@@ -77,13 +411,24 @@ flowchart TD
     style E fill:#9c27b0,color:#ffffff
 ```
 
-**자동화 도구 실행**:
+**🔧 실행 전 AWS 환경 확인**:
 ```bash
-# 실습 스크립트 실행
-./day1-practice.sh
-# 메뉴 선택: 3. 클라우드 컨테이너 서비스
+# AWS CLI 설정 확인
+aws sts get-caller-identity
+# 예상 결과: AWS 계정 정보 출력
 
-# 자동화 도구: ./tools/cloud/aws-ecs-helper.sh --action cluster-create
+# ECS 클러스터 목록 확인
+aws ecs list-clusters
+# 예상 결과: 기존 클러스터 목록 (없을 수도 있음)
+
+# VPC 및 서브넷 확인
+aws ec2 describe-vpcs --query 'Vpcs[?IsDefault==`true`]'
+aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-xxxxx"
+# 예상 결과: 기본 VPC 및 서브넷 정보
+
+# 보안 그룹 확인
+aws ec2 describe-security-groups --filters "Name=group-name,Values=default"
+# 예상 결과: 기본 보안 그룹 정보
 ```
 
 **변경 후 시스템 아키텍처**:
@@ -113,82 +458,65 @@ flowchart TD
     style H fill:#4caf50,color:#ffffff
 ```
 
-**실습 명령어**:
+**📊 실행 후 AWS ECS 변화 확인**:
 ```bash
-# ECS 클러스터 생성
-aws ecs create-cluster --cluster-name my-cluster
+# ECS 클러스터 생성 확인
+aws ecs describe-clusters --clusters my-cluster
+# 예상 결과: 클러스터 상태 ACTIVE
 
-# Task Definition 생성
-cat > task-definition.json << 'EOF'
-{
-  "family": "nginx-task",
-  "networkMode": "awsvpc",
-  "requiresCompatibilities": ["FARGATE"],
-  "cpu": "256",
-  "memory": "512",
-  "executionRoleArn": "arn:aws:iam::ACCOUNT:role/ecsTaskExecutionRole",
-  "containerDefinitions": [
-    {
-      "name": "nginx",
-      "image": "nginx:1.21",
-      "portMappings": [
-        {
-          "containerPort": 80,
-          "protocol": "tcp"
-        }
-      ],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "/ecs/nginx",
-          "awslogs-region": "us-west-2",
-          "awslogs-stream-prefix": "ecs"
-        }
-      }
-    }
-  ]
-}
-EOF
+# ECS 서비스 상태 확인
+aws ecs describe-services --cluster my-cluster --services my-service
+# 예상 결과: 서비스 상태 ACTIVE, 실행 중인 태스크 수
 
-aws ecs register-task-definition --cli-input-json file://task-definition.json
+# ALB DNS 이름 확인
+aws elbv2 describe-load-balancers --names my-alb --query 'LoadBalancers[0].DNSName' --output text
+# 예상 결과: my-alb-1234567890.us-west-2.elb.amazonaws.com
 
-# ECS 서비스 생성
-aws ecs create-service \
-  --cluster my-cluster \
-  --service-name nginx-service \
-  --task-definition nginx-task:1 \
-  --desired-count 2 \
-  --launch-type FARGATE \
-  --network-configuration "awsvpcConfiguration={subnets=[subnet-12345],securityGroups=[sg-12345],assignPublicIp=ENABLED}"
+# 태스크 실행 상태 확인
+aws ecs list-tasks --cluster my-cluster --service-name my-service
+# 예상 결과: 실행 중인 태스크 ARN 목록
 ```
 
-**실습 내용**:
-- ECS 태스크 정의 생성
-- ECS 서비스 생성
-- Application Load Balancer 연결
-- 자동 스케일링 설정
+**🌐 웹브라우저 접속 가이드**:
+1. **ALB DNS 이름 확인**:
+   ```bash
+   ALB_DNS=$(aws elbv2 describe-load-balancers --names my-alb --query 'LoadBalancers[0].DNSName' --output text)
+   echo "ALB 접속 주소: http://$ALB_DNS"
+   ```
+
+2. **애플리케이션 접속 테스트**:
+   - 접속 URL: `http://[ALB-DNS-NAME]`
+   - 예상 화면: "Hello from ECS Fargate!"
+   - 응답 시간: 약 100-200ms
+
+3. **AWS 콘솔에서 확인**:
+   - ECS 콘솔: https://console.aws.amazon.com/ecs/
+   - 클러스터: my-cluster
+   - 서비스: my-service
+   - 태스크: 실행 중인 컨테이너 확인
 
 #### 수작업 실습 가이드 (AWS ECS 배포)
 
-**1단계: AWS CLI 설정 및 ECS 클러스터 생성**
+**1단계: AWS CLI 설정 및 IAM 사전 설정**
 ```bash
 # AWS CLI 설정 확인
 aws configure list
 aws sts get-caller-identity
 
-# ECS 클러스터 생성
-aws ecs create-cluster \
-    --cluster-name cloud-intermediate-cluster \
-    --capacity-providers FARGATE \
-    --default-capacity-provider-strategy capacityProvider=FARGATE,weight=1
+# 사용자 IAM 정책 확인
+aws iam list-attached-user-policies --user-name $(aws sts get-caller-identity --query User --output text | cut -d'/' -f2)
 
-# 클러스터 상태 확인
-aws ecs describe-clusters --clusters cloud-intermediate-cluster
-```
+# ECS 관련 정책 추가 (없는 경우)
+aws iam attach-user-policy \
+    --user-name $(aws sts get-caller-identity --query User --output text | cut -d'/' -f2) \
+    --policy-arn arn:aws:iam::aws:policy/AmazonECS_FullAccess
 
-**2단계: IAM 역할 생성**
-```bash
-# ECS Task Execution Role 생성
+# IAM 역할 생성 권한 추가 (필요시)
+aws iam attach-user-policy \
+    --user-name $(aws sts get-caller-identity --query User --output text | cut -d'/' -f2) \
+    --policy-arn arn:aws:iam::aws:policy/IAMFullAccess
+
+# ECS Task Execution Role 생성 (사전 생성)
 aws iam create-role \
     --role-name ecsTaskExecutionRole \
     --assume-role-policy-document '{
@@ -202,83 +530,117 @@ aws iam create-role \
                 "Action": "sts:AssumeRole"
             }
         ]
-    }'
+    }' 2>/dev/null || echo "IAM 역할이 이미 존재합니다."
 
 # ECS Task Execution Role에 정책 연결
 aws iam attach-role-policy \
     --role-name ecsTaskExecutionRole \
     --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
 
-# ECS Task Role 생성 (애플리케이션용)
-aws iam create-role \
-    --role-name ecsTaskRole \
-    --assume-role-policy-document '{
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Principal": {
-                    "Service": "ecs-tasks.amazonaws.com"
-                },
-                "Action": "sts:AssumeRole"
-            }
-        ]
-    }'
+# IAM 역할 생성 확인
+aws iam get-role --role-name ecsTaskExecutionRole
 ```
 
-**3단계: CloudWatch Log Group 생성**
+**0단계: 환경 변수 설정**
+```bash
+# 환경 변수 설정 (실습 효율성을 위해)
+export CLUSTER_NAME="ecs-intermediate"
+export SERVICE_NAME="cloud-intermediate-service"
+export TASK_FAMILY="nginx-task"
+export LOG_GROUP="/ecs/cloud-intermediate-app"
+export ALB_NAME="cloud-intermediate-alb"
+export TG_NAME="cloud-intermediate-tg"
+export SECURITY_GROUP="ecs-security-group"
+
+# 환경 변수 설정 확인 (중요!)
+echo "=== 환경 변수 확인 ==="
+echo "클러스터: $CLUSTER_NAME"
+echo "서비스: $SERVICE_NAME"
+echo "태스크 패밀리: $TASK_FAMILY"
+echo "로그 그룹: $LOG_GROUP"
+echo "ALB 이름: $ALB_NAME"
+echo "타겟 그룹: $TG_NAME"
+echo "보안 그룹: $SECURITY_GROUP"
+
+# 변수가 비어있으면 오류 발생
+if [ -z "$CLUSTER_NAME" ] || [ -z "$SERVICE_NAME" ] || [ -z "$TASK_FAMILY" ] || [ -z "$LOG_GROUP" ]; then
+    echo "❌ 환경 변수가 설정되지 않았습니다. 0단계를 다시 실행하세요."
+    exit 1
+fi
+echo "✅ 모든 환경 변수가 설정되었습니다."
+```
+
+**1단계: ECS 클러스터 생성**
+```bash
+# ECS 클러스터 생성
+aws ecs create-cluster \
+    --cluster-name $CLUSTER_NAME \
+    --capacity-providers FARGATE \
+    --default-capacity-provider-strategy capacityProvider=FARGATE,weight=1
+
+# 클러스터 상태 확인
+aws ecs describe-clusters --clusters $CLUSTER_NAME
+```
+
+**2단계: CloudWatch Log Group 생성**
 ```bash
 # CloudWatch Log Group 생성
 aws logs create-log-group \
-    --log-group-name /ecs/cloud-intermediate-app
+    --log-group-name $LOG_GROUP
 
 # Log Group 정책 설정
 aws logs put-retention-policy \
-    --log-group-name /ecs/cloud-intermediate-app \
+    --log-group-name $LOG_GROUP \
     --retention-in-days 7
 ```
 
-**4단계: VPC 및 네트워크 설정**
+**3단계: VPC 및 네트워크 설정**
 ```bash
 # 기본 VPC 정보 확인
-aws ec2 describe-vpcs --filters "Name=is-default,Values=true"
+VPC_ID=$(aws ec2 describe-vpcs --filters "Name=is-default,Values=true" --query 'Vpcs[0].VpcId' --output text)
+echo "VPC ID: $VPC_ID"
 
 # 서브넷 정보 확인
-aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-$(aws ec2 describe-vpcs --filters 'Name=is-default,Values=true' --query 'Vpcs[0].VpcId' --output text)"
+aws ec2 describe-subnets --filters "Name=vpc-id,Values=$VPC_ID"
 
 # 보안 그룹 생성
-aws ec2 create-security-group \
-    --group-name ecs-security-group \
+SECURITY_GROUP_ID=$(aws ec2 create-security-group \
+    --group-name $SECURITY_GROUP \
     --description "Security group for ECS tasks" \
-    --vpc-id $(aws ec2 describe-vpcs --filters 'Name=is-default,Values=true' --query 'Vpcs[0].VpcId' --output text)
+    --vpc-id $VPC_ID \
+    --query 'GroupId' --output text)
+echo "보안 그룹 ID: $SECURITY_GROUP_ID"
 
 # 보안 그룹 규칙 추가 (HTTP)
 aws ec2 authorize-security-group-ingress \
-    --group-id $(aws ec2 describe-security-groups --filters 'Name=group-name,Values=ecs-security-group' --query 'SecurityGroups[0].GroupId' --output text) \
+    --group-id $SECURITY_GROUP_ID \
     --protocol tcp \
     --port 80 \
     --cidr 0.0.0.0/0
 
 # 보안 그룹 규칙 추가 (HTTPS)
 aws ec2 authorize-security-group-ingress \
-    --group-id $(aws ec2 describe-security-groups --filters 'Name=group-name,Values=ecs-security-group' --query 'SecurityGroups[0].GroupId' --output text) \
+    --group-id $SECURITY_GROUP_ID \
     --protocol tcp \
     --port 443 \
     --cidr 0.0.0.0/0
 ```
 
-**5단계: Task Definition 생성**
+**4단계: Task Definition 생성**
 ```bash
+# Account ID 가져오기
+ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+echo "Account ID: $ACCOUNT_ID"
+
 # Task Definition JSON 파일 생성
-cat > task-definition.json << 'EOF'
+cat > task-definition.json << EOF
 {
-  "family": "cloud-intermediate-app",
+  "family": "$TASK_FAMILY",
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "256",
   "memory": "512",
-  "executionRoleArn": "arn:aws:iam::ACCOUNT_ID:role/ecsTaskExecutionRole",
-  "taskRoleArn": "arn:aws:iam::ACCOUNT_ID:role/ecsTaskRole",
+  "executionRoleArn": "arn:aws:iam::$ACCOUNT_ID:role/ecsTaskExecutionRole",
   "containerDefinitions": [
     {
       "name": "nginx",
@@ -292,7 +654,7 @@ cat > task-definition.json << 'EOF'
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/cloud-intermediate-app",
+          "awslogs-group": "$LOG_GROUP",
           "awslogs-region": "ap-northeast-2",
           "awslogs-stream-prefix": "ecs"
         }
@@ -312,37 +674,38 @@ cat > task-definition.json << 'EOF'
 }
 EOF
 
-# Account ID 자동 치환
-ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-sed -i "s/ACCOUNT_ID/$ACCOUNT_ID/g" task-definition.json
-
 # Task Definition 등록
 aws ecs register-task-definition --cli-input-json file://task-definition.json
 
 # Task Definition 확인
-aws ecs describe-task-definition --task-definition cloud-intermediate-app
+aws ecs describe-task-definition --task-definition $TASK_FAMILY
 ```
 
-**6단계: Application Load Balancer 생성**
+**5단계: Application Load Balancer 생성**
 ```bash
+# 서브넷 정보 가져오기
+SUBNET_IDS=$(aws ec2 describe-subnets --filters "Name=vpc-id,Values=$VPC_ID" --query 'Subnets[].SubnetId' --output text)
+echo "서브넷 IDs: $SUBNET_IDS"
+
 # ALB 생성
 aws elbv2 create-load-balancer \
-    --name cloud-intermediate-alb \
-    --subnets $(aws ec2 describe-subnets --filters 'Name=vpc-id,Values='$(aws ec2 describe-vpcs --filters 'Name=is-default,Values=true' --query 'Vpcs[0].VpcId' --output text) --query 'Subnets[0].SubnetId' --output text) $(aws ec2 describe-subnets --filters 'Name=vpc-id,Values='$(aws ec2 describe-vpcs --filters 'Name=is-default,Values=true' --query 'Vpcs[0].VpcId' --output text) --query 'Subnets[1].SubnetId' --output text) \
-    --security-groups $(aws ec2 describe-security-groups --filters 'Name=group-name,Values=ecs-security-group' --query 'SecurityGroups[0].GroupId' --output text) \
+    --name $ALB_NAME \
+    --subnets $SUBNET_IDS \
+    --security-groups $SECURITY_GROUP_ID \
     --scheme internet-facing \
     --type application \
     --ip-address-type ipv4
 
 # ALB ARN 저장
-ALB_ARN=$(aws elbv2 describe-load-balancers --names cloud-intermediate-alb --query 'LoadBalancers[0].LoadBalancerArn' --output text)
+ALB_ARN=$(aws elbv2 describe-load-balancers --names $ALB_NAME --query 'LoadBalancers[0].LoadBalancerArn' --output text)
+echo "ALB ARN: $ALB_ARN"
 
 # Target Group 생성
 aws elbv2 create-target-group \
-    --name cloud-intermediate-tg \
+    --name $TG_NAME \
     --protocol HTTP \
     --port 80 \
-    --vpc-id $(aws ec2 describe-vpcs --filters 'Name=is-default,Values=true' --query 'Vpcs[0].VpcId' --output text) \
+    --vpc-id $VPC_ID \
     --target-type ip \
     --health-check-path / \
     --health-check-interval-seconds 30 \
@@ -351,7 +714,8 @@ aws elbv2 create-target-group \
     --unhealthy-threshold-count 3
 
 # Target Group ARN 저장
-TG_ARN=$(aws elbv2 describe-target-groups --names cloud-intermediate-tg --query 'TargetGroups[0].TargetGroupArn' --output text)
+TG_ARN=$(aws elbv2 describe-target-groups --names $TG_NAME --query 'TargetGroups[0].TargetGroupArn' --output text)
+echo "Target Group ARN: $TG_ARN"
 
 # Listener 생성
 aws elbv2 create-listener \
@@ -361,30 +725,30 @@ aws elbv2 create-listener \
     --default-actions Type=forward,TargetGroupArn=$TG_ARN
 ```
 
-**7단계: ECS 서비스 생성**
+**6단계: ECS 서비스 생성**
 ```bash
 # ECS 서비스 생성
 aws ecs create-service \
-    --cluster cloud-intermediate-cluster \
-    --service-name cloud-intermediate-service \
-    --task-definition cloud-intermediate-app:1 \
+    --cluster $CLUSTER_NAME \
+    --service-name $SERVICE_NAME \
+    --task-definition $TASK_FAMILY:1 \
     --desired-count 2 \
     --launch-type FARGATE \
-    --network-configuration "awsvpcConfiguration={subnets=[$(aws ec2 describe-subnets --filters 'Name=vpc-id,Values='$(aws ec2 describe-vpcs --filters 'Name=is-default,Values=true' --query 'Vpcs[0].VpcId' --output text) --query 'Subnets[0].SubnetId' --output text),$(aws ec2 describe-subnets --filters 'Name=vpc-id,Values='$(aws ec2 describe-vpcs --filters 'Name=is-default,Values=true' --query 'Vpcs[0].VpcId' --output text) --query 'Subnets[1].SubnetId' --output text)],securityGroups=[$(aws ec2 describe-security-groups --filters 'Name=group-name,Values=ecs-security-group' --query 'SecurityGroups[0].GroupId' --output text)],assignPublicIp=ENABLED}" \
+    --network-configuration "awsvpcConfiguration={subnets=[$SUBNET_IDS],securityGroups=[$SECURITY_GROUP_ID],assignPublicIp=ENABLED}" \
     --load-balancers "targetGroupArn=$TG_ARN,containerName=nginx,containerPort=80"
 
 # 서비스 상태 확인
 aws ecs describe-services \
-    --cluster cloud-intermediate-cluster \
-    --services cloud-intermediate-service
+    --cluster $CLUSTER_NAME \
+    --services $SERVICE_NAME
 ```
 
-**8단계: Auto Scaling 설정**
+**7단계: Auto Scaling 설정**
 ```bash
 # Auto Scaling Target 생성
 aws application-autoscaling register-scalable-target \
     --service-namespace ecs \
-    --resource-id service/cloud-intermediate-cluster/cloud-intermediate-service \
+    --resource-id service/$CLUSTER_NAME/$SERVICE_NAME \
     --scalable-dimension ecs:service:DesiredCount \
     --min-capacity 1 \
     --max-capacity 10
@@ -392,7 +756,7 @@ aws application-autoscaling register-scalable-target \
 # Auto Scaling Policy 생성 (CPU 기반)
 aws application-autoscaling put-scaling-policy \
     --service-namespace ecs \
-    --resource-id service/cloud-intermediate-cluster/cloud-intermediate-service \
+    --resource-id service/$CLUSTER_NAME/$SERVICE_NAME \
     --scalable-dimension ecs:service:DesiredCount \
     --policy-name cpu-scaling-policy \
     --policy-type TargetTrackingScaling \
@@ -408,7 +772,7 @@ aws application-autoscaling put-scaling-policy \
 # Auto Scaling Policy 생성 (메모리 기반)
 aws application-autoscaling put-scaling-policy \
     --service-namespace ecs \
-    --resource-id service/cloud-intermediate-cluster/cloud-intermediate-service \
+    --resource-id service/$CLUSTER_NAME/$SERVICE_NAME \
     --scalable-dimension ecs:service:DesiredCount \
     --policy-name memory-scaling-policy \
     --policy-type TargetTrackingScaling \
@@ -422,23 +786,35 @@ aws application-autoscaling put-scaling-policy \
     }'
 ```
 
-**9단계: 배포 테스트**
+**8단계: 배포 테스트**
 ```bash
 # ALB DNS 이름 확인
-aws elbv2 describe-load-balancers --names cloud-intermediate-alb --query 'LoadBalancers[0].DNSName' --output text
+ALB_DNS=$(aws elbv2 describe-load-balancers --names $ALB_NAME --query 'LoadBalancers[0].DNSName' --output text)
+echo "ALB DNS: $ALB_DNS"
 
 # ALB 접근 테스트
-ALB_DNS=$(aws elbv2 describe-load-balancers --names cloud-intermediate-alb --query 'LoadBalancers[0].DNSName' --output text)
 curl -I http://$ALB_DNS
 
 # ECS 태스크 상태 확인
-aws ecs list-tasks --cluster cloud-intermediate-cluster --service-name cloud-intermediate-service
+aws ecs list-tasks --cluster $CLUSTER_NAME --service-name $SERVICE_NAME
 
 # CloudWatch 로그 확인
-aws logs describe-log-streams --log-group-name /ecs/cloud-intermediate-app
+aws logs describe-log-streams --log-group-name $LOG_GROUP
+
+# 로그 내용 확인 (로그 스트림이 있는 경우)
+LOG_STREAMS=$(aws logs describe-log-streams --log-group-name $LOG_GROUP --query 'logStreams[].logStreamName' --output text)
+if [ -n "$LOG_STREAMS" ]; then
+    echo "로그 스트림 발견:"
+    for stream in $LOG_STREAMS; do
+        echo "  - $stream"
+        aws logs get-log-events --log-group-name $LOG_GROUP --log-stream-name $stream --query 'events[].message' --output text
+    done
+else
+    echo "로그 스트림이 없습니다."
+fi
 ```
 
-**10단계: 모니터링 설정**
+**9단계: 모니터링 설정**
 ```bash
 # CloudWatch 대시보드 생성
 aws cloudwatch put-dashboard \
@@ -453,7 +829,7 @@ aws cloudwatch put-dashboard \
                 "height": 6,
                 "properties": {
                     "metrics": [
-                        ["AWS/ECS", "CPUUtilization", "ServiceName", "cloud-intermediate-service", "ClusterName", "cloud-intermediate-cluster"]
+                        ["AWS/ECS", "CPUUtilization", "ServiceName", "$SERVICE_NAME", "ClusterName", "$CLUSTER_NAME"]
                     ],
                     "period": 300,
                     "stat": "Average",
@@ -469,7 +845,7 @@ aws cloudwatch put-dashboard \
                 "height": 6,
                 "properties": {
                     "metrics": [
-                        ["AWS/ECS", "MemoryUtilization", "ServiceName", "cloud-intermediate-service", "ClusterName", "cloud-intermediate-cluster"]
+                        ["AWS/ECS", "MemoryUtilization", "ServiceName", "cloud-intermediate-service", "ClusterName", "ecs-intermediate"]
                     ],
                     "period": 300,
                     "stat": "Average",
@@ -490,20 +866,20 @@ aws cloudwatch put-metric-alarm \
     --period 300 \
     --threshold 80 \
     --comparison-operator GreaterThanThreshold \
-    --dimensions Name=ServiceName,Value=cloud-intermediate-service Name=ClusterName,Value=cloud-intermediate-cluster \
+    --dimensions Name=ServiceName,Value=cloud-intermediate-service Name=ClusterName,Value=ecs-intermediate \
     --evaluation-periods 2
 ```
 
-**11단계: 정리**
+**10단계: 정리**
 ```bash
 # ECS 서비스 삭제
 aws ecs update-service \
-    --cluster cloud-intermediate-cluster \
+    --cluster ecs-intermediate \
     --service cloud-intermediate-service \
     --desired-count 0
 
 aws ecs delete-service \
-    --cluster cloud-intermediate-cluster \
+    --cluster ecs-intermediate \
     --service cloud-intermediate-service
 
 # Task Definition 삭제
@@ -514,7 +890,7 @@ aws elbv2 delete-load-balancer --load-balancer-arn $ALB_ARN
 aws elbv2 delete-target-group --target-group-arn $TG_ARN
 
 # ECS 클러스터 삭제
-aws ecs delete-cluster --cluster cloud-intermediate-cluster
+aws ecs delete-cluster --cluster ecs-intermediate
 
 # IAM 역할 삭제
 aws iam detach-role-policy --role-name ecsTaskExecutionRole --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
@@ -529,6 +905,18 @@ aws ec2 delete-security-group --group-id $(aws ec2 describe-security-groups --fi
 ```
 
 #### 실습 2: GCP Cloud Run 배포 (30분)
+
+> **💡 실습 방법**: 아래의 수작업 실습 가이드를 따라 단계별로 진행하세요. Cloud Run은 서버리스 컨테이너 플랫폼으로 간단한 배포가 가능합니다.
+
+**🔄 GKE vs Cloud Run 실습 비교**
+
+| 구분 | **GKE (오전 실습)** | **Cloud Run (오후 실습)** |
+|------|---------------------|---------------------------|
+| **복잡도** | 높음 (Kubernetes YAML) | 낮음 (gcloud 명령어) |
+| **설정 파일** | 복잡한 YAML 매니페스트 | 간단한 Dockerfile |
+| **네트워킹** | Service, Ingress 설정 | 자동 관리 |
+| **스케일링** | HPA, VPA 설정 | 자동 스케일링 (0→무한대) |
+| **학습 목표** | Kubernetes 마스터 | 서버리스 컨테이너 |
 
 **변경 전 시스템 아키텍처**:
 ```mermaid
@@ -545,10 +933,6 @@ flowchart TD
     style D fill:#d32f2f,color:#ffffff
 ```
 
-**자동화 도구 실행**:
-```bash
-# 자동화 도구: ./tools/cloud/gcp-cloudrun-helper.sh --action deploy-service
-```
 
 **변경 후 시스템 아키텍처**:
 ```mermaid
@@ -579,360 +963,238 @@ flowchart TD
     style I fill:#4caf50,color:#ffffff
 ```
 
-**실습 명령어**:
-```bash
-# Cloud Run 서비스 배포
-gcloud run deploy nginx-service \
-  --image nginx:1.21 \
-  --platform managed \
-  --region us-central1 \
-  --allow-unauthenticated \
-  --port 80 \
-  --memory 512Mi \
-  --cpu 1 \
-  --min-instances 0 \
-  --max-instances 10
-
-# 서비스 상태 확인
-gcloud run services list
-
-# 서비스 URL 확인
-gcloud run services describe nginx-service --region us-central1 --format 'value(status.url)'
-
-# 트래픽 관리
-gcloud run services update-traffic nginx-service \
-  --to-latest \
-  --region us-central1
-```
-
-**실습 내용**:
-- Cloud Run 서비스 배포
-- 자동 스케일링 설정
-- 트래픽 관리
-- 보안 설정
 
 #### 수작업 실습 가이드 (GCP Cloud Run 배포)
 
-**1단계: GCP CLI 설정 및 프로젝트 설정**
+**0단계: 환경 변수 설정**
 ```bash
-# GCP CLI 설치 확인
-gcloud version
+# 환경 변수 설정 (실습 효율성을 위해)
+export PROJECT_ID=$(gcloud config get-value project)
+export REGION="asia-northeast3"
+export SERVICE_NAME="cloud-run-demo"
+export IMAGE_NAME="gcr.io/$PROJECT_ID/cloud-run-demo:latest"
 
-# GCP 인증
-gcloud auth login
+# 환경 변수 설정 확인 (중요!)
+echo "=== 환경 변수 확인 ==="
+echo "프로젝트 ID: $PROJECT_ID"
+echo "리전: $REGION"
+echo "서비스명: $SERVICE_NAME"
+echo "이미지명: $IMAGE_NAME"
 
-# 프로젝트 설정
-gcloud config set project YOUR_PROJECT_ID
-
-# 기본 리전 설정
-gcloud config set compute/region asia-northeast3
-gcloud config set run/region asia-northeast3
-
-# 프로젝트 정보 확인
-gcloud config list
-gcloud projects describe $(gcloud config get-value project)
+# 변수가 비어있으면 오류 발생
+if [ -z "$SERVICE_NAME" ] || [ -z "$REGION" ] || [ -z "$IMAGE_NAME" ] || [ -z "$PROJECT_ID" ]; then
+    echo "❌ 환경 변수가 설정되지 않았습니다. 0단계를 다시 실행하세요."
+    exit 1
+fi
+echo "✅ 모든 환경 변수가 설정되었습니다."
 ```
 
-**2단계: 필요한 API 활성화**
+**1단계: Docker 이미지 빌드 및 푸시**
 ```bash
-# Cloud Run API 활성화
-gcloud services enable run.googleapis.com
+# Cloud Build를 사용한 이미지 빌드 및 푸시
+gcloud builds submit --tag $IMAGE_NAME .
 
-# Container Registry API 활성화
-gcloud services enable containerregistry.googleapis.com
-
-# Cloud Build API 활성화
-gcloud services enable cloudbuild.googleapis.com
-
-# 활성화된 API 확인
-gcloud services list --enabled --filter="name:run.googleapis.com OR name:containerregistry.googleapis.com OR name:cloudbuild.googleapis.com"
+# 빌드 완료 확인
+echo "✅ 이미지 빌드 및 푸시 완료: $IMAGE_NAME"
 ```
 
-**3단계: 샘플 애플리케이션 준비**
-```bash
-# 작업 디렉토리 생성
-mkdir cloud-run-demo
-cd cloud-run-demo
-
-# 샘플 Node.js 애플리케이션 생성
-cat > package.json << 'EOF'
-{
-  "name": "cloud-run-demo",
-  "version": "1.0.0",
-  "description": "GCP Cloud Run Demo Application",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5"
-  }
-}
-EOF
-
-# Express 서버 생성
-cat > server.js << 'EOF'
-const express = require('express');
-const cors = require('cors');
-
-const app = express();
-const PORT = process.env.PORT || 8080;
-
-app.use(cors());
-app.use(express.json());
-
-app.get('/', (req, res) => {
-  res.json({
-    message: 'Hello from GCP Cloud Run!',
-    timestamp: new Date().toISOString(),
-    version: '1.0.0'
-  });
-});
-
-app.get('/health', (req, res) => {
-  res.json({
-    status: 'healthy',
-    uptime: process.uptime(),
-    memory: process.memoryUsage()
-  });
-});
-
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
-});
-EOF
-
-# Dockerfile 생성
-cat > Dockerfile << 'EOF'
-FROM node:18-alpine
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm install --only=production
-
-COPY . .
-
-EXPOSE 8080
-
-USER node
-
-CMD ["npm", "start"]
-EOF
-
-# .dockerignore 생성
-cat > .dockerignore << 'EOF'
-node_modules
-npm-debug.log
-.git
-.gitignore
-README.md
-.env
-.nyc_output
-coverage
-.DS_Store
-EOF
-```
-
-**4단계: Container Registry에 이미지 빌드 및 푸시**
-```bash
-# 프로젝트 ID 가져오기
-PROJECT_ID=$(gcloud config get-value project)
-
-# Container Registry에 이미지 빌드
-gcloud builds submit --tag gcr.io/$PROJECT_ID/cloud-run-demo .
-
-# 이미지 확인
-gcloud container images list --repository gcr.io/$PROJECT_ID
-
-# 이미지 상세 정보 확인
-gcloud container images describe gcr.io/$PROJECT_ID/cloud-run-demo:latest
-```
-
-**5단계: Cloud Run 서비스 배포**
+**2단계: Cloud Run 서비스 배포**
 ```bash
 # Cloud Run 서비스 배포
-gcloud run deploy cloud-run-demo \
-  --image gcr.io/$PROJECT_ID/cloud-run-demo:latest \
+gcloud run deploy $SERVICE_NAME \
+  --image $IMAGE_NAME \
+  --region $REGION \
   --platform managed \
-  --region asia-northeast3 \
   --allow-unauthenticated \
-  --port 8080 \
-  --memory 512Mi \
-  --cpu 1 \
-  --min-instances 0 \
-  --max-instances 10 \
-  --concurrency 80 \
-  --timeout 300 \
-  --set-env-vars NODE_ENV=production
+  --port 8080
 
-# 배포 상태 확인
-gcloud run services list --region asia-northeast3
-
-# 서비스 상세 정보 확인
-gcloud run services describe cloud-run-demo --region asia-northeast3
+# 배포 완료 확인
+echo "✅ Cloud Run 서비스 배포 완료"
 ```
 
-**6단계: 서비스 접근 테스트**
+**3단계: 서비스 상태 확인**
 ```bash
-# 서비스 URL 가져오기
-SERVICE_URL=$(gcloud run services describe cloud-run-demo --region asia-northeast3 --format 'value(status.url)')
+# 서비스 정보 확인
+gcloud run services describe $SERVICE_NAME \
+  --region $REGION \
+  --format="table(metadata.name,status.url,status.conditions[0].status,spec.template.spec.containers[0].image)"
 
-# 서비스 접근 테스트
-curl $SERVICE_URL
-
-# 헬스 체크 테스트
-curl $SERVICE_URL/health
-
-# 서비스 로그 확인
-gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=cloud-run-demo" --limit 10
+# 서비스 URL 확인
+SERVICE_URL=$(gcloud run services describe $SERVICE_NAME --region $REGION --format="value(status.url)")
+echo "서비스 URL: $SERVICE_URL"
 ```
 
-**7단계: 트래픽 관리 설정**
+**4단계: 서비스 테스트**
 ```bash
-# 새 버전 배포 (트래픽 분할 테스트용)
-gcloud run deploy cloud-run-demo \
-  --image gcr.io/$PROJECT_ID/cloud-run-demo:latest \
-  --platform managed \
-  --region asia-northeast3 \
-  --no-traffic
+# 서비스 응답 테스트
+curl -s $SERVICE_URL | jq '.'
 
-# 트래픽을 새 버전으로 100% 전환
-gcloud run services update-traffic cloud-run-demo \
-  --to-latest \
-  --region asia-northeast3
-
-# 트래픽 분할 설정 (50:50)
-gcloud run services update-traffic cloud-run-demo \
-  --to-revisions=cloud-run-demo-00001-abc=50,cloud-run-demo-00002-def=50 \
-  --region asia-northeast3
-
-# 트래픽 설정 확인
-gcloud run services describe cloud-run-demo --region asia-northeast3 --format 'value(status.traffic)'
-```
-
-**8단계: 자동 스케일링 설정**
-```bash
-# 서비스 업데이트 (스케일링 설정)
-gcloud run services update cloud-run-demo \
-  --region asia-northeast3 \
-  --min-instances 1 \
-  --max-instances 20 \
-  --concurrency 100 \
-  --cpu-throttling
-
-# 스케일링 정책 확인
-gcloud run services describe cloud-run-demo --region asia-northeast3 --format 'value(spec.template.metadata.annotations)'
-```
-
-**9단계: 보안 설정**
-```bash
-# 인증이 필요한 서비스로 변경
-gcloud run services update cloud-run-demo \
-  --region asia-northeast3 \
-  --no-allow-unauthenticated
-
-# IAM 정책 설정 (특정 사용자에게만 접근 허용)
-gcloud run services add-iam-policy-binding cloud-run-demo \
-  --region asia-northeast3 \
-  --member="user:YOUR_EMAIL@gmail.com" \
-  --role="roles/run.invoker"
-
-# 다시 공개 접근 허용 (실습용)
-gcloud run services update cloud-run-demo \
-  --region asia-northeast3 \
-  --allow-unauthenticated
-```
-
-**10단계: 환경 변수 및 시크릿 설정**
-```bash
-# 환경 변수 설정
-gcloud run services update cloud-run-demo \
-  --region asia-northeast3 \
-  --set-env-vars NODE_ENV=production,LOG_LEVEL=info
-
-# 시크릿 생성
-echo -n "my-secret-value" | gcloud secrets create my-secret --data-file=-
-
-# 시크릿을 환경 변수로 사용
-gcloud run services update cloud-run-demo \
-  --region asia-northeast3 \
-  --set-secrets SECRET_KEY=my-secret:latest
-
-# 설정 확인
-gcloud run services describe cloud-run-demo --region asia-northeast3 --format 'value(spec.template.spec.template.spec.containers[0].env)'
-```
-
-**11단계: 모니터링 설정**
-```bash
-# Cloud Run 메트릭 확인
-gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=cloud-run-demo" --limit 5
-
-# Cloud Monitoring에서 메트릭 확인
-gcloud monitoring metrics list --filter="resource.type=cloud_run_revision"
-
-# 알림 정책 생성 (CPU 사용률)
-gcloud alpha monitoring policies create --policy-from-file=- << 'EOF'
-{
-  "displayName": "Cloud Run High CPU",
-  "conditions": [
-    {
-      "displayName": "CPU utilization is high",
-      "conditionThreshold": {
-        "filter": "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"cloud-run-demo\"",
-        "comparison": "COMPARISON_GREATER_THAN",
-        "thresholdValue": 80,
-        "duration": "300s"
-      }
-    }
-  ],
-  "alertStrategy": {
-    "autoClose": "1800s"
-  }
-}
-EOF
-```
-
-**12단계: 부하 테스트**
-```bash
-# Apache Bench를 사용한 부하 테스트
-ab -n 100 -c 10 $SERVICE_URL/
-
-# 또는 curl을 사용한 간단한 부하 테스트
-for i in {1..10}; do
-  curl -s $SERVICE_URL/health &
+# 여러 번 테스트하여 트래픽 분산 확인
+for i in {1..3}; do
+  echo "요청 $i:"
+  curl -s $SERVICE_URL | jq -r '.timestamp'
+  sleep 1
 done
-wait
-
-# 서비스 메트릭 확인
-gcloud run services describe cloud-run-demo --region asia-northeast3 --format 'value(status.conditions)'
 ```
 
-**13단계: 정리**
+**5단계: 트래픽 관리 (리비전 관리)**
+```bash
+# 현재 리비전 목록 확인
+gcloud run revisions list \
+  --service $SERVICE_NAME \
+  --region $REGION \
+  --format="table(metadata.name,status.conditions[0].status,spec.containers[0].image)"
+
+# 최신 리비전과 이전 리비전 확인
+LATEST_REVISION=$(gcloud run revisions list --service $SERVICE_NAME --region $REGION --limit 1 --format="value(metadata.name)")
+PREVIOUS_REVISION=$(gcloud run revisions list --service $SERVICE_NAME --region $REGION --limit 2 | tail -1 | awk '{print $1}')
+
+echo "최신 리비전: $LATEST_REVISION"
+echo "이전 리비전: $PREVIOUS_REVISION"
+```
+
+**6단계: 트래픽 분할 설정**
+```bash
+# 트래픽을 50:50으로 분할
+gcloud run services update-traffic $SERVICE_NAME \
+  --region $REGION \
+  --to-revisions $LATEST_REVISION=50,$PREVIOUS_REVISION=50
+
+# 트래픽 분할 확인
+echo "✅ 트래픽 분할 설정 완료: 50% 최신, 50% 이전"
+```
+
+**7단계: 로그 확인**
+```bash
+# Cloud Run 로그 확인
+gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=$SERVICE_NAME" \
+  --limit 5 \
+  --format="table(timestamp,severity,textPayload)"
+
+echo "✅ 로그 확인 완료"
+```
+
+**8단계: 정리 및 확인**
+```bash
+# 서비스 상태 최종 확인
+gcloud run services describe $SERVICE_NAME --region $REGION --format="table(metadata.name,status.url,status.conditions[0].status)"
+
+# 트래픽 분할 상태 확인
+gcloud run services describe $SERVICE_NAME --region $REGION --format="table(spec.traffic[].revisionName,spec.traffic[].percent)"
+
+echo "✅ GCP Cloud Run 실습 완료!"
+echo "서비스 URL: $(gcloud run services describe $SERVICE_NAME --region $REGION --format='value(status.url)')"
+```
+
+### 🧹 **실습 정리**
+
+**Cloud Run 서비스 삭제**
 ```bash
 # Cloud Run 서비스 삭제
-gcloud run services delete cloud-run-demo --region asia-northeast3 --quiet
+gcloud run services delete $SERVICE_NAME --region $REGION --quiet
 
 # Container Registry 이미지 삭제
-gcloud container images delete gcr.io/$PROJECT_ID/cloud-run-demo:latest --quiet
+gcloud container images delete $IMAGE_NAME --quiet
 
-# 시크릿 삭제
-gcloud secrets delete my-secret --quiet
+echo "✅ GCP Cloud Run 실습 정리 완료"
+```
 
-# 알림 정책 삭제
-gcloud alpha monitoring policies list --filter="displayName=Cloud Run High CPU" --format="value(name)" | xargs -I {} gcloud alpha monitoring policies delete {}
+## 🚨 문제 해결 가이드
 
-# 로컬 파일 정리
-cd ..
-rm -rf cloud-run-demo
+### **환경 변수 관련 오류**
+```bash
+# 오류: argument --region: expected one argument
+# 해결: 환경 변수 재설정
+export PROJECT_ID=$(gcloud config get-value project)
+export REGION="asia-northeast3"
+export SERVICE_NAME="cloud-run-demo"
+export IMAGE_NAME="gcr.io/$PROJECT_ID/cloud-run-demo:latest"
+```
+
+### **GCP Cloud Run 트래픽 관리 오류**
+```bash
+# 오류: Revision does not exist
+# 해결: 실제 리비전 이름 확인 후 사용
+LATEST_REVISION=$(gcloud run revisions list --service $SERVICE_NAME --region $REGION --limit 1 --format="value(metadata.name)")
+PREVIOUS_REVISION=$(gcloud run revisions list --service $SERVICE_NAME --region $REGION --limit 2 | tail -1 | awk '{print $1}')
+
+gcloud run services update-traffic $SERVICE_NAME \
+  --region $REGION \
+  --to-revisions $LATEST_REVISION=50,$PREVIOUS_REVISION=50
 ```
 
 ### 📊 실습 결과
+
+#### **수동 실습 완료 체크리스트**
 - [ ] AWS ECS 컨테이너 서비스 배포 완료
 - [ ] GCP Cloud Run 서버리스 배포 완료
 - [ ] 자동 스케일링 설정 완료
 - [ ] 로드 밸런서 연결 완료
+
+#### **🤖 자동화 스크립트 검증**
+```bash
+# AWS ECS 상태 확인
+./aws-ecs-helper.sh --action status
+
+# GCP Cloud Run 상태 확인
+./gcp-cloudrun-helper.sh --action status
+
+# 통합 상태 확인
+./day1-practice.sh --action status
+```
+
+#### **✅ 성공 지표**
+- **AWS ECS**: 클러스터 활성, 서비스 실행 중, 태스크 정상 동작
+- **GCP Cloud Run**: 서비스 배포 완료, 트래픽 분할 설정, 로그 수집 정상
+- **자동화 스크립트**: 수동 가이드와 동일한 결과 보장
+
+
+### 🔄 전체 서비스 비교 요약
+
+**📈 학습 곡선 및 복잡도 비교**
+
+```mermaid
+flowchart TD
+    subgraph "학습 난이도"
+        A["Cloud Run<br/>(가장 쉬움)"] --> B["ECS Fargate<br/>(쉬움)"]
+        B --> C["GKE<br/>(어려움)"]
+        C --> D["EKS<br/>(가장 어려움)"]
+    end
+    
+    subgraph "관리 부담"
+        E["Cloud Run<br/>(없음)"] --> F["ECS Fargate<br/>(낮음)"]
+        F --> G["GKE<br/>(중간)"]
+        G --> H["EKS<br/>(높음)"]
+    end
+    
+    subgraph "비용 효율성"
+        I["Cloud Run<br/>(최고)"] --> J["ECS Fargate<br/>(높음)"]
+        J --> K["GKE<br/>(중간)"]
+        K --> L["EKS<br/>(낮음)"]
+    end
+    
+    style A fill:#4caf50,color:#ffffff
+    style B fill:#8bc34a,color:#ffffff
+    style C fill:#ff9800,color:#ffffff
+    style D fill:#f44336,color:#ffffff
+    style E fill:#4caf50,color:#ffffff
+    style F fill:#8bc34a,color:#ffffff
+    style G fill:#ff9800,color:#ffffff
+    style H fill:#f44336,color:#ffffff
+    style I fill:#4caf50,color:#ffffff
+    style J fill:#8bc34a,color:#ffffff
+    style K fill:#ff9800,color:#ffffff
+    style L fill:#f44336,color:#ffffff
+```
+
+**🎯 실습을 통한 핵심 학습 포인트**
+
+| 서비스 | **핵심 학습 내용** | **실무 적용 시나리오** |
+|--------|-------------------|----------------------|
+| **EKS** | Kubernetes 마스터, 복잡한 마이크로서비스 | 대규모 엔터프라이즈 애플리케이션 |
+| **ECS** | AWS 네이티브 서비스, Fargate 서버리스 | AWS 생태계 내 컨테이너 서비스 |
+| **GKE** | Kubernetes 마스터, GCP 통합 | GCP 생태계 내 복잡한 워크로드 |
+| **Cloud Run** | 서버리스 컨테이너, 비용 최적화 | 간단한 웹 서비스, API 서버 |
 
 ---
 
@@ -1000,11 +1262,41 @@ flowchart TD
 
 **자동화 도구 실행**:
 ```bash
-# 실습 스크립트 실행
-./day1-practice.sh
-# 메뉴 선택: 4. 통합 모니터링 허브
+# 📍 실습 위치: mcp_knowledge_base/cloud_intermediate/repo/practice/day1/monitoring-hub/
+cd mcp_knowledge_base/cloud_intermediate/repo/practice/day1/monitoring-hub/
 
-# 자동화 도구: ./tools/cloud/monitoring-hub-helper.sh --action create-hub
+# 📍 VM 생성성
+cp ../../../tools/cloud/aws-setup-helper.sh ./
+cp ../../../tools/cloud/aws-environment.env ./
+cp ../../../tools/cloud/aws-ec2-create ./
+
+# 📍 환경 파일 갱신 (필수)
+./aws-setup-helper.sh
+
+# 📍 환경 파일 갱신 (필수)
+./ls -la aws-environment.env
+./cat aws-environment.env
+
+# 📍 환경 파일 갱신 (필수)
+./ls -la aws-environment.env
+
+
+# 📍 환경 파일 복사 (중앙 집중식 관리)
+cp ../../../tools/cloud/monitoring-hub-helper.sh ./
+cp ../../../tools/cloud/aws-environment.env ./
+cp ../../../tools/cloud/monitoring-environment.env ./
+
+# 📍 환경 파일 확인 (필수)
+ls -la monitoring-hub-helper.sh *-environment.env
+
+# 📍 모니터링 허브 인프라 구축 (자동화)
+./monitoring-hub-helper.sh --action create-hub
+
+# 📍 Prometheus 설치 및 설정
+./monitoring-hub-helper.sh --action install-prometheus
+
+# 📍 Grafana 설치 및 설정
+./monitoring-hub-helper.sh --action install-grafana
 ```
 
 **변경 후 시스템 아키텍처**:
@@ -1452,7 +1744,14 @@ flowchart TD
 
 **자동화 도구 실행**:
 ```bash
-# 자동화 도구: ./tools/cloud/monitoring-helper.sh --action install-prometheus
+# 📍 Prometheus 설치 및 설정 (자동화)
+./monitoring-hub-helper.sh --action install-prometheus
+
+# 📍 Prometheus 서비스 상태 확인
+./monitoring-hub-helper.sh --action check-prometheus
+
+# 📍 Prometheus 메트릭 수집 확인
+./monitoring-hub-helper.sh --action test-prometheus
 ```
 
 **변경 후 시스템 아키텍처**:
@@ -1679,7 +1978,17 @@ flowchart TD
 
 **자동화 도구 실행**:
 ```bash
-# 자동화 도구: ./tools/cloud/monitoring-helper.sh --action install-grafana
+# 📍 Grafana 설치 및 설정 (자동화)
+./monitoring-hub-helper.sh --action install-grafana
+
+# 📍 Grafana 서비스 상태 확인
+./monitoring-hub-helper.sh --action check-grafana
+
+# 📍 Grafana 데이터 소스 설정
+./monitoring-hub-helper.sh --action setup-grafana-datasource
+
+# 📍 Grafana 대시보드 설정
+./monitoring-hub-helper.sh --action setup-grafana-dashboard
 ```
 
 **변경 후 시스템 아키텍처**:
@@ -1750,7 +2059,14 @@ flowchart TD
 
 **자동화 도구 실행**:
 ```bash
-# 자동화 도구: ./tools/cloud/monitoring-helper.sh --action install-node-exporter
+# 📍 Node Exporter 설치 및 설정 (자동화)
+./monitoring-hub-helper.sh --action install-node-exporter
+
+# 📍 Node Exporter 서비스 상태 확인
+./monitoring-hub-helper.sh --action check-node-exporter
+
+# 📍 시스템 메트릭 수집 확인
+./monitoring-hub-helper.sh --action test-node-exporter
 ```
 
 **변경 후 시스템 아키텍처**:
@@ -1809,34 +2125,132 @@ sudo systemctl enable node_exporter
 
 ## 🧹 실습 정리 (17:00-17:30)
 
-### 자동 정리 실행
+### 🎯 **4교시 모니터링 허브 정리**
+
+#### **Docker 컨테이너 정리**
 ```bash
-# Day1 실습 자동 정리
-./day1-practice.sh
-# 메뉴에서 "정리" 옵션 선택
+# SSH로 모니터링 인스턴스 접속
+ssh -i cloud-deployment-key.pem ec2-user@3.37.234.110
+
+# 실행 중인 컨테이너 확인
+docker ps
+
+# 컨테이너 중지 및 삭제
+docker stop prometheus grafana node-exporter
+docker rm prometheus grafana node-exporter
+
+# Docker 이미지 정리 (선택사항)
+docker image prune -f
 ```
 
-### 정리 내용
-- [ ] Docker 이미지 정리
-- [ ] Kubernetes 리소스 정리
-- [ ] 클라우드 리소스 정리
-- [ ] 모니터링 스택 정리
+#### **AWS 리소스 정리**
+```bash
+# EC2 인스턴스 중지 (비용 절약)
+aws ec2 stop-instances --instance-ids i-09108c566c2abb37d
+
+# EC2 인스턴스 삭제 (완전 정리)
+aws ec2 terminate-instances --instance-ids i-09108c566c2abb37d
+
+# Elastic IP 해제 (할당 ID 확인 후)
+aws ec2 describe-addresses --query 'Addresses[?InstanceId==`i-09108c566c2abb37d`].AllocationId' --output text
+aws ec2 release-address --allocation-id <ALLOCATION_ID>
+```
+
+#### **GCP 리소스 정리**
+```bash
+# GCP Compute Engine 인스턴스 삭제
+gcloud compute instances delete cloud-intermediate-vm --zone=asia-northeast3-a --quiet
+```
+
+### 🤖 **자동화 스크립트 정리 (권장)**
+
+**통합 정리 실행**
+```bash
+# 전체 실습 환경 정리
+./day1-practice.sh --action cleanup
+```
+
+**개별 서비스 정리**
+```bash
+# AWS ECS 정리
+./aws-ecs-helper.sh --action cleanup
+
+# GCP Cloud Run 정리  
+./gcp-cloudrun-helper.sh --action cleanup
+
+# 모니터링 허브 정리
+./monitoring-hub-helper.sh --action cleanup
+
+# 상태 확인
+./day1-practice.sh --action status
+```
+
+### 📋 **정리 내용 확인**
+
+#### **3교시: 클라우드 컨테이너 서비스**
+- [ ] AWS ECS 클러스터 삭제
+- [ ] GCP Cloud Run 서비스 삭제
+- [ ] Container Registry 이미지 삭제
+- [ ] 로드 밸런서 및 보안 그룹 정리
+- [ ] CloudWatch 로그 그룹 정리
+
+#### **4교시: 통합 모니터링 허브**
+- [ ] Docker 컨테이너 중지 및 삭제
+- [ ] Prometheus, Grafana, Node Exporter 정리
+- [ ] AWS EC2 인스턴스 중지/삭제
+- [ ] GCP Compute Engine 인스턴스 삭제
+- [ ] Elastic IP 해제
+- [ ] 보안 그룹 정리
 
 ---
 
 ## 📊 학습 성과 확인
 
-### 실습 완료 체크리스트
-- [ ] Docker 멀티스테이지 빌드 실습 완료
-- [ ] Kubernetes 기본 리소스 생성 및 관리 완료
+### **🤖 자동화 스크립트 검증**
+```bash
+# 전체 실습 상태 확인
+./day1-practice.sh --action status
+
+# 개별 서비스 상태 확인
+./aws-ecs-helper.sh --action status
+./gcp-cloudrun-helper.sh --action status
+./monitoring-hub-helper.sh --action status
+```
+
+### **✅ 실습 완료 체크리스트**
+
+#### **3교시: 클라우드 컨테이너 서비스**
 - [ ] AWS ECS 컨테이너 서비스 배포 완료
 - [ ] GCP Cloud Run 서버리스 배포 완료
-- [ ] Prometheus + Grafana 모니터링 시스템 구축 완료
+- [ ] 자동 스케일링 설정 완료
+- [ ] 트래픽 관리 설정 완료
+- [ ] 모니터링 및 로깅 설정 완료
 
-### 다음 단계
+#### **4교시: 통합 모니터링 허브**
+- [ ] Prometheus 메트릭 수집 시스템 구축 완료
+- [ ] Grafana 대시보드 접근 가능
+- [ ] Node Exporter 시스템 메트릭 수집 확인
+- [ ] Docker 컨테이너 기반 모니터링 환경 구축
+- [ ] 웹 인터페이스를 통한 모니터링 도구 접근 확인
+
+### **🎯 학습 목표 달성 확인**
+
+#### **3교시: 클라우드 컨테이너 서비스**
+- [ ] **AWS ECS**: Fargate 서버리스 컨테이너 배포 이해
+- [ ] **GCP Cloud Run**: 서버리스 컨테이너 플랫폼 활용
+- [ ] **자동화**: 수동 가이드와 자동화 스크립트 동기화 이해
+- [ ] **비교 분석**: ECS vs Cloud Run vs EKS vs GKE 차이점 파악
+
+#### **4교시: 통합 모니터링 허브**
+- [ ] **Prometheus**: 메트릭 수집 및 저장 시스템 이해
+- [ ] **Grafana**: 시각화 대시보드 구축 및 활용
+- [ ] **Node Exporter**: 시스템 메트릭 수집 도구 이해
+- [ ] **Docker**: 컨테이너 기반 모니터링 환경 구축
+- [ ] **통합 모니터링**: Prometheus + Grafana + Node Exporter 연동
+
+### **🚀 다음 단계**
 - **Day 2 실습**으로 진행: CI/CD 및 고급 클라우드 배포
-- **통합 강의 시나리오** 확인
-- **통합 모니터링 시나리오** 확인
+- **자동화 스크립트 활용**: 수동 가이드와 자동화 스크립트 조합 활용
 
 ---
 
@@ -1847,6 +2261,8 @@ sudo systemctl enable node_exporter
 - **환경 설정 성공률**: 90% 이상
 - **LoadBalancer 접근 성공률**: 85% 이상
 - **모니터링 시스템 구축 성공률**: 90% 이상
+- **Docker 컨테이너 실행 성공률**: 95% 이상
+- **웹 인터페이스 접근 성공률**: 90% 이상
 
 ### 정성적 지표
 - **수강생 만족도**: 4.5/5.0 이상
@@ -1869,8 +2285,9 @@ sudo systemctl enable node_exporter
 - `./tools/cloud/gcp-cloudrun-helper.sh` - Cloud Run 서비스 배포 및 관리
 
 ### 모니터링 도구
-- `./tools/cloud/monitoring-helper.sh` - Prometheus, Grafana, Node Exporter 설치 및 설정
-- `./tools/cloud/monitoring-hub-helper.sh` - 통합 모니터링 허브 구축
+- `./tools/cloud/monitoring-hub-helper.sh` - 통합 모니터링 허브 구축 (Prometheus, Grafana, Node Exporter)
+- `./tools/cloud/environment-check.sh` - 실습 환경 자동 체크
+- `./tools/cloud/setup-environment.sh` - 환경 설정 자동화
 
 ---
 
@@ -1885,11 +2302,9 @@ sudo systemctl enable node_exporter
 - [Grafana 공식 문서](https://grafana.com/docs/)
 
 ### 실습 샘플 코드
-- `/cloud_intermediate/repo/examples/day1/docker/` - Docker 멀티스테이지 빌드 예제
-- `/cloud_intermediate/repo/examples/day1/kubernetes/` - Kubernetes 리소스 예제
-- `/cloud_intermediate/repo/examples/day1/aws-ecs/` - AWS ECS 배포 예제
-- `/cloud_intermediate/repo/examples/day1/gcp-cloudrun/` - GCP Cloud Run 배포 예제
-- `/cloud_intermediate/repo/examples/day1/monitoring/` - 모니터링 설정 예제
+- `repo/practice/day1/cloud-container-services/` - AWS ECS, GCP Cloud Run 배포 예제
+- `repo/practice/day1/monitoring-hub/` - Prometheus, Grafana 모니터링 설정 예제
+- `tools/cloud/` - 공통 환경 설정 및 헬퍼 스크립트
 
 ---
 

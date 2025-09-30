@@ -34,36 +34,36 @@
 ```
 mcp_knowledge_base/cloud_intermediate/
 ├── 📚 lectures/day1/                    # 강의안
-├── 🛠️ practice/day1/                   # 실습 코드
+├── 🛠️ repo/practice/day1/              # 실습 코드
 │   ├── docker-advanced/                # Docker 고급 실습
 │   ├── kubernetes-basics/              # Kubernetes 기초
 │   ├── cloud-container-services/       # 클라우드 컨테이너 서비스
 │   └── monitoring-hub/                 # 통합 모니터링 허브
-├── 🤖 automation/day1/                 # 자동화 스크립트
-└── 🛠️ tools/cloud/                    # 공통 도구 및 설정
+├── 🤖 repo/automation/day1/            # 자동화 스크립트
+└── 🛠️ repo/tools/cloud/               # 공통 도구 및 설정
 ```
 
 #### **📋 실습별 정확한 경로**
 
 **1. Docker 고급 실습**
-- **실습 위치**: `practice/day1/docker-advanced/`
+- **실습 위치**: `repo/practice/day1/docker-advanced/`
 - **실행 스크립트**: `./docker-comparison-demo.sh`
-- **환경 파일**: `tools/cloud/`에서 자동 복사
+- **환경 파일**: `repo/tools/cloud/`에서 자동 복사
 
 **2. Kubernetes 기초 실습**
-- **실습 위치**: `practice/day1/kubernetes-basics/`
+- **실습 위치**: `repo/practice/day1/kubernetes-basics/`
 - **실행 스크립트**: `./kubernetes-basics-helper.sh`
-- **환경 파일**: `tools/cloud/`에서 자동 복사
+- **환경 파일**: `repo/tools/cloud/`에서 자동 복사
 
 **3. 클라우드 컨테이너 서비스**
-- **실습 위치**: `practice/day1/cloud-container-services/`
+- **실습 위치**: `repo/practice/day1/cloud-container-services/`
 - **AWS ECS**: `./aws-ecs-helper.sh`
 - **GCP Cloud Run**: `./gcp-cloud-run-helper.sh`
 
 **4. 통합 모니터링 허브**
-- **실습 위치**: `practice/day1/monitoring-hub/`
+- **실습 위치**: `repo/practice/day1/monitoring-hub/`
 - **실행 스크립트**: `./monitoring-hub-helper.sh`
-- **설정 파일**: `tools/cloud/`에서 자동 복사
+- **설정 파일**: `repo/tools/cloud/`에서 자동 복사
 
 ### 📋 실습 진행 체크리스트
 - [ ] **환경 설정**: 필수 도구 설치 및 설정 완료
@@ -72,7 +72,7 @@ mcp_knowledge_base/cloud_intermediate/
   - [ ] AWS CLI 설정 및 인증 확인
   - [ ] GCP CLI 설정 및 인증 확인
 - [ ] **Docker 고급 실습**: 멀티스테이지 빌드 및 최적화 완료
-  - [ ] `cd practice/day1/docker-advanced/` 디렉토리로 이동
+  - [ ] `cd repo/practice/day1/docker-advanced/` 디렉토리로 이동
   - [ ] 환경 파일 복사: `cp ../../../tools/cloud/*-environment.env ./ && cp ../../../tools/cloud/docker-helper.sh ./ && cp ../../../tools/cloud/docker-comparison-demo.sh ./`
   - [ ] 환경 파일 확인: `ls -la *-environment.env docker-helper.sh docker-comparison-demo.sh`
   - [ ] **포트 충돌 해결**: 기존 컨테이너 정리 후 실행
@@ -86,14 +86,14 @@ mcp_knowledge_base/cloud_intermediate/
   - [ ] 이미지 크기 비교 결과 확인
   - [ ] 보안 스캔 결과 확인
 - [ ] **Kubernetes 기초**: AWS EKS 클러스터 배포 및 Workload 배포 완료
-  - [ ] `cd practice/day1/kubernetes-basics/` 디렉토리로 이동
-  - [ ] 환경 파일 복사: `cp ../../../tools/cloud/aws-setup-helper.sh ./ && cp ../../../tools/cloud/aws-aws-eks-helper.sh ./ && cp ../../../tools/cloud/*-environment.env ./ && cp ../../../tools/cloud/*.yaml ./`
-  - [ ] 환경 파일 확인: `ls -la aws-setup-helper.sh aws-aws-eks-helper.sh *-environment.env *.yaml`
-  - [ ] **AWS EKS 클러스터 배포**: `./aws-setup-helper.sh --action create-eks-cluster`
-  - [ ] **EKS 클러스터 설정**: `./aws-aws-eks-helper.sh --action setup-cluster`
-  - [ ] **클러스터 검증**: `./aws-aws-eks-helper.sh --action check-cluster`
-  - [ ] **Workload 배포**: `./aws-aws-eks-helper.sh --action deploy-workload`
-  - [ ] **외부 접근 테스트**: `./aws-aws-eks-helper.sh --action test-external-access`
+  - [ ] `cd repo/practice/day1/kubernetes-basics/` 디렉토리로 이동
+  - [ ] 환경 파일 복사: `cp ../../../tools/cloud/aws-setup-helper.sh ./ && cp ../../../tools/cloud/aws-eks-helper.sh ./ && cp ../../../tools/cloud/*-environment.env ./ && cp ../../../tools/cloud/*.yaml ./`
+  - [ ] 환경 파일 확인: `ls -la aws-setup-helper.sh aws-eks-helper.sh *-environment.env *.yaml`
+  - [ ] **AWS EKS 클러스터 배포**: `./aws-eks-helper.sh --action create`
+  - [ ] **EKS 클러스터 설정**: `./aws-eks-helper.sh --action status`
+  - [ ] **클러스터 검증**: `./aws-eks-helper.sh --action status`
+  - [ ] **Workload 배포**: `kubectl apply -f nginx-deployment.yaml`
+  - [ ] **외부 접근 테스트**: `kubectl get services`
   - [ ] 클러스터 상태 확인: `kubectl get nodes`, `kubectl get pods`, `kubectl get services`
 - [ ] **클라우드 서비스**: AWS ECS, GCP Cloud Run 배포 완료
   - [ ] AWS ECS 클러스터 생성 및 태스크 실행
@@ -138,7 +138,7 @@ cd mcp_knowledge_base/cloud_intermediate/
 ./tools/cloud/setup-environment.sh
 
 # 📍 개별 실습 모듈 및 환경 파일 확인
-ls -la practice/day1/
+ls -la repo/practice/day1/
 # docker-comparison-demo.sh, kubernetes-basics/, cloud-container-services/ 등 확인
 
 # 📍 중앙 집중식 환경 파일 확인
@@ -147,7 +147,7 @@ ls -la tools/cloud/*-environment.env tools/cloud/*-helper.sh tools/cloud/*.yaml 
 
 # 📍 환경 파일 복사 및 확인
 echo "=== Docker 실습 환경 파일 복사 ==="
-cd practice/day1/docker-demo/
+cd repo/practice/day1/docker-demo/
 cp ../../../tools/cloud/*-environment.env ./
 cp ../../../tools/cloud/docker-helper.sh ./
 cp ../../../tools/cloud/docker-comparison-demo.sh ./
@@ -225,15 +225,30 @@ flowchart TD
     style E fill:#9c27b0,color:#ffffff
 ```
 
+**🔧 실행 전 상태 확인**:
+```bash
+# 현재 Docker 이미지 상태 확인
+docker images | grep demo-app
+# 예상 결과: (이미지가 없는 상태)
+
+# 현재 실행 중인 컨테이너 확인
+docker ps
+# 예상 결과: 실행 중인 컨테이너 목록
+
+# 포트 사용 상태 확인
+netstat -tulpn | grep :500[1-3]
+# 예상 결과: 사용 중인 포트 없음
+```
+
 **구체적 비교 대상**:
-- **단일 스테이지**: `demo-app:single` (비교 기준)
-- **멀티스테이지**: `demo-app:multistage` (최적화 대상)
-- **최적화된 버전**: `demo-app:optimized` (추가 최적화)
+- **단일 스테이지**: `demo-app:single` (비교 기준) - 약 1.2GB
+- **멀티스테이지**: `demo-app:multistage` (최적화 대상) - 약 200MB
+- **최적화된 버전**: `demo-app:optimized` (추가 최적화) - 약 50MB
 
 **자동화 도구 실행**:
 ```bash
-# 📍 실습 위치: mcp_knowledge_base/cloud_intermediate/practice/day1/
-cd mcp_knowledge_base/cloud_intermediate/practice/day1/docker-advanced/
+# 📍 실습 위치: mcp_knowledge_base/cloud_intermediate/repo/practice/day1/
+cd mcp_knowledge_base/cloud_intermediate/repo/practice/day1/docker-advanced/
 
 # 📍 환경 파일 복사 (중앙 집중식 관리)
 cp ../tools/cloud/.env ./
@@ -249,6 +264,73 @@ ls -la .env docker-compose.yml Dockerfile*
 # 📍 또는 개별 Docker 도구 사용
 ./tools/cloud/docker-helper.sh --action multistage-build
 ```
+
+**📊 실행 후 변화 확인**:
+```bash
+# 빌드된 이미지 크기 비교 확인
+docker images | grep demo-app
+# 예상 결과:
+# demo-app:single      1.2GB
+# demo-app:multistage  200MB  (약 83% 크기 감소)
+# demo-app:optimized   50MB   (약 96% 크기 감소)
+
+# 실행 중인 컨테이너 상태 확인
+docker ps | grep demo-app
+# 예상 결과:
+# demo-app-original    :5001->3000/tcp
+# demo-app-optimized   :5002->3000/tcp  
+# demo-app-multistage  :5003->3000/tcp
+
+# 웹브라우저 접속 주소 확인
+echo "=== 웹브라우저 접속 주소 ==="
+echo "기본 버전: http://localhost:5001"
+echo "최적화 버전: http://localhost:5002"
+echo "멀티스테이지 버전: http://localhost:5003"
+```
+
+**변경 후 시스템 아키텍처**:
+```mermaid
+flowchart TD
+    subgraph "Docker 멀티스테이지 최적화"
+        A["소스 코드"] --> B["빌드 스테이지"]
+        B --> C["런타임 스테이지"]
+        C --> D["최적화된 이미지"]
+        D --> E["작은 크기 + 보안 강화"]
+    end
+    
+    subgraph "최적화 기능"
+        F["레이어 캐싱"] --> G["알파인 베이스"]
+        G --> H["Non-root 사용자"]
+        H --> I["헬스체크"]
+        I --> J["자동 스캔"]
+    end
+    
+    E --> F
+    
+    style A fill:#1976d2,color:#ffffff
+    style B fill:#388e3c,color:#ffffff
+    style C fill:#388e3c,color:#ffffff
+    style D fill:#388e3c,color:#ffffff
+    style E fill:#4caf50,color:#ffffff
+    style F fill:#4caf50,color:#ffffff
+    style G fill:#4caf50,color:#ffffff
+    style H fill:#4caf50,color:#ffffff
+    style I fill:#4caf50,color:#ffffff
+    style J fill:#4caf50,color:#ffffff
+```
+
+**🌐 웹브라우저 접속 가이드**:
+1. **기본 버전 접속**: http://localhost:5001
+   - 예상 화면: "Hello from Docker! (Original Version)"
+   - 응답 시간: 약 200ms
+   
+2. **최적화 버전 접속**: http://localhost:5002
+   - 예상 화면: "Hello from Docker! (Optimized Version)"
+   - 응답 시간: 약 150ms (더 빠름)
+   
+3. **멀티스테이지 버전 접속**: http://localhost:5003
+   - 예상 화면: "Hello from Docker! (Multistage Version)"
+   - 응답 시간: 약 100ms (가장 빠름)
 
 #### 🚨 포트 충돌 해결 (중요)
 
@@ -342,8 +424,8 @@ flowchart TD
 
 **실습 명령어**:
 ```bash
-# 📍 실습 위치: mcp_knowledge_base/cloud_intermediate/practice/day1/
-cd mcp_knowledge_base/cloud_intermediate/practice/day1/
+# 📍 실습 위치: mcp_knowledge_base/cloud_intermediate/repo/practice/day1/
+cd mcp_knowledge_base/cloud_intermediate/repo/practice/day1/
 
 # 📍 Docker 고급 실습 실행
 ./docker-comparison-demo.sh
@@ -766,6 +848,21 @@ flowchart TD
     style F fill:#ff6f00,color:#ffffff
 ```
 
+**🔧 실행 전 상태 확인**:
+```bash
+# 현재 이미지 크기 확인
+docker images | grep demo-app
+# 예상 결과: demo-app:original 약 1.2GB
+
+# 이미지 레이어 분석
+docker history demo-app:original
+# 예상 결과: 많은 레이어와 큰 크기
+
+# 컨테이너 실행 상태 확인
+docker ps | grep demo-app
+# 예상 결과: 실행 중인 컨테이너 목록
+```
+
 **자동화 도구 실행**:
 ```bash
 # 자동화 도구: ./tools/cloud/docker-helper.sh --action optimize-image
@@ -801,6 +898,41 @@ flowchart TD
     style I fill:#4caf50,color:#ffffff
     style J fill:#4caf50,color:#ffffff
 ```
+
+**📊 실행 후 변화 확인**:
+```bash
+# 최적화된 이미지 크기 비교
+docker images | grep demo-app
+# 예상 결과:
+# demo-app:original    1.2GB
+# demo-app:optimized   200MB  (약 83% 크기 감소)
+
+# 이미지 레이어 수 비교
+docker history demo-app:original | wc -l
+docker history demo-app:optimized | wc -l
+# 예상 결과: 레이어 수 대폭 감소
+
+# 보안 스캔 결과 비교
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+  aquasec/trivy image demo-app:original | grep "Total:"
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+  aquasec/trivy image demo-app:optimized | grep "Total:"
+# 예상 결과: 취약점 수 대폭 감소
+
+# 컨테이너 실행 시간 비교
+time docker run --rm demo-app:original echo "test"
+time docker run --rm demo-app:optimized echo "test"
+# 예상 결과: 최적화된 버전이 더 빠른 시작 시간
+```
+
+**🌐 웹브라우저 접속 가이드**:
+1. **최적화 전 접속**: http://localhost:5001
+   - 예상 화면: "Hello from Docker! (Original Version)"
+   - 메모리 사용량: 약 200MB
+   
+2. **최적화 후 접속**: http://localhost:5002
+   - 예상 화면: "Hello from Docker! (Optimized Version)"
+   - 메모리 사용량: 약 50MB (75% 감소)
 
 **실습 명령어**:
 ```bash
@@ -934,6 +1066,22 @@ flowchart TD
     style E fill:#d32f2f,color:#ffffff
 ```
 
+**🔧 실행 전 보안 상태 확인**:
+```bash
+# 현재 컨테이너 사용자 확인
+docker run --rm demo-app:original whoami
+# 예상 결과: root (보안 위험)
+
+# 보안 스캔 실행 (Trivy 설치 필요)
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+  aquasec/trivy image demo-app:original
+# 예상 결과: 많은 취약점 발견
+
+# 컨테이너 내부 패키지 확인
+docker run --rm demo-app:original dpkg -l | wc -l
+# 예상 결과: 많은 불필요한 패키지
+```
+
 **자동화 도구 실행**:
 ```bash
 # 자동화 도구: ./tools/cloud/docker-helper.sh --action security-scan
@@ -967,6 +1115,38 @@ flowchart TD
     style H fill:#1976d2,color:#ffffff
     style I fill:#1976d2,color:#ffffff
 ```
+
+**📊 실행 후 보안 변화 확인**:
+```bash
+# 보안 강화된 컨테이너 사용자 확인
+docker run --rm demo-app:secure whoami
+# 예상 결과: nextjs (non-root 사용자)
+
+# 보안 스캔 결과 비교
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+  aquasec/trivy image demo-app:original | grep "Total:"
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+  aquasec/trivy image demo-app:secure | grep "Total:"
+# 예상 결과: 취약점 수 대폭 감소
+
+# 컨테이너 내부 패키지 수 비교
+docker run --rm demo-app:original dpkg -l | wc -l
+docker run --rm demo-app:secure apk list | wc -l
+# 예상 결과: Alpine 기반으로 패키지 수 대폭 감소
+
+# 컨테이너 권한 확인
+docker run --rm demo-app:secure id
+# 예상 결과: uid=1001(nextjs) gid=1001(nodejs)
+```
+
+**🌐 웹브라우저 접속 가이드**:
+1. **보안 강화 전 접속**: http://localhost:5001
+   - 예상 화면: "Hello from Docker! (Original Version)"
+   - 보안 상태: Root 사용자 실행 (위험)
+   
+2. **보안 강화 후 접속**: http://localhost:5003
+   - 예상 화면: "Hello from Docker! (Secure Version)"
+   - 보안 상태: Non-root 사용자 실행 (안전)
 
 **실습 명령어**:
 ```bash
@@ -1247,36 +1427,102 @@ flowchart TD
 
 **자동화 도구 실행**:
 ```bash
-# 📍 실습 위치: mcp_knowledge_base/cloud_intermediate/practice/day1/kubernetes-basics/
-cd mcp_knowledge_base/cloud_intermediate/practice/day1/kubernetes-basics/
+# 📍 실습 위치: mcp_knowledge_base/cloud_intermediate/repo/practice/day1/kubernetes-basics/
+cd mcp_knowledge_base/cloud_intermediate/repo/practice/day1/kubernetes-basics/
 
 # 📍 환경 파일 복사 (중앙 집중식 관리)
 cp ../../../tools/cloud/aws-setup-helper.sh ./
-cp ../../../tools/cloud/aws-aws-eks-helper.sh ./
+cp ../../../tools/cloud/aws-eks-helper.sh ./
 cp ../../../tools/cloud/aws-environment.env ./
 cp ../../../tools/cloud/*.yaml ./
 
 # 📍 환경 파일 확인 (필수)
-ls -la aws-setup-helper.sh aws-aws-eks-helper.sh aws-environment.env *.yaml
+ls -la aws-setup-helper.sh aws-eks-helper.sh aws-environment.env *.yaml
 
 # 📍 AWS 환경 설정 및 인증 확인
 ./aws-setup-helper.sh --action setup-aws-environment
 ./aws-setup-helper.sh --action check-aws-credentials
 
 # 📍 EKS 클러스터 생성 (자동화)
-./aws-aws-eks-helper.sh --action create-cluster
-./aws-aws-eks-helper.sh --action create-cluster --name [cluster-name] --region [region-name]
-
-# 📍 노드 그룹 생성
-./aws-aws-eks-helper.sh --action create-nodegroup --cluster demo-cluster --node-type t3.medium
+./aws-eks-helper.sh --action create
 
 # 📍 kubectl 설정 및 클러스터 연결
-./aws-aws-eks-helper.sh --action setup-kubectl --cluster demo-cluster --region us-west-2
+./aws-eks-helper.sh --action status
 
 # 📍 클러스터 상태 확인
-./aws-aws-eks-helper.sh --action check-cluster --cluster demo-cluster
 kubectl get nodes
 kubectl get pods --all-namespaces
+
+# 📍 외부 접근을 위한 LoadBalancer Service 생성
+kubectl apply -f nginx-loadbalancer.yaml
+
+# 📍 외부 IP 확인 및 접근 테스트
+kubectl get services nginx-loadbalancer
+kubectl get services nginx-loadbalancer -o wide
+```
+
+### 🔧 kubectl 설정 및 클러스터 연결 상세 설명
+
+#### **1. 자동 설정 (권장)**
+```bash
+# aws-eks-helper.sh를 통한 자동 설정
+./aws-eks-helper.sh --action status
+```
+- **자동 처리**: kubeconfig 파일 자동 업데이트
+- **Context 설정**: 현재 클러스터로 자동 전환
+- **인증 설정**: AWS IAM 자격 증명 자동 연동
+
+#### **2. 수동 설정 방법**
+```bash
+# AWS CLI를 통한 수동 설정
+aws eks update-kubeconfig --region ap-northeast-2 --name cloud-intermediate-eks
+
+# 또는 특정 프로필로 설정
+aws eks update-kubeconfig --region ap-northeast-2 --name cloud-intermediate-eks --profile default
+```
+
+#### **3. kubectl 설정 확인**
+```bash
+# 현재 컨텍스트 확인
+kubectl config current-context
+
+# 사용 가능한 컨텍스트 목록
+kubectl config get-contexts
+
+# 컨텍스트 삭제
+kubectl config delete-context <context-name>
+
+# 예시: 특정 EKS 클러스터 컨텍스트 삭제
+kubectl config delete-context arn:aws:eks:ap-northeast-2:123456789012:cluster/old-cluster
+
+# 모든 컨텍스트 확인 후 삭제
+kubectl config get-contexts
+kubectl config delete-context <삭제할-컨텍스트-이름>
+
+
+# 클러스터 정보 확인
+kubectl cluster-info
+
+# 노드 상태 확인
+kubectl get nodes -o wide
+```
+
+#### **4. 인증 방식 이해**
+- **AWS IAM 연동**: kubectl이 AWS 자격 증명을 사용하여 EKS API에 접근
+- **자동 갱신**: AWS CLI 자격 증명이 자동으로 갱신됨
+- **보안**: 별도의 kubeconfig 파일에 민감한 정보 저장 없음
+
+#### **5. 문제 해결**
+```bash
+# 인증 오류 시 AWS 자격 증명 확인
+aws sts get-caller-identity
+
+# kubeconfig 파일 위치 확인
+echo $KUBECONFIG
+ls -la ~/.kube/config
+
+# 클러스터 연결 테스트
+kubectl auth can-i get pods
 ```
 
 **변경 후 시스템 아키텍처**:
@@ -1313,22 +1559,81 @@ flowchart TD
 ./aws-setup-helper.sh --action check-aws-credentials
 
 # 📍 EKS 클러스터 생성 (자동화)
-./aws-aws-eks-helper.sh --action create-cluster --name demo-cluster --region us-west-2
-
-# 📍 노드 그룹 생성
-./aws-aws-eks-helper.sh --action create-nodegroup --cluster demo-cluster --node-type t3.medium
+./aws-eks-helper.sh --action create
 
 # 📍 kubectl 설정 및 클러스터 연결
-./aws-aws-eks-helper.sh --action setup-kubectl --cluster demo-cluster --region us-west-2
+./aws-eks-helper.sh --action status
 
 # 📍 클러스터 상태 확인
-./aws-aws-eks-helper.sh --action check-cluster --cluster demo-cluster
 kubectl get nodes
 kubectl get pods --all-namespaces
 
 # 📍 Context 확인 및 전환
 kubectl config get-contexts
-kubectl config use-context arn:aws:eks:us-west-2:123456789012:cluster/demo-cluster
+kubectl config use-context arn:aws:eks:ap-northeast-2:123456789012:cluster/demo-cluster
+```
+
+### 🔧 kubectl 설정 및 클러스터 연결 상세 설명
+
+#### **1. 자동 설정 (권장)**
+```bash
+# aws-eks-helper.sh를 통한 자동 설정
+./aws-eks-helper.sh --action status
+```
+- **자동 처리**: kubeconfig 파일 자동 업데이트
+- **Context 설정**: 현재 클러스터로 자동 전환
+- **인증 설정**: AWS IAM 자격 증명 자동 연동
+
+#### **2. 수동 설정 방법**
+```bash
+# AWS CLI를 통한 수동 설정
+aws eks update-kubeconfig --region ap-northeast-2 --name cloud-intermediate-eks
+
+# 또는 특정 프로필로 설정
+aws eks update-kubeconfig --region ap-northeast-2 --name cloud-intermediate-eks --profile default
+```
+
+#### **3. kubectl 설정 확인**
+```bash
+# 현재 컨텍스트 확인
+kubectl config current-context
+
+# 사용 가능한 컨텍스트 목록
+kubectl config get-contexts
+
+# 컨텍스트 삭제
+kubectl config delete-context <context-name>
+
+# 예시: 특정 EKS 클러스터 컨텍스트 삭제
+kubectl config delete-context arn:aws:eks:ap-northeast-2:123456789012:cluster/old-cluster
+
+# 모든 컨텍스트 확인 후 삭제
+kubectl config get-contexts
+kubectl config delete-context <삭제할-컨텍스트-이름>
+
+# 클러스터 정보 확인
+kubectl cluster-info
+
+# 노드 상태 확인
+kubectl get nodes -o wide
+```
+
+#### **4. 인증 방식 이해**
+- **AWS IAM 연동**: kubectl이 AWS 자격 증명을 사용하여 EKS API에 접근
+- **자동 갱신**: AWS CLI 자격 증명이 자동으로 갱신됨
+- **보안**: 별도의 kubeconfig 파일에 민감한 정보 저장 없음
+
+#### **5. 문제 해결**
+```bash
+# 인증 오류 시 AWS 자격 증명 확인
+aws sts get-caller-identity
+
+# kubeconfig 파일 위치 확인
+echo $KUBECONFIG
+ls -la ~/.kube/config
+
+# 클러스터 연결 테스트
+kubectl auth can-i get pods
 ```
 
 **실습 내용**:
@@ -1373,16 +1678,19 @@ flowchart TD
 **자동화 도구 실행**:
 ```bash
 # 📍 클러스터 상태 확인
-./aws-aws-eks-helper.sh --action check-cluster
-
-# 📍 노드 그룹 상태 확인
-./aws-aws-eks-helper.sh --action check-nodegroups
+./aws-eks-helper.sh --action status
 
 # 📍 kubectl 설정 확인
-./aws-aws-eks-helper.sh --action verify-kubectl
+kubectl config current-context
+kubectl cluster-info
 
 # 📍 클러스터 연결 테스트
-./aws-aws-eks-helper.sh --action test-connection
+kubectl get nodes
+kubectl get pods --all-namespaces
+
+# 📍 DNS 조회 테스트 (정상적인 NXDOMAIN 오류는 무시)
+kubectl run dns-test --image=busybox --rm -it --restart=Never -- nslookup nginx-service
+# 참고: NXDOMAIN 오류는 DNS가 다른 도메인을 시도하는 정상적인 과정입니다
 
 # 📍 클러스터 정보 출력
 kubectl cluster-info
@@ -2261,16 +2569,23 @@ flowchart TD
 **자동화 도구 실행**:
 ```bash
 # 📍 기본 Workload 배포
-./aws-aws-eks-helper.sh --action deploy-workload
+kubectl apply -f nginx-deployment.yaml
 
 # 📍 Nginx Deployment 배포
-./aws-aws-eks-helper.sh --action deploy-nginx
+kubectl apply -f nginx-deployment.yaml
 
-# 📍 LoadBalancer Service 생성
-./aws-aws-eks-helper.sh --action create-loadbalancer
+# 📍 LoadBalancer Service 생성 (외부 접근용)
+kubectl apply -f nginx-loadbalancer.yaml
 
 # 📍 외부 접근 테스트
-./aws-aws-eks-helper.sh --action test-external-access
+kubectl get services
+kubectl get pods
+
+# 📍 외부 IP 확인 및 접근 테스트
+kubectl get services nginx-loadbalancer -o wide
+EXTERNAL_IP=$(kubectl get service nginx-loadbalancer -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+echo "외부 접근 URL: http://$EXTERNAL_IP"
+curl -I http://$EXTERNAL_IP
 
 # 📍 배포 상태 확인
 kubectl get deployments
@@ -2308,35 +2623,47 @@ flowchart TD
 
 **실습 명령어**:
 ```bash
-# LoadBalancer Service 생성
+# LoadBalancer Service 생성 (외부 접근용)
 cat > nginx-loadbalancer.yaml << 'EOF'
 apiVersion: v1
 kind: Service
 metadata:
   name: nginx-loadbalancer
+  labels:
+    app: nginx
 spec:
   selector:
     app: nginx
   ports:
   - port: 80
     targetPort: 80
+    protocol: TCP
   type: LoadBalancer
 EOF
 
 kubectl apply -f nginx-loadbalancer.yaml
 
-# 외부 IP 확인
-kubectl get services nginx-loadbalancer
+# 외부 IP 확인 및 접근 테스트
+kubectl get services nginx-loadbalancer -o wide
+
+# 외부 접근 URL 확인
+EXTERNAL_IP=$(kubectl get service nginx-loadbalancer -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+echo "외부 접근 URL: http://$EXTERNAL_IP"
 
 # 접속 테스트
-curl http://EXTERNAL-IP
+curl -I http://$EXTERNAL_IP
+curl http://$EXTERNAL_IP
+
+# DNS 확인 (외부에서 접근 가능한지 확인)
+nslookup $EXTERNAL_IP
 ```
 
 **실습 내용**:
-- NodePort를 통한 외부 접근
+- LoadBalancer를 통한 외부 인터넷 접근
 - EKS ALB LoadBalancer 배포
 - GKE GLB LoadBalancer 배포
 - Ingress를 통한 고급 라우팅
+- 외부 접근 URL 확인 및 테스트
 
 #### 실습 4: 문제 해결 (15분)
 
@@ -2399,6 +2726,7 @@ kubectl get deployments
 # 상세 정보 확인
 kubectl describe pod nginx-pod
 kubectl describe service nginx-service
+kubectl describe service nginx-loadbalancer
 
 # 로그 확인
 kubectl logs nginx-pod
@@ -2406,13 +2734,22 @@ kubectl logs nginx-pod
 # 이벤트 확인
 kubectl get events --sort-by=.metadata.creationTimestamp
 
-# 네트워크 테스트
+# 네트워크 테스트 (클러스터 내부)
 kubectl run test-pod --image=busybox --rm -it -- wget -qO- nginx-service
+
+# 외부 접근 테스트
+EXTERNAL_IP=$(kubectl get service nginx-loadbalancer -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+echo "외부 접근 URL: http://$EXTERNAL_IP"
+curl -I http://$EXTERNAL_IP
+
+# LoadBalancer 상태 확인
+kubectl get services nginx-loadbalancer -o wide
 ```
 
 **실습 내용**:
 - LoadBalancer 문제 진단
-- 네트워크 연결 테스트
+- 네트워크 연결 테스트 (내부/외부)
+- 외부 접근 URL 확인 및 테스트
 - 성능 최적화
 
 ### 📊 실습 결과
@@ -2420,6 +2757,7 @@ kubectl run test-pod --image=busybox --rm -it -- wget -qO- nginx-service
 - [ ] Pod, Deployment, Service 배포 성공
 - [ ] ConfigMap과 Secret 설정 완료
 - [ ] LoadBalancer 외부 접근 구성 완료
+- [ ] 외부 인터넷 접근 URL 확인 및 테스트 완료
 - [ ] 문제 해결 및 최적화 완료
 
 ---
