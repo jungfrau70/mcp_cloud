@@ -69,9 +69,9 @@
 ## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화 (새로운 repo 구조)
-- **실습 샘플 코드**: `/cloud_intermediate/repo/examples/day1/`
+- **실습 샘플 코드**: `/cloud_intermediate/repo/practice/day1/`
 - **자동화 스크립트**: `/cloud_intermediate/repo/automation/day1/`
-- **클라우드 도구**: `/cloud_intermediate/repo/tools/cloud/`
+- **클라우드 도구**: `/cloud_intermediate/tools/cloud/`
 
 ### 필수 도구
 - **Docker**: 컨테이너 런타임 환경
@@ -98,32 +98,35 @@ aws configure list
 ### 1단계: 환경 준비 (새로운 repo 구조)
 ```bash
 # 실습 환경 자동 설정
-cd cloud_intermediate/repo/setup/
-./install-all-wsl.sh
+cd cloud_intermediate/tools/cloud/
+./cloud-intermediate-helper.sh --setup
 
 # Day1 실습 자동화 실행
-cd ../automation/day1/
+# 자동화 스크립트를 실습 위치로 복사
+cp ../../tools/cloud/day1-practice.sh ./
+chmod +x day1-practice.sh
 ./day1-practice.sh
 ```
 
 ### 2단계: 실습 진행
-1. **Docker 고급 활용** → [docker-advanced.md](./practice/docker-advanced.md)
-2. **Kubernetes 기초** → [kubernetes-basics.md](./practice/kubernetes-basics.md)
-3. **클라우드 컨테이너 서비스** → [cloud-container-services.md](./practice/cloud-container-services.md)
-4. **통합 모니터링 허브** → [monitoring-hub.md](./practice/monitoring-hub.md)
-5. **외부 접속 및 보안 설정** → [external-access-guide.md](./practice/external-access-guide.md)
+1. **Docker 고급 활용** → [docker-advanced.md](./docker-advanced.md)
+2. **Kubernetes 기초** → [kubernetes-basics.md](./kubernetes-basics.md)
+3. **클라우드 컨테이너 서비스** → [cloud-container-services.md](./cloud-container-services.md)
+4. **통합 모니터링 허브** → [monitoring-hub.md](./monitoring-hub.md)
+5. **외부 접속 및 보안 설정** → [external-access-guide.md](./external-access-guide.md)
 
 ### 2.5단계: 외부 접속 테스트
 ```bash
 # 외부 접속 테스트 및 검증 실행
-cd cloud_intermediate/repo/samples/day1/
+cd cloud_intermediate/repo/practice/day1/
 ./external-access-test.sh
 ```
 
 ### 3단계: 실습 정리
 ```bash
 # Day1 실습 자동 정리
-./cloud_intermediate/repo/automation/day1/cleanup.sh
+cd cloud_intermediate/repo/automation/day1/
+./cleanup.sh
 ```
 
 ---
@@ -141,7 +144,7 @@ cd cloud_intermediate/repo/samples/day1/
 - [ ] 실습 결과 외부 공유 가능
 
 ### 다음 단계
-- **Day 2 실습**으로 진행: CI/CD 및 고급 클라우드 배포, 멀티 클라우드 모니터링
+- **Day 2 실습**으로 진행: CI/CD 및 VM 기반 배포, 멀티 클라우드 모니터링
 - **통합 강의 시나리오** 확인: [../통합강의시나리오.md](../통합강의시나리오.md)
 - **통합 모니터링 시나리오** 확인: [../통합모니터링시나리오.md](../통합모니터링시나리오.md)
 
@@ -149,7 +152,7 @@ cd cloud_intermediate/repo/samples/day1/
 
 ## 🔗 관련 문서
 
-- [Day 1 강의안](../Day1_강의안.md)
+- [Day 1 강의안](../lectures/day1/)
 - [학습 경로](../learning-path.md)
 - [과정 개요](../README.md)
 - [통합 강의 시나리오](../통합강의시나리오.md)

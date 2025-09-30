@@ -29,9 +29,25 @@
 ## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/cloud_intermediate/repo/examples/day2/cloud-deployment/`
-- **자동화 스크립트**: `/cloud_intermediate/repo/automation/day2/cloud-deployment-practice-automation.sh`
-- **클라우드 스크립트**: `/cloud_intermediate/repo/cloud-scripts/`
+- **실습 샘플 코드**: `/cloud_intermediate/repo/practice/day2/cloud-deployment/`
+- **자동화 스크립트**: `/cloud_intermediate/tools/cloud/aws-ecs-helper.sh`, `/cloud_intermediate/tools/cloud/gcp-cloudrun-helper.sh` (복사 후 사용)
+- **클라우드 스크립트**: `/cloud_intermediate/tools/cloud/`
+
+### 🔧 자동화 스크립트 사용법
+```bash
+# 자동화 스크립트를 실습 위치로 복사
+cp ../../tools/cloud/aws-ecs-helper.sh ./
+cp ../../tools/cloud/gcp-cloudrun-helper.sh ./
+chmod +x aws-ecs-helper.sh gcp-cloudrun-helper.sh
+
+# AWS ECS 고급 배포
+./aws-ecs-helper.sh --action create-alb
+./aws-ecs-helper.sh --action blue-green-deployment
+
+# GCP Cloud Run 고급 배포
+./gcp-cloudrun-helper.sh --action domain-mapping
+./gcp-cloudrun-helper.sh --action traffic-splitting
+```
 
 <details>
 <summary>🚀 실습 환경 준비</summary>

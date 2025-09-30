@@ -1,7 +1,7 @@
 # 🎯 Cloud Intermediate 학습 경로
 
 > 📋 **전체 과정**: 2일 (16시간) 클라우드 중급 과정  
-> 📋 **학습 방식**: 100% 자동화 실습 중심  
+> 📋 **학습 방식**: 자동화 도구 지원 + 수동 실습 중심  
 > 📋 **선수 학습**: Cloud Basic 완료 필수  
 
 ---
@@ -21,8 +21,8 @@ flowchart TD
     
     Day2 --> D2_1["🔄 GitHub Actions CI/CD"]
     Day2 --> D2_2["📊 멀티 클라우드 모니터링"]
-    Day2 --> D2_3["🚀 AWS Application 모니터링"]
-    Day2 --> D2_4["☁️ GCP 클러스터 모니터링"]
+    Day2 --> D2_3["🚀 AWS EC2 VM 모니터링"]
+    Day2 --> D2_4["☁️ GCP VM 통합 모니터링"]
     
     style Start fill:#1976d2,color:#ffffff
     style Day1 fill:#388e3c,color:#ffffff
@@ -91,29 +91,29 @@ flowchart TD
 - **실습**: Phase 1-2 (통합 모니터링 허브 + AWS 클러스터 모니터링)
 - **결과**: 멀티 클라우드 통합 모니터링 시스템 구축
 
-#### **3교시: AWS Application 모니터링 (90분)**
-- **목표**: GitHub Actions를 통한 AWS EKS 애플리케이션 배포 및 Application 모니터링
-- **실습**: Phase 3 (AWS Application 모니터링)
-- **결과**: GitHub Actions CI/CD 파이프라인 구축 및 AWS EKS 애플리케이션 자동 배포
+#### **3교시: AWS EC2 VM 모니터링 (90분)**
+- **목표**: AWS EC2에 Docker 애플리케이션 배포 및 VM 기반 모니터링
+- **실습**: AWS EC2 VM 배포 및 모니터링 설정
+- **결과**: AWS EC2에 Docker 애플리케이션 배포 및 VM 기반 모니터링 시스템 구축
 
-#### **4교시: GCP 클러스터 통합 모니터링 (90분)**
-- **목표**: GCP GKE 클러스터 구축 및 멀티 클라우드 통합 모니터링 완성
-- **실습**: Phase 4 (GCP 클러스터 모니터링)
-- **결과**: GCP GKE 클러스터 구축 및 멀티 클라우드 통합 모니터링 시스템 완성
+#### **4교시: GCP VM 통합 모니터링 (90분)**
+- **목표**: GCP Compute Engine VM 구축 및 멀티 클라우드 VM 통합 모니터링 완성
+- **실습**: GCP VM 배포 및 멀티 클라우드 VM 통합 모니터링
+- **결과**: GCP VM 구축 및 멀티 클라우드 VM 통합 모니터링 시스템 완성
 
 ---
 
 ## 🛠️ 실습 환경 설정
 
 ### **필수 요구사항**
-- **AWS 계정**: ECS, EKS 서비스 사용 권한
-- **GCP 계정**: GKE, Cloud Run 서비스 사용 권한
+- **AWS 계정**: EC2, ECS 서비스 사용 권한
+- **GCP 계정**: Compute Engine 서비스 사용 권한
 - **GitHub 계정**: Actions 사용 권한
-- **로컬 환경**: Docker, kubectl, AWS CLI, GCP CLI 설치
+- **로컬 환경**: Docker, AWS CLI, GCP CLI 설치
 
 ### **권장 환경**
 - **AWS EC2**: t3.medium (2vCPU, 4GB RAM)
-- **GCP GKE**: e2-medium 노드 3개
+- **GCP Compute Engine**: e2-medium 인스턴스
 - **로컬 환경**: WSL2 또는 macOS/Linux
 
 ---
@@ -122,43 +122,63 @@ flowchart TD
 
 ### **전체 과정 자동화**
 ```bash
-# 전체 과정 자동화 실행 (새로운 repo 구조)
-cd repo/automation/
-./cloud-intermediate-helper.sh
+# 전체 과정 자동화 실행
+# 자동화 스크립트를 실습 위치로 복사
+cp tools/cloud/day1-practice.sh repo/practice/day1/
+cp tools/cloud/day2-practice.sh repo/practice/day2/
+chmod +x repo/practice/day1/day1-practice.sh
+chmod +x repo/practice/day2/day2-practice.sh
+
+# Day1 실행
+cd repo/practice/day1/
+./day1-practice.sh --action all
+
+# Day2 실행
+cd ../day2/
+./day2-practice.sh --action all
 
 # 실시간 모니터링
-cd ../tools/monitoring/
+cd ../monitoring/
 ./lecture-monitor.sh --dashboard
 ```
 
 ### **개별 Day 실행**
 ```bash
-# Day 1 실행 (새로운 구조)
-cd repo/automation/day1/
+# Day 1 실행
+# 자동화 스크립트를 실습 위치로 복사
+cp tools/cloud/day1-practice.sh repo/practice/day1/
+chmod +x repo/practice/day1/day1-practice.sh
+cd repo/practice/day1/
 ./day1-practice.sh
 
-# Day 2 실행 (새로운 구조)
-cd repo/automation/day2/
+# Day 2 실행
+# 자동화 스크립트를 실습 위치로 복사
+cp tools/cloud/day2-practice.sh repo/practice/day2/
+chmod +x repo/practice/day2/day2-practice.sh
+cd repo/practice/day2/
 ./day2-practice.sh
 ```
 
 ### **개별 실습 실행**
 ```bash
-# Docker 고급 실습 (새로운 구조)
-cd repo/examples/day1/docker-advanced/
+# Docker 고급 실습
+cd repo/practice/day1/docker-advanced/
 # 실습 코드 확인 후 수동 실행
 
-# Kubernetes 기초 실습 (새로운 구조)
-cd repo/examples/day1/kubernetes-basics/
+# Kubernetes 기초 실습
+cd repo/practice/day1/kubernetes-basics/
 # 실습 코드 확인 후 수동 실행
 
-# AWS ECS 실습 (새로운 구조)
-cd repo/examples/day1/cloud-container-services/
+# AWS ECS 실습
+cd repo/practice/day1/cloud-container-services/
 # 실습 코드 확인 후 수동 실행
 
-# 모니터링 허브 구축 (새로운 구조)
-cd repo/automation/monitoring/
-./monitoring-stack.sh
+# 모니터링 허브 구축
+# 자동화 스크립트를 실습 위치로 복사
+cp tools/cloud/monitoring-hub-helper.sh repo/practice/day1/
+chmod +x repo/practice/day1/monitoring-hub-helper.sh
+cd repo/practice/day1/
+./monitoring-hub-helper.sh --action create-hub
 ```
 
 ---
@@ -174,8 +194,8 @@ cd repo/automation/monitoring/
 ### **Day 2 완료 기준**
 - [ ] GitHub Actions CI/CD 파이프라인 구축
 - [ ] 멀티 클라우드 통합 모니터링 시스템 구축
-- [ ] AWS Application 모니터링 설정
-- [ ] GCP 클러스터 통합 모니터링 완성
+- [ ] AWS EC2 VM 모니터링 설정
+- [ ] GCP VM 통합 모니터링 완성
 
 ### **전체 과정 완료 기준**
 - [ ] 모든 자동화 스크립트 정상 실행
@@ -192,6 +212,7 @@ cd repo/automation/monitoring/
 - **멀티 클라우드**: AWS + GCP + Azure 통합 관리
 - **DevSecOps**: 보안 통합 CI/CD 파이프라인
 - **AI/ML Ops**: 머신러닝 모델 배포 및 관리
+- **VM 기반 배포**: 실제 프로덕션 환경과 유사한 VM 기반 배포 경험
 
 ### **실무 적용**
 - **프로덕션 환경**: 학습한 패턴을 실제 업무에 적용
@@ -203,8 +224,8 @@ cd repo/automation/monitoring/
 ## 📚 관련 문서
 
 - [README.md](./README.md) - 과정 개요
-- [Day1 강의안](./Day1_강의안.md) - 1일차 상세 가이드
-- [Day2 강의안](./Day2_강의안.md) - 2일차 상세 가이드
+- [Day1 강의안](./lectures/day1/) - 1일차 상세 가이드
+- [Day2 강의안](./lectures/day2/) - 2일차 상세 가이드
 - [통합 강의 시나리오](./통합강의시나리오.md) - 전체 과정 시나리오
 - [통합 모니터링 시나리오](./통합모니터링시나리오.md) - 모니터링 구축 가이드
 

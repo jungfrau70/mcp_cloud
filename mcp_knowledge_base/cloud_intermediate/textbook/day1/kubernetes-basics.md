@@ -29,9 +29,21 @@
 ## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/cloud_intermediate/repos/samples/day1/kubernetes-basics/`
-- **자동화 스크립트**: `/cloud_intermediate/repos/automation/day1/kubernetes-basics-practice-automation.sh`
-- **클라우드 스크립트**: `/cloud_intermediate/repos/cloud-scripts/`
+- **실습 샘플 코드**: `/cloud_intermediate/repo/practice/day1/kubernetes-basics/`
+- **자동화 스크립트**: `/cloud_intermediate/tools/cloud/k8s-helper.sh` (복사 후 사용)
+- **클라우드 스크립트**: `/cloud_intermediate/tools/cloud/`
+
+### 🔧 자동화 스크립트 사용법
+```bash
+# 자동화 스크립트를 실습 위치로 복사
+cp ../../tools/cloud/k8s-helper.sh ./
+chmod +x k8s-helper.sh
+
+# 실습 진행
+./k8s-helper.sh --action setup-cluster
+./k8s-helper.sh --action deploy-workload
+./k8s-helper.sh --action configure-access
+```
 
 <details>
 <summary>🚀 실습 환경 준비</summary>

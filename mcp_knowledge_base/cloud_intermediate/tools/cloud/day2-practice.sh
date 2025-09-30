@@ -6,9 +6,9 @@
 # 
 # 기능:
 #   - GitHub Actions CI/CD 파이프라인 실습
-#   - AWS EKS 애플리케이션 모니터링
-#   - GCP GKE 클러스터 통합 모니터링
-#   - 멀티 클라우드 통합 모니터링
+#   - AWS EC2 VM 애플리케이션 모니터링
+#   - GCP Compute Engine VM 통합 모니터링
+#   - 멀티 클라우드 VM 통합 모니터링
 #   - 서브실행모듈을 통한 클라우드 작업 실행
 #
 # 사용법:
@@ -180,9 +180,9 @@ show_day2_menu() {
     log_header "=========================================="
     echo ""
     echo "1. 🔄 GitHub Actions CI/CD 파이프라인"
-    echo "2. 📊 AWS EKS 애플리케이션 모니터링"
-    echo "3. ☁️  GCP GKE 클러스터 통합 모니터링"
-    echo "4. 🌐 멀티 클라우드 통합 모니터링"
+    echo "2. 📊 AWS EC2 VM 애플리케이션 모니터링"
+    echo "3. ☁️  GCP Compute Engine VM 통합 모니터링"
+    echo "4. 🌐 멀티 클라우드 VM 통합 모니터링"
     echo "5. 🖥️  AWS EC2 인스턴스 생성"
     echo "6. 🖥️  GCP Compute Engine 인스턴스 생성"
     echo "7. 🔍 클러스터 현황 확인"
@@ -210,23 +210,23 @@ handle_day2_menu() {
                 call_sub_module "github-actions-helper.sh" "test-pipeline" "aws"
                 ;;
             2) 
-                log_info "AWS EKS 애플리케이션 모니터링을 시작합니다..."
-                call_sub_module "aws-eks-monitoring-helper.sh" "create-cluster" "aws"
+                log_info "AWS EC2 VM 애플리케이션 모니터링을 시작합니다..."
+                call_sub_module "aws-ec2-helper.sh" "create-instance" "aws"
                 call_sub_module "aws-app-monitoring-helper.sh" "app-deploy" "aws"
                 call_sub_module "aws-app-monitoring-helper.sh" "app-monitoring" "aws"
                 ;;
             3) 
-                log_info "GCP GKE 클러스터 통합 모니터링을 시작합니다..."
-                call_sub_module "gcp-gke-monitoring-helper.sh" "create-cluster" "gcp"
-                call_sub_module "gcp-gke-monitoring-helper.sh" "deploy-app" "gcp"
-                call_sub_module "gcp-gke-monitoring-helper.sh" "setup-monitoring" "gcp"
+                log_info "GCP Compute Engine VM 통합 모니터링을 시작합니다..."
+                call_sub_module "gcp-compute-helper.sh" "create-instance" "gcp"
+                call_sub_module "gcp-compute-helper.sh" "deploy-app" "gcp"
+                call_sub_module "gcp-compute-helper.sh" "setup-monitoring" "gcp"
                 ;;
             4) 
-                log_info "멀티 클라우드 통합 모니터링을 시작합니다..."
+                log_info "멀티 클라우드 VM 통합 모니터링을 시작합니다..."
                 call_sub_module "multi-cloud-monitoring-helper.sh" "monitoring-setup" "all"
                 call_sub_module "multi-cloud-monitoring-helper.sh" "prometheus-deploy" "all"
                 call_sub_module "multi-cloud-monitoring-helper.sh" "grafana-deploy" "all"
-                call_sub_module "multi-cloud-monitoring-helper.sh" "cross-cluster-setup" "all"
+                call_sub_module "multi-cloud-monitoring-helper.sh" "cross-vm-setup" "all"
                 ;;
             5) 
                 log_info "AWS EC2 인스턴스를 생성합니다..."
@@ -237,24 +237,24 @@ handle_day2_menu() {
                 call_sub_module "gcp-compute-helper.sh" "create-instance" "gcp"
                 ;;
             7) 
-                log_info "클러스터 현황을 확인합니다..."
-                call_sub_module "aws-eks-monitoring-helper.sh" "status" "aws"
-                call_sub_module "gcp-gke-monitoring-helper.sh" "status" "gcp"
-                call_sub_module "multi-cloud-monitoring-helper.sh" "monitoring-status" "all"
+                log_info "VM 현황을 확인합니다..."
                 call_sub_module "aws-ec2-helper.sh" "status" "aws"
+                call_sub_module "gcp-compute-helper.sh" "status" "gcp"
+                call_sub_module "multi-cloud-monitoring-helper.sh" "monitoring-status" "all"
+                call_sub_module "aws-app-monitoring-helper.sh" "status" "aws"
                 call_sub_module "gcp-compute-helper.sh" "status" "gcp"
                 ;;
             8) 
                 log_info "배포 관리를 시작합니다..."
                 call_sub_module "github-actions-helper.sh" "deploy-app" "aws"
                 call_sub_module "aws-app-monitoring-helper.sh" "app-scaling" "aws"
-                call_sub_module "gcp-gke-monitoring-helper.sh" "deploy-app" "gcp"
+                call_sub_module "gcp-compute-helper.sh" "deploy-app" "gcp"
                 ;;
             9) 
-                log_info "클러스터 관리를 시작합니다..."
-                call_sub_module "aws-eks-monitoring-helper.sh" "setup-alerts" "aws"
-                call_sub_module "gcp-gke-monitoring-helper.sh" "setup-alerts" "gcp"
-                call_sub_module "multi-cloud-monitoring-helper.sh" "cross-cluster-setup" "all"
+                log_info "VM 관리를 시작합니다..."
+                call_sub_module "aws-ec2-helper.sh" "setup-alerts" "aws"
+                call_sub_module "gcp-compute-helper.sh" "setup-alerts" "gcp"
+                call_sub_module "multi-cloud-monitoring-helper.sh" "cross-vm-setup" "all"
                 ;;
             10) 
                 log_info "실습 환경을 정리합니다..."
@@ -289,42 +289,42 @@ direct_mode() {
             call_sub_module "github-actions-helper.sh" "setup-secrets" "aws"
             call_sub_module "github-actions-helper.sh" "test-pipeline" "aws"
             ;;
-        "aws-eks-monitoring")
-            log_info "AWS EKS 모니터링 실습을 시작합니다..."
-            call_sub_module "aws-eks-monitoring-helper.sh" "create-cluster" "aws"
+        "aws-ec2-monitoring")
+            log_info "AWS EC2 VM 모니터링 실습을 시작합니다..."
+            call_sub_module "aws-ec2-helper.sh" "create-instance" "aws"
             call_sub_module "aws-app-monitoring-helper.sh" "app-deploy" "aws"
             call_sub_module "aws-app-monitoring-helper.sh" "app-monitoring" "aws"
             ;;
-        "gcp-gke-monitoring")
-            log_info "GCP GKE 모니터링 실습을 시작합니다..."
-            call_sub_module "gcp-gke-monitoring-helper.sh" "create-cluster" "gcp"
-            call_sub_module "gcp-gke-monitoring-helper.sh" "deploy-app" "gcp"
-            call_sub_module "gcp-gke-monitoring-helper.sh" "setup-monitoring" "gcp"
+        "gcp-compute-monitoring")
+            log_info "GCP Compute Engine VM 모니터링 실습을 시작합니다..."
+            call_sub_module "gcp-compute-helper.sh" "create-instance" "gcp"
+            call_sub_module "gcp-compute-helper.sh" "deploy-app" "gcp"
+            call_sub_module "gcp-compute-helper.sh" "setup-monitoring" "gcp"
             ;;
         "multi-cloud")
-            log_info "멀티 클라우드 모니터링 실습을 시작합니다..."
+            log_info "멀티 클라우드 VM 모니터링 실습을 시작합니다..."
             call_sub_module "multi-cloud-monitoring-helper.sh" "monitoring-setup" "all"
             call_sub_module "multi-cloud-monitoring-helper.sh" "prometheus-deploy" "all"
             call_sub_module "multi-cloud-monitoring-helper.sh" "grafana-deploy" "all"
-            call_sub_module "multi-cloud-monitoring-helper.sh" "cross-cluster-setup" "all"
+            call_sub_module "multi-cloud-monitoring-helper.sh" "cross-vm-setup" "all"
             ;;
-        "cluster-status")
-            log_info "클러스터 현황을 확인합니다..."
-            call_sub_module "aws-eks-monitoring-helper.sh" "status" "aws"
-            call_sub_module "gcp-gke-monitoring-helper.sh" "status" "gcp"
+        "vm-status")
+            log_info "VM 현황을 확인합니다..."
+            call_sub_module "aws-ec2-helper.sh" "status" "aws"
+            call_sub_module "gcp-compute-helper.sh" "status" "gcp"
             call_sub_module "multi-cloud-monitoring-helper.sh" "monitoring-status" "all"
             ;;
         "deployment")
             log_info "배포 관리를 시작합니다..."
             call_sub_module "github-actions-helper.sh" "deploy-app" "aws"
             call_sub_module "aws-app-monitoring-helper.sh" "app-scaling" "aws"
-            call_sub_module "gcp-gke-monitoring-helper.sh" "deploy-app" "gcp"
+            call_sub_module "gcp-compute-helper.sh" "deploy-app" "gcp"
             ;;
-        "cluster")
-            log_info "클러스터 관리를 시작합니다..."
-            call_sub_module "aws-eks-monitoring-helper.sh" "setup-alerts" "aws"
-            call_sub_module "gcp-gke-monitoring-helper.sh" "setup-alerts" "gcp"
-            call_sub_module "multi-cloud-monitoring-helper.sh" "cross-cluster-setup" "all"
+        "vm-management")
+            log_info "VM 관리를 시작합니다..."
+            call_sub_module "aws-ec2-helper.sh" "setup-alerts" "aws"
+            call_sub_module "gcp-compute-helper.sh" "setup-alerts" "gcp"
+            call_sub_module "multi-cloud-monitoring-helper.sh" "cross-vm-setup" "all"
             ;;
         "cleanup")
             log_info "실습 환경을 정리합니다..."
@@ -337,8 +337,8 @@ direct_mode() {
         "all")
             log_info "전체 Day 2 실습을 시작합니다..."
             call_sub_module "github-actions-helper.sh" "create-workflow" "aws"
-            call_sub_module "aws-eks-monitoring-helper.sh" "create-cluster" "aws"
-            call_sub_module "gcp-gke-monitoring-helper.sh" "create-cluster" "gcp"
+            call_sub_module "aws-ec2-helper.sh" "create-instance" "aws"
+            call_sub_module "gcp-compute-helper.sh" "create-instance" "gcp"
             call_sub_module "multi-cloud-monitoring-helper.sh" "monitoring-setup" "all"
             log_success "Day 2 전체 실습 완료"
             ;;

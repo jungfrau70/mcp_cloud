@@ -36,9 +36,21 @@
 ## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/cloud_intermediate/repo/samples/day1/monitoring-hub/`
-- **자동화 스크립트**: `/cloud_intermediate/repo/automation/day1/day1-practice.sh`
-- **모니터링 스크립트**: `/cloud_intermediate/repo/monitoring-scripts/`
+- **실습 샘플 코드**: `/cloud_intermediate/repo/practice/day1/monitoring-hub/`
+- **자동화 스크립트**: `/cloud_intermediate/tools/cloud/monitoring-hub-helper.sh` (복사 후 사용)
+- **모니터링 스크립트**: `/cloud_intermediate/tools/cloud/`
+
+### 🔧 자동화 스크립트 사용법
+```bash
+# 자동화 스크립트를 실습 위치로 복사
+cp ../../tools/cloud/monitoring-hub-helper.sh ./
+chmod +x monitoring-hub-helper.sh
+
+# 모니터링 허브 구축
+./monitoring-hub-helper.sh --action create-hub
+./monitoring-hub-helper.sh --action configure-prometheus
+./monitoring-hub-helper.sh --action setup-grafana
+```
 
 <details>
 <summary>🚀 실습 환경 준비</summary>

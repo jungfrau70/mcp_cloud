@@ -29,9 +29,21 @@
 ## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/cloud_intermediate/repo/examples/day2/cicd-pipeline/`
-- **자동화 스크립트**: `/cloud_intermediate/repo/automation/day2/cicd-pipeline-practice-automation.sh`
-- **클라우드 스크립트**: `/cloud_intermediate/repo/cloud-scripts/`
+- **실습 샘플 코드**: `/cloud_intermediate/repo/practice/day2/cicd-pipeline/`
+- **자동화 스크립트**: `/cloud_intermediate/tools/cloud/github-actions-helper.sh` (복사 후 사용)
+- **클라우드 스크립트**: `/cloud_intermediate/tools/cloud/`
+
+### 🔧 자동화 스크립트 사용법
+```bash
+# 자동화 스크립트를 실습 위치로 복사
+cp ../../tools/cloud/github-actions-helper.sh ./
+chmod +x github-actions-helper.sh
+
+# CI/CD 파이프라인 실습
+./github-actions-helper.sh --action create-workflow
+./github-actions-helper.sh --action setup-secrets
+./github-actions-helper.sh --action test-pipeline
+```
 
 <details>
 <summary>🚀 실습 환경 준비</summary>

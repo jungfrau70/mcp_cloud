@@ -29,9 +29,21 @@
 ## 🛠️ 실습 환경 준비
 
 ### 📁 실습 코드 및 자동화
-- **실습 샘플 코드**: `/cloud_intermediate/repos/samples/day1/docker-advanced/`
-- **자동화 스크립트**: `/cloud_intermediate/repos/automation/day1/docker-advanced-practice-automation.sh`
-- **클라우드 스크립트**: `/cloud_intermediate/repos/cloud-scripts/`
+- **실습 샘플 코드**: `/cloud_intermediate/repo/practice/day1/docker-advanced/`
+- **자동화 스크립트**: `/cloud_intermediate/tools/cloud/docker-helper.sh` (복사 후 사용)
+- **클라우드 스크립트**: `/cloud_intermediate/tools/cloud/`
+
+### 🔧 자동화 스크립트 사용법
+```bash
+# 자동화 스크립트를 실습 위치로 복사
+cp ../../tools/cloud/docker-helper.sh ./
+chmod +x docker-helper.sh
+
+# 실습 진행
+./docker-helper.sh --action multistage-build
+./docker-helper.sh --action optimize-image
+./docker-helper.sh --action security-scan
+```
 
 <details>
 <summary>🚀 실습 환경 준비</summary>
