@@ -92,85 +92,84 @@ flowchart TD
     style J fill:#1976d2,color:#ffffff
 ```
 
-**🔧 실행 전 AWS EC2 환경 확인**:
+**🔧 실행 전 AWS EKS 환경 확인**:
 ```bash
-# AWS EC2 인스턴스 정보 확인
-hostname
-# 결과: ip-10-1-1-198.ap-northeast-2.compute.internal
-
 # AWS CLI 설정 확인
 aws sts get-caller-identity
 # 결과: AWS 계정 정보 출력
 
-# EC2 인스턴스 메타데이터 확인
-curl -s http://169.254.169.254/latest/meta-data/public-ipv4
-# 결과: 퍼블릭 IP 주소
+# EKS CLI (eksctl) 설치 확인
+eksctl version
+# 결과: eksctl 버전 정보
 
-# Docker 설치 확인
-docker --version
-docker-compose --version
-# 결과: Docker 및 Docker Compose 버전 정보
+# kubectl 설치 확인
+kubectl version --client
+# 결과: kubectl 버전 정보
+
+# AWS 리전 설정 확인
+aws configure get region
+# 결과: ap-northeast-2
+
+# EKS 클러스터 목록 확인
+aws eks list-clusters --region ap-northeast-2
+# 결과: 기존 클러스터 목록 (없을 수도 있음)
 ```
 
 **실제 실행 명령어**:
 ```bash
-# 1. AWS EC2 인스턴스 정보 확인
-echo "=== AWS EC2 인스턴스 정보 ==="
-hostname
-curl -s http://169.254.169.254/latest/meta-data/public-ipv4
-curl -s http://169.254.169.254/latest/meta-data/instance-type
+# 1. EKS 클러스터 생성 (aws-eks-helper.sh 사용)
+./aws-eks-helper.sh --action cluster-create
 
-# 2. 애플리케이션 배포를 위한 Docker Compose 실행
-docker-compose up -d
+# 2. EKS 클러스터 상태 확인
+./aws-eks-helper.sh --action cluster-status
 
-# 3. 서비스 상태 확인
-docker-compose ps
+# 3. kubeconfig 업데이트
+./aws-eks-helper.sh --action kubeconfig-update
 
-# 4. 애플리케이션 Health Check
-curl -s http://localhost:3000/health | jq .
+# 4. 클러스터 노드 및 파드 상태 확인
+kubectl get nodes
+kubectl get pods --all-namespaces
 
-# 5. Prometheus 메트릭 수집 확인
-curl -s "http://localhost:9090/api/v1/targets" | jq '.data.activeTargets[] | select(.labels.job == "github-actions-demo")'
+# 5. 클러스터 자동 스케일링 설정 확인
+kubectl get hpa --all-namespaces
 ```
 
-**📊 실행 후 AWS EC2 애플리케이션 확인**:
+**📊 실행 후 EKS 클러스터 확인**:
 ```bash
-# Prometheus 타겟 상태 확인
-curl -s "http://localhost:9090/api/v1/targets" | jq '.data.activeTargets[] | {job: .labels.job, health: .health, lastScrape: .lastScrape}'
+# EKS 클러스터 상태 확인
+aws eks describe-cluster --name eks-intermediate --region ap-northeast-2 --query 'cluster.{Name:name,Status:status,Version:version,Endpoint:endpoint}' --output table
 
 # 결과 예시:
-# {
-#   "job": "github-actions-demo",
-#   "health": "up",
-#   "lastScrape": "2025-09-30T09:29:52.984608983Z"
-# }
+# | Name              | Status  | Version | Endpoint                                                      |
+# | eks-intermediate  | ACTIVE  | 1.28    | https://ABCDEFGHIJKLMNOP.gr7.ap-northeast-2.eks.amazonaws.com |
 
-# 수집된 메트릭 샘플 확인
-curl -s http://localhost:3000/metrics | grep -E "(process_cpu_seconds_total|process_resident_memory_bytes)" | head -5
+# 클러스터 노드 상태 확인
+kubectl get nodes -o wide
 
-# EC2 인스턴스 상태 확인
-aws ec2 describe-instances --instance-ids $(curl -s http://169.254.169.254/latest/meta-data/instance-id) --query 'Reservations[0].Instances[0].State.Name'
-# 결과: "running"
+# 클러스터 파드 상태 확인
+kubectl get pods --all-namespaces
+
+# EKS 클러스터 자동 스케일링 확인
+kubectl get hpa --all-namespaces
 ```
 
 **🌐 웹브라우저 접속 가이드**:
-1. **Grafana 대시보드**:
-   - URL: `http://[EC2-Public-IP]:3000`
-   - 로그인: admin/admin
-   - 확인 사항: 애플리케이션 메트릭 대시보드
+1. **AWS EKS 콘솔**:
+   - URL: `https://console.aws.amazon.com/eks/`
+   - 확인 사항: 클러스터 상태, 노드 그룹, 서비스
 
-2. **Prometheus 대시보드**:
-   - URL: `http://[EC2-Public-IP]:9090`
-   - 확인 사항: 타겟 상태, 메트릭 쿼리
+2. **Kubernetes 대시보드** (설치된 경우):
+   - URL: `https://[EKS-ENDPOINT]/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/`
+   - 확인 사항: 클러스터 리소스, 파드 상태
 
-3. **애플리케이션**:
-   - URL: `http://[EC2-Public-IP]:3000`
-   - 확인 사항: Health Check, 메트릭 엔드포인트
+3. **애플리케이션 서비스**:
+   - URL: `http://[LoadBalancer-IP]` (LoadBalancer 서비스 생성 시)
+   - 확인 사항: 배포된 애플리케이션 접근
 
 **실습 내용**:
-- AWS EC2에 애플리케이션 직접 배포
-- Docker Compose로 통합 스택 실행
-- EC2 기반 모니터링 시스템 구축
+- AWS EKS 클러스터 생성 및 설정
+- kubectl을 통한 클러스터 관리
+- EKS 기반 Kubernetes 환경 구축
 
 #### 실습 2: GitHub Actions VM 배포 설정 (20분)
 
@@ -297,7 +296,7 @@ flowchart TD
 gcloud compute instances create cloud-intermediate-vm \
     --zone=asia-northeast1-a \
     --machine-type=e2-medium \
-    --image-family=ubuntu-2004-lts \
+    --image-family=ubuntu-2204-lts \
     --image-project=ubuntu-os-cloud \
     --boot-disk-size=20GB \
     --boot-disk-type=pd-standard \
@@ -317,8 +316,10 @@ sudo usermod -aG docker $USER
 sudo systemctl start docker
 sudo systemctl enable docker
 
+# 주의) 반드시 새로운 테미털을 열고 계속 
+
 # 5. 애플리케이션 배포를 위한 Docker Compose 실행
-git clone https://github.com/jungfrau70/github-actions-demo-day2.git
+git clone https://github.com/[github-userid]/github-actions-demo-day2.git
 cd github-actions-demo-day2
 git checkout day2-advanced
 docker-compose up -d

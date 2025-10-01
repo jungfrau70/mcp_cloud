@@ -138,11 +138,11 @@ echo "=== 중앙 집중식 환경 파일 (tools/cloud/) ==="
 ls -la tools/cloud/*-environment.env tools/cloud/*-helper.sh tools/cloud/*.yaml 2>/dev/null || echo "환경 파일이 없습니다"
 
 # 📍 환경 파일 복사 및 확인
-echo "=== CI/CD 실습 환경 파일 복사 ==="
-cd practice/day2/cicd-practice-app/
-cp ../../../tools/cloud/*-environment.env ./
-cp ../../../tools/cloud/cicd-pipeline-helper.sh ./
-ls -la *-environment.env cicd-pipeline-helper.sh
+echo "=== EKS 실습 환경 파일 복사 ==="
+cd practice/day2/eks-practice/
+cp ../../../tools/cloud/aws-eks-helper.sh ./
+cp ../../../tools/cloud/aws-environment.env ./
+ls -la aws-eks-helper.sh aws-environment.env
 
 echo "=== 모니터링 실습 환경 파일 복사 ==="
 cd ../monitoring-hub/

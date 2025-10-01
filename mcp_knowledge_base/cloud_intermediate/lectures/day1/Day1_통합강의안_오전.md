@@ -89,9 +89,8 @@ mcp_knowledge_base/cloud_intermediate/
   - [ ] `cd repo/practice/day1/kubernetes-basics/` 디렉토리로 이동
   - [ ] 환경 파일 복사: `cp ../../../tools/cloud/aws-setup-helper.sh ./ && cp ../../../tools/cloud/aws-eks-helper.sh ./ && cp ../../../tools/cloud/*-environment.env ./ && cp ../../../tools/cloud/*.yaml ./`
   - [ ] 환경 파일 확인: `ls -la aws-setup-helper.sh aws-eks-helper.sh *-environment.env *.yaml`
-  - [ ] **AWS EKS 클러스터 배포**: `./aws-eks-helper.sh --action create`
-  - [ ] **EKS 클러스터 설정**: `./aws-eks-helper.sh --action status`
-  - [ ] **클러스터 검증**: `./aws-eks-helper.sh --action status`
+  - [ ] **AWS EKS 클러스터 배포**: `./aws-eks-helper.sh --action cluster-create`
+  - [ ] **EKS 클러스터 상태**: `./aws-eks-helper.sh --action cluster-status`
   - [ ] **Workload 배포**: `kubectl apply -f nginx-deployment.yaml`
   - [ ] **외부 접근 테스트**: `kubectl get services`
   - [ ] 클러스터 상태 확인: `kubectl get nodes`, `kubectl get pods`, `kubectl get services`
@@ -136,6 +135,12 @@ cd mcp_knowledge_base/cloud_intermediate/
 
 # 📍 환경 설정 자동화
 ./tools/cloud/setup-environment.sh
+
+# 📍 EKS 실습 환경 파일 복사
+cd practice/day1/eks-practice/
+cp ../../../tools/cloud/aws-eks-helper.sh ./
+cp ../../../tools/cloud/aws-environment.env ./
+ls -la aws-eks-helper.sh aws-environment.env
 
 # 📍 개별 실습 모듈 및 환경 파일 확인
 ls -la repo/practice/day1/

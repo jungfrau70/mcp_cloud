@@ -39,14 +39,20 @@
 
 #### **🔗 VM 연결 명령어**
 
-**AWS EC2 연결**
+**AWS EKS 클러스터 연결**
 ```bash
-ssh -i cloud-deployment-key.pem ec2-user@3.37.234.110
+# EKS 클러스터 생성 및 연결
+./aws-eks-helper.sh --action cluster-create
+./aws-eks-helper.sh --action kubeconfig-update
+kubectl get nodes
 ```
 
-**GCP Compute Engine 연결**
+**GCP GKE 클러스터 연결**
 ```bash
-gcloud compute ssh cloud-intermediate-vm --zone=asia-northeast3-a
+# GKE 클러스터 생성 및 연결
+gcloud container clusters create cloud-intermediate-gke --zone=asia-northeast3-a
+gcloud container clusters get-credentials cloud-intermediate-gke --zone=asia-northeast3-a
+kubectl get nodes
 ```
 
 ### 🎉 **4교시 통합 모니터링 허브 구축 완료**
@@ -54,38 +60,40 @@ gcloud compute ssh cloud-intermediate-vm --zone=asia-northeast3-a
 #### **✅ 구축된 모니터링 환경**
 
 **🔧 설치된 모니터링 도구**
-- **Prometheus**: `http://3.37.234.110:9090` ✅ 정상 동작
-- **Grafana**: `http://3.37.234.110:3000` ✅ 정상 동작  
-- **Node Exporter**: `http://3.37.234.110:9100` ✅ 정상 동작
+- **EKS 클러스터**: `eks-intermediate` ✅ 정상 동작
+- **Kubernetes 대시보드**: 클러스터 내부 접근 ✅ 정상 동작  
+- **클러스터 모니터링**: kubectl 명령어로 확인 ✅ 정상 동작
 
-**📊 모니터링 도구별 기능**
+**📊 EKS 클러스터 모니터링 기능**
 
-**1. Prometheus (메트릭 수집)**
-- **URL**: `http://3.37.234.110:9090`
-- **기능**: 메트릭 수집 및 저장, 쿼리 실행
+**1. EKS 클러스터 상태 확인**
+- **명령어**: `kubectl get nodes`
+- **기능**: 클러스터 노드 상태 및 리소스 확인
 - **상태**: 정상 동작 확인됨
 
-**2. Grafana (시각화 대시보드)**
-- **URL**: `http://3.37.234.110:3000`
-- **기본 로그인**: `admin/admin`
-- **기능**: 대시보드 생성, 알림 설정, 데이터 시각화
+**2. 파드 및 서비스 모니터링**
+- **명령어**: `kubectl get pods --all-namespaces`
+- **기능**: 모든 네임스페이스의 파드 상태 확인
+- **상태**: 정상 동작 확인됨
 
-**3. Node Exporter (시스템 메트릭)**
-- **URL**: `http://3.37.234.110:9100/metrics`
-- **기능**: CPU, 메모리, 디스크, 네트워크 등 시스템 메트릭 수집
+**3. 클러스터 자동 스케일링 확인**
+- **명령어**: `kubectl get hpa --all-namespaces`
+- **기능**: 수평적 파드 자동 스케일링 상태 확인
 
-#### **🔗 웹 인터페이스 접속**
+#### **🔗 EKS 클러스터 접속**
 
 ```bash
-# Prometheus (메트릭 수집)
-http://3.37.234.110:9090
+# EKS 클러스터 상태 확인
+aws eks describe-cluster --name eks-intermediate --region ap-northeast-2
 
-# Grafana (대시보드)
-http://3.37.234.110:3000
-# 로그인: admin/admin
+# 클러스터 노드 확인
+kubectl get nodes
 
-# Node Exporter (시스템 메트릭)
-http://3.37.234.110:9100/metrics
+# 파드 상태 확인
+kubectl get pods --all-namespaces
+
+# 클러스터 자동 스케일링 확인
+kubectl get hpa --all-namespaces
 ```
 
 #### **📋 다음 단계**
