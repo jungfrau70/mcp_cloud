@@ -1111,10 +1111,10 @@ curl -s http://localhost:9090/api/v1/query?query=up
 - **실무 적용**: 실제 프로젝트에 적용 가능한 실무 경험
 
 ### 관련 문서
-- [Day2 README](../README.md)
-- [CI/CD 파이프라인](./cicd-pipeline.md)
-- [클라우드 배포](./cloud-deployment.md)
-- [통합 모니터링 시나리오](../../../통합모니터링시나리오.md)
+- [Day2 README](cloud_intermediate/textbook/day2/README.md)
+- [CI/CD 파이프라인](cloud_intermediate/textbook/day2/cicd-pipeline.md)
+- [클라우드 배포](cloud_intermediate/textbook/day2/cloud-deployment.md)
+- [통합 모니터링 시나리오](cloud_intermediate/통합모니터링시나리오.md)
 
 - [ ] Infrastructure/Platform 모니터링 설정
 - [ ] AWS 클러스터 메트릭 수집 확인

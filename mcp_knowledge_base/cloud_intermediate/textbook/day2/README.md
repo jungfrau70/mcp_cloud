@@ -148,11 +148,11 @@ chmod +x docker-helper.sh
 
 ## 🔗 관련 문서
 
-- [Day 2 강의안](../../lectures/day2/)
-- [학습 경로](../../learning-path.md)
-- [과정 개요](../../README.md)
-- [통합 강의 시나리오](../../통합강의시나리오.md)
-- [통합 모니터링 시나리오](../../통합모니터링시나리오.md)
+- [Day 2 강의안](cloud_intermediate/lectures/day2/)
+- [학습 경로](cloud_intermediate/learning-path.md)
+- [과정 개요](cloud_intermediate/README.md)
+- [통합 강의 시나리오](cloud_intermediate/통합강의시나리오.md)
+- [통합 모니터링 시나리오](cloud_intermediate/통합모니터링시나리오.md)
 
 ---
 

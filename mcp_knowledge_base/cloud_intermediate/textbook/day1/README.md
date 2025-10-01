@@ -151,18 +151,18 @@ cd cloud_intermediate/repo/automation/day1/
 
 ### 다음 단계
 - **Day 2 실습**으로 진행: CI/CD 및 VM 기반 배포, 멀티 클라우드 모니터링
-- **통합 강의 시나리오** 확인: [../../통합강의시나리오.md](../../통합강의시나리오.md)
-- **통합 모니터링 시나리오** 확인: [../../통합모니터링시나리오.md](../../통합모니터링시나리오.md)
+- **통합 강의 시나리오** 확인: [cloud_intermediate/통합강의시나리오.md](cloud_intermediate/통합강의시나리오.md)
+- **통합 모니터링 시나리오** 확인: [cloud_intermediate/통합모니터링시나리오.md](cloud_intermediate/통합모니터링시나리오.md)
 
 ---
 
 ## 🔗 관련 문서
 
-- [Day 1 강의안](../../lectures/day1/)
-- [학습 경로](../../learning-path.md)
-- [과정 개요](../../README.md)
-- [통합 강의 시나리오](../../통합강의시나리오.md)
-- [통합 모니터링 시나리오](../../통합모니터링시나리오.md)
+- [Day 1 강의안](cloud_intermediate/lectures/day1/)
+- [학습 경로](cloud_intermediate/learning-path.md)
+- [과정 개요](cloud_intermediate/README.md)
+- [통합 강의 시나리오](cloud_intermediate/통합강의시나리오.md)
+- [통합 모니터링 시나리오](cloud_intermediate/통합모니터링시나리오.md)
 
 ---
 

@@ -338,6 +338,6 @@ New-AzRoleAssignment -SignInName "itadmin@<tenant>.onmicrosoft.com" -RoleDefinit
 
 <div align="center">
 
-["← 이전: Cloud Master 메인"](README.md) | ["📚 전체 커리큘럼"](curriculum.md) | ["🏠 학습 경로로 돌아가기"](index.md) | ["📋 학습 경로"](learning-path.md)
+["← 이전: Cloud Intermediate 메인"](cloud_intermediate/README.md) | ["📚 전체 커리큘럼"](cloud_intermediate/curriculum.md) | ["🏠 학습 경로로 돌아가기"](cloud_intermediate/index.md) | ["📋 학습 경로"](cloud_intermediate/learning-path.md)
 
 </div>
