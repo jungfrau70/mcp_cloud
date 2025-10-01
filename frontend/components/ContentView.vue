@@ -1295,10 +1295,10 @@ watch(() => props.slide, (s) => {
       return;
     }
     if ((s.type === 'pptx' || s.type === 'ppt') && s.url) {
-      // PPTX/PPT 파일의 경우 다운로드 링크만 제공 (브라우저에서 직접 표시 불가)
-      slidePdfUrl.value = '';
+      // PPTX/PPT 파일의 경우 PDF로 변환된 파일을 표시
+      slidePdfUrl.value = String(s.url);
       slideHtml.value = '';
-      isSlideView.value = false; // 콘텐츠 뷰에서 다운로드 링크 표시
+      isSlideView.value = true; // 슬라이드 뷰에서 PDF 표시
       return;
     }
     if (s.html) {

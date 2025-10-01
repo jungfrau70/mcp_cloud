@@ -375,17 +375,27 @@ def get_slide(textbook_path: str = None, curriculum_path: str = None):
     # If PPT/PPTX requested, convert to PDF and stream
     if fp.suffix.lower() in ('.ppt', '.pptx'):
         if convert_pptx_to_pdf is None:
-            # LibreOffice가 없는 경우 원본 PPTX 파일을 직접 서빙
-            print(f"DEBUG: LibreOffice not available, serving original PPTX file: {fp}")
-            return FileResponse(str(fp), media_type='application/vnd.openxmlformats-officedocument.presentationml.presentation', filename=fp.name, content_disposition_type='inline')
+            # LibreOffice가 없는 경우 원본 PPTX 파일을 다운로드로 서빙
+            print(f"DEBUG: LibreOffice not available, serving original PPTX file as download: {fp}")
+            return FileResponse(
+                str(fp), 
+                media_type='application/vnd.openxmlformats-officedocument.presentationml.presentation', 
+                filename=fp.name, 
+                content_disposition_type='attachment'  # inline → attachment로 변경
+            )
         try:
             pdf_fp = convert_pptx_to_pdf(fp, KB_ROOT)
         except HTTPException as e:
             raise e
         except Exception as e:
-            print(f"DEBUG: PPTX conversion failed: {e}, serving original file")
-            # 변환 실패 시 원본 파일 서빙
-            return FileResponse(str(fp), media_type='application/vnd.openxmlformats-officedocument.presentationml.presentation', filename=fp.name, content_disposition_type='inline')
+            print(f"DEBUG: PPTX conversion failed: {e}, serving original file as download")
+            # 변환 실패 시 원본 파일을 다운로드로 서빙
+            return FileResponse(
+                str(fp), 
+                media_type='application/vnd.openxmlformats-officedocument.presentationml.presentation', 
+                filename=fp.name, 
+                content_disposition_type='attachment'  # inline → attachment로 변경
+            )
         return FileResponse(str(pdf_fp), media_type='application/pdf', filename=pdf_fp.name, content_disposition_type='inline')
 
     # Default: return text content

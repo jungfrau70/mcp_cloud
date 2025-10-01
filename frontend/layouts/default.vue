@@ -1078,7 +1078,16 @@ const handleFileClick = async (path) => {
           const contentType = response.headers.get('content-type') || ''
           if (contentType.includes('application/pdf')) {
             const blob = await response.blob()
-            tbContent.value = `# ${path.split('/').pop()}\n\nPDF 문서가 로드되었습니다.`
+            const fileName = path.split('/').pop()
+            const isPptx = fileName.toLowerCase().endsWith('.pptx') || fileName.toLowerCase().endsWith('.ppt')
+            
+            if (isPptx) {
+              // PPTX/PPT 파일이 PDF로 변환된 경우
+              tbContent.value = `# ${fileName}\n\n## 📊 PowerPoint 프레젠테이션 (PDF 변환)\n\n이 문서는 PowerPoint 프레젠테이션을 PDF로 변환한 것입니다.\n\n### 💡 참고사항\n\n- 원본 PPTX 파일이 PDF로 변환되어 표시됩니다.\n- 브라우저에서 직접 미리보기가 가능합니다.`
+            } else {
+              // 일반 PDF 파일
+              tbContent.value = `# ${fileName}\n\nPDF 문서가 로드되었습니다.`
+            }
             tbSlide.value = { type: 'pdf', url: URL.createObjectURL(blob) }
           } else if (contentType.includes('application/vnd.openxmlformats-officedocument.presentationml.presentation') || 
                      contentType.includes('application/vnd.ms-powerpoint')) {
