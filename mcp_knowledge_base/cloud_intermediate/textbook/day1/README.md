@@ -33,28 +33,28 @@
 - **이미지 최적화**: 레이어 최적화 및 보안 강화
 - **Docker Compose 고급 활용**: 복잡한 애플리케이션 스택 관리
 
-**실습 파일**: [docker-advanced.md](./practice/docker-advanced.md)
+**실습 파일**: [docker-advanced.md](./docker-advanced.md)
 
 ### 🔧 2교시: Kubernetes 기초 (90분)
 - **Pod, Service, Deployment 생성**: Kubernetes 핵심 리소스 이해
 - **ConfigMap, Secret 관리**: 설정 및 보안 정보 관리
 - **로컬 Kubernetes 환경 구축**: 개발 환경 설정
 
-**실습 파일**: [kubernetes-basics.md](./practice/kubernetes-basics.md)
+**실습 파일**: [kubernetes-basics.md](./kubernetes-basics.md)
 
 ### 🔧 3교시: 클라우드 컨테이너 서비스 (90분)
 - **AWS ECS 태스크 정의 및 서비스 생성**: AWS 컨테이너 서비스 활용
 - **GCP Cloud Run 서비스 배포**: GCP 서버리스 컨테이너 서비스 활용
 - **클라우드 네이티브 패턴 학습**: 클라우드 환경에 최적화된 배포 전략
 
-**실습 파일**: [cloud-container-services.md](./practice/cloud-container-services.md)
+**실습 파일**: [cloud-container-services.md](./cloud-container-services.md)
 
 ### 🔧 4교시: 통합 모니터링 허브 구축 (90분)
 - **Prometheus + Grafana 스택**: 모니터링 인프라 구축
 - **Node Exporter, Push Gateway**: 메트릭 수집 및 전송
 - **AlertManager 설정**: 알림 시스템 구성
 
-**실습 파일**: [monitoring-hub.md](./practice/monitoring-hub.md)
+**실습 파일**: [monitoring-hub.md](./monitoring-hub.md)
 
 ### 🔧 5교시: 외부 접속 및 보안 설정 (30분)
 - **AWS 보안 그룹 자동 설정**: 외부 접속을 위한 방화벽 설정
@@ -62,7 +62,7 @@
 - **외부 접속 테스트**: 모든 서비스의 외부 접속 가능 여부 검증
 - **실습 결과 공유**: 외부 접속 URL을 통한 실습 결과 공유
 
-**실습 파일**: [external-access-guide.md](./practice/external-access-guide.md)
+**실습 파일**: [external-access-guide.md](./external-access-guide.md)
 
 ---
 
@@ -103,9 +103,15 @@ cd cloud_intermediate/tools/cloud/
 
 # Day1 실습 자동화 실행
 # 자동화 스크립트를 실습 위치로 복사
-cp ../../tools/cloud/day1-practice.sh ./
-chmod +x day1-practice.sh
-./day1-practice.sh
+cp ../../tools/cloud/docker-helper.sh ./
+cp ../../tools/cloud/k8s-helper.sh ./
+chmod +x docker-helper.sh k8s-helper.sh
+
+# Docker 실습
+./docker-helper.sh --action multistage-build
+
+# Kubernetes 실습
+./k8s-helper.sh --action setup-cluster
 ```
 
 ### 2단계: 실습 진행
@@ -145,18 +151,18 @@ cd cloud_intermediate/repo/automation/day1/
 
 ### 다음 단계
 - **Day 2 실습**으로 진행: CI/CD 및 VM 기반 배포, 멀티 클라우드 모니터링
-- **통합 강의 시나리오** 확인: [../통합강의시나리오.md](../통합강의시나리오.md)
-- **통합 모니터링 시나리오** 확인: [../통합모니터링시나리오.md](../통합모니터링시나리오.md)
+- **통합 강의 시나리오** 확인: [../../통합강의시나리오.md](../../통합강의시나리오.md)
+- **통합 모니터링 시나리오** 확인: [../../통합모니터링시나리오.md](../../통합모니터링시나리오.md)
 
 ---
 
 ## 🔗 관련 문서
 
-- [Day 1 강의안](../lectures/day1/)
-- [학습 경로](../learning-path.md)
-- [과정 개요](../README.md)
-- [통합 강의 시나리오](../통합강의시나리오.md)
-- [통합 모니터링 시나리오](../통합모니터링시나리오.md)
+- [Day 1 강의안](../../lectures/day1/)
+- [학습 경로](../../learning-path.md)
+- [과정 개요](../../README.md)
+- [통합 강의 시나리오](../../통합강의시나리오.md)
+- [통합 모니터링 시나리오](../../통합모니터링시나리오.md)
 
 ---
 

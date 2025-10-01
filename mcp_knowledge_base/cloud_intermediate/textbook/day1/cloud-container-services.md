@@ -37,17 +37,15 @@
 ### 🔧 자동화 스크립트 사용법
 ```bash
 # 자동화 스크립트를 실습 위치로 복사
-cp ../../tools/cloud/aws-ecs-helper.sh ./
-cp ../../tools/cloud/gcp-cloudrun-helper.sh ./
-chmod +x aws-ecs-helper.sh gcp-cloudrun-helper.sh
+cp ../../tools/cloud/docker-helper.sh ./
+chmod +x docker-helper.sh
 
-# AWS ECS 실습
-./aws-ecs-helper.sh --action create-cluster
-./aws-ecs-helper.sh --action deploy-service
+# Docker 컨테이너 실습
+./docker-helper.sh --action multistage-build
+./docker-helper.sh --action optimize-image
 
-# GCP Cloud Run 실습
-./gcp-cloudrun-helper.sh --action deploy-service
-./gcp-cloudrun-helper.sh --action configure-traffic
+# 수동으로 AWS ECS 및 GCP Cloud Run 실습 진행
+# (자동화 스크립트는 추후 추가 예정)
 ```
 
 <details>

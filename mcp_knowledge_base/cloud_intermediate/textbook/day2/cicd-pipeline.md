@@ -36,13 +36,15 @@
 ### 🔧 자동화 스크립트 사용법
 ```bash
 # 자동화 스크립트를 실습 위치로 복사
-cp ../../tools/cloud/github-actions-helper.sh ./
-chmod +x github-actions-helper.sh
+cp ../../tools/cloud/docker-helper.sh ./
+chmod +x docker-helper.sh
 
-# CI/CD 파이프라인 실습
-./github-actions-helper.sh --action create-workflow
-./github-actions-helper.sh --action setup-secrets
-./github-actions-helper.sh --action test-pipeline
+# Docker 이미지 빌드 및 테스트
+./docker-helper.sh --action multistage-build
+./docker-helper.sh --action security-scan
+
+# 수동으로 GitHub Actions 워크플로우 설정
+# (자동화 스크립트는 추후 추가 예정)
 ```
 
 <details>

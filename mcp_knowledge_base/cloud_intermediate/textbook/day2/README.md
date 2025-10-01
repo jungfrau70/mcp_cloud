@@ -106,9 +106,11 @@ kubectl version --client
 ```bash
 # 실습 환경 자동 설정
 # 자동화 스크립트를 실습 위치로 복사
-cp ../../tools/cloud/day2-practice.sh ./
-chmod +x day2-practice.sh
-./day2-practice.sh --action setup
+cp ../../tools/cloud/docker-helper.sh ./
+chmod +x docker-helper.sh
+
+# Docker 환경 설정
+./docker-helper.sh --action multistage-build
 ```
 
 ### 2단계: 실습 진행
@@ -120,9 +122,9 @@ chmod +x day2-practice.sh
 ```bash
 # Day2 실습 자동 정리
 # 자동화 스크립트를 실습 위치로 복사 (이미 복사된 경우 생략 가능)
-cp ../../tools/cloud/day2-practice.sh ./
-chmod +x day2-practice.sh
-./day2-practice.sh --action cleanup
+cp ../../tools/cloud/docker-helper.sh ./
+chmod +x docker-helper.sh
+./docker-helper.sh --action cleanup
 ```
 
 ---
@@ -146,11 +148,11 @@ chmod +x day2-practice.sh
 
 ## 🔗 관련 문서
 
-- [Day 2 강의안](../lectures/day2/)
-- [학습 경로](../learning-path.md)
-- [과정 개요](../README.md)
-- [통합 강의 시나리오](../통합강의시나리오.md)
-- [통합 모니터링 시나리오](../통합모니터링시나리오.md)
+- [Day 2 강의안](../../lectures/day2/)
+- [학습 경로](../../learning-path.md)
+- [과정 개요](../../README.md)
+- [통합 강의 시나리오](../../통합강의시나리오.md)
+- [통합 모니터링 시나리오](../../통합모니터링시나리오.md)
 
 ---
 

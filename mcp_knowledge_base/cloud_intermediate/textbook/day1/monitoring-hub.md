@@ -43,13 +43,14 @@
 ### 🔧 자동화 스크립트 사용법
 ```bash
 # 자동화 스크립트를 실습 위치로 복사
-cp ../../tools/cloud/monitoring-hub-helper.sh ./
-chmod +x monitoring-hub-helper.sh
+cp ../../tools/cloud/docker-helper.sh ./
+chmod +x docker-helper.sh
 
-# 모니터링 허브 구축
-./monitoring-hub-helper.sh --action create-hub
-./monitoring-hub-helper.sh --action configure-prometheus
-./monitoring-hub-helper.sh --action setup-grafana
+# Docker Compose로 모니터링 스택 구축
+docker-compose up -d
+
+# 수동으로 Prometheus, Grafana 설정 진행
+# (자동화 스크립트는 추후 추가 예정)
 ```
 
 <details>
